@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2011, The Android Open Source Project
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<com.liskovsoft.browser.AutologinBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FBF0A0"
+    android:gravity="center_vertical"
+    android:visibility="gone"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip">
+        <TextView
+            android:text="@string/autologin_bar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/primary_text_light"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Spinner
+            android:id="@+id/autologin_account"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingLeft="8dp"
+            android:paddingRight="24dp"
+            style="@android:style/Widget.Holo.Light.Spinner" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip">
+        <Button
+            android:id="@+id/autologin_close"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/autologin_bar_hide_text"
+            style="@android:style/Widget.Holo.Light.Button" />
+        <ProgressBar
+            android:id="@+id/autologin_progress"
+            android:indeterminateOnly="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="invisible" />
+        <Button
+            android:id="@+id/autologin_login"
+            android:text="@string/autologin_bar_login_text"
+            style="@android:style/Widget.Holo.Light.Button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/autologin_error"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="#dd6826"
+        android:text="@string/autologin_bar_error"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+</com.liskovsoft.browser.AutologinBar>

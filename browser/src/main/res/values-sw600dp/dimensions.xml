@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2010 The Android Open Source Project Licensed under the
+    Apache License, Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+    applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied. See the License for
+    the specific language governing permissions and limitations under the
+    License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <dimen name="bookmarkThumbnailWidth">180dip</dimen>
+    <dimen name="bookmarkThumbnailHeight">120dip</dimen>
+    <dimen name="widgetThumbnailHeight">104dip</dimen>
+    <dimen name="widgetColumnWidth">130dip</dimen>
+    <dimen name="favicon_padded_size">28dip</dimen>
+    <dimen name="add_bookmark_width">500dip</dimen>
+    <!-- For the most visited page (we use px as these are adjusted by the browser) -->
+    <dimen name="mv_max_width">1010px</dimen>
+    <dimen name="mv_item_width">231px</dimen>
+    <dimen name="mv_item_width_portrait">213px</dimen>
+    <dimen name="mv_border_width">3px</dimen>
+    <!-- For the combined Bookmarks History view -->
+    <dimen name="combo_paddingTop">50dip</dimen>
+    <dimen name="combo_horizontalSpacing">8dip</dimen>
+    <dimen name="qc_radius_start">75dip</dimen>
+    <dimen name="qc_radius_increment">90dip</dimen>
+    <dimen name="qc_slop">15dip</dimen>
+    <dimen name="qc_touch_offset">15dip</dimen>
+    <dimen name="qc_tab_title_height">30dip</dimen>
+    <dimen name="qc_thumb_width">240dip</dimen>
+    <dimen name="qc_thumb_height">160dip</dimen>
+    <dimen name="qc_item_size">48dip</dimen>
+    <dimen name="suggest_item_padding">8dp</dimen>
+    <dimen name="toolbar_height">48dip</dimen>
+    <dimen name="tab_thumbnail_width">@dimen/qc_thumb_width</dimen>
+    <dimen name="tab_thumbnail_height">@dimen/qc_thumb_height</dimen>
+</resources>

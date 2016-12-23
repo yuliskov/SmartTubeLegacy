@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2010 The Android Open Source Project Licensed under the
+    Apache License, Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+    applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied. See the License for
+    the specific language governing permissions and limitations under the
+    License.
+-->
+<resources
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <dimen name="tab_width">180dp</dimen>
+    <dimen name="tab_height">44dp</dimen>
+    <dimen name="tab_overlap">8dp</dimen>
+    <dimen name="tab_addoverlap">14dp</dimen>
+    <dimen name="tab_slice">15.5dp</dimen>
+    <dimen name="tab_focus_stroke">2dip</dimen>
+    <dimen name="max_tab_width">300dp</dimen>
+    <dimen name="bookmarkThumbnailWidth">90dip</dimen>
+    <dimen name="bookmarkThumbnailHeight">80dip</dimen>
+    <!-- Height determined by measuring the TableLayout in
+        browser_add_bookmark_content and matching that. -->
+    <dimen name="folder_selector_height">181dip</dimen>
+    <dimen name="widgetItemMinHeight">48dip</dimen>
+    <dimen name="favicon_size">16dip</dimen>
+    <dimen name="favicon_padded_size">20dip</dimen>
+    <dimen name="qc_radius_start">65dip</dimen>
+    <dimen name="qc_radius_increment">80dip</dimen>
+    <dimen name="qc_slop">10dip</dimen>
+    <dimen name="qc_touch_offset">15dip</dimen>
+    <dimen name="qc_tab_title_height">24dip</dimen>
+    <dimen name="qc_thumb_width">150dip</dimen>
+    <dimen name="qc_thumb_height">100dip</dimen>
+    <dimen name="qc_item_size">40dip</dimen>
+    <dimen name="bookmark_widget_thumb_size">32dip</dimen>
+    <dimen name="bookmark_widget_favicon_size">26dip</dimen>
+    <!-- For the most visited page (we use px as these are adjusted by the browser) -->
+    <dimen name="mv_max_width">450px</dimen>
+    <dimen name="mv_item_width">80px</dimen>
+    <dimen name="mv_item_width_portrait">80px</dimen>
+    <dimen name="mv_border_width">2px</dimen>
+    <dimen name="tab_padding_top">12dp</dimen>
+    <dimen name="tab_first_padding_left">12dp</dimen>
+    <dimen name="list_favicon_padding">5dip</dimen>
+    <dimen name="list_favicon_corner_radius">3dip</dimen>
+    <dimen name="tab_favicon_corner_radius">2dip</dimen>
+    <dimen name="widgetThumbnailHeight">94dip</dimen>
+    <dimen name="widgetHorizontalSpacing">6dip</dimen>
+    <dimen name="widgetVerticalSpacing">6dip</dimen>
+    <dimen name="widgetColumnWidth">80dip</dimen>
+    <!-- For the combined Bookmarks History view -->
+    <dimen name="combo_paddingTop">0dip</dimen>
+    <dimen name="combo_horizontalSpacing">6dip</dimen>
+    <dimen name="tab_view_thumbnail_height">76dip</dimen>
+    <!-- Preference activity side margins -->
+    <dimen name="preference_screen_side_margin">0dp</dimen>
+    <!-- Preference activity side margins negative-->
+    <dimen name="preference_screen_side_margin_negative">0dp</dimen>
+    <!-- Preference widget area width (to the left of the text) -->
+    <dimen name="preference_widget_width">56dp</dimen>
+    <dimen name="nav_tab_spacing">8dp</dimen>
+    <dimen name="menu_width">240dip</dimen>
+    <dimen name="menu_height">32dip</dimen>
+    <dimen name="toolbar_height">52dip</dimen>
+    <dimen name="tab_thumbnail_width">240dip</dimen>
+    <dimen name="tab_thumbnail_height">160dip</dimen>
+    <dimen name="nav_tab_width">240dip</dimen>
+    <dimen name="nav_tab_height">160dip</dimen>
+    <dimen name="nav_tab_titleheight">32dip</dimen>
+    <dimen name="nav_tab_text_normal">18sp</dimen>
+    <dimen name="nav_tab_text_small">14sp</dimen>
+    <dimen name="suggest_item_padding">8dp</dimen>
+    <dimen name="progress_bar_margin">-11dip</dimen>
+</resources>

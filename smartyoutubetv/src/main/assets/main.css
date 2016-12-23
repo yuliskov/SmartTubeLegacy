@@ -1,0 +1,8 @@
+div#legend {
+    display: none;
+}
+
+input {
+    pointer-events: none;
+    tab-index: -1;
+}

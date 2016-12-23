@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.liskovsoft.browser.NavigationBarTablet
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_urlbar"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:id="@+id/navbuttons"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/back"
+            android:src="@drawable/ic_back_holo_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_back"
+            style="@style/HoloButton" />
+        <ImageButton
+            android:id="@+id/forward"
+            android:src="@drawable/ic_forward_holo_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_forward"
+            style="@style/HoloButton" />
+        <ImageButton
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/HoloButton"
+            android:gravity="center_vertical"
+            android:contentDescription="@string/accessibility_button_stop"
+            android:src="@drawable/ic_stop_holo_dark" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/urlbar_focused"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal"
+        android:background="@drawable/url_background">
+        <ImageView
+            android:id="@+id/url_icon"
+            android:layout_width="32dip"
+            android:layout_height="20dip"
+            android:src="@drawable/ic_web_holo_dark"
+            android:layout_gravity="center" />
+        <ImageView
+            android:id="@+id/lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="0dip"
+            style="@style/HoloIcon"
+            android:visibility="gone" />
+        <com.android.browser.UrlInputView
+            android:id="@+id/url"
+            android:layout_width="0dip"
+            android:layout_weight="1.0"
+            android:layout_height="match_parent"
+            android:paddingLeft="4dip"
+            android:paddingRight="0dip"
+            android:background="@null"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:hint="@string/search_hint"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:lines="1"
+            android:scrollHorizontally="true"
+            android:inputType="textUri"
+            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+            style="@style/Suggestions" />
+        <ImageButton
+            android:id="@+id/star"
+            android:src="@drawable/btn_imageview_star"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_addbookmark"
+            style="@style/HoloButton" />
+        <ImageButton
+            android:id="@+id/clear"
+            android:src="@drawable/ic_stop_holo_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_clear"
+            style="@style/HoloButton" />
+        <ImageButton
+            android:id="@+id/voice"
+            android:src="@drawable/ic_voice_search_holo_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_voice"
+            style="@style/HoloButton" />
+        </LinearLayout>
+    <ImageButton
+        android:id="@+id/search"
+        android:src="@drawable/ic_search_holo_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+            android:contentDescription="@string/accessibility_button_search"
+        style="@style/HoloButton" />
+    <ImageButton
+        android:id="@+id/all_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        style="@style/HoloButton"
+        android:contentDescription="@string/accessibility_button_bookmarks"
+        android:src="@drawable/ic_bookmarks_history_holo_dark" />
+</com.liskovsoft.browser.NavigationBarTablet>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BrowserTheme" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">#FFFFFFFF</item>
+        <item name="android:windowActionBar">true</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:actionBarSize">56dip</item>
+    </style>
+    <style name="Suggestions" parent="@android:style/Widget.Holo.AutoCompleteTextView">
+    </style>
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/bg_browsertabs</item>
+        <item name="android:displayOptions"></item>
+    </style>
+</resources>

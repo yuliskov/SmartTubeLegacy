@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="SimpleUITheme" parent="Theme.AppCompat.NoActionBar">
+    </style>
+
+    <style name="BrowserTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">#FFFFFFFF</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+    </style>
+    <style name="DialogWhenLarge" parent="@android:style/Theme.Holo.DialogWhenLarge" >
+        <item name="android:windowActionBar">false</item>
+    </style>
+    <style name="BookmarkTheme" parent="@android:style/Theme.Holo">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/bg_urlbar</item>
+        <item name="android:displayOptions"></item>
+    </style>
+    <style name="Suggestions" parent="@android:style/Widget.Holo.AutoCompleteTextView">
+        <item name="android:popupBackground">#D0000000</item>
+        <item name="android:dropDownVerticalOffset">0dip</item>
+    </style>
+    <style name="SuggestionLineMedium"
+            parent="@android:style/TextAppearance.Holo.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="SuggestionLineSmall"
+            parent="@android:style/TextAppearance.Holo.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="ActionBar" parent="@android:style/Widget.ActionBar">
+        <item name="android:background">@color/black</item>
+    </style>
+    <style name="ShortcutTheme" parent="@android:Theme.Holo.DialogWhenLarge">
+    </style>
+    <style name="TitleBar">
+        <item name="android:windowEnterAnimation">@anim/title_bar_enter</item>
+        <item name="android:windowExitAnimation">@anim/title_bar_exit</item>
+    </style>
+    <style name="HoloIcon">
+        <item name="android:layout_marginLeft">16dip</item>
+    </style>
+    <style name="HoloButton">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+    </style>
+    <style name="TabTitleSelected" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TabTitleUnselected" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AutofillProfileTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_margin">2dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="AutofillProfileEditText" parent="@style/AutofillProfileTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:imeOptions">flagNoExtractUi|actionNext</item>
+        <item name="android:singleLine">true</item>
+    </style>
+</resources>
