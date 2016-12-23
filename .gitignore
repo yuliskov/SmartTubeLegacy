@@ -1,3 +1,6 @@
+*_bak
+*.bak
+/.idea
 *.7z
 *.iml
 .gradle
