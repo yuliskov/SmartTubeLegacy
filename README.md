@@ -8,11 +8,11 @@ Another drawback is that official client needs minimum Android 5.0.
 And there comes Smart YouTube TV. It require zero deps, minimum Android 4.4.
 
 ##Highlights
-- consist of two parts: app and standalone browser engine
+- consist of two parts: app and standalone browser engine:
 	- [smartyoutubetv]: main app that using browser engine for rendering
 	- [browser]: engine with wide capabilities (e.g. display page without any UI) 
 - browser engine can be used independently (currently in development)
-- browser engine based on android open source browser project based on **marshmallow-release** branch
+- browser engine based on **marshmallow-release** branch of android open source browser project:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 ##Pros of browser engine
