@@ -9,8 +9,11 @@ And there comes Smart YouTube TV. It require zero deps, minimum Android 4.4.
 
 ##Highlights
 - consist of two parts: app and standalone browser engine
+	- [smartyoutubetv]: main app that using browser engine for rendering
+	- [browser]: engine wide capabilities 
 - browser engine can be used independently (currently in development)
-- browser engine based on android open source browser project marshmallow branch (link1)
+- browser engine based on android open source browser project based on **marshmallow-release** branch
+	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 ##Pros of browser engine
 - you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
@@ -18,5 +21,6 @@ And there comes Smart YouTube TV. It require zero deps, minimum Android 4.4.
 - browser can have tabs, settings and other regular browser features
 - all internal state is saved into persistent memory instead of RAM
 
-(link1)
-Based on: git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser
+[browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser
+[smartyoutubetv]: https://github.com/yuliskov/SmartYouTubeTV/tree/master/smartyoutubetv
+[browser]: https://github.com/yuliskov/SmartYouTubeTV/tree/master/browser
