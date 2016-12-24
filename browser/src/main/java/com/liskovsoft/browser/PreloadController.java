@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
-import com.liskovsoft.browser.util.PageDefaults;
+import com.liskovsoft.browser.util.PageData;
 
 public class PreloadController implements WebViewController {
 
@@ -252,7 +251,7 @@ public class PreloadController implements WebViewController {
     }
 
     @Override
-    public PageDefaults getPageDefaults() {
+    public PageData getPageDefaults() {
         return null;
     }
 

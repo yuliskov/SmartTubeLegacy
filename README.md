@@ -26,11 +26,10 @@ controller.loadUrl("http://ya.ru");
 ```
 
 ##TODO
-- investigate intent routing inside Browser app when opening url
 - update UML diagram for MainController and SubControllers
 - add txt file with concise project description
 - show informative error when site not available
-- more details: 
+- find more details: 
 	- TabControl.SubWindow
 	- DataController
 	- BrowserWebView.CustomView
@@ -43,6 +42,7 @@ controller.loadUrl("http://ya.ru");
   - testThatWevViewHeadersProperlySet
 
 ##DONE
+- handle intents from external apps
 - restore state (Bundle) when app unloaded from memory
 - back key not closes video but exits from app
 - dont play video in background
@@ -57,7 +57,7 @@ controller.loadUrl("http://ya.ru");
   - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
 ##Other
-- if you curious on which sources browser engine based:
+- if you curious on which sources browser engine based, do this in console:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 [browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser

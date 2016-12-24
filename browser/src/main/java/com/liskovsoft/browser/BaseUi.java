@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.List;
+
 public abstract class BaseUi implements UI {
     protected final Activity mActivity;
     protected final UiController mUiController;
@@ -110,12 +112,21 @@ public abstract class BaseUi implements UI {
     public void addTab(Tab tab) {
     }
 
+    @Override
+    public void updateTabs(List<Tab> tabs) {
+    }
+
     /**
      * TODO: move method to another interface that ExtendedBaseUi will implements
      */
     public void editUrl(boolean clearInput, boolean forceIME) {}
     public void showAutoLogin(Tab tab){}
     public void hideAutoLogin(Tab tab){}
+
+    @Override
+    public void showWeb(boolean animate) {
+        mUiController.hideCustomView();
+    }
 
     /**
      * Dispatch keys to views inside content area (e.g. WebView)

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
@@ -14,9 +13,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
-import com.liskovsoft.browser.util.PageDefaults;
-
-import java.util.List;
+import com.liskovsoft.browser.util.PageData;
 
 /**
  * WebView aspect of the controller
@@ -105,5 +102,5 @@ public interface WebViewController {
 
     boolean shouldCaptureThumbnails();
 
-    PageDefaults getPageDefaults();
+    PageData getPageDefaults();
 }

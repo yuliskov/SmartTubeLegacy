@@ -2,12 +2,12 @@ package com.liskovsoft.browser.util;
 
 import java.util.Map;
 
-public class PageDefaults {
+public class PageData {
     private final String mUrl;
     private final Map<String, String> mHeaders;
     private final PageLoadHandler mHandler;
 
-    public PageDefaults(String url, Map<String, String> headers, PageLoadHandler handler) {
+    public PageData(String url, Map<String, String> headers, PageLoadHandler handler) {
         mUrl = url;
         mHeaders = headers;
         mHandler = handler;

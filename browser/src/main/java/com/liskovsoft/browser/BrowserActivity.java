@@ -1,8 +1,11 @@
 package com.liskovsoft.browser;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import com.liskovsoft.browser.util.SimpleUIController;
@@ -24,6 +27,8 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String ACTION_RESTART = "--restart--";
     private static final String EXTRA_STATE = "state";
     public static final String EXTRA_DISABLE_URL_OVERRIDE = "disable_url_override";
+    private KeyguardManager mKeyguardManager;
+    private PowerManager mPowerManager;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -91,6 +96,32 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+        if (shouldIgnoreIntents()) return;
+        if (ACTION_RESTART.equals(intent.getAction())) {
+            Bundle outState = new Bundle();
+            mController.onSaveInstanceState(outState);
+            finish();
+            getApplicationContext().startActivity(
+                    new Intent(getApplicationContext(), BrowserActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .putExtra(EXTRA_STATE, outState));
+            return;
+        }
+        mController.handleNewIntent(intent);
+    }
+
+    private boolean shouldIgnoreIntents() {
+        // Only process intents if the screen is on and the device is unlocked
+        // aka, if we will be user-visible
+        if (mKeyguardManager == null) {
+            mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        }
+        if (mPowerManager == null) {
+            mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        }
+        boolean ignore = !mPowerManager.isScreenOn();
+        ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
+        logger.info("ignore intents: {}", ignore);
+        return ignore;
     }
 }

@@ -22,7 +22,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.util.PageDefaults;
+import com.liskovsoft.browser.util.PageData;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +36,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private final BrowserSettings mSettings;
     private final TabControl mTabControl;
     private final CrashRecoveryHandler mCrashRecoveryHandler;
+    private final IntentHandler mIntentHandler;
     private UI mUi;
     private boolean mActivityPaused = true;
     private WakeLock mWakeLock;
@@ -78,7 +79,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private int mMenuState;
     private boolean mMenuIsDown;
     private boolean mShouldShowErrorConsole;
-    private PageDefaults mPageDefaults;
+    private PageData mPageDefaults;
 
     public Controller(Activity browser) {
         mActivity = browser;
@@ -86,6 +87,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mTabControl = new TabControl(this);
         mCrashRecoveryHandler = CrashRecoveryHandler.initialize(this);
         mFactory = new BrowserWebViewFactory(browser);
+        mIntentHandler = new IntentHandler(mActivity, this);
+
         startHandler();
 
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
@@ -100,7 +103,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mCrashRecoveryHandler.startRecovery(intent);
     }
 
-    public void start(final Intent intent, final PageDefaults pageDefaults) {
+    public void start(final Intent intent, final PageData pageDefaults) {
         mPageDefaults = pageDefaults;
         mFactory.setNextHeaders(mPageDefaults.getHeaders());
         // mCrashRecoverHandler has any previously saved state.
@@ -108,7 +111,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     @Override
-    public PageDefaults getPageDefaults() {
+    public PageData getPageDefaults() {
         return mPageDefaults;
     }
 
@@ -128,9 +131,21 @@ public class Controller implements UiController, WebViewController, ActivityCont
             openTabToHomePage();
         } else {
             logger.info("Restoring browser state...");
-            boolean restoreIncognitoTabs = false;
             boolean needsRestoreAllTabs = mUi.needsRestoreAllTabs();
-            mTabControl.restoreState(icicle, currentTabId, restoreIncognitoTabs, needsRestoreAllTabs);
+            // TODO: restore incognito tabs
+            mTabControl.restoreState(icicle, currentTabId, false, needsRestoreAllTabs);
+            List<Tab> tabs = mTabControl.getTabs();
+
+            mUi.updateTabs(tabs);
+            // TabControl.restoreState() will create a new tab even if
+            // restoring the state fails.
+            setActiveTab(mTabControl.getCurrentTab());
+        }
+
+        // Intent is non-null when framework thinks the browser should be
+        // launching with a new intent (icicle is null).
+        if (intent != null) {
+            mIntentHandler.onNewIntent(intent);
         }
     }
 
@@ -199,6 +214,16 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * Use this method to control browser from outer world.
      *
      * @param url     Full site address.
+     * @return Info about loaded page.
+     */
+    public Tab loadUrl(String url) {
+        return loadUrl(url, null);
+    }
+
+    /**
+     * Use this method to control browser from outer world.
+     *
+     * @param url     Full site address.
      * @param headers Can be null.
      * @return Info about loaded page.
      */
@@ -214,11 +239,23 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @return Info about loaded page.
      */
     public Tab loadUrl(String url, Map<String, String> headers, PageLoadHandler handler) {
-        mFactory.setNextHeaders(headers);
+        PageData pageData = new PageData(url, headers, handler);
+        return load(pageData);
+    }
+
+
+    /**
+     * Use this method to control browser from outer world.
+     *
+     * @param pageData page url, state and handlers
+     * @return Info about loaded page.
+     */
+    public Tab load(PageData pageData) {
+        mFactory.setNextHeaders(pageData.getHeaders());
 
         Tab tab = createNewTab(false, true, false);
-        tab.setPageLoadHandler(handler);
-        loadUrl(tab, url, headers);
+        tab.setPageLoadHandler(pageData.getHandler());
+        loadUrl(tab, pageData.getUrl(), pageData.getHeaders());
         return tab;
     }
 
@@ -571,11 +608,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     @Override
-    public void handleNewIntent(Intent intent) {
-
-    }
-
-    @Override
     public void showPageInfo() {
 
     }
@@ -595,10 +627,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     }
 
-    @Override
-    public BrowserSettings getSettings() {
-        return null;
-    }
+
 
     @Override
     public boolean supportsVoice() {
@@ -614,6 +643,19 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * TODO: end bunch of non implemented methods
      */
 
+    @Override
+    public void handleNewIntent(Intent intent) {
+        if (!mUi.isWebShowing()) {
+            mUi.showWeb(false);
+        }
+        mIntentHandler.onNewIntent(intent);
+    }
+
+
+    @Override
+    public BrowserSettings getSettings() {
+        return mSettings;
+    }
 
     @Override
     public boolean shouldShowErrorConsole() {

@@ -5,6 +5,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 
+import java.util.List;
+
 public interface UI {
     boolean needsRestoreAllTabs();
     void onProgressChanged(Tab tab);
@@ -29,6 +31,8 @@ public interface UI {
     boolean isCustomViewShowing();
     void onVoiceResult(String mVoiceResult);
     void editUrl(boolean clearInput, boolean forceIME);
+    void updateTabs(List<Tab> tabs);
+    void showWeb(boolean animate);
     boolean dispatchKey(int code, KeyEvent event);
     void bookmarkedStatusHasChanged(Tab tab);
 
