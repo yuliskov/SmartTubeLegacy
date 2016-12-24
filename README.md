@@ -25,8 +25,38 @@ controller = new SimpleUiController(context);
 controller.loadUrl("http://ya.ru");
 ```
 
+##TODO
+- investigate intent routing inside Browser app when opening url
+- update UML diagram for MainController and SubControllers
+- add txt file with concise project description
+- show informative error when site not available
+- TabControl->SubWindow (what???)
+- DataController (what???)
+- BrowserWebView->CustomView (what????)
+- SnapshotBar (what???)
+- add tests:
+  - testCheckBackKeyIsHandled
+  - testThatUserAgentHeaderMustNotBeOverriden 
+  - testControllers
+  - testThatWebViewCreatedAndAttachedToTheActivityRootView
+  - testThatWevViewHeadersProperlySet
+
+##DONE
+- restore state (Bundle) when app unloaded from memory
+- back key not closes video but exits from app
+- dont play video in background
+- keys not working
+- add wide viewport
+- hide TitleBar and other UI (Controller.enableBasicMode())
+- fix constant activity reload
+- remove ActionBar
+- use logging framework slf4j + android logger backend
+  - https://github.com/noveogroup/android-logger
+  - http://www.slf4j.org/android/
+  - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
+
 ##Other
-- Use next command to get sources on which browser engine based:
+- If you curious on which sources my browser engine based, here command to fetch them:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 [browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser
