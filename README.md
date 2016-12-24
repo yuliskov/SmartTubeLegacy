@@ -1,11 +1,11 @@
 #Smart YouTube TV
 
-Imagine that you have ordinary chinese android box with simple remote controller.
-What YouTube client you should use? Regular client doesnt understand remote controller.
+Imagine that you have ordinary Chinese android box with simple remote controller.
+What YouTube client you should use? Regular client doesn't understand remote controller.
 Off course you may use official YouTube TV client for Nexus Player. But there is many drawback. 
-One of them is deps (e.g. gapps) that box usually don't have.
+One of them is dependencies (e.g. gapps) that box usually don't have.
 Another drawback is that official client needs minimum Android 5.0. 
-And there comes Smart YouTube TV. It require zero deps, minimum Android 4.4.
+And there comes Smart YouTube TV. It require zero dependencies, minimum Android 4.4.
 
 ##Highlights
 - consist of two parts: app and standalone browser engine:
@@ -19,7 +19,13 @@ And there comes Smart YouTube TV. It require zero deps, minimum Android 4.4.
 - ability to easily add tabs, settings and other regular browser-specific features
 - all internal state is saved into persistent memory instead of RAM
 
-##Basic usage
+##Usage
+###Basic usage
+```
+controller = new SimpleUiController(context);
+controller.loadUrl("http://ya.ru");
+```
+###With life-circle handling
 ```
 controller = new SimpleUiController(context);
 controller.loadUrl("http://ya.ru");
@@ -45,7 +51,7 @@ controller.loadUrl("http://ya.ru");
 - handle intents from external apps
 - restore state (Bundle) when app unloaded from memory
 - back key not closes video but exits from app
-- dont play video in background
+- don't play video in background
 - keys not working
 - add wide viewport
 - hide TitleBar and other UI (Controller.enableBasicMode())
