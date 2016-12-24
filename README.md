@@ -30,10 +30,11 @@ controller.loadUrl("http://ya.ru");
 - update UML diagram for MainController and SubControllers
 - add txt file with concise project description
 - show informative error when site not available
-- TabControl->SubWindow (what???)
-- DataController (what???)
-- BrowserWebView->CustomView (what????)
-- SnapshotBar (what???)
+- more details: 
+	- TabControl.SubWindow
+	- DataController
+	- BrowserWebView.CustomView
+	- SnapshotBar
 - add tests:
   - testCheckBackKeyIsHandled
   - testThatUserAgentHeaderMustNotBeOverriden 
@@ -56,7 +57,7 @@ controller.loadUrl("http://ya.ru");
   - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
 ##Other
-- If you curious on which sources my browser engine based, here command to fetch them:
+- if you curious on which sources browser engine based:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 [browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser
