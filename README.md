@@ -28,7 +28,7 @@ controller.loadUrl("http://ya.ru");
 ###With life-circle handling
 ```
 controller = new SimpleUiController(context);
-controller.loadUrl("http://ya.ru");
+controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
