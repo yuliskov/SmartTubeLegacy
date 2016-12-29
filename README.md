@@ -32,6 +32,7 @@ controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
+- fix lint issues
 - update UML diagram for MainController and SubControllers
 - show informative error when site not available
 - find more details: 
