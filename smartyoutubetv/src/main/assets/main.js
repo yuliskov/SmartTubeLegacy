@@ -14,13 +14,26 @@ function addExitEvent() {
 
 
 // Xiaomi Mi TV 3 has bug playing webm format, so use mp4 instead
-function fixWebmArtifacts() {
+function fixVideoColorsOnMiTV3() {
     if (!window.MediaSource)
         return;
 
     window.MediaSource.isTypeSupported = function(native) {
         return function(str) {
             if (str.indexOf('webm') >= 0) 
+                return false;
+            return native.call(window.MediaSource, str);
+        }
+    }(window.MediaSource.isTypeSupported);
+}
+
+function fixHangsOnMiTV3() {
+    if (!window.MediaSource)
+        return;
+
+    window.MediaSource.isTypeSupported = function(native) {
+        return function(str) {
+            if (str.indexOf('mp4') >= 0) 
                 return false;
             return native.call(window.MediaSource, str);
         }
@@ -44,5 +57,6 @@ function fixVideoPlaybackWhenRestored() {
 }
 
 addExitEvent();
+// fixHangsOnMiTV3();
+// fixVideoColorsOnMiTV3();
 // fixVideoPlaybackWhenRestored();
-// fixWebmArtifacts();

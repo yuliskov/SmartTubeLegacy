@@ -2,6 +2,9 @@ package com.liskovsoft.browser;
 
 import android.app.Application;
 import android.webkit.CookieSyncManager;
+import com.liskovsoft.browser.util.SimpleUncaughtExceptionHandler;
+
+import java.lang.Thread.UncaughtExceptionHandler;
 
 public class Browser extends Application {
     // Set to true to enable verbose logging.
@@ -14,6 +17,8 @@ public class Browser extends Application {
     final static String EXTRA_SHARE_FAVICON = "share_favicon";
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
 
+    private UncaughtExceptionHandler mHandler;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -22,6 +27,10 @@ public class Browser extends Application {
         CookieSyncManager.createInstance(this);
         BrowserSettings.initialize(getApplicationContext());
         //Preloader.initialize(getApplicationContext());
+
+        // Setup handler for uncaught exceptions.
+        mHandler = new SimpleUncaughtExceptionHandler(getApplicationContext());
+        Thread.setDefaultUncaughtExceptionHandler(mHandler);
     }
 
 }

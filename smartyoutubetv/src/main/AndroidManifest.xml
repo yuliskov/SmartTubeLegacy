@@ -12,7 +12,6 @@
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <!-- End Leanback required fields -->
     <application tools:node="merge"
-                 android:name="com.liskovsoft.browser.Browser"
                  android:allowBackup="true"
                  android:icon="@mipmap/ic_launcher"
                  android:banner="@mipmap/ic_banner"

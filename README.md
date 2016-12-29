@@ -33,7 +33,6 @@ controller.start(intent, "http://ya.ru");
 
 ##TODO
 - update UML diagram for MainController and SubControllers
-- add txt file with concise project description
 - show informative error when site not available
 - find more details: 
 	- TabControl.SubWindow
@@ -48,6 +47,7 @@ controller.start(intent, "http://ya.ru");
   - testThatWevViewHeadersProperlySet
 
 ##DONE
+- add crash handler
 - handle intents from external apps
 - restore state (Bundle) when app unloaded from memory
 - back key not closes video but exits from app
