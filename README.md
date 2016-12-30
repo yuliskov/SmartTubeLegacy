@@ -65,7 +65,7 @@ controller.start(intent, "http://ya.ru");
   - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
 ##Other
-- if you curious on which sources browser engine based, do this in console:
+- how to fetch original browser sources from [android open source project][browser-origin]:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 [browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser
