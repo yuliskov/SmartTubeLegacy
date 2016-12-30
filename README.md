@@ -14,8 +14,8 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 - browser engine can be used independently (currently in development)
 - browser engine based on **marshmallow-release** branch of [android open source project][browser-origin]
 
-##Pros of browser engine over regular WebView
-- you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
+##Comparison of this browser engine over regular WebView
+- you don't have to deal with creating custom methods for managing WebView life-circle (pause, resume etc)
 - ability to easily add tabs, settings and other regular browser-specific features
 - all internal state is saved into persistent memory instead of RAM
 
