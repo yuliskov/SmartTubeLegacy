@@ -4,11 +4,17 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
+    /**
+     * Original package name: com.liskovsoft.smartyoutubetv
+     * GPlay package name: com.firsthash.smartyoutubetv2
+     * 4PDA package name: com.firsthash.smartyoutubetv
+     */
+
     defaultConfig {
-        applicationId "com.liskovsoft.smartyoutubetv"
+        applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 35
+        versionCode 38
         versionName "6.0.0"
         multiDexEnabled = true
 

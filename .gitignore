@@ -4,6 +4,7 @@
 *_bak
 *.bak
 /.idea
+*.apk
 *.7z
 *.iml
 .gradle

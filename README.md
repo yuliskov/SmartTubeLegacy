@@ -32,9 +32,10 @@ controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
+- select preferred connection speed at first start
+- show informative error when site not available
 - fix lint issues
 - update UML diagram for MainController and SubControllers
-- show informative error when site not available
 - find more details: 
 	- TabControl.SubWindow
 	- DataController
