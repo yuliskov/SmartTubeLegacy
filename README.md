@@ -65,7 +65,7 @@ controller.start(intent, "http://ya.ru");
   - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
 ##Other
-- how to fetch original browser sources from [android open source project][browser-origin]:
+- how to fetch sources from [android open source project][browser-origin] via console:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
 [browser-origin]: https://android.googlesource.com/platform/packages/apps/Browser
