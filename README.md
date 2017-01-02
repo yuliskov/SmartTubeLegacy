@@ -19,20 +19,20 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 - ability to easily add tabs, settings and other regular browser-specific features
 - all internal state is saved into persistent memory instead of RAM
 
-##Usage
+## Browser Engine Usage
 ###Basic usage
 ```
 controller = new SimpleUiController(context);
 controller.loadUrl("http://ya.ru");
 ```
-###With life-circle handling
+###With WebView life-circle handling
 ```
 controller = new SimpleUiController(context);
 controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
-- select preferred connection speed at first start
+- ability to set video quality on first start
 - show informative error when site not available
 - fix lint issues
 - update UML diagram for MainController and SubControllers
