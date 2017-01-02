@@ -759,10 +759,22 @@ public class Tab implements PictureListener {
             updateBookmarkedStatus();
         }
 
+        // TODO: remove
+        // // return true if want to hijack the url to let another app to handle it
+        // @Override
+        // public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        //     return true;
+        // }
+
         // return true if want to hijack the url to let another app to handle it
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return true;
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (!mDisableOverrideUrlLoading && mInForeground) {
+                return mWebViewController.shouldOverrideUrlLoading(Tab.this,
+                        view, url);
+            } else {
+                return false;
+            }
         }
     };
 

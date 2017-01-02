@@ -17,6 +17,7 @@ import android.support.v7.view.ActionMode;
 import android.text.TextUtils;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.WindowManager.LayoutParams;
 import android.webkit.*;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
@@ -93,8 +94,14 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
 
+        setupBrowserActivity();
+    }
+
+    protected void setupBrowserActivity() {
         // we must set theme before call to setContentView
-        browser.setTheme(R.style.BrowserTheme);
+        mActivity.setTheme(R.style.BrowserTheme);
+        // no more layout zooming when soft keyboard popups
+        mActivity.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
