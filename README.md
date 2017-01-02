@@ -19,7 +19,7 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 - ability to easily add tabs, settings and other regular browser-specific features
 - all internal state is saved into persistent memory instead of RAM
 
-## Browser Engine Usage
+## Browser engine usage
 ###Basic usage
 ```
 controller = new SimpleUiController(context);
