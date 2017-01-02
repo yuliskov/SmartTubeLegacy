@@ -42,11 +42,11 @@ controller.start(intent, "http://ya.ru");
 	- BrowserWebView.CustomView
 	- SnapshotBar
 - add tests:
-  - testCheckBackKeyIsHandled
-  - testThatUserAgentHeaderMustNotBeOverriden 
-  - testControllers
-  - testThatWebViewCreatedAndAttachedToTheActivityRootView
-  - testThatWevViewHeadersProperlySet
+  - testThatUrlIsNotOverridedAndHandledInternally
+  - testCheckThatBackKeyNotClosesActivity
+  - testThatCustomUserAgentHeaderNotOverridedBySettings
+  - testThatWebViewCreatedAndAttachedToTheActivityView
+  - testThatWebViewHeadersAreProperlySet
 
 ##DONE
 - add crash handler
