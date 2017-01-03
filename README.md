@@ -50,6 +50,7 @@ controller.start(intent, "http://ya.ru");
   - testThatWebViewHeadersAreProperlySet
 
 ##DONE
+- add adblock
 - add crash handler
 - handle intents from external apps
 - restore state (Bundle) when app unloaded from memory

@@ -427,11 +427,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
-        //if (tab.getPageLoadHandler() != null) {
-        //    tab.getPageLoadHandler().onPageStarted(tab);
-        //} else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
-        //    mPageDefaults.getHandler().onPageStarted(tab);
-        //}
+        // TODO: not implemented
     }
 
 
@@ -442,11 +438,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
      */
     @Override
     public void onPageFinished(Tab tab) {
-        //if (tab.getPageLoadHandler() != null) {
-        //    tab.getPageLoadHandler().onPageFinished(tab);
-        //} else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
-        //    mPageDefaults.getHandler().onPageFinished(tab);
-        //}
+        // TODO: not implemented
     }
 
     /**
