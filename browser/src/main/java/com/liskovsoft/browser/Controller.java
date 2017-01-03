@@ -122,6 +122,11 @@ public class Controller implements UiController, WebViewController, ActivityCont
         return mPageDefaults;
     }
 
+    @Override
+    public PageLoadHandler getPageLoadHandler() {
+        return mPageDefaults.getHandler();
+    }
+
     public void setUi(UI ui) {
         mUi = ui;
     }
@@ -261,7 +266,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mFactory.setNextHeaders(pageData.getHeaders());
 
         Tab tab = createNewTab(false, true, false);
-        tab.setPageLoadHandler(pageData.getHandler());
+
         loadUrl(tab, pageData.getUrl(), pageData.getHeaders());
         return tab;
     }
@@ -422,11 +427,11 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
-        if (tab.getPageLoadHandler() != null) {
-            tab.getPageLoadHandler().onPageStarted(tab);
-        } else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
-            mPageDefaults.getHandler().onPageStarted(tab);
-        }
+        //if (tab.getPageLoadHandler() != null) {
+        //    tab.getPageLoadHandler().onPageStarted(tab);
+        //} else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
+        //    mPageDefaults.getHandler().onPageStarted(tab);
+        //}
     }
 
 
@@ -437,11 +442,11 @@ public class Controller implements UiController, WebViewController, ActivityCont
      */
     @Override
     public void onPageFinished(Tab tab) {
-        if (tab.getPageLoadHandler() != null) {
-            tab.getPageLoadHandler().onPageFinished(tab);
-        } else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
-            mPageDefaults.getHandler().onPageFinished(tab);
-        }
+        //if (tab.getPageLoadHandler() != null) {
+        //    tab.getPageLoadHandler().onPageFinished(tab);
+        //} else if (mPageDefaults != null && mPageDefaults.getHandler() != null) {
+        //    mPageDefaults.getHandler().onPageFinished(tab);
+        //}
     }
 
     /**

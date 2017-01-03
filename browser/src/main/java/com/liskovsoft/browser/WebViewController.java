@@ -14,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
 import com.liskovsoft.browser.util.PageData;
+import com.liskovsoft.browser.util.PageLoadHandler;
 
 /**
  * WebView aspect of the controller
@@ -102,5 +103,11 @@ public interface WebViewController {
 
     boolean shouldCaptureThumbnails();
 
+    /**
+     * My Custom Methods
+     */
+
     PageData getPageDefaults();
+
+    PageLoadHandler getPageLoadHandler();
 }

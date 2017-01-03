@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
-import com.liskovsoft.browser.util.CustomHeadersWebViewClient;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +67,9 @@ public class Tab implements PictureListener {
     private DeviceAccountLogin mDeviceAccountLogin;
     private Bitmap mCapture;
     private Handler mHandler;
-
     private PageLoadHandler mPageLoadHandler;
+
+
     private int mCaptureWidth;
     private int mCaptureHeight;
     // The Geolocation permissions prompt
@@ -93,6 +93,7 @@ public class Tab implements PictureListener {
         mContext = mWebViewController.getContext();
         mSettings = BrowserSettings.getInstance();
         mDataController = DataController.getInstance(mContext);
+        mPageLoadHandler = mWebViewController.getPageLoadHandler();
 
         mCurrentState = new PageState(mContext, w != null && w.isPrivateBrowsingEnabled());
 
@@ -165,6 +166,8 @@ public class Tab implements PictureListener {
         mMainView = w;
         // attach the WebViewClient, WebChromeClient and DownloadListener
         if (mMainView != null) {
+            setupPageLoadHandlerDelegates();
+
             mMainView.setWebViewClient(mWebViewClient);
             mMainView.setWebChromeClient(mWebChromeClient);
             // Attach DownloadManager so that downloads can start in an active
@@ -187,6 +190,11 @@ public class Tab implements PictureListener {
                 mSavedState = null;
             }
         }
+    }
+
+    private void setupPageLoadHandlerDelegates() {
+        mWebViewClient = mPageLoadHandler.overrideWebViewClient(mWebViewClient);
+        mWebChromeClient = mPageLoadHandler.overrideWebChromeClient(mWebChromeClient);
     }
 
     /**
@@ -618,14 +626,6 @@ public class Tab implements PictureListener {
         return mCurrentState.mIsBookmarkedSite;
     }
 
-    public void setPageLoadHandler(PageLoadHandler handler) {
-        mPageLoadHandler = handler;
-    }
-
-    public PageLoadHandler getPageLoadHandler() {
-        return mPageLoadHandler;
-    }
-
     /**
      * Restore the state of the tab.
      * @param b state object
@@ -710,7 +710,7 @@ public class Tab implements PictureListener {
     // -------------------------------------------------------------------------
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
-    private final WebViewClient mWebViewClient = new WebViewClient() {
+    private WebViewClient mWebViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {
             mDisableOverrideUrlLoading = false;
@@ -719,6 +719,8 @@ public class Tab implements PictureListener {
             }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
+
+            mPageLoadHandler.onPageFinished(Tab.this);
         }
 
         @Override
@@ -756,15 +758,10 @@ public class Tab implements PictureListener {
             // finally update the UI in the activity if it is in the foreground
             mWebViewController.onPageStarted(Tab.this, view, favicon);
 
+            mPageLoadHandler.onPageStarted(Tab.this);
+
             updateBookmarkedStatus();
         }
-
-        // TODO: remove
-        // // return true if want to hijack the url to let another app to handle it
-        // @Override
-        // public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        //     return true;
-        // }
 
         // return true if want to hijack the url to let another app to handle it
         @Override
@@ -814,4 +811,5 @@ public class Tab implements PictureListener {
         }
 
     }
+
 }

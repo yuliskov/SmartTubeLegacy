@@ -42,6 +42,7 @@ controller.start(intent, "http://ya.ru");
 	- BrowserWebView.CustomView
 	- SnapshotBar
 - add tests:
+  - testThatPageLoadHandlerNotCalledTwise
   - testThatUrlIsNotOverridedAndHandledInternally
   - testCheckThatBackKeyNotClosesActivity
   - testThatCustomUserAgentHeaderNotOverridedBySettings

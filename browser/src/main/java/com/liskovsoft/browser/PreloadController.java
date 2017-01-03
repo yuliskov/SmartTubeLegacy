@@ -15,6 +15,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
 import com.liskovsoft.browser.util.PageData;
+import com.liskovsoft.browser.util.PageLoadHandler;
 
 public class PreloadController implements WebViewController {
 
@@ -252,6 +253,11 @@ public class PreloadController implements WebViewController {
 
     @Override
     public PageData getPageDefaults() {
+        return null;
+    }
+
+    @Override
+    public PageLoadHandler getPageLoadHandler() {
         return null;
     }
 

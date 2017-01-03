@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv;
 
 import android.content.Context;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.util.PageLoadHandler;
 
@@ -25,6 +27,16 @@ public class MyPageLoadHandler implements PageLoadHandler {
         WebView w = tab.getWebView();
         // js must be added befor page full loaded
         addJSInterface(w);
+    }
+
+    @Override
+    public WebViewClient overrideWebViewClient(WebViewClient client) {
+        return new AdAwayWebViewClient(client);
+    }
+
+    @Override
+    public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
+        return client;
     }
 
     private void addJSInterface(WebView w) {
