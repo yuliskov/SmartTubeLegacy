@@ -17,6 +17,8 @@
                  android:banner="@mipmap/ic_banner"
                  android:label="Smart YouTube TV"
                  android:supportsRtl="true">
+        <!-- TODO: modified, DIAL integration for Amazon TV -->
+        <meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>
         <activity android:name=".SmartYouTubeTVActivity"
                   android:launchMode="singleTask"
                   android:alwaysRetainTaskState="true"
