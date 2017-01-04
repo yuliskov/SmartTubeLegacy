@@ -50,6 +50,7 @@ controller.start(intent, "http://ya.ru");
   - testThatWebViewHeadersAreProperlySet
 
 ##DONE
+- add DIAL (DIscovery And Launch) support
 - add adblock
 - add crash handler
 - handle intents from external apps
