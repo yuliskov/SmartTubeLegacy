@@ -14,7 +14,7 @@ function addExitEvent() {
 
 
 // Xiaomi Mi TV 3 has bug playing webm format, so use mp4 instead
-function fixVideoColorsOnMiTV3() {
+function fixDistortedColorsOnMiTV3() {
     if (!window.MediaSource)
         return;
 
@@ -27,7 +27,7 @@ function fixVideoColorsOnMiTV3() {
     }(window.MediaSource.isTypeSupported);
 }
 
-function fixHangsOnMiTV3() {
+function fixSpatialRebootOnMiTV3() {
     if (!window.MediaSource)
         return;
 
@@ -40,23 +40,23 @@ function fixHangsOnMiTV3() {
     }(window.MediaSource.isTypeSupported);
 }
 
-function fixVideoPlaybackWhenRestored() {
-	var e = new Event("keydown");
-	// e.key="a";    // just enter the char you want to send 
-	// e.keyCode=e.key.charCodeAt(0);
-	e.keyCode = 13; // Enter key
-	e.which=e.keyCode;
-	e.altKey=false;
-	e.ctrlKey=true;
-	e.shiftKey=false;
-	e.metaKey=false;
-	e.bubbles=true;
-
-	var toggleButton = document.getElementsByClassName('icon-player-play')[0];
-	toggleButton.dispatchEvent(e);
-}
+// function fixVideoPlaybackWhenRestored() {
+// 	var e = new Event("keydown");
+// 	// e.key="a";    // just enter the char you want to send
+// 	// e.keyCode=e.key.charCodeAt(0);
+// 	e.keyCode = 13; // Enter key
+// 	e.which=e.keyCode;
+// 	e.altKey=false;
+// 	e.ctrlKey=true;
+// 	e.shiftKey=false;
+// 	e.metaKey=false;
+// 	e.bubbles=true;
+//
+// 	var toggleButton = document.getElementsByClassName('icon-player-play')[0];
+// 	toggleButton.dispatchEvent(e);
+// }
 
 addExitEvent();
-// fixHangsOnMiTV3();
-// fixVideoColorsOnMiTV3();
+fixDistortedColorsOnMiTV3();
+// fixSpatialRebootOnMiTV3();
 // fixVideoPlaybackWhenRestored();

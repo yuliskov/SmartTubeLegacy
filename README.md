@@ -32,6 +32,11 @@ controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
+- add Chrome Custom Tabs backend
+  - https://developer.chrome.com/multidevice/android/customtabs
+- add Crosswalk backend
+  - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
+- generate exclusion list for devices
 - ability to set video quality on first start
 - show informative error when site not available
 - fix lint issues
