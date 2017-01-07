@@ -32,10 +32,9 @@ controller.start(intent, "http://ya.ru");
 ```
 
 ##TODO
-- add Chrome Custom Tabs backend
-  - https://developer.chrome.com/multidevice/android/customtabs
 - add Crosswalk backend
   - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
+  - http://stackoverflow.com/questions/25978071/is-it-possible-to-change-user-agent-in-crosswalk-android-tizen-apps
 - ability to set video quality on first start
 - show informative error when site not available
 - fix lint issues
@@ -54,6 +53,8 @@ controller.start(intent, "http://ya.ru");
   - testThatWebViewHeadersAreProperlySet
 
 ##DONE
+- add Chrome Custom Tabs backend (no api for setUserAgent, setUseWideViewPort etc)
+  - https://developer.chrome.com/multidevice/android/customtabs
 - apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock
