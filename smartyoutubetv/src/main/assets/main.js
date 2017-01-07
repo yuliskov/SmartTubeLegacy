@@ -12,51 +12,56 @@ function addExitEvent() {
     window.eventAdded = true;
 }
 
+///////////////////////////////////////////
 
-// Xiaomi Mi TV 3 has bug playing webm format, so use mp4 instead
-function fixDistortedColorsOnMiTV3() {
+// codec exclusion list:
+// X92 - webm
+// MiTV3S-55 - mp4
+// other MiTV3 - webm
+
+function applyCodecFixes() {
+	var thisDevice = app.getDeviceName();
+	console.log('applyCodecFixes to ' + thisDevice);
+	// some devices have buggy codec support, so disable them
+    // device order is important
+	var deviceMap = {'X92': 'webm', 'MiTV3S-55': 'mp4', 'MiTV3': 'webm'};
+	for (var device in deviceMap) {
+		if (deviceMatch(thisDevice, device)) {
+			disableCodec(deviceMap[device]);
+            break;
+        }
+	}
+}
+
+function deviceMatch(thisDevice, device) {
+	return strCmp(thisDevice, device);
+}
+
+function disableCodec(codec) {
+	if (!codec)
+		return;
     if (!window.MediaSource)
         return;
 
+    console.log('disableCodec ' + codec);
+
     window.MediaSource.isTypeSupported = function(native) {
         return function(str) {
-            if (str.indexOf('webm') >= 0) 
+            if (strCmp(str, codec)) 
                 return false;
             return native.call(window.MediaSource, str);
         }
     }(window.MediaSource.isTypeSupported);
 }
 
-function fixSpatialRebootOnMiTV3() {
-    if (!window.MediaSource)
-        return;
-
-    window.MediaSource.isTypeSupported = function(native) {
-        return function(str) {
-            if (str.indexOf('mp4') >= 0) 
-                return false;
-            return native.call(window.MediaSource, str);
-        }
-    }(window.MediaSource.isTypeSupported);
+function strCmp(str1, str2) {
+	str1 = str1.toLowerCase();
+	str2 = str2.toLowerCase();
+	return str1.indexOf(str2) >= 0;
 }
 
-// function fixVideoPlaybackWhenRestored() {
-// 	var e = new Event("keydown");
-// 	// e.key="a";    // just enter the char you want to send
-// 	// e.keyCode=e.key.charCodeAt(0);
-// 	e.keyCode = 13; // Enter key
-// 	e.which=e.keyCode;
-// 	e.altKey=false;
-// 	e.ctrlKey=true;
-// 	e.shiftKey=false;
-// 	e.metaKey=false;
-// 	e.bubbles=true;
-//
-// 	var toggleButton = document.getElementsByClassName('icon-player-play')[0];
-// 	toggleButton.dispatchEvent(e);
-// }
+
+/////////////////////////////////////////
 
 addExitEvent();
-fixDistortedColorsOnMiTV3();
-// fixSpatialRebootOnMiTV3();
-// fixVideoPlaybackWhenRestored();
+applyCodecFixes();

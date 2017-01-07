@@ -36,7 +36,6 @@ controller.start(intent, "http://ya.ru");
   - https://developer.chrome.com/multidevice/android/customtabs
 - add Crosswalk backend
   - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
-- add exclusion list for devices
 - ability to set video quality on first start
 - show informative error when site not available
 - fix lint issues
@@ -55,6 +54,7 @@ controller.start(intent, "http://ya.ru");
   - testThatWebViewHeadersAreProperlySet
 
 ##DONE
+- apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock
 - add crash handler

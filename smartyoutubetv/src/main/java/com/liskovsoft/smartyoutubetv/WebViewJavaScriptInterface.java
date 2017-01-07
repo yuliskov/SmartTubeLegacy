@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.webkit.JavascriptInterface;
 
 /*
@@ -28,5 +29,14 @@ public class WebViewJavaScriptInterface {
         if (mContext instanceof Activity) {
             ((Activity) mContext).finish();
         }
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    public String getDeviceName() {
+        return Build.MODEL;
     }
 }
