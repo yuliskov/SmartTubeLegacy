@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.util.PageData;
+import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.SimpleUIController;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
@@ -21,7 +21,7 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
     private PageLoadHandler mPageLoadHandler;
-    private PageData mPageDefaults;
+    private PageDefaults mPageDefaults;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -38,7 +38,7 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
 
         mController = new SimpleUIController(this);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageData(mYouTubeTVUrl, mHeaders, mPageLoadHandler);
+        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler);
         mController.start(intent, mPageDefaults);
         setController(mController);
     }

@@ -23,7 +23,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.util.PageData;
+import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +80,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private int mMenuState;
     private boolean mMenuIsDown;
     private boolean mShouldShowErrorConsole;
-    private PageData mPageDefaults;
+    private PageDefaults mPageDefaults;
 
     public Controller(Activity browser) {
         mActivity = browser;
@@ -110,7 +110,11 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mCrashRecoveryHandler.startRecovery(intent);
     }
 
-    public void start(final Intent intent, final PageData pageDefaults) {
+    public void start(final Intent intent, final String url) {
+        start(intent, new PageDefaults(url, null, null));
+    }
+
+    public void start(final Intent intent, final PageDefaults pageDefaults) {
         mPageDefaults = pageDefaults;
         mFactory.setNextHeaders(mPageDefaults.getHeaders());
         // mCrashRecoverHandler has any previously saved state.
@@ -118,7 +122,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     @Override
-    public PageData getPageDefaults() {
+    public PageDefaults getPageDefaults() {
         return mPageDefaults;
     }
 
@@ -251,7 +255,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @return Info about loaded page.
      */
     public Tab loadUrl(String url, Map<String, String> headers, PageLoadHandler handler) {
-        PageData pageData = new PageData(url, headers, handler);
+        PageDefaults pageData = new PageDefaults(url, headers, handler);
         return load(pageData);
     }
 
@@ -262,7 +266,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @param pageData page url, state and handlers
      * @return Info about loaded page.
      */
-    public Tab load(PageData pageData) {
+    public Tab load(PageDefaults pageData) {
         mFactory.setNextHeaders(pageData.getHeaders());
 
         Tab tab = createNewTab(false, true, false);

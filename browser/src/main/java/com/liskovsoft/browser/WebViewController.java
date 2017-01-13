@@ -13,7 +13,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
-import com.liskovsoft.browser.util.PageData;
+import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.PageLoadHandler;
 
 /**
@@ -107,7 +107,7 @@ public interface WebViewController {
      * My Custom Methods
      */
 
-    PageData getPageDefaults();
+    PageDefaults getPageDefaults();
 
     PageLoadHandler getPageLoadHandler();
 }

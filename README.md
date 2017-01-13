@@ -31,13 +31,14 @@ MyActivity extends XWalkBrowserActivity {
 	}
 }
 ```
-###With WebView life-circle handling
+###With WebView lifecircle handling
 ```
 MyActivity extends XWalkBrowserActivity {
 	@Override
 	void createController(Bundle bundle) {
 		Controller controller = new SimpleUiController(this);
-		controller.start(getIntent(), "http://ya.ru");
+		Intent intent = (icicle == null) ? getIntent() : null;
+		controller.start(intent, "http://ya.ru");
 		setController(controller);
 	}
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class CustomHeadersWebViewClient extends WebViewClient {
     private static final Logger logger = LoggerFactory.getLogger(CustomHeadersWebViewClient.class);
-    private PageData mPageDefaults;
+    private PageDefaults mPageDefaults;
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         if (mPageDefaults == null || mPageDefaults.getHeaders() == null)
@@ -41,7 +41,7 @@ public class CustomHeadersWebViewClient extends WebViewClient {
         }
     }
 
-    public void setPageDefaults(PageData pageDefaults) {
+    public void setPageDefaults(PageDefaults pageDefaults) {
         this.mPageDefaults = pageDefaults;
     }
 }
