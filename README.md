@@ -23,15 +23,23 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 ###Basic usage
 ```
 MyActivity extends XWalkBrowserActivity {
-	controller = new SimpleUiController(context);
-	controller.loadUrl("http://ya.ru");
+	@Override
+	void createController(Bundle bundle) {
+		Controller controller = new SimpleUiController(this);
+		controller.loadUrl("http://ya.ru");
+		setController(controller);
+	}
 }
 ```
 ###With WebView life-circle handling
 ```
 MyActivity extends XWalkBrowserActivity {
-	controller = new SimpleUiController(context);
-	controller.start(intent, "http://ya.ru");
+	@Override
+	void createController(Bundle bundle) {
+		Controller controller = new SimpleUiController(this);
+		controller.start(getIntent(), "http://ya.ru");
+		setController(controller);
+	}
 }
 ```
 
