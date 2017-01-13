@@ -22,20 +22,22 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 ## Browser engine usage
 ###Basic usage
 ```
-controller = new SimpleUiController(context);
-controller.loadUrl("http://ya.ru");
+MyActivity extends XWalkBrowserActivity {
+	controller = new SimpleUiController(context);
+	controller.loadUrl("http://ya.ru");
+}
 ```
 ###With WebView life-circle handling
 ```
-controller = new SimpleUiController(context);
-controller.start(intent, "http://ya.ru");
+MyActivity extends XWalkBrowserActivity {
+	controller = new SimpleUiController(context);
+	controller.start(intent, "http://ya.ru");
+}
 ```
 
 ##TODO
 - ability to set video quality
 - show informative error when site not available
-- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
-  - https://developer.chrome.com/multidevice/android/customtabs
 - fix lint issues
 - update UML diagram for MainController and SubControllers
 - find more details: 
@@ -50,6 +52,8 @@ controller.start(intent, "http://ya.ru");
   - testThatCustomUserAgentHeaderNotOverridedBySettings
   - testThatWebViewCreatedAndAttachedToTheActivityView
   - testThatWebViewHeadersAreProperlySet
+- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
+  - https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
 - add Crosswalk backend
