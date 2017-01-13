@@ -34,6 +34,8 @@ controller.start(intent, "http://ya.ru");
 ##TODO
 - ability to set video quality
 - show informative error when site not available
+- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
+  - https://developer.chrome.com/multidevice/android/customtabs
 - fix lint issues
 - update UML diagram for MainController and SubControllers
 - find more details: 
@@ -54,8 +56,6 @@ controller.start(intent, "http://ya.ru");
   - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
   - https://crosswalk-project.org/documentation/shared_mode.html
   - https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
-- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
-  - https://developer.chrome.com/multidevice/android/customtabs
 - apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock
