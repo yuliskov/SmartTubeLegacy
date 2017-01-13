@@ -69,6 +69,7 @@ MyActivity extends XWalkBrowserActivity {
   - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
   - https://crosswalk-project.org/documentation/shared_mode.html
   - https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
+  - https://github.com/crosswalk-project/crosswalk-website/wiki/Shared-mode-for-Crosswalk-Core-Library-on-Android
 - apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock

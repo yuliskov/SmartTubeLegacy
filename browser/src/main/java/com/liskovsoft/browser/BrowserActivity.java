@@ -110,18 +110,27 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mController == null) {
+            return false;
+        }
         return mController.onKeyDown(keyCode, event) ||
                 super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (mController == null) {
+            return false;
+        }
         return mController.onKeyLongPress(keyCode, event) ||
                 super.onKeyLongPress(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (mController == null) {
+            return false;
+        }
         return mController.onKeyUp(keyCode, event) ||
                 super.onKeyUp(keyCode, event);
     }
