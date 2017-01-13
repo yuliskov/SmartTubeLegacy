@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
 import com.liskovsoft.browser.util.HeadersBrowserWebView;
+import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
+import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
 
 import java.util.Map;
 
@@ -19,7 +21,21 @@ public class BrowserWebViewFactory implements WebViewFactory {
 
     protected WebView instantiateWebView(AttributeSet attrs, int defStyle,
                                          boolean privateBrowsing) {
-        WebView w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+        //WebView w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+        WebView w = findProperView(attrs, defStyle, privateBrowsing);
+
+        return w;
+    }
+
+    // TODO: replace with polymorphism
+    private WebView findProperView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
+        WebView w;
+
+        if (mContext instanceof XWalkBrowserActivity) {
+            w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+        } else {
+            w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+        }
         return w;
     }
 

@@ -1,4 +1,4 @@
-package com.liskovsoft.browser;
+package com.liskovsoft.browser.util;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -6,17 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import com.liskovsoft.browser.util.SimpleUIController;
+import com.liskovsoft.browser.Controller;
+import com.liskovsoft.browser.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowserActivity extends AppCompatActivity {
-    private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
+public class BrowserActivityController {
+    private static final Logger logger = LoggerFactory.getLogger(BrowserActivityController.class);
+    private final Activity mActivity;
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
     private final String mDefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -30,26 +31,8 @@ public class BrowserActivity extends AppCompatActivity {
     private KeyguardManager mKeyguardManager;
     private PowerManager mPowerManager;
 
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        //mController = beforeCreateAndInitController(icicle);
-    }
-
-    protected void initController(Bundle icicle) {
-        mHeaders = new HashMap<>();
-        mHeaders.put("user-agent", mDefaultUserAgent);
-
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? getIntent() : null;
-        mController.start(intent);
-        mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    }
-
-
-    protected void setController(Controller controller) {
-        mController = controller;
+    public BrowserActivityController(Activity activity) {
+        mActivity = activity;
     }
 
     /**
@@ -57,46 +40,27 @@ public class BrowserActivity extends AppCompatActivity {
      *  onSaveInstanceState is called right before onStop(). The map contains
      *  the saved state.
      */
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (mController == null)
-            return;
         logger.info("BrowserActivity.onSaveInstanceState: this=", this);
         mController.onSaveInstanceState(outState);
     }
 
-    ///**
-    // * Break down initialization so you can do it later if you want.
-    // * @param icicle state
-    // * @return
-    // */
-    //protected Controller beforeCreateAndInitController(Bundle icicle) {
-    //    return createAndInitController(icicle);
-    //}
-    //
-    //protected Controller createAndInitController(Bundle icicle) {
-    //    mHeaders = new HashMap<>();
-    //    mHeaders.put("user-agent", mDefaultUserAgent);
-    //
-    //    mController = new SimpleUIController(this);
-    //    Intent intent = (icicle == null) ? getIntent() : null;
-    //    mController.start(intent);
-    //    mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    //    return mController;
-    //}
+    protected Controller createAndInitController(Bundle icicle) {
+        mHeaders = new HashMap<>();
+        mHeaders.put("user-agent", mDefaultUserAgent);
 
-    @Override
+        mController = new SimpleUIController(mActivity);
+        Intent intent = (icicle == null) ? mActivity.getIntent() : null;
+        mController.start(intent);
+        mController.loadUrl(mDefaultHomeUrl, mHeaders);
+        return mController;
+    }
+
     protected void onPause() {
-        super.onPause();
-        if (mController == null) {
-            return;
-        }
         mController.onPause();
     }
 
-    @Override
     protected void onResume() {
-        super.onResume();
         if (mController == null) {
             return;
         }
@@ -108,36 +72,30 @@ public class BrowserActivity extends AppCompatActivity {
         return activity.getResources().getBoolean(R.bool.isTablet);
     }
 
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return mController.onKeyDown(keyCode, event) ||
-                super.onKeyDown(keyCode, event);
+        if (mController == null)
+            return false;
+        return mController.onKeyDown(keyCode, event);
     }
 
-    @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        return mController.onKeyLongPress(keyCode, event) ||
-                super.onKeyLongPress(keyCode, event);
+        return mController.onKeyLongPress(keyCode, event);
     }
 
-    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return mController.onKeyUp(keyCode, event) ||
-                super.onKeyUp(keyCode, event);
+        if (mController == null)
+            return false;
+        return mController.onKeyUp(keyCode, event);
     }
 
-    @Override
     protected void onNewIntent(Intent intent) {
-        if (mController == null) {
-            return;
-        }
         if (shouldIgnoreIntents()) return;
         if (ACTION_RESTART.equals(intent.getAction())) {
             Bundle outState = new Bundle();
             mController.onSaveInstanceState(outState);
-            finish();
-            getApplicationContext().startActivity(
-                    new Intent(getApplicationContext(), BrowserActivity.class)
+            mActivity.finish();
+            mActivity.getApplicationContext().startActivity(
+                    new Intent(mActivity.getApplicationContext(), BrowserActivityController.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(EXTRA_STATE, outState));
             return;
@@ -149,10 +107,10 @@ public class BrowserActivity extends AppCompatActivity {
         // Only process intents if the screen is on and the device is unlocked
         // aka, if we will be user-visible
         if (mKeyguardManager == null) {
-            mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            mKeyguardManager = (KeyguardManager) mActivity.getSystemService(Context.KEYGUARD_SERVICE);
         }
         if (mPowerManager == null) {
-            mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            mPowerManager = (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
         }
         boolean ignore = !mPowerManager.isScreenOn();
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();

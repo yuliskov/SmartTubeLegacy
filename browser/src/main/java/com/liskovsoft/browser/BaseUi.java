@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
 
 import java.util.List;
 
@@ -304,7 +305,9 @@ public abstract class BaseUi implements UI {
             return;
         }
         View container = tab.getViewContainer();
-        WebView mainView  = tab.getWebView();
+        View mainView  = tab.getWebView();
+        mainView = findProperView(mainView);
+
         // Attach the WebView to the container and then attach the
         // container to the content view.
         FrameLayout wrapper =
@@ -323,6 +326,14 @@ public abstract class BaseUi implements UI {
             }
             mContentView.addView(container, COVER_SCREEN_PARAMS);
         }
+    }
+
+    // TODO: replace with polymorphism
+    private View findProperView(View mainView) {
+        if (mainView instanceof XWalkWebViewAdapter) {
+            mainView = ((XWalkWebViewAdapter) mainView).getXWalkView();
+        }
+        return mainView;
     }
 
     private void removeTabFromContentView(Tab tab) {

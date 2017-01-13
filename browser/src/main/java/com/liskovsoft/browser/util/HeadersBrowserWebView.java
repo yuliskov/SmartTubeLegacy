@@ -10,7 +10,7 @@ import com.liskovsoft.browser.WebViewFactory;
 import java.util.Map;
 
 public class HeadersBrowserWebView extends BrowserWebView {
-    private Map<String, String> mHeaders;
+    protected Map<String, String> mHeaders;
     private WebSettings mSettings;
 
     public HeadersBrowserWebView(Context context) {

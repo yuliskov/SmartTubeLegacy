@@ -1,36 +1,89 @@
 package com.liskovsoft.browser.xwalk;
 
+import android.content.Context;
 import android.webkit.WebSettings;
+import com.liskovsoft.browser.util.HeadersWebSettingsDecorator;
+import org.xwalk.core.XWalkSettings;
 
-public class XWalkWebSettings extends WebSettings {
+public class XWalkWebSettingsAdapter extends WebSettings {
+    private final XWalkSettings xWalkSettings;
+
+    public XWalkWebSettingsAdapter(XWalkSettings settings) {
+        xWalkSettings = settings;
+    }
+
+    @Override
+    public void setLayoutAlgorithm(LayoutAlgorithm l) {
+        LayoutAlgorithm layoutAlgorithm = l;
+        XWalkSettings.LayoutAlgorithm newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.NORMAL;
+        switch (layoutAlgorithm) {
+            case NORMAL:
+                newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.NORMAL;
+                break;
+            case SINGLE_COLUMN:
+                newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.SINGLE_COLUMN;
+                break;
+            case NARROW_COLUMNS:
+                newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.NARROW_COLUMNS;
+                break;
+            case TEXT_AUTOSIZING:
+                newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.TEXT_AUTOSIZING;
+                break;
+        }
+        xWalkSettings.setLayoutAlgorithm(newLayoutAlgorithm);
+    }
+
+    @Override
+    public LayoutAlgorithm getLayoutAlgorithm() {
+        XWalkSettings.LayoutAlgorithm layoutAlgorithm = xWalkSettings.getLayoutAlgorithm();
+        LayoutAlgorithm newLayoutAlgorithm = LayoutAlgorithm.NORMAL;
+        switch (layoutAlgorithm) {
+            case NORMAL:
+                newLayoutAlgorithm = LayoutAlgorithm.NORMAL;
+                break;
+            case SINGLE_COLUMN:
+                newLayoutAlgorithm = LayoutAlgorithm.SINGLE_COLUMN;
+                break;
+            case NARROW_COLUMNS:
+                newLayoutAlgorithm = LayoutAlgorithm.NARROW_COLUMNS;
+                break;
+            case TEXT_AUTOSIZING:
+                newLayoutAlgorithm = LayoutAlgorithm.TEXT_AUTOSIZING;
+                break;
+        }
+        return newLayoutAlgorithm;
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
     @Override
     public void setSupportZoom(boolean support) {
-
+        xWalkSettings.setSupportZoom(support);
     }
 
     @Override
     public boolean supportZoom() {
-        return false;
+        return xWalkSettings.supportZoom();
     }
 
     @Override
     public void setMediaPlaybackRequiresUserGesture(boolean require) {
-
+        xWalkSettings.setMediaPlaybackRequiresUserGesture(require);
     }
 
     @Override
     public boolean getMediaPlaybackRequiresUserGesture() {
-        return false;
+        return xWalkSettings.getMediaPlaybackRequiresUserGesture();
     }
 
     @Override
     public void setBuiltInZoomControls(boolean enabled) {
-
+        xWalkSettings.setBuiltInZoomControls(enabled);
     }
 
     @Override
     public boolean getBuiltInZoomControls() {
-        return false;
+        return xWalkSettings.getBuiltInZoomControls();
     }
 
     @Override
@@ -45,32 +98,32 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setAllowFileAccess(boolean allow) {
-
+        xWalkSettings.setAllowFileAccess(allow);
     }
 
     @Override
     public boolean getAllowFileAccess() {
-        return false;
+        return xWalkSettings.getAllowFileAccess();
     }
 
     @Override
     public void setAllowContentAccess(boolean allow) {
-
+        xWalkSettings.setAllowContentAccess(allow);
     }
 
     @Override
     public boolean getAllowContentAccess() {
-        return false;
+        return xWalkSettings.getAllowContentAccess();
     }
 
     @Override
     public void setLoadWithOverviewMode(boolean overview) {
-
+        xWalkSettings.setLoadWithOverviewMode(overview);
     }
 
     @Override
     public boolean getLoadWithOverviewMode() {
-        return false;
+        return xWalkSettings.getLoadWithOverviewMode();
     }
 
     @Override
@@ -85,12 +138,12 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setSaveFormData(boolean save) {
-
+        xWalkSettings.setSaveFormData(save);
     }
 
     @Override
     public boolean getSaveFormData() {
-        return false;
+        return xWalkSettings.getSaveFormData();
     }
 
     @Override
@@ -105,12 +158,12 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setTextZoom(int textZoom) {
-
+        xWalkSettings.setTextZoom(textZoom);
     }
 
     @Override
     public int getTextZoom() {
-        return 0;
+        return xWalkSettings.getTextZoom();
     }
 
     @Override
@@ -135,32 +188,22 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setUseWideViewPort(boolean use) {
-
+        xWalkSettings.setUseWideViewPort(use);
     }
 
     @Override
     public boolean getUseWideViewPort() {
-        return false;
+        return xWalkSettings.getUseWideViewPort();
     }
 
     @Override
     public void setSupportMultipleWindows(boolean support) {
-
+        xWalkSettings.setSupportMultipleWindows(support);
     }
 
     @Override
     public boolean supportMultipleWindows() {
-        return false;
-    }
-
-    @Override
-    public void setLayoutAlgorithm(LayoutAlgorithm l) {
-
-    }
-
-    @Override
-    public LayoutAlgorithm getLayoutAlgorithm() {
-        return null;
+        return xWalkSettings.supportMultipleWindows();
     }
 
     @Override
@@ -245,67 +288,67 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setDefaultFontSize(int size) {
-
+        xWalkSettings.setDefaultFontSize(size);
     }
 
     @Override
     public int getDefaultFontSize() {
-        return 0;
+        return xWalkSettings.getDefaultFontSize();
     }
 
     @Override
     public void setDefaultFixedFontSize(int size) {
-
+        xWalkSettings.setDefaultFixedFontSize(size);
     }
 
     @Override
     public int getDefaultFixedFontSize() {
-        return 0;
+        return xWalkSettings.getDefaultFixedFontSize();
     }
 
     @Override
     public void setLoadsImagesAutomatically(boolean flag) {
-
+        xWalkSettings.setLoadsImagesAutomatically(flag);
     }
 
     @Override
     public boolean getLoadsImagesAutomatically() {
-        return false;
+        return xWalkSettings.getLoadsImagesAutomatically();
     }
 
     @Override
     public void setBlockNetworkImage(boolean flag) {
-
+        xWalkSettings.setBlockNetworkImage(flag);
     }
 
     @Override
     public boolean getBlockNetworkImage() {
-        return false;
+        return xWalkSettings.getBlockNetworkImage();
     }
 
     @Override
     public void setBlockNetworkLoads(boolean flag) {
-
+        xWalkSettings.setBlockNetworkLoads(flag);
     }
 
     @Override
     public boolean getBlockNetworkLoads() {
-        return false;
+        return xWalkSettings.getBlockNetworkLoads();
     }
 
     @Override
     public void setJavaScriptEnabled(boolean flag) {
-
+        xWalkSettings.setJavaScriptEnabled(flag);
     }
 
     @Override
     public void setAllowUniversalAccessFromFileURLs(boolean flag) {
-
+        xWalkSettings.setAllowUniversalAccessFromFileURLs(flag);
     }
 
     @Override
     public void setAllowFileAccessFromFileURLs(boolean flag) {
-
+        xWalkSettings.setAllowFileAccessFromFileURLs(flag);
     }
 
     @Override
@@ -340,17 +383,17 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setDatabaseEnabled(boolean flag) {
-
+        xWalkSettings.setDatabaseEnabled(flag);
     }
 
     @Override
     public void setDomStorageEnabled(boolean flag) {
-
+        xWalkSettings.setDomStorageEnabled(flag);
     }
 
     @Override
     public boolean getDomStorageEnabled() {
-        return false;
+        return xWalkSettings.getDomStorageEnabled();
     }
 
     @Override
@@ -360,7 +403,7 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public boolean getDatabaseEnabled() {
-        return false;
+        return xWalkSettings.getDatabaseEnabled();
     }
 
     @Override
@@ -370,17 +413,17 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public boolean getJavaScriptEnabled() {
-        return false;
+        return xWalkSettings.getJavaScriptEnabled();
     }
 
     @Override
     public boolean getAllowUniversalAccessFromFileURLs() {
-        return false;
+        return xWalkSettings.getAllowUniversalAccessFromFileURLs();
     }
 
     @Override
     public boolean getAllowFileAccessFromFileURLs() {
-        return false;
+        return xWalkSettings.getAllowFileAccessFromFileURLs();
     }
 
     @Override
@@ -390,12 +433,12 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setJavaScriptCanOpenWindowsAutomatically(boolean flag) {
-
+        xWalkSettings.setJavaScriptCanOpenWindowsAutomatically(flag);
     }
 
     @Override
     public boolean getJavaScriptCanOpenWindowsAutomatically() {
-        return false;
+        return xWalkSettings.getJavaScriptCanOpenWindowsAutomatically();
     }
 
     @Override
@@ -410,12 +453,16 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setUserAgentString(String ua) {
-
+        xWalkSettings.setUserAgentString(ua);
     }
 
     @Override
     public String getUserAgentString() {
-        return null;
+        return xWalkSettings.getUserAgentString();
+    }
+
+    public static String getDefaultUserAgent(Context context) {
+        return WebSettings.getDefaultUserAgent(context);
     }
 
     @Override
@@ -430,12 +477,12 @@ public class XWalkWebSettings extends WebSettings {
 
     @Override
     public void setCacheMode(int mode) {
-
+        xWalkSettings.setCacheMode(mode);
     }
 
     @Override
     public int getCacheMode() {
-        return 0;
+        return xWalkSettings.getCacheMode();
     }
 
     @Override

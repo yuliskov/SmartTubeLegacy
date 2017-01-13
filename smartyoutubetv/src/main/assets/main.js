@@ -25,7 +25,7 @@ function applyCodecFixes() {
 	console.log('applyCodecFixes to ' + thisDevice);
 	// some devices have buggy codec support, so disable them
     // device order is important
-	var deviceMap = {'X92': 'webm', 'MiTV3S-55': 'mp4', 'MiTV3': 'webm'};
+	var deviceMap = {'X92': 'webm', 'MiTV3S-55': 'mp4', 'MiTV': 'webm'};
 	for (var device in deviceMap) {
 		if (deviceMatch(thisDevice, device)) {
 			disableCodec(deviceMap[device]);

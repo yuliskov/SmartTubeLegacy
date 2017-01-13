@@ -104,7 +104,7 @@ public class Tab implements PictureListener {
             mId = TabControl.getNextId();
         }
 
-        // all magic happen here, state restored here
+        // state restored here!!!
         setWebView(w);
 
         //((CustomHeadersWebViewClient) mWebViewClient).setPageDefaults(mWebViewController.getPageDefaults());

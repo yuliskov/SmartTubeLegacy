@@ -1,4 +1,4 @@
-package com.liskovsoft.browser;
+package com.liskovsoft.browser.xwalk;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -6,17 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import com.liskovsoft.browser.Controller;
+import com.liskovsoft.browser.R;
 import com.liskovsoft.browser.util.SimpleUIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xwalk.core.XWalkActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowserActivity extends AppCompatActivity {
-    private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
+public class XWalkBrowserActivity_TEMP extends XWalkActivity {
+    private static final Logger logger = LoggerFactory.getLogger(XWalkBrowserActivity_TEMP.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
     private final String mDefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -31,25 +33,15 @@ public class BrowserActivity extends AppCompatActivity {
     private PowerManager mPowerManager;
 
     @Override
+    protected void onXWalkReady() {
+        mController = createAndInitController(null);
+    }
+
+    @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        //mController = beforeCreateAndInitController(icicle);
-    }
-
-    protected void initController(Bundle icicle) {
-        mHeaders = new HashMap<>();
-        mHeaders.put("user-agent", mDefaultUserAgent);
-
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? getIntent() : null;
-        mController.start(intent);
-        mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    }
-
-
-    protected void setController(Controller controller) {
-        mController = controller;
+        //mController = createAndInitController(icicle);
     }
 
     /**
@@ -59,39 +51,25 @@ public class BrowserActivity extends AppCompatActivity {
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (mController == null)
-            return;
         logger.info("BrowserActivity.onSaveInstanceState: this=", this);
         mController.onSaveInstanceState(outState);
     }
 
-    ///**
-    // * Break down initialization so you can do it later if you want.
-    // * @param icicle state
-    // * @return
-    // */
-    //protected Controller beforeCreateAndInitController(Bundle icicle) {
-    //    return createAndInitController(icicle);
-    //}
-    //
-    //protected Controller createAndInitController(Bundle icicle) {
-    //    mHeaders = new HashMap<>();
-    //    mHeaders.put("user-agent", mDefaultUserAgent);
-    //
-    //    mController = new SimpleUIController(this);
-    //    Intent intent = (icicle == null) ? getIntent() : null;
-    //    mController.start(intent);
-    //    mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    //    return mController;
-    //}
+    protected Controller createAndInitController(Bundle icicle) {
+        mHeaders = new HashMap<>();
+        mHeaders.put("user-agent", mDefaultUserAgent);
+
+        mController = new SimpleUIController(this);
+        Intent intent = (icicle == null) ? getIntent() : null;
+        mController.start(intent);
+        mController.loadUrl(mDefaultHomeUrl, mHeaders);
+        return mController;
+    }
 
     @Override
     protected void onPause() {
-        super.onPause();
-        if (mController == null) {
-            return;
-        }
         mController.onPause();
+        super.onPause();
     }
 
     @Override
@@ -110,6 +88,8 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mController == null)
+            return false;
         return mController.onKeyDown(keyCode, event) ||
                 super.onKeyDown(keyCode, event);
     }
@@ -122,22 +102,21 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (mController == null)
+            return false;
         return mController.onKeyUp(keyCode, event) ||
                 super.onKeyUp(keyCode, event);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (mController == null) {
-            return;
-        }
         if (shouldIgnoreIntents()) return;
         if (ACTION_RESTART.equals(intent.getAction())) {
             Bundle outState = new Bundle();
             mController.onSaveInstanceState(outState);
             finish();
             getApplicationContext().startActivity(
-                    new Intent(getApplicationContext(), BrowserActivity.class)
+                    new Intent(getApplicationContext(), XWalkBrowserActivity_TEMP.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(EXTRA_STATE, outState));
             return;
