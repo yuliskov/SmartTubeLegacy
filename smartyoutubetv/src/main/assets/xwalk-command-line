@@ -1,1 +1,1 @@
-xwalk --disk-cache-size=1
+xwalk --disk-cache-size=104857600
