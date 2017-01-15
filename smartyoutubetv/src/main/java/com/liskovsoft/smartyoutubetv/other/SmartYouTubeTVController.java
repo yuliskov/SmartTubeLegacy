@@ -9,7 +9,7 @@ import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import com.liskovsoft.browser.util.SimpleUIController;
-import com.liskovsoft.smartyoutubetv.MyPageLoadHandler;
+import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 
 import java.util.HashMap;
 import java.util.Map;

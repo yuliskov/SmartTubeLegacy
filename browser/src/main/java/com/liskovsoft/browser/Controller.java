@@ -23,6 +23,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
+import com.liskovsoft.browser.util.ControllerPostProcessor;
 import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private static Bitmap sThumbnailBitmap;
     private Handler mHandler;
     private NetworkStateHandler mNetworkHandler;
+    private ControllerPostProcessor mPostProcessor;
 
     // For select and find, we keep track of the ActionMode so that
     // finish() can be called as desired.
@@ -83,12 +85,17 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private PageDefaults mPageDefaults;
 
     public Controller(Activity browser) {
+        this(browser, null);
+    }
+
+    public Controller(Activity browser, ControllerPostProcessor postProcessor) {
         mActivity = browser;
         mSettings = BrowserSettings.getInstance();
         mTabControl = new TabControl(this);
         mCrashRecoveryHandler = CrashRecoveryHandler.initialize(this);
         mFactory = new BrowserWebViewFactory(browser);
         mIntentHandler = new IntentHandler(mActivity, this);
+        mPostProcessor = postProcessor;
 
         startHandler();
 
@@ -107,7 +114,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
     @Override
     public void start(final Intent intent) {
         // mCrashRecoverHandler has any previously saved state.
-        mCrashRecoveryHandler.startRecovery(intent);
+        //mCrashRecoveryHandler.startRecovery(intent);
+        start(intent, new PageDefaults(null, null, null));
     }
 
     public void start(final Intent intent, final String url) {
@@ -117,6 +125,9 @@ public class Controller implements UiController, WebViewController, ActivityCont
     public void start(final Intent intent, final PageDefaults pageDefaults) {
         mPageDefaults = pageDefaults;
         mFactory.setNextHeaders(mPageDefaults.getHeaders());
+        if (mPostProcessor != null) {
+            mPostProcessor.process(this);
+        }
         // mCrashRecoverHandler has any previously saved state.
         mCrashRecoveryHandler.startRecovery(intent);
     }
@@ -350,6 +361,10 @@ public class Controller implements UiController, WebViewController, ActivityCont
     @Override
     public List<Tab> getTabs() {
         return mTabControl.getTabs();
+    }
+
+    public CrashRecoveryHandler getCrashRecoveryHandler() {
+        return mCrashRecoveryHandler;
     }
 
     @Override

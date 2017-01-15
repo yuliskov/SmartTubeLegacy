@@ -9,6 +9,8 @@ import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.SimpleUIController;
 import com.liskovsoft.browser.util.PageLoadHandler;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
+import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
+import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
         mPageLoadHandler = new MyPageLoadHandler(this);
         mHeaders.put("user-agent", mLGSmartTVUserAgent);
 
-        mController = new SimpleUIController(this);
+        mController = new SimpleUIController(this, new LangDetector());
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
         mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler);
         mController.start(intent, mPageDefaults);

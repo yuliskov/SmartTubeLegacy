@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv;
+package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;

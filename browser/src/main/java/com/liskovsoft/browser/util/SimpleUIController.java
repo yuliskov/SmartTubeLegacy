@@ -7,7 +7,10 @@ import com.liskovsoft.browser.UI;
 
 public class SimpleUIController extends Controller {
     public SimpleUIController(Activity browser) {
-        super(browser);
+        this(browser, null);
+    }
+    public SimpleUIController(Activity browser, ControllerPostProcessor postProcessor) {
+        super(browser, postProcessor);
         // we must set theme before ui instantiation
         browser.setTheme(R.style.SimpleUITheme);
         initUi();
