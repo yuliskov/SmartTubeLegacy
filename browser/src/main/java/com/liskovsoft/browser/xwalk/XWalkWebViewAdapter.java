@@ -11,6 +11,7 @@ import com.liskovsoft.browser.util.HeadersBrowserWebView;
 import com.liskovsoft.browser.util.HeadersWebSettingsDecorator;
 import org.xwalk.core.XWalkView;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class XWalkWebViewAdapter extends HeadersBrowserWebView {
@@ -43,6 +44,14 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     @Override
     public void loadUrl(String url) {
         mXWalkView.load(url, null);
+    }
+
+    @Override
+    public void loadData(String data, String mimeType, String encoding) {
+        // Content-Type: text/html; charset=utf-8
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", String.format("%s; %s", mimeType, encoding));
+        mXWalkView.load(null, data, headers);
     }
 
     @Override

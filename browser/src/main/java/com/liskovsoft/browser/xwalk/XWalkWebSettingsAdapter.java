@@ -2,14 +2,13 @@ package com.liskovsoft.browser.xwalk;
 
 import android.content.Context;
 import android.webkit.WebSettings;
-import com.liskovsoft.browser.util.HeadersWebSettingsDecorator;
 import org.xwalk.core.XWalkSettings;
 
 public class XWalkWebSettingsAdapter extends WebSettings {
-    private final XWalkSettings xWalkSettings;
+    private final XWalkSettings mXWalkSettings;
 
     public XWalkWebSettingsAdapter(XWalkSettings settings) {
-        xWalkSettings = settings;
+        mXWalkSettings = settings;
     }
 
     @Override
@@ -30,12 +29,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
                 newLayoutAlgorithm = XWalkSettings.LayoutAlgorithm.TEXT_AUTOSIZING;
                 break;
         }
-        xWalkSettings.setLayoutAlgorithm(newLayoutAlgorithm);
+        mXWalkSettings.setLayoutAlgorithm(newLayoutAlgorithm);
     }
 
     @Override
     public LayoutAlgorithm getLayoutAlgorithm() {
-        XWalkSettings.LayoutAlgorithm layoutAlgorithm = xWalkSettings.getLayoutAlgorithm();
+        XWalkSettings.LayoutAlgorithm layoutAlgorithm = mXWalkSettings.getLayoutAlgorithm();
         LayoutAlgorithm newLayoutAlgorithm = LayoutAlgorithm.NORMAL;
         switch (layoutAlgorithm) {
             case NORMAL:
@@ -58,32 +57,32 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setSupportZoom(boolean support) {
-        xWalkSettings.setSupportZoom(support);
+        mXWalkSettings.setSupportZoom(support);
     }
 
     @Override
     public boolean supportZoom() {
-        return xWalkSettings.supportZoom();
+        return mXWalkSettings.supportZoom();
     }
 
     @Override
     public void setMediaPlaybackRequiresUserGesture(boolean require) {
-        xWalkSettings.setMediaPlaybackRequiresUserGesture(require);
+        mXWalkSettings.setMediaPlaybackRequiresUserGesture(require);
     }
 
     @Override
     public boolean getMediaPlaybackRequiresUserGesture() {
-        return xWalkSettings.getMediaPlaybackRequiresUserGesture();
+        return mXWalkSettings.getMediaPlaybackRequiresUserGesture();
     }
 
     @Override
     public void setBuiltInZoomControls(boolean enabled) {
-        xWalkSettings.setBuiltInZoomControls(enabled);
+        mXWalkSettings.setBuiltInZoomControls(enabled);
     }
 
     @Override
     public boolean getBuiltInZoomControls() {
-        return xWalkSettings.getBuiltInZoomControls();
+        return mXWalkSettings.getBuiltInZoomControls();
     }
 
     @Override
@@ -98,32 +97,32 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setAllowFileAccess(boolean allow) {
-        xWalkSettings.setAllowFileAccess(allow);
+        mXWalkSettings.setAllowFileAccess(allow);
     }
 
     @Override
     public boolean getAllowFileAccess() {
-        return xWalkSettings.getAllowFileAccess();
+        return mXWalkSettings.getAllowFileAccess();
     }
 
     @Override
     public void setAllowContentAccess(boolean allow) {
-        xWalkSettings.setAllowContentAccess(allow);
+        mXWalkSettings.setAllowContentAccess(allow);
     }
 
     @Override
     public boolean getAllowContentAccess() {
-        return xWalkSettings.getAllowContentAccess();
+        return mXWalkSettings.getAllowContentAccess();
     }
 
     @Override
     public void setLoadWithOverviewMode(boolean overview) {
-        xWalkSettings.setLoadWithOverviewMode(overview);
+        mXWalkSettings.setLoadWithOverviewMode(overview);
     }
 
     @Override
     public boolean getLoadWithOverviewMode() {
-        return xWalkSettings.getLoadWithOverviewMode();
+        return mXWalkSettings.getLoadWithOverviewMode();
     }
 
     @Override
@@ -138,12 +137,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setSaveFormData(boolean save) {
-        xWalkSettings.setSaveFormData(save);
+        mXWalkSettings.setSaveFormData(save);
     }
 
     @Override
     public boolean getSaveFormData() {
-        return xWalkSettings.getSaveFormData();
+        return mXWalkSettings.getSaveFormData();
     }
 
     @Override
@@ -158,12 +157,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setTextZoom(int textZoom) {
-        xWalkSettings.setTextZoom(textZoom);
+        mXWalkSettings.setTextZoom(textZoom);
     }
 
     @Override
     public int getTextZoom() {
-        return xWalkSettings.getTextZoom();
+        return mXWalkSettings.getTextZoom();
     }
 
     @Override
@@ -188,22 +187,22 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setUseWideViewPort(boolean use) {
-        xWalkSettings.setUseWideViewPort(use);
+        mXWalkSettings.setUseWideViewPort(use);
     }
 
     @Override
     public boolean getUseWideViewPort() {
-        return xWalkSettings.getUseWideViewPort();
+        return mXWalkSettings.getUseWideViewPort();
     }
 
     @Override
     public void setSupportMultipleWindows(boolean support) {
-        xWalkSettings.setSupportMultipleWindows(support);
+        mXWalkSettings.setSupportMultipleWindows(support);
     }
 
     @Override
     public boolean supportMultipleWindows() {
-        return xWalkSettings.supportMultipleWindows();
+        return mXWalkSettings.supportMultipleWindows();
     }
 
     @Override
@@ -288,67 +287,67 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setDefaultFontSize(int size) {
-        xWalkSettings.setDefaultFontSize(size);
+        mXWalkSettings.setDefaultFontSize(size);
     }
 
     @Override
     public int getDefaultFontSize() {
-        return xWalkSettings.getDefaultFontSize();
+        return mXWalkSettings.getDefaultFontSize();
     }
 
     @Override
     public void setDefaultFixedFontSize(int size) {
-        xWalkSettings.setDefaultFixedFontSize(size);
+        mXWalkSettings.setDefaultFixedFontSize(size);
     }
 
     @Override
     public int getDefaultFixedFontSize() {
-        return xWalkSettings.getDefaultFixedFontSize();
+        return mXWalkSettings.getDefaultFixedFontSize();
     }
 
     @Override
     public void setLoadsImagesAutomatically(boolean flag) {
-        xWalkSettings.setLoadsImagesAutomatically(flag);
+        mXWalkSettings.setLoadsImagesAutomatically(flag);
     }
 
     @Override
     public boolean getLoadsImagesAutomatically() {
-        return xWalkSettings.getLoadsImagesAutomatically();
+        return mXWalkSettings.getLoadsImagesAutomatically();
     }
 
     @Override
     public void setBlockNetworkImage(boolean flag) {
-        xWalkSettings.setBlockNetworkImage(flag);
+        mXWalkSettings.setBlockNetworkImage(flag);
     }
 
     @Override
     public boolean getBlockNetworkImage() {
-        return xWalkSettings.getBlockNetworkImage();
+        return mXWalkSettings.getBlockNetworkImage();
     }
 
     @Override
     public void setBlockNetworkLoads(boolean flag) {
-        xWalkSettings.setBlockNetworkLoads(flag);
+        mXWalkSettings.setBlockNetworkLoads(flag);
     }
 
     @Override
     public boolean getBlockNetworkLoads() {
-        return xWalkSettings.getBlockNetworkLoads();
+        return mXWalkSettings.getBlockNetworkLoads();
     }
 
     @Override
     public void setJavaScriptEnabled(boolean flag) {
-        xWalkSettings.setJavaScriptEnabled(flag);
+        mXWalkSettings.setJavaScriptEnabled(flag);
     }
 
     @Override
     public void setAllowUniversalAccessFromFileURLs(boolean flag) {
-        xWalkSettings.setAllowUniversalAccessFromFileURLs(flag);
+        mXWalkSettings.setAllowUniversalAccessFromFileURLs(flag);
     }
 
     @Override
     public void setAllowFileAccessFromFileURLs(boolean flag) {
-        xWalkSettings.setAllowFileAccessFromFileURLs(flag);
+        mXWalkSettings.setAllowFileAccessFromFileURLs(flag);
     }
 
     @Override
@@ -383,17 +382,17 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setDatabaseEnabled(boolean flag) {
-        xWalkSettings.setDatabaseEnabled(flag);
+        mXWalkSettings.setDatabaseEnabled(flag);
     }
 
     @Override
     public void setDomStorageEnabled(boolean flag) {
-        xWalkSettings.setDomStorageEnabled(flag);
+        mXWalkSettings.setDomStorageEnabled(flag);
     }
 
     @Override
     public boolean getDomStorageEnabled() {
-        return xWalkSettings.getDomStorageEnabled();
+        return mXWalkSettings.getDomStorageEnabled();
     }
 
     @Override
@@ -403,7 +402,7 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public boolean getDatabaseEnabled() {
-        return xWalkSettings.getDatabaseEnabled();
+        return mXWalkSettings.getDatabaseEnabled();
     }
 
     @Override
@@ -413,17 +412,17 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public boolean getJavaScriptEnabled() {
-        return xWalkSettings.getJavaScriptEnabled();
+        return mXWalkSettings.getJavaScriptEnabled();
     }
 
     @Override
     public boolean getAllowUniversalAccessFromFileURLs() {
-        return xWalkSettings.getAllowUniversalAccessFromFileURLs();
+        return mXWalkSettings.getAllowUniversalAccessFromFileURLs();
     }
 
     @Override
     public boolean getAllowFileAccessFromFileURLs() {
-        return xWalkSettings.getAllowFileAccessFromFileURLs();
+        return mXWalkSettings.getAllowFileAccessFromFileURLs();
     }
 
     @Override
@@ -433,12 +432,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setJavaScriptCanOpenWindowsAutomatically(boolean flag) {
-        xWalkSettings.setJavaScriptCanOpenWindowsAutomatically(flag);
+        mXWalkSettings.setJavaScriptCanOpenWindowsAutomatically(flag);
     }
 
     @Override
     public boolean getJavaScriptCanOpenWindowsAutomatically() {
-        return xWalkSettings.getJavaScriptCanOpenWindowsAutomatically();
+        return mXWalkSettings.getJavaScriptCanOpenWindowsAutomatically();
     }
 
     @Override
@@ -453,12 +452,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setUserAgentString(String ua) {
-        xWalkSettings.setUserAgentString(ua);
+        mXWalkSettings.setUserAgentString(ua);
     }
 
     @Override
     public String getUserAgentString() {
-        return xWalkSettings.getUserAgentString();
+        return mXWalkSettings.getUserAgentString();
     }
 
     public static String getDefaultUserAgent(Context context) {
@@ -477,12 +476,12 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     @Override
     public void setCacheMode(int mode) {
-        xWalkSettings.setCacheMode(mode);
+        mXWalkSettings.setCacheMode(mode);
     }
 
     @Override
     public int getCacheMode() {
-        return xWalkSettings.getCacheMode();
+        return mXWalkSettings.getCacheMode();
     }
 
     @Override

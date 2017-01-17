@@ -38,4 +38,9 @@ public class HeadersWebSettingsDecorator extends WebSettingsDecorator {
 
         super.setUserAgentString(ua);
     }
+
+    @Override
+    public void setDefaultTextEncodingName(String encoding) {
+        super.setDefaultTextEncodingName(encoding);
+    }
 }

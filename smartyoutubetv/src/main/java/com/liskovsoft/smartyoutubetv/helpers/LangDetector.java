@@ -22,7 +22,7 @@ public class LangDetector implements ControllerPostProcessor {
         mContext = controller.getContext();
 
         if (updateHeaders(mController.getPageDefaults())){
-            // don't restore page state for russian users
+            // to keep russian (non system lang) we must not do state restore
             mController.getCrashRecoveryHandler().clearState();
         }
     }
