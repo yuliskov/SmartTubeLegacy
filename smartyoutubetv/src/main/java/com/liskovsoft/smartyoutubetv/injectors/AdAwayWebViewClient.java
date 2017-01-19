@@ -27,14 +27,6 @@ public class AdAwayWebViewClient extends WebViewClient {
     }
 
 
-    @Override
-    @Deprecated
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (doesUrlBelongToAdServer(url))
-            return true;
-        return mWebViewClient.shouldOverrideUrlLoading(view, url);
-    }
-
     private boolean doesUrlBelongToAdServer(String url) {
         for (String suburl : mAdAwayList) {
             boolean contains = url.contains(suburl);
@@ -45,12 +37,39 @@ public class AdAwayWebViewClient extends WebViewClient {
     }
 
     /**
+     * Block ads here. Don't use shouldOverrideUrlLoading because it's not called for internal urls.
+     * @param view
+     * @param url
+     * @return
+     */
+    @Override
+    @Deprecated
+    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+        if (doesUrlBelongToAdServer(url)) {
+            // block url
+            return new WebResourceResponse(null, null, null);
+        }
+        return mWebViewClient.shouldInterceptRequest(view, url);
+    }
+
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        return mWebViewClient.shouldInterceptRequest(view, request);
+    }
+
+    /**
      * OTHER METHODS
      */
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         return mWebViewClient.shouldOverrideUrlLoading(view, request);
+    }
+
+    @Override
+    @Deprecated
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        return mWebViewClient.shouldOverrideUrlLoading(view, url);
     }
 
     @Override
@@ -71,17 +90,6 @@ public class AdAwayWebViewClient extends WebViewClient {
     @Override
     public void onPageCommitVisible(WebView view, String url) {
         mWebViewClient.onPageCommitVisible(view, url);
-    }
-
-    @Override
-    @Deprecated
-    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        return mWebViewClient.shouldInterceptRequest(view, url);
-    }
-
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-        return mWebViewClient.shouldInterceptRequest(view, request);
     }
 
     @Override

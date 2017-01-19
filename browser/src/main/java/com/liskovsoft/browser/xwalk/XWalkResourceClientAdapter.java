@@ -1,6 +1,7 @@
 package com.liskovsoft.browser.xwalk;
 
 import android.text.TextUtils;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import okhttp3.*;
@@ -43,9 +44,15 @@ public class XWalkResourceClientAdapter extends XWalkResourceClient {
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(XWalkView view, String url) {
-        return mWebViewClient.shouldOverrideUrlLoading(mWebView, url);
+    public WebResourceResponse shouldInterceptLoadRequest(XWalkView view, String url) {
+        return mWebViewClient.shouldInterceptRequest(mWebView, url);
     }
+
+    // shouldOverrideUrlLoading called one time fore session, use shouldInterceptLoadRequest instead
+    //@Override
+    //public boolean shouldOverrideUrlLoading(XWalkView view, String url) {
+    //    return mWebViewClient.shouldOverrideUrlLoading(mWebView, url);
+    //}
 
     public XWalkWebResourceResponse shouldInterceptLoadRequest2(XWalkView view, XWalkWebResourceRequest request) {
         if (client == null) {
@@ -83,6 +90,10 @@ public class XWalkResourceClientAdapter extends XWalkResourceClient {
 
     private XWalkWebResourceResponse createEmptyXWalkWebResourceResponse() {
         return createXWalkWebResourceResponse(null, null, null, 0, null, null);
+    }
+
+    private WebResourceResponse createEmptyWebResourceResponse() {
+        return new WebResourceResponse(null, null, null);
     }
 
     private String getMimeType(MediaType contentType) {

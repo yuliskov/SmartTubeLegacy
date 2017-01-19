@@ -3,7 +3,6 @@ package com.liskovsoft.browser.xwalk;
 import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.XWalkInitializer;
@@ -81,12 +80,12 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
 
     private void setUpdateApkUrl() {
         if (!isGooglePlayInstalled()) {
-            setUpdateSourceToGDrive();
+            setUpdateApkUrlToGDrive();
         }
     }
 
-    private void setUpdateSourceToGDrive() {
-        String abi = Build.CPU_ABI;
+    private void setUpdateApkUrlToGDrive() {
+        String abi = XWalkEnvironment.getRuntimeAbi();
         Map<String, String> apkUrls = new HashMap<>();
         apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXZkl1dW9IbFFJNEk");
         apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA");
@@ -98,7 +97,7 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new XWalkUpdater(this, this);
         }
-        setUpdateSourceToGDrive();
+        setUpdateApkUrlToGDrive();
         mXWalkUpdater.updateXWalkRuntime();
     }
 

@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.util.PageDefaults;
 import com.liskovsoft.browser.util.SimpleUIController;
 import com.liskovsoft.browser.util.PageLoadHandler;
+import com.liskovsoft.browser.util.WebViewBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,8 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Fabric.with(this, new Crashlytics());
 
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }

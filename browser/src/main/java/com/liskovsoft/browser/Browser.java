@@ -29,9 +29,10 @@ public class Browser extends Application {
         //Preloader.initialize(getApplicationContext());
 
         // Leave empty, Play Market use built in exception handling mechanism.
+        // Don't uncomment. Already used Crashlytics in parent app.
         // Setup handler for uncaught exceptions.
-        mHandler = new SimpleUncaughtExceptionHandler(getApplicationContext());
-        Thread.setDefaultUncaughtExceptionHandler(mHandler);
+        //mHandler = new SimpleUncaughtExceptionHandler(getApplicationContext());
+        //Thread.setDefaultUncaughtExceptionHandler(mHandler);
     }
 
 }

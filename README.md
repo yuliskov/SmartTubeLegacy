@@ -61,12 +61,12 @@ MyActivity extends XWalkBrowserActivity {
   - testThatCustomUserAgentHeaderNotOverridedBySettings
   - testThatWebViewCreatedAndAttachedToTheActivityView
   - testThatWebViewHeadersAreProperlySet
-- review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
-  - add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
 - add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
   - https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
+- review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
+  - add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
 - add Crosswalk backend
   - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
   - https://crosswalk-project.org/documentation/shared_mode.html
