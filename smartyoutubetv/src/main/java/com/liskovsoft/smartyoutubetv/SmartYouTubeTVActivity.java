@@ -2,8 +2,13 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.util.PageDefaults;
@@ -34,7 +39,20 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
 
         Fabric.with(this, new Crashlytics());
 
+        // TODO: remove setTheme
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
+
+        makeActivityFullscreen();
+    }
+
+    private void makeActivityFullscreen() {
+        int sdkInt = VERSION.SDK_INT;
+        if (sdkInt < 19) {
+            getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
     @Override
