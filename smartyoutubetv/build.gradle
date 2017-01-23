@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 50
-        versionName "6.3.7"
+        versionCode 52
+        versionName "6.3.8"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -51,12 +51,15 @@ android {
 
     productFlavors {
         originalFlavor {
-            resValue "string", "app_name", "Smart YouTube TV"
+            // custom resources location: src/originalFlavor
+            // resValue "string", "app_name", "Smart YouTube TV"
         }
         betaFlavor {
             applicationIdSuffix ".beta"
-            versionNameSuffix "-beta"
-            resValue "string", "app_name", "Smart YouTube TV Beta"
+            // versionNameSuffix "-beta"
+
+            // custom resources location: src/betaFlavor
+            // resValue "string", "app_name", "Smart YouTube TV Beta"
         }
     }
 }
