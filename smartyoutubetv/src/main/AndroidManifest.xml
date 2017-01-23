@@ -27,7 +27,8 @@
                   android:launchMode="singleTask"
                   android:alwaysRetainTaskState="true"
                   android:windowSoftInputMode="adjustResize"
-                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale">
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+                  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

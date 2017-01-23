@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv;
+package com.liskovsoft.smartyoutubetv.other;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,12 +8,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
+import com.liskovsoft.browser.BrowserActivity;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.other.PageDefaults;
-import com.liskovsoft.browser.other.SimpleUIController;
 import com.liskovsoft.browser.other.PageLoadHandler;
-import com.liskovsoft.browser.other.WebViewBrowserActivity;
-import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
+import com.liskovsoft.browser.other.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 import io.fabric.sdk.android.Fabric;
@@ -23,7 +22,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
+public class SmartYouTubeTVCore {
+    private final BrowserActivity mBrowserActivity;
     private Controller mController;
     private final String mYouTubeTVUrl = "https://youtube.com/tv";
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
@@ -31,50 +31,40 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
     private PageLoadHandler mPageLoadHandler;
     private PageDefaults mPageDefaults;
 
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public SmartYouTubeTVCore(BrowserActivity activity) {
+        Fabric.with(activity, new Crashlytics());
 
-        Fabric.with(this, new Crashlytics());
+
+        mBrowserActivity = activity;
+        makeActivityFullscreen();
 
         // TODO: remove setTheme
-        setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
+        mBrowserActivity.setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
+    }
 
-        makeActivityFullscreen();
+    public Controller createController(Bundle icicle) {
+        if (mController != null) {
+            return mController;
+        }
+        mHeaders = new HashMap<>();
+        mPageLoadHandler = new MyPageLoadHandler(mBrowserActivity);
+        mHeaders.put("user-agent", mLGSmartTVUserAgent);
+
+        mController = new SimpleUIController(mBrowserActivity);
+        Intent intent = (icicle == null) ? transformIntent(mBrowserActivity.getIntent()) : null;
+        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
+        mController.start(intent, mPageDefaults);
+        return mController;
     }
 
     private void makeActivityFullscreen() {
         int sdkInt = VERSION.SDK_INT;
         if (sdkInt < 19) {
-            getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+            mBrowserActivity.getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         } else {
-            View decorView = getWindow().getDecorView();
+            View decorView = mBrowserActivity.getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }
-
-    @Override
-    protected void initController(Bundle icicle) {
-        mHeaders = new HashMap<>();
-        mPageLoadHandler = new MyPageLoadHandler(this);
-        mHeaders.put("user-agent", mLGSmartTVUserAgent);
-
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
-        mController.start(intent, mPageDefaults);
-        setController(mController);
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        event = doTranslateKeys(event);
-        return super.dispatchKeyEvent(event);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(transformIntent(intent));
     }
 
     private boolean mDownFired;
@@ -91,7 +81,7 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
         return true;
     }
 
-    private KeyEvent doTranslateKeys(KeyEvent event) {
+    public KeyEvent doTranslateKeys(KeyEvent event) {
         if (isEventIgnored(event)) {
             return new KeyEvent(0, 0);
         }
@@ -120,7 +110,7 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
     ///////////////////////// Begin Youtube filter /////////////////////
 
 
-    private Intent transformIntent(Intent intent) {
+    public Intent transformIntent(Intent intent) {
         if (intent == null)
             return null;
         Uri data = intent.getData();
