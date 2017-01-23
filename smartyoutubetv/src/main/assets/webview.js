@@ -1,3 +1,5 @@
+//////////////////////////////////////////////
+
 function addExitEvent() {
     if (window.eventAdded)
         return;

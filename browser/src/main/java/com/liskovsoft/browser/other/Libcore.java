@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.util;
+package com.liskovsoft.browser.other;
 
 /**
  * TODO: copied from somewhere in the web

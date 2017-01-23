@@ -2,7 +2,6 @@ package com.liskovsoft.browser;
 
 import android.app.Application;
 import android.webkit.CookieSyncManager;
-import com.liskovsoft.browser.util.SimpleUncaughtExceptionHandler;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 

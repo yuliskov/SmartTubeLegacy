@@ -2,19 +2,17 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.util.PageDefaults;
-import com.liskovsoft.browser.util.SimpleUIController;
-import com.liskovsoft.browser.util.PageLoadHandler;
-import com.liskovsoft.browser.util.WebViewBrowserActivity;
+import com.liskovsoft.browser.other.PageDefaults;
+import com.liskovsoft.browser.other.SimpleUIController;
+import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.other.WebViewBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
@@ -61,9 +59,9 @@ public class SmartYouTubeTVActivity extends XWalkBrowserActivity {
         mPageLoadHandler = new MyPageLoadHandler(this);
         mHeaders.put("user-agent", mLGSmartTVUserAgent);
 
-        mController = new SimpleUIController(this, new LangDetector());
+        mController = new SimpleUIController(this);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler);
+        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
         mController.start(intent, mPageDefaults);
         setController(mController);
     }

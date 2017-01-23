@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.util;
+package com.liskovsoft.browser.other;
 
 /**
  * TODO: copied from web
@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 public final class Streams {
     private static AtomicReference<byte[]> skipBuffer = new AtomicReference<byte[]>();

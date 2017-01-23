@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.util;
+package com.liskovsoft.browser.other;
 
 import android.webkit.WebChromeClient;
 import android.webkit.WebViewClient;

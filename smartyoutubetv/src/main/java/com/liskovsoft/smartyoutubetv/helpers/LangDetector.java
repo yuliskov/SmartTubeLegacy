@@ -4,26 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.util.ControllerPostProcessor;
-import com.liskovsoft.browser.util.PageDefaults;
+import com.liskovsoft.browser.other.ControllerEventHandler;
+import com.liskovsoft.browser.other.PageDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LangDetector implements ControllerPostProcessor {
+public class LangDetector implements ControllerEventHandler {
     private Context mContext;
     private Controller mController;
     private String[] rusPackages = {"dkc.androidtv.tree", "dkc.video.fsbox", "dkc.video.uatv"};
 
-    @Override
-    public void process(Controller controller) {
+    public LangDetector(Controller controller) {
         mController = controller;
         mContext = controller.getContext();
+    }
 
+    @Override
+    public void afterStart() {
         if (updateHeaders(mController.getPageDefaults())){
-            // to keep russian (non system lang) we must not do state restore
-            mController.getCrashRecoveryHandler().clearState();
+            // to keep russian (non system lang) we must not keep a state
+            mController.getCrashRecoveryHandler().pauseState();
         }
     }
 

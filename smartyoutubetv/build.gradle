@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 45
-        versionName "6.3.0"
+        versionCode 50
+        versionName "6.3.7"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -46,6 +46,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        originalFlavor {
+            resValue "string", "app_name", "Smart YouTube TV"
+        }
+        betaFlavor {
+            applicationIdSuffix ".beta"
+            versionNameSuffix "-beta"
+            resValue "string", "app_name", "Smart YouTube TV Beta"
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.liskovsoft.browser.provider;
 
 import android.net.Uri;
-import com.liskovsoft.browser.util.BrowserContract;
+import com.liskovsoft.browser.other.BrowserContract;
 
 public class BrowserProvider2 {
     public static interface Thumbnails {

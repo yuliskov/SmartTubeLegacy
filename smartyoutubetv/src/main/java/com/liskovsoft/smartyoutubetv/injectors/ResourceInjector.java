@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 import android.content.Context;
 import android.util.Base64;
 import android.webkit.WebView;
-import com.liskovsoft.browser.util.WebViewBrowserActivity;
+import com.liskovsoft.browser.other.WebViewBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 
 import java.io.BufferedReader;

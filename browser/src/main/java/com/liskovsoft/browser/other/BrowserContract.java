@@ -1,16 +1,14 @@
-package com.liskovsoft.browser.util;
+package com.liskovsoft.browser.other;
 
 /**
  * TODO: file was found somewhere in internet (API 19 ???)
  */
 
-import android.accounts.Account;
 import android.content.*;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.RemoteException;
-import android.util.Pair;
+
 /**
  * <p>
  * The contract between the browser provider and applications. Contains the definition

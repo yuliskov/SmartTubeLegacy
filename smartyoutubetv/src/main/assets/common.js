@@ -1,5 +1,26 @@
 /////////////////////////////////////////////////
 
+function overrideProp(obj, propName, propValue) {
+    Object.defineProperty(obj, propName, {
+        get: function() { return propValue; },
+        set: function(newValue) { ; },
+        enumerable: true,
+        configurable: true
+    });
+}
+
+function setNewDimensions() {
+    var newWidth = 854;
+    var newHeight = 480;
+    
+    overrideProp(window.screen, 'availHeight', newHeight);
+    overrideProp(window.screen, 'availWidth', newWidth);
+    overrideProp(window.screen, 'height', newHeight);
+    overrideProp(window.screen, 'width', newWidth);
+}
+
+/////////////////////////////////////////////////
+
 var observeDOM = (function(){
     var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
         eventListenerSupported = window.addEventListener;
@@ -23,26 +44,32 @@ var observeDOM = (function(){
 
 //////////////////////////////////////////////
 
-function replaceParamButtonTitle(paramButton) {
+function replaceOverlappedTextInRussian(paramButton) {
     // encodeURI("Дополнительные параметры")
     var stringToFind = "%D0%94%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D1%8B";
     // encodeURI("Параметры")
     var stringToReplace = "%D0%9F%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D1%8B";
-    if (paramButton.innerHTML == decodeURI(stringToFind))
+    if (paramButton.innerHTML == decodeURI(stringToFind)){
         paramButton.innerHTML = decodeURI(stringToReplace);
-    return paramButton;
+        return true;
+    }
+    return false;
+}
+
+function doObserveOverlappedTextInRussian(paramButton) {
+    observeDOM(paramButton, function(el) {
+        console.log('dom changed, ' + el);
+        replaceOverlappedTextInRussian(el);
+	});	
 }
 
 function fixOverlappedTextInRussian() {
 	var paramButton = document.getElementById("transport-more-button").children[0];
-    replaceParamButtonTitle(paramButton);
-
-    observeDOM(paramButton, function(el) {
-        console.log('dom changed, ' + el);
-        replaceParamButtonTitle(el);
-	});
+    if (replaceOverlappedTextInRussian(paramButton))
+    	doObserveOverlappedTextInRussian(paramButton);
 }
 
 /////////////////////////////////////////
 
 fixOverlappedTextInRussian();
+// setNewDimensions();

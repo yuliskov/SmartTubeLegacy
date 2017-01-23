@@ -15,7 +15,7 @@
                  android:allowBackup="true"
                  android:icon="@mipmap/ic_launcher"
                  android:banner="@mipmap/ic_banner"
-                 android:label="Smart YouTube TV"
+                 android:label="@string/app_name"
                  android:supportsRtl="true">
         <!-- TODO: modified, DIAL integration for Amazon TV -->
         <meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>

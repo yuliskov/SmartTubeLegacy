@@ -122,6 +122,17 @@ public class CrashRecoveryHandler {
         updateLastRecovered(0);
     }
 
+    private boolean mIsPaused;
+
+    public void pauseState() {
+        clearState();
+        mIsPaused = true;
+    }
+
+    public void resumeState() {
+        mIsPaused = false;
+    }
+
     private boolean shouldRestore() {
         BrowserSettings browserSettings = BrowserSettings.getInstance();
         long lastRecovered = browserSettings.getLastRecovered();
@@ -210,6 +221,9 @@ public class CrashRecoveryHandler {
      * @param state The state to write out
      */
     synchronized void writeState(Bundle state) {
+        if (mIsPaused) {
+            return;
+        }
         logger.debug("Saving crash recovery state");
         Parcel p = Parcel.obtain();
         try {

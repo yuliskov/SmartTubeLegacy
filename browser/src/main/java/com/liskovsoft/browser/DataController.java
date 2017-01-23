@@ -10,8 +10,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import com.liskovsoft.browser.util.BrowserContract;
-import com.liskovsoft.browser.util.BrowserContract.History;
+import com.liskovsoft.browser.other.BrowserContract;
+import com.liskovsoft.browser.other.BrowserContract.History;
 import android.util.Log;
 
 import com.liskovsoft.browser.provider.BrowserProvider2.Thumbnails;

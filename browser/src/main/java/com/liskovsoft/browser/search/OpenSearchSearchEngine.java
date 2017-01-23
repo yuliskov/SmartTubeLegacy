@@ -2,14 +2,13 @@ package com.liskovsoft.browser.search;
 
 import com.liskovsoft.browser.R;
 
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
-import com.liskovsoft.browser.util.Streams;
-import com.liskovsoft.browser.util.ResponseUtils;
+import com.liskovsoft.browser.other.Streams;
+import com.liskovsoft.browser.other.ResponseUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 

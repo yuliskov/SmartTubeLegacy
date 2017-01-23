@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.provider.MediaStore;
@@ -17,7 +16,7 @@ import android.util.Patterns;
 
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.search.SearchEngine;
-import com.liskovsoft.browser.util.Search;
+import com.liskovsoft.browser.other.Search;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.XWalkInitializer;
+import org.xwalk.core.XWalkPreferences;
 import org.xwalk.core.XWalkUpdater;
 
 import java.util.HashMap;
@@ -87,8 +88,9 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
     private void setUpdateApkUrlToGDrive() {
         String abi = XWalkEnvironment.getRuntimeAbi();
         Map<String, String> apkUrls = new HashMap<>();
-        apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXZkl1dW9IbFFJNEk");
-        apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA");
+        //apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXa2xwOUVRNWdTbEk"); // 23.53.589.4
+        apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXZkl1dW9IbFFJNEk"); // 22.52.561.4
+        apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA"); // 22.52.561.4
         mXWalkUpdater.setXWalkApkUrl(apkUrls.get(abi));
     }
 
@@ -97,7 +99,7 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new XWalkUpdater(this, this);
         }
-        setUpdateApkUrlToGDrive();
+        setUpdateApkUrl();
         mXWalkUpdater.updateXWalkRuntime();
     }
 
@@ -106,6 +108,7 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         // Do anything with the embedding API
 
         initController(mBundle);
+        onResume(); // resume already called with controller==null so give a second chance
     }
 
     @Override

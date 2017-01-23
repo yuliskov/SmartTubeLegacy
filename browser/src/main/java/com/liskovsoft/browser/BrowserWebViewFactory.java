@@ -5,7 +5,7 @@ import android.content.pm.PackageManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
-import com.liskovsoft.browser.util.HeadersBrowserWebView;
+import com.liskovsoft.browser.other.HeadersBrowserWebView;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
 

@@ -1,11 +1,9 @@
-package com.liskovsoft.browser.util;
+package com.liskovsoft.browser.other;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import com.liskovsoft.browser.BrowserWebView;
-import com.liskovsoft.browser.BrowserWebViewFactory;
-import com.liskovsoft.browser.WebViewFactory;
 
 import java.util.Map;
 

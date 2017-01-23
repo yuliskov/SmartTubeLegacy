@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.util.PageDefaults;
-import com.liskovsoft.browser.util.PageLoadHandler;
-import com.liskovsoft.browser.util.SimpleUIController;
+import com.liskovsoft.browser.other.PageDefaults;
+import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.other.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 
 import java.util.HashMap;
