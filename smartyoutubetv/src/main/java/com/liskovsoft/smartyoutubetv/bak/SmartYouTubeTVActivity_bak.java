@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv;
+package com.liskovsoft.smartyoutubetv.bak;
 
 import android.content.Intent;
 import android.net.Uri;

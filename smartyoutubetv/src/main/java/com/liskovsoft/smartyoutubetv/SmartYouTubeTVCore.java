@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.other;
+package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
 import android.net.Uri;

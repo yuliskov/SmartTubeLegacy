@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.XWalkInitializer;
-import org.xwalk.core.XWalkPreferences;
 import org.xwalk.core.XWalkUpdater;
 
 import java.util.HashMap;
@@ -79,7 +78,17 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         return app_installed;
     }
 
+    private void fixUnsupportedArch() {
+        String arch = System.getProperty("os.arch").toLowerCase();
+        switch (arch) {
+            case "armv8l":
+                System.setProperty("os.arch", "armv8");
+                break;
+        }
+    }
+
     private void setUpdateApkUrl() {
+        fixUnsupportedArch();
         if (!isGooglePlayInstalled()) {
             setUpdateApkUrlToGDrive();
         }
