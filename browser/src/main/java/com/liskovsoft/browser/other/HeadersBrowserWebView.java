@@ -42,9 +42,10 @@ public class HeadersBrowserWebView extends BrowserWebView {
         if (mSettings != null)
             return mSettings;
 
-        // Fix for Android 4.0.3, 4.0.4: WebSettings doesn't have default constructor
+        // don't wrap WebSettings on old api (below 16)
+        // because WebSettings doesn't have default constructor
         int sdkInt = VERSION.SDK_INT;
-        if (sdkInt <= 15) {
+        if (sdkInt < 16) {
             mSettings = super.getSettings();
             return mSettings;
         }
