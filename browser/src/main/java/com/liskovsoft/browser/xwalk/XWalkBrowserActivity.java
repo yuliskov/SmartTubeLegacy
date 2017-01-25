@@ -88,7 +88,8 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
     }
 
     private void setUpdateApkUrl() {
-        fixUnsupportedArch();
+        //not working
+        //fixUnsupportedArch();
         if (!isGooglePlayInstalled()) {
             setUpdateApkUrlToGDrive();
         }
@@ -108,7 +109,7 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new XWalkUpdater(this, this);
         }
-        setUpdateApkUrl();
+        setUpdateApkUrlToGDrive();
         mXWalkUpdater.updateXWalkRuntime();
     }
 
