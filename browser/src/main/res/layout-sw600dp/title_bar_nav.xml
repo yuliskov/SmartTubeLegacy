@@ -54,7 +54,7 @@
             android:layout_marginLeft="0dip"
             style="@style/HoloIcon"
             android:visibility="gone" />
-        <com.android.browser.UrlInputView
+        <com.liskovsoft.browser.UrlInputView
             android:id="@+id/url"
             android:layout_width="0dip"
             android:layout_weight="1.0"

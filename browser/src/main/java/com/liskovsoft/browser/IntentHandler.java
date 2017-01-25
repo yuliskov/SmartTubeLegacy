@@ -16,7 +16,7 @@ import android.util.Patterns;
 
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.search.SearchEngine;
-import com.liskovsoft.browser.other.Search;
+import com.liskovsoft.browser.custom.Search;
 
 import java.util.HashMap;
 import java.util.Iterator;

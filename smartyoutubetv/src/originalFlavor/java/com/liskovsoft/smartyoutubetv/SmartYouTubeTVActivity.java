@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import com.liskovsoft.browser.other.WebViewBrowserActivity;
+import com.liskovsoft.browser.custom.WebViewBrowserActivity;
 
 public class SmartYouTubeTVActivity extends WebViewBrowserActivity {
     private SmartYouTubeTVCore mCore;

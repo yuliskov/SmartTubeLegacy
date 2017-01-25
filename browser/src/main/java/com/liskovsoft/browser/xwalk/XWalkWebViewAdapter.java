@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
-import com.liskovsoft.browser.other.HeadersBrowserWebView;
-import com.liskovsoft.browser.other.HeadersWebSettingsDecorator;
+import com.liskovsoft.browser.custom.HeadersBrowserWebView;
+import com.liskovsoft.browser.custom.HeadersWebSettingsDecorator;
 import org.xwalk.core.XWalkView;
 
 import java.util.HashMap;

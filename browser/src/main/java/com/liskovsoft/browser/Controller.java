@@ -23,8 +23,8 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.other.PageDefaults;
-import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.custom.PageDefaults;
+import com.liskovsoft.browser.custom.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

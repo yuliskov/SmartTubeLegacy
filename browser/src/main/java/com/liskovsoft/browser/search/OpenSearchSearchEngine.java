@@ -7,8 +7,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
-import com.liskovsoft.browser.other.Streams;
-import com.liskovsoft.browser.other.ResponseUtils;
+import com.liskovsoft.browser.custom.Streams;
+import com.liskovsoft.browser.custom.ResponseUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 

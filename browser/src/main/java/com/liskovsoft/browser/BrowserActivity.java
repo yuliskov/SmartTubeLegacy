@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import com.liskovsoft.browser.other.SimpleUIController;
+import com.liskovsoft.browser.custom.SimpleUIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

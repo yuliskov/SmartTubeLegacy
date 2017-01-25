@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.browser;
+package com.liskovsoft.browser;
 
 import android.webkit.WebHistoryItem;
 

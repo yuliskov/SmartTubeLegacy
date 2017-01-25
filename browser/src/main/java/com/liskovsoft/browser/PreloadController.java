@@ -14,8 +14,8 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
-import com.liskovsoft.browser.other.PageDefaults;
-import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.custom.PageDefaults;
+import com.liskovsoft.browser.custom.PageLoadHandler;
 
 public class PreloadController implements WebViewController {
 

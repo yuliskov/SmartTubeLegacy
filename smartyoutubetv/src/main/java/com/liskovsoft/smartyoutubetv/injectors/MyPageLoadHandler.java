@@ -5,7 +5,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.custom.PageLoadHandler;
 
 public class MyPageLoadHandler implements PageLoadHandler {
     private final Context mContext;

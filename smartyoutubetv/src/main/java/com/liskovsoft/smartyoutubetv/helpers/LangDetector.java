@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.other.ControllerEventHandler;
-import com.liskovsoft.browser.other.PageDefaults;
+import com.liskovsoft.browser.custom.ControllerEventHandler;
+import com.liskovsoft.browser.custom.PageDefaults;
 
 import java.util.ArrayList;
 import java.util.List;

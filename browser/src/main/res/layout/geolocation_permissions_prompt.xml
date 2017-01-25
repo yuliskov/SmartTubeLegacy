@@ -16,7 +16,7 @@
      This is the layout for the Geolocation permissions prompt.
 -->
 
-<com.android.browser.GeolocationPermissionsPrompt
+<com.liskovsoft.browser.GeolocationPermissionsPrompt
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -81,4 +81,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</com.android.browser.GeolocationPermissionsPrompt>
+</com.liskovsoft.browser.GeolocationPermissionsPrompt>

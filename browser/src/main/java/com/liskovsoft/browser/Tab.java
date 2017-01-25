@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
-import com.liskovsoft.browser.other.PageLoadHandler;
+import com.liskovsoft.browser.custom.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

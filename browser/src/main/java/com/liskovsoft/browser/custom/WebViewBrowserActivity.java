@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.other;
+package com.liskovsoft.browser.custom;
 
 import android.os.Bundle;
 import com.liskovsoft.browser.BrowserActivity;

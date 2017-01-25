@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.other;
+package com.liskovsoft.browser.custom;
 
 /**
  * TODO: file was found somewhere in internet (API 19 ???)
@@ -23,7 +23,7 @@ import android.net.Uri;
  */
 public class BrowserContract {
     /** The authority for the browser provider */
-    public static final String AUTHORITY = "com.android.browser";
+    public static final String AUTHORITY = "com.liskovsoft.browser";
     /** A content:// style uri to the authority for the browser provider */
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
     /**
