@@ -55,23 +55,25 @@ MyActivity extends XWalkBrowserActivity {
 	- BrowserWebView.CustomView
 	- SnapshotBar
 - add tests:
-  - testThatPageLoadHandlerNotCalledTwise
-  - testThatUrlIsNotOverridedAndHandledInternally
-  - testCheckThatBackKeyNotClosesActivity
-  - testThatCustomUserAgentHeaderNotOverridedBySettings
-  - testThatWebViewCreatedAndAttachedToTheActivityView
-  - testThatWebViewHeadersAreProperlySet
+	- testThatPageLoadHandlerNotCalledTwise
+	- testThatUrlIsNotOverridedAndHandledInternally
+	- testCheckThatBackKeyNotClosesActivity
+	- testThatCustomUserAgentHeaderNotOverridedBySettings
+	- testThatWebViewCreatedAndAttachedToTheActivityView
+	- testThatWebViewHeadersAreProperlySet
 - add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
-  - https://developer.chrome.com/multidevice/android/customtabs
+	- https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
+- add multiple flavors: original (WebView) and beta (XWalk)
+	- custom resources location: src/originalFlavor and src/regularFlavor
 - review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
-  - add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
+	- add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
 - add Crosswalk backend
-  - https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
-  - https://crosswalk-project.org/documentation/shared_mode.html
-  - https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
-  - https://github.com/crosswalk-project/crosswalk-website/wiki/Shared-mode-for-Crosswalk-Core-Library-on-Android
+	- https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
+	- https://crosswalk-project.org/documentation/shared_mode.html
+	- https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
+	- https://github.com/crosswalk-project/crosswalk-website/wiki/Shared-mode-for-Crosswalk-Core-Library-on-Android
 - apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock
@@ -86,9 +88,9 @@ MyActivity extends XWalkBrowserActivity {
 - fix constant activity reload
 - remove ActionBar
 - use logging framework slf4j + android logger backend
-  - https://github.com/noveogroup/android-logger
-  - http://www.slf4j.org/android/
-  - http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
+	- https://github.com/noveogroup/android-logger
+	- http://www.slf4j.org/android/
+	- http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
 ##Other
 - how to fetch sources from [android open source project][browser-origin] via console:

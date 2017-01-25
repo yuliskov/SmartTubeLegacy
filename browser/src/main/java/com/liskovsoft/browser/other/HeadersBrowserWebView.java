@@ -1,6 +1,7 @@
 package com.liskovsoft.browser.other;
 
 import android.content.Context;
+import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import com.liskovsoft.browser.BrowserWebView;
@@ -40,6 +41,13 @@ public class HeadersBrowserWebView extends BrowserWebView {
     public WebSettings getSettings() {
         if (mSettings != null)
             return mSettings;
+
+        // Fix for Android 4.0.3, 4.0.4: WebSettings doesn't have default constructor
+        int sdkInt = VERSION.SDK_INT;
+        if (sdkInt <= 15) {
+            mSettings = super.getSettings();
+            return mSettings;
+        }
 
         mSettings = new HeadersWebSettingsDecorator(mHeaders, super.getSettings());
         return mSettings;
