@@ -9,9 +9,9 @@ function overrideProp(obj, propName, propValue) {
     });
 }
 
-function setNewDimensions() {
-    var newWidth = 854;
-    var newHeight = 480;
+function setNewDimensions(width, height) {
+    var newWidth = width;
+    var newHeight = height;
     
     overrideProp(window.screen, 'availHeight', newHeight);
     overrideProp(window.screen, 'availWidth', newWidth);
@@ -64,6 +64,7 @@ function doObserveOverlappedTextInRussian(paramButton) {
 }
 
 function fixOverlappedTextInRussian() {
+    console.log("fixOverlappedTextInRussian");
 	var paramButton = document.getElementById("transport-more-button").children[0];
     if (replaceOverlappedTextInRussian(paramButton))
     	doObserveOverlappedTextInRussian(paramButton);
@@ -72,4 +73,5 @@ function fixOverlappedTextInRussian() {
 /////////////////////////////////////////
 
 fixOverlappedTextInRussian();
-// setNewDimensions();
+// 854x480, 640×360
+// setNewDimensions(640, 360);

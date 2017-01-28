@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
@@ -192,6 +193,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     }
 
     public boolean isWideViewport() {
+        // youtube: fit layout into the screen (set to false)
         return mPrefs.getBoolean(PREF_WIDE_VIEWPORT, false);
     }
 
@@ -317,7 +319,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setPluginState(getPluginState());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
         settings.setSavePassword(rememberPasswords());
-        // essential for proper fit video elements into the page (e.g. youtube)
+        // youtube: fit layout into screen
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setUseWideViewPort(isWideViewport());
 

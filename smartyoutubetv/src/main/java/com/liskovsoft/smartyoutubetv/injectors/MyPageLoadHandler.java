@@ -25,8 +25,9 @@ public class MyPageLoadHandler implements PageLoadHandler {
     @Override
     public void onPageStarted(Tab tab) {
         WebView w = tab.getWebView();
-        // js must be added befor page full loaded
+        // js must be added before page fully loaded
         addJSInterface(w);
+        //injectWebFiles(w);
     }
 
     @Override

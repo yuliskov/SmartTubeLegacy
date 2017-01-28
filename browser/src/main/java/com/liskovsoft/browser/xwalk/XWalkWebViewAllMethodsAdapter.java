@@ -34,22 +34,22 @@ import org.xwalk.core.XWalkView;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class XWalkWebViewFullAdapter extends HeadersBrowserWebView {
+public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
     protected XWalkView mXWalkView;
 
-    public XWalkWebViewFullAdapter(Map<String, String> headers, Context context) {
+    public XWalkWebViewAllMethodsAdapter(Map<String, String> headers, Context context) {
         this(headers, context, null);
     }
 
-    public XWalkWebViewFullAdapter(Map<String, String> headers, Context context, AttributeSet attrs) {
+    public XWalkWebViewAllMethodsAdapter(Map<String, String> headers, Context context, AttributeSet attrs) {
         this(headers, context, null, 0);
     }
 
-    public XWalkWebViewFullAdapter(Map<String, String> headers, Context context, AttributeSet attrs, int defStyleAttr) {
+    public XWalkWebViewAllMethodsAdapter(Map<String, String> headers, Context context, AttributeSet attrs, int defStyleAttr) {
         this(headers, context, attrs, defStyleAttr, false);
     }
 
-    public XWalkWebViewFullAdapter(Map<String, String> headers, Context context, AttributeSet attrs, int defStyle, boolean privateBrowsing) {
+    public XWalkWebViewAllMethodsAdapter(Map<String, String> headers, Context context, AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         super(headers, context, attrs, defStyle, privateBrowsing);
 
         // cant init here, real init is done below

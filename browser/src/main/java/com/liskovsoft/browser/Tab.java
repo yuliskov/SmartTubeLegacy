@@ -1,16 +1,39 @@
+/*
+ * Copyright (C) 2009 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.liskovsoft.browser;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Picture;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
 import com.liskovsoft.browser.custom.PageLoadHandler;
@@ -76,8 +99,9 @@ public class Tab implements PictureListener {
     private GeolocationPermissionsPrompt mGeolocationPermissionsPrompt;
     // The permissions prompt
     private PermissionsPrompt mPermissionsPrompt;
-    private WebChromeClient mWebChromeClient;
     private DownloadListener mDownloadListener;
+    // Main WebView wrapper
+    private View mContainer;
 
     // Construct a new tab
     Tab(WebViewController wvcontroller, WebView w) {
@@ -272,6 +296,22 @@ public class Tab implements PictureListener {
     }
 
     /**
+     * Return the tab's error console. Creates the console if createIfNEcessary
+     * is true and we haven't already created the console.
+     * @param createIfNecessary Flag to indicate if the console should be
+     *            created if it has not been already.
+     * @return The tab's error console, or null if one has not been created and
+     *         createIfNecessary is false.
+     */
+    ErrorConsoleView getErrorConsole(boolean createIfNecessary) {
+        if (createIfNecessary && mErrorConsole == null) {
+            mErrorConsole = new ErrorConsoleView(mContext);
+            mErrorConsole.setWebView(mMainView);
+        }
+        return mErrorConsole;
+    }
+
+    /**
      * Remove the tab from the parent
      */
     void removeFromTree() {
@@ -357,18 +397,6 @@ public class Tab implements PictureListener {
             }
         }
     };
-
-    /**
-     * Dismiss the subWindow for the tab.
-     */
-    void dismissSubWindow() {
-        if (mSubView != null) {
-            mWebViewController.endActionMode();
-            mSubView.destroy();
-            mSubView = null;
-            mSubViewContainer = null;
-        }
-    }
 
     /**
      * Destroy the tab's main WebView and subWindow if any
@@ -498,6 +526,50 @@ public class Tab implements PictureListener {
     }
 
     /**
+     * Create a new subwindow unless a subwindow already exists.
+     * @return True if a new subwindow was created. False if one already exists.
+     */
+    boolean createSubWindow() {
+        if (mSubView == null) {
+            mWebViewController.createSubWindow(this);
+            mSubView.setWebViewClient(new SubWindowClient(mWebViewClient,
+                    mWebViewController));
+            mSubView.setWebChromeClient(new SubWindowChromeClient(
+                    mWebChromeClient));
+            // Set a different DownloadListener for the mSubView, since it will
+            // just need to dismiss the mSubView, rather than close the Tab
+            mSubView.setDownloadListener(new BrowserDownloadListener() {
+                public void onDownloadStart(String url, String userAgent,
+                                            String contentDisposition, String mimetype, String referer,
+                                            long contentLength) {
+                    mWebViewController.onDownloadStart(Tab.this, url, userAgent,
+                            contentDisposition, mimetype, referer, contentLength);
+                    if (mSubView.copyBackForwardList().getSize() == 0) {
+                        // This subwindow was opened for the sole purpose of
+                        // downloading a file. Remove it.
+                        mWebViewController.dismissSubWindow(Tab.this);
+                    }
+                }
+            });
+            mSubView.setOnCreateContextMenuListener(mWebViewController.getActivity());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Dismiss the subWindow for the tab.
+     */
+    void dismissSubWindow() {
+        if (mSubView != null) {
+            mWebViewController.endActionMode();
+            mSubView.destroy();
+            mSubView = null;
+            mSubViewContainer = null;
+        }
+    }
+
+    /**
      * Set the parent tab of this tab.
      */
     void setParent(Tab parent) {
@@ -535,6 +607,31 @@ public class Tab implements PictureListener {
      */
     public Tab getParent() {
         return mParent;
+    }
+
+    /**
+     * @return The geolocation permissions prompt for this tab.
+     */
+    GeolocationPermissionsPrompt getGeolocationPermissionsPrompt() {
+        if (mGeolocationPermissionsPrompt == null) {
+            ViewStub stub = (ViewStub) mContainer
+                    .findViewById(R.id.geolocation_permissions_prompt);
+            mGeolocationPermissionsPrompt = (GeolocationPermissionsPrompt) stub
+                    .inflate();
+        }
+        return mGeolocationPermissionsPrompt;
+    }
+
+    /**
+     * @return The permissions prompt for this tab.
+     */
+    PermissionsPrompt getPermissionsPrompt() {
+        if (mPermissionsPrompt == null) {
+            ViewStub stub = (ViewStub) mContainer
+                    .findViewById(R.id.permissions_prompt);
+            mPermissionsPrompt = (PermissionsPrompt) stub.inflate();
+        }
+        return mPermissionsPrompt;
     }
 
     String getUrl() {
@@ -707,6 +804,43 @@ public class Tab implements PictureListener {
     // Error console for the tab
     private ErrorConsoleView mErrorConsole;
 
+    // All the state needed for a page
+    protected static class PageState {
+        String mUrl;
+        String mOriginalUrl;
+        String mTitle;
+        SecurityState mSecurityState;
+        // This is non-null only when mSecurityState is SECURITY_STATE_BAD_CERTIFICATE.
+        SslError mSslCertificateError;
+        Bitmap mFavicon;
+        boolean mIsBookmarkedSite;
+        boolean mIncognito;
+
+        PageState(Context c, boolean incognito) {
+            mIncognito = incognito;
+            if (mIncognito) {
+                mOriginalUrl = mUrl = "browser:incognito";
+                mTitle = c.getString(R.string.new_incognito_tab);
+            } else {
+                mOriginalUrl = mUrl = "";
+                mTitle = c.getString(R.string.new_tab);
+            }
+            mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
+        }
+
+        PageState(Context c, boolean incognito, String url, Bitmap favicon) {
+            mIncognito = incognito;
+            mOriginalUrl = mUrl = url;
+            if (URLUtil.isHttpsUrl(url)) {
+                mSecurityState = SecurityState.SECURITY_STATE_SECURE;
+            } else {
+                mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
+            }
+            mFavicon = favicon;
+        }
+
+    }
+
     // -------------------------------------------------------------------------
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
@@ -775,41 +909,457 @@ public class Tab implements PictureListener {
         }
     };
 
-    // All the state needed for a page
-    protected static class PageState {
-        String mUrl;
-        String mOriginalUrl;
-        String mTitle;
-        SecurityState mSecurityState;
-        // This is non-null only when mSecurityState is SECURITY_STATE_BAD_CERTIFICATE.
-        SslError mSslCertificateError;
-        Bitmap mFavicon;
-        boolean mIsBookmarkedSite;
-        boolean mIncognito;
+    // -------------------------------------------------------------------------
+    // WebChromeClient implementation for the main WebView
+    // -------------------------------------------------------------------------
 
-        PageState(Context c, boolean incognito) {
-            mIncognito = incognito;
-            if (mIncognito) {
-                mOriginalUrl = mUrl = "browser:incognito";
-                mTitle = c.getString(R.string.new_incognito_tab);
+    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+        // Helper method to create a new tab or sub window.
+        private void createWindow(final boolean dialog, final Message msg) {
+            WebView.WebViewTransport transport =
+                    (WebView.WebViewTransport) msg.obj;
+            if (dialog) {
+                createSubWindow();
+                mWebViewController.attachSubWindow(Tab.this);
+                transport.setWebView(mSubView);
             } else {
-                mOriginalUrl = mUrl = "";
-                mTitle = c.getString(R.string.new_tab);
+                final Tab newTab = mWebViewController.openTab(null,
+                        Tab.this, true, true);
+                transport.setWebView(newTab.getWebView());
             }
-            mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
+            msg.sendToTarget();
         }
 
-        PageState(Context c, boolean incognito, String url, Bitmap favicon) {
-            mIncognito = incognito;
-            mOriginalUrl = mUrl = url;
-            if (URLUtil.isHttpsUrl(url)) {
-                mSecurityState = SecurityState.SECURITY_STATE_SECURE;
-            } else {
-                mSecurityState = SecurityState.SECURITY_STATE_NOT_SECURE;
+        @Override
+        public boolean onCreateWindow(WebView view, final boolean dialog,
+                                      final boolean userGesture, final Message resultMsg) {
+            // only allow new window or sub window for the foreground case
+            if (!mInForeground) {
+                return false;
             }
-            mFavicon = favicon;
+            // Short-circuit if we can't create any more tabs or sub windows.
+            if (dialog && mSubView != null) {
+                new AlertDialog.Builder(mContext)
+                        .setTitle(R.string.too_many_subwindows_dialog_title)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setMessage(R.string.too_many_subwindows_dialog_message)
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+                return false;
+            } else if (!mWebViewController.getTabControl().canCreateNewTab()) {
+                new AlertDialog.Builder(mContext)
+                        .setTitle(R.string.too_many_windows_dialog_title)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setMessage(R.string.too_many_windows_dialog_message)
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+                return false;
+            }
+
+            // Short-circuit if this was a user gesture.
+            if (userGesture) {
+                createWindow(dialog, resultMsg);
+                return true;
+            }
+
+            // Allow the popup and create the appropriate window.
+            final AlertDialog.OnClickListener allowListener =
+                    new AlertDialog.OnClickListener() {
+                        public void onClick(DialogInterface d,
+                                            int which) {
+                            createWindow(dialog, resultMsg);
+                        }
+                    };
+
+            // Block the popup by returning a null WebView.
+            final AlertDialog.OnClickListener blockListener =
+                    new AlertDialog.OnClickListener() {
+                        public void onClick(DialogInterface d, int which) {
+                            resultMsg.sendToTarget();
+                        }
+                    };
+
+            // Build a confirmation dialog to display to the user.
+            final AlertDialog d =
+                    new AlertDialog.Builder(mContext)
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .setMessage(R.string.popup_window_attempt)
+                            .setPositiveButton(R.string.allow, allowListener)
+                            .setNegativeButton(R.string.block, blockListener)
+                            .setCancelable(false)
+                            .create();
+
+            // Show the confirmation dialog.
+            d.show();
+            return true;
         }
 
+        @Override
+        public void onRequestFocus(WebView view) {
+            if (!mInForeground) {
+                mWebViewController.switchToTab(Tab.this);
+            }
+        }
+
+        @Override
+        public void onCloseWindow(WebView window) {
+            if (mParent != null) {
+                // JavaScript can only close popup window.
+                if (mInForeground) {
+                    mWebViewController.switchToTab(mParent);
+                }
+                mWebViewController.closeTab(Tab.this);
+            }
+        }
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message,
+                                 JsResult result) {
+            mWebViewController.getTabControl().setActiveTab(Tab.this);
+            return false;
+        }
+
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message,
+                                   JsResult result) {
+            mWebViewController.getTabControl().setActiveTab(Tab.this);
+            return false;
+        }
+
+        @Override
+        public boolean onJsPrompt(WebView view, String url, String message,
+                                  String defaultValue, JsPromptResult result) {
+            mWebViewController.getTabControl().setActiveTab(Tab.this);
+            return false;
+        }
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            mPageLoadProgress = newProgress;
+            if (newProgress == 100) {
+                mInPageLoad = false;
+            }
+            mWebViewController.onProgressChanged(Tab.this);
+            if (mUpdateThumbnail && newProgress == 100) {
+                mUpdateThumbnail = false;
+            }
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, final String title) {
+            mCurrentState.mTitle = title;
+            mWebViewController.onReceivedTitle(Tab.this, title);
+        }
+
+        @Override
+        public void onReceivedIcon(WebView view, Bitmap icon) {
+            mCurrentState.mFavicon = icon;
+            mWebViewController.onFavicon(Tab.this, view, icon);
+        }
+
+        @Override
+        public void onReceivedTouchIconUrl(WebView view, String url,
+                                           boolean precomposed) {
+            final ContentResolver cr = mContext.getContentResolver();
+            // Let precomposed icons take precedence over non-composed
+            // icons.
+            if (precomposed && mTouchIconLoader != null) {
+                mTouchIconLoader.cancel(false);
+                mTouchIconLoader = null;
+            }
+            // Have only one async task at a time.
+            if (mTouchIconLoader == null) {
+                mTouchIconLoader = new DownloadTouchIcon(Tab.this, cr, view);
+                mTouchIconLoader.execute(url);
+            }
+        }
+
+        @Override
+        public void onShowCustomView(View view,
+                                     WebChromeClient.CustomViewCallback callback) {
+            Activity activity = mWebViewController.getActivity();
+            if (activity != null) {
+                onShowCustomView(view, activity.getRequestedOrientation(), callback);
+            }
+        }
+
+        @Override
+        public void onShowCustomView(View view, int requestedOrientation,
+                                     WebChromeClient.CustomViewCallback callback) {
+            if (mInForeground) mWebViewController.showCustomView(Tab.this, view,
+                    requestedOrientation, callback);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            if (mInForeground) mWebViewController.hideCustomView();
+        }
+
+        /**
+         * The origin has exceeded its database quota.
+         * @param url the URL that exceeded the quota
+         * @param databaseIdentifier the identifier of the database on which the
+         *            transaction that caused the quota overflow was run
+         * @param currentQuota the current quota for the origin.
+         * @param estimatedSize the estimated size of the database.
+         * @param totalUsedQuota is the sum of all origins' quota.
+         * @param quotaUpdater The callback to run when a decision to allow or
+         *            deny quota has been made. Don't forget to call this!
+         */
+        @Override
+        public void onExceededDatabaseQuota(String url,
+                                            String databaseIdentifier, long currentQuota, long estimatedSize,
+                                            long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
+            mSettings.getWebStorageSizeManager()
+                    .onExceededDatabaseQuota(url, databaseIdentifier,
+                            currentQuota, estimatedSize, totalUsedQuota,
+                            quotaUpdater);
+        }
+
+        /**
+         * The Application Cache has exceeded its max size.
+         * @param spaceNeeded is the amount of disk space that would be needed
+         *            in order for the last appcache operation to succeed.
+         * @param totalUsedQuota is the sum of all origins' quota.
+         * @param quotaUpdater A callback to inform the WebCore thread that a
+         *            new app cache size is available. This callback must always
+         *            be executed at some point to ensure that the sleeping
+         *            WebCore thread is woken up.
+         */
+        @Override
+        public void onReachedMaxAppCacheSize(long spaceNeeded,
+                                             long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
+            mSettings.getWebStorageSizeManager()
+                    .onReachedMaxAppCacheSize(spaceNeeded, totalUsedQuota,
+                            quotaUpdater);
+        }
+
+        /**
+         * Instructs the browser to show a prompt to ask the user to set the
+         * Geolocation permission state for the specified origin.
+         * @param origin The origin for which Geolocation permissions are
+         *     requested.
+         * @param callback The callback to call once the user has set the
+         *     Geolocation permission state.
+         */
+        @Override
+        public void onGeolocationPermissionsShowPrompt(String origin,
+                                                       GeolocationPermissions.Callback callback) {
+            if (mInForeground) {
+                getGeolocationPermissionsPrompt().show(origin, callback);
+            }
+        }
+
+        /**
+         * Instructs the browser to hide the Geolocation permissions prompt.
+         */
+        @Override
+        public void onGeolocationPermissionsHidePrompt() {
+            if (mInForeground && mGeolocationPermissionsPrompt != null) {
+                mGeolocationPermissionsPrompt.hide();
+            }
+        }
+
+        @Override
+        public void onPermissionRequest(PermissionRequest request) {
+            if (!mInForeground) return;
+            getPermissionsPrompt().show(request);
+        }
+
+        @Override
+        public void onPermissionRequestCanceled(PermissionRequest request) {
+            if (mInForeground && mPermissionsPrompt != null) {
+                mPermissionsPrompt.hide();
+            }
+        }
+
+        /* Adds a JavaScript error message to the system log and if the JS
+         * console is enabled in the about:debug options, to that console
+         * also.
+         * @param consoleMessage the message object.
+         */
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            if (mInForeground) {
+                // call getErrorConsole(true) so it will create one if needed
+                ErrorConsoleView errorConsole = getErrorConsole(true);
+                errorConsole.addErrorMessage(consoleMessage);
+                if (mWebViewController.shouldShowErrorConsole()
+                        && errorConsole.getShowState() !=
+                        ErrorConsoleView.SHOW_MAXIMIZED) {
+                    errorConsole.showConsole(ErrorConsoleView.SHOW_MINIMIZED);
+                }
+            }
+
+            // Don't log console messages in private browsing mode
+            if (isPrivateBrowsingEnabled()) return true;
+
+            String message = "Console: " + consoleMessage.message() + " "
+                    + consoleMessage.sourceId() +  ":"
+                    + consoleMessage.lineNumber();
+
+            switch (consoleMessage.messageLevel()) {
+                case TIP:
+                    logger.debug(message);
+                    break;
+                case LOG:
+                    logger.info(message);
+                    break;
+                case WARNING:
+                    logger.warn(message);
+                    break;
+                case ERROR:
+                    logger.error(message);
+                    break;
+                case DEBUG:
+                    logger.debug(message);
+                    break;
+            }
+
+            return true;
+        }
+
+        /**
+         * Ask the browser for an icon to represent a <video> element.
+         * This icon will be used if the Web page did not specify a poster attribute.
+         * @return Bitmap The icon or null if no such icon is available.
+         */
+        @Override
+        public Bitmap getDefaultVideoPoster() {
+            if (mInForeground) {
+                return mWebViewController.getDefaultVideoPoster();
+            }
+            return null;
+        }
+
+        /**
+         * Ask the host application for a custom progress view to show while
+         * a <video> is loading.
+         * @return View The progress view.
+         */
+        @Override
+        public View getVideoLoadingProgressView() {
+            if (mInForeground) {
+                return mWebViewController.getVideoLoadingProgressView();
+            }
+            return null;
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> callback,
+                                         FileChooserParams params) {
+            if (mInForeground) {
+                mWebViewController.showFileChooser(callback, params);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * Deliver a list of already-visited URLs
+         */
+        @Override
+        public void getVisitedHistory(final ValueCallback<String[]> callback) {
+            mWebViewController.getVisitedHistory(callback);
+        }
+
+    };
+
+    // -------------------------------------------------------------------------
+    // WebViewClient implementation for the sub window
+    // -------------------------------------------------------------------------
+
+    // Subclass of WebViewClient used in subwindows to notify the main
+    // WebViewClient of certain WebView activities.
+    private static class SubWindowClient extends WebViewClient {
+        // The main WebViewClient.
+        private final WebViewClient mClient;
+        private final WebViewController mController;
+
+        SubWindowClient(WebViewClient client, WebViewController controller) {
+            mClient = client;
+            mController = controller;
+        }
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            // Unlike the others, do not call mClient's version, which would
+            // change the progress bar.  However, we do want to remove the
+            // find or select dialog.
+            mController.endActionMode();
+        }
+        @Override
+        public void doUpdateVisitedHistory(WebView view, String url,
+                                           boolean isReload) {
+            mClient.doUpdateVisitedHistory(view, url, isReload);
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return mClient.shouldOverrideUrlLoading(view, url);
+        }
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler,
+                                       SslError error) {
+            mClient.onReceivedSslError(view, handler, error);
+        }
+        @Override
+        public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
+            mClient.onReceivedClientCertRequest(view, request);
+        }
+        @Override
+        public void onReceivedHttpAuthRequest(WebView view,
+                                              HttpAuthHandler handler, String host, String realm) {
+            mClient.onReceivedHttpAuthRequest(view, handler, host, realm);
+        }
+        @Override
+        public void onFormResubmission(WebView view, Message dontResend,
+                                       Message resend) {
+            mClient.onFormResubmission(view, dontResend, resend);
+        }
+        @Override
+        public void onReceivedError(WebView view, int errorCode,
+                                    String description, String failingUrl) {
+            mClient.onReceivedError(view, errorCode, description, failingUrl);
+        }
+        @Override
+        public boolean shouldOverrideKeyEvent(WebView view,
+                                              android.view.KeyEvent event) {
+            return mClient.shouldOverrideKeyEvent(view, event);
+        }
+        @Override
+        public void onUnhandledKeyEvent(WebView view,
+                                        android.view.KeyEvent event) {
+            mClient.onUnhandledKeyEvent(view, event);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // WebChromeClient implementation for the sub window
+    // -------------------------------------------------------------------------
+
+    private class SubWindowChromeClient extends WebChromeClient {
+        // The main WebChromeClient.
+        private final WebChromeClient mClient;
+
+        SubWindowChromeClient(WebChromeClient client) {
+            mClient = client;
+        }
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            mClient.onProgressChanged(view, newProgress);
+        }
+        @Override
+        public boolean onCreateWindow(WebView view, boolean dialog,
+                                      boolean userGesture, android.os.Message resultMsg) {
+            return mClient.onCreateWindow(view, dialog, userGesture, resultMsg);
+        }
+        @Override
+        public void onCloseWindow(WebView window) {
+            if (window != mSubView) {
+                logger.error("Can't close the window");
+            }
+            mWebViewController.dismissSubWindow(Tab.this);
+        }
     }
 
 }

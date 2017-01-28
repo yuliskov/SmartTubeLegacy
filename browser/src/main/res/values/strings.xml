@@ -425,4 +425,28 @@
     <string name="website_settings_clear_all_dialog_message">Delete all website data and location permissions?</string>
     <string name="website_settings_clear_all_dialog_ok_button">OK</string>
     <string name="website_settings_clear_all_dialog_cancel_button">Cancel</string>
+
+    <!-- Pop-up window dialog -->
+    <!-- Message for a dialog informing the user that the site is attempting to
+            display a popup window -->
+    <string name="popup_window_attempt">Allow this site to open a
+        pop-up window?</string>
+    <!-- Label for a button to allow a particular popup window to open -->
+    <string name="allow">Allow</string>
+    <!-- Label for a button to disallow a particular popup from opening -->
+    <string name="block">Block</string>
+
+    <!-- Title for a dialog informing the user that they cannot open any more
+            windows because the limit has been reached. -->
+    <string name="too_many_windows_dialog_title">Tab limit reached</string>
+    <!-- Message in a dialog telling the user that they cannot open any more
+            windows because the limit has been reached. -->
+    <string name="too_many_windows_dialog_message">Can\'t open a new tab until you close one.</string>
+    <!-- Title for a dialog informing the user that they cannot open a subwindow
+            because only one can be open at a time. -->
+    <string name="too_many_subwindows_dialog_title">Pop-up already open</string>
+    <!-- Message for a dialog informing the user that they cannot open a
+            subwindow because only one can be open at a time. -->
+    <string name="too_many_subwindows_dialog_message">Only one pop-up can be open
+        at a time.</string>
 </resources>

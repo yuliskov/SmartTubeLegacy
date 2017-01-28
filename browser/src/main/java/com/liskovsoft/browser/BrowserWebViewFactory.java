@@ -36,6 +36,10 @@ public class BrowserWebViewFactory implements WebViewFactory {
         } else {
             w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         }
+
+        // youtube: this is only way to change video quality
+        //w.setInitialScale(100);
+
         return w;
     }
 

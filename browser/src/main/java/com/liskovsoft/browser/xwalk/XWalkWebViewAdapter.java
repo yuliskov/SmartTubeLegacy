@@ -41,8 +41,11 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         //XWalkPreferences.setValue(XWalkPreferences.ANIMATABLE_XWALK_VIEW, true);
 
         mXWalkView = new XWalkView(context, attrs);
+    }
 
-        mXWalkView.setZOrderOnTop(true); // fix blank screen (no video)
+    @Override
+    public void setInitialScale(int scaleInPercent) {
+        mXWalkView.setInitialScale(scaleInPercent);
     }
 
     @Override
