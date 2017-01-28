@@ -51,7 +51,12 @@ public abstract class BaseUi implements UI {
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
         mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
-        setFullscreen(BrowserSettings.getInstance().useFullscreen());
+
+        // fix: attempt to invoke virtual method 'boolean com.liskovsoft.browser.BrowserSettings.useFullscreen()' on a null object reference
+        BrowserSettings settings = BrowserSettings.getInstance();
+        if (settings != null) {
+            setFullscreen(settings.useFullscreen());
+        }
 
         // dirty hack to make WebView receive focus
         initSupportActionBar();
