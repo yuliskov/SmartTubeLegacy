@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.webkit.WebBackForwardList;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.custom.HeadersBrowserWebView;
@@ -109,6 +110,11 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     @Override
     public WebViewClient getWebViewClient() {
         return mResourceClient.getWebViewClient();
+    }
+
+    @Override
+    public void addJavascriptInterface(Object object, String name) {
+        mXWalkView.addJavascriptInterface(object, name);
     }
 
 

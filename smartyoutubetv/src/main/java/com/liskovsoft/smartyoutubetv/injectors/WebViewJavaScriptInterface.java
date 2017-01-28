@@ -25,6 +25,7 @@ public class WebViewJavaScriptInterface {
      * required after SDK version 17.
      */
     @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
     public void closeApp() {
         if (mContext instanceof Activity) {
             ((Activity) mContext).finish();
@@ -36,6 +37,7 @@ public class WebViewJavaScriptInterface {
      * required after SDK version 17.
      */
     @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return Build.MODEL;
     }
