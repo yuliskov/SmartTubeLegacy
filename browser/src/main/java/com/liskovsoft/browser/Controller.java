@@ -25,6 +25,7 @@ import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.browser.xwalk.XWalkDelayHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,6 +117,10 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     public void start(final Intent intent, final PageDefaults pageDefaults) {
+        if (delayStart(intent, pageDefaults)) {
+            return;
+        }
+
         mPageDefaults = pageDefaults;
         mFactory.setNextHeaders(mPageDefaults.getHeaders());
         if (pageDefaults.getPostProcessor() != null) {
@@ -123,6 +128,10 @@ public class Controller implements UiController, WebViewController, ActivityCont
         }
         // mCrashRecoverHandler has any previously saved state.
         mCrashRecoveryHandler.startRecovery(intent);
+    }
+
+    private boolean delayStart(final Intent intent, final PageDefaults pageDefaults) {
+        return XWalkDelayHandler.add(new Runnable(){public void run(){start(intent, pageDefaults);}});
     }
 
     @Override
@@ -181,7 +190,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         return openTab(INCOGNITO_URI, true, true, false);
     }
 
-    // open a non inconito tab with the given url data
+    // open a non incognito tab with the given url data
     // and set as active tab
     public Tab openTab(UrlData urlData) {
         Tab tab = showPreloadedTab(urlData);
@@ -264,19 +273,34 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
 
+    protected void loadUrl(Tab tab, String url, Map<String, String> headers) {
+        if (tab != null) {
+            tab.loadUrl(url, headers);
+            mUi.onProgressChanged(tab);
+        }
+    }
+
     /**
      * Use this method to control browser from outer world.
      *
      * @param pageData page url, state and handlers
      * @return Info about loaded page.
      */
-    public Tab load(PageDefaults pageData) {
+    public Tab load(final PageDefaults pageData) {
+        if (delayLoad(pageData)) {
+            return null;
+        }
+
         mFactory.setNextHeaders(pageData.getHeaders());
 
         Tab tab = createNewTab(false, true, false);
 
         loadUrl(tab, pageData.getUrl(), pageData.getHeaders());
         return tab;
+    }
+
+    private boolean delayLoad(final PageDefaults pageData) {
+        return XWalkDelayHandler.add(new Runnable(){public void run(){load(pageData);}});
     }
 
     private Map<String, String> convertToCaseInsensitiveMap(Map<String, String> headers) {
@@ -289,13 +313,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
     @Override
     public TabControl getTabControl() {
         return mTabControl;
-    }
-
-    protected void loadUrl(Tab tab, String url, Map<String, String> headers) {
-        if (tab != null) {
-            tab.loadUrl(url, headers);
-            mUi.onProgressChanged(tab);
-        }
     }
 
     /********************** TODO: UI stuff *****************************/

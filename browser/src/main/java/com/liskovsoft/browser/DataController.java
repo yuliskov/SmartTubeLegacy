@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2010 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.liskovsoft.browser;
 
 import android.content.ContentResolver;
@@ -15,13 +31,15 @@ import com.liskovsoft.browser.custom.BrowserContract.History;
 import android.util.Log;
 
 import com.liskovsoft.browser.provider.BrowserProvider2.Thumbnails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class DataController {
-    private static final String LOGTAG = "DataController";
+    private static final Logger sLogger = LoggerFactory.getLogger(DataController.class);
     // Message IDs
     private static final int HISTORY_UPDATE_VISITED = 100;
     private static final int HISTORY_UPDATE_TITLE = 101;
@@ -265,7 +283,10 @@ public class DataController {
                 if (cursor != null) // fix NPE on Android 5.1
                     isBookmark = cursor.moveToFirst();
             } catch (SQLiteException e) {
-                Log.e(LOGTAG, "Error checking for bookmark: " + e);
+                sLogger.error("Error checking for bookmark: " + e);
+            } catch (SecurityException e) {
+                // TODO: Permission Denial: opening provider that is not exported from uid
+                sLogger.error("Bookmark provider error: " + e);
             } finally {
                 if (cursor != null) cursor.close();
             }

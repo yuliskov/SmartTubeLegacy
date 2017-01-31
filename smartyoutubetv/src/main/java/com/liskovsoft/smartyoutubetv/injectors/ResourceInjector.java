@@ -39,12 +39,7 @@ public class ResourceInjector {
     public void inject() {
         injectCSS("main.css");
         injectJS("common.js");
-        if (mContext instanceof WebViewBrowserActivity) {
-            injectJS("webview.js");
-        }
-        if (mContext instanceof XWalkBrowserActivity) {
-            injectJS("xwalk.js");
-        }
+        injectJS("webview.js");
     }
 
     private void injectJS(String fileName) {

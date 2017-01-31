@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.XWalkInitializer;
 import org.xwalk.core.XWalkUpdater;
@@ -11,7 +13,7 @@ import org.xwalk.core.XWalkUpdater;
 import java.util.HashMap;
 import java.util.Map;
 
-public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, XWalkUpdater.XWalkUpdateListener {
+public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, XWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
     private XWalkUpdater mXWalkUpdater;
     private Bundle mBundle;
@@ -20,6 +22,12 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Browser.getEngineType() == EngineType.XWalk) {
+            initXWalk(savedInstanceState);
+        }
+    }
+
+    protected void initXWalk(Bundle icicle) {
         // Must call initAsync() before anything that involves the embedding
         // API, including invoking setContentView() with the layout which
         // holds the XWalkView object.
@@ -35,13 +43,16 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
         // 4. Call mXWalkView.setXXListener(), e.g., setDownloadListener
         // 5. Call mXWalkView.addJavascriptInterface()
 
-        mBundle = savedInstanceState;
-
+        mBundle = icicle;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (mXWalkInitializer == null) {
+            return;
+        }
 
         // Try to initialize again when the user completed updating and
         // returned to current activity. The initAsync() will do nothing if
@@ -117,7 +128,10 @@ public class XWalkBrowserActivity extends BrowserActivity implements XWalkInitia
     public void onXWalkInitCompleted() {
         // Do anything with the embedding API
 
-        initController(mBundle);
+        // notify about end of initialization
+        Browser.getBus().post(new XWalkInitCompleted());
+
+        //initController(mBundle);
         onResume(); // resume already called with controller==null so give a second chance
     }
 

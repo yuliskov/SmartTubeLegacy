@@ -5,40 +5,32 @@ import android.content.pm.PackageManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
+import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.custom.HeadersBrowserWebView;
-import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
+import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
+import com.liskovsoft.browser.xwalk.XWalkWebViewFactory;
 
 import java.util.Map;
 
 public class BrowserWebViewFactory implements WebViewFactory {
-    private final Context mContext;
-    private Map<String, String> mNextHeaders;
+    protected final Context mContext;
+    protected Map<String, String> mNextHeaders;
 
     public BrowserWebViewFactory(Context browser) {
         mContext = browser;
     }
 
-    protected WebView instantiateWebView(AttributeSet attrs, int defStyle,
-                                         boolean privateBrowsing) {
-        //WebView w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
-        WebView w = findProperView(attrs, defStyle, privateBrowsing);
-
-        return w;
-    }
-
-    // TODO: replace with polymorphism
-    private WebView findProperView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
+    protected WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         WebView w;
-
-        if (mContext instanceof XWalkBrowserActivity) {
+        if (Browser.getEngineType() == EngineType.XWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         } else {
             w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         }
 
-        // youtube: this is only way to change video quality
-        //w.setInitialScale(100);
+        // youtube tv: this is only way to change video quality
+        // w.setInitialScale(100);
 
         return w;
     }

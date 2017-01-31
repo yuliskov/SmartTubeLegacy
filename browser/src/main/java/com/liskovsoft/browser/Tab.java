@@ -48,7 +48,7 @@ import java.util.Vector;
  * Essentially this is an WebView holder.
  */
 public class Tab implements PictureListener {
-    private static final Logger logger = LoggerFactory.getLogger(Tab.class);
+    private static final Logger sLogger = LoggerFactory.getLogger(Tab.class);
     private static Bitmap sDefaultFavicon;
     protected WebViewController mWebViewController;
     private final Context mContext;
@@ -208,7 +208,7 @@ public class Tab implements PictureListener {
                 WebBackForwardList restoredState
                         = mMainView.restoreState(mSavedState);
                 if (restoredState == null || restoredState.getSize() == 0) {
-                    logger.warn("Failed to restore WebView state!");
+                    sLogger.warn("Failed to restore WebView state!");
                     loadUrl(mCurrentState.mOriginalUrl, null);
                 }
                 mSavedState = null;
@@ -487,7 +487,7 @@ public class Tab implements PictureListener {
         mSavedState = new Bundle();
         WebBackForwardList savedList = mMainView.saveState(mSavedState);
         if (savedList == null || savedList.getSize() == 0) {
-            logger.warn("Failed to save back/forward list for "
+            sLogger.warn("Failed to save back/forward list for "
                     + mCurrentState.mUrl);
         }
 
@@ -711,7 +711,7 @@ public class Tab implements PictureListener {
             try {
                 mCapture.copyPixelsFromBuffer(buffer);
             } catch (RuntimeException rex) {
-                logger.error("Load capture has mismatched sizes; buffer: "
+                sLogger.error("Load capture has mismatched sizes; buffer: "
                         + buffer.capacity() + " blob: " + blob.length
                         + "capture: " + mCapture.getByteCount());
                 throw rex;
@@ -849,7 +849,7 @@ public class Tab implements PictureListener {
         public void onPageFinished(WebView view, String url) {
             mDisableOverrideUrlLoading = false;
             if (!isPrivateBrowsingEnabled()) {
-                logger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
+                sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
             }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
@@ -1200,19 +1200,19 @@ public class Tab implements PictureListener {
 
             switch (consoleMessage.messageLevel()) {
                 case TIP:
-                    logger.debug(message);
+                    sLogger.debug(message);
                     break;
                 case LOG:
-                    logger.info(message);
+                    sLogger.info(message);
                     break;
                 case WARNING:
-                    logger.warn(message);
+                    sLogger.warn(message);
                     break;
                 case ERROR:
-                    logger.error(message);
+                    sLogger.error(message);
                     break;
                 case DEBUG:
-                    logger.debug(message);
+                    sLogger.debug(message);
                     break;
             }
 
@@ -1356,7 +1356,7 @@ public class Tab implements PictureListener {
         @Override
         public void onCloseWindow(WebView window) {
             if (window != mSubView) {
-                logger.error("Can't close the window");
+                sLogger.error("Can't close the window");
             }
             mWebViewController.dismissSubWindow(Tab.this);
         }

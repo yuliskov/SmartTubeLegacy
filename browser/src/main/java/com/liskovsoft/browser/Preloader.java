@@ -22,7 +22,7 @@ public class Preloader {
 
     private final Context mContext;
     private final Handler mHandler;
-    private final BrowserWebViewFactory mFactory;
+    private final WebViewFactory mFactory;
     private volatile PreloaderSession mSession;
 
     public static void initialize(Context context) {

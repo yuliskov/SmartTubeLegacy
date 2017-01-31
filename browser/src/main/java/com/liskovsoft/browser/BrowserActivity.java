@@ -29,15 +29,23 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String EXTRA_DISABLE_URL_OVERRIDE = "disable_url_override";
     private KeyguardManager mKeyguardManager;
     private PowerManager mPowerManager;
+    private Bundle mIcicle;
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        //mController = beforeCreateAndInitController(icicle);
+        // this routine is a simple demonstration what you can do with controller
+        if (this.getClass() == BrowserActivity.class) {
+            createController(icicle);
+        }
     }
 
-    protected void initController(Bundle icicle) {
+    //protected void beginInitWebView(Bundle icicle) {
+    //    createController(icicle);
+    //}
+
+    private void createController(Bundle icicle) {
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mDefaultUserAgent);
 

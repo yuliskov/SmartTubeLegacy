@@ -2,6 +2,7 @@ package com.liskovsoft.browser;
 
 import android.app.Application;
 import android.webkit.CookieSyncManager;
+import com.squareup.otto.Bus;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
@@ -16,7 +17,7 @@ public class Browser extends Application {
     final static String EXTRA_SHARE_FAVICON = "share_favicon";
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
 
-    private UncaughtExceptionHandler mHandler;
+    private static Bus sBus;
 
     @Override
     public void onCreate() {
@@ -33,6 +34,29 @@ public class Browser extends Application {
         //mHandler = new SimpleUncaughtExceptionHandler(getApplicationContext());
         //Thread.setDefaultUncaughtExceptionHandler(mHandler);
     }
+
+    private static EngineType sEngineType = EngineType.WebView;
+
+    public enum EngineType {
+        WebView, XWalk
+    }
+
+    public static void setEngineType(EngineType engineType) {
+        sEngineType = engineType;
+    }
+
+    public static EngineType getEngineType() {
+        return sEngineType;
+    }
+
+    public static Bus getBus() {
+        if (sBus == null) {
+            sBus = new Bus();
+        }
+        return sBus;
+    }
+
+    private UncaughtExceptionHandler mHandler;
 
 }
 

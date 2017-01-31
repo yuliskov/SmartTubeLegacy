@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.bak;
+package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.browser.Controller;
+import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.browser.custom.PageLoadHandler;
@@ -22,7 +23,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SmartYouTubeTVActivity_bak extends XWalkBrowserActivity {
+public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Controller mController;
     private final String mYouTubeTVUrl = "https://youtube.com/tv";
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
@@ -40,6 +41,19 @@ public class SmartYouTubeTVActivity_bak extends XWalkBrowserActivity {
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
 
         makeActivityFullscreen();
+        createController(icicle);
+    }
+
+    private void createController(Bundle icicle) {
+        mHeaders = new HashMap<>();
+        mPageLoadHandler = new MyPageLoadHandler(this);
+        mHeaders.put("user-agent", mLGSmartTVUserAgent);
+
+        mController = new SimpleUIController(this);
+        Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
+        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
+        mController.start(intent, mPageDefaults);
+        setController(mController);
     }
 
     private void makeActivityFullscreen() {
@@ -50,19 +64,6 @@ public class SmartYouTubeTVActivity_bak extends XWalkBrowserActivity {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }
-
-    @Override
-    protected void initController(Bundle icicle) {
-        mHeaders = new HashMap<>();
-        mPageLoadHandler = new MyPageLoadHandler(this);
-        mHeaders.put("user-agent", mLGSmartTVUserAgent);
-
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
-        mController.start(intent, mPageDefaults);
-        setController(mController);
     }
 
     @Override

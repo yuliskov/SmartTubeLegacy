@@ -22,22 +22,28 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 ## Browser engine usage
 ###Basic usage
 ```
-MyActivity extends XWalkBrowserActivity {
+MyActivity extends MainBrowserActivity {
 	@Override
-	void initController(Bundle bundle) {
+	void onCreate(Bundle bundle) {
+		super.onCreate();
 		Controller controller = new SimpleUiController(this);
 		controller.loadUrl("http://ya.ru");
 		setController(controller);
 	}
 }
 ```
-###With WebView lifecircle handling
+###More lifecircle handling and custom engine usage
 ```
-MyActivity extends XWalkBrowserActivity {
+MyActivity extends MainBrowserActivity {
+	MyActivity() {
+		// set preferred engine to XWalk (default - WebView)
+		// we must set engine as early as possible
+        Browser.setEngineType(EngineType.XWalk);
+	}
 	@Override
-	void initController(Bundle bundle) {
+	void onCreate(Bundle bundle) {
 		Controller controller = new SimpleUiController(this);
-		Intent intent = (icicle == null) ? getIntent() : null;
+		Intent intent = (bundle == null) ? getIntent() : null;
 		controller.start(intent, "http://ya.ru");
 		setController(controller);
 	}
