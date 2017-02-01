@@ -37,9 +37,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         Fabric.with(this, new Crashlytics());
 
-        // TODO: remove setTheme
-        setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
-
         makeActivityFullscreen();
         createController(icicle);
     }
