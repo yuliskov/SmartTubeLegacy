@@ -898,6 +898,7 @@ public class Tab implements PictureListener {
         }
 
         // return true if want to hijack the url to let another app to handle it (FIRED ONCE)
+        // don't rely on it: shouldOverrideUrlLoading called one time fore session, use shouldInterceptLoadRequest instead
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (!mDisableOverrideUrlLoading && mInForeground) {

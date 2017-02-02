@@ -4,10 +4,8 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.squareup.otto.Subscribe;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class XWalkDelayHandler {
-    private static AtomicBoolean sHandlerAdded = new AtomicBoolean();
+    private static XWalkDelayHandler sLastHandler;
     private final Runnable mRunnable;
 
     public XWalkDelayHandler(Runnable runnable) {
@@ -16,7 +14,7 @@ public class XWalkDelayHandler {
     }
 
     public static boolean add(Runnable runnable) {
-        if (sHandlerAdded.get()) {
+        if (sLastHandler != null) { // handler already added
             return false;
         }
 
@@ -24,9 +22,7 @@ public class XWalkDelayHandler {
             return false;
         }
 
-        new XWalkDelayHandler(runnable);
-
-        sHandlerAdded.set(true);
+        sLastHandler = new XWalkDelayHandler(runnable);
 
         return true;
     }
@@ -34,7 +30,7 @@ public class XWalkDelayHandler {
     @Subscribe
     public void onXWalkInitiCompleted(XWalkInitCompleted event) {
         mRunnable.run();
-        sHandlerAdded.set(false);
+        sLastHandler = null;
         Browser.getBus().unregister(this);
     }
 }

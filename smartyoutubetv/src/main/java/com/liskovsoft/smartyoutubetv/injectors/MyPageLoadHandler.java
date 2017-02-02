@@ -32,7 +32,7 @@ public class MyPageLoadHandler implements PageLoadHandler {
 
     @Override
     public WebViewClient overrideWebViewClient(WebViewClient client) {
-        return new AdAwayWebViewClient(client);
+        return new MyWebViewClientDecorator(client);
     }
 
     @Override

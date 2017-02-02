@@ -5,35 +5,16 @@ import android.net.http.SslError;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.*;
+import com.liskovsoft.smartyoutubetv.helpers.AdAwayClient;
+import com.liskovsoft.smartyoutubetv.helpers.RequestInterceptor;
 
-public class AdAwayWebViewClient extends WebViewClient {
+public class MyWebViewClientDecorator extends WebViewClient {
     private final WebViewClient mWebViewClient;
-    private final String[] mAdAwayList = {"googleads.g.doubleclick.net",
-            "pagead.l.doubleclick.net",
-            "ad.doubleclick.net",
-            "partnerad.l.doubleclick.net",
-            "pubads.g.doubleclick.net",
-            "cm.g.doubleclick.net",
-            "securepubads.g.doubleclick.net",
-            "pagead2.googlesyndication.com",
-            "tpc.googlesyndication.com",
-            "www.googleadservices.com",
-            "syndication.exoclick.com",
-            "ads.exoclick.com",
-            "cdn11.contentabc.com"};
+    private final RequestInterceptor mInterceptor;
 
-    public AdAwayWebViewClient(WebViewClient client) {
+    public MyWebViewClientDecorator(WebViewClient client) {
         mWebViewClient = client;
-    }
-
-
-    private boolean doesUrlBelongToAdServer(String url) {
-        for (String suburl : mAdAwayList) {
-            boolean contains = url.contains(suburl);
-            if (contains)
-                return true;
-        }
-        return false;
+        mInterceptor = new RequestInterceptor();
     }
 
     /**
@@ -45,9 +26,11 @@ public class AdAwayWebViewClient extends WebViewClient {
     @Override
     @Deprecated
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        if (doesUrlBelongToAdServer(url)) {
+        if (AdAwayClient.isAd(url)) {
             // block url
             return new WebResourceResponse(null, null, null);
+        } else if (mInterceptor.tryIntercept(url)) {
+            return mInterceptor.intercept(url);
         }
         return mWebViewClient.shouldInterceptRequest(view, url);
     }

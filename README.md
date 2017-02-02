@@ -99,6 +99,14 @@ MyActivity extends MainBrowserActivity {
 	- http://www.slf4j.org/android/
 	- http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
 
+##Used libraries
+- Crosswalk - alternative browser engine
+- Otto - message bus
+- OkHttp - http processing
+- Android Logger - logger factory implementation
+- Crashlytics - multipurpose crash analytics
+- Butter Knife - simplify layout handling
+
 ##Other
 - how to fetch sources from [android open source project][browser-origin] via console:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
