@@ -25,7 +25,7 @@ import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.PageLoadHandler;
-import com.liskovsoft.browser.xwalk.XWalkDelayHandler;
+import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +96,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
 
         setupBrowserActivity();
+        mPageDefaults = new PageDefaults(); // prevent NPE
     }
 
     protected void setupBrowserActivity() {
@@ -131,7 +132,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     private boolean delayStart(final Intent intent, final PageDefaults pageDefaults) {
-        return XWalkDelayHandler.add(new Runnable(){public void run(){start(intent, pageDefaults);}});
+        return XWalkInitHandler.add(new Runnable(){public void run(){start(intent, pageDefaults);}});
     }
 
     @Override
@@ -141,7 +142,34 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public PageLoadHandler getPageLoadHandler() {
+        if (mPageDefaults.getHandler() == null) {
+            return emptyPageLoadHandler();
+        }
         return mPageDefaults.getHandler();
+    }
+
+    private PageLoadHandler emptyPageLoadHandler() {
+        return new PageLoadHandler() {
+            @Override
+            public void onPageFinished(Tab tab) {
+
+            }
+
+            @Override
+            public void onPageStarted(Tab tab) {
+
+            }
+
+            @Override
+            public WebViewClient overrideWebViewClient(WebViewClient client) {
+                return null;
+            }
+
+            @Override
+            public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
+                return null;
+            }
+        };
     }
 
     public void setUi(UI ui) {
@@ -300,7 +328,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     private boolean delayLoad(final PageDefaults pageData) {
-        return XWalkDelayHandler.add(new Runnable(){public void run(){load(pageData);}});
+        return XWalkInitHandler.add(new Runnable(){public void run(){load(pageData);}});
     }
 
     private Map<String, String> convertToCaseInsensitiveMap(Map<String, String> headers) {

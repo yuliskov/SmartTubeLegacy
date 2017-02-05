@@ -4,17 +4,17 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.squareup.otto.Subscribe;
 
-public class XWalkDelayHandler {
-    private static XWalkDelayHandler sLastHandler;
+public class XWalkInitHandler {
+    private static boolean sInitDone = false;
     private final Runnable mRunnable;
 
-    public XWalkDelayHandler(Runnable runnable) {
+    public XWalkInitHandler(Runnable runnable) {
         mRunnable = runnable;
         Browser.getBus().register(this);
     }
 
     public static boolean add(Runnable runnable) {
-        if (sLastHandler != null) { // handler already added
+        if (sInitDone) { // xwalk init already completed
             return false;
         }
 
@@ -22,15 +22,19 @@ public class XWalkDelayHandler {
             return false;
         }
 
-        sLastHandler = new XWalkDelayHandler(runnable);
+        new XWalkInitHandler(runnable);
 
         return true;
     }
 
+    public static void reset() {
+        sInitDone = false;
+    }
+
     @Subscribe
     public void onXWalkInitiCompleted(XWalkInitCompleted event) {
-        mRunnable.run();
-        sLastHandler = null;
+        sInitDone = true;
         Browser.getBus().unregister(this);
+        mRunnable.run();
     }
 }

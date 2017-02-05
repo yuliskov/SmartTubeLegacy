@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 60
-        versionName "6.4.6"
+        versionCode 64
+        versionName "6.5.0"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -79,5 +79,10 @@ dependencies {
         transitive = true;
     }
 
-    compile project(':browser')
+    // uncomment if you want to use embeddable xwalk engine
+    // originalFlavorCompile project(path: ':browser', configuration: "liteFlavorDebug")
+    // betaFlavorCompile project(path: ':browser', configuration: "fullFlavorDebug")
+
+    debugCompile project(path: ':browser', configuration: "liteFlavorDebug")
+    releaseCompile project(path: ':browser', configuration: "liteFlavorRelease")
 }

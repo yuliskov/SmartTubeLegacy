@@ -1,26 +1,50 @@
 package com.liskovsoft.smartyoutubetv.helpers;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.webkit.WebResourceResponse;
 import okhttp3.*;
 
 import javax.net.ssl.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * TODO: NOT WORKING: Fix it in case you need this
+ */
 public class RequestInterceptor {
+    private final Context mContext;
     private OkHttpClient client;
-    
-    public boolean tryIntercept(String url) {
+
+    public RequestInterceptor(Context context) {
+        mContext = context;
+    }
+
+    public boolean test(String url) {
+        //if (url.equals("https://www.youtube.com/s/tv/html5/loader/live.js")) {
+        //    return true;
+        //}
         return false;
     }
 
     public WebResourceResponse intercept(String url) {
-        return injectJS(url, "common.js");
+        return replaceWith("live.js");
+    }
+
+    private WebResourceResponse replaceWith(String fileName) {
+        InputStream inputStream = null;
+        try {
+            inputStream = mContext.getAssets().open(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new WebResourceResponse("text/javascript", "UTF-8", inputStream);
     }
 
     private WebResourceResponse injectJS(String url, String path) {

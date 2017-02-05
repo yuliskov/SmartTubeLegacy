@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.injectors;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Message;
@@ -11,10 +12,12 @@ import com.liskovsoft.smartyoutubetv.helpers.RequestInterceptor;
 public class MyWebViewClientDecorator extends WebViewClient {
     private final WebViewClient mWebViewClient;
     private final RequestInterceptor mInterceptor;
+    private final Context mContext;
 
-    public MyWebViewClientDecorator(WebViewClient client) {
+    public MyWebViewClientDecorator(WebViewClient client, Context context) {
         mWebViewClient = client;
-        mInterceptor = new RequestInterceptor();
+        mContext = context;
+        mInterceptor = new RequestInterceptor(mContext);
     }
 
     /**
@@ -26,12 +29,15 @@ public class MyWebViewClientDecorator extends WebViewClient {
     @Override
     @Deprecated
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+        if (mInterceptor.test(url)) {
+            return mInterceptor.intercept(url);
+        }
+
         if (AdAwayClient.isAd(url)) {
             // block url
             return new WebResourceResponse(null, null, null);
-        } else if (mInterceptor.tryIntercept(url)) {
-            return mInterceptor.intercept(url);
         }
+
         return mWebViewClient.shouldInterceptRequest(view, url);
     }
 

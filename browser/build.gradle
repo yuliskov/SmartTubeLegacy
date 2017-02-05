@@ -23,6 +23,16 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    // In the library module's build.gradle, you need a couple extra lines to tell it to
+    // export the flavors and which build variant to use by default if not specified when being included from another module:
+    defaultPublishConfig "liteFlavorDebug"
+    publishNonDefault true
+
+    productFlavors {
+        liteFlavor {}
+        fullFlavor {}
+    }
 }
 
 dependencies {
@@ -41,7 +51,6 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
 
-    compile 'org.xwalk:xwalk_shared_library:22.52.561.4'
-    // compile 'org.xwalk:xwalk_shared_library_beta:23.53.589.4'
-
+    liteFlavorCompile 'org.xwalk:xwalk_shared_library:23.53.589.4'
+    fullFlavorCompile 'org.xwalk:xwalk_core_library:23.53.589.4'
 }

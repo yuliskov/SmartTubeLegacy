@@ -98,20 +98,32 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
         }
     }
 
+    private boolean isUnsupportedArch() {
+        String arch = System.getProperty("os.arch").toLowerCase();
+        switch (arch) {
+            case "armv8l":
+                return true;
+        }
+        return false;
+    }
+
     private void setUpdateApkUrl() {
-        //not working
-        //fixUnsupportedArch();
+        if (isUnsupportedArch()) {
+            setUpdateApkUrlToGDrive();
+            return;
+        }
+
         if (!isGooglePlayInstalled()) {
             setUpdateApkUrlToGDrive();
+            return;
         }
     }
 
     private void setUpdateApkUrlToGDrive() {
         String abi = XWalkEnvironment.getRuntimeAbi();
         Map<String, String> apkUrls = new HashMap<>();
-        //apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXa2xwOUVRNWdTbEk"); // 23.53.589.4
-        apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXZkl1dW9IbFFJNEk"); // 22.52.561.4
-        apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA"); // 22.52.561.4
+        apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXa2xwOUVRNWdTbEk"); // 23.53.589.4
+        //apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA"); // 22.52.561.4
         mXWalkUpdater.setXWalkApkUrl(apkUrls.get(abi));
     }
 
@@ -120,7 +132,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new XWalkUpdater(this, this);
         }
-        setUpdateApkUrlToGDrive();
+        setUpdateApkUrl();
         mXWalkUpdater.updateXWalkRuntime();
     }
 

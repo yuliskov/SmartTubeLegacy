@@ -37,8 +37,9 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         Fabric.with(this, new Crashlytics());
 
-        makeActivityFullscreen();
         createController(icicle);
+
+        makeActivityFullscreen();
     }
 
     private void createController(Bundle icicle) {
@@ -54,8 +55,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     private void makeActivityFullscreen() {
-        int sdkInt = VERSION.SDK_INT;
-        if (sdkInt < 19) {
+        if (VERSION.SDK_INT < 19) {
             getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         } else {
             View decorView = getWindow().getDecorView();

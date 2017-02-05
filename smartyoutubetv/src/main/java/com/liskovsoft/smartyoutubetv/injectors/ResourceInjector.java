@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv.injectors;
 import android.content.Context;
 import android.util.Base64;
 import android.webkit.WebView;
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.custom.WebViewBrowserActivity;
 import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 
@@ -39,7 +41,11 @@ public class ResourceInjector {
     public void inject() {
         injectCSS("main.css");
         injectJS("common.js");
-        injectJS("webview.js");
+        if (Browser.getEngineType() == EngineType.XWalk) {
+            injectJS("xwalk.js");
+        } else {
+            injectJS("webview.js");
+        }
     }
 
     private void injectJS(String fileName) {

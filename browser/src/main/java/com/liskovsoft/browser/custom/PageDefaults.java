@@ -8,6 +8,10 @@ public class PageDefaults {
     private final PageLoadHandler mHandler;
     private final ControllerEventHandler mPostProcessor;
 
+    public PageDefaults() {
+        this(null, null, null, null);
+    }
+
     public PageDefaults(String url, Map<String, String> headers, PageLoadHandler handler) {
         this(url, headers, handler, null);
     }

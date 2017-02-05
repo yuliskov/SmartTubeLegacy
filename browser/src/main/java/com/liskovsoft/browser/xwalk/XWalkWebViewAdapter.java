@@ -2,8 +2,12 @@ package com.liskovsoft.browser.xwalk;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -121,12 +125,23 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     @Override
     public WebBackForwardList saveState(Bundle outState) {
         boolean success = mXWalkView.saveState(outState);
-        return new WebBackForwardListAdapter(success);
+
+        return getWebBackForwardListAdapter(success);
     }
 
     @Override
     public WebBackForwardList restoreState(Bundle inState) {
         boolean success = mXWalkView.restoreState(inState);
+
+        return getWebBackForwardListAdapter(success);
+    }
+
+    private WebBackForwardList getWebBackForwardListAdapter(boolean success) {
+        // WebBackForwardList doesn't have a constructor on api < 17
+        if (VERSION.SDK_INT < 17) {
+            return super.copyBackForwardList();
+        }
+
         return new WebBackForwardListAdapter(success);
     }
 }
