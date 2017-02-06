@@ -1,10 +1,14 @@
 package com.liskovsoft.browser;
 
 import android.app.Application;
+import android.content.res.AssetManager;
 import android.webkit.CookieSyncManager;
 import com.squareup.otto.Bus;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Properties;
 
 public class Browser extends Application {
     // Set to true to enable verbose logging.
@@ -18,6 +22,7 @@ public class Browser extends Application {
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
 
     private static Bus sBus;
+    private static Properties sProperties;
 
     @Override
     public void onCreate() {
@@ -33,6 +38,22 @@ public class Browser extends Application {
         // Setup handler for uncaught exceptions.
         //mHandler = new SimpleUncaughtExceptionHandler(getApplicationContext());
         //Thread.setDefaultUncaughtExceptionHandler(mHandler);
+
+        initProperties();
+    }
+
+    private void initProperties() {
+        if (sProperties != null) {
+            return;
+        }
+        try {
+            sProperties = new Properties();
+            AssetManager assetManager = this.getAssets();
+            InputStream inputStream = assetManager.open("project.properties");
+            sProperties.load(inputStream);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private static EngineType sEngineType = EngineType.WebView;
@@ -54,6 +75,13 @@ public class Browser extends Application {
             sBus = new Bus();
         }
         return sBus;
+    }
+
+    public static String getProperty(String key) {
+        if (sProperties == null) {
+            return null;
+        }
+        return sProperties.getProperty(key);
     }
 
     private UncaughtExceptionHandler mHandler;

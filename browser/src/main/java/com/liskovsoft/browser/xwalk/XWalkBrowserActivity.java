@@ -121,10 +121,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
 
     private void setUpdateApkUrlToGDrive() {
         String abi = XWalkEnvironment.getRuntimeAbi();
-        Map<String, String> apkUrls = new HashMap<>();
-        apkUrls.put("armeabi-v7a", "https://drive.google.com/uc?id=0ByORA7yiJiQXa2xwOUVRNWdTbEk"); // 23.53.589.4
-        //apkUrls.put("arm64-v8a", "https://drive.google.com/uc?id=0ByORA7yiJiQXcmd1ZFlRMnhaOTA"); // 22.52.561.4
-        mXWalkUpdater.setXWalkApkUrl(apkUrls.get(abi));
+        mXWalkUpdater.setXWalkApkUrl(Browser.getProperty("xwalk." + abi));
     }
 
     @Override
