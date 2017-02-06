@@ -10,9 +10,6 @@ import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.XWalkInitializer;
 import org.xwalk.core.XWalkUpdater;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, XWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
     private XWalkUpdater mXWalkUpdater;
@@ -109,19 +106,23 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
 
     private void setUpdateApkUrl() {
         if (isUnsupportedArch()) {
-            setUpdateApkUrlToGDrive();
+            setupXWalkApkUrl();
             return;
         }
 
         if (!isGooglePlayInstalled()) {
-            setUpdateApkUrlToGDrive();
+            setupXWalkApkUrl();
             return;
         }
     }
 
-    private void setUpdateApkUrlToGDrive() {
+    private void setupXWalkApkUrl() {
         String abi = XWalkEnvironment.getRuntimeAbi();
-        mXWalkUpdater.setXWalkApkUrl(Browser.getProperty("xwalk." + abi));
+        String xwalkUrl = Browser.getProperty("xwalk.url." + abi);
+        if (xwalkUrl == null) {
+            return;
+        }
+        mXWalkUpdater.setXWalkApkUrl(xwalkUrl);
     }
 
     @Override
