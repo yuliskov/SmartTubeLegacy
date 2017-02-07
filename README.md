@@ -60,6 +60,7 @@ MyActivity extends MainBrowserActivity {
 - Butter Knife - simplify layout handling
 
 ##TODO
+- auto clear cache to maintain small footprint
 - ability to set video quality
 - show informative error when site not available
 - fix lint issues

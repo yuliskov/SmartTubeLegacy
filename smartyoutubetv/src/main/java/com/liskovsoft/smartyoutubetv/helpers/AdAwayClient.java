@@ -13,7 +13,13 @@ public class AdAwayClient {
             "www.googleadservices.com",
             "syndication.exoclick.com",
             "ads.exoclick.com",
-            "cdn11.contentabc.com"};
+            "cdn11.contentabc.com"
+            // button sounds
+            // "sound/cross-enter.mp3",
+            // "sound/same-toggle.mp3",
+            // "sound/same-heavy.mp3",
+            // "sound/same-light.mp3"
+    };
 
 
     public static boolean isAd(String url) {
