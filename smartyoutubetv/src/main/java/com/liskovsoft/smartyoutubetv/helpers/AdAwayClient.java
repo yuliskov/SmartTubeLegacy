@@ -13,8 +13,9 @@ public class AdAwayClient {
             "www.googleadservices.com",
             "syndication.exoclick.com",
             "ads.exoclick.com",
-            "cdn11.contentabc.com"
+            "cdn11.contentabc.com",
             // button sounds
+            "youtube.com/s/tv/html5/0b01c692/sound"
             // "sound/cross-enter.mp3",
             // "sound/same-toggle.mp3",
             // "sound/same-heavy.mp3",
