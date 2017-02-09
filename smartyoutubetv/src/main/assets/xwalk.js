@@ -6,7 +6,7 @@
 // other MiTV3 - webm
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
 
-if (isThisDevice('X92', 'Q1EN', 'Hi3798MV100', 'MiTV')) {
+if (isThisDevice('X92', 'Q1EN', 'Hi3798MV100')) {
 	disableCodec('webm');
 }
 
