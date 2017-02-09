@@ -31,7 +31,7 @@ function applyCodecFixes(deviceMap) {
 function isThisDevice(device) {
 	if (!window.thisDevice)
 		window.thisDevice = app.getDeviceName();
-    return strCmp(thisDevice, device);
+    return strCmp(window.thisDevice, device);
 }
 
 function disableCodec(codec) {
