@@ -19,17 +19,18 @@ function addExitEvent() {
 ////////////////////////////////////////////////
 
 function applyCodecFixes(deviceMap) {
-    var thisDevice = app.getDeviceName();
-    console.log('applyCodecFixes to ' + thisDevice);
+    console.log('applyCodecFixes');
     for (var device in deviceMap) {
-        if (deviceMatch(thisDevice, device)) {
+        if (isThisDevice(device)) {
             disableCodec(deviceMap[device]);
             break;
         }
     }
 }
 
-function deviceMatch(thisDevice, device) {
+function isThisDevice(device) {
+	if (!window.thisDevice)
+		window.thisDevice = app.getDeviceName();
     return strCmp(thisDevice, device);
 }
 
