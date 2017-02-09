@@ -28,10 +28,20 @@ function applyCodecFixes(deviceMap) {
     }
 }
 
-function isThisDevice(device) {
+// variable number of arguments
+function isThisDevice() {
+	if (arguments.length == 0)
+		return false;
 	if (!window.thisDevice)
 		window.thisDevice = app.getDeviceName();
-    return strCmp(window.thisDevice, device);
+	var argsLen = arguments.length;
+	for (var i = 0; i < argsLen; i++) {
+		var device = arguments[i];
+		console.log("isThisDevice: " + device);
+		if (strCmp(window.thisDevice, device))
+			return true;
+	}
+    return false;
 }
 
 function disableCodec(codec) {

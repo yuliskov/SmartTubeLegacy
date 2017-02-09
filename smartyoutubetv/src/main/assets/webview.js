@@ -7,10 +7,13 @@ addExitEvent();
 // X92 - webm
 // MiTV3S-55 - mp4
 // other MiTV3 - webm
-// our china friend: Q1EN.2004 Hi3798MV100 - ???
-// applyCodecFixes({'X92': 'webm', 'MiTV3S-55': 'mp4', 'MiTV': 'webm'});
-// applyCodecFixes({'X92': 'webm', 'MiBOX': 'webm', 'MiTV': 'webm', 'Q1EN': 'webm', 'Hi3798MV100': 'webm'});
-disableCodec('webm');
+// Q1EN.2004 Hi3798MV100 (china friend) - webm
+
+if (isThisDevice('X92', 'Q1EN', 'Hi3798MV100')) {
+	disableCodec('webm');
+} else if (isThisDevice('MiTV3S-55')) {
+	disableCodec('mp4');
+}
 
 fixOverlappedTextInRussian();
 
