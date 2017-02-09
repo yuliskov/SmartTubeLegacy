@@ -15,20 +15,17 @@ public class AdAwayClient {
             "ads.exoclick.com",
             "cdn11.contentabc.com",
             // button sounds
-            "youtube.com/s/tv/html5/0b01c692/sound"
-            // "sound/cross-enter.mp3",
-            // "sound/same-toggle.mp3",
-            // "sound/same-heavy.mp3",
-            // "sound/same-light.mp3"
+            "youtube.com/s/tv/html5/*/sound"
     };
 
 
     public static boolean isAd(String url) {
         for (String suburl : mAdAwayList) {
-            boolean contains = url.contains(suburl);
+            boolean contains = Helpers.match(url, suburl);
             if (contains)
                 return true;
         }
         return false;
     }
+
 }
