@@ -5,10 +5,7 @@
 // X92 - webm
 // other MiTV3 - webm
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
-
-if (isThisDevice('X92', 'Q1EN', 'Hi3798MV100')) {
-	disableCodec('webm');
-}
+applyCodecFixes({'X92': 'webm', 'Q1EN': 'webm', 'Hi3798MV100': 'webm'});
 
 fixOverlappedTextInRussian();
 

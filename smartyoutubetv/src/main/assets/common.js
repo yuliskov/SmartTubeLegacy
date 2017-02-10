@@ -19,10 +19,13 @@ function addExitEvent() {
 ////////////////////////////////////////////////
 
 function applyCodecFixes(deviceMap) {
-    console.log('applyCodecFixes');
     for (var device in deviceMap) {
         if (isThisDevice(device)) {
-            disableCodec(deviceMap[device]);
+        	var codecs = deviceMap[device].split(',');
+        	var codecsLen = codecs.length;
+        	for (var i = 0; i < codecsLen; i++) {
+	            disableCodec(codecs[i].trim());
+        	}
             break;
         }
     }
@@ -37,9 +40,9 @@ function isThisDevice() {
 	var argsLen = arguments.length;
 	for (var i = 0; i < argsLen; i++) {
 		var device = arguments[i];
-		console.log("isThisDevice: " + device);
-		if (strCmp(window.thisDevice, device))
+		if (strCmp(window.thisDevice, device)) {
 			return true;
+		}
 	}
     return false;
 }
@@ -54,7 +57,7 @@ function disableCodec(codec) {
         return;
     }
 
-    console.log('disableCodec: ' + codec);
+    console.log('disableCodec: ' + codec + ' ' + window.thisDevice);
 
     window.MediaSource.isTypeSupported = function(native) {
         return function(str) {
