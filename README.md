@@ -15,7 +15,7 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 - browser engine based on **marshmallow-release** branch of [android open source project][browser-origin]
 
 ##Quick start
-Navigate to the project root then type in the console:
+To build project navigate to the root directory then type:
 ```
 gradlew build
 ```
