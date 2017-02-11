@@ -14,6 +14,12 @@ And there comes Smart YouTube TV. It require zero dependencies, minimum Android 
 - browser engine can be used independently (currently in development)
 - browser engine based on **marshmallow-release** branch of [android open source project][browser-origin]
 
+##Quick start
+Navigate to the project root then type in the console:
+```
+gradlew build
+```
+
 ##Benefits of this browser engine over regular WebView
 - ability to choose preferred engine type: WebView, XWalk
 - you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
