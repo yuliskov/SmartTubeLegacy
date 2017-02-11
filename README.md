@@ -20,12 +20,6 @@ To build project navigate to the root directory then type:
 gradlew build
 ```
 
-##Benefits of this browser engine over regular WebView
-- ability to choose preferred engine type: WebView, XWalk
-- you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
-- ability to easily add tabs, settings and other regular browser-specific features
-- all internal state is saved into persistent memory instead of RAM
-
 ## Browser engine usage
 ###Basic usage
 ```
@@ -56,6 +50,12 @@ MyActivity extends MainBrowserActivity {
 	}
 }
 ```
+
+##Benefits of this browser engine over regular WebView
+- ability to choose preferred engine type: WebView, XWalk
+- you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
+- ability to easily add tabs, settings and other regular browser-specific features
+- all internal state is saved into persistent memory instead of RAM
 
 ##Used libraries
 - Crosswalk - alternative browser engine
