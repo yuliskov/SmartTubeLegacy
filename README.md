@@ -19,6 +19,7 @@ To build project navigate to the root directory then type:
 ```
 gradlew build
 ```
+Generated apks will be placed in the directory ./smartyoutubetv/build/outputs/apk/
 
 ## Browser engine usage
 ###Basic usage
