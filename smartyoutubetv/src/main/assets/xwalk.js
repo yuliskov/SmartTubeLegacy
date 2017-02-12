@@ -5,8 +5,8 @@
 // X92 - webm
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
 // NEO-U1 (github) - webm
-// other devices (empty string) - webm
-applyCodecFixes({'X92': 'webm', 'Q1EN': 'webm', 'Hi3798MV100': 'webm', 'NEO-U1': 'webm', '': 'webm'});
+// all other devices (empty string) - webm
+applyCodecFixes({'': 'webm'});
 
 fixOverlappedTextInRussian();
 
