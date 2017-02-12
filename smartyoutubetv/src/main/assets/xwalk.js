@@ -5,10 +5,8 @@
 // X92 - webm
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
 // NEO-U1 (github) - webm
+// t95m (gmail) - all
 // all other devices (empty string) - webm
-applyCodecFixes({'': 'webm'});
+applyCodecFixes({'t95m': '', '': 'webm'});
 
 fixOverlappedTextInRussian();
-
-// 854x480, 640×360
-// setNewDimensions(640, 360);

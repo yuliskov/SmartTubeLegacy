@@ -10,10 +10,8 @@ addExitEvent();
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
 // NG3128HD (github) - webm, mp4
 // NEO-U1 (github) - webm
+// t95m (gmail) - all
 // all other devices (empty string) - webm
-applyCodecFixes({'NG3128HD': 'webm, mp4', '': 'webm'});
+applyCodecFixes({'NG3128HD': 'webm, mp4', 't95m': '', '': 'webm'});
 
 fixOverlappedTextInRussian();
-
-// 854x480, 640×360
-// setNewDimensions(640, 360);
