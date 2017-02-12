@@ -3,9 +3,9 @@
 // some devices have buggy codec support, so disable them, device order is important
 // codec exclusion list:
 // X92 - webm
-// other MiTV3 - webm
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
-applyCodecFixes({'X92': 'webm', 'Q1EN': 'webm', 'Hi3798MV100': 'webm'});
+// other devices - webm
+applyCodecFixes({'X92': 'webm', 'Q1EN': 'webm', 'Hi3798MV100': 'webm', '': 'webm'});
 
 fixOverlappedTextInRussian();
 
