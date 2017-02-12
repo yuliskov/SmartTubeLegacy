@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 68
-        versionName "6.5.4"
+        versionCode 69
+        versionName "6.5.5"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -70,6 +70,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+    testCompile 'commons-io:commons-io:2.5'
+
     compile 'com.android.support:appcompat-v7:25.0.0'
 
     compile 'com.jakewharton:butterknife:8.4.0'
