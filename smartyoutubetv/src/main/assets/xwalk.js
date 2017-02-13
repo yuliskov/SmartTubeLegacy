@@ -7,7 +7,8 @@
 // NEO-U1 (github) - webm
 // t95m (gmail) - all
 // KTU84M (gmail/tailand friend/jackie.hhop@gmail.com) - all
+// 32T18 OF THE FAMILY GENERATION T18 BY (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // all other devices (empty string) - webm
-applyCodecFixes({'t95m': '', '': 'webm'});
+applyCodecFixes({'t95m': '', '32T18': '', '': 'webm'});
 
 fixOverlappedTextInRussian();
