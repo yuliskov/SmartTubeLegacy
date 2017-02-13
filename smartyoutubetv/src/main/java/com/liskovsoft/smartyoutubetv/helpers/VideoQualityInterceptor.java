@@ -22,7 +22,7 @@ public class VideoQualityInterceptor extends RequestInterceptor {
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
-        videoInfoBuilder.removeSDFormats();
+        videoInfoBuilder.removeHDFormats();
         //videoInfoBuilder.removeFormat(248);
         //videoInfoBuilder.removeFormat(137);
         //videoInfoBuilder.removeFormat(247);
