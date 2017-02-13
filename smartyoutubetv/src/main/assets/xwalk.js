@@ -6,6 +6,7 @@
 // Q1EN.2004 Hi3798MV100 (china friend) - webm
 // NEO-U1 (github) - webm
 // t95m (gmail) - all
+// KTU84M (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // all other devices (empty string) - webm
 applyCodecFixes({'t95m': '', '': 'webm'});
 

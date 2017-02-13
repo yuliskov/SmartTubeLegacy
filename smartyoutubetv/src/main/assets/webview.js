@@ -11,6 +11,7 @@ addExitEvent();
 // NG3128HD (github) - webm, mp4
 // NEO-U1 (github) - webm
 // t95m (gmail) - all
+// KTU84M (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // all other devices (empty string) - webm
 applyCodecFixes({'NG3128HD': 'webm, mp4', 't95m': '', '': 'webm'});
 
