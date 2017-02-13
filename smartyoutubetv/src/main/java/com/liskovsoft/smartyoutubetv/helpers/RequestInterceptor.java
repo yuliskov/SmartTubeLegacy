@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.webkit.WebResourceResponse;
 import okhttp3.*;
 
@@ -20,21 +19,52 @@ import java.util.Map.Entry;
  */
 public class RequestInterceptor {
     private final Context mContext;
-    private OkHttpClient client;
+    private OkHttpClient mClient;
 
     public RequestInterceptor(Context context) {
         mContext = context;
     }
 
     public boolean test(String url) {
-        //if (url.equals("https://www.youtube.com/s/tv/html5/loader/live.js")) {
-        //    return true;
-        //}
+        // trying to manipulate with video formats
+        if (url.contains("get_video_info")) {
+            return true;
+        }
         return false;
     }
 
     public WebResourceResponse intercept(String url) {
-        return replaceWith("live.js");
+        Response response = doRequest(url);
+        VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
+        videoInfoBuilder.removeFormat(248);
+        videoInfoBuilder.removeFormat(137);
+        InputStream is = videoInfoBuilder.get();
+
+        WebResourceResponse resourceResponse = new WebResourceResponse(
+                getMimeType(response.body().contentType()),
+                getCharset(response.body().contentType()),
+                is
+        );
+        return resourceResponse;
+    }
+
+    private Response doRequest(String url) {
+        if (mClient == null) {
+            mClient = new OkHttpClient();
+        }
+
+        Request okHttpRequest = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response okHttpResponse = null;
+        try {
+            okHttpResponse = mClient.newCall(okHttpRequest).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return okHttpResponse;
     }
 
     private WebResourceResponse replaceWith(String fileName) {
@@ -48,8 +78,8 @@ public class RequestInterceptor {
     }
 
     private WebResourceResponse injectJS(String url, String path) {
-        if (client == null) {
-            client = new OkHttpClient();
+        if (mClient == null) {
+            mClient = new OkHttpClient();
         }
 
         Request okHttpRequest = new Request.Builder()
@@ -58,7 +88,7 @@ public class RequestInterceptor {
 
         Response okHttpResponse = null;
         try {
-            okHttpResponse = client.newCall(okHttpRequest).execute();
+            okHttpResponse = mClient.newCall(okHttpRequest).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
