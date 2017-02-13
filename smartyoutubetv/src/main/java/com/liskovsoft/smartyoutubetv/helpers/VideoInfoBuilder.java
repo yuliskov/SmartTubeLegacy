@@ -3,7 +3,11 @@ package com.liskovsoft.smartyoutubetv.helpers;
 import android.net.Uri;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +35,21 @@ public class VideoInfoBuilder {
         for (int itag : mRemovedFormats) {
             removeFormatFromString(itag);
         }
-        return new ByteArrayInputStream(mVideoInfo.getBytes(Charset.forName("UTF8")));
+        return new ByteArrayInputStream(mVideoInfo.getBytes(Charset.forName("UTF-8")));
     }
 
     private void removeFormatFromString(int itag) {
-        Uri videoInfo = Uri.parse(mVideoInfo);
+        Uri videoInfo = Uri.parse("http://example.com?" + mVideoInfo);
         String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
-        String adaptiveFormatsDecoded = Uri.decode(adaptiveFormats);
-        String[] formats = adaptiveFormatsDecoded.split(",");
+        //String adaptiveFormatsDecoded = decode(adaptiveFormats);
+        String[] formats = adaptiveFormats.split(",");
+        for (String format : formats) {
+            if (format.contains("itag=" + itag)) {
+                String encode = Uri.encode(format);
+                mVideoInfo = mVideoInfo.replace(encode + "%2C", "");
+                mVideoInfo = mVideoInfo.replace("%2C" + encode, "");
+            }
+        }
     }
 
     private String readAllStream() {

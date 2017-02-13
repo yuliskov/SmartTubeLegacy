@@ -71,6 +71,7 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     testCompile 'commons-io:commons-io:2.5'
+    testCompile 'org.robolectric:robolectric:3.2.2'
 
     compile 'com.android.support:appcompat-v7:25.0.0'
 
