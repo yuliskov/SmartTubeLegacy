@@ -75,7 +75,9 @@ public class VideoInfoBuilder {
     }
 
     public void enable4K() {
-        mEnable4K = true;
+        removeSDFormats();
+        removeHDFormats();
+        mEnable4K = false;
     }
 
     public InputStream get() {
@@ -98,13 +100,13 @@ public class VideoInfoBuilder {
         if (!mEnable4K) {
             return;
         }
-        mVideoInfo = mVideoInfo.replace(String.valueOf(137), String.valueOf(138));
+        mVideoInfo = mVideoInfo.replace(String.valueOf(138), String.valueOf(137));
+        mVideoInfo = mVideoInfo.replace(String.valueOf(264), String.valueOf(136));
     }
 
     private void removeFormatFromContent(int itag) {
         Uri videoInfo = Uri.parse("http://example.com?" + mVideoInfo);
         String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
-        //String adaptiveFormatsDecoded = decode(adaptiveFormats);
         String[] formats = adaptiveFormats.split(",");
         for (String format : formats) {
             if (format.contains("itag=" + itag)) {
