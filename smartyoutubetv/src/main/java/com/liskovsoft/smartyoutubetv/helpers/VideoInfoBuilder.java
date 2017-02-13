@@ -51,6 +51,8 @@ public class VideoInfoBuilder {
     private String mVideoInfo;
     private int[] mSDItags = {249, 250, 140, 251, 171, 160, 278, 133, 242, 243, 134, 244, 135};
     private int[] mHDItags = {247, 136, 248, 137};
+    private int[] m4KITags = {271, 264, 266, 138, 313};
+    private boolean mEnable4K;
 
     public VideoInfoBuilder(InputStream stream) {
         mOriginStream = stream;
@@ -73,7 +75,8 @@ public class VideoInfoBuilder {
     }
 
     public void enable4K() {
-        
+        removeHDFormats();
+        mEnable4K = true;
     }
 
     public InputStream get() {
@@ -81,11 +84,19 @@ public class VideoInfoBuilder {
             return mOriginStream;
         }
 
-        mVideoInfo = readAllStream();
+        readAllContent();
+
         for (int itag : mRemovedFormats) {
             removeFormatFromString(itag);
         }
+
+        replaceHDFormatsWith4KFormats();
+        
         return new ByteArrayInputStream(mVideoInfo.getBytes(Charset.forName("UTF-8")));
+    }
+
+    private void replaceHDFormatsWith4KFormats() {
+        mVideoInfo = mVideoInfo.replace(String.valueOf(266), String.valueOf(137));
     }
 
     private void removeFormatFromString(int itag) {
@@ -102,9 +113,9 @@ public class VideoInfoBuilder {
         }
     }
 
-    private String readAllStream() {
+    private void readAllContent() {
         Scanner s = new Scanner(mOriginStream).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
-        return result;
+        mVideoInfo = result;
     }
 }
