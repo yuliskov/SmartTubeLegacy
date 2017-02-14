@@ -49,7 +49,7 @@ public class VideoInfoBuilder {
     private final InputStream mOriginStream;
     private List<Integer> mRemovedFormats = new ArrayList<>();
     private String mVideoInfo;
-    private int[] mSDItags = {249, 250, 140, 251, 171, 160, 278, 133, 242, 243, 134, 244, 135};
+    private int[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
     private int[] mHDItags = {247, 136, 248, 137};
     private int[] m4KITags = {271, 264, 266, 138, 313};
     private boolean mEnable4K;
@@ -77,23 +77,23 @@ public class VideoInfoBuilder {
     public void enable4K() {
         removeSDFormats();
         removeHDFormats();
-        mEnable4K = false;
+        //mEnable4K = true;
     }
 
     public InputStream get() {
-        if (mRemovedFormats.isEmpty()) {
-            return mOriginStream;
-        }
-
         readAllContent();
 
-        for (int itag : mRemovedFormats) {
-            removeFormatFromContent(itag);
-        }
+        removeSelectedFormats();
 
         replaceHDFormatsWith4KFormats();
         
         return new ByteArrayInputStream(mVideoInfo.getBytes(Charset.forName("UTF-8")));
+    }
+
+    private void removeSelectedFormats() {
+        for (int itag : mRemovedFormats) {
+            removeFormatFromContent(itag);
+        }
     }
 
     private void replaceHDFormatsWith4KFormats() {
