@@ -8,6 +8,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,15 @@ public abstract class RequestInterceptor {
             return null;
         }
         return contentType.charset().name();
+    }
+
+    protected WebResourceResponse createResponse(MediaType mediaType, InputStream is) {
+        WebResourceResponse resourceResponse = new WebResourceResponse(
+                getMimeType(mediaType),
+                getCharset(mediaType),
+                is
+        );
+        return resourceResponse;
     }
 
     protected Map<String, String> toRegularMap(Map<String, List<String>> multimap) {

@@ -75,9 +75,9 @@ public class VideoInfoBuilder {
     }
 
     public void enable4K() {
-        removeSDFormats();
-        removeHDFormats();
-        //mEnable4K = true;
+        //removeSDFormats();
+        //removeHDFormats();
+        mEnable4K = true;
     }
 
     public InputStream get() {

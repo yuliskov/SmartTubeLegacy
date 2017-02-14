@@ -22,15 +22,10 @@ public class VideoQualityInterceptor extends RequestInterceptor {
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
-        videoInfoBuilder.removeSDFormats();
+        videoInfoBuilder.removeHDFormats();
 
         InputStream is = videoInfoBuilder.get();
 
-        WebResourceResponse resourceResponse = new WebResourceResponse(
-                getMimeType(response.body().contentType()),
-                getCharset(response.body().contentType()),
-                is
-        );
-        return resourceResponse;
+        return createResponse(response.body().contentType(), is);
     }
 }
