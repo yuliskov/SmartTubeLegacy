@@ -146,4 +146,55 @@ function fixOverlappedTextInRussian() {
     	doObserveOverlappedTextInRussian(paramButton);
 }
 
-/////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+function createElement(html) {
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    return div.firstChild;
+}
+
+function addQualityControls() {
+    if (window.addQualityControlsDone)
+        return;
+
+    // jQuery here has very limited functionality
+    var jQuery = $;
+
+    // toggle-selected - when not collapsed
+    var qualityToggle = createElement(
+    '<div id="transport-more-button" class="toggle-button" tabindex="-1"> \
+        <span>Quality Options</span> \
+    </div>');
+    var qualityButtonRow = createElement(
+    '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
+        <div class="toggle-button" tabindex="-1">240p</div> \
+        <div class="toggle-button" tabindex="-1">360p</div> \
+        <div class="toggle-button" tabindex="-1">480p</div> \
+        <div class="toggle-button" tabindex="-1">720p</div> \
+        <div class="toggle-button" tabindex="-1">1080p</div> \
+    </div>');
+    
+    jQuery('.controls-row').append(qualityToggle);
+
+    var backup;
+    qualityToggle.addEventListener('click', function(event) {
+        if (backup) {
+            var elems = backup;
+            backup = null;
+        } else {
+            backup = jQuery('#buttons-list');
+            var elems = qualityButtonRow;
+        }
+        jQuery('#buttons-list').remove();
+        jQuery('.controls-row').prepend(elems);
+
+        // problem: can't stop propagation
+        event.stopPropagation();
+        event.preventDefault();
+    });
+
+    window.addQualityControlsDone = true;
+}
+
+///////////////////////////////////////////////////

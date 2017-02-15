@@ -22,7 +22,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
     public MainRequestInterceptor(Context context) {
         mContext = context;
         mInterceptors = new ArrayList<>();
-        mInterceptors.add(new VideoQualityInterceptor());
+        //mInterceptors.add(new VideoQualityInterceptor());
         //mInterceptors.add(new ResolutionInterceptor(mContext));
     }
 
