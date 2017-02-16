@@ -158,8 +158,7 @@ function addQualityControls() {
     if (window.addQualityControlsDone)
         return;
 
-    // jQuery here has very limited functionality
-    var jQuery = $;
+    // note: $ is wrapper for document.querySelector
 
     // toggle-selected - when not collapsed
     var qualityToggle = createElement(
@@ -168,33 +167,51 @@ function addQualityControls() {
     </div>');
     var qualityButtonRow = createElement(
     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
-        <div class="toggle-button" tabindex="-1">240p</div> \
-        <div class="toggle-button" tabindex="-1">360p</div> \
-        <div class="toggle-button" tabindex="-1">480p</div> \
-        <div class="toggle-button" tabindex="-1">720p</div> \
-        <div class="toggle-button" tabindex="-1">1080p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="160,278">144p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="133,242">240p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="243,134">360p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="244,135">480p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="247,136">720p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="248,137">1080p</div> \
     </div>');
+
+    qualityButtonRow.addEventListener('keyup', function(event){
+        if (event.keyCode != 13) // enter
+            return;
+        console.log(event.target.dataset.itag);
+        // app.switchResolution(event.target.dataset.itag);
+        event.stopPropagation();
+    });
     
-    jQuery('.controls-row').append(qualityToggle);
+    document.querySelector('.controls-row').appendChild(qualityToggle);
 
     var backup;
-    qualityToggle.addEventListener('click', function(event) {
+    qualityToggle.addEventListener('keyup', function(event) {
+        if (event.keyCode != 13) // enter
+            return;
+
         if (backup) {
             var elems = backup;
             backup = null;
         } else {
-            backup = jQuery('#buttons-list');
+            backup = document.querySelector('#buttons-list');
             var elems = qualityButtonRow;
         }
-        jQuery('#buttons-list').remove();
-        jQuery('.controls-row').prepend(elems);
+        // remove()
+        var el = document.querySelector('#buttons-list');
+        el.parentNode.removeChild(el);
+        // prepend()
+        var parent = document.querySelector('.controls-row');
+        parent.insertBefore(elems, parent.firstChild);
 
         // problem: can't stop propagation
         event.stopPropagation();
-        event.preventDefault();
     });
 
     window.addQualityControlsDone = true;
 }
 
 ///////////////////////////////////////////////////
+
+// add quality settings to video
+addQualityControls();
