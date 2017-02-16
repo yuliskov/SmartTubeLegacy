@@ -154,6 +154,23 @@ function createElement(html) {
     return div.firstChild;
 }
 
+function handleRemoteControllerKeys(obj) {
+    // focused selected
+    var buttons = obj.querySelectorAll('.toggle-button');
+    var parent = document.querySelector('#transport-controls');
+
+    parent.addEventListener('keydown', function(event) {
+        console.log("handleRemoteControllerKeys");
+
+        if (event.keyCode != 37 && event.keyCode != 39) { // arrow left/arrow right
+            return;
+        }
+
+        var selected = parent.querySelector('.focused.selected');
+
+    });
+}
+
 function addQualityControls() {
     if (window.addQualityControlsDone)
         return;
@@ -175,14 +192,19 @@ function addQualityControls() {
         <div class="toggle-button" tabindex="-1" data-itag="248,137">1080p</div> \
     </div>');
 
+    handleRemoteControllerKeys(qualityButtonRow);
+    handleRemoteControllerKeys(qualityToggle);
+
     qualityButtonRow.addEventListener('keyup', function(event){
         if (event.keyCode != 13) // enter
             return;
         console.log(event.target.dataset.itag);
+
         // app.switchResolution(event.target.dataset.itag);
         event.stopPropagation();
     });
     
+    // append()
     document.querySelector('.controls-row').appendChild(qualityToggle);
 
     var backup;
@@ -204,7 +226,6 @@ function addQualityControls() {
         var parent = document.querySelector('.controls-row');
         parent.insertBefore(elems, parent.firstChild);
 
-        // problem: can't stop propagation
         event.stopPropagation();
     });
 
