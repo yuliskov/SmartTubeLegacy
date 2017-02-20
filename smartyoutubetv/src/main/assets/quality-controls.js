@@ -102,66 +102,6 @@ function get(key) {
 
 ////// End Helpers //////
 
-function handleRemoteControllerKeys() {
-    // classes: 
-    // focused - button highlighted
-    // selected - button will have next focus
-    // disabled - button not active
-
-    var objArr = getButtons();
-    var navigationEventHandler = function(event){genericNavigationListener(event, objArr)};
-
-    // TODO: modify in future
-    window.QualityControls_objArr = objArr;
-    window.QualityControls_navigationEventHandler = navigationEventHandler;
-
-    for (var i = 0; i < objArr.length; i++) {
-
-        objArr[i].addEventListener('keydown', navigationEventHandler);
-    }
-}
-
-function disableHandleRemoteControllerKeys() {
-    var objArr = window.QualityControls_objArr;
-    var navigationEventHandler = window.QualityControls_navigationEventHandler;
-
-    for (var i = 0; i < objArr.length; i++) {
-        objArr[i].removeEventListener('keydown', navigationEventHandler);
-    }
-}
-
-function enableHandleQualityRowButtons(obj1, obj2) {
-    var nodes = obj2.querySelectorAll('.toggle-button');
-    var objArr = [].concat([obj1], Array.from(nodes));
-    var navigationEventHandler = function(event){genericNavigationListener(event, objArr)};
-    addEventListenerAll('keydown', navigationEventHandler, objArr);
-    window.QualityControls_qualityRowNavigationEventHandler = navigationEventHandler;
-}
-
-function disableHandleQualityRowButtons(obj1, obj2) {
-    var nodes = obj2.querySelectorAll('.toggle-button');
-    var objArr = [].concat([obj1], Array.from(nodes));
-    removeEventListenerAll('keydown', window.QualityControls_qualityRowNavigationEventHandler, objArr);
-}
-
-function getButtons() {
-    var parent = document.querySelector('.controls-row');
-    var list1 = parent.querySelectorAll('#buttons-list .toggle-button, .button');
-    var list2 = parent.querySelectorAll('#transport-more-button');
-    var list3 = parent.querySelectorAll('#quality-more-button');
-    var result = [].concat(Array.from(list2), Array.from(list3), Array.from(list1));
-    return result;
-}
-
-function getQualityButtonsArr(obj, parent) {
-
-}
-
-function isTransportMoreButtonExpanded() {
-    var reportButton = document.querySelector('.controls-row .icon-bug_report');
-    return reportButton == null ? false : true;
-}
-
 function createQualityToggleButton() {
     return createElement(
     '<div id="quality-more-button" class="toggle-button" tabindex="-1"> \
@@ -181,16 +121,18 @@ function createQualityButtonsRow() {
     </div>');
 }
 
-function compareByOffset(a, b) {
-  if (a.offsetLeft < b.offsetLeft)
-    return -1;
-  if (a.offsetLeft > b.offsetLeft)
-    return 1;
-  return 0;
-}
+///// Remote Controller Navigation Handling /////
 
 function sortButtons(nodes) {
     // sort buttons based on horizontal position on screen
+    function compareByOffset(a, b) {
+      if (a.offsetLeft < b.offsetLeft)
+        return -1;
+      if (a.offsetLeft > b.offsetLeft)
+        return 1;
+      return 0;
+    }
+
 
     var objArr = Array.from(nodes);
 
@@ -225,8 +167,6 @@ function addArrowKeysHandling(container) {
         console.log('el changed', el);
     })
 }
-
-///// Event Handlers /////
 
 function arrowKeysListener(event, objArr) {
     var left = 37;
@@ -299,72 +239,9 @@ function swapFocus(oldFocus, newFocus) {
     }
 }
 
-function genericNavigationListener(event, objArr) {
-    console.log("genericNavigationListener");
-    var left = 37;
-    var right = 39;
-    var keyCode = event.keyCode;
+///// End Remote Controller Navigation Handling /////
 
-    if (event.keyCode != left && event.keyCode != right) {
-        return;
-    }
-
-    switch(keyCode) {
-        case left:
-            var obj = getNextLeftFocus(objArr, event.target);
-            if (obj)
-                swapFocus(event.target, obj);
-            break;
-        case right:
-            var obj = getNextRightFocus(objArr, event.target);
-            if (obj)
-                swapFocus(event.target, obj);
-            break;
-    } 
-
-    event.stopPropagation(); // I will handle this event   
-}
-
-function transportMoreButtonOnClick(event) {
-    if (event.keyCode != 13) // enter/click
-        return;
-
-    if (isTransportMoreButtonExpanded()) {
-        // hide quality controls
-
-        // disable event handling
-        disableHandleRemoteControllerKeys();
-    } else {
-        handleRemoteControllerKeys();
-    }
-}
-
-function qualityToggleButtonOnClick(event, qualityButtonRow) {
-    if (event.keyCode != 13) // enter/click
-        return;
-
-    if (window.QualityControls_backup) {
-        var elems = window.QualityControls_backup;
-        window.QualityControls_backup = null;
-
-        disableHandleRemoteControllerKeys();
-        enableHandleQualityRowButtons(event.target, qualityButtonRow);
-    } else {
-        window.QualityControls_backup = document.querySelector('#buttons-list');
-        var elems = qualityButtonRow;
-
-        handleRemoteControllerKeys();
-        disableHandleQualityRowButtons(event.target, qualityButtonRow);
-    }
-    // remove()
-    var el = document.querySelector('#buttons-list');
-    el.parentNode.removeChild(el);
-    // prepend()
-    var parent = document.querySelector('.controls-row');
-    parent.insertBefore(elems, parent.firstChild);
-
-    event.stopPropagation();
-}
+///// Event Handlers /////
 
 function qualityButtonRowOnClick(event) {
     if (event.keyCode != 13) // enter/click
@@ -378,7 +255,7 @@ function qualityButtonRowOnClick(event) {
     event.stopPropagation(); 
 }
 
-function qualityToggleButtonOnClick2(event, qualityButtonRow) {
+function qualityToggleButtonOnClick(event, qualityButtonRow) {
     if (event.keyCode != 13) // enter or click
         return;
 
@@ -404,30 +281,6 @@ function qualityToggleButtonOnClick2(event, qualityButtonRow) {
 ///// End Event Handlers /////
 
 function addQualityControls() {
-    if (window.QualityControls_addQualityControlsDone)
-        return;
-
-    var qualityToggle = createQualityToggleButton();
-    var qualityButtonRow = createQualityButtonsRow();
-
-    // handleRemoteControllerKeys(qualityToggle);
-
-    qualityButtonRow.addEventListener('keyup', function(event){ qualityButtonRowOnClick(event) });
-    
-    // append()
-    document.querySelector('.controls-row').appendChild(qualityToggle);
-
-    handleRemoteControllerKeys();
-
-    qualityToggle.addEventListener('keyup', function(event){qualityToggleButtonOnClick(event, qualityButtonRow)});
-
-    var transportMoreButton = document.querySelector('.controls-row #transport-more-button');
-    transportMoreButton.addEventListener('keyup', transportMoreButtonOnClick);
-
-    window.QualityControls_addQualityControlsDone = true;
-}
-
-function addQualityControls2() {
     if (window.addQualityControlsDone)
         return;
 
@@ -438,7 +291,7 @@ function addQualityControls2() {
     
     // attach event handler to my toggle-button
     var qualityButtonsRow = createQualityButtonsRow();
-    qualityToggleButton.addEventListener('keyup', function(event){qualityToggleButtonOnClick2(event, qualityButtonsRow)});
+    qualityToggleButton.addEventListener('keyup', function(event){qualityToggleButtonOnClick(event, qualityButtonsRow)});
 
     // attach event handler to quality-button-row
     qualityButtonsRow.addEventListener('keyup', function(event){qualityButtonRowOnClick(event)});
@@ -453,4 +306,4 @@ function addQualityControls2() {
 ///////////////////////////////////////////////////
 
 // add quality settings to video
-addQualityControls2();
+addQualityControls();
