@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.res.AssetManager;
 import android.webkit.CookieSyncManager;
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +73,7 @@ public class Browser extends Application {
 
     public static Bus getBus() {
         if (sBus == null) {
-            sBus = new Bus();
+            sBus = new Bus(ThreadEnforcer.ANY);
         }
         return sBus;
     }

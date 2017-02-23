@@ -6,28 +6,3 @@ input {
     pointer-events: none;
     tab-index: -1;
 }
-
-/* used in quality-controls.js */
-
-.fresh-transport-controls #quality-more-button {
-    font-size: 2em;
-    height: .7em;
-    left: 1.9em;
-    margin-right: 1.452em;
-    padding: .385em;
-    position: relative;
-    top: -2.7em;
-    width: inherit;
-}
-
-.fresh-transport-controls #quality-more-button span {
-    font-size: .485em;
-    margin: 0.2em 0 0;
-    position: initial;
-    text-align: center;
-    top: 0;
-    visibility: visible;
-    width: 100%
-}
-
-/* end used in quality-controls.js */

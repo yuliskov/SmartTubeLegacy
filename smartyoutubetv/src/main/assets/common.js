@@ -1,3 +1,9 @@
+function waitBeforeInit(fn) {
+    var progress = document.querySelector('#progress-bar');
+    var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
+    progress.addEventListener('focus', onfocus);
+}
+
 //////////////////////////////////////////////
 
 function addExitEvent() {
@@ -147,3 +153,5 @@ function fixOverlappedTextInRussian() {
 }
 
 ////////////////////////////////////////////
+
+waitBeforeInit(fixOverlappedTextInRussian);

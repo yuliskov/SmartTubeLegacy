@@ -1,19 +1,9 @@
-package com.liskovsoft.smartyoutubetv.helpers;
+package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.webkit.WebResourceResponse;
-import okhttp3.*;
 
-import javax.net.ssl.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class MainRequestInterceptor extends RequestInterceptor {
     private Context mContext;
@@ -22,8 +12,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
     public MainRequestInterceptor(Context context) {
         mContext = context;
         mInterceptors = new ArrayList<>();
-        //mInterceptors.add(new VideoQualityInterceptor());
-        //mInterceptors.add(new ResolutionInterceptor(mContext));
+        mInterceptors.add(new VideoQualityInterceptor());
     }
 
     @Override

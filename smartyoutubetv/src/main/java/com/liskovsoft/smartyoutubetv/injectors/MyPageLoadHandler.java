@@ -27,7 +27,6 @@ public class MyPageLoadHandler implements PageLoadHandler {
         WebView w = tab.getWebView();
         // js must be added before page fully loaded
         addJSInterface(w);
-        //injectWebFiles(w);
     }
 
     @Override
@@ -46,7 +45,8 @@ public class MyPageLoadHandler implements PageLoadHandler {
     }
 
     private void injectWebFiles(WebView w) {
-        mInjector = new ResourceInjector(mContext, w);
+        if (mInjector == null)
+            mInjector = new ResourceInjector(mContext, w);
         mInjector.inject();
     }
 }

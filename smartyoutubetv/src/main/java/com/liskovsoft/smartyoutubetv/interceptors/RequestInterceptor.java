@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.helpers;
+package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.text.TextUtils;
 import android.webkit.WebResourceResponse;

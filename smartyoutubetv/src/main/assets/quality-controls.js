@@ -1,5 +1,11 @@
 ///// Helpers //////
 
+function waitBeforeInit(fn) {
+    var progress = document.querySelector('#progress-bar');
+    var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
+    progress.addEventListener('focus', onfocus);
+}
+
 var observeDOM = (function(){
     var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
         eventListenerSupported = window.addEventListener;
@@ -104,7 +110,7 @@ function get(key) {
 
 function createQualityToggleButton() {
     return createElement(
-    '<div id="quality-more-button" class="toggle-button" tabindex="-1"> \
+    '<div id="transport-more-button" class="toggle-button" tabindex="-1"> \
         <span>Quality Options</span> \
     </div>');
 }
@@ -112,12 +118,10 @@ function createQualityToggleButton() {
 function createQualityButtonsRow() {
     return createElement(
     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
-        <div class="toggle-button" tabindex="-1" data-itag="160,278">144p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="133,242">240p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="243,134">360p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="244,135">480p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="247,136">720p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="248,137">1080p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="160,278" style="min-width: 2.3em; width: initial;">144p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="243,134" style="min-width: 2.3em; width: initial;">360p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="247,136" style="min-width: 2.3em; width: initial;">720p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="248,137" style="min-width: 2.3em; width: initial;">1080p</div> \
     </div>');
 }
 
@@ -151,8 +155,10 @@ function addArrowKeysHandling(container) {
     if (!buttons)
         console.log('Houston we have problems: cant find buttons');
 
-    var listener = function (event) {arrowKeysListener(event, buttons)};  
-    container.addEventListener('keydown', listener);
+    var listener1 = function (event) {arrowKeysListener(event, buttons)};  
+    var listener2 = function (event) {moveOutListener(event, buttons)};  
+    container.addEventListener('keydown', listener1);
+    container.addEventListener('keydown', listener2);
 
     // remove event handlers when content is changed 
     observeDOM(container, function(el) {
@@ -161,11 +167,49 @@ function addArrowKeysHandling(container) {
         buttons = sortButtons(buttons); // convert to array and sort
 
         // reattach handlers
-        container.removeEventListener('keydown', listener);
-        container.addEventListener('keydown', listener);
+        container.removeEventListener('keydown', listener1);
+        container.removeEventListener('keydown', listener2);
+        container.addEventListener('keydown', listener1);
+        container.addEventListener('keydown', listener2);
 
         console.log('el changed', el);
     })
+}
+
+function moveOutListener(event, objArr) {
+    var up = 38;
+    var down = 40;
+    var esc = 27;
+    var keyCode = event.keyCode;
+
+    if (keyCode != up && keyCode != down && keyCode != esc) {
+        return;
+    }
+
+    var focusedAll = event.currentTarget.querySelectorAll('.focused.button, .focused.toggle-button');
+    for (var i = 0; i < focusedAll.length; i++) {
+        removeFocus(focusedAll[i]);
+    }
+
+    hideQualityControls(); 
+
+    var playBtn = event.currentTarget.querySelector('.icon-player-play');
+    addFocus(playBtn);
+}
+
+function hideQualityControls() {
+    // TODO: rewrite
+
+    if (get('buttons-list') == null) {
+        return;
+    }
+
+    var backedButtons = get('buttons-list');
+    put('buttons-list', null);
+
+    var parent = querySelector('.controls-row'); // root container
+    remove(parent.querySelector('#buttons-list'));
+    prepend(parent, backedButtons);
 }
 
 function arrowKeysListener(event, objArr) {
@@ -227,12 +271,22 @@ function getNextRightFocus(objArr, currentFocus) {
     return nextObj;    
 }
 
+function addFocus(elem) {
+    addClass(elem, 'focused');
+    addClass(elem, 'selected');  
+    elem.focus();
+}
+
+
+function removeFocus(elem) {
+    removeClass(elem, 'focused');
+    removeClass(elem, 'selected');    
+}
+
 function swapFocus(oldFocus, newFocus) {
-    removeClass(oldFocus, 'focused');
-    removeClass(oldFocus, 'selected');
-    addClass(newFocus, 'focused');
-    addClass(newFocus, 'selected');
-    newFocus.focus();
+    removeFocus(oldFocus);
+    
+    addFocus(newFocus);
 
     if (isHidden(newFocus)) {
         console.log("Houston we have probles here!"); 
@@ -271,7 +325,7 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
     var buttons = querySelector('#buttons-list');
     remove(buttons);
 
-    var parent = querySelector('.controls-row');
+    var parent = querySelector('.controls-row'); // root container
     prepend(parent, elems);
 
     // I'll handle event themself
@@ -279,6 +333,10 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
 }
 
 ///// End Event Handlers /////
+
+function notifyAboutSupportedVideoFormats(formats) {
+    console.log("Supported formats are: ", formats);
+}
 
 function addQualityControls() {
     if (window.addQualityControlsDone)
@@ -305,5 +363,7 @@ function addQualityControls() {
 
 ///////////////////////////////////////////////////
 
+// addQualityControls();
+
 // add quality settings to video
-addQualityControls();
+waitBeforeInit(addQualityControls);

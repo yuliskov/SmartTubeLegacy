@@ -8,10 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.webkit.WebBackForwardList;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import com.liskovsoft.browser.custom.HeadersBrowserWebView;
 import com.liskovsoft.browser.custom.HeadersWebSettingsDecorator;
 import org.xwalk.core.XWalkView;
@@ -46,6 +43,21 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         //XWalkPreferences.setValue(XWalkPreferences.ANIMATABLE_XWALK_VIEW, true);
 
         mXWalkView = new XWalkView(context, attrs);
+    }
+
+    @Override
+    public String getUrl() {
+        return mXWalkView.getUrl();
+    }
+
+    @Override
+    public String getOriginalUrl() {
+        return mXWalkView.getOriginalUrl();
+    }
+
+    @Override
+    public void evaluateJavascript(String script, ValueCallback<String> resultCallback) {
+        mXWalkView.evaluateJavascript(script, resultCallback);
     }
 
     @Override

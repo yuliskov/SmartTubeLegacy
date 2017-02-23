@@ -1,11 +1,13 @@
 package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.net.Uri;
+import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,9 +51,9 @@ public class VideoInfoBuilder {
     private final InputStream mOriginStream;
     private List<Integer> mRemovedFormats = new ArrayList<>();
     private String mVideoInfo;
-    private int[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
-    private int[] mHDItags = {247, 136, 248, 137};
-    private int[] m4KITags = {271, 264, 266, 138, 313};
+    private Integer[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
+    private Integer[] mHDItags = {247, 136, 248, 137};
+    private Integer[] m4KITags = {271, 264, 266, 138, 313};
     private boolean mEnable4K;
 
     public VideoInfoBuilder(InputStream stream) {
@@ -121,5 +123,28 @@ public class VideoInfoBuilder {
         Scanner s = new Scanner(mOriginStream).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
         mVideoInfo = result;
+    }
+
+    public void switchToFormat(String itagsWithDelimeters) {
+        if (itagsWithDelimeters == null) {
+            return;
+        }
+
+        String[] itags = itagsWithDelimeters.split(",");
+
+        List<Integer> retainedFormats = new ArrayList<>();
+        for (String itag : itags) {
+            retainedFormats.add(Integer.parseInt(itag.trim()));
+        }
+
+        mRemovedFormats.addAll(Arrays.asList(mSDItags));
+        mRemovedFormats.addAll(Arrays.asList(mHDItags));
+        mRemovedFormats.addAll(Arrays.asList(m4KITags));
+
+        mRemovedFormats.removeAll(retainedFormats);
+    }
+
+    public String getSupportedFormats() {
+        return null;
     }
 }

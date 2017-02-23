@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.webkit.JavascriptInterface;
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 
 /*
  * JavaScript Interface. Web code can access methods in here
@@ -40,5 +42,15 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return Build.MODEL;
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void switchResolution(String itag) {
+        Browser.getBus().post(new SwitchResolutionEvent(itag));
     }
 }

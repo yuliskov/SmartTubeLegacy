@@ -7,8 +7,8 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.*;
 import com.liskovsoft.smartyoutubetv.helpers.AdAwayClient;
-import com.liskovsoft.smartyoutubetv.helpers.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.helpers.MainRequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 
 public class MyWebViewClientDecorator extends WebViewClient {
     private final WebViewClient mWebViewClient;
