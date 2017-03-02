@@ -54,6 +54,7 @@ public class VideoInfoBuilder {
     private Integer[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
     private Integer[] mHDItags = {247, 136, 248, 137};
     private Integer[] m4KITags = {271, 264, 266, 138, 313};
+    private Integer[] mAllITags = {160, 278, 133, 242, 243, 134, 244, 135, 247, 136, 248, 137, 271, 264, 266, 138, 313};
     private boolean mEnable4K;
 
     public VideoInfoBuilder(InputStream stream) {
@@ -123,6 +124,24 @@ public class VideoInfoBuilder {
         Scanner s = new Scanner(mOriginStream).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
         mVideoInfo = result;
+    }
+
+    public void setMaxFormat(String itagBoundry) {
+        if (itagBoundry == null) {
+            return;
+        }
+
+        int itagBoundryInt = Integer.parseInt(itagBoundry);
+
+        boolean meetBoundry = false;
+
+        // remove formats with quality above others
+        for (int itag : mAllITags) {
+            if (meetBoundry)
+                mRemovedFormats.add(itag);
+            if (itag == itagBoundryInt)
+                meetBoundry = true;
+        }
     }
 
     public void switchToFormat(String itagsWithDelimeters) {

@@ -1,15 +1,15 @@
 package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Base64;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.Browser.EngineType;
+import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
+import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
+import com.squareup.otto.Subscribe;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class ResourceInjectorBase {
     private final Context mContext;
@@ -31,9 +31,64 @@ public class ResourceInjectorBase {
             "parent.appendChild(element)" +
             "})()";
 
+    private static final String testJSFnTemplate = "function testInject(fileName){if (window[fileName]) return; window[fileName] = true; app.onJSFileInject(fileName)}; testInject('%s');";
+    private static final String testCSSFnTemplate = "function testInject(fileName){if (window[fileName]) return; window[fileName] = true; app.onCSSFileInject(fileName)}; testInject('%s');";
+
+    private final EventHandler mHandler;
+
+    private class EventHandler {
+        private final ResourceInjectorBase mInjector;
+
+        public EventHandler(ResourceInjectorBase injector) {
+            Browser.getBus().register(this);
+            mInjector = injector;
+        }
+
+        @Subscribe
+        public void onJSFileInjectEvent(JSFileInjectEvent event) {
+            final String fileName = event.getFileName();
+            Handler handler = new Handler(mContext.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mInjector.injectJS(fileName);
+                }
+            });
+        }
+
+        @Subscribe
+        public void onCSSFileInjectEvent(CSSFileInjectEvent event) {
+            final String fileName = event.getFileName();
+            Handler handler = new Handler(mContext.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mInjector.injectCSS(fileName);
+                }
+            });
+        }
+    }
+
     public ResourceInjectorBase(Context context, WebView webView) {
-        this.mContext = context;
-        this.mWebView = webView;
+        mContext = context;
+        mWebView = webView;
+        mHandler = new EventHandler(this);
+    }
+
+    /**
+     * Safe mean injected only one time per page.
+     * @param fileName
+     */
+    protected void injectJSOnce(String fileName) {
+        injectContent(jsInjectTemplate, String.format(testJSFnTemplate, fileName).getBytes());
+    }
+
+    /**
+     * Safe mean injected only one time per page.
+     * @param fileName
+     */
+    protected void injectCSSSafe(String fileName) {
+        injectContent(jsInjectTemplate, String.format(testCSSFnTemplate, fileName).getBytes());
     }
 
     protected void injectJS(String fileName) {
@@ -54,22 +109,18 @@ public class ResourceInjectorBase {
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
             inputStream.close();
-            String encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
-            mWebView.loadUrl(String.format(template, encoded));
+            injectContent(template, buffer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void injectContent(String template, byte[] data) {
+        String encoded = Base64.encodeToString(data, Base64.NO_WRAP);
+        mWebView.loadUrl(String.format(template, encoded));
+    }
+
     /////////////////////////////////////////////////////
-
-    private void loadJS(String fileName) {
-        loadResource(fileName, "text/javascript");
-    }
-
-    private void loadCSS(String fileName) {
-        loadResource(fileName, "text/css");
-    }
 
     private void loadResource(String fileName, String mimeType) {
         try {

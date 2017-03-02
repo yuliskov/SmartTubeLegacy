@@ -484,7 +484,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
-        // TODO: not implemented
+        // NOP
     }
 
 
@@ -495,7 +495,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
      */
     @Override
     public void onPageFinished(Tab tab) {
-        // TODO: not implemented
+        // NOP
     }
 
     /**

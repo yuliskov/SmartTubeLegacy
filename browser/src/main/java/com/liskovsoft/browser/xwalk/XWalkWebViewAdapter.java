@@ -46,6 +46,11 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     }
 
     @Override
+    public void reload() {
+        mXWalkView.reload(XWalkView.RELOAD_NORMAL);
+    }
+
+    @Override
     public String getUrl() {
         return mXWalkView.getUrl();
     }
@@ -67,12 +72,12 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
     @Override
     public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {
-        mXWalkView.load(url, null, additionalHttpHeaders);
+        mXWalkView.loadUrl(url, additionalHttpHeaders);
     }
 
     @Override
     public void loadUrl(String url) {
-        mXWalkView.load(url, null);
+        mXWalkView.loadUrl(url);
     }
 
     @Override

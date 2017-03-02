@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
+import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,6 +146,15 @@ public class Tab implements PictureListener {
         }
     }
 
+    public void reload() {
+        if (mMainView == null)
+            return;
+
+        String url = mMainView.getUrl();
+        PageDefaults pageDefaults = mWebViewController.getPageDefaults();
+        loadUrl(url, pageDefaults.getHeaders());
+    }
+
     private static synchronized Bitmap getDefaultFavicon(Context context) {
         if (sDefaultFavicon == null) {
             sDefaultFavicon = BitmapFactory.decodeResource(
@@ -190,7 +200,7 @@ public class Tab implements PictureListener {
         mMainView = w;
         // attach the WebViewClient, WebChromeClient and DownloadListener
         if (mMainView != null) {
-            setupPageLoadHandlerDelegates();
+            overridePageLoadHandlerDelegates();
 
             mMainView.setWebViewClient(mWebViewClient);
             mMainView.setWebChromeClient(mWebChromeClient);
@@ -216,7 +226,7 @@ public class Tab implements PictureListener {
         }
     }
 
-    private void setupPageLoadHandlerDelegates() {
+    private void overridePageLoadHandlerDelegates() {
         mWebViewClient = mPageLoadHandler.overrideWebViewClient(mWebViewClient);
         mWebChromeClient = mPageLoadHandler.overrideWebChromeClient(mWebChromeClient);
     }
@@ -853,7 +863,6 @@ public class Tab implements PictureListener {
             }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
-
             mPageLoadHandler.onPageFinished(Tab.this);
         }
 
@@ -891,7 +900,6 @@ public class Tab implements PictureListener {
 
             // finally update the UI in the activity if it is in the foreground
             mWebViewController.onPageStarted(Tab.this, view, favicon);
-
             mPageLoadHandler.onPageStarted(Tab.this);
 
             updateBookmarkedStatus();

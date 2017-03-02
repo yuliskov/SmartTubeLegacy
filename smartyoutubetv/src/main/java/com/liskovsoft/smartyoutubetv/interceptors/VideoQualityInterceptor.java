@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.events.SupportedVideoFormatsEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import com.squareup.otto.Subscribe;
@@ -51,7 +50,7 @@ public class VideoQualityInterceptor extends RequestInterceptor {
         //String formats = videoInfoBuilder.getSupportedFormats();
         //Browser.getBus().post(new SupportedVideoFormatsEvent(formats));
 
-        videoInfoBuilder.switchToFormat(mItag);
+        videoInfoBuilder.setMaxFormat(mItag);
 
         InputStream is = videoInfoBuilder.get();
 

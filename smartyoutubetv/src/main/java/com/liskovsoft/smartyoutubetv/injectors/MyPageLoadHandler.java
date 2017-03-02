@@ -24,9 +24,8 @@ public class MyPageLoadHandler implements PageLoadHandler {
 
     @Override
     public void onPageStarted(Tab tab) {
-        WebView w = tab.getWebView();
         // js must be added before page fully loaded
-        addJSInterface(w);
+        addJSInterface(tab);
     }
 
     @Override
@@ -39,9 +38,14 @@ public class MyPageLoadHandler implements PageLoadHandler {
         return client;
     }
 
-    private void addJSInterface(WebView w) {
-        mJS = new WebViewJavaScriptInterface(mContext);
-        w.addJavascriptInterface(mJS, "app");
+    private void addJSInterface(Tab tab) {
+        if (mJS != null) {
+            return;
+        }
+
+        mJS = new WebViewJavaScriptInterface(mContext, tab);
+        WebView webView = tab.getWebView();
+        webView.addJavascriptInterface(mJS, "app");
     }
 
     private void injectWebFiles(WebView w) {

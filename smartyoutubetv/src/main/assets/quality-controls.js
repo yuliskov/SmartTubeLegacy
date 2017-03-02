@@ -1,5 +1,17 @@
 ///// Helpers //////
 
+function firstRun() {
+    if (!arguments.callee.done)
+        return arguments.callee.done = true;
+
+    return false;
+}
+
+function onInterfaceVisible(fn) {
+    var progress = document.querySelector('#progress-bar');
+    progress.addEventListener('focus', fn);
+}
+
 function waitBeforeInit(fn) {
     var progress = document.querySelector('#progress-bar');
     var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
@@ -34,17 +46,29 @@ function createElement(html) {
 }
 
 function addClass(el, className) {
-    if (el.classList)
-      el.classList.add(className);
-    else
+    if (el == null)
+        return;
+    if (el.classList) {
+        var names = className.split(' ');
+        for (var i = 0; i < names.length; i++) {
+            el.classList.add(names[i]);
+        }
+    } else {
       el.className += ' ' + className;
+    }
 }
 
 function removeClass(el, className) {
-    if (el.classList)
-      el.classList.remove(className);
-    else
-      el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    if (el == null)
+        return;
+    if (el.classList) {
+        var names = className.split(' ');
+        for (var i = 0; i < names.length; i++) {
+            el.classList.remove(names[i]);
+        }
+    } else {
+        el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    }
 }
 
 function hasClass( elem, klass ) {
@@ -106,6 +130,18 @@ function get(key) {
     return window.globalMap[key];
 }
 
+function removeEventListenerAll(el, type, fnArr) {
+    for (var i = 0; i < fnArr.length; i++) {
+        el.removeEventListener(type, fnArr[i]);
+    }
+}
+
+function addEventListenerAll(el, type, fnArr) {
+    for (var i = 0; i < fnArr.length; i++) {
+        el.addEventListener(type, fnArr[i]);
+    }
+}
+
 ////// End Helpers //////
 
 function createQualityToggleButton() {
@@ -118,10 +154,10 @@ function createQualityToggleButton() {
 function createQualityButtonsRow() {
     return createElement(
     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
-        <div class="toggle-button" tabindex="-1" data-itag="160,278" style="min-width: 2.3em; width: initial;">144p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="243,134" style="min-width: 2.3em; width: initial;">360p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="247,136" style="min-width: 2.3em; width: initial;">720p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="248,137" style="min-width: 2.3em; width: initial;">1080p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="278" style="min-width: 2.3em; width: initial;">144p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="134" style="min-width: 2.3em; width: initial;">360p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="136" style="min-width: 2.3em; width: initial;">720p</div> \
+        <div class="toggle-button" tabindex="-1" data-itag="137" style="min-width: 2.3em; width: initial;">1080p</div> \
     </div>');
 }
 
@@ -138,7 +174,7 @@ function sortButtons(nodes) {
     }
 
 
-    var objArr = Array.from(nodes);
+    var objArr = Array.prototype.slice.call(nodes);
 
     return objArr.sort(compareByOffset);
 }
@@ -157,23 +193,25 @@ function addArrowKeysHandling(container) {
 
     var listener1 = function (event) {arrowKeysListener(event, buttons)};  
     var listener2 = function (event) {moveOutListener(event, buttons)};  
-    container.addEventListener('keydown', listener1);
-    container.addEventListener('keydown', listener2);
-
-    // remove event handlers when content is changed 
-    observeDOM(container, function(el) {
+    addEventListenerAll(container, 'keydown', [listener1, listener2]);
+    
+    var onDomChanged = function(el) {
         // refill buttons
         buttons = container.querySelectorAll('.button, .toggle-button');
         buttons = sortButtons(buttons); // convert to array and sort
 
         // reattach handlers
-        container.removeEventListener('keydown', listener1);
-        container.removeEventListener('keydown', listener2);
-        container.addEventListener('keydown', listener1);
-        container.addEventListener('keydown', listener2);
+        removeEventListenerAll(container, 'keydown', [listener1, listener2]);
+        addEventListenerAll(container, 'keydown', [listener1, listener2]);
 
-        console.log('el changed', el);
-    })
+        // removeClass(container.querySelector('.my-disabled'), 'my-disabled disabled');
+    };
+
+
+    // remove event handlers when content is changed 
+    observeDOM(container, onDomChanged);
+
+    onInterfaceVisible(onDomChanged);
 }
 
 function moveOutListener(event, objArr) {
@@ -186,9 +224,15 @@ function moveOutListener(event, objArr) {
         return;
     }
 
-    var focusedAll = event.currentTarget.querySelectorAll('.focused.button, .focused.toggle-button');
+    var focusedAll = objArr;
     for (var i = 0; i < focusedAll.length; i++) {
         removeFocus(focusedAll[i]);
+        if (hasClass(focusedAll[i], 'my-disabled'))
+            removeClass(focusedAll[i], 'disabled my-disabled');
+    }
+
+    if (get('buttons-list') == null) {
+        return;
     }
 
     hideQualityControls(); 
@@ -221,8 +265,6 @@ function arrowKeysListener(event, objArr) {
         return;
     }
 
-    // var objArr = Array.from(nodes);
-
     switch(keyCode) {
         case left:
             var obj = getNextLeftFocus(objArr, event.target);
@@ -244,10 +286,14 @@ function getNextLeftFocus(objArr, currentFocus) {
     if (currIdx == 0)
         return null;
 
-    var prevObj = objArr[currIdx - 1];
+    var prevObj;
 
-    if (hasClass(prevObj, 'disabled'))
-        prevObj = objArr[currIdx - 2];
+    for (var i = (currIdx - 1); i >= 0; i--) {
+        prevObj = objArr[i];
+        if (!hasClass(prevObj, 'disabled'))
+            break;
+        prevObj = null;
+    }
 
     if (!prevObj)
         return null;
@@ -260,10 +306,14 @@ function getNextRightFocus(objArr, currentFocus) {
     if (currIdx == (objArr.length - 1))
         return null;
 
-    var nextObj = objArr[currIdx + 1];
+    var nextObj;
 
-    if (hasClass(nextObj, 'disabled'))
-        nextObj = objArr[currIdx + 2];
+    for (var i = (currIdx + 1); i < objArr.length; i++) {
+        nextObj = objArr[i];
+        if (!hasClass(nextObj, 'disabled'))
+            break;
+        nextObj = null;
+    }
 
     if (!nextObj)
         return null;
@@ -301,7 +351,7 @@ function qualityButtonRowOnClick(event) {
     if (event.keyCode != 13) // enter/click
         return;
     
-    console.log(event.target.dataset.itag);
+    console.log('switchResolution' + event.target.dataset.itag);
 
     if (window.app)
         window.app.switchResolution(event.target.dataset.itag);
@@ -313,13 +363,15 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
     if (event.keyCode != 13) // enter or click
         return;
 
-    if (get('buttons-list')) {
+    if (get('buttons-list')) { // hide
         var elems = get('buttons-list');
         put('buttons-list', null);
-    } else {
+        removeClass(querySelector('#transport-more-button'), 'disabled my-disabled');
+    } else { // show
         var buttonList = querySelector('#buttons-list');
         put('buttons-list', buttonList);
         var elems = qualityButtonRow;
+        addClass(querySelector('#transport-more-button'), 'disabled my-disabled');
     }
     
     var buttons = querySelector('#buttons-list');
@@ -330,6 +382,17 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
 
     // I'll handle event themself
     event.stopPropagation();
+}
+
+function transportMoreButtonOnClick(event, qualityToggleButton) {
+    if (event.keyCode != 13) // enter or click
+        return;
+
+    if (hasClass(qualityToggleButton, 'disabled')) {
+        removeClass(qualityToggleButton, 'disabled my-disabled');
+    } else {
+        addClass(qualityToggleButton, 'disabled my-disabled');
+    }
 }
 
 ///// End Event Handlers /////
@@ -354,6 +417,9 @@ function addQualityControls() {
     // attach event handler to quality-button-row
     qualityButtonsRow.addEventListener('keyup', function(event){qualityButtonRowOnClick(event)});
 
+    // var transportMoreButton = querySelector('#transport-more-button');
+    // transportMoreButton.addEventListener('keyup', function(event){transportMoreButtonOnClick(event, qualityToggleButton)});
+
     // add arrow keys handling
     // TODO: not done
     addArrowKeysHandling(querySelector('.controls-row'));
@@ -363,7 +429,5 @@ function addQualityControls() {
 
 ///////////////////////////////////////////////////
 
-// addQualityControls();
-
 // add quality settings to video
-waitBeforeInit(addQualityControls);
+addQualityControls();

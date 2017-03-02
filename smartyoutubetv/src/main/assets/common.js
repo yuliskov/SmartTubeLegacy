@@ -1,3 +1,12 @@
+function firstRun() {
+    if (!arguments.callee.done)
+        return arguments.callee.done = true;
+
+    return false;
+}
+
+////////////////////////////////////////////
+
 function waitBeforeInit(fn) {
     var progress = document.querySelector('#progress-bar');
     var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
