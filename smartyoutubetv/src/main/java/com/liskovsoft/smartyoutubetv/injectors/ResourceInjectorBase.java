@@ -10,6 +10,7 @@ import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.squareup.otto.Subscribe;
 
 import java.io.*;
+import java.net.URLEncoder;
 
 public class ResourceInjectorBase {
     private final Context mContext;
@@ -118,6 +119,14 @@ public class ResourceInjectorBase {
     private void injectContent(String template, byte[] data) {
         String encoded = Base64.encodeToString(data, Base64.NO_WRAP);
         mWebView.loadUrl(String.format(template, encoded));
+    }
+
+    private String encode(byte[] data) {
+        try {
+            return URLEncoder.encode(new String(data, "UTF-8"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /////////////////////////////////////////////////////

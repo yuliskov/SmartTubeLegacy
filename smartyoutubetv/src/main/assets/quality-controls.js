@@ -1,3 +1,50 @@
+//////// Localization //////////
+
+function getCurrentLanguage() {
+    var language = navigator.languages && navigator.languages[0] || // Chrome / Firefox
+               navigator.language ||   // All browsers
+               navigator.userLanguage; // IE <= 10
+
+    return language;
+}
+
+function detectLanguage() {
+    var result = 'ru-RU';
+
+    var language = getCurrentLanguage();
+    if (language == 'EN') {
+        result = 'en-US';
+    }
+
+    return result;
+}
+
+function base64Decode(str) {
+    var decoded = str;
+    try {
+        decoded = window.atob(str);
+    } catch (e) {
+    }
+    return decoded;
+}
+
+function localize(str) {
+    var ruHash = {
+        'Quality Options': "%D0%9A%D0%B0%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%BE", 
+    };
+    var userLang = detectLanguage();
+    var curHash = {}; // don't translate if language not detected
+    switch (userLang) {
+        case "ru-RU":
+            curHash = ruHash;
+            break;
+    }
+    var result = curHash[str] || str;
+    return decodeURI(result);
+}
+
+//////// End Localization //////////
+
 ///// Helpers //////
 
 function firstRun() {
@@ -147,7 +194,7 @@ function addEventListenerAll(el, type, fnArr) {
 function createQualityToggleButton() {
     return createElement(
     '<div id="transport-more-button" class="toggle-button" tabindex="-1"> \
-        <span>Quality Options</span> \
+        <span>' + localize('Quality Options') + '</span> \
     </div>');
 }
 
