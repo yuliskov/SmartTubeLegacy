@@ -30,7 +30,7 @@ function base64Decode(str) {
 
 function localize(str) {
     var ruHash = {
-        'Quality Options': "%D0%9A%D0%B0%D1%87%D0%B5%D1%81%D1%82%D0%B2%D0%BE", 
+        'Quality Options': "Качество", 
     };
     var userLang = detectLanguage();
     var curHash = {}; // don't translate if language not detected
@@ -40,7 +40,7 @@ function localize(str) {
             break;
     }
     var result = curHash[str] || str;
-    return decodeURI(result);
+    return result;
 }
 
 //////// End Localization //////////

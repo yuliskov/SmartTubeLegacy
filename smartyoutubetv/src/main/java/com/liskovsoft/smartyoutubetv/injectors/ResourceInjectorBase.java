@@ -7,10 +7,10 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.squareup.otto.Subscribe;
 
 import java.io.*;
-import java.net.URLEncoder;
 
 public class ResourceInjectorBase {
     private final Context mContext;
@@ -20,7 +20,7 @@ public class ResourceInjectorBase {
             "var element = document.createElement('style');" +
             "element.type = 'text/css';" +
             // Tell the browser to BASE64-decode the string into your script !!!
-            "element.innerHTML = window.atob('%s');" +
+            "element.innerHTML = decodeURIComponent(window.atob('%s'));" +
             "parent.appendChild(element)" +
             "})()";
     private static final String jsInjectTemplate = "javascript:(function() {" +
@@ -28,7 +28,7 @@ public class ResourceInjectorBase {
             "var element = document.createElement(\'script\');" +
             "element.type = \'text/javascript\';" +
             // Tell the browser to BASE64-decode the string into your script !!!
-            "element.innerHTML = window.atob('%s');" +
+            "element.innerHTML = decodeURIComponent(window.atob('%s'));" +
             "parent.appendChild(element)" +
             "})()";
 
@@ -117,16 +117,9 @@ public class ResourceInjectorBase {
     }
 
     private void injectContent(String template, byte[] data) {
-        String encoded = Base64.encodeToString(data, Base64.NO_WRAP);
+        String uriEncoded = Helpers.encodeURI(data);// preserve non-english letters
+        String encoded = Base64.encodeToString(uriEncoded.getBytes(), Base64.NO_WRAP);
         mWebView.loadUrl(String.format(template, encoded));
-    }
-
-    private String encode(byte[] data) {
-        try {
-            return URLEncoder.encode(new String(data, "UTF-8"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /////////////////////////////////////////////////////

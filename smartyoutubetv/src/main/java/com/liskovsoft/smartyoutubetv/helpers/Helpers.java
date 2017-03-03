@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class Helpers {
     /**
@@ -33,5 +35,14 @@ public class Helpers {
             e.printStackTrace();
         }
         return is;
+    }
+
+    public static String encodeURI(byte[] data) {
+        try {
+            // make behaviour of java uri-encode the same as javascript's one
+            return URLEncoder.encode(new String(data, "UTF-8"), "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
