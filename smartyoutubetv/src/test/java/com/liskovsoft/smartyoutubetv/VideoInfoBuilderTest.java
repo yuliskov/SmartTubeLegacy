@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,12 +20,14 @@ import static junit.framework.Assert.assertTrue;
 @Config(constants = BuildConfig.class)
 public class VideoInfoBuilderTest {
     private InputStream mOriginalInfo;
-    private InputStream mResultedInfo;
+    private InputStream mModifiedInfo;
+    private InputStream mFullHDInfo;
 
     @Before
     public void setUp() throws Exception {
         mOriginalInfo = TestHelpers.openResource("get_video_info_origin");
-        mResultedInfo = TestHelpers.openResource("get_video_info_modified");
+        mModifiedInfo = TestHelpers.openResource("get_video_info_modified");
+        mFullHDInfo = TestHelpers.openResource("get_video_info_full_hd");
     }
 
     @Test
@@ -34,7 +37,16 @@ public class VideoInfoBuilderTest {
         builder.removeFormat(137); // mp4 1920x1080
         InputStream result = builder.get();
 
-        assertTrue(IOUtils.contentEquals(result, mResultedInfo));
+        assertTrue(IOUtils.contentEquals(result, mModifiedInfo));
+    }
+
+    @Test
+    public void testSelectFormat() throws IOException {
+        VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
+        builder.selectFormat(VideoFormat._1080p_);
+        InputStream result = builder.get();
+
+        assertTrue(IOUtils.contentEquals(result, mFullHDInfo));
     }
 
     @Test

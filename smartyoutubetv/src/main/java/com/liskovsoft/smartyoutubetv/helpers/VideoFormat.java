@@ -44,6 +44,7 @@ public enum VideoFormat {
     private static Map<Integer, VideoFormat> mStrValMap = new HashMap<>();
 
     private final int[] mITags;
+
     private VideoFormat(int ...iTags) {
         mITags = iTags;
     }
@@ -55,6 +56,10 @@ public enum VideoFormat {
                 mStrValMap.put(iTag, format);
             }
         }
+    }
+
+    public int[] getITags() {
+        return mITags;
     }
 
     @Override

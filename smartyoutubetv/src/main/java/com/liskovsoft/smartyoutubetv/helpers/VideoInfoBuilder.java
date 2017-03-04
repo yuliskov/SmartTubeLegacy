@@ -154,4 +154,17 @@ public class VideoInfoBuilder {
         String itag = videoInfo.getQueryParameter("itag");
         return itag;
     }
+
+    public void selectFormat(VideoFormat format) {
+        VideoFormat[] values = VideoFormat.values();
+        for (VideoFormat value : values) {
+            if (format == value) {
+                continue;
+            }
+            int[] iTags = value.getITags();
+            for (int iTag : iTags) {
+                removeFormat(iTag);
+            }
+        }
+    }
 }
