@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv;
 
+import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -9,6 +10,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -32,5 +35,27 @@ public class VideoInfoBuilderTest {
         InputStream result = builder.get();
 
         assertTrue(IOUtils.contentEquals(result, mResultedInfo));
+    }
+
+    @Test
+    public void testGetAllSupportedFormats() {
+        Set<VideoFormat> testFormats = createTestFormats();
+
+        VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
+        Set<VideoFormat> allSupportedFormats = builder.getSupportedFormats();
+        testFormats.removeAll(allSupportedFormats);
+
+        assertTrue(testFormats.isEmpty());
+    }
+
+    private Set<VideoFormat> createTestFormats() {
+        Set<VideoFormat> testFormats = new HashSet<>();
+        testFormats.add(VideoFormat._144p_);
+        testFormats.add(VideoFormat._240p_);
+        testFormats.add(VideoFormat._360p_);
+        testFormats.add(VideoFormat._480p_);
+        testFormats.add(VideoFormat._720p_);
+        testFormats.add(VideoFormat._1080p_);
+        return testFormats;
     }
 }

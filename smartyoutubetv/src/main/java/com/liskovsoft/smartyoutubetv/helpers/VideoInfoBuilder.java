@@ -1,15 +1,11 @@
 package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.net.Uri;
-import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /*
 
@@ -50,80 +46,56 @@ format code  extension  resolution note
 public class VideoInfoBuilder {
     private final InputStream mOriginStream;
     private List<Integer> mRemovedFormats = new ArrayList<>();
-    private String mVideoInfo;
+    private Set<VideoFormat> mSupportedFormats = new HashSet<>();
+    private final String mVideoInfo;
     private Integer[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
     private Integer[] mHDItags = {247, 136, 248, 137};
     private Integer[] m4KITags = {271, 264, 266, 138, 313};
     private Integer[] mAllITags = {160, 278, 133, 242, 243, 134, 244, 135, 247, 136, 248, 137, 271, 264, 266, 138, 313};
     private boolean mEnable4K;
+    private String mResultVideoInfo;
 
     public VideoInfoBuilder(InputStream stream) {
         mOriginStream = stream;
+
+        Scanner s = new Scanner(mOriginStream).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+        mVideoInfo = result;
+        mResultVideoInfo = mVideoInfo;
     }
 
     public void removeFormat(int itag) {
         mRemovedFormats.add(itag);
     }
 
-    public void removeSDFormats() {
-        for (int itag : mSDItags) {
-            mRemovedFormats.add(itag);
-        }
-    }
-    
-    public void removeHDFormats() {
-        for (int itag : mHDItags) {
-            mRemovedFormats.add(itag);
-        }
-    }
-
-    public void enable4K() {
-        //removeSDFormats();
-        //removeHDFormats();
-        mEnable4K = true;
-    }
-
     public InputStream get() {
-        readAllContent();
-
         removeSelectedFormats();
 
-        replaceHDFormatsWith4KFormats();
-        
-        return new ByteArrayInputStream(mVideoInfo.getBytes(Charset.forName("UTF-8")));
+        return new ByteArrayInputStream(mResultVideoInfo.getBytes(Charset.forName("UTF-8")));
     }
 
     private void removeSelectedFormats() {
-        for (int itag : mRemovedFormats) {
-            removeFormatFromContent(itag);
+        for (int iTag : mRemovedFormats) {
+            removeFormatFromContent(iTag);
         }
-    }
-
-    private void replaceHDFormatsWith4KFormats() {
-        if (!mEnable4K) {
-            return;
-        }
-        mVideoInfo = mVideoInfo.replace(String.valueOf(138), String.valueOf(137));
-        mVideoInfo = mVideoInfo.replace(String.valueOf(264), String.valueOf(136));
     }
 
     private void removeFormatFromContent(int itag) {
-        Uri videoInfo = Uri.parse("http://example.com?" + mVideoInfo);
-        String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
-        String[] formats = adaptiveFormats.split(",");
+        String[] formats = getSupportedFormats(mResultVideoInfo);
         for (String format : formats) {
             if (format.contains("itag=" + itag)) {
                 String encode = Uri.encode(format);
-                mVideoInfo = mVideoInfo.replace(encode + "%2C", "");
-                mVideoInfo = mVideoInfo.replace("%2C" + encode, "");
+                mResultVideoInfo = mResultVideoInfo
+                        .replace(encode + "%2C", "")
+                        .replace("%2C" + encode, "");
             }
         }
     }
 
-    private void readAllContent() {
-        Scanner s = new Scanner(mOriginStream).useDelimiter("\\A");
-        String result = s.hasNext() ? s.next() : "";
-        mVideoInfo = result;
+    private String[] getSupportedFormats(String query) {
+        Uri videoInfo = Uri.parse("http://example.com?" + query);
+        String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
+        return adaptiveFormats.split(",");
     }
 
     public void setMaxFormat(String itagBoundry) {
@@ -131,29 +103,29 @@ public class VideoInfoBuilder {
             return;
         }
 
-        int itagBoundryInt = Integer.parseInt(itagBoundry);
+        int iTagBoundryInt = Integer.parseInt(itagBoundry);
 
         boolean meetBoundry = false;
 
         // remove formats with quality above others
-        for (int itag : mAllITags) {
+        for (int iTag : mAllITags) {
             if (meetBoundry)
-                mRemovedFormats.add(itag);
-            if (itag == itagBoundryInt)
+                mRemovedFormats.add(iTag);
+            if (iTag == iTagBoundryInt)
                 meetBoundry = true;
         }
     }
 
-    public void switchToFormat(String itagsWithDelimeters) {
-        if (itagsWithDelimeters == null) {
+    public void switchToFormat(String iTagsWithDelimiters) {
+        if (iTagsWithDelimiters == null) {
             return;
         }
 
-        String[] itags = itagsWithDelimeters.split(",");
+        String[] iTags = iTagsWithDelimiters.split(",");
 
         List<Integer> retainedFormats = new ArrayList<>();
-        for (String itag : itags) {
-            retainedFormats.add(Integer.parseInt(itag.trim()));
+        for (String iTag : iTags) {
+            retainedFormats.add(Integer.parseInt(iTag.trim()));
         }
 
         mRemovedFormats.addAll(Arrays.asList(mSDItags));
@@ -163,7 +135,23 @@ public class VideoInfoBuilder {
         mRemovedFormats.removeAll(retainedFormats);
     }
 
-    public String getSupportedFormats() {
-        return null;
+    public Set<VideoFormat> getSupportedFormats() {
+        String[] formats = getSupportedFormats(mVideoInfo);
+        for (String format : formats) {
+            String iTag = findITagValue(format);
+            VideoFormat fmt = VideoFormat.fromITag(iTag);
+            if (fmt == null) { // pass audio formats
+                break;
+            }
+            mSupportedFormats.add(fmt);
+        }
+
+        return Collections.unmodifiableSet(mSupportedFormats);
+    }
+
+    private String findITagValue(String format) {
+        Uri videoInfo = Uri.parse("http://example.com?" + format);
+        String itag = videoInfo.getQueryParameter("itag");
+        return itag;
     }
 }
