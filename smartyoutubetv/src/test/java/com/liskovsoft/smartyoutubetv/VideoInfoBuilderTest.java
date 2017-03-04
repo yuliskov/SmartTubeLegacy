@@ -20,13 +20,13 @@ import static junit.framework.Assert.assertTrue;
 @Config(constants = BuildConfig.class)
 public class VideoInfoBuilderTest {
     private InputStream mOriginalInfo;
-    private InputStream mModifiedInfo;
+    private InputStream mFullHDRemovedInfo;
     private InputStream mFullHDInfo;
 
     @Before
     public void setUp() throws Exception {
         mOriginalInfo = TestHelpers.openResource("get_video_info_origin");
-        mModifiedInfo = TestHelpers.openResource("get_video_info_modified");
+        mFullHDRemovedInfo = TestHelpers.openResource("get_video_info_full_hd_removed");
         mFullHDInfo = TestHelpers.openResource("get_video_info_full_hd");
     }
 
@@ -37,7 +37,7 @@ public class VideoInfoBuilderTest {
         builder.removeFormat(137); // mp4 1920x1080
         InputStream result = builder.get();
 
-        assertTrue(IOUtils.contentEquals(result, mModifiedInfo));
+        assertTrue(IOUtils.contentEquals(result, mFullHDRemovedInfo));
     }
 
     @Test
