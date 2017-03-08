@@ -3,15 +3,19 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
+
 import java.io.InputStream;
+import java.util.Set;
 
-public class VideoQualityInterceptor extends RequestInterceptor {
-    private String mItag;
+public class VideoInfoInterceptor extends RequestInterceptor {
+    private String mFormatName;
 
-    public VideoQualityInterceptor() {
+    public VideoInfoInterceptor() {
         Browser.getBus().register(this);
     }
 
@@ -26,11 +30,7 @@ public class VideoQualityInterceptor extends RequestInterceptor {
 
     @Subscribe
     public void setDesiredResolution(SwitchResolutionEvent event) {
-        mItag = event.getItag();
-    }
-
-    public void setDesiredResolution(String itag) {
-        mItag = itag;
+        mFormatName = event.getFormatName();
     }
 
 
@@ -40,20 +40,20 @@ public class VideoQualityInterceptor extends RequestInterceptor {
             return null;
         }
 
-        //if (mItag == null) {
-        //    return null;
-        //}
-
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
 
-        //String formats = videoInfoBuilder.getSupportedFormats();
-        //Browser.getBus().post(new SupportedVideoFormatsEvent(formats));
+        Set<VideoFormat> supportedFormats = videoInfoBuilder.getSupportedFormats();
 
-        videoInfoBuilder.setMaxFormat(mItag);
+        Browser.getBus().post(new VideoFormatEvent(supportedFormats, VideoFormat.fromName(mFormatName)));
+
+        boolean modified = videoInfoBuilder.selectFormat(VideoFormat.fromName(mFormatName));
 
         InputStream is = videoInfoBuilder.get();
 
+        if (!modified) {
+            return null;
+        }
 
         return createResponse(response.body().contentType(), is);
     }

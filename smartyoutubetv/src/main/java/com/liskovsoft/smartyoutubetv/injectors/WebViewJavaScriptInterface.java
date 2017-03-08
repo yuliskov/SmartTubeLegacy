@@ -55,8 +55,8 @@ public class WebViewJavaScriptInterface {
      */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
-    public void switchResolution(String itag) {
-        Browser.getBus().post(new SwitchResolutionEvent(itag));
+    public void switchResolution(String formatName) {
+        Browser.getBus().post(new SwitchResolutionEvent(formatName));
 
         Handler handler = new Handler(mContext.getMainLooper());
         handler.post(new Runnable() {

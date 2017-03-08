@@ -33,8 +33,9 @@ public class VideoInfoBuilderTest {
     @Test
     public void testFormatsRemoving() throws Exception {
         VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
-        builder.removeFormat(248); // webm 1920x1080
-        builder.removeFormat(137); // mp4 1920x1080
+        //builder.removeFormat(248); // webm 1920x1080
+        //builder.removeFormat(137); // mp4 1920x1080
+        builder.removeFormat(VideoFormat._1080p_);
         InputStream result = builder.get();
 
         assertTrue(IOUtils.contentEquals(result, mFullHDRemovedInfo));

@@ -14,7 +14,7 @@ import java.util.Map;
 public class LangDetector implements ControllerEventHandler {
     private Context mContext;
     private Controller mController;
-    private String[] rusPackages = {"dkc.androidtv.tree", "dkc.video.fsbox", "dkc.video.uatv"};
+    private String[] rusPackages = {"dkc.androidtv.tree", "dkc.video.fsbox", "dkc.video.hdbox", "dkc.video.uatv"};
 
     public LangDetector(Controller controller) {
         mController = controller;

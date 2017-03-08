@@ -116,6 +116,10 @@ public class ResourceInjectorBase {
         }
     }
 
+    protected void injectJSContent(String content) {
+        injectContent(jsInjectTemplate, content.getBytes());
+    }
+
     private void injectContent(String template, byte[] data) {
         String uriEncoded = Helpers.encodeURI(data);// preserve non-english letters
         String encoded = Base64.encodeToString(uriEncoded.getBytes(), Base64.NO_WRAP);

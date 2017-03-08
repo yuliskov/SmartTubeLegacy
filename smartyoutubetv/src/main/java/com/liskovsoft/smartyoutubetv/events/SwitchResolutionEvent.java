@@ -1,13 +1,13 @@
 package com.liskovsoft.smartyoutubetv.events;
 
 public class SwitchResolutionEvent {
-    private final String mItag;
+    private String mFormatName;
 
-    public SwitchResolutionEvent(String itag) {
-        mItag = itag;
+    public SwitchResolutionEvent(String formatName) {
+        mFormatName = formatName;
     }
 
-    public String getItag() {
-        return mItag;
+    public String getFormatName() {
+        return mFormatName;
     }
 }

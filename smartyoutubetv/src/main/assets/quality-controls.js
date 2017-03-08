@@ -1,3 +1,29 @@
+//////// Event Handling ////////
+
+// run event on document object
+function fireEvent(data, type) {
+    var event; // The custom event that will be created
+
+    if (document.createEvent) {
+        event = document.createEvent("HTMLEvents");
+        event.initEvent(type, true, true);
+    } else {
+        event = document.createEventObject();
+        event.eventType = type;
+    }
+
+    event.eventName = type;
+    event.data = data;
+
+    if (document.createEvent) {
+        document.dispatchEvent(event);
+    } else {
+        document.fireEvent("on" + event.eventType, event);
+    }
+}
+
+//////// End Event Handling ///////
+
 //////// Localization //////////
 
 function getCurrentLanguage() {
@@ -152,14 +178,16 @@ function querySelectorAll(selector) {
 }
 
 function remove(el) {
-    // remove()
-    // var el = document.querySelector('#buttons-list');
+    if (!el)
+        return;
+
     el.parentNode.removeChild(el);
 }
 
 function prepend(parent, elems) {
-    // prepend()
-    // var parent = document.querySelector('.controls-row');
+    if (!parent || !elems)
+        return;
+
     parent.insertBefore(elems, parent.firstChild);
 }
 
@@ -198,6 +226,16 @@ function createQualityToggleButton() {
     </div>');
 }
 
+function createQualityButtonsRow2(videoFormats) {
+    var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"></div>');
+    for (var idx in videoFormats) {
+        var textColor = videoFormats[idx].selected ? 'color: red' : 'color: inherit';
+        append(container, createElement('<div class="toggle-button" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>'));
+    }
+
+    return container;
+}
+
 function createQualityButtonsRow() {
     return createElement(
     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
@@ -227,6 +265,9 @@ function sortButtons(nodes) {
 }
 
 function addArrowKeysHandling(container) {
+    if (!container)
+        return;
+
     // classes: 
     // focused - button highlighted
     // selected - button will have next focus
@@ -398,10 +439,10 @@ function qualityButtonRowOnClick(event) {
     if (event.keyCode != 13) // enter/click
         return;
     
-    console.log('switchResolution' + event.target.dataset.itag);
+    console.log('switchResolution ' + event.target.dataset.formatName);
 
     if (window.app)
-        window.app.switchResolution(event.target.dataset.itag);
+        window.app.switchResolution(event.target.dataset.formatName);
     
     event.stopPropagation(); 
 }
@@ -442,6 +483,37 @@ function transportMoreButtonOnClick(event, qualityToggleButton) {
     }
 }
 
+function removePreviouslyCreatedButtons() {
+    var button = get('quality-toggle-buton');
+    remove(button);
+}
+
+function setupQualityButtons(videoFormats) {
+    if (!videoFormats.length)
+        return;
+
+    // removePreviouslyCreatedButtons
+    remove(get('quality-toggle-buton'));
+
+    // create and add my toggle-button
+    var qualityToggleButton = createQualityToggleButton();
+    var parentContainer = querySelector('.controls-row');
+    append(parentContainer, qualityToggleButton);
+    var qualityButtonsRow = createQualityButtonsRow2(videoFormats);
+    // save
+    put('quality-toggle-buton', qualityToggleButton);
+
+
+    var qualityOnClick = function(event){qualityButtonRowOnClick(event)};
+    var toggleOnClick = function(event){qualityToggleButtonOnClick(event, qualityButtonsRow)};
+
+    // attach event handler to my toggle-button
+    qualityToggleButton.addEventListener('keyup', toggleOnClick);
+
+    // attach event handler to quality-button-row
+    qualityButtonsRow.addEventListener('keyup', qualityOnClick);
+}
+
 ///// End Event Handlers /////
 
 function notifyAboutSupportedVideoFormats(formats) {
@@ -452,17 +524,10 @@ function addQualityControls() {
     if (window.addQualityControlsDone)
         return;
 
-    // create and add my toggle-button
-    var qualityToggleButton = createQualityToggleButton();
-    var parentContainer = querySelector('.controls-row');
-    append(parentContainer, qualityToggleButton);
-    
-    // attach event handler to my toggle-button
-    var qualityButtonsRow = createQualityButtonsRow();
-    qualityToggleButton.addEventListener('keyup', function(event){qualityToggleButtonOnClick(event, qualityButtonsRow)});
+    // setup default, before 'videoformats' event is fired
+    setupQualityButtons([{name: '144p'},{name: '360p'},{name: '720p'},{name: '1080p'}]);
 
-    // attach event handler to quality-button-row
-    qualityButtonsRow.addEventListener('keyup', function(event){qualityButtonRowOnClick(event)});
+    document.addEventListener('videoformats', function(event){console.log('videoformats event fired'); setupQualityButtons(event.data)});
 
     // var transportMoreButton = querySelector('#transport-more-button');
     // transportMoreButton.addEventListener('keyup', function(event){transportMoreButtonOnClick(event, qualityToggleButton)});
@@ -470,6 +535,7 @@ function addQualityControls() {
     // add arrow keys handling
     // TODO: not done
     addArrowKeysHandling(querySelector('.controls-row'));
+
 
     window.addQualityControlsDone = true;
 }

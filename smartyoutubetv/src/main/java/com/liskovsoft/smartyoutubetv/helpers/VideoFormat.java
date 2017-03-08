@@ -40,7 +40,7 @@ format code  extension  resolution note
 */
 
 public enum VideoFormat {
-    _144p_(160, 278), _240p_(133, 242), _360p_(243, 134), _480p_(244, 135), _720p_(247, 136), _1080p_(248, 137), _1440p_(271, 264), _2160p(266, 138, 313);
+    _144p_(160, 278), _240p_(133, 242), _360p_(243, 134), _480p_(244, 135), _720p_(247, 136), _1080p_(248, 137), _1440p_(271, 264), _2160p(266, 138, 313), _Auto_();
     private static Map<Integer, VideoFormat> mStrValMap = new HashMap<>();
 
     private final int[] mITags;
@@ -61,20 +61,39 @@ public enum VideoFormat {
     public int[] getITags() {
         return mITags;
     }
-
+    
     @Override
     public String toString() {
         return super.toString().replace("_", "");
     }
 
-    public static VideoFormat fromITag(String strVal) {
-        int iTag = Integer.valueOf(strVal);
+    public static VideoFormat fromName(String name) {
+        if (name == null) {
+            return null;
+        }
+        return VideoFormat.valueOf(String.format("_%s_", name));
+    }
+
+    public static VideoFormat fromITag(String strITag) {
+        if (strITag == null) {
+            return null;
+        }
+
+        int iTag = Integer.valueOf(strITag);
 
         if(!mStrValMap.containsKey(iTag)) {
             return null;
-            //throw new IllegalArgumentException("Unknown String Value: " + strVal);
         }
 
         return mStrValMap.get(iTag);
+    }
+
+    public int getResolution() {
+        if (this == _Auto_) {
+            return 999; // set 'AUTO' as rightmost value
+        }
+
+        int resolution = Integer.parseInt(toString().replace("p", ""));
+        return resolution;
     }
 }

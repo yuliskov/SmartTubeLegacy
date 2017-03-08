@@ -46,13 +46,13 @@ format code  extension  resolution note
 public class VideoInfoBuilder {
     private final InputStream mOriginStream;
     private List<Integer> mRemovedFormats = new ArrayList<>();
-    private Set<VideoFormat> mSupportedFormats = new HashSet<>();
+    private Set<VideoFormat> mSupportedFormats = new TreeSet<>(new Comparator<VideoFormat>() {
+        @Override
+        public int compare(VideoFormat format1, VideoFormat format2) {
+            return format1.getResolution() - format2.getResolution();
+        }
+    });
     private final String mVideoInfo;
-    private Integer[] mSDItags = {160, 278, 133, 242, 243, 134, 244, 135};
-    private Integer[] mHDItags = {247, 136, 248, 137};
-    private Integer[] m4KITags = {271, 264, 266, 138, 313};
-    private Integer[] mAllITags = {160, 278, 133, 242, 243, 134, 244, 135, 247, 136, 248, 137, 271, 264, 266, 138, 313};
-    private boolean mEnable4K;
     private String mResultVideoInfo;
 
     public VideoInfoBuilder(InputStream stream) {
@@ -64,8 +64,16 @@ public class VideoInfoBuilder {
         mResultVideoInfo = mVideoInfo;
     }
 
-    public void removeFormat(int itag) {
+    private void removeFormat(int itag) {
         mRemovedFormats.add(itag);
+    }
+
+
+    public void removeFormat(VideoFormat format) {
+        int[] iTags = format.getITags();
+        for (int iTag : iTags) {
+            removeFormat(iTag);
+        }
     }
 
     public InputStream get() {
@@ -98,55 +106,25 @@ public class VideoInfoBuilder {
         return adaptiveFormats.split(",");
     }
 
-    public void setMaxFormat(String itagBoundry) {
-        if (itagBoundry == null) {
-            return;
-        }
-
-        int iTagBoundryInt = Integer.parseInt(itagBoundry);
-
-        boolean meetBoundry = false;
-
-        // remove formats with quality above others
-        for (int iTag : mAllITags) {
-            if (meetBoundry)
-                mRemovedFormats.add(iTag);
-            if (iTag == iTagBoundryInt)
-                meetBoundry = true;
-        }
-    }
-
-    public void switchToFormat(String iTagsWithDelimiters) {
-        if (iTagsWithDelimiters == null) {
-            return;
-        }
-
-        String[] iTags = iTagsWithDelimiters.split(",");
-
-        List<Integer> retainedFormats = new ArrayList<>();
-        for (String iTag : iTags) {
-            retainedFormats.add(Integer.parseInt(iTag.trim()));
-        }
-
-        mRemovedFormats.addAll(Arrays.asList(mSDItags));
-        mRemovedFormats.addAll(Arrays.asList(mHDItags));
-        mRemovedFormats.addAll(Arrays.asList(m4KITags));
-
-        mRemovedFormats.removeAll(retainedFormats);
-    }
-
     public Set<VideoFormat> getSupportedFormats() {
+        if (mSupportedFormats.size() != 0) {
+            return mSupportedFormats;
+        }
+
         String[] formats = getSupportedFormats(mVideoInfo);
+        
         for (String format : formats) {
             String iTag = findITagValue(format);
             VideoFormat fmt = VideoFormat.fromITag(iTag);
             if (fmt == null) { // pass audio formats
-                break;
+                continue;
             }
             mSupportedFormats.add(fmt);
         }
 
-        return Collections.unmodifiableSet(mSupportedFormats);
+        mSupportedFormats = Collections.unmodifiableSet(mSupportedFormats);
+
+        return mSupportedFormats;
     }
 
     private String findITagValue(String format) {
@@ -155,7 +133,13 @@ public class VideoInfoBuilder {
         return itag;
     }
 
-    public void selectFormat(VideoFormat format) {
+    public boolean selectFormat(VideoFormat format) {
+        if (format == null) {
+            return false;
+        }
+        if (!mSupportedFormats.contains(format)) {
+            return false;
+        }
         VideoFormat[] values = VideoFormat.values();
         for (VideoFormat value : values) {
             if (format == value) {
@@ -166,5 +150,6 @@ public class VideoInfoBuilder {
                 removeFormat(iTag);
             }
         }
+        return true;
     }
 }
