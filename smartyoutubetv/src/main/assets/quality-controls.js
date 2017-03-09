@@ -85,6 +85,12 @@ function onInterfaceVisible(fn) {
     progress.addEventListener('focus', fn);
 }
 
+
+function onInterfaceHidden(fn) {
+    var progress = document.querySelector('#buttons-list');
+    progress.addEventListener('focusout', fn);
+}
+
 function waitBeforeInit(fn) {
     var progress = document.querySelector('#progress-bar');
     var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
@@ -229,8 +235,14 @@ function createQualityToggleButton() {
 function createQualityButtonsRow2(videoFormats) {
     var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"></div>');
     for (var idx in videoFormats) {
-        var textColor = videoFormats[idx].selected ? 'color: red' : 'color: inherit';
-        append(container, createElement('<div class="toggle-button" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>'));
+        var textColor = '';
+        var disabledClass = '';
+        if (videoFormats[idx].selected){
+            textColor = 'color: red';
+            disabledClass = 'disabled';
+        }
+        var el = createElement('<div class="toggle-button ' + disabledClass + '" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>')
+        append(container, el);
     }
 
     return container;
@@ -289,20 +301,20 @@ function addArrowKeysHandling(container) {
         buttons = sortButtons(buttons); // convert to array and sort
 
         // reattach handlers
+        // remove event handlers when content is changed
         removeEventListenerAll(container, 'keydown', [listener1, listener2]);
         addEventListenerAll(container, 'keydown', [listener1, listener2]);
-
-        // removeClass(container.querySelector('.my-disabled'), 'my-disabled disabled');
     };
 
 
-    // remove event handlers when content is changed 
+     
     observeDOM(container, onDomChanged);
-
     onInterfaceVisible(onDomChanged);
+    onInterfaceVisible(function(event){resetButtonsState(event.currentTarget, buttons)});
 }
 
 function moveOutListener(event, objArr) {
+    console.log('moveOutListener fired');
     var up = 38;
     var down = 40;
     var esc = 27;
@@ -312,6 +324,10 @@ function moveOutListener(event, objArr) {
         return;
     }
 
+    resetButtonsState(event.currentTarget, objArr);
+}
+
+function resetButtonsState(container, objArr) {
     var focusedAll = objArr;
     for (var i = 0; i < focusedAll.length; i++) {
         removeFocus(focusedAll[i]);
@@ -325,7 +341,7 @@ function moveOutListener(event, objArr) {
 
     hideQualityControls(); 
 
-    var playBtn = event.currentTarget.querySelector('.icon-player-play');
+    var playBtn = container.querySelector('.icon-player-play');
     addFocus(playBtn);
 }
 

@@ -26,7 +26,7 @@ public class VideoFormatNotification extends ResourceInjectorBase {
         Set<VideoFormat> formats = event.getSupportedFormats();
         VideoFormat selected = event.getSelectedFormat();
         formats = excludeFormats(formats);
-        formats.add(VideoFormat._Auto_);
+        
         if (selected == null || !formats.contains(selected)) {
             selected = VideoFormat._Auto_;
         }
@@ -47,6 +47,7 @@ public class VideoFormatNotification extends ResourceInjectorBase {
 
         // get rid off java.util.Collections$UnmodifiableCollection
         TreeSet<VideoFormat> sortedSet = new TreeSet<>(formats);
+        sortedSet.add(VideoFormat._Auto_);
 
         sortedSet.remove(VideoFormat._240p_);
         sortedSet.remove(VideoFormat._480p_);

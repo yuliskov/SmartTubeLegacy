@@ -103,6 +103,10 @@ public class VideoInfoBuilder {
     private String[] getSupportedFormats(String query) {
         Uri videoInfo = Uri.parse("http://example.com?" + query);
         String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
+        // stream may not contain dash formats
+        if (adaptiveFormats == null) {
+            return new String[]{};
+        }
         return adaptiveFormats.split(",");
     }
 
