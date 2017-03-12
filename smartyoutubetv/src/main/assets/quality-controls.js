@@ -35,14 +35,8 @@ function getCurrentLanguage() {
 }
 
 function detectLanguage() {
-    var result = 'ru-RU';
-
     var language = getCurrentLanguage();
-    if (language == 'EN') {
-        result = 'en-US';
-    }
-
-    return result;
+    return language.split('-')[0].toLowerCase();
 }
 
 function base64Decode(str) {
@@ -56,12 +50,13 @@ function base64Decode(str) {
 
 function localize(str) {
     var ruHash = {
-        'Quality Options': "Качество", 
+        'Quality': "Качество", 
     };
     var userLang = detectLanguage();
     var curHash = {}; // don't translate if language not detected
     switch (userLang) {
-        case "ru-RU":
+        case "ru":
+        case "uk":
             curHash = ruHash;
             break;
     }
@@ -228,7 +223,7 @@ function addEventListenerAll(el, type, fnArr) {
 function createQualityToggleButton() {
     return createElement(
     '<div id="transport-more-button" class="toggle-button" tabindex="-1"> \
-        <span>' + localize('Quality Options') + '</span> \
+        <span>' + localize('Quality') + '</span> \
     </div>');
 }
 

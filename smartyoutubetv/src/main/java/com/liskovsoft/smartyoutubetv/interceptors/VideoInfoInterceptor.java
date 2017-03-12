@@ -61,16 +61,19 @@ public class VideoInfoInterceptor extends RequestInterceptor {
         return createResponse(response.body().contentType(), is);
     }
 
+    /**
+     * Query all available formats (including 4K MP4). By default format list is restricted.
+     * @param url
+     * @return
+     */
     private String fix4KSupport(String url) {
         Uri query = Uri.parse(url);
-        String html5 = query.getQueryParameter("html5");
         String videoId = query.getQueryParameter("video_id");
-        String cpn = query.getQueryParameter("cpn");
 
         String path = query.getPath();
         String host = query.getHost();
         String scheme = query.getScheme();
 
-        return scheme + "://" + host + path + "?" + "html5=" + html5 + "&video_id=" + videoId + "&cpn=" + cpn;
+        return scheme + "://" + host + path + "?video_id=" + videoId;
     }
 }
