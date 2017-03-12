@@ -92,15 +92,14 @@ public class VideoInfoBuilder {
 
         // pretend that there 720p video
         for (int i = 0; i < iTags.length; i++) {
-            // itag%3D271
-            mResultVideoInfo = mResultVideoInfo.replace(
-                    Uri.encode("itag=" + iTags[i]),
-                    Uri.encode("itag=" + VideoFormat._720p_.getITags()[i]));
-            // itag%253D271
-            mResultVideoInfo = mResultVideoInfo.replace(
-                    Uri.encode(Uri.encode("itag=" + iTags[i])),
-                    Uri.encode(Uri.encode("itag=" + VideoFormat._720p_.getITags()[i])));
+            // itag%3D271 == itag=271
+            mResultVideoInfo = mResultVideoInfo.replace("itag%3D" + iTags[i], "itag%3D" + VideoFormat._720p_.getITags()[i]);
+            // itag%253D271 == itag%3D271
+            mResultVideoInfo = mResultVideoInfo.replace("itag%253D" + iTags[i], "itag%253D" + VideoFormat._720p_.getITags()[i]);
+            // size%3D2560x1440 == size=2560x1440
         }
+        mResultVideoInfo = mResultVideoInfo.replace("size%3D2560x1440", "size%3D1280x720");
+        mResultVideoInfo = mResultVideoInfo.replace("size%3D3840x2160", "size%3D1280x720");
     }
 
     private boolean isNot4KVideo() {

@@ -68,7 +68,6 @@ MyActivity extends MainBrowserActivity {
 
 ##TODO
 - auto clear cache to maintain small footprint
-- ability to set video quality
 - show informative error when site not available
 - fix lint issues
 - update UML diagram for MainController and SubControllers
@@ -88,6 +87,7 @@ MyActivity extends MainBrowserActivity {
 	- https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
+- ability to set video quality
 - add multiple flavors: original (WebView) and beta (XWalk)
 	- custom resources location: src/originalFlavor and src/regularFlavor
 - review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
