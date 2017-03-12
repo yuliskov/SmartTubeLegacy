@@ -40,7 +40,8 @@ format code  extension  resolution note
 */
 
 public enum VideoFormat {
-    _144p_(160, 278), _240p_(133, 242), _360p_(243, 134), _480p_(244, 135), _720p_(247, 136), _1080p_(248, 137), _1440p_(271, 264), _2160p(266, 138, 313), _Auto_();
+    // order is matter: first itag - mp4, second one - webm
+    _144p_(160, 278), _240p_(133, 242), _360p_(134, 243), _480p_(135, 244), _720p_(136, 247), _1080p_(137, 248), _1440p_(264, 271), _2160p(266, 313), _Auto_();
     private static Map<Integer, VideoFormat> mStrValMap = new HashMap<>();
 
     private final int[] mITags;

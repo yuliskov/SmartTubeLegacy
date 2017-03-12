@@ -54,6 +54,7 @@ public class VideoInfoBuilder {
     });
     private final String mVideoInfo;
     private String mResultVideoInfo;
+    private VideoFormat mSelectedFormat;
 
     public VideoInfoBuilder(InputStream stream) {
         mOriginStream = stream;
@@ -82,10 +83,38 @@ public class VideoInfoBuilder {
         return new ByteArrayInputStream(mResultVideoInfo.getBytes(Charset.forName("UTF-8")));
     }
 
+    private void fix4KVideo() {
+        if (isNot4KVideo()) {
+            return;
+        }
+
+        int[] iTags = mSelectedFormat.getITags();
+
+        // pretend that there 720p video
+        for (int i = 0; i < iTags.length; i++) {
+            // itag%3D271
+            mResultVideoInfo = mResultVideoInfo.replace(
+                    Uri.encode("itag=" + iTags[i]),
+                    Uri.encode("itag=" + VideoFormat._720p_.getITags()[i]));
+            // itag%253D271
+            mResultVideoInfo = mResultVideoInfo.replace(
+                    Uri.encode(Uri.encode("itag=" + iTags[i])),
+                    Uri.encode(Uri.encode("itag=" + VideoFormat._720p_.getITags()[i])));
+        }
+    }
+
+    private boolean isNot4KVideo() {
+        if (mSelectedFormat == null)
+            return true;
+        return mSelectedFormat.getResolution() < VideoFormat._1440p_.getResolution();
+    }
+
     private void removeSelectedFormats() {
         for (int iTag : mRemovedFormats) {
             removeFormatFromContent(iTag);
         }
+
+        //fix4KVideo();
     }
 
     private void removeFormatFromContent(int itag) {
@@ -93,6 +122,7 @@ public class VideoInfoBuilder {
         for (String format : formats) {
             if (format.contains("itag=" + itag)) {
                 String encode = Uri.encode(format);
+                // append comma (format separator) to format specification
                 mResultVideoInfo = mResultVideoInfo
                         .replace(encode + "%2C", "")
                         .replace("%2C" + encode, "");
@@ -144,6 +174,10 @@ public class VideoInfoBuilder {
         if (!mSupportedFormats.contains(format)) {
             return false;
         }
+        if (mSelectedFormat != null) {
+            throw new UnsupportedOperationException("You can select format only once.");
+        }
+        mSelectedFormat = format;
         VideoFormat[] values = VideoFormat.values();
         for (VideoFormat value : values) {
             if (format == value) {
