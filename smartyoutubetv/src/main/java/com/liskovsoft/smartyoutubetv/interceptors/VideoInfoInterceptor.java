@@ -41,7 +41,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
             return null;
         }
 
-        url = fix4KSupport(url);
+        //url = fix4KSupport(url);
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
@@ -68,12 +68,14 @@ public class VideoInfoInterceptor extends RequestInterceptor {
      */
     private String fix4KSupport(String url) {
         Uri query = Uri.parse(url);
+        String html5 = query.getQueryParameter("html5");
         String videoId = query.getQueryParameter("video_id");
+        String cpn = query.getQueryParameter("cpn");
 
         String path = query.getPath();
         String host = query.getHost();
         String scheme = query.getScheme();
 
-        return scheme + "://" + host + path + "?video_id=" + videoId;
+        return scheme + "://" + host + path + "?" + "html5=" + html5 + "&video_id=" + videoId + "&cpn=" + cpn;
     }
 }
