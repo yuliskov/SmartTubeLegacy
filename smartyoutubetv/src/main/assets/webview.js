@@ -14,4 +14,4 @@ addExitEvent();
 // Generic Android on mt5882 (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // 32T18 OF THE FAMILY GENERATION T18 BY (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // all other devices (empty string) - webm
-applyCodecFixes({'NG3128HD': 'webm, mp4', 't95m': '', '32T18': '', '': 'webm'});
+applyCodecFixes({'NG3128HD': 'webm, mp4', 't95m': '', '32T18': '', 'MiTV3S (missionimpossible)': 'mp4', '': 'webm'});

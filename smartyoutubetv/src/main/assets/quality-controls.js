@@ -309,7 +309,7 @@ function addArrowKeysHandling(container) {
 }
 
 function moveOutListener(event, objArr) {
-    console.log('moveOutListener fired');
+    // console.log('moveOutListener fired');
     var up = 38;
     var down = 40;
     var esc = 27;
@@ -323,6 +323,8 @@ function moveOutListener(event, objArr) {
 }
 
 function resetButtonsState(container, objArr) {
+    console.log('resetButtonsState called');
+
     var focusedAll = objArr;
     for (var i = 0; i < focusedAll.length; i++) {
         removeFocus(focusedAll[i]);

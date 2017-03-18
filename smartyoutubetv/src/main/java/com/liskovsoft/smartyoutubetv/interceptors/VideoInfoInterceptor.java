@@ -1,10 +1,13 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
+import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import com.squareup.otto.Subscribe;
@@ -14,9 +17,12 @@ import java.io.InputStream;
 import java.util.Set;
 
 public class VideoInfoInterceptor extends RequestInterceptor {
-    private String mFormatName;
+    private final Context mContext;
+    private VideoFormat mSelectedFormat = VideoFormat._720p_;
 
-    public VideoInfoInterceptor() {
+    public VideoInfoInterceptor(Context context) {
+        mContext = context;
+
         Browser.getBus().register(this);
     }
 
@@ -31,7 +37,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
 
     @Subscribe
     public void setDesiredResolution(SwitchResolutionEvent event) {
-        mFormatName = event.getFormatName();
+        mSelectedFormat = VideoFormat.fromName(event.getFormatName());
     }
 
 
@@ -48,9 +54,9 @@ public class VideoInfoInterceptor extends RequestInterceptor {
 
         Set<VideoFormat> supportedFormats = videoInfoBuilder.getSupportedFormats();
 
-        Browser.getBus().post(new VideoFormatEvent(supportedFormats, VideoFormat.fromName(mFormatName)));
+        Browser.getBus().post(new VideoFormatEvent(supportedFormats, mSelectedFormat));
 
-        boolean modified = videoInfoBuilder.selectFormat(VideoFormat.fromName(mFormatName));
+        boolean modified = videoInfoBuilder.selectFormat(mSelectedFormat);
 
         InputStream is = videoInfoBuilder.get();
 

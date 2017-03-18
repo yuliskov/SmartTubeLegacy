@@ -46,7 +46,7 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
-        return Build.MODEL;
+        return String.format("%s (%s)", Build.MODEL, Build.PRODUCT);
     }
 
     /*
