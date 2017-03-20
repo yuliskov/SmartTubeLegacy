@@ -3,6 +3,7 @@ notes.txt
 /misc
 /TODO.txt
 *_bak
+*_tmp
 *.bak
 /.idea
 *.apk

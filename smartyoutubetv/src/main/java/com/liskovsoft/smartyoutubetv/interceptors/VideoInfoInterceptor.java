@@ -1,13 +1,11 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import com.squareup.otto.Subscribe;
@@ -47,7 +45,13 @@ public class VideoInfoInterceptor extends RequestInterceptor {
             return null;
         }
 
-        //url = fix4KSupport(url);
+        //// test code, delete in production
+        //if (true) {
+        //    InputStream inputStream = Helpers.getAsset(mContext, "get_video_info_4k_2");
+        //    return createResponse(MediaType.parse("application/x-www-form-urlencoded"), inputStream);
+        //}
+
+        url = unlockAllFormats(url);
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
@@ -56,32 +60,24 @@ public class VideoInfoInterceptor extends RequestInterceptor {
 
         Browser.getBus().post(new VideoFormatEvent(supportedFormats, mSelectedFormat));
 
-        boolean modified = videoInfoBuilder.selectFormat(mSelectedFormat);
+        videoInfoBuilder.selectFormat(mSelectedFormat);
 
         InputStream is = videoInfoBuilder.get();
-
-        if (!modified) {
-            return null;
-        }
 
         return createResponse(response.body().contentType(), is);
     }
 
     /**
-     * Query all available formats (including 4K MP4). By default format list is restricted.
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
      * @param url
      * @return
      */
-    private String fix4KSupport(String url) {
-        Uri query = Uri.parse(url);
-        String html5 = query.getQueryParameter("html5");
-        String videoId = query.getQueryParameter("video_id");
-        String cpn = query.getQueryParameter("cpn");
+    private String unlockAllFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        String path = query.getPath();
-        String host = query.getHost();
-        String scheme = query.getScheme();
+        query.remove("c");
 
-        return scheme + "://" + host + path + "?" + "html5=" + html5 + "&video_id=" + videoId + "&cpn=" + cpn;
+        return query.toString();
     }
 }
