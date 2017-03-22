@@ -67,6 +67,7 @@ MyActivity extends MainBrowserActivity {
 - Butter Knife - simplify layout handling
 
 ##TODO
+- add 60 fps support
 - auto clear cache to maintain small footprint
 - show informative error when site not available
 - fix lint issues
