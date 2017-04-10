@@ -37,9 +37,19 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         Fabric.with(this, new Crashlytics());
 
+        clearCache();
+
         createController(icicle);
 
         makeActivityFullscreen();
+    }
+
+    /**
+     * WebView likes to cache js. So this is prevents my changes from applying.
+     */
+    private void clearCache() {
+        deleteDatabase("webview.db");
+        deleteDatabase("webviewCache.db");
     }
 
     private void createController(Bundle icicle) {

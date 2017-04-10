@@ -6,6 +6,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.smartyoutubetv.events.VideoFormatNotification;
 
 public class MyPageLoadHandler implements PageLoadHandler {
     private final Context mContext;

@@ -8,9 +8,13 @@ function firstRun() {
 ////////////////////////////////////////////
 
 function waitBeforeInit(fn) {
-    var progress = document.querySelector('#progress-bar');
-    var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
-    progress.addEventListener('focus', onfocus);
+    var playButton = document.querySelector('.icon-player-play');
+    if (!playButton){
+        setTimeout(function(){waitBeforeInit(fn)}, 500);
+        return;
+    }
+    var onfocus = function(){fn(); playButton.removeEventListener('focus', onfocus)}
+    playButton.addEventListener('focus', onfocus);
 }
 
 //////////////////////////////////////////////

@@ -51,7 +51,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
         //    return createResponse(MediaType.parse("application/x-www-form-urlencoded"), inputStream);
         //}
 
-        url = unlockAllFormats(url);
+        //url = unlockAllFormats(url);
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());

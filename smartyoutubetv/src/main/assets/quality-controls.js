@@ -53,6 +53,7 @@ function localize(str) {
         'Quality': "Качество", 
     };
     var userLang = detectLanguage();
+    console.log("current language is " + userLang + " " + str);
     var curHash = {}; // don't translate if language not detected
     switch (userLang) {
         case "ru":
@@ -75,22 +76,65 @@ function firstRun() {
     return false;
 }
 
+//  var up = 38;
+//  var down = 40;
+//  var left = 37;
+//  var right = 39;
+//  var enter = 13;
 function onInterfaceVisible(fn) {
-    var progress = document.querySelector('#progress-bar');
-    progress.addEventListener('focus', fn);
+    var playButton = document.querySelector('.icon-player-play');
+    if (!playButton){
+        setTimeout(function(){onInterfaceVisible(fn)}, 500);
+        return;
+    }
+    playButton.addEventListener('focus', fn);
 }
 
+// //  var up = 38;
+// //  var down = 40;
+// //  var left = 37;
+// //  var right = 39;
+// //  var enter = 13;
+// function onInterfaceVisible(fn) {
+//     var playButton = document.querySelector('.icon-player-play');
+//     if (!playButton){
+//         setTimeout(function(){onInterfaceVisible(fn)}, 500);
+//         return;
+//     }
+//     playButton.addEventListener('focus', fn);
 
-function onInterfaceHidden(fn) {
-    var progress = document.querySelector('#buttons-list');
-    progress.addEventListener('focusout', fn);
-}
+//     var el = document;
+//     el.addEventListener('keydown', function(event) {
+//     	 var up = 38;
+// 		 var down = 40;
+// 		 var left = 37;
+// 		 var right = 39;
+// 		 var enter = 13;
+// 		 var key = event.keyCode;
+// 		 if (key != up && key != down && key != left && key != right && key != enter) {
+// 		 	return;
+// 		 }
+
+// 		 var controls = document.querySelector('#transport-controls');
+// 		 console.log('onInterfaceVisible ' + hasClass(controls, 'hidden'));
+
+// 		 if (hasClass(controls, 'hidden')) {
+// 		 	console.log('onInterfaceVisible ' + hasClass(controls, 'hidden'));
+// 		 }
+//     });
+// }
 
 function waitBeforeInit(fn) {
-    var progress = document.querySelector('#progress-bar');
-    var onfocus = function(){fn(); progress.removeEventListener('focus', onfocus)}
-    progress.addEventListener('focus', onfocus);
+    var playButton = document.querySelector('.icon-player-play');
+    if (!playButton){
+        setTimeout(function(){waitBeforeInit(fn)}, 500);
+        return;
+    }
+    var onfocus = function(){fn(); playButton.removeEventListener('focus', onfocus)}
+    playButton.addEventListener('focus', onfocus);
 }
+
+/////////////////////////////
 
 var observeDOM = (function(){
     var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
@@ -112,6 +156,9 @@ var observeDOM = (function(){
         }
     }
 })();
+
+
+///////////////////////////
 
 function createElement(html) {
     var div = document.createElement('div');
@@ -149,9 +196,18 @@ function hasClass( elem, klass ) {
      return (" " + elem.className + " " ).indexOf( " "+klass+" " ) > -1;
 }
 
+function hasId( elem, id ) {
+     return (" " + elem.id + " " ).indexOf( " " + id + " " ) > -1;
+}
+
 //Where el is the DOM element you'd like to test for visibility
 function isHidden(el) {
     return (el.offsetParent === null)
+}
+
+function isInterfaceHidden() {
+	var controls = document.querySelector('#transport-controls');
+	return hasClass(controls, 'hidden');
 }
 
 function addEventListenerAll(type, fn, objArr) {
@@ -222,7 +278,7 @@ function addEventListenerAll(el, type, fnArr) {
 
 function createQualityToggleButton() {
     return createElement(
-    '<div id="transport-more-button" class="toggle-button" tabindex="-1"> \
+    '<div id="transport-more-button" class="my-button toggle-button" tabindex="-1"> \
         <span>' + localize('Quality') + '</span> \
     </div>');
 }
@@ -236,7 +292,7 @@ function createQualityButtonsRow2(videoFormats) {
             textColor = 'color: red';
             disabledClass = 'disabled';
         }
-        var el = createElement('<div class="toggle-button ' + disabledClass + '" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>')
+        var el = createElement('<div class="my-button toggle-button ' + disabledClass + '" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>')
         append(container, el);
     }
 
@@ -291,6 +347,7 @@ function addArrowKeysHandling(container) {
     addEventListenerAll(container, 'keydown', [listener1, listener2]);
     
     var onDomChanged = function(el) {
+    	console.log('onDomChanged');
         // refill buttons
         buttons = container.querySelectorAll('.button, .toggle-button');
         buttons = sortButtons(buttons); // convert to array and sort
@@ -301,11 +358,12 @@ function addArrowKeysHandling(container) {
         addEventListenerAll(container, 'keydown', [listener1, listener2]);
     };
 
-
-     
     observeDOM(container, onDomChanged);
     onInterfaceVisible(onDomChanged);
-    onInterfaceVisible(function(event){resetButtonsState(event.currentTarget, buttons)});
+    // reset state of buttons that managed in this script
+    onInterfaceVisible(function(event){
+    	resetButtonsState(event.currentTarget, buttons);
+    });
 }
 
 function moveOutListener(event, objArr) {
@@ -317,34 +375,41 @@ function moveOutListener(event, objArr) {
 
     if (keyCode != up && keyCode != down && keyCode != esc) {
         return;
+    }    
+
+    console.log('moveOutListener');
+
+    if (keyCode == esc) {
+	    // fix hide interface on esc key
+	    setTimeout(function(){resetButtonsState(event.currentTarget, objArr)}, 500);
+    	return;
     }
 
     resetButtonsState(event.currentTarget, objArr);
 }
 
+// reset state of buttons that managed in this script
 function resetButtonsState(container, objArr) {
     console.log('resetButtonsState called');
 
     var focusedAll = objArr;
+    
     for (var i = 0; i < focusedAll.length; i++) {
-        removeFocus(focusedAll[i]);
         if (hasClass(focusedAll[i], 'my-disabled'))
             removeClass(focusedAll[i], 'disabled my-disabled');
+        if (hasId(focusedAll[i], 'transport-more-button'))
+        	removeFocus(focusedAll[i]);
+        if (hasClass(focusedAll[i], 'my-button'))
+        	removeFocus(focusedAll[i]);
     }
 
-    if (get('buttons-list') == null) {
-        return;
-    }
-
-    hideQualityControls(); 
-
-    var playBtn = container.querySelector('.icon-player-play');
-    addFocus(playBtn);
+    hideQualityControls();
 }
 
 function hideQualityControls() {
     // TODO: rewrite
 
+    // Are quality buttons shown?
     if (get('buttons-list') == null) {
         return;
     }
@@ -353,8 +418,14 @@ function hideQualityControls() {
     put('buttons-list', null);
 
     var parent = querySelector('.controls-row'); // root container
-    remove(parent.querySelector('#buttons-list'));
+    var qualityRow = parent.querySelector('#buttons-list');
+    remove(qualityRow);
     prepend(parent, backedButtons);
+
+    var buttons = qualityRow.querySelectorAll('.button, .toggle-button');
+    for (var i = 0; i < buttons.length; i++) {
+        removeFocus(buttons[i]);
+    }
 }
 
 function arrowKeysListener(event, objArr) {
@@ -423,6 +494,8 @@ function getNextRightFocus(objArr, currentFocus) {
 }
 
 function addFocus(elem) {
+	if (!elem)
+		return;
     addClass(elem, 'focused');
     addClass(elem, 'selected');  
     elem.focus();
@@ -460,6 +533,18 @@ function qualityButtonRowOnClick(event) {
     event.stopPropagation(); 
 }
 
+function setupAutoHide() {
+	var checkInterfaceHidden = function(){
+		console.log('checking that interface is hidden');
+		if (isInterfaceHidden()) {
+			clearInterval(interval);
+			hideQualityControls();
+		}
+	};
+	var interval = setInterval(checkInterfaceHidden, 500);
+	console.log('setupAutoHide');
+}
+
 function qualityToggleButtonOnClick(event, qualityButtonRow) {
     if (event.keyCode != 13) // enter or click
         return;
@@ -473,6 +558,7 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
         put('buttons-list', buttonList);
         var elems = qualityButtonRow;
         addClass(querySelector('#transport-more-button'), 'disabled my-disabled');
+        setupAutoHide();
     }
     
     var buttons = querySelector('#buttons-list');
@@ -481,7 +567,7 @@ function qualityToggleButtonOnClick(event, qualityButtonRow) {
     var parent = querySelector('.controls-row'); // root container
     prepend(parent, elems);
 
-    // I'll handle event themself
+    // I'll handle event myself
     event.stopPropagation();
 }
 
