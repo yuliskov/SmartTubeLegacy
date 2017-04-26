@@ -7,31 +7,73 @@ function firstRun() {
 
 ////////////////////////////////////////////
 
-function waitBeforeInit(fn) {
-    var playButton = document.querySelector('.icon-player-play');
-    if (!playButton){
-        setTimeout(function(){waitBeforeInit(fn)}, 500);
-        return;
-    }
-    var onfocus = function(){fn(); playButton.removeEventListener('focus', onfocus)}
-    playButton.addEventListener('focus', onfocus);
+function delayTillElementBeInitialized(callback, testFn) {
+	var res = testFn();
+	if (res) {
+		callback();
+		return;
+	}
+
+	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
+	    var up = 38;
+	    var down = 40;
+	    var esc = 27;
+	    var enter = 13;
+	    var keyCode = event.keyCode;
+
+	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
+	        return;
+	    }
+
+    	setTimeout(function() {
+    		var res = testFn();
+	    	if (!res)
+	    		return;
+
+	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
+
+	    	// cleanup
+		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
+		    // actual call
+		    callback();
+    	}, 500);
+    });	
 }
 
-//////////////////////////////////////////////
+function getVideoPlayerPlayButton() {
+	return document.querySelector('.icon-player-play');
+}
+
+function delayUntilPlayerBeInitialized(fn) {
+    delayTillElementBeInitialized(fn, getVideoPlayerPlayButton);
+}
+
+function getExitDialogOKButton() {
+	return document.getElementById('dialog-ok-button');
+}
+
+function delayUnitlExitDialogBeInitialized(fn) {
+	delayTillElementBeInitialized(fn, getExitDialogOKButton);
+}
+
+///////////////////////////////////////////////
 
 function addExitEvent() {
-    if (window.eventAdded)
+    console.log("addExitEvent");
+	if (window.eventAdded)
         return;
 
-    console.log("addExitEvent");
-
-    var element = document.getElementById('dialog-ok-button');
-    element.addEventListener('keydown', function (e) {
-        if (e.which == 13) {
-            e.preventDefault();
-            app.closeApp();
-        }
+    delayUnitlExitDialogBeInitialized(function() {
+	    var element = getExitDialogOKButton();
+	    
+	    element.addEventListener('keydown', function (e) {
+	        if (e.which == 13) { // click
+	            e.preventDefault();
+	            app.closeApp();
+	        }
+	    });
     });
+
     window.eventAdded = true;
 }
 
@@ -165,4 +207,4 @@ function fixOverlappedTextInRussian() {
 
 ////////////////////////////////////////////
 
-waitBeforeInit(fixOverlappedTextInRussian);
+delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);

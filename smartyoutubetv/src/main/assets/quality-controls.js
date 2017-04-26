@@ -90,49 +90,59 @@ function onInterfaceVisible(fn) {
     playButton.addEventListener('focus', fn);
 }
 
-// //  var up = 38;
-// //  var down = 40;
-// //  var left = 37;
-// //  var right = 39;
-// //  var enter = 13;
-// function onInterfaceVisible(fn) {
-//     var playButton = document.querySelector('.icon-player-play');
-//     if (!playButton){
-//         setTimeout(function(){onInterfaceVisible(fn)}, 500);
-//         return;
-//     }
-//     playButton.addEventListener('focus', fn);
+/////////////////////////////////////////////////
 
-//     var el = document;
-//     el.addEventListener('keydown', function(event) {
-//     	 var up = 38;
-// 		 var down = 40;
-// 		 var left = 37;
-// 		 var right = 39;
-// 		 var enter = 13;
-// 		 var key = event.keyCode;
-// 		 if (key != up && key != down && key != left && key != right && key != enter) {
-// 		 	return;
-// 		 }
+function delayTillElementBeInitialized(callback, testFn) {
+	var res = testFn();
+	if (res) {
+		callback();
+		return;
+	}
 
-// 		 var controls = document.querySelector('#transport-controls');
-// 		 console.log('onInterfaceVisible ' + hasClass(controls, 'hidden'));
+	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
+	    var up = 38;
+	    var down = 40;
+	    var esc = 27;
+	    var enter = 13;
+	    var keyCode = event.keyCode;
 
-// 		 if (hasClass(controls, 'hidden')) {
-// 		 	console.log('onInterfaceVisible ' + hasClass(controls, 'hidden'));
-// 		 }
-//     });
-// }
+	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
+	        return;
+	    }
 
-function waitBeforeInit(fn) {
-    var playButton = document.querySelector('.icon-player-play');
-    if (!playButton){
-        setTimeout(function(){waitBeforeInit(fn)}, 500);
-        return;
-    }
-    var onfocus = function(){fn(); playButton.removeEventListener('focus', onfocus)}
-    playButton.addEventListener('focus', onfocus);
+    	setTimeout(function() {
+    		var res = testFn();
+	    	if (!res)
+	    		return;
+
+	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
+
+	    	// cleanup
+		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
+		    // actual call
+		    callback();
+    	}, 500);
+    });	
 }
+
+function getVideoPlayerPlayButton() {
+	return document.querySelector('.icon-player-play');
+}
+
+function delayUntilPlayerBeInitialized(fn) {
+    delayTillElementBeInitialized(fn, getVideoPlayerPlayButton);
+}
+
+function getExitDialogOKButton() {
+	return document.getElementById('dialog-ok-button');
+}
+
+function delayUnitlExitDialogBeInitialized(fn) {
+	delayTillElementBeInitialized(fn, getExitDialogOKButton);
+}
+
+///////////////////////////////////////////////
+
 
 /////////////////////////////
 
@@ -642,4 +652,4 @@ function addQualityControls() {
 ///////////////////////////////////////////////////
 
 // add quality settings to video
-addQualityControls();
+delayUntilPlayerBeInitialized(addQualityControls);

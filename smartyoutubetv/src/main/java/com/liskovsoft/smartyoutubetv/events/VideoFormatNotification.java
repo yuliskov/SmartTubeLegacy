@@ -37,7 +37,8 @@ public class VideoFormatNotification extends ResourceInjectorBase {
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                injectJSContent("fireEvent(" + jsonFormatList + ", 'videoformats')");
+                // BUGFIX: Console: ReferenceError: fireEvent is not defined
+                injectJSContent("if(fireEvent){fireEvent(" + jsonFormatList + ", 'videoformats')}");
             }
         });
     }

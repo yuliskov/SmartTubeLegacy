@@ -99,6 +99,7 @@ public class BrowserActivity extends AppCompatActivity {
         if (mController == null) {
             return;
         }
+        logger.info("BrowserActivity.onPause: this=" + this);
         mController.onPause();
     }
 
@@ -109,6 +110,17 @@ public class BrowserActivity extends AppCompatActivity {
             return;
         }
         logger.info("BrowserActivity.onResume: this=" + this);
+        mController.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onResume();
+        if (mController == null) {
+            return;
+        }
+        logger.info("BrowserActivity.onDestroy: this=" + this);
+        // BUGFIX: fixing bug with Resuming webview timers
         mController.onResume();
     }
 

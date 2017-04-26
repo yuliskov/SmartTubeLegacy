@@ -88,7 +88,7 @@ public class ResourceInjectorBase {
      * Safe mean injected only one time per page.
      * @param fileName
      */
-    protected void injectCSSSafe(String fileName) {
+    protected void injectCSSOnce(String fileName) {
         injectContent(jsInjectTemplate, String.format(testCSSFnTemplate, fileName).getBytes());
     }
 

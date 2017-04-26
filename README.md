@@ -88,6 +88,8 @@ MyActivity extends MainBrowserActivity {
 	- https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
+- disable release logging
+- bug with Resuming webview timers
 - ability to set video quality
 - add multiple flavors: original (WebView) and beta (XWalk)
 	- custom resources location: src/originalFlavor and src/regularFlavor

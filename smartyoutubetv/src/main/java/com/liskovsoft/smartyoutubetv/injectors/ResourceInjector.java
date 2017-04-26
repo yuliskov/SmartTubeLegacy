@@ -20,7 +20,7 @@ public class ResourceInjector extends ResourceInjectorBase {
     }
 
     public void inject() {
-        injectCSSSafe("main.css");
+        injectCSSOnce("main.css");
         injectJSOnce("common.js");
         injectJSOnce("quality-controls.js");
         if (Browser.getEngineType() == EngineType.XWalk) {

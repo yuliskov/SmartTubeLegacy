@@ -4,15 +4,19 @@ import android.content.Context;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.liskovsoft.browser.BrowserActivity;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.custom.PageLoadHandler;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatNotification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyPageLoadHandler implements PageLoadHandler {
     private final Context mContext;
     private WebViewJavaScriptInterface mJS;
     private ResourceInjector mInjector;
     private VideoFormatNotification mNotification;
+    private static final Logger logger = LoggerFactory.getLogger(MyPageLoadHandler.class);
 
     public MyPageLoadHandler(Context context) {
         mContext = context;
@@ -20,6 +24,7 @@ public class MyPageLoadHandler implements PageLoadHandler {
 
     @Override
     public void onPageFinished(Tab tab) {
+        logger.info("onPageFinished called");
         WebView w = tab.getWebView();
         injectWebFiles(w);
     }
