@@ -68,26 +68,14 @@ MyActivity extends MainBrowserActivity {
 
 ##TODO
 - add 60 fps support
-- auto clear cache to maintain small footprint
+- playlist: more informative playlist layout
+- playlist: add shuffle option
+- video-item: add comments section
+- video-item: add description section
 - show informative error when site not available
-- fix lint issues
-- update UML diagram for MainController and SubControllers
-- find more details: 
-	- TabControl.SubWindow
-	- DataController
-	- BrowserWebView.CustomView
-	- SnapshotBar
-- add tests:
-	- testThatPageLoadHandlerNotCalledTwise
-	- testThatUrlIsNotOverridedAndHandledInternally
-	- testCheckThatBackKeyNotClosesActivity
-	- testThatCustomUserAgentHeaderNotOverridedBySettings
-	- testThatWebViewCreatedAndAttachedToTheActivityView
-	- testThatWebViewHeadersAreProperlySet
-- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
-	- https://developer.chrome.com/multidevice/android/customtabs
 
 ##DONE
+- auto clear cache to maintain small footprint
 - disable release logging
 - bug with Resuming webview timers
 - ability to set video quality
@@ -117,6 +105,23 @@ MyActivity extends MainBrowserActivity {
 	- https://github.com/noveogroup/android-logger
 	- http://www.slf4j.org/android/
 	- http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
+
+##NOTES
+- update UML diagram for MainController and SubControllers
+- find more details: 
+	- TabControl.SubWindow
+	- DataController
+	- BrowserWebView.CustomView
+	- SnapshotBar
+- add tests:
+	- testThatPageLoadHandlerNotCalledTwise
+	- testThatUrlIsNotOverridedAndHandledInternally
+	- testCheckThatBackKeyNotClosesActivity
+	- testThatCustomUserAgentHeaderNotOverridedBySettings
+	- testThatWebViewCreatedAndAttachedToTheActivityView
+	- testThatWebViewHeadersAreProperlySet
+- add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
+	- https://developer.chrome.com/multidevice/android/customtabs
 
 ##Other
 - how to fetch sources from [android open source project][browser-origin] via console:

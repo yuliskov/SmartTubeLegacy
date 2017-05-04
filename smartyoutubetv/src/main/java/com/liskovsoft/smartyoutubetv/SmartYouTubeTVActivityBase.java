@@ -13,7 +13,6 @@ import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.browser.custom.PageLoadHandler;
-import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
 import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 import io.fabric.sdk.android.Fabric;
@@ -105,6 +104,24 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         event = translateBackToEscape(event);
         event = translateMenuToGuide(event);
+        event = translateNumpadEnterToEnter(event);
+        event = translateButtonAToEnter(event);
+        return event;
+    }
+
+    private KeyEvent translateButtonAToEnter(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_A) {
+            // pay attention, you must pass action_up instead of action_down
+            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
+        }
+        return event;
+    }
+
+    private KeyEvent translateNumpadEnterToEnter(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+            // pay attention, you must pass action_up instead of action_down
+            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
+        }
         return event;
     }
 
