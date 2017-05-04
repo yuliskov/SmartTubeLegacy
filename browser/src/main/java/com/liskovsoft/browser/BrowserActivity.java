@@ -120,7 +120,7 @@ public class BrowserActivity extends AppCompatActivity {
             return;
         }
         logger.info("BrowserActivity.onDestroy: this=" + this);
-        // BUGFIX: fixing bug with Resuming webview timers
+        // BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
         mController.onResume();
     }
 

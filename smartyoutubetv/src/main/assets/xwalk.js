@@ -11,4 +11,11 @@
 // KTU84M (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // 32T18 OF THE FAMILY GENERATION T18 BY (gmail/tailand friend/jackie.hhop@gmail.com) - all
 // all other devices (empty string) - webm
-applyCodecFixes({'t95m': '', '32T18': '', 'MiTV3S (missionimpossible)': 'mp4', 'MiTV3S (pulpfiction)': 'mp4', '': 'webm'});
+applyCodecFixes({
+	'MiTV2-40 (hancock)': 'mp4',
+	't95m': '', 
+	'32T18': '', 
+	'MiTV3S (missionimpossible)': 'mp4', 
+	'MiTV3S (pulpfiction)': 'mp4', 
+	'': 'webm'
+});

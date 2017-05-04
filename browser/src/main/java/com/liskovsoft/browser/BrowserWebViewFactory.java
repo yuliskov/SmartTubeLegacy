@@ -26,11 +26,9 @@ public class BrowserWebViewFactory implements WebViewFactory {
         if (Browser.getEngineType() == EngineType.XWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         } else {
-            w = new HeadersBrowserWebView(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+            // BUGFIX: rare memory leak in WebView
+            w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
-
-        // youtube tv: this is only way to change video quality
-        // w.setInitialScale(100);
 
         return w;
     }
