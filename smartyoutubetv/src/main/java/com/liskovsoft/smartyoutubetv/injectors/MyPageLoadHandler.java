@@ -31,8 +31,12 @@ public class MyPageLoadHandler implements PageLoadHandler {
 
     @Override
     public void onPageStarted(Tab tab) {
+        logger.info("onPageStarted called");
         // js must be added before page fully loaded
         addJSInterface(tab);
+
+        //WebView w = tab.getWebView();
+        //injectWebFiles(w);
     }
 
     @Override

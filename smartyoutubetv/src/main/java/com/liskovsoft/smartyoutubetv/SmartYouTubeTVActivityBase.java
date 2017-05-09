@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
@@ -13,6 +15,7 @@ import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.helpers.LangDetector;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 import io.fabric.sdk.android.Fabric;
@@ -76,6 +79,47 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = doTranslateKeys(event);
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        return translateMouseWheelToArrowKeys(event);
+    }
+
+    private boolean translateMouseWheelToArrowKeys(MotionEvent event) {
+        if (0 != (event.getSource() & InputDevice.SOURCE_CLASS_POINTER)) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_SCROLL:
+                    fakeHorizontalScroll(event);
+                    fakeVerticalScroll(event);
+                    return false;
+            }
+        }
+        return super.dispatchGenericMotionEvent(event);
+    }
+
+    private void fakeVerticalScroll(MotionEvent event) {
+        if (Helpers.floatEquals(event.getAxisValue(MotionEvent.AXIS_VSCROLL), 0.0f)) {
+            return;
+        }
+        KeyEvent keyEvent = null;
+        if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f)
+            keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN);
+        else
+            keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP);
+        dispatchKeyEvent(keyEvent);
+    }
+
+    private void fakeHorizontalScroll(MotionEvent event) {
+        if (Helpers.floatEquals(event.getAxisValue(MotionEvent.AXIS_HSCROLL), 0.0f)) {
+            return;
+        }
+        KeyEvent keyEvent = null;
+        if (event.getAxisValue(MotionEvent.AXIS_HSCROLL) < 0.0f)
+            keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT);
+        else
+            keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT);
+        dispatchKeyEvent(keyEvent);
     }
 
     @Override

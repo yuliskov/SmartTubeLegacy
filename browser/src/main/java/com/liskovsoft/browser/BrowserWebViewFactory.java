@@ -1,8 +1,10 @@
 package com.liskovsoft.browser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
@@ -30,6 +32,8 @@ public class BrowserWebViewFactory implements WebViewFactory {
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
 
+        w.setInitialScale(100); // real display size
+        
         return w;
     }
 

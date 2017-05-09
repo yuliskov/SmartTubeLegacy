@@ -45,4 +45,9 @@ public class Helpers {
             throw new RuntimeException(e);
         }
     }
+
+    public static boolean floatEquals(float num1, float num2) {
+        float epsilon = 0.1f;
+        return Math.abs(num1 - num2) < epsilon;
+    }
 }

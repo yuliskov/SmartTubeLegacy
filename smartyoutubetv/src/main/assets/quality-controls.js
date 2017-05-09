@@ -95,6 +95,7 @@ function onInterfaceVisible(fn) {
 function delayTillElementBeInitialized(callback, testFn) {
 	var res = testFn();
 	if (res) {
+        console.log('delayTillElementBeInitialized: prepare to fire callback');
 		callback();
 		return;
 	}

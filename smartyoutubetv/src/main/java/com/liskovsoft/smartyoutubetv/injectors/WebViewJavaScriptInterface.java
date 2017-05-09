@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
@@ -47,6 +50,20 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return String.format("%s (%s)", Build.MODEL, Build.PRODUCT);
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public String getDeviceResolution() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity)mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        return String.format("%sx%s", width, height);
     }
 
     /*

@@ -17,11 +17,13 @@ function delayTillElementBeInitialized(callback, testFn) {
 	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
 	    var up = 38;
 	    var down = 40;
+        var left = 37;
+        var right = 39;
 	    var esc = 27;
 	    var enter = 13;
 	    var keyCode = event.keyCode;
 
-	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
+	    if (keyCode != up && keyCode != down && keyCode != left && keyCode != right && keyCode != esc && keyCode != enter) {
 	        return;
 	    }
 
@@ -37,7 +39,7 @@ function delayTillElementBeInitialized(callback, testFn) {
 		    // actual call
 		    callback();
     	}, 500);
-    });	
+    }, true);	
 }
 
 function getVideoPlayerPlayButton() {
@@ -129,6 +131,7 @@ function disableCodec(codec) {
     }(window.MediaSource.isTypeSupported);
 }
 
+// returns true even when the second string is empty: strCmp('abc', '')
 function strCmp(str1, str2) {
     str1 = str1.toLowerCase();
     str2 = str2.toLowerCase();
@@ -207,4 +210,56 @@ function fixOverlappedTextInRussian() {
 
 ////////////////////////////////////////////
 
+function overrideProp(propStr, value) {
+    var arr = propStr.split(".");      // Split the string using dot as separator
+    var lastVal = arr.pop();       // Get last element
+    var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
+
+    Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
+}
+
+function applyFakeResolution() {
+    // var w = 2560, h = 1440;
+    if (!app)
+        return;
+    var arr = app.getDeviceResolution().split('x');
+    var w = arr[0];
+    var h = arr[1];
+
+    window.innerWidth = w;
+    window.innerHeight = h;
+
+    overrideProp("document.documentElement.clientWidth", w);
+    overrideProp("document.documentElement.clientHeight", h);
+
+    overrideProp("window.screen.availWidth", w);
+    overrideProp("window.screen.availHeight", h);
+
+    overrideProp("window.screen.width", w);
+    overrideProp("window.screen.height", h);
+}
+
+function fixWrongPixelRatio() {
+    // fix ugly Dimensions value like "950x640*2"
+    window.devicePixelRatio = 1.0;
+}
+
+function commonLogs() {
+    console.log("window.devicePixelRatio = " + window.devicePixelRatio);
+    console.log("document.documentElement.clientWidth = " + document.documentElement.clientWidth);
+    console.log("document.documentElement.clientHeight = " + document.documentElement.clientHeight);
+    console.log("window.innerWidth = " + window.innerWidth);
+    console.log("window.innerHeight = " + window.innerHeight);
+    console.log("window.screen.availWidth = " + window.screen.availWidth);
+    console.log("window.screen.availHeight = " + window.screen.availHeight);
+}
+
+
+////////////////////////////////////////////
+
+console.log('common.js is starting...');
+
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
+// applyFakeResolution();
+fixWrongPixelRatio();
+commonLogs();

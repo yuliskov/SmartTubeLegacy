@@ -188,13 +188,13 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_LOAD_PAGE, true);
     }
 
-    public boolean rememberPasswords() {
-        return mPrefs.getBoolean(PREF_REMEMBER_PASSWORDS, true);
-    }
-
     public boolean isWideViewport() {
         // youtube: fit layout into the screen (set to false)
         return mPrefs.getBoolean(PREF_WIDE_VIEWPORT, false);
+    }
+
+    public boolean rememberPasswords() {
+        return mPrefs.getBoolean(PREF_REMEMBER_PASSWORDS, true);
     }
 
     private static void requireInitialization() {
