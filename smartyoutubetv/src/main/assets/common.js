@@ -252,6 +252,8 @@ function commonLogs() {
     console.log("window.innerHeight = " + window.innerHeight);
     console.log("window.screen.availWidth = " + window.screen.availWidth);
     console.log("window.screen.availHeight = " + window.screen.availHeight);
+    console.log("window.screen.width = " + window.screen.width);
+    console.log("window.screen.height = " + window.screen.height);
 }
 
 

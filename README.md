@@ -79,15 +79,9 @@ MyActivity extends MainBrowserActivity {
 - disable release logging
 - bug with Resuming webview timers
 - ability to set video quality
-- add multiple flavors: original (WebView) and beta (XWalk)
-	- custom resources location: src/originalFlavor and src/regularFlavor
-- review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
-	- add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
+- adapt build system to multiple prduct flavors
+- add Crashlytics crash reporting tool
 - add Crosswalk backend
-	- https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
-	- https://crosswalk-project.org/documentation/shared_mode.html
-	- https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
-	- https://github.com/crosswalk-project/crosswalk-website/wiki/Shared-mode-for-Crosswalk-Core-Library-on-Android
 - apply codec fixes: MiTV3, MiTV3S-55, X92
 - add DIAL (DIscovery And Launch) support
 - add adblock
@@ -98,15 +92,29 @@ MyActivity extends MainBrowserActivity {
 - don't play video in background
 - keys not working
 - add wide viewport
-- hide TitleBar and other UI (Controller.enableBasicMode())
 - fix constant activity reload
 - remove ActionBar
+- add system wide logging
+
+##NOTES
+- hide TitleBar and other UI (Controller.enableBasicMode())
 - use logging framework slf4j + android logger backend
 	- https://github.com/noveogroup/android-logger
 	- http://www.slf4j.org/android/
 	- http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
-
-##NOTES
+- add multiple flavors: original (WebView) and beta (XWalk)
+	- custom resources location: src/originalFlavor and src/regularFlavor
+- use logging framework slf4j + android logger backend
+	- https://github.com/noveogroup/android-logger
+	- http://www.slf4j.org/android/
+	- http://stackoverflow.com/questions/10514175/which-android-logging-framework-to-use
+- review crash reporting tools (https://www.captechconsulting.com/blogs/a-comparison-of-android-crash-reporting-tools)
+	- add Crashlytics crash reporting tool (https://fabric.io/kits/android/crashlytics/)
+- Crosswalk docs:
+	- https://crosswalk-project.org/documentation/android/embedding_crosswalk.html
+	- https://crosswalk-project.org/documentation/shared_mode.html
+	- https://crosswalk-project.org/apis/embeddingapidocs_v7/index.html?org/xwalk/core/XWalkInitializer.html
+	- https://github.com/crosswalk-project/crosswalk-website/wiki/Shared-mode-for-Crosswalk-Core-Library-on-Android
 - update UML diagram for MainController and SubControllers
 - find more details: 
 	- TabControl.SubWindow
