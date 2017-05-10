@@ -97,6 +97,7 @@ MyActivity extends MainBrowserActivity {
 - add system wide logging
 
 ##NOTES
+- Activity->onLowMemory() -> throw exception; tune webview to display complex sites
 - hide TitleBar and other UI (Controller.enableBasicMode())
 - use logging framework slf4j + android logger backend
 	- https://github.com/noveogroup/android-logger

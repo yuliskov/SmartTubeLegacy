@@ -226,8 +226,8 @@ function applyFakeResolution() {
     var w = arr[0];
     var h = arr[1];
 
-    window.innerWidth = w;
-    window.innerHeight = h;
+    overrideProp("window.innerWidth", w);
+    overrideProp("window.innerHeight", h);
 
     overrideProp("document.documentElement.clientWidth", w);
     overrideProp("document.documentElement.clientHeight", h);
@@ -246,10 +246,10 @@ function fixWrongPixelRatio() {
 
 function commonLogs() {
     console.log("window.devicePixelRatio = " + window.devicePixelRatio);
-    console.log("document.documentElement.clientWidth = " + document.documentElement.clientWidth);
-    console.log("document.documentElement.clientHeight = " + document.documentElement.clientHeight);
     console.log("window.innerWidth = " + window.innerWidth);
     console.log("window.innerHeight = " + window.innerHeight);
+    console.log("document.documentElement.clientWidth = " + document.documentElement.clientWidth);
+    console.log("document.documentElement.clientHeight = " + document.documentElement.clientHeight);
     console.log("window.screen.availWidth = " + window.screen.availWidth);
     console.log("window.screen.availHeight = " + window.screen.availHeight);
     console.log("window.screen.width = " + window.screen.width);

@@ -30,6 +30,10 @@ public class MyUrlEncodedQueryString {
         mQueryString.remove(key);
     }
 
+    public void set(String key, String value) {
+        mQueryString.set(key, value);
+    }
+
     @Override
     public String toString() {
         String path = mParsedUri.getPath();

@@ -76,7 +76,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
     private String unlockAllFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        query.remove("c");
+        query.set("c", "HTML5");
 
         return query.toString();
     }
