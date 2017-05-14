@@ -219,27 +219,17 @@ function overrideProp(propStr, value) {
 }
 
 function applyFakeResolution() {
-    // var w = 2560, h = 1440;
-    if (!app)
-        return;
-    var arr = app.getDeviceResolution().split('x');
-    var w = arr[0];
-    var h = arr[1];
+    // WONT WORK PROPERLY
+    
+    var w = 2560, h = 1440;
 
     overrideProp("window.innerWidth", w);
     overrideProp("window.innerHeight", h);
-
-    overrideProp("document.documentElement.clientWidth", w);
-    overrideProp("document.documentElement.clientHeight", h);
-
-    overrideProp("window.screen.availWidth", w);
-    overrideProp("window.screen.availHeight", h);
-
-    overrideProp("window.screen.width", w);
-    overrideProp("window.screen.height", h);
 }
 
 function fixWrongPixelRatio() {
+    // WONT WORK PROPERLY
+    
     // fix ugly Dimensions value like "950x640*2"
     window.devicePixelRatio = 1.0;
 }
@@ -263,5 +253,5 @@ console.log('common.js is starting...');
 
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
 // applyFakeResolution();
-fixWrongPixelRatio();
+// fixWrongPixelRatio();
 commonLogs();

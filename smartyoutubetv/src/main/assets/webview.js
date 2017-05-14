@@ -5,7 +5,7 @@ addExitEvent();
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
-	'MiTV3S (missionimpossible)': 'mp4', // ???
+	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
 	'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
 	'NG3128HD': 'webm, mp4', // (github)
 	't95m': '', // (gmail) 

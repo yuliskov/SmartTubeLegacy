@@ -2,6 +2,7 @@
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+	'MiTV3S-43 (hancock)': 'webm', // MiTV3S 43" ???
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
 	't95m': '', // (gmail)
 	'32T18': '', // KTU84M (gmail, tailand)
