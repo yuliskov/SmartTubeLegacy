@@ -1,4 +1,4 @@
-#Smart YouTube TV
+# Smart YouTube TV
 
 Imagine that you have ordinary Chinese android box with simple remote controller.
 What YouTube client you should use? Regular client doesn't understand remote controller.
@@ -7,14 +7,14 @@ One of them is dependencies (e.g. gapps) that box usually don't have.
 Another drawback is that official client needs minimum Android 5.0. 
 And there comes Smart YouTube TV. It require zero dependencies, minimum Android 4.4.
 
-##Highlights
+## Highlights
 - consist of two parts: app and standalone browser engine:
 	- [smartyoutubetv]: main app that using browser engine for rendering
 	- [browser]: engine with wide capabilities (e.g. display naked page) 
 - browser engine can be used independently (currently in development)
 - browser engine based on **marshmallow-release** branch of [android open source project][browser-origin]
 
-##Quick start
+## Quick start
 To build project navigate to the root directory then type:
 ```
 gradlew build
@@ -22,7 +22,7 @@ gradlew build
 Generated apks will be placed in the directory ./smartyoutubetv/build/outputs/apk/
 
 ## Browser engine usage
-###Basic usage
+### Basic usage
 ```
 MyActivity extends MainBrowserActivity {
 	@Override
@@ -34,7 +34,7 @@ MyActivity extends MainBrowserActivity {
 	}
 }
 ```
-###More lifecircle handling and custom engine usage
+### More lifecircle handling and custom engine usage
 ```
 MyActivity extends MainBrowserActivity {
 	MyActivity() {
@@ -52,13 +52,13 @@ MyActivity extends MainBrowserActivity {
 }
 ```
 
-##Benefits of this browser engine over regular WebView
+## Benefits of this browser engine over regular WebView
 - ability to choose preferred engine type: WebView, XWalk
 - you don't have to deal with creating custom methods for managing WebView lifecircle (pause, resume etc)
 - ability to easily add tabs, settings and other regular browser-specific features
 - all internal state is saved into persistent memory instead of RAM
 
-##Used libraries
+## Used libraries
 - Crosswalk - alternative browser engine
 - Otto - message bus
 - OkHttp - http processing
@@ -66,7 +66,7 @@ MyActivity extends MainBrowserActivity {
 - Crashlytics - multipurpose crash analytics
 - Butter Knife - simplify layout handling
 
-##TODO
+## TODO
 - add 60 fps support
 - playlist: more informative playlist layout
 - playlist: add shuffle option
@@ -74,7 +74,7 @@ MyActivity extends MainBrowserActivity {
 - video-item: add description section
 - show informative error when site not available
 
-##DONE
+## DONE
 - auto clear cache to maintain small footprint
 - disable release logging
 - bug with Resuming webview timers
@@ -96,7 +96,7 @@ MyActivity extends MainBrowserActivity {
 - remove ActionBar
 - add system wide logging
 
-##NOTES
+## NOTES
 - Activity->onLowMemory() -> throw exception; tune webview to display complex sites
 - hide TitleBar and other UI (Controller.enableBasicMode())
 - use logging framework slf4j + android logger backend
@@ -132,7 +132,7 @@ MyActivity extends MainBrowserActivity {
 - add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
 	- https://developer.chrome.com/multidevice/android/customtabs
 
-##Other
+## Other
 - how to fetch sources from [android open source project][browser-origin] via console:
 	- `git clone -b marshmallow-release https://android.googlesource.com/platform/packages/apps/Browser`
 
