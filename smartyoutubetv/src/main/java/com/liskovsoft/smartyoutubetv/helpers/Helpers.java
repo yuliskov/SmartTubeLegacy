@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,5 +50,9 @@ public class Helpers {
     public static boolean floatEquals(float num1, float num2) {
         float epsilon = 0.1f;
         return Math.abs(num1 - num2) < epsilon;
+    }
+
+    public static String getDeviceName() {
+        return String.format("%s (%s)", Build.MODEL, Build.PRODUCT);
     }
 }

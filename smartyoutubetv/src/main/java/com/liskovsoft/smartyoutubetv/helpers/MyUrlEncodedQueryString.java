@@ -30,6 +30,10 @@ public class MyUrlEncodedQueryString {
         mQueryString.remove(key);
     }
 
+    public String get(String key) {
+        return mQueryString.get(key);
+    }
+
     public void set(String key, String value) {
         mQueryString.set(key, value);
     }

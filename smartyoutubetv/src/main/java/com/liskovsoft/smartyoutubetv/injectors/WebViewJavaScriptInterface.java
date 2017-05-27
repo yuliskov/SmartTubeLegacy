@@ -13,6 +13,7 @@ import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 
 /*
  * JavaScript Interface. Web code can access methods in here
@@ -49,7 +50,7 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
-        return String.format("%s (%s)", Build.MODEL, Build.PRODUCT);
+        return Helpers.getDeviceName();
     }
 
     /*
