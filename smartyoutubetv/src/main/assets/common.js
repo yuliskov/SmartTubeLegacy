@@ -219,12 +219,29 @@ function overrideProp(propStr, value) {
 }
 
 function applyFakeResolution() {
-    // WONT WORK PROPERLY
+    if (!app)
+        return;
     
-    var w = 2560, h = 1440;
+    // android resolution (can differ from physical resolution)
+    var arr = app.getDeviceResolution().split('x');
+    var w = arr[0], h = arr[1];
+    
+    // fake resolution (does't have influence on video resolution)
+    // var w = 2560, h = 1440;
 
     overrideProp("window.innerWidth", w);
     overrideProp("window.innerHeight", h);
+
+    // NOTE: there is no need to override props below
+
+    // overrideProp("document.documentElement.clientWidth", w);
+    // overrideProp("document.documentElement.clientHeight", h);
+
+    // overrideProp("window.screen.availWidth", w);
+    // overrideProp("window.screen.availHeight", h);
+
+    // overrideProp("window.screen.width", w);
+    // overrideProp("window.screen.height", h);
 }
 
 function fixWrongPixelRatio() {

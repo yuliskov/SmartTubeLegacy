@@ -3,20 +3,14 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
-import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoParser;
-import okhttp3.MediaType;
 import okhttp3.Response;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Set;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final Context mContext;
@@ -31,7 +25,8 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
         if (url.contains("get_video_info")) {
             String model = Helpers.getDeviceName();
             switch (model.toLowerCase()) {
-                case "mbx reference board (g18ref)":
+                case "mbx reference board (g18ref) (g18ref)":
+                //case "mibox_mini (forrestgump)":
                      return true;
             }
         }
@@ -44,21 +39,31 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
             return null;
         }
 
-        Response response = doOkHttpRequest(url);
-
-        InputStream videoInfo = response.body().byteStream();
-
-        VideoInfoParser parser = new VideoInfoParser(videoInfo);
-        String hdVideoLink = parser.getHDVideoLink();
-
-        openExternalPlayer(hdVideoLink);
+        pressBackButton();
+        openExternalPlayer(url);
 
         return null;
     }
 
-    private void openExternalPlayer(String uri) {
+    private void pressBackButton() {
+        if (!(mContext instanceof AppCompatActivity))
+            return;
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+    }
+
+    private String getVideoLink(String url) {
+        Response response = doOkHttpRequest(url);
+        InputStream videoInfo = response.body().byteStream();
+        VideoInfoParser parser = new VideoInfoParser(videoInfo);
+        return parser.getHDVideoLink();
+    }
+
+    private void openExternalPlayer(String url) {
+        String videoLink = getVideoLink(url);
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(uri), "video/mp4");
+        intent.setDataAndType(Uri.parse(videoLink), "video/mp4");
         mContext.startActivity(intent);
     }
 }
