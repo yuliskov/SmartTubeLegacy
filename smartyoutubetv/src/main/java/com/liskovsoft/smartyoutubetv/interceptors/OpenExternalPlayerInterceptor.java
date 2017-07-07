@@ -14,6 +14,14 @@ import java.io.InputStream;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final Context mContext;
+    private final String[] mDevicesToProcess = {
+            "mbx reference board (g18ref) (g18ref)",
+            "mitv3s-43 (hancock)",
+            "MiTV4 (pulpfiction)"
+            //"mibox_mini (forrestgump)"
+    };
+    private Boolean mCachedDeviceMatchResult = null;
+
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
@@ -23,12 +31,10 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     public boolean test(String url) {
         // trying to manipulate with video formats
         if (url.contains("get_video_info")) {
-            String model = Helpers.getDeviceName();
-            switch (model.toLowerCase()) {
-                case "mbx reference board (g18ref) (g18ref)":
-                //case "mibox_mini (forrestgump)":
-                     return true;
+            if (mCachedDeviceMatchResult == null) {
+                mCachedDeviceMatchResult = Helpers.deviceMatch(mDevicesToProcess);
             }
+            return mCachedDeviceMatchResult;
         }
         return false;
     }

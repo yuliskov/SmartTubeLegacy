@@ -21,7 +21,7 @@ public class AdAwayClient {
 
     public static boolean isAd(String url) {
         for (String suburl : mAdAwayList) {
-            boolean contains = Helpers.match(url, suburl);
+            boolean contains = Helpers.matchSubstr(url, suburl);
             if (contains)
                 return true;
         }

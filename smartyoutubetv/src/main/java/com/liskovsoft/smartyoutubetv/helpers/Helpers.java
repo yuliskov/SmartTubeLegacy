@@ -15,7 +15,7 @@ public class Helpers {
      * @param mask
      * @return
      */
-    public static boolean match(String host, String mask) {
+    public static boolean matchSubstr(String host, String mask) {
         String[] sections = mask.split("\\*");
         String text = host;
         for (String section : sections) {
@@ -26,6 +26,10 @@ public class Helpers {
             text = text.substring(index + section.length());
         }
         return true;
+    }
+
+    public static boolean matchSubstrNoCase(String host, String mask) {
+        return matchSubstr(host.toLowerCase(), mask.toLowerCase());
     }
 
     public static InputStream getAsset(Context ctx, String fileName) {
@@ -54,5 +58,16 @@ public class Helpers {
 
     public static String getDeviceName() {
         return String.format("%s (%s)", Build.MODEL, Build.PRODUCT);
+    }
+
+    public static boolean deviceMatch(String[] devicesToProcess) {
+        String thisDeviceName = Helpers.getDeviceName();
+        for (String deviceName : devicesToProcess) {
+            boolean match = matchSubstrNoCase(thisDeviceName, deviceName);
+            if (match) {
+                return true;
+            }
+        }
+        return false;
     }
 }

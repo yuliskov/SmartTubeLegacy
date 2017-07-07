@@ -67,6 +67,7 @@ MyActivity extends MainBrowserActivity {
 - Butter Knife - simplify layout handling
 
 ## TODO
+- close app if connection cannot be made
 - add 60 fps support
 - playlist: more informative playlist layout
 - playlist: add shuffle option
