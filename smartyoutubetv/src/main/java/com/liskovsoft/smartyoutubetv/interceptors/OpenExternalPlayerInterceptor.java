@@ -31,10 +31,11 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     public boolean test(String url) {
         // trying to manipulate with video formats
         if (url.contains("get_video_info")) {
-            if (mCachedDeviceMatchResult == null) {
-                mCachedDeviceMatchResult = Helpers.deviceMatch(mDevicesToProcess);
-            }
-            return mCachedDeviceMatchResult;
+            //if (mCachedDeviceMatchResult == null) {
+            //    mCachedDeviceMatchResult = Helpers.deviceMatch(mDevicesToProcess);
+            //}
+            //return mCachedDeviceMatchResult;
+            return true;
         }
         return false;
     }

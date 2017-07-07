@@ -7,6 +7,7 @@ applyCodecFixes({
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
 	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
 	'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
+	'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
 	'NG3128HD': 'webm, mp4', // (github)
 	't95m': '', // (gmail) 
 	'32T18': '', // FAMILY GENERATION T18 BY (gmail)
