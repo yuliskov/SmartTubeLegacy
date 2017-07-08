@@ -30,6 +30,23 @@ public class MyWebViewClientDecorator extends WebViewClient {
     @Override
     @Deprecated
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+        WebResourceResponse response = processRequest(view, url);
+        if (response != null) {
+            return response;
+        }
+        return mWebViewClient.shouldInterceptRequest(view, url);
+    }
+
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        WebResourceResponse response = processRequest(view, request.getUrl().toString());
+        if (response != null) {
+            return response;
+        }
+        return mWebViewClient.shouldInterceptRequest(view, request);
+    }
+
+    private WebResourceResponse processRequest(WebView view, String url) {
         if (mInterceptor.test(url)) {
             return mInterceptor.intercept(url);
         }
@@ -39,12 +56,7 @@ public class MyWebViewClientDecorator extends WebViewClient {
             return new WebResourceResponse(null, null, null);
         }
 
-        return mWebViewClient.shouldInterceptRequest(view, url);
-    }
-
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-        return mWebViewClient.shouldInterceptRequest(view, request);
+        return null;
     }
 
     /**
