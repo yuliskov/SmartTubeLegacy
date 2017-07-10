@@ -8,6 +8,7 @@ import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
+import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoBuilder;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 
@@ -54,7 +55,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
         //url = unlockAllFormats(url);
 
         Response response = doOkHttpRequest(url);
-        VideoInfoBuilder videoInfoBuilder = new VideoInfoBuilder(response.body().byteStream());
+        VideoInfoBuilder videoInfoBuilder = new YouTubeVideoInfoBuilder(response.body().byteStream());
 
         Set<VideoFormat> supportedFormats = videoInfoBuilder.getSupportedFormats();
 

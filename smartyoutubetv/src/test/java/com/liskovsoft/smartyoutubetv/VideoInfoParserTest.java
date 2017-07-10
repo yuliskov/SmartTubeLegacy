@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv;
 
-import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoParser;
+import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoParser;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class VideoInfoParserTest {
 
     @Test
     public void testGetHDVideoLink() throws IOException {
-        VideoInfoParser videoInfoParser = new VideoInfoParser(mVideoInfo);
+        VideoInfoParser videoInfoParser = new YouTubeVideoInfoParser(mVideoInfo);
         String result = videoInfoParser.getHDVideoLink();
 
         assertTrue(IOUtils.contentEquals(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)), mHDVideoLink));

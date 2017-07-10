@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv;
 
 import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
+import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoBuilder;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class VideoInfoBuilderTest {
 
     @Test
     public void testFormatsRemoving() throws Exception {
-        VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
+        VideoInfoBuilder builder = new YouTubeVideoInfoBuilder(mOriginalInfo);
         //builder.removeFormat(248); // webm 1920x1080
         //builder.removeFormat(137); // mp4 1920x1080
         builder.removeFormat(VideoFormat._1080p_);
@@ -43,7 +44,7 @@ public class VideoInfoBuilderTest {
 
     @Test
     public void testSelectFormat() throws IOException {
-        VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
+        VideoInfoBuilder builder = new YouTubeVideoInfoBuilder(mOriginalInfo);
         builder.selectFormat(VideoFormat._1080p_);
         InputStream result = builder.get();
 
@@ -54,7 +55,7 @@ public class VideoInfoBuilderTest {
     public void testGetAllSupportedFormats() {
         Set<VideoFormat> testFormats = createTestFormats();
 
-        VideoInfoBuilder builder = new VideoInfoBuilder(mOriginalInfo);
+        VideoInfoBuilder builder = new YouTubeVideoInfoBuilder(mOriginalInfo);
         Set<VideoFormat> allSupportedFormats = builder.getSupportedFormats();
         testFormats.removeAll(allSupportedFormats);
 

@@ -11,6 +11,9 @@ public class MyUrlEncodedQueryString {
 
     private MyUrlEncodedQueryString(String url) {
         mParsedUri = Uri.parse(url);
+        if (mParsedUri.getHost() == null) {
+            url = "http://fakeurl.com?" + url;
+        }
         mQueryString = UrlEncodedQueryString.parse(getURI(url));
     }
 
@@ -43,6 +46,10 @@ public class MyUrlEncodedQueryString {
         String path = mParsedUri.getPath();
         String host = mParsedUri.getHost();
         String scheme = mParsedUri.getScheme();
+
+        if (host == null) {
+            return mQueryString.toString();
+        }
 
         return String.format("%s://%s%s?%s", scheme, host, path, mQueryString);
     }

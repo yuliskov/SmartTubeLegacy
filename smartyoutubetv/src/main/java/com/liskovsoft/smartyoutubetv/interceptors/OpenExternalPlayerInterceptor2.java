@@ -7,31 +7,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.helpers.VideoInfoParser;
 import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoParser;
 import okhttp3.Response;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Scanner;
 
-public class OpenExternalPlayerInterceptor extends RequestInterceptor {
+public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
     private final String[] mDevicesToProcess = {
             "mbx reference board (g18ref) (g18ref)",
-            "mitv3s-43 (hancock)",
-            "MiTV4 (pulpfiction)"
+            "mitv3s-43 (hancock)"
+            //"MiTV4 (pulpfiction)"
             //"mibox_mini (forrestgump)"
     };
     private Boolean mCachedDeviceMatchResult = null;
 
-
-    public OpenExternalPlayerInterceptor(Context context) {
+    public OpenExternalPlayerInterceptor2(Context context) {
         mContext = context;
     }
 
     @Override
     public boolean test(String url) {
-        // trying to manipulate with video formats
-        if (url.contains("get_video_info")) {
+        if (url.contains("get_video_info") || url.contains("googlevideo")) {
             if (mCachedDeviceMatchResult == null) {
                 mCachedDeviceMatchResult = Helpers.deviceMatch(mDevicesToProcess);
             }
@@ -46,10 +48,26 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
             return null;
         }
 
+        if (url.contains("get_video_info")) {
+            return cleanupDashInfo(url);
+        }
+
         pressBackButton();
         openExternalPlayer(url);
 
         return null;
+    }
+
+    private WebResourceResponse cleanupDashInfo(String url) {
+        Response response = doOkHttpRequest(url);
+        InputStream videoInfo = response.body().byteStream();
+        Scanner s = new Scanner(videoInfo).useDelimiter("\\A");
+        String queryUrl = s.hasNext() ? s.next() : "";
+        MyUrlEncodedQueryString parsedQuery = MyUrlEncodedQueryString.parse(queryUrl);
+        parsedQuery.set("adaptive_fmts", "");
+        parsedQuery.set("dashmpd", "");
+        ByteArrayInputStream is = new ByteArrayInputStream(parsedQuery.toString().getBytes(Charset.forName("UTF8")));
+        return createResponse(response.body().contentType(), is);
     }
 
     private void pressBackButton() {
@@ -68,7 +86,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     }
 
     private void openExternalPlayer(String url) {
-        String videoLink = getVideoLink(url);
+        String videoLink = url;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(videoLink), "video/mp4");
         mContext.startActivity(intent);

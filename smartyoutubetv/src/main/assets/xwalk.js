@@ -7,6 +7,7 @@ applyCodecFixes({
 	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
 	'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
 	'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
+	'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
 	't95m': '', // (gmail)
 	'32T18': '', // KTU84M (gmail, tailand)
 	'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)

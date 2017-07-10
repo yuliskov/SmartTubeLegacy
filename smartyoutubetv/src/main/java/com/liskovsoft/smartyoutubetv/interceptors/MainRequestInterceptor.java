@@ -12,7 +12,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
     public MainRequestInterceptor(Context context) {
         mContext = context;
         mInterceptors = new ArrayList<>();
-        mInterceptors.add(new OpenExternalPlayerInterceptor(context));
+        mInterceptors.add(new OpenExternalPlayerInterceptor2(context));
         mInterceptors.add(new VideoInfoInterceptor(context));
     }
 
