@@ -31,10 +31,11 @@ public class BrowserWebViewFactory implements WebViewFactory {
             // BUGFIX: rare memory leak in WebView
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
-        
+
+        // TODO: deal with ui scaling
         // real display size (virtual pixel == real pixel)
         // 100 - normal resolution, 50 - 2160p resolution
-        w.setInitialScale(100);
+        // w.setInitialScale(100);
 
         return w;
     }

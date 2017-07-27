@@ -186,8 +186,9 @@ var observeDOM = (function(){
 
 function replaceOverlappedTextInRussian(paramButton) {
     var stringToFind = "Дополнительные параметры";
+    var stringToFind2 = "Другие параметры";
     var stringToReplace = "Параметры";
-    if (paramButton.innerHTML == stringToFind) {
+    if (paramButton.innerHTML == stringToFind || paramButton.innerHTML == stringToFind2) {
         paramButton.innerHTML = stringToReplace;
         return true;
     }

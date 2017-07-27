@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 85
-        versionName "6.8.9"
+        versionCode 86
+        versionName "6.8.10"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -50,16 +50,19 @@ android {
     }
 
     productFlavors {
-        originalFlavor {
+        original {
             // custom resources location: src/originalFlavor
             // resValue "string", "app_name", "Smart YouTube TV"
         }
-        betaFlavor {
+        xwalk {
             applicationIdSuffix ".beta"
             // versionNameSuffix "-beta"
 
             // custom resources location: src/betaFlavor
             // resValue "string", "app_name", "Smart YouTube TV Beta"
+        }
+        exoplayer {
+            applicationIdSuffix ".exoplayer"
         }
     }
 }
@@ -73,7 +76,7 @@ dependencies {
     testCompile 'commons-io:commons-io:2.5'
     testCompile 'org.robolectric:robolectric:3.2.2'
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -87,6 +90,8 @@ dependencies {
     // originalFlavorCompile project(path: ':browser', configuration: "liteFlavorDebug")
     // betaFlavorCompile project(path: ':browser', configuration: "fullFlavorDebug")
 
-    debugCompile project(path: ':browser', configuration: "liteFlavorDebug")
-    releaseCompile project(path: ':browser', configuration: "liteFlavorRelease")
+    debugCompile project(path: ':browser', configuration: "liteDebug")
+    releaseCompile project(path: ':browser', configuration: "liteRelease")
+
+    exoplayerCompile 'com.google.android.exoplayer:exoplayer:r2.4.4'
 }
