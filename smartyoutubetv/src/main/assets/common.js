@@ -271,5 +271,5 @@ console.log('common.js is starting...');
 
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
 // applyFakeResolution();
-fixWrongPixelRatio();
+// fixWrongPixelRatio();
 commonLogs();

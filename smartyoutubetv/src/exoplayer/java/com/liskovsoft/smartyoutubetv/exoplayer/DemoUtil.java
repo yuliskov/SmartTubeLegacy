@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.liskovsoft.smartyoutubetv.exoplayer2;
+package com.liskovsoft.smartyoutubetv.exoplayer;
 
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;

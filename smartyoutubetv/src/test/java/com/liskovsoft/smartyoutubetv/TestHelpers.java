@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Scanner;
 
 public class TestHelpers {
     public static boolean isEqual(InputStream i1, InputStream i2)
@@ -43,5 +44,13 @@ public class TestHelpers {
 
     public static InputStream openResource(String path) {
         return TestHelpers.class.getClassLoader().getResourceAsStream(path);
+    }
+
+    public static String readResource(String path) {
+        InputStream stream = openResource(path);
+        Scanner s = new Scanner(stream).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+
+        return result;
     }
 }

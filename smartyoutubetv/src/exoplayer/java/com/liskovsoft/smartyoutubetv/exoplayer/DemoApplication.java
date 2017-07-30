@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.liskovsoft.smartyoutubetv.exoplayer2;
+package com.liskovsoft.smartyoutubetv.exoplayer;
 
 import android.app.Application;
 import com.google.android.exoplayer2.BuildConfig;
@@ -23,11 +23,12 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.browser.Browser;
 
 /**
  * Placeholder application to facilitate overriding Application methods for debugging and testing.
  */
-public class DemoApplication extends Application {
+public class DemoApplication extends Browser {
 
     protected String userAgent;
 
