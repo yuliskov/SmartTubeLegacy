@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv;
 
-import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
-import com.liskovsoft.smartyoutubetv.helpers.VideoInfoBuilder;
-import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoBuilder;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoInfoBuilder;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.YouTubeVideoInfoBuilder;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;

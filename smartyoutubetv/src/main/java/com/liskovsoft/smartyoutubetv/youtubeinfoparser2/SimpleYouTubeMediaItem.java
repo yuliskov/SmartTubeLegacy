@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
 public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     private String mITag;
@@ -7,6 +7,13 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     private String mType;
     private String mClen;
     private String mBitrate;
+
+    public SimpleYouTubeMediaItem(String ITag) {
+        mITag = ITag;
+    }
+
+    public SimpleYouTubeMediaItem() {
+    }
 
     @Override
     public String getUrl() {
@@ -156,5 +163,17 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     @Override
     public void setQuality(String quality) {
 
+    }
+
+    @Override
+    public int compareTo(YouTubeMediaItem item) {
+        if (item == null) {
+            return 1;
+        }
+
+        int thisIndex = ITag.getIndex(getITag());
+        int otherIndex = ITag.getIndex(item.getITag());
+
+        return thisIndex - otherIndex;
     }
 }

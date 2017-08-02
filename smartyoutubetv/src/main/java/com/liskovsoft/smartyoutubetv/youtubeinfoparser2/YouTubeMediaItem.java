@@ -1,6 +1,6 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
-public interface YouTubeMediaItem {
+public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     // Common
     String getUrl();
     void setUrl(String url);

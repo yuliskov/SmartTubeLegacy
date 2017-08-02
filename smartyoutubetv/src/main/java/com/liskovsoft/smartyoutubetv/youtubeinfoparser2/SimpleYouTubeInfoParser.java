@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
 import android.net.Uri;
 
@@ -9,23 +9,23 @@ import java.util.Scanner;
 public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String mContent;
 
-    private class UriVisitor implements YouTubeInfoVisitor {
-        private final String mITag;
-        private String mResult;
+    private class FindUriVisitor implements YouTubeInfoVisitor {
+        private final YouTubeMediaItem mOriginItem;
+        private YouTubeMediaItem mLastItem;
 
-        UriVisitor(String iTag) {
-            mITag = iTag;
+        FindUriVisitor(String iTag) {
+            mOriginItem = new SimpleYouTubeMediaItem(iTag);
         }
 
         @Override
         public void visitMediaItem(YouTubeMediaItem mediaItem) {
-            if (mediaItem.getITag().equals(mITag)) {
-                mResult = mediaItem.getUrl();
+            if (mediaItem.compareTo(mOriginItem) <= 0 && mediaItem.compareTo(mLastItem) > 0) {
+                mLastItem = mediaItem;
             }
         }
 
         public Uri getUri() {
-            return Uri.parse(mResult);
+            return Uri.parse(mLastItem.getUrl());
         }
     }
 
@@ -51,7 +51,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     @Override
     public Uri getUrlByTag(String iTag) {
         SimpleYouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
-        UriVisitor visitor = new UriVisitor(iTag);
+        FindUriVisitor visitor = new FindUriVisitor(iTag);
         visitable.accept(visitor);
         return visitor.getUri();
     }

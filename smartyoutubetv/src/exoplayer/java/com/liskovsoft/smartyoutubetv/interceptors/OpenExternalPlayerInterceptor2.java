@@ -7,11 +7,9 @@ import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.SimpleYouTubeInfoParser;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.YouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeInfoParser;
 import okhttp3.Response;
-
-import java.util.List;
 
 public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
@@ -51,8 +49,8 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private void parseAndOpenExoPlayer(String url) {
         Response response = doOkHttpRequest(url);
         SimpleYouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(response.body().byteStream());
-        Uri video = dataParser.getUrlByTag(YouTubeInfoParser.VIDEO_1080P_AVC);
-        Uri audio = dataParser.getUrlByTag(YouTubeInfoParser.AUDIO_128K_AAC);
+        Uri video = dataParser.getUrlByTag(ITag.VIDEO_2160P_AVC_HQ);
+        Uri audio = dataParser.getUrlByTag(ITag.AUDIO_128K_AAC);
         Sample sample = SampleHelpers.buildFromVideoAndAudio(video, audio);
         mContext.startActivity(sample.buildIntent(mContext));
     }

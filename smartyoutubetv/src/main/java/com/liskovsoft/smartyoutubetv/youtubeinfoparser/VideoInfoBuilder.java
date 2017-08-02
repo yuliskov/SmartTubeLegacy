@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.helpers;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
 
 import java.io.InputStream;
 import java.util.Set;

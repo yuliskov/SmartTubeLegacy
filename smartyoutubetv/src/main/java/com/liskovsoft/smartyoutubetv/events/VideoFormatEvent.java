@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.events;
 
-import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
 
 import java.util.Set;
 

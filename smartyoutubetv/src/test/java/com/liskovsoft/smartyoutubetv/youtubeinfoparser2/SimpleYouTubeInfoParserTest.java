@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
@@ -39,9 +39,9 @@ public class SimpleYouTubeInfoParserTest {
     @Test
     public void tryToExtractSomeUrls() throws Exception {
         YouTubeInfoParser parser = new SimpleYouTubeInfoParser(mYouTubeVideoInfo);
-        Uri url = parser.getUrlByTag(YouTubeInfoParser.VIDEO_1080P_AVC);
+        Uri url = parser.getUrlByTag(ITag.VIDEO_1080P_AVC);
         assertTrue(url.equals(Uri.parse(sVideo)));
-        Uri url2 = parser.getUrlByTag(YouTubeInfoParser.AUDIO_128K_AAC);
+        Uri url2 = parser.getUrlByTag(ITag.AUDIO_128K_AAC);
         assertTrue(url2.equals(Uri.parse(sAudio)));
     }
 

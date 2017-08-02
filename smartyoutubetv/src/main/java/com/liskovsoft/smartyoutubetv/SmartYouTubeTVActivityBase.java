@@ -45,13 +45,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
     }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        throw new RuntimeException("Memory limit reached!!!");
-    }
-
+    
     /**
      * WebView likes to cache js. So this is prevents my changes from applying.
      */

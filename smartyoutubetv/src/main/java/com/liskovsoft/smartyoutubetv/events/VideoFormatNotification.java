@@ -4,12 +4,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
-import com.liskovsoft.smartyoutubetv.helpers.VideoFormat;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
