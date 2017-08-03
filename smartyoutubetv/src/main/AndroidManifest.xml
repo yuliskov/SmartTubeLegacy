@@ -13,7 +13,9 @@
     <uses-feature android:name="android.hardware.sensor" android:required="false"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <!-- End Leanback required fields -->
-    <application tools:node="merge"
+    <application android:largeHeap="true"
+                 android:hardwareAccelerated="true"
+                 tools:node="merge"
                  android:allowBackup="true"
                  android:icon="@mipmap/ic_launcher"
                  android:banner="@mipmap/ic_banner"

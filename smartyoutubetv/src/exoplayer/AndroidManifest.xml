@@ -13,7 +13,9 @@
     <uses-feature android:name="android.hardware.sensor" android:required="false"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <!-- End Leanback required fields -->
-    <application tools:replace="android:name"
+    <application android:largeHeap="true"
+                 android:hardwareAccelerated="true"
+                 tools:replace="android:name"
                  android:name=".exoplayer.DemoApplication"
                  tools:node="merge"
                  android:allowBackup="true"
@@ -27,12 +29,12 @@
             android:name="io.fabric.ApiKey"
             android:value="2d068551b7d8e7635eb2fd339601762059ca0530"
         />
-        <activity android:name=".SmartYouTubeTVActivity"
-                  android:launchMode="singleTask"
+        <activity tools:replace="android:launchMode"
+                  android:name=".SmartYouTubeTVActivity"
+                  android:launchMode="singleTop"
                   android:alwaysRetainTaskState="true"
                   android:windowSoftInputMode="adjustResize"
-                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-                  >
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

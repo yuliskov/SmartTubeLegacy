@@ -74,6 +74,7 @@ MyActivity extends MainBrowserActivity {
 - video-item: add comments section
 - video-item: add description section
 - show informative error when site not available
+- add link sharing feature
 
 ## DONE
 - auto clear cache to maintain small footprint
@@ -132,6 +133,10 @@ MyActivity extends MainBrowserActivity {
 	- testThatWebViewHeadersAreProperlySet
 - add Chrome Custom Tabs backend (unable to implement: lack of api for setUserAgent, setUseWideViewPort)
 	- https://developer.chrome.com/multidevice/android/customtabs
+- optimization tips
+    - android:largeHeap="true"
+    - android:hardwareAccelerated="true"
+    - assets folder xwalk-command-line: xwalk --ignore-gpu-blacklist
 
 ## Other
 - how to fetch sources from [android open source project][browser-origin] via console:

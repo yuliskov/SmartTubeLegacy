@@ -45,6 +45,8 @@ public final class SampleHelpers {
                 intent.putExtra(PlayerActivity.DRM_LICENSE_URL, drmLicenseUrl);
                 intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
             }
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
             return intent;
         }
 
