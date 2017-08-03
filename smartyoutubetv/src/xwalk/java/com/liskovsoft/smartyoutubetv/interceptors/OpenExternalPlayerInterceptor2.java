@@ -8,8 +8,8 @@ import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
-import com.liskovsoft.smartyoutubetv.helpers.VideoInfoParser;
-import com.liskovsoft.smartyoutubetv.helpers.YouTubeVideoInfoParser;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoInfoParser;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.YouTubeVideoInfoParser;
 import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;

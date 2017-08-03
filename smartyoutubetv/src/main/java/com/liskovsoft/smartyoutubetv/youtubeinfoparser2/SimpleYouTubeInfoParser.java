@@ -25,6 +25,9 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         public Uri getUri() {
+            if (mLastItem == null) {
+                return Uri.parse("");
+            }
             return Uri.parse(mLastItem.getUrl());
         }
     }

@@ -170,10 +170,7 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
         if (item == null) {
             return 1;
         }
-
-        int thisIndex = ITag.getIndex(getITag());
-        int otherIndex = ITag.getIndex(item.getITag());
-
-        return thisIndex - otherIndex;
+        
+        return ITag.compare(getITag(), item.getITag());
     }
 }

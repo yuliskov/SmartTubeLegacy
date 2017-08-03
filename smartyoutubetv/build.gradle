@@ -30,17 +30,16 @@ android {
      * GPlay package name: com.firsthash.smartyoutubetv2
      * 4PDA package name: com.firsthash.smartyoutubetv
      */
-
+    
     defaultConfig {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 86
-        versionName "6.8.10"
+        versionCode 87
+        versionName "6.8.12"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -63,6 +62,21 @@ android {
         }
         exoplayer {
             applicationIdSuffix ".exoplayer"
+        }
+    }
+
+    // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
+    // https://stackoverflow.com/questions/18332474/how-to-set-versionname-in-apk-filename-using-gradle
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def project = "SmartYouTubeTV"
+            def flavor = variant.productFlavors[0].name.capitalize()
+            def buildType = variant.variantData.variantConfiguration.buildType.name.take(1)
+            def version = variant.versionName
+
+            def newApkName = sprintf("%s_%s_v%s_%s.apk", [project, flavor, version, buildType])
+
+            output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
 }

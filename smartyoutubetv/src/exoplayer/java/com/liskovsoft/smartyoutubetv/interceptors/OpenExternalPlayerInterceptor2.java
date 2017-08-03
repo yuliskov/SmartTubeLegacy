@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeInfoParser;
 import okhttp3.Response;
@@ -47,7 +48,7 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     }
 
     private void parseAndOpenExoPlayer(String url) {
-        Response response = doOkHttpRequest(url);
+        Response response = doOkHttpRequest(unlockAllFormats(url));
         SimpleYouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(response.body().byteStream());
         Uri video = dataParser.getUrlByTag(ITag.VIDEO_2160P_AVC_HQ);
         Uri audio = dataParser.getUrlByTag(ITag.AUDIO_128K_AAC);

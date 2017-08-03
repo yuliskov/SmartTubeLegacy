@@ -23,11 +23,35 @@ public final class ITag {
     public final static String VIDEO_2160P_WEBM = "313";
     public final static String VIDEO_2160P_AVC = "266";
     public final static String VIDEO_2160P_AVC_HQ = "138";
-    private final static List<String> sOrderedTags = Arrays.asList(
-            AUDIO_115K_WEBM, AUDIO_128K_AAC, VIDEO_144P_WEBM, VIDEO_144P_AVC, VIDEO_240P_WEBM, VIDEO_240P_AVC,
-            VIDEO_360P_WEBM, VIDEO_360P_AVC, VIDEO_480P_WEBM, VIDEO_480P_AVC, VIDEO_720P_WEBM, VIDEO_720P_AVC,
-            VIDEO_1080P_WEBM, VIDEO_1080P_AVC, VIDEO_1440P_WEBM, VIDEO_1440P_AVC, VIDEO_2160P_WEBM, VIDEO_2160P_AVC, VIDEO_2160P_AVC_HQ);
-    public static int getIndex(String iTag) {
-        return sOrderedTags.indexOf(iTag);
+
+    public final static String MUXED_360P_WEBM = "43";
+    public final static String MUXED_360P_AVC = "18";
+    public final static String MUXED_720P_AVC = "22";
+
+    private final static List<String> sOrderedITagsAVC = Arrays.asList(
+            MUXED_360P_AVC, MUXED_720P_AVC,
+            AUDIO_128K_AAC, VIDEO_144P_AVC, VIDEO_240P_AVC,
+            VIDEO_360P_AVC, VIDEO_480P_AVC, VIDEO_720P_AVC,
+            VIDEO_1080P_AVC, VIDEO_1440P_AVC, VIDEO_2160P_AVC, VIDEO_2160P_AVC_HQ);
+
+    private final static List<String> sOrderedITagsWEBM = Arrays.asList(
+            MUXED_360P_WEBM,
+            AUDIO_115K_WEBM, VIDEO_144P_WEBM, VIDEO_240P_WEBM,
+            VIDEO_360P_WEBM, VIDEO_480P_WEBM, VIDEO_720P_WEBM,
+            VIDEO_1080P_WEBM, VIDEO_1440P_WEBM, VIDEO_2160P_WEBM);
+
+    private final static List<List<String>> sITagsContainer = Arrays.asList(sOrderedITagsAVC, sOrderedITagsWEBM);
+
+    public static int compare(String leftITag, String rightITag) {
+        for (List<String> iTags : sITagsContainer) {
+            int left = iTags.indexOf(leftITag);
+            int right = iTags.indexOf(rightITag);
+            if (left != -1 && right != -1) {
+                return left - right;
+            }
+        }
+
+        // we can't be here
+        return 99;
     }
 }

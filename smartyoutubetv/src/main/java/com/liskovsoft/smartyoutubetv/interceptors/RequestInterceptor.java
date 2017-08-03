@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.text.TextUtils;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -68,5 +69,19 @@ public abstract class RequestInterceptor {
             resultMap.put(entry.getKey(), TextUtils.join(",", entry.getValue()));
         }
         return resultMap;
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    protected String unlockAllFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("c", "HTML5");
+
+        return query.toString();
     }
 }
