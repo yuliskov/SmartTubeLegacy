@@ -63,6 +63,8 @@ public class YouTubeVideoInfoBuilder implements VideoInfoBuilder {
         String result = s.hasNext() ? s.next() : "";
         mVideoInfo = result;
         mResultVideoInfo = mVideoInfo;
+
+        initSupportedFormats();
     }
 
     private void removeFormat(int itag) {
@@ -147,8 +149,12 @@ public class YouTubeVideoInfoBuilder implements VideoInfoBuilder {
             return mSupportedFormats;
         }
 
+        return mSupportedFormats;
+    }
+
+    private void initSupportedFormats() {
         String[] formats = getSupportedFormats(mVideoInfo);
-        
+
         for (String format : formats) {
             String iTag = findITagValue(format);
             VideoFormat fmt = VideoFormat.fromITag(iTag);
@@ -159,8 +165,6 @@ public class YouTubeVideoInfoBuilder implements VideoInfoBuilder {
         }
 
         mSupportedFormats = Collections.unmodifiableSet(mSupportedFormats);
-
-        return mSupportedFormats;
     }
 
     private String findITagValue(String format) {
@@ -169,6 +173,12 @@ public class YouTubeVideoInfoBuilder implements VideoInfoBuilder {
         return itag;
     }
 
+    /**
+     * Removes all video formats but one that supplied.
+     * Also all audio formats remain untouched.
+     * @param format
+     * @return
+     */
     @Override
     public boolean selectFormat(VideoFormat format) {
         if (format == null) {
