@@ -1,12 +1,9 @@
-package com.liskovsoft.smartyoutubetv.injectors;
+package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;

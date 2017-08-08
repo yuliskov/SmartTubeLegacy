@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.injectors;
+package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.content.Context;
 import android.os.Handler;
@@ -100,8 +100,32 @@ public class ResourceInjectorBase {
         injectResource(fileName, cssInjectTemplate);
     }
 
-    protected void runJS(String content) {
-        mWebView.loadUrl(String.format(jsInjectTemplate, content));
+    /**
+     * Injects JS as is
+     * @param content
+     */
+    protected void injectJSAsIs(final String content) {
+        Handler mainHandler = new Handler(mContext.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl(String.format(jsInjectTemplate, content));
+            }
+        });
+    }
+
+    /**
+     * Injects JS and encodes non-english letters
+     * @param content
+     */
+    protected void injectJSUnicode(final String content) {
+        Handler mainHandler = new Handler(mContext.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                injectContent(jsInjectTemplate, content.getBytes());
+            }
+        });
     }
 
     private void injectResource(String fileName, String template) {
@@ -114,10 +138,6 @@ public class ResourceInjectorBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    protected void injectJSContent(String content) {
-        injectContent(jsInjectTemplate, content.getBytes());
     }
 
     private void injectContent(String template, byte[] data) {

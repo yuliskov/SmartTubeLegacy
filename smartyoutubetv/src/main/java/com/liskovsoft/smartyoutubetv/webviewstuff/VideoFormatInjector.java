@@ -1,20 +1,20 @@
-package com.liskovsoft.smartyoutubetv.events;
+package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.content.Context;
 import android.os.Handler;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
-import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-public class VideoFormatNotification extends ResourceInjectorBase {
+public class VideoFormatInjector extends ResourceInjectorBase {
     private final Context mContext;
 
-    public VideoFormatNotification(Context context, WebView webView) {
+    public VideoFormatInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);
         mContext = context;
@@ -31,14 +31,7 @@ public class VideoFormatNotification extends ResourceInjectorBase {
         }
         final String jsonFormatList = toJSON(formats, selected);
 
-        Handler mainHandler = new Handler(mContext.getMainLooper());
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                // BUGFIX: Console: ReferenceError: fireEvent is not defined
-                injectJSContent("if(fireEvent){fireEvent(" + jsonFormatList + ", 'videoformats')}");
-            }
-        });
+        injectJSUnicode("if(fireEvent){fireEvent(" + jsonFormatList + ", 'videoformats')}");
     }
 
     private Set<VideoFormat> excludeFormats(Set<VideoFormat> formats) {

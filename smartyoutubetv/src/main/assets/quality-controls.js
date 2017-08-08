@@ -296,6 +296,7 @@ function createQualityToggleButton() {
 
 function createQualityButtonsRow2(videoFormats) {
     var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"></div>');
+    var container2 = createElement('<div class="new-list-container horizontal" style="margin-left: 0em;"></div>');
     for (var idx in videoFormats) {
         var textColor = '';
         var disabledClass = '';
@@ -304,21 +305,24 @@ function createQualityButtonsRow2(videoFormats) {
             disabledClass = 'disabled';
         }
         var el = createElement('<div class="my-button toggle-button ' + disabledClass + '" tabindex="-1" data-format-name="' + videoFormats[idx].name + '" style="min-width: 2.3em; width: initial; ' + textColor + '">' + videoFormats[idx].name + '</div>')
-        append(container, el);
+        append(container2, el);
+        append(container, container2);
     }
 
     return container;
 }
 
-function createQualityButtonsRow() {
-    return createElement(
-    '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
-        <div class="toggle-button" tabindex="-1" data-itag="278" style="min-width: 2.3em; width: initial;">144p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="134" style="min-width: 2.3em; width: initial;">360p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="136" style="min-width: 2.3em; width: initial;">720p</div> \
-        <div class="toggle-button" tabindex="-1" data-itag="137" style="min-width: 2.3em; width: initial;">1080p</div> \
-    </div>');
-}
+// function createQualityButtonsRow() {
+//     return createElement(
+//     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
+//         <div class="new-list-container horizontal" style="margin-left: 0em;"> \
+//             <div class="toggle-button" tabindex="-1" data-itag="278" style="min-width: 2.3em; width: initial;">144p</div> \
+//             <div class="toggle-button" tabindex="-1" data-itag="134" style="min-width: 2.3em; width: initial;">360p</div> \
+//             <div class="toggle-button" tabindex="-1" data-itag="136" style="min-width: 2.3em; width: initial;">720p</div> \
+//             <div class="toggle-button" tabindex="-1" data-itag="137" style="min-width: 2.3em; width: initial;">1080p</div> \
+//         </div> \
+//     </div>');
+// }
 
 ///// Remote Controller Navigation Handling /////
 

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.injectors;
+package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.net.http.SslError;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.*;
-import com.liskovsoft.smartyoutubetv.helpers.AdAwayClient;
+import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 
