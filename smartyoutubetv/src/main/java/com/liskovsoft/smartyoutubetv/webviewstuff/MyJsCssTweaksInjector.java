@@ -19,18 +19,18 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     }
 
     public void inject() {
-        injectCSSOnce("main.css");
-        injectJSOnce("common.js");
-        injectJSOnce("quality-controls.js");
+        injectCSSAssetOnce("main.css");
+        injectJSAssetOnce("common.js");
+        injectJSAssetOnce("quality-controls.js");
         if (Browser.getEngineType() == EngineType.XWalk) {
-            injectJSOnce("xwalk.js");
+            injectJSAssetOnce("xwalk.js");
         } else {
-            injectJSOnce("webview.js");
+            injectJSAssetOnce("webview.js");
         }
     }
 
     @Subscribe
     public void notifyAboutSupportedVideoFormats(SupportedVideoFormatsEvent event) {
-        injectJSAsIs("notifyAboutSupportedVideoFormats(['hd', 'sd', 'lq'])");
+        injectJSContent("notifyAboutSupportedVideoFormats(['hd', 'sd', 'lq'])");
     }
 }

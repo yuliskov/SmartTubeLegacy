@@ -14,16 +14,28 @@ import okhttp3.Response;
 
 public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
+    private final RequestInterceptor mExoInterceptor;
+    private final RequestInterceptor mCipherInterceptor;
+    private RequestInterceptor mCurrentInterceptor;
 
     public OpenExternalPlayerInterceptor2(Context context) {
         mContext = context;
+        mExoInterceptor = new ExoInterceptor(context);
+        mCipherInterceptor = new CipherInterceptor(context);
     }
 
     @Override
     public boolean test(String url) {
         if (url.contains("get_video_info")) {
+            mCurrentInterceptor = mExoInterceptor;
             return true;
         }
+
+        if (url.contains("tv-player.js")) {
+            mCurrentInterceptor = mCipherInterceptor;
+            return true;
+        }
+
         return false;
     }
 
@@ -33,26 +45,8 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return null;
         }
 
-        pressBackButton();
-        parseAndOpenExoPlayer(url);
+        mCurrentInterceptor.intercept(url);
 
         return null;
-    }
-
-    private void pressBackButton() {
-        if (!(mContext instanceof AppCompatActivity))
-            return;
-        AppCompatActivity activity = (AppCompatActivity) mContext;
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
-    }
-
-    private void parseAndOpenExoPlayer(String url) {
-        Response response = doOkHttpRequest(unlockAllFormats(url));
-        SimpleYouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(response.body().byteStream());
-        Uri video = dataParser.getUrlByTag(ITag.VIDEO_2160P_AVC_HQ);
-        Uri audio = dataParser.getUrlByTag(ITag.AUDIO_128K_AAC);
-        Sample sample = SampleHelpers.buildFromVideoAndAudio(video, audio);
-        mContext.startActivity(sample.buildIntent(mContext));
     }
 }

@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
@@ -12,7 +13,7 @@ import com.squareup.otto.Subscribe;
 
 import java.io.*;
 
-public class ResourceInjectorBase {
+public abstract class ResourceInjectorBase {
     private final Context mContext;
     private final WebView mWebView;
     private static final String cssInjectTemplate = "javascript:(function() {" +
@@ -48,13 +49,7 @@ public class ResourceInjectorBase {
         @Subscribe
         public void onJSFileInjectEvent(JSFileInjectEvent event) {
             final String fileName = event.getFileName();
-            Handler handler = new Handler(mContext.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mInjector.injectJS(fileName);
-                }
-            });
+            mInjector.injectJSAsset(fileName);
         }
 
         @Subscribe
@@ -64,7 +59,7 @@ public class ResourceInjectorBase {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mInjector.injectCSS(fileName);
+                    mInjector.injectCSSAsset(fileName);
                 }
             });
         }
@@ -80,7 +75,7 @@ public class ResourceInjectorBase {
      * Safe mean injected only one time per page.
      * @param fileName
      */
-    protected void injectJSOnce(String fileName) {
+    protected void injectJSAssetOnce(String fileName) {
         injectContent(jsInjectTemplate, String.format(testJSFnTemplate, fileName).getBytes());
     }
 
@@ -88,15 +83,15 @@ public class ResourceInjectorBase {
      * Safe mean injected only one time per page.
      * @param fileName
      */
-    protected void injectCSSOnce(String fileName) {
+    protected void injectCSSAssetOnce(String fileName) {
         injectContent(jsInjectTemplate, String.format(testCSSFnTemplate, fileName).getBytes());
     }
 
-    protected void injectJS(String fileName) {
+    protected void injectJSAsset(String fileName) {
         injectResource(fileName, jsInjectTemplate);
     }
 
-    protected void injectCSS(String fileName) {
+    protected void injectCSSAsset(String fileName) {
         injectResource(fileName, cssInjectTemplate);
     }
 
@@ -104,28 +99,16 @@ public class ResourceInjectorBase {
      * Injects JS as is
      * @param content
      */
-    protected void injectJSAsIs(final String content) {
-        Handler mainHandler = new Handler(mContext.getMainLooper());
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mWebView.loadUrl(String.format(jsInjectTemplate, content));
-            }
-        });
+    protected void injectJSContent(final String content) {
+        loadUrlSafe(String.format(jsInjectTemplate, content));
     }
 
     /**
      * Injects JS and encodes non-english letters
      * @param content
      */
-    protected void injectJSUnicode(final String content) {
-        Handler mainHandler = new Handler(mContext.getMainLooper());
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                injectContent(jsInjectTemplate, content.getBytes());
-            }
-        });
+    protected void injectJSContentUnicode(final String content) {
+        injectContent(jsInjectTemplate, content.getBytes());
     }
 
     private void injectResource(String fileName, String template) {
@@ -143,7 +126,24 @@ public class ResourceInjectorBase {
     private void injectContent(String template, byte[] data) {
         String uriEncoded = Helpers.encodeURI(data);// preserve non-english letters
         String encoded = Base64.encodeToString(uriEncoded.getBytes(), Base64.NO_WRAP);
-        mWebView.loadUrl(String.format(template, encoded));
+        String content = String.format(template, encoded);
+        loadUrlSafe(content);
+    }
+
+    private void loadUrlSafe(final String content) {
+        if(Looper.myLooper() == Looper.getMainLooper()) {
+            // Current Thread is Main Thread.
+            mWebView.loadUrl(content);
+            return;
+        }
+
+        Handler mainHandler = new Handler(mContext.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl(content);
+            }
+        });
     }
 
     /////////////////////////////////////////////////////

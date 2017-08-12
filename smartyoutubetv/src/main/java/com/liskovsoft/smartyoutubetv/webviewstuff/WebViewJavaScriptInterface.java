@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.PostDecipheredSignaturesEvent;
 
 /*
  * JavaScript Interface. Web code can access methods in here
@@ -92,5 +93,11 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public void onCSSFileInject(String fileName) {
         Browser.getBus().post(new CSSFileInjectEvent(fileName));
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void postDecipheredSignatures(String[] signatures) {
+        Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures));
     }
 }

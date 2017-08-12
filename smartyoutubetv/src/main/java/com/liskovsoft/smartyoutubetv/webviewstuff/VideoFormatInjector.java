@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.webviewstuff;
 
 import android.content.Context;
-import android.os.Handler;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
@@ -31,7 +30,7 @@ public class VideoFormatInjector extends ResourceInjectorBase {
         }
         final String jsonFormatList = toJSON(formats, selected);
 
-        injectJSUnicode("if(fireEvent){fireEvent(" + jsonFormatList + ", 'videoformats')}");
+        injectJSContentUnicode("if(fireEvent){fireEvent(" + jsonFormatList + ", 'videoformats')}");
     }
 
     private Set<VideoFormat> excludeFormats(Set<VideoFormat> formats) {

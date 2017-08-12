@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.CipherUtils2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,16 @@ public class SimpleYouTubeInfoParserTest {
         String originSig = "98C85C188F11DA24D5964D412FA4487AE09127A9C.893CF7AD1FA33DF80C481AC9186D768667511E7E7A73";
         String newSig = "8C85C198F11DA24D5964D412FA4487AA09E27A9C.893CF7AD1F333DF80C481AC9186D768667511E71";
         assertEquals(newSig, CipherUtils.decipherSignature(originSig));
+    }
+
+    @Test
+    public void tryToExtractJSDecipherCode() {
+        InputStream is = TestHelpers.openResource("tv-player.js");
+        String result = "var EQ={F2:function(a,b){a.splice(0,b)},\n" + "Xy:function(a,b){var c=a[0];a[0]=a[b%a.length];a[b]=c},\n" + "LN:function" +
+                "(a){a.reverse()}};\n" + "function FQ(a){a=a.split(\"\");EQ.LN(a,23);EQ.F2(a,2);EQ.Xy(a,1);EQ.F2(a,3);EQ.Xy(a,11);EQ.Xy(a,9);EQ.F2" +
+                "(a,2);return a.join(\"\")}";
+        String jsCode = CipherUtils2.extractDecipherCode(is);
+        assertEquals(result, jsCode);
     }
 
 }
