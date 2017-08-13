@@ -27,11 +27,24 @@ public class CipherInterceptor extends RequestInterceptor {
             return null;
         }
 
+        runInOtherThread(url);
+
+        return null;
+    }
+
+    private void runInOtherThread(final String url) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cacheResponse(url);
+            }
+        }).start();
+    }
+
+    private void cacheResponse(String url) {
         Response response = doOkHttpRequest(url);
         InputStream is = response.body().byteStream();
         mJSDecipherCode = CipherUtils2.extractDecipherCode(is);
-
-        return null;
     }
 
     @Subscribe
