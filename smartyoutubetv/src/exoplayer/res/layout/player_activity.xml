@@ -36,7 +36,8 @@
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textSize="10sp"
-        tools:ignore="SmallSp"/>
+        tools:ignore="SmallSp"
+        android:visibility="gone"/>
 
     <LinearLayout android:id="@+id/controls_root"
         android:layout_width="match_parent"

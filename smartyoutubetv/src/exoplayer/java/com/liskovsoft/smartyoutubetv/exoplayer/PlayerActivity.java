@@ -207,6 +207,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onVisibilityChange(int visibility) {
         debugRootView.setVisibility(visibility);
+        debugTextView.setVisibility(visibility);
     }
 
     // Internal methods
@@ -513,6 +514,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private void showControls() {
         debugRootView.setVisibility(View.VISIBLE);
+        debugTextView.setVisibility(View.VISIBLE);
     }
 
     private void showToast(int messageId) {
