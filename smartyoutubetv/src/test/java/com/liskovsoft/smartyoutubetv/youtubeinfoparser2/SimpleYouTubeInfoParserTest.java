@@ -74,7 +74,7 @@ public class SimpleYouTubeInfoParserTest {
     public void tryToExtractJSDecipherCode() {
         InputStream is = TestHelpers.openResource("tv-player.js");
         String result = "var EQ={F2:function(a,b){a.splice(0,b)},\n" + "Xy:function(a,b){var c=a[0];a[0]=a[b%a.length];a[b]=c},\n" + "LN:function" +
-                "(a){a.reverse()}};\n" + "function FQ(a){a=a.split(\"\");EQ.LN(a,23);EQ.F2(a,2);EQ.Xy(a,1);EQ.F2(a,3);EQ.Xy(a,11);EQ.Xy(a,9);EQ.F2" +
+                "(a){a.reverse()}};\n" + "function decipherSignature(a){a=a.split(\"\");EQ.LN(a,23);EQ.F2(a,2);EQ.Xy(a,1);EQ.F2(a,3);EQ.Xy(a,11);EQ.Xy(a,9);EQ.F2" +
                 "(a,2);return a.join(\"\")}";
         String jsCode = CipherUtils2.extractDecipherCode(is);
         assertEquals(result, jsCode);

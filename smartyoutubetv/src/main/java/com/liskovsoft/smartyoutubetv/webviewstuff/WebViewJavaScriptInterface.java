@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.PostDecipheredSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.PostDecipheredSignaturesEvent;
 
 /*
  * JavaScript Interface. Web code can access methods in here

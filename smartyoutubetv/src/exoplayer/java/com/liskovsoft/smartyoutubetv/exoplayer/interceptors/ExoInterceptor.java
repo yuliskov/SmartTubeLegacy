@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.interceptors;
+package com.liskovsoft.smartyoutubetv.exoplayer.interceptors;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTubeInfoParser2;

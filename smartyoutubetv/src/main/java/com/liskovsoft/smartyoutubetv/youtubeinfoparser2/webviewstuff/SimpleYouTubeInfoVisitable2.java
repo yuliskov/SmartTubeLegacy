@@ -5,8 +5,9 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.CipherUtils;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeInfoVisitable;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeInfoVisitor;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
 import com.squareup.otto.Subscribe;
 
 import java.io.InputStream;

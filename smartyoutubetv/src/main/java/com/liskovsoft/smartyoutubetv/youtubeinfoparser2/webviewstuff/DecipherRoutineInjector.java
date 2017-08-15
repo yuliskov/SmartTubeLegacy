@@ -4,10 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.interceptors.GetDecipherCodeDoneEvent;
-import com.liskovsoft.smartyoutubetv.interceptors.GetDecipherCodeEvent;
 import com.liskovsoft.smartyoutubetv.webviewstuff.ResourceInjectorBase;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.GetDecipherCodeDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.GetDecipherCodeEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.PostDecipheredSignaturesEvent;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -65,7 +68,7 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
     private void combineDecipherRoutine() {
         mDecipherRoutine = mDecipherCode + ";";
         mDecipherRoutine += mCombinedSignatures;
-        mDecipherRoutine += "for (var i = 0; i < rawSignatures.length; i++) {rawSignatures[i] = FQ(rawSignatures[i]);}; app.postDecipheredSignatures(rawSignatures);";
+        mDecipherRoutine += "for (var i = 0; i < rawSignatures.length; i++) {rawSignatures[i] = decipherSignature(rawSignatures[i]);}; app.postDecipheredSignatures(rawSignatures);";
     }
 
     private void extractSignatures() {

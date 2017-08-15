@@ -1,16 +1,9 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
-import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
-import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeInfoParser;
-import okhttp3.Response;
+import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.CipherInterceptor;
+import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.ExoInterceptor;
 
 public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
