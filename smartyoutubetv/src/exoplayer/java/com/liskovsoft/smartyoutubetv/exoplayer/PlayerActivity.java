@@ -35,6 +35,8 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryExcep
 import com.google.android.exoplayer2.source.*;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifest;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
@@ -51,10 +53,15 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.nio.charset.Charset;
 import java.util.UUID;
 
 /**
@@ -76,6 +83,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
+    public static final String MPD_CONTENT_EXTRA = "mpd_content";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -289,6 +297,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                             null));
                     continue;
                 }
+                // TODO: modified
+                if (intent.getStringExtra(MPD_CONTENT_EXTRA) != null) {
+                    mediaSources[i] = buildMPDMediaSource(uris[i], intent.getStringExtra(MPD_CONTENT_EXTRA));
+                    continue;
+                }
                 mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
             }
             MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
@@ -300,6 +313,23 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             needRetrySource = false;
             updateButtonVisibilities();
         }
+    }
+
+    // TODO: modified
+    private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
+        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
+                mainHandler, eventLogger);
+    }
+
+    private DashManifest getManifest(Uri uri, String mpdContent) {
+        DashManifestParser parser = new DashManifestParser();
+        DashManifest result = null;
+        try {
+            result = parser.parse(uri, Helpers.toStream(mpdContent));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private MediaSource buildMediaSource(Uri uri, String overrideExtension) {

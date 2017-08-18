@@ -166,6 +166,11 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     }
 
     @Override
+    public boolean belongsToType(String type) {
+        return ITag.belongsToType(type, getITag());
+    }
+
+    @Override
     public int compareTo(YouTubeMediaItem item) {
         if (item == null) {
             return 1;

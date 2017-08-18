@@ -36,4 +36,5 @@ public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     // Other/Regular
     String getQuality();
     void setQuality(String quality);
+    boolean belongsToType(String type);
 }

@@ -3,10 +3,13 @@ package com.liskovsoft.smartyoutubetv.helpers;
 import android.content.Context;
 import android.os.Build;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.Scanner;
 
 public class Helpers {
     /**
@@ -69,5 +72,15 @@ public class Helpers {
             }
         }
         return false;
+    }
+
+    public static String readToString(InputStream inputStream) {
+        Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+        return result;
+    }
+
+    public static InputStream toStream(String content) {
+        return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
     }
 }

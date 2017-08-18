@@ -41,6 +41,8 @@ public final class ITag {
             VIDEO_1080P_WEBM, VIDEO_1440P_WEBM, VIDEO_2160P_WEBM);
 
     private final static List<List<String>> sITagsContainer = Arrays.asList(sOrderedITagsAVC, sOrderedITagsWEBM);
+    public static final String AVC = "AVC";
+    public static final String WEBM = "VP9";
 
     public static int compare(String leftITag, String rightITag) {
         for (List<String> iTags : sITagsContainer) {
@@ -53,5 +55,17 @@ public final class ITag {
 
         // we can't be here
         return 99;
+    }
+
+    public static boolean belongsToType(String type, String iTag) {
+        String realType = getRealType(iTag);
+        return type.equals(realType);
+    }
+
+    private static String getRealType(String iTag) {
+        if (sOrderedITagsAVC.contains(iTag)) {
+            return AVC;
+        }
+        return WEBM;
     }
 }

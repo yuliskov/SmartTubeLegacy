@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.CipherUtils2;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +11,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -78,6 +82,21 @@ public class SimpleYouTubeInfoParserTest {
                 "(a,2);return a.join(\"\")}";
         String jsCode = CipherUtils2.extractDecipherCode(is);
         assertEquals(result, jsCode);
+    }
+
+    @Test
+    public void testTypeMatcher() {
+        assertTrue(ITag.belongsToType(ITag.AVC, ITag.VIDEO_1080P_AVC));
+        assertTrue(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_1080P_WEBM));
+        assertFalse(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_720P_AVC));
+    }
+
+    @Test
+    public void testHelpers() {
+        String sampleString = "<xml>\nHello\nWorld\n</xml>";
+        byte[] utf8s = sampleString.getBytes(Charset.forName("UTF8"));
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(utf8s);
+        assertEquals(sampleString, Helpers.readToString(byteArrayInputStream));
     }
 
 }

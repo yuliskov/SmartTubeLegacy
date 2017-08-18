@@ -3,7 +3,9 @@ package com.liskovsoft.smartyoutubetv.exoplayer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +20,10 @@ public final class SampleHelpers {
 
     public static Sample buildFromVideoAndAudio(Uri video, Uri audio) {
         return new UriSample("Sample Video", String.format("%s|%s", video, audio));
+    }
+
+    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
+        return new MPDSample("Sample Video", mpdPlaylist);
     }
 
     public abstract static class Sample {
@@ -48,6 +54,32 @@ public final class SampleHelpers {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
             return intent;
+        }
+
+    }
+
+    public static final class MPDSample extends Sample {
+        public final String extension;
+        private final String mpdContent;
+
+        public MPDSample(String name, InputStream mpdStream) {
+            this(name, null, null, null, true, null, "mpd", mpdStream);
+        }
+
+        public MPDSample(String name, UUID drmSchemeUuid, String drmLicenseUrl,
+                         String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
+                         String extension, InputStream mpdStream) {
+            super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
+            this.mpdContent = Helpers.readToString(mpdStream);
+            this.extension = extension;
+        }
+
+        @Override
+        public Intent buildIntent(Context context) {
+            return super.buildIntent(context)
+                    .putExtra(PlayerActivity.MPD_CONTENT_EXTRA, mpdContent)
+                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
+                    .setAction(PlayerActivity.ACTION_VIEW);
         }
 
     }
