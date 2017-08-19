@@ -46,11 +46,11 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
     private YouTubeMediaItem createMediaItem(String content) {
         Uri mediaUrl = Uri.parse("http://example.com?" + content);
         SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
-        mediaItem.setBitrate(mediaUrl.getQueryParameter(YouTubeInfoVisitable.BITRATE));
-        mediaItem.setUrl(mediaUrl.getQueryParameter(YouTubeInfoVisitable.URL));
-        mediaItem.setITag(mediaUrl.getQueryParameter(YouTubeInfoVisitable.ITAG));
-        mediaItem.setType(mediaUrl.getQueryParameter(YouTubeInfoVisitable.TYPE));
-        mediaItem.setS(mediaUrl.getQueryParameter(YouTubeInfoVisitable.S));
+        mediaItem.setBitrate(mediaUrl.getQueryParameter(YouTubeMediaItem.BITRATE));
+        mediaItem.setUrl(mediaUrl.getQueryParameter(YouTubeMediaItem.URL));
+        mediaItem.setITag(mediaUrl.getQueryParameter(YouTubeMediaItem.ITAG));
+        mediaItem.setType(mediaUrl.getQueryParameter(YouTubeMediaItem.TYPE));
+        mediaItem.setS(mediaUrl.getQueryParameter(YouTubeMediaItem.S));
         decipherSignature(mediaItem);
         return mediaItem;
     }

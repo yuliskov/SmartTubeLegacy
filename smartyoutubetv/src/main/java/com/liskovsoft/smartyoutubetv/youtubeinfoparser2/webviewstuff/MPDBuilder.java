@@ -5,7 +5,6 @@ import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 import java.io.InputStream;
 
 public interface MPDBuilder {
-    void appendVideo(YouTubeMediaItem mediaItem);
-    void appendAudio(YouTubeMediaItem mediaItem);
+    void append(YouTubeMediaItem mediaItem);
     InputStream build();
 }

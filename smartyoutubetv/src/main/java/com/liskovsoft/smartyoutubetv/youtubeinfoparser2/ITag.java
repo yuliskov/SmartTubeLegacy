@@ -5,7 +5,6 @@ import java.util.List;
 
 public final class ITag {
     public final static String AUDIO_115K_WEBM = "251";
-    public final static String AUDIO_128K_AAC_LQ = "139";
     public final static String AUDIO_128K_AAC = "140";
     public final static String VIDEO_144P_WEBM = "278";
     public final static String VIDEO_144P_AVC = "160";
@@ -29,10 +28,7 @@ public final class ITag {
     public final static String MUXED_360P_AVC = "18";
     public final static String MUXED_720P_AVC = "22";
 
-    private final static List<String> sOrderedITagsAVCAudio = Arrays.asList(
-            AUDIO_128K_AAC_LQ, AUDIO_128K_AAC);
-
-    private final static List<String> sOrderedITagsAVCVideo = Arrays.asList(
+    private final static List<String> sOrderedITagsAVC = Arrays.asList(
             MUXED_360P_AVC, MUXED_720P_AVC,
             AUDIO_128K_AAC, VIDEO_144P_AVC, VIDEO_240P_AVC,
             VIDEO_360P_AVC, VIDEO_480P_AVC, VIDEO_720P_AVC,
@@ -44,12 +40,9 @@ public final class ITag {
             VIDEO_360P_WEBM, VIDEO_480P_WEBM, VIDEO_720P_WEBM,
             VIDEO_1080P_WEBM, VIDEO_1440P_WEBM, VIDEO_2160P_WEBM);
 
-    private final static List<List<String>> sITagsContainer = Arrays.asList(sOrderedITagsAVCAudio, sOrderedITagsAVCVideo, sOrderedITagsWEBM);
+    private final static List<List<String>> sITagsContainer = Arrays.asList(sOrderedITagsAVC, sOrderedITagsWEBM);
     public static final String AVC = "AVC";
     public static final String WEBM = "VP9";
-    public static final String AVC_VIDEO = "AVC_VIDEO";
-    public static final String AVC_AUDIO = "AVC_AUDIO";
-    public static final String WEBM_VIDEO = "WEBM_VIDEO";
 
     public static int compare(String leftITag, String rightITag) {
         for (List<String> iTags : sITagsContainer) {
@@ -60,7 +53,7 @@ public final class ITag {
             }
         }
 
-        // we can't be here
+        // TODO: we can't be here
         return 99;
     }
 
@@ -70,12 +63,9 @@ public final class ITag {
     }
 
     private static String getRealType(String iTag) {
-        if (sOrderedITagsAVCVideo.contains(iTag)) {
-            return AVC_VIDEO;
+        if (sOrderedITagsAVC.contains(iTag)) {
+            return AVC;
         }
-        if (sOrderedITagsAVCAudio.contains(iTag)) {
-            return AVC_AUDIO;
-        }
-        return null;
+        return WEBM;
     }
 }

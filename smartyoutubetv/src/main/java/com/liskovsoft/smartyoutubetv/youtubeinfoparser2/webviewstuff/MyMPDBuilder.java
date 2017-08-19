@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
 
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -16,13 +17,15 @@ import java.util.regex.Pattern;
 public class MyMPDBuilder implements MPDBuilder {
     private final List<YouTubeMediaItem> mVideos;
     private final List<YouTubeMediaItem> mAudios;
+    private final YouTubeGenericInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
 
-    public MyMPDBuilder() {
-        initXmlSerializer();
+    public MyMPDBuilder(YouTubeGenericInfo info) {
+        mInfo = info;
         mVideos = new ArrayList<>();
         mAudios = new ArrayList<>();
+        initXmlSerializer();
     }
 
     private void initXmlSerializer() {
@@ -37,6 +40,9 @@ public class MyMPDBuilder implements MPDBuilder {
         //setPrefix("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         //setPrefix("yt", "http://youtube.com/yt/2012/10/10");
 
+        //String duration = "PT309S";
+        String duration = String.format("PT%sS", mInfo.getLengthSeconds());
+
         startTag("", "MPD");
         attribute("", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         attribute("", "xmlns", "urn:mpeg:DASH:schema:MPD:2011");
@@ -45,11 +51,11 @@ public class MyMPDBuilder implements MPDBuilder {
         attribute("", "minBufferTime", "PT1.500S");
         attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
         attribute("", "type", "static");
-        attribute("", "mediaPresentationDuration", "PT135.650S");
+        attribute("", "mediaPresentationDuration", duration);
 
 
         startTag("", "Period");
-        attribute("", "duration", "PT135.650S");
+        attribute("", "duration", duration);
     }
 
     private void setPrefix(String prefix, String namespace) {
@@ -126,13 +132,19 @@ public class MyMPDBuilder implements MPDBuilder {
     }
 
     @Override
-    public void appendVideo(YouTubeMediaItem mediaItem) {
-        mVideos.add(mediaItem);
+    public void append(YouTubeMediaItem mediaItem) {
+        if (notDASH(mediaItem)) {
+            return;
+        }
+        if (isVideo(mediaItem)) {
+            mVideos.add(mediaItem);
+        } else {
+            mAudios.add(mediaItem);
+        }
     }
 
-    @Override
-    public void appendAudio(YouTubeMediaItem mediaItem) {
-        mAudios.add(mediaItem);
+    private boolean notDASH(YouTubeMediaItem mediaItem) {
+        return mediaItem.getInit() == null;
     }
 
     private void writeVideoTags() {
@@ -140,7 +152,7 @@ public class MyMPDBuilder implements MPDBuilder {
 
         // Representation
         for (YouTubeMediaItem item : mVideos) {
-            writeMediaItemTag(item, true);
+            writeMediaItemTag(item);
         }
 
         endTag("", "AdaptationSet");
@@ -151,13 +163,13 @@ public class MyMPDBuilder implements MPDBuilder {
 
         // Representation
         for (YouTubeMediaItem item : mAudios) {
-            writeMediaItemTag(item, false);
+            writeMediaItemTag(item);
         }
 
         endTag("", "AdaptationSet");
     }
 
-    private void writeMediaItemTag(YouTubeMediaItem item, boolean isVideo) {
+    private void writeMediaItemTag(YouTubeMediaItem item) {
         startTag("", "Representation");
 
         attribute("", "id", item.getITag());
@@ -165,7 +177,7 @@ public class MyMPDBuilder implements MPDBuilder {
         attribute("", "startWithSAP", "1");
         attribute("", "bandwidth", item.getBitrate());
 
-        if (isVideo) {
+        if (isVideo(item)) {
             // video attrs
             attribute("", "width", getWidth(item));
             attribute("", "height", getHeight(item));
@@ -197,6 +209,10 @@ public class MyMPDBuilder implements MPDBuilder {
         endTag("", "SegmentBase");
 
         endTag("", "Representation");
+    }
+
+    private boolean isVideo(YouTubeMediaItem item) {
+        return item.getSize() != null;
     }
 
     private XmlSerializer text(String url) {

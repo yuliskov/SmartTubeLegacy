@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 import java.io.InputStream;
@@ -32,6 +32,11 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
             mUrlFoundCallback.onUrlFound(getUri());
         }
 
+        @Override
+        public void visitGenericInfo(YouTubeGenericInfo info) {
+            
+        }
+
         public Uri getUri() {
             if (mLastItem == null) {
                 return Uri.parse("");
@@ -43,22 +48,22 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     private class CombineMPDPlaylistVisitor implements YouTubeInfoVisitor2 {
         private final String mType;
         private final MPDFoundCallback mMpdFoundCallback;
-        private final MyMPDBuilder mMPDBuilder;
+        private MyMPDBuilder mMPDBuilder;
 
         public CombineMPDPlaylistVisitor(String type, MPDFoundCallback mpdFoundCallback) {
             mType = type;
             mMpdFoundCallback = mpdFoundCallback;
-            mMPDBuilder = new MyMPDBuilder();
+        }
+
+        @Override
+        public void visitGenericInfo(YouTubeGenericInfo info) {
+            mMPDBuilder = new MyMPDBuilder(info);
         }
 
         @Override
         public void visitMediaItem(YouTubeMediaItem mediaItem) {
-            if (mediaItem.belongsToType(ITag.AVC_VIDEO)) {
-                mMPDBuilder.appendVideo(mediaItem);
-            }
-
-            if (mediaItem.belongsToType(ITag.AVC_AUDIO)) {
-                mMPDBuilder.appendAudio(mediaItem);
+            if (mediaItem.belongsToType(mType)) {
+                mMPDBuilder.append(mediaItem);
             }
         }
 

@@ -87,9 +87,9 @@ public class SimpleYouTubeInfoParserTest {
 
     @Test
     public void testTypeMatcher() {
-        assertTrue(ITag.belongsToType(ITag.AVC_VIDEO, ITag.VIDEO_1080P_AVC));
-        assertTrue(ITag.belongsToType(ITag.WEBM_VIDEO, ITag.VIDEO_1080P_WEBM));
-        assertFalse(ITag.belongsToType(ITag.WEBM_VIDEO, ITag.VIDEO_720P_AVC));
+        assertTrue(ITag.belongsToType(ITag.AVC, ITag.VIDEO_1080P_AVC));
+        assertTrue(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_1080P_WEBM));
+        assertFalse(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_720P_AVC));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class SimpleYouTubeInfoParserTest {
         fakeItem.setUrl("http://empty.url");
         fakeItem.setType("video/mp4;+codecs=\"avc1.640033\"");
         MyMPDBuilder fakeBuilder = new MyMPDBuilder();
-        fakeBuilder.appendVideo(fakeItem);
+        fakeBuilder.append(fakeItem);
         assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
     }
 

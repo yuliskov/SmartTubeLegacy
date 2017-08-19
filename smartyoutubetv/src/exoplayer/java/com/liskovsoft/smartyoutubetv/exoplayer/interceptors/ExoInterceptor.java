@@ -32,7 +32,7 @@ public class ExoInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         pressBackButton();
-        parseAndOpenExoPlayer2(url);
+        parseAndOpenExoPlayer(url);
 
         return null;
     }
