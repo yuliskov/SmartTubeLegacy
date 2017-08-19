@@ -20,6 +20,7 @@ public interface YouTubeInfoVisitable {
     String FPS = "fps";
     String LMT = "lmt";
     String QUALITY_LABEL = "quality_label";
+    String INIT = "init";
     // End DASH params
 
     // Regular video params

@@ -42,25 +42,29 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
 
     private class CombineMPDPlaylistVisitor implements YouTubeInfoVisitor2 {
         private final String mType;
-        private final MPDPlaylistFoundCallback mMpdPlaylistFoundCallback;
+        private final MPDFoundCallback mMpdFoundCallback;
         private final MyMPDBuilder mMPDBuilder;
 
-        public CombineMPDPlaylistVisitor(String type, MPDPlaylistFoundCallback mpdPlaylistFoundCallback) {
+        public CombineMPDPlaylistVisitor(String type, MPDFoundCallback mpdFoundCallback) {
             mType = type;
-            mMpdPlaylistFoundCallback = mpdPlaylistFoundCallback;
+            mMpdFoundCallback = mpdFoundCallback;
             mMPDBuilder = new MyMPDBuilder();
         }
 
         @Override
         public void visitMediaItem(YouTubeMediaItem mediaItem) {
-            if (mediaItem.belongsToType(ITag.AVC)) {
-                mMPDBuilder.append(mediaItem);
+            if (mediaItem.belongsToType(ITag.AVC_VIDEO)) {
+                mMPDBuilder.appendVideo(mediaItem);
+            }
+
+            if (mediaItem.belongsToType(ITag.AVC_AUDIO)) {
+                mMPDBuilder.appendAudio(mediaItem);
             }
         }
 
         @Override
         public void doneVisiting() {
-            mMpdPlaylistFoundCallback.onFound(mMPDBuilder.build());
+            mMpdFoundCallback.onFound(mMPDBuilder.build());
         }
     }
 
@@ -87,7 +91,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     }
 
     @Override
-    public void getMPDPlaylist(String type, MPDPlaylistFoundCallback mpdPlaylistFoundCallback) {
+    public void getMPDPlaylist(String type, MPDFoundCallback mpdPlaylistFoundCallback) {
         YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
         YouTubeInfoVisitor2 visitor = new CombineMPDPlaylistVisitor(type, mpdPlaylistFoundCallback);
         visitable.accept(visitor);

@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.CipherUtils2;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.MyMPDBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,9 +87,9 @@ public class SimpleYouTubeInfoParserTest {
 
     @Test
     public void testTypeMatcher() {
-        assertTrue(ITag.belongsToType(ITag.AVC, ITag.VIDEO_1080P_AVC));
-        assertTrue(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_1080P_WEBM));
-        assertFalse(ITag.belongsToType(ITag.WEBM, ITag.VIDEO_720P_AVC));
+        assertTrue(ITag.belongsToType(ITag.AVC_VIDEO, ITag.VIDEO_1080P_AVC));
+        assertTrue(ITag.belongsToType(ITag.WEBM_VIDEO, ITag.VIDEO_1080P_WEBM));
+        assertFalse(ITag.belongsToType(ITag.WEBM_VIDEO, ITag.VIDEO_720P_AVC));
     }
 
     @Test
@@ -96,7 +97,23 @@ public class SimpleYouTubeInfoParserTest {
         String sampleString = "<xml>\nHello\nWorld\n</xml>";
         byte[] utf8s = sampleString.getBytes(Charset.forName("UTF8"));
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(utf8s);
-        assertEquals(sampleString, Helpers.readToString(byteArrayInputStream));
+        assertEquals(sampleString, Helpers.toString(byteArrayInputStream));
+    }
+
+    @Test
+    public void mpdBuilderTest() {
+        InputStream emptyMpd = TestHelpers.openResource("empty_mpd");
+        MyMPDBuilder builder = new MyMPDBuilder();
+        String expected = Helpers.toString(emptyMpd);
+        assertEquals(expected, Helpers.toString(builder.build()));
+
+        InputStream oneItem = TestHelpers.openResource("mpd_one_item");
+        SimpleYouTubeMediaItem fakeItem = new SimpleYouTubeMediaItem();
+        fakeItem.setUrl("http://empty.url");
+        fakeItem.setType("video/mp4;+codecs=\"avc1.640033\"");
+        MyMPDBuilder fakeBuilder = new MyMPDBuilder();
+        fakeBuilder.appendVideo(fakeItem);
+        assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
     }
 
 }

@@ -73,6 +73,11 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
         mediaItem.setITag(mediaUrl.getQueryParameter(YouTubeInfoVisitable.ITAG));
         mediaItem.setType(mediaUrl.getQueryParameter(YouTubeInfoVisitable.TYPE));
         mediaItem.setS(mediaUrl.getQueryParameter(YouTubeInfoVisitable.S));
+        mediaItem.setClen(mediaUrl.getQueryParameter(YouTubeInfoVisitable.CLEN));
+        mediaItem.setFps(mediaUrl.getQueryParameter(YouTubeInfoVisitable.FPS));
+        mediaItem.setIndex(mediaUrl.getQueryParameter(YouTubeInfoVisitable.INDEX));
+        mediaItem.setInit(mediaUrl.getQueryParameter(YouTubeInfoVisitable.INIT));
+        mediaItem.setSize(mediaUrl.getQueryParameter(YouTubeInfoVisitable.SIZE));
         //decipherSignature(mediaItem);
         return mediaItem;
     }

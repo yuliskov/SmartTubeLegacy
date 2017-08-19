@@ -23,7 +23,7 @@ public final class SampleHelpers {
     }
 
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
-        return new MPDSample("Sample Video", mpdPlaylist);
+        return new MPDSample("Sample Video", "https://example.com/test.mpd", mpdPlaylist);
     }
 
     public abstract static class Sample {
@@ -59,24 +59,27 @@ public final class SampleHelpers {
     }
 
     public static final class MPDSample extends Sample {
+        public final String uri;
         public final String extension;
         private final String mpdContent;
 
-        public MPDSample(String name, InputStream mpdStream) {
-            this(name, null, null, null, true, null, "mpd", mpdStream);
+        public MPDSample(String name, String uri, InputStream mpdStream) {
+            this(name, null, null, null, true, uri, "mpd", mpdStream);
         }
 
         public MPDSample(String name, UUID drmSchemeUuid, String drmLicenseUrl,
                          String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            this.mpdContent = Helpers.readToString(mpdStream);
+            this.mpdContent = Helpers.toString(mpdStream);
             this.extension = extension;
+            this.uri = uri;
         }
 
         @Override
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
+                    .setData(Uri.parse(uri))
                     .putExtra(PlayerActivity.MPD_CONTENT_EXTRA, mpdContent)
                     .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
                     .setAction(PlayerActivity.ACTION_VIEW);

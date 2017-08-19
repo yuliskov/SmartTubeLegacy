@@ -9,8 +9,7 @@ import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeInfoParser;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.MPDPlaylistFoundCallback;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.MPDFoundCallback;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTubeInfoParser2;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.UrlFoundCallback;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.YouTubeInfoParser2;
@@ -41,7 +40,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer(String url) {
         Response response = doOkHttpRequest(unlockAllFormats(url));
         final YouTubeInfoParser2 dataParser = new SimpleYouTubeInfoParser2(response.body().byteStream());
-        dataParser.getMPDPlaylist(ITag.AVC, new MPDPlaylistFoundCallback() {
+        dataParser.getMPDPlaylist(ITag.AVC, new MPDFoundCallback() {
             @Override
             public void onFound(final InputStream mpdPlaylist) {
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdPlaylist);

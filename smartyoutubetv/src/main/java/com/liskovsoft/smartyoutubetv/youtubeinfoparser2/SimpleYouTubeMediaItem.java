@@ -7,6 +7,15 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     private String mType;
     private String mClen;
     private String mBitrate;
+    private String mProjectionType;
+    private String mXtags;
+    private String mSize;
+    private String mIndex;
+    private String mInit;
+    private String mFps;
+    private String mLmt;
+    private String mQualityLabel;
+    private String mQuality;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -77,92 +86,92 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
 
     @Override
     public String getProjectionType() {
-        return null;
+        return mProjectionType;
     }
 
     @Override
     public void setProjectionType(String projectionType) {
-
+        mProjectionType = projectionType;
     }
 
     @Override
     public String getXtags() {
-        return null;
+        return mXtags;
     }
 
     @Override
     public void setXtags(String xtags) {
-
+        mXtags = xtags;
     }
 
     @Override
     public String getSize() {
-        return null;
+        return mSize;
     }
 
     @Override
     public void setSize(String size) {
-
+        mSize = size;
     }
 
     @Override
     public String getIndex() {
-        return null;
+        return mIndex;
     }
 
     @Override
     public void setIndex(String index) {
-
+        mIndex = index;
     }
 
     @Override
     public String getInit() {
-        return null;
+        return mInit;
     }
 
     @Override
     public void setInit(String init) {
-
+        mInit = init;
     }
 
     @Override
     public String getFps() {
-        return null;
+        return mFps;
     }
 
     @Override
     public void setFps(String fps) {
-
+        mFps = fps;
     }
 
     @Override
     public String getLmt() {
-        return null;
+        return mLmt;
     }
 
     @Override
     public void setLmt(String lmt) {
-
+        mLmt = lmt;
     }
 
     @Override
     public String getQualityLabel() {
-        return null;
+        return mQualityLabel;
     }
 
     @Override
     public void setQualityLabel(String qualityLabel) {
-
+        mQualityLabel = qualityLabel;
     }
 
     @Override
     public String getQuality() {
-        return null;
+        return mQuality;
     }
 
     @Override
     public void setQuality(String quality) {
-
+        mQuality = quality;
     }
 
     @Override
