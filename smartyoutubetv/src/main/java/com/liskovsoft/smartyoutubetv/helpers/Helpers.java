@@ -2,6 +2,9 @@ package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.content.Context;
 import android.os.Build;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -82,5 +85,22 @@ public class Helpers {
 
     public static InputStream toStream(String content) {
         return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
+    }
+
+    public static Response doOkHttpRequest(String url) {
+        OkHttpClient mClient = new OkHttpClient();
+
+        Request okHttpRequest = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response okHttpResponse = null;
+        try {
+            okHttpResponse = mClient.newCall(okHttpRequest).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return okHttpResponse;
     }
 }

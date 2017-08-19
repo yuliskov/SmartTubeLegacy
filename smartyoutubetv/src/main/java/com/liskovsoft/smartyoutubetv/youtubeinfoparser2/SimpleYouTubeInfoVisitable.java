@@ -17,12 +17,6 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
         mContent = content;
     }
 
-    private String readToString(InputStream stream) {
-        Scanner s = new Scanner(stream).useDelimiter("\\A");
-        String result = s.hasNext() ? s.next() : "";
-        return result;
-    }
-
     @Override
     public void accept(YouTubeInfoVisitor visitor) {
         mVisitor = visitor;

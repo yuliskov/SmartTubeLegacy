@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
@@ -12,7 +13,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     private final String mContent;
     private UrlFoundCallback mUrlFoundCallback;
 
-    private class FindUriVisitor implements YouTubeInfoVisitor2 {
+    private class FindUriVisitor extends YouTubeInfoVisitor2 {
         private final YouTubeMediaItem mOriginItem;
         private YouTubeMediaItem mLastItem;
 
@@ -21,7 +22,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
         }
 
         @Override
-        public void visitMediaItem(YouTubeMediaItem mediaItem) {
+        public void onMediaItem(YouTubeMediaItem mediaItem) {
             if (mediaItem.compareTo(mOriginItem) <= 0 && mediaItem.compareTo(mLastItem) > 0) {
                 mLastItem = mediaItem;
             }
@@ -32,11 +33,6 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
             mUrlFoundCallback.onUrlFound(getUri());
         }
 
-        @Override
-        public void visitGenericInfo(YouTubeGenericInfo info) {
-            
-        }
-
         public Uri getUri() {
             if (mLastItem == null) {
                 return Uri.parse("");
@@ -45,7 +41,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
         }
     }
 
-    private class CombineMPDPlaylistVisitor implements YouTubeInfoVisitor2 {
+    private class CombineMPDPlaylistVisitor extends YouTubeInfoVisitor2 {
         private final String mType;
         private final MPDFoundCallback mMpdFoundCallback;
         private MyMPDBuilder mMPDBuilder;
@@ -56,12 +52,17 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
         }
 
         @Override
-        public void visitGenericInfo(YouTubeGenericInfo info) {
+        public void onGenericInfo(YouTubeGenericInfo info) {
             mMPDBuilder = new MyMPDBuilder(info);
         }
 
         @Override
-        public void visitMediaItem(YouTubeMediaItem mediaItem) {
+        public void onRawMPD(InputStream rawMPD) {
+            mMpdFoundCallback.onFound(rawMPD);
+        }
+
+        @Override
+        public void onMediaItem(YouTubeMediaItem mediaItem) {
             if (mediaItem.belongsToType(mType)) {
                 mMPDBuilder.append(mediaItem);
             }
@@ -69,6 +70,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
 
         @Override
         public void doneVisiting() {
+            //mMpdFoundCallback.onFound(Helpers.toStream("Hello World"));
             mMpdFoundCallback.onFound(mMPDBuilder.build());
         }
     }
@@ -96,9 +98,9 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     }
 
     @Override
-    public void getMPDPlaylist(String type, MPDFoundCallback mpdPlaylistFoundCallback) {
+    public void getMPDByCodec(String type, MPDFoundCallback mpdFoundCallback) {
         YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
-        YouTubeInfoVisitor2 visitor = new CombineMPDPlaylistVisitor(type, mpdPlaylistFoundCallback);
+        YouTubeInfoVisitor2 visitor = new CombineMPDPlaylistVisitor(type, mpdFoundCallback);
         visitable.accept(visitor);
     }
 }

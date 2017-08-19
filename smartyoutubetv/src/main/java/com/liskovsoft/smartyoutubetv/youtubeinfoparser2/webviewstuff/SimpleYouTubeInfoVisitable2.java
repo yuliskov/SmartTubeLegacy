@@ -2,21 +2,21 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
 
 import android.net.Uri;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.CipherUtils;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeInfoVisitable;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
 import com.squareup.otto.Subscribe;
+import okhttp3.Response;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
     private final String mContent;
@@ -32,25 +32,43 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
     public void accept(YouTubeInfoVisitor2 visitor) {
         mVisitor = visitor;
 
-        YouTubeGenericInfo info = extractInfo(mContent);
-        mVisitor.visitGenericInfo(info);
+        YouTubeGenericInfo info = extractInfo();
+        mVisitor.onGenericInfo(info);
+
+        InputStream rawMPD = extractRawMPD();
+        if (rawMPD != null) {
+            mVisitor.onRawMPD(rawMPD);
+            return;
+        }
 
         List<YouTubeMediaItem> items = parseToMediaItems();
         assert items != null;
         mMediaItems = items;
 
-        decipherSignatures();
+        decipherSignaturesAndDoCallback();
     }
 
-    private void decipherSignatures() {
+    private InputStream extractRawMPD() {
+        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        String dashmpdUrl = videoInfo.getQueryParameter("dashmpd");
+        if (dashmpdUrl != null) {
+            Response response = Helpers.doOkHttpRequest(dashmpdUrl);
+            return response.body().byteStream();
+        }
+        return null;
+    }
+
+    private void decipherSignaturesAndDoCallback() {
         Browser.getBus().post(new DecipherSignaturesEvent(mMediaItems));
     }
 
     @Subscribe
     public void decipherSignaturesDone(DecipherSignaturesDoneEvent doneEvent) {
+        Browser.getBus().unregister(this);
+
         List<YouTubeMediaItem> items = doneEvent.getMediaItems();
         for (YouTubeMediaItem item : items) {
-            mVisitor.visitMediaItem(item);
+            mVisitor.onMediaItem(item);
         }
         mVisitor.doneVisiting();
     }
@@ -90,9 +108,9 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
         }
     }
 
-    private YouTubeGenericInfo extractInfo(String content) {
+    private YouTubeGenericInfo extractInfo() {
         YouTubeGenericInfo info = new SimpleYouTubeGenericInfo();
-        Uri videoInfo = Uri.parse("http://example.com?" + content);
+        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
         info.setLengthSeconds(videoInfo.getQueryParameter(YouTubeGenericInfo.LENGTH_SECONDS));
         info.setTitle(videoInfo.getQueryParameter(YouTubeGenericInfo.TITLE));
         info.setAuthor(videoInfo.getQueryParameter(YouTubeGenericInfo.AUTHOR));

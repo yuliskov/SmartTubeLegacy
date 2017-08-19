@@ -14,11 +14,14 @@ import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTu
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.UrlFoundCallback;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.YouTubeInfoParser2;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
+    private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
 
     public ExoInterceptor(Context context) {
         mContext = context;
@@ -40,10 +43,11 @@ public class ExoInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer(String url) {
         Response response = doOkHttpRequest(unlockAllFormats(url));
         final YouTubeInfoParser2 dataParser = new SimpleYouTubeInfoParser2(response.body().byteStream());
-        dataParser.getMPDPlaylist(ITag.AVC, new MPDFoundCallback() {
+        dataParser.getMPDByCodec(ITag.AVC, new MPDFoundCallback() {
             @Override
             public void onFound(final InputStream mpdPlaylist) {
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdPlaylist);
+                sLogger.info("About to start ExoPlayer activity");
                 mContext.startActivity(sample.buildIntent(mContext));
             }
         });
@@ -63,10 +67,12 @@ public class ExoInterceptor extends RequestInterceptor {
         dataParser.getUrlByTag(ITag.VIDEO_2160P_AVC_HQ, new UrlFoundCallback() {
             @Override
             public void onUrlFound(final Uri videoUri) {
+                sLogger.info("About to parse audio");
                 dataParser.getUrlByTag(ITag.AUDIO_128K_AAC, new UrlFoundCallback() {
                     @Override
                     public void onUrlFound(final Uri audioUri) {
                         Sample sample = SampleHelpers.buildFromVideoAndAudio(videoUri, audioUri);
+                        sLogger.info("About to start ExoPlayer activity");
                         mContext.startActivity(sample.buildIntent(mContext));
                     }
                 });

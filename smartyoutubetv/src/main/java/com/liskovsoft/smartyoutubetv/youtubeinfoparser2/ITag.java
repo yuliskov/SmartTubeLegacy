@@ -4,7 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class ITag {
-    public final static String AUDIO_115K_WEBM = "251";
+    public final static String AUDIO_68K_WEBM = "249";
+    public final static String AUDIO_89K_WEBM = "250";
+    public final static String AUDIO_133K_WEBM = "171";
+    public final static String AUDIO_156K_WEBM = "251";
+    public final static String AUDIO_48K_AAC = "139";
     public final static String AUDIO_128K_AAC = "140";
     public final static String VIDEO_144P_WEBM = "278";
     public final static String VIDEO_144P_AVC = "160";
@@ -30,13 +34,15 @@ public final class ITag {
 
     private final static List<String> sOrderedITagsAVC = Arrays.asList(
             MUXED_360P_AVC, MUXED_720P_AVC,
-            AUDIO_128K_AAC, VIDEO_144P_AVC, VIDEO_240P_AVC,
+            AUDIO_48K_AAC, AUDIO_128K_AAC,
+            VIDEO_144P_AVC, VIDEO_240P_AVC,
             VIDEO_360P_AVC, VIDEO_480P_AVC, VIDEO_720P_AVC,
             VIDEO_1080P_AVC, VIDEO_1440P_AVC, VIDEO_2160P_AVC, VIDEO_2160P_AVC_HQ);
 
     private final static List<String> sOrderedITagsWEBM = Arrays.asList(
             MUXED_360P_WEBM,
-            AUDIO_115K_WEBM, VIDEO_144P_WEBM, VIDEO_240P_WEBM,
+            AUDIO_68K_WEBM, AUDIO_89K_WEBM, AUDIO_133K_WEBM, AUDIO_156K_WEBM,
+            VIDEO_144P_WEBM, VIDEO_240P_WEBM,
             VIDEO_360P_WEBM, VIDEO_480P_WEBM, VIDEO_720P_WEBM,
             VIDEO_1080P_WEBM, VIDEO_1440P_WEBM, VIDEO_2160P_WEBM);
 

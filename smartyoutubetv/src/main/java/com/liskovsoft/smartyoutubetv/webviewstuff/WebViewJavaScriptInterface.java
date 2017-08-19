@@ -12,6 +12,8 @@ import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.PostDecipheredSignaturesEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * JavaScript Interface. Web code can access methods in here
@@ -20,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.Post
 public class WebViewJavaScriptInterface {
     private final Tab mTab;
     private Context mContext;
+    private static final Logger sLogger = LoggerFactory.getLogger(WebViewJavaScriptInterface.class);
 
     /*
      * Need a reference to the context in order to sent a post message
@@ -98,6 +101,7 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void postDecipheredSignatures(String[] signatures) {
+        sLogger.info("Just now received deciphered signatures from webview.");
         Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures));
     }
 }
