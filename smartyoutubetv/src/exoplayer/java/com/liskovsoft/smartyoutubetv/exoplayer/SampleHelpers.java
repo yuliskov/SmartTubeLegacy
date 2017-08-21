@@ -18,6 +18,10 @@ public final class SampleHelpers {
         return new PlaylistSample("Sample Playlist", samples);
     }
 
+    public static Sample buildFromUri(Uri contentUrl) {
+        return new UriSample("Sample Video", contentUrl.toString());
+    }
+
     public static Sample buildFromVideoAndAudio(Uri video, Uri audio) {
         return new UriSample("Sample Video", String.format("%s|%s", video, audio));
     }

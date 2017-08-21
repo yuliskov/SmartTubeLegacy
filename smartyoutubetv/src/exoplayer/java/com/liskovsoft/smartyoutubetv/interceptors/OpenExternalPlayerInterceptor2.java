@@ -38,8 +38,6 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return null;
         }
 
-        mCurrentInterceptor.intercept(url);
-
-        return null;
+        return mCurrentInterceptor.intercept(url);
     }
 }

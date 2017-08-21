@@ -37,11 +37,10 @@ public class MyMPDBuilder implements MPDBuilder {
         startDocument(mXmlSerializer);
         mXmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 
-        //setPrefix("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        //setPrefix("yt", "http://youtube.com/yt/2012/10/10");
-
-        //String duration = "PT309S";
-        String duration = String.format("PT%sS", mInfo.getLengthSeconds());
+        String duration = "PT309S";
+        if (mInfo != null) {
+            duration = String.format("PT%sS", mInfo.getLengthSeconds());
+        }
 
         startTag("", "MPD");
         attribute("", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -137,9 +136,10 @@ public class MyMPDBuilder implements MPDBuilder {
             return;
         }
         if (isVideo(mediaItem)) {
-            mVideos.add(mediaItem);
+            // combine list from low to high qualities
+            mVideos.add(0, mediaItem);
         } else {
-            mAudios.add(mediaItem);
+            mAudios.add(0, mediaItem);
         }
     }
 

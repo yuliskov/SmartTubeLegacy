@@ -317,6 +317,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     // TODO: modified
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
+        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                 mainHandler, eventLogger);
     }

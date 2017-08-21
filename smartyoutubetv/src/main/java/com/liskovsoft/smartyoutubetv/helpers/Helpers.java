@@ -15,6 +15,8 @@ import java.nio.charset.Charset;
 import java.util.Scanner;
 
 public class Helpers {
+    private static OkHttpClient mClient;
+
     /**
      * Simple wildcard matching routine. Implemented without regex. So you may expect huge performance boost.
      * @param host
@@ -88,7 +90,7 @@ public class Helpers {
     }
 
     public static Response doOkHttpRequest(String url) {
-        OkHttpClient mClient = new OkHttpClient();
+        mClient = new OkHttpClient();
 
         Request okHttpRequest = new Request.Builder()
                 .url(url)

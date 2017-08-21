@@ -35,9 +35,10 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
         YouTubeGenericInfo info = extractInfo();
         mVisitor.onGenericInfo(info);
 
-        InputStream rawMPD = extractRawMPD();
-        if (rawMPD != null) {
-            mVisitor.onRawMPD(rawMPD);
+        Uri uri = extractHLSUrl();
+        if (uri != null) {
+            mVisitor.onLiveItem(uri);
+            // this is live so other items is useless
             return;
         }
 
@@ -46,6 +47,15 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
         mMediaItems = items;
 
         decipherSignaturesAndDoCallback();
+    }
+
+    private Uri extractHLSUrl() {
+        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        String hlsUrl = videoInfo.getQueryParameter("hlsvp");
+        if (hlsUrl != null) {
+            return Uri.parse(hlsUrl);
+        }
+        return null;
     }
 
     private InputStream extractRawMPD() {

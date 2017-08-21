@@ -57,11 +57,6 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
         }
 
         @Override
-        public void onRawMPD(InputStream rawMPD) {
-            mMpdFoundCallback.onFound(rawMPD);
-        }
-
-        @Override
         public void onMediaItem(YouTubeMediaItem mediaItem) {
             if (mediaItem.belongsToType(mType)) {
                 mMPDBuilder.append(mediaItem);
