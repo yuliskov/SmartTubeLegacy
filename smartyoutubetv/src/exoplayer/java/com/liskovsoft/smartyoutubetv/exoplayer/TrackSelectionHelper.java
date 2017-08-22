@@ -156,16 +156,26 @@ import java.util.Arrays;
             trackViewLayoutId, root, false);
         trackView.setBackgroundResource(selectableItemBackgroundResourceId);
         trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
-        if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
-            == RendererCapabilities.FORMAT_HANDLED) {
-          trackView.setFocusable(true);
-          trackView.setTag(Pair.create(groupIndex, trackIndex));
-          trackView.setOnClickListener(this);
-          haveSupportedTracks = true;
-        } else {
-          trackView.setFocusable(false);
-          trackView.setEnabled(false);
-        }
+
+
+        //if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
+        //    == RendererCapabilities.FORMAT_HANDLED) {
+        //  trackView.setFocusable(true);
+        //  trackView.setTag(Pair.create(groupIndex, trackIndex));
+        //  trackView.setOnClickListener(this);
+        //  haveSupportedTracks = true;
+        //} else {
+        //  trackView.setFocusable(false);
+        //  trackView.setEnabled(false);
+        //}
+
+        // TODO: modified
+        trackView.setFocusable(true);
+        trackView.setTag(Pair.create(groupIndex, trackIndex));
+        trackView.setOnClickListener(this);
+        haveSupportedTracks = true;
+
+
         trackViews[groupIndex][trackIndex] = trackView;
         root.addView(trackView);
       }

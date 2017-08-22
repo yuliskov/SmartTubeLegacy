@@ -74,4 +74,22 @@ public final class ITag {
         }
         return WEBM;
     }
+
+    public static String getAudioRateByTag(String iTag) {
+        switch (iTag) {
+            case AUDIO_128K_AAC:
+                return "44100";
+            case AUDIO_48K_AAC:
+                return "22050";
+            case AUDIO_156K_WEBM:
+                return "48000";
+            case AUDIO_133K_WEBM:
+                return "44100";
+            case AUDIO_89K_WEBM:
+                return "48000";
+            case AUDIO_68K_WEBM:
+                return "48000";
+        }
+        return "44100";
+    }
 }

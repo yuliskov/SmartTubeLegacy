@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
 
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 import org.xmlpull.v1.XmlSerializer;
@@ -185,7 +186,7 @@ public class MyMPDBuilder implements MPDBuilder {
             attribute("", "frameRate", item.getFps());
         } else {
             // audio attrs
-            attribute("", "audioSamplingRate", "44100"); // TODO: get this value somewhere
+            attribute("", "audioSamplingRate", ITag.getAudioRateByTag(item.getITag()));
         }
 
         startTag("", "BaseURL");
