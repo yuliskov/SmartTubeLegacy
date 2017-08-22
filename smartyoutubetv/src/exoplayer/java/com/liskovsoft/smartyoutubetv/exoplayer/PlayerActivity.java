@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
@@ -42,6 +43,7 @@ import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
@@ -225,7 +227,34 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         boolean needNewPlayer = player == null;
         if (needNewPlayer) {
             TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-            trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
+
+            //trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
+
+            // TODO: modified: force all format support
+            trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
+                @Override
+                protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
+                                                        int[][][] rendererFormatSupports) throws ExoPlaybackException {
+                    for (int k = 0; k < rendererFormatSupports[0][0].length; k++) {
+                        int supportLevel = rendererFormatSupports[0][0][k];
+                        int notSupported = 6;
+                        int formatSupported = 7;
+                        if (supportLevel == notSupported) {
+                            rendererFormatSupports[0][0][k] = formatSupported;
+                        }
+                    }
+                    return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
+                }
+            };
+
+
+
+            //Parameters parameters = trackSelector.getParameters();
+            //Parameters newParams = parameters
+            //        .withExceedRendererCapabilitiesIfNecessary(true)
+            //        .withExceedVideoConstraintsIfNecessary(true);
+            //trackSelector.setParameters(newParams);
+
             trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
             lastSeenTrackGroupArray = null;
             eventLogger = new EventLogger(trackSelector);
@@ -309,7 +338,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             if (haveResumePosition) {
                 player.seekTo(resumeWindow, resumePosition);
             }
-            player.prepare(mediaSource, !haveResumePosition, false);
+            //player.prepare(mediaSource, !haveResumePosition, false);
+
+            // TODO: modified
+            player.prepare(mediaSource);
+            
             needRetrySource = false;
             updateButtonVisibilities();
         }

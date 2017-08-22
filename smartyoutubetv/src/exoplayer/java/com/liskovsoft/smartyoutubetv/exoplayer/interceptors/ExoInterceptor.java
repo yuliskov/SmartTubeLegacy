@@ -42,8 +42,6 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         makeResponseStream(url);
         parseAndOpenExoPlayer3();
-        pressBackButton();
-
         return null;
     }
 
@@ -67,16 +65,19 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void onFound(final InputStream mpdContent) {
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
-                sLogger.info("About to start ExoPlayer activity for Regular item");
-                mContext.startActivity(sample.buildIntent(mContext));
+                openExoPlayer(sample);
             }
             @Override
             public void onLiveFound(final Uri hlsUrl) {
                 Sample sample = SampleHelpers.buildFromUri(hlsUrl);
-                sLogger.info("About to start ExoPlayer activity for Live item");
-                mContext.startActivity(sample.buildIntent(mContext));
+                openExoPlayer(sample);
             }
         });
+    }
+
+    private void openExoPlayer(Sample sample) {
+        sLogger.info("About to start ExoPlayer activity for Regular item");
+        mContext.startActivity(sample.buildIntent(mContext));
     }
 
     private void parseAndOpenExoPlayer() {
