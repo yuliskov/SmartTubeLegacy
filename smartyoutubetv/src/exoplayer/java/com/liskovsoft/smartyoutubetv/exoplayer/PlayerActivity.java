@@ -235,6 +235,14 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 @Override
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
+                    if (rendererFormatSupports != null && rendererFormatSupports[0] != null && rendererFormatSupports[0][0] != null) {
+                        forceAllFormatsSupport(rendererFormatSupports);
+                    }
+
+                    return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
+                }
+
+                private void forceAllFormatsSupport(int[][][] rendererFormatSupports) {
                     for (int k = 0; k < rendererFormatSupports[0][0].length; k++) {
                         int supportLevel = rendererFormatSupports[0][0][k];
                         int notSupported = 6;
@@ -243,17 +251,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                             rendererFormatSupports[0][0][k] = formatSupported;
                         }
                     }
-                    return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
                 }
             };
-
-
-
-            //Parameters parameters = trackSelector.getParameters();
-            //Parameters newParams = parameters
-            //        .withExceedRendererCapabilitiesIfNecessary(true)
-            //        .withExceedVideoConstraintsIfNecessary(true);
-            //trackSelector.setParameters(newParams);
 
             trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
             lastSeenTrackGroupArray = null;
@@ -338,11 +337,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             if (haveResumePosition) {
                 player.seekTo(resumeWindow, resumePosition);
             }
-            //player.prepare(mediaSource, !haveResumePosition, false);
+            player.prepare(mediaSource, !haveResumePosition, false);
 
-            // TODO: modified
-            player.prepare(mediaSource);
-            
             needRetrySource = false;
             updateButtonVisibilities();
         }

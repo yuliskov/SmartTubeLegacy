@@ -137,10 +137,9 @@ public class MyMPDBuilder implements MPDBuilder {
             return;
         }
         if (isVideo(mediaItem)) {
-            // combine list from low to high qualities
-            mVideos.add(0, mediaItem);
+            mVideos.add(mediaItem);
         } else {
-            mAudios.add(0, mediaItem);
+            mAudios.add(mediaItem);
         }
     }
 
