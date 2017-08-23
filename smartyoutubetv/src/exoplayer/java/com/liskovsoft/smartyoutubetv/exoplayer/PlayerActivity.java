@@ -235,20 +235,32 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 @Override
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
-                    if (rendererFormatSupports != null && rendererFormatSupports[0] != null && rendererFormatSupports[0][0] != null) {
-                        forceAllFormatsSupport(rendererFormatSupports);
-                    }
+                    forceAllFormatsSupport(rendererFormatSupports);
 
                     return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
                 }
 
                 private void forceAllFormatsSupport(int[][][] rendererFormatSupports) {
-                    for (int k = 0; k < rendererFormatSupports[0][0].length; k++) {
-                        int supportLevel = rendererFormatSupports[0][0][k];
-                        int notSupported = 6;
-                        int formatSupported = 7;
-                        if (supportLevel == notSupported) {
-                            rendererFormatSupports[0][0][k] = formatSupported;
+                    if (rendererFormatSupports == null) {
+                        return;
+                    }
+
+                    for (int i = 0; i < rendererFormatSupports.length; i++) {
+                        if (rendererFormatSupports[i] == null) {
+                            continue;
+                        }
+                        for (int j = 0; j < rendererFormatSupports[i].length; j++) {
+                            if (rendererFormatSupports[i][j] == null) {
+                                continue;
+                            }
+                            for (int k = 0; k < rendererFormatSupports[i][j].length; k++) {
+                                int supportLevel = rendererFormatSupports[i][j][k];
+                                int notSupported = 6;
+                                int formatSupported = 7;
+                                if (supportLevel == notSupported) {
+                                    rendererFormatSupports[i][j][k] = formatSupported;
+                                }
+                            }
                         }
                     }
                 }

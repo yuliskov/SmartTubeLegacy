@@ -21,6 +21,7 @@ public class BackPressInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         pressBackButton();
+
         return null;
     }
 
