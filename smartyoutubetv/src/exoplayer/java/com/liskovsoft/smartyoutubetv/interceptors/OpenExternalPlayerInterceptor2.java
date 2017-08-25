@@ -32,7 +32,7 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
-        if (url.contains("/playback?")) {
+        if (url.contains("ptracking")) {
             mCurrentInterceptor = mBackPressInterceptor;
             return true;
         }

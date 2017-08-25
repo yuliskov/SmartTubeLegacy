@@ -8,8 +8,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,5 +85,9 @@ public abstract class RequestInterceptor {
         query.set("c", "HTML5");
 
         return query.toString();
+    }
+
+    protected WebResourceResponse createEmptyResponse() {
+        return createResponse(MediaType.parse("video/mp4"), new ByteArrayInputStream("".getBytes(Charset.forName("UTF8"))));
     }
 }
