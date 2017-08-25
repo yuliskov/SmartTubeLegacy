@@ -42,4 +42,14 @@ public class ExoPreferences implements ExoKeys {
                 .putInt(ExoKeys.TRACK_INDEX, trackIndex)
                 .apply();
     }
+
+    public String getSelectedTrackId() {
+        return mPrefs.getString(ExoKeys.SELECTED_TRACK_ID, null);
+    }
+
+    public void setSelectedTrackId(String id) {
+        mPrefs.edit()
+                .putString(ExoKeys.SELECTED_TRACK_ID, id)
+                .apply();
+    }
 }

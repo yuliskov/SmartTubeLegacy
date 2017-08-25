@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -62,9 +63,6 @@ import java.util.Arrays;
     private CheckedTextView enableRandomAdaptationView;
     private CheckedTextView[][] trackViews;
     private ExoPreferences mPrefs;
-    private int groupIndex;
-    private int trackIndex;
-    private Context mContext;
 
     /**
      * @param selector                      The track selector.
@@ -215,6 +213,7 @@ import java.util.Arrays;
             persistPlayerState();
         } else {
             selector.clearSelectionOverrides(rendererIndex);
+            resetPlayerState();
         }
     }
 
@@ -234,11 +233,8 @@ import java.util.Arrays;
         } else {
             isDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
-            //int groupIndex = tag.first;
-            //int trackIndex = tag.second;
-
-            groupIndex = tag.first;
-            trackIndex = tag.second;
+            int groupIndex = tag.first;
+            int trackIndex = tag.second;
 
             if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
                 override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
@@ -292,32 +288,104 @@ import java.util.Arrays;
         return tracks;
     }
 
-    public void restore(Context context) {
-        mContext = context;
-        mPrefs = new ExoPreferences(context);
-
-        restorePlayerState();
-    }
-
-    private void persistPlayerState() {
-        mPrefs.setRendererIndex(rendererIndex);
-        mPrefs.setGroupIndex(groupIndex);
-        mPrefs.setTrackIndex(trackIndex);
-    }
-
-    private void restorePlayerState() {
-        int rendererIndex = mPrefs.getRendererIndex();
-        int groupIndex = mPrefs.getGroupIndex();
-        int trackIndex = mPrefs.getTrackIndex();
-        if (rendererIndex == -1 || groupIndex == -1 || trackIndex == -1) {
+    public void restore(Context context, TrackGroupArray[] rendererTrackGroupArrays) {
+        if (mPrefs != null) { // run once
             return;
         }
 
-        loadTrack(rendererIndex, groupIndex, trackIndex);
+        mPrefs = new ExoPreferences(context);
+
+        restorePlayerState(rendererTrackGroupArrays);
     }
 
+    private void restorePlayerState(TrackGroupArray[] rendererTrackGroupArrays) {
+        String selectedTrackId = mPrefs.getSelectedTrackId();
+        if (selectedTrackId == null) {
+            return;
+        }
+
+        loadTrack(rendererTrackGroupArrays, selectedTrackId);
+    }
+
+    private void resetPlayerState() {
+        if (mPrefs == null) {
+            return;
+        }
+
+        mPrefs.setSelectedTrackId(null);
+    }
+
+    private void persistPlayerState() {
+        if (mPrefs == null) {
+            return;
+        }
+
+        String trackId = extractCurrentTrackId();
+
+        mPrefs.setSelectedTrackId(trackId);
+    }
+
+    private String extractCurrentTrackId() {
+        int rendererIndex = 0; // video
+        int groupIndex = 0; // default
+        int trackIndex = override.tracks[0];
+        MappedTrackInfo trackInfo = selector.getCurrentMappedTrackInfo();
+        TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
+        Format format = trackGroups.get(groupIndex).getFormat(trackIndex);
+        return format.id;
+    }
+
+    private int findTrackIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+        int rendererIndex = 0; // video
+        int groupIndex = 0; // default
+        TrackGroup trackGroup = rendererTrackGroupArrays[rendererIndex].get(groupIndex);
+        for (int i = 0; i < trackGroup.length; i++) {
+            Format format = trackGroup.getFormat(i);
+            if (format.id.equals(selectedTrackId)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Switch track
+     * @param rendererTrackGroupArrays source of tracks
+     * @param selectedTrackId dash format id
+     */
+    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+        int rendererIndex = 0; // video
+        int groupIndex = 0; // default
+        int trackIndex = findTrackIndex(rendererTrackGroupArrays, selectedTrackId);
+        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
+        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+        selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+    }
+
+    /**
+     * Switch track
+     * @param rendererTrackGroupArrays source of tracks
+     * @param rendererIndex video - 0, or audio - 1 (??)
+     * @param groupIndex usually 0
+     * @param trackIndex track num in list
+     */
+    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, int rendererIndex, int groupIndex, int trackIndex) {
+        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
+        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+        selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+    }
+
+    /**
+     * Switch track
+     * @param rendererIndex video - 0, or audio - 1 (??)
+     * @param groupIndex usually 0
+     * @param trackIndex track num in list
+     */
     private void loadTrack(int rendererIndex, int groupIndex, int trackIndex) {
         MappedTrackInfo trackInfo = selector.getCurrentMappedTrackInfo();
+        if (trackInfo == null) {
+            return;
+        }
         TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
         selector.setSelectionOverride(rendererIndex, trackGroups, override);

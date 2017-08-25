@@ -12,6 +12,9 @@ public class CipherUtils2 {
         Scanner scanner = new Scanner(is);
         Pattern regex = Pattern.compile(decipherPattern);
         String jsCode = scanner.findWithinHorizon(regex, 0);
+        if (jsCode == null) {
+            return "";
+        }
         String cleaned = jsCode.replaceFirst("function\\ [A-Za-z]{2}", "function decipherSignature");
         return cleaned;
     }

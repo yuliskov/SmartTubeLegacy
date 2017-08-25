@@ -238,6 +238,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 @Override
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
+
+                    trackSelectionHelper.restore(getApplicationContext(), rendererTrackGroupArrays);
+
                     forceAllFormatsSupport(rendererFormatSupports);
 
                     return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
@@ -465,10 +468,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        // TODO: modified
-        if (playbackState == ExoPlayer.STATE_READY) {
-            trackSelectionHelper.restore(getApplicationContext());
-        }
+        //// TODO: modified
+        //if (playbackState == ExoPlayer.STATE_READY) {
+        //    trackSelectionHelper.restore(getApplicationContext());
+        //}
 
         if (playbackState == ExoPlayer.STATE_ENDED) {
             showControls();
