@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.BackPressInterceptor;
+import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.PlayEndInterceptor;
 import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.CipherInterceptor;
 import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.ExoInterceptor;
 
@@ -10,20 +10,21 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
     private final RequestInterceptor mExoInterceptor;
     private final RequestInterceptor mCipherInterceptor;
-    private final BackPressInterceptor mBackPressInterceptor;
+    private final PlayEndInterceptor mPlayEndInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public OpenExternalPlayerInterceptor2(Context context) {
         mContext = context;
         mExoInterceptor = new ExoInterceptor(context);
         mCipherInterceptor = new CipherInterceptor(context);
-        mBackPressInterceptor = new BackPressInterceptor(context);
+        mPlayEndInterceptor = new PlayEndInterceptor(context);
     }
 
     @Override
     public boolean test(String url) {
         if (url.contains("get_video_info")) {
             mCurrentInterceptor = mExoInterceptor;
+            mPlayEndInterceptor.reset();
             return true;
         }
 
@@ -32,8 +33,9 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
+        // useful places: ptracking
         if (url.contains("ptracking")) {
-            mCurrentInterceptor = mBackPressInterceptor;
+            mCurrentInterceptor = mPlayEndInterceptor;
             return true;
         }
 

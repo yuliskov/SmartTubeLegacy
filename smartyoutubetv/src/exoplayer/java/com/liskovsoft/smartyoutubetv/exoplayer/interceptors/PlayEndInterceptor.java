@@ -4,17 +4,20 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import okhttp3.MediaType;
 
 import java.io.ByteArrayInputStream;
 
-public class BackPressInterceptor extends RequestInterceptor {
+public class PlayEndInterceptor extends RequestInterceptor {
     private final Context mContext;
+    private final PressNextCommand mPressNextCommand;
     private int mCounter;
 
-    public BackPressInterceptor(Context context) {
+    public PlayEndInterceptor(Context context) {
         mContext = context;
+        mPressNextCommand = new PressNextCommand();
     }
 
     @Override
@@ -24,19 +27,13 @@ public class BackPressInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        pressBackButton();
+        if (mCounter == 0) {
+            mPressNextCommand.call();
+        }
 
         mCounter++;
 
         return null;
-    }
-
-    private void pressBackButton() {
-        if (!(mContext instanceof AppCompatActivity))
-            return;
-        AppCompatActivity activity = (AppCompatActivity) mContext;
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
     }
 
     public void reset() {

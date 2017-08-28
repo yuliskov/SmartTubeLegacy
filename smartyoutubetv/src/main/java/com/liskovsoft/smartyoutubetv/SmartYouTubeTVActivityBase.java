@@ -17,7 +17,7 @@ import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.browser.custom.PageLoadHandler;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.LangDetector;
-import com.liskovsoft.smartyoutubetv.webviewstuff.MyPageLoadHandler;
+import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.HashMap;

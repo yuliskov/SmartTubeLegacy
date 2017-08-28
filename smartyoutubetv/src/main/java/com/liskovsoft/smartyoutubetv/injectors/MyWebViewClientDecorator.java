@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webviewstuff;
+package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.content.Context;
 import android.graphics.Bitmap;

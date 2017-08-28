@@ -2,19 +2,13 @@ package com.liskovsoft.smartyoutubetv.exoplayer.interceptors;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.MPDFoundCallback;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.MediaFoundCallback;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTubeInfoParser2;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTubeInfoParser3;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.UrlFoundCallback;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.YouTubeInfoParser2;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.YouTubeInfoParser3;
 import okhttp3.MediaType;
 import okhttp3.Response;
@@ -41,7 +35,7 @@ public class ExoInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         makeResponseStream(url);
-        parseAndOpenExoPlayer3();
+        parseAndOpenExoPlayer();
         return null;
     }
 
@@ -51,15 +45,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mResponseType = response.body().contentType();
     }
 
-    private void pressBackButton() {
-        if (!(mContext instanceof AppCompatActivity))
-            return;
-        AppCompatActivity activity = (AppCompatActivity) mContext;
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-        activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
-    }
-
-    private void parseAndOpenExoPlayer3() {
+    private void parseAndOpenExoPlayer() {
         final YouTubeInfoParser3 dataParser = new SimpleYouTubeInfoParser3(mResponseStream, ITag.AVC);
         dataParser.getCombinedMedia(new MediaFoundCallback() {
             @Override
@@ -78,36 +64,5 @@ public class ExoInterceptor extends RequestInterceptor {
     private void openExoPlayer(Sample sample) {
         sLogger.info("About to start ExoPlayer activity for Regular item");
         mContext.startActivity(sample.buildIntent(mContext));
-    }
-
-    private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser2 dataParser = new SimpleYouTubeInfoParser2(mResponseStream);
-        dataParser.getMPDByCodec(ITag.AVC, new MPDFoundCallback() {
-            @Override
-            public void onFound(final InputStream mpdPlaylist) {
-                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdPlaylist);
-                sLogger.info("About to start ExoPlayer activity");
-                mContext.startActivity(sample.buildIntent(mContext));
-            }
-        });
-    }
-
-    private void parseAndOpenExoPlayer2() {
-        final YouTubeInfoParser2 dataParser = new SimpleYouTubeInfoParser2(mResponseStream);
-        dataParser.getUrlByTag(ITag.VIDEO_2160P_AVC_HQ, new UrlFoundCallback() {
-            @Override
-            public void onUrlFound(final Uri videoUri) {
-                sLogger.info("About to parse audio");
-                dataParser.getUrlByTag(ITag.AUDIO_128K_AAC, new UrlFoundCallback() {
-                    @Override
-                    public void onUrlFound(final Uri audioUri) {
-                        Sample sample = SampleHelpers.buildFromVideoAndAudio(videoUri, audioUri);
-                        sLogger.info("About to start ExoPlayer activity");
-                        mContext.startActivity(sample.buildIntent(mContext));
-                    }
-                });
-            }
-        });
-
     }
 }

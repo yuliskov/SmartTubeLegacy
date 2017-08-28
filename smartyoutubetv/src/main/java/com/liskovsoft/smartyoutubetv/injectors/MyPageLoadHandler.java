@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webviewstuff;
+package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.content.Context;
 import android.webkit.WebChromeClient;
@@ -7,6 +7,7 @@ import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.custom.PageLoadHandler;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.DecipherRoutineInjector;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.GenericEventResourceInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ public class MyPageLoadHandler implements PageLoadHandler {
     private VideoFormatInjector mNotification;
     private DecipherRoutineInjector mDecipherRoutineInjector;
     private static final Logger logger = LoggerFactory.getLogger(MyPageLoadHandler.class);
+    private GenericEventResourceInjector mEventResourceInjector;
 
     public MyPageLoadHandler(Context context) {
         mContext = context;
@@ -66,6 +68,8 @@ public class MyPageLoadHandler implements PageLoadHandler {
             mNotification = new VideoFormatInjector(mContext, w);
         if (mDecipherRoutineInjector == null)
             mDecipherRoutineInjector = new DecipherRoutineInjector(mContext, w);
+        if (mEventResourceInjector == null)
+            mEventResourceInjector = new GenericEventResourceInjector(mContext, w);
 
         mInjector.inject();
     }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.webviewstuff.ResourceInjectorBase;
+import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
