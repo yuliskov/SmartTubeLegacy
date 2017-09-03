@@ -33,11 +33,11 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
-        // useful places: ptracking
-        if (url.contains("ptracking")) {
-            mCurrentInterceptor = mPlayEndInterceptor;
-            return true;
-        }
+        //// useful places: ptracking
+        //if (url.contains("ptracking")) {
+        //    mCurrentInterceptor = mPlayEndInterceptor;
+        //    return true;
+        //}
 
         return false;
     }

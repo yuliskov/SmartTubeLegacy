@@ -6,7 +6,6 @@ import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 import java.io.InputStream;
-import java.util.Scanner;
 
 public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
     private final String mContent;
@@ -14,10 +13,10 @@ public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
 
     private class CombineMediaVisitor extends YouTubeInfoVisitor2 {
         private final String mType;
-        private final MediaFoundCallback mMediaFoundCallback;
+        private final OnMediaFoundCallback mMediaFoundCallback;
         private MyMPDBuilder mMPDBuilder;
 
-        public CombineMediaVisitor(String type, MediaFoundCallback mediaFoundCallback) {
+        public CombineMediaVisitor(String type, OnMediaFoundCallback mediaFoundCallback) {
             mType = type;
             mMediaFoundCallback = mediaFoundCallback;
         }
@@ -25,6 +24,7 @@ public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
         @Override
         public void onGenericInfo(YouTubeGenericInfo info) {
             mMPDBuilder = new MyMPDBuilder(info);
+            mMediaFoundCallback.onInfoFound(info);
         }
 
         @Override
@@ -41,7 +41,7 @@ public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
 
         @Override
         public void doneVisiting() {
-            mMediaFoundCallback.onFound(mMPDBuilder.build());
+            mMediaFoundCallback.onVideoFound(mMPDBuilder.build());
         }
     }
 
@@ -51,7 +51,7 @@ public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
     }
 
     @Override
-    public void getCombinedMedia(MediaFoundCallback mpdFoundCallback) {
+    public void setOnMediaFoundCallback(OnMediaFoundCallback mpdFoundCallback) {
         YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
         YouTubeInfoVisitor2 visitor = new CombineMediaVisitor(mType, mpdFoundCallback);
         visitable.accept(visitor);

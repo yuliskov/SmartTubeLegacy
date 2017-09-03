@@ -53,6 +53,14 @@
 
     </LinearLayout>
 
+    <TextView android:id="@+id/video_title"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:textSize="20sp"
+              tools:ignore="SmallSp"/>
+
   </LinearLayout>
 
 </FrameLayout>

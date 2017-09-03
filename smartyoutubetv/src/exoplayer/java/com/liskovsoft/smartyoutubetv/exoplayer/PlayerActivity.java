@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -20,6 +21,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayer.EventListener;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.RendererCapabilities;
@@ -89,6 +91,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
+    public static final String ACTION_NEXT = "ACTION_NEXT";
+    public static final String ACTION_PREV = "ACTION_PREV";
+    public static final String ACTION_BACK = "ACTION_BACK";
+    public static final String VIDEO_TITLE = "VIDEO_TITLE";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -113,6 +119,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private boolean shouldAutoPlay;
     private int resumeWindow;
     private long resumePosition;
+    private OnClickListener mPrevNextListener;
+    private EventListener mPlaybackEndListener;
+    private TextView mVideoTitle;
 
     // Activity lifecycle
 
@@ -138,6 +147,56 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
+
+        initExoPlayerButtons();
+        initVideoTitle();
+    }
+
+    private void initVideoTitle() {
+        String videoTitle = getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
+        if (videoTitle == null) {
+            return;
+        }
+        mVideoTitle = (TextView)findViewById(R.id.video_title);
+        mVideoTitle.setText(videoTitle);
+    }
+
+    private void initExoPlayerButtons() {
+        final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
+        final View prevButton = simpleExoPlayerView.findViewById(R.id.exo_prev);
+        OnClickListener clickListener = obtainPrevNextListener(nextButton, prevButton);
+        nextButton.setOnClickListener(clickListener);
+        prevButton.setOnClickListener(clickListener);
+    }
+
+    private OnClickListener obtainPrevNextListener(final View nextButton, final View prevButton) {
+        if (mPrevNextListener != null) {
+            return mPrevNextListener;
+        }
+        mPrevNextListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == nextButton) {
+                    doGracefulExit(PlayerActivity.ACTION_NEXT);
+                } else if (v == prevButton) {
+                    doGracefulExit(PlayerActivity.ACTION_PREV);
+                }
+            }
+        };
+        return mPrevNextListener;
+    }
+
+    private void doGracefulExit(String action) {
+        Intent intent = new Intent();
+        intent.putExtra("action", action);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        doGracefulExit(PlayerActivity.ACTION_BACK);
+        // moveTaskToBack(true); // don't exit at this point
     }
 
     @Override
@@ -221,6 +280,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public void onVisibilityChange(int visibility) {
         debugRootView.setVisibility(visibility);
         debugTextView.setVisibility(visibility);
+        mVideoTitle.setVisibility(visibility);
     }
 
     // Internal methods
@@ -239,8 +299,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
+                    // do restore as early as possible
                     trackSelectionHelper.restore(getApplicationContext(), rendererTrackGroupArrays);
-
                     forceAllFormatsSupport(rendererFormatSupports);
 
                     return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
@@ -350,7 +410,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 }
                 mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
             }
-            MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
+            // TODO: modified
+            MediaSource mediaSource = mediaSources.length == 1 ? new LoopingMediaSource(mediaSources[0]) :
+                    new LoopingMediaSource(new ConcatenatingMediaSource(mediaSources));
             boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
             if (haveResumePosition) {
                 player.seekTo(resumeWindow, resumePosition);
@@ -468,12 +530,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        //// TODO: modified
-        //if (playbackState == ExoPlayer.STATE_READY) {
-        //    trackSelectionHelper.restore(getApplicationContext());
-        //}
-
         if (playbackState == ExoPlayer.STATE_ENDED) {
+
+            
             showControls();
         }
         updateButtonVisibilities();
@@ -492,11 +551,13 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
         // Do nothing.
+        int i = 0;
     }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
         // Do nothing.
+        int i = 0;
     }
 
     @Override
@@ -534,9 +595,21 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         }
     }
 
+    private boolean mTrackChangedOnce;
+
+    private void passOneTimeAndDoExit() {
+        if (mTrackChangedOnce) {
+            doGracefulExit(PlayerActivity.ACTION_NEXT);
+        } else {
+            mTrackChangedOnce = true;
+        }
+    }
+
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+        passOneTimeAndDoExit();
+
         updateButtonVisibilities();
         if (trackGroups != lastSeenTrackGroupArray) {
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();

@@ -18,16 +18,24 @@ public final class SampleHelpers {
         return new PlaylistSample("Sample Playlist", samples);
     }
 
+    public static Sample buildFromUri(Uri contentUrl, String title) {
+        return new UriSample(title, contentUrl.toString());
+    }
+
     public static Sample buildFromUri(Uri contentUrl) {
-        return new UriSample("Sample Video", contentUrl.toString());
+        return buildFromUri(contentUrl, "Sample Video");
     }
 
     public static Sample buildFromVideoAndAudio(Uri video, Uri audio) {
         return new UriSample("Sample Video", String.format("%s|%s", video, audio));
     }
 
+    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title) {
+        return new MPDSample(title, "https://example.com/test.mpd", mpdPlaylist);
+    }
+
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
-        return new MPDSample("Sample Video", "https://example.com/test.mpd", mpdPlaylist);
+        return buildFromMPDPlaylist(mpdPlaylist, "Sample Video");
     }
 
     public abstract static class Sample {
@@ -57,6 +65,7 @@ public final class SampleHelpers {
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
+            intent.putExtra(PlayerActivity.VIDEO_TITLE, this.name);
             return intent;
         }
 
