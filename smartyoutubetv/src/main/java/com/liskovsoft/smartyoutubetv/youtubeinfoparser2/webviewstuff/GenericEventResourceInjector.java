@@ -7,6 +7,24 @@ import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 
 public class GenericEventResourceInjector extends ResourceInjectorBase {
+    public static class GenericBooleanResultEvent {
+        private int mId;
+        private boolean mResult;
+
+        public GenericBooleanResultEvent(boolean result, int id) {
+            mId = id;
+            mResult = result;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public boolean getResult() {
+            return mResult;
+        }
+    }
+
     public static class JSResourceEvent {
         private String mCode;
 

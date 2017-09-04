@@ -94,10 +94,10 @@ public class ExoInterceptor extends RequestInterceptor {
     private void bindActions(final String action) {
         switch (action) {
             case PlayerActivity.ACTION_NEXT:
-                new PressNextCommand().call();
+                new PressNextCommand(new PressBackCommand2()).call();
                 break;
             case PlayerActivity.ACTION_PREV:
-                new PressPrevCommand().call();
+                new PressPrevCommand(new PressBackCommand2()).call();
                 break;
             case PlayerActivity.ACTION_BACK:
                 new PressBackCommand2().call();

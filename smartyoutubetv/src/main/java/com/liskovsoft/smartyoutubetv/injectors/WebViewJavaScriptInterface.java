@@ -11,6 +11,8 @@ import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.GenericEventResourceInjector;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.GenericEventResourceInjector.GenericBooleanResultEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.PostDecipheredSignaturesEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,5 +105,12 @@ public class WebViewJavaScriptInterface {
     public void postDecipheredSignatures(String[] signatures) {
         sLogger.info("Just now received deciphered signatures from webview.");
         Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures));
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void onGenericBooleanResult(boolean result, int id) {
+        sLogger.info("Just now received generic boolean result from webview.");
+        Browser.getBus().post(new GenericBooleanResultEvent(result, id));
     }
 }

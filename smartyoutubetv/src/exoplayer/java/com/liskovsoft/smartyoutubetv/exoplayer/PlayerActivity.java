@@ -413,6 +413,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             // TODO: modified
             MediaSource mediaSource = mediaSources.length == 1 ? new LoopingMediaSource(mediaSources[0]) :
                     new LoopingMediaSource(new ConcatenatingMediaSource(mediaSources));
+
+            //MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
+
             boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
             if (haveResumePosition) {
                 player.seekTo(resumeWindow, resumePosition);
@@ -531,7 +534,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == ExoPlayer.STATE_ENDED) {
-
+            //doGracefulExit(PlayerActivity.ACTION_NEXT);
             
             showControls();
         }

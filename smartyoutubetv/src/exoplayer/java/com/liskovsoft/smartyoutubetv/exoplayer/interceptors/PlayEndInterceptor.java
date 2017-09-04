@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressBackCommand2;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import okhttp3.MediaType;
@@ -17,7 +18,7 @@ public class PlayEndInterceptor extends RequestInterceptor {
 
     public PlayEndInterceptor(Context context) {
         mContext = context;
-        mPressNextCommand = new PressNextCommand();
+        mPressNextCommand = new PressNextCommand(new PressBackCommand2());
     }
 
     @Override
