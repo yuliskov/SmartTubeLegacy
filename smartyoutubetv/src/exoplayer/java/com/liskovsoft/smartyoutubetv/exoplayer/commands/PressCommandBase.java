@@ -10,7 +10,7 @@ import com.squareup.otto.Subscribe;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-public abstract class PressCommandBase implements Callable<Boolean> {
+public abstract class PressCommandBase implements GenericCommand {
     private final String mTriggerEventFunction = "function triggerEvent(el, type, keyCode) {\n"
             + 	"console.log('triggerEvent called', el, type, keyCode)\n"
             + 	"if ('createEvent' in document) {\n"
@@ -39,7 +39,7 @@ public abstract class PressCommandBase implements Callable<Boolean> {
             + "\n"
             + "isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
     private String mClassName;
-    private Callable<Boolean> mCommand;
+    private GenericCommand mCommand;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
     private final int mMyId = new Random().nextInt();
 
@@ -55,7 +55,7 @@ public abstract class PressCommandBase implements Callable<Boolean> {
             }
 
             if (!event.getResult()) {
-                doCallCallable(mCommand);
+                mCommand.call();
             }
             Browser.getBus().unregister(this);
         }
@@ -69,7 +69,7 @@ public abstract class PressCommandBase implements Callable<Boolean> {
     }
 
 
-    protected void pressButtonByClass(String className, final Callable<Boolean> command) {
+    protected void pressButtonByClass(String className, final GenericCommand command) {
         mClassName = className;
         mCommand = command;
         mGenericButtonReceiver = new GenericBooleanResultReceiver();
@@ -88,16 +88,5 @@ public abstract class PressCommandBase implements Callable<Boolean> {
     private String combineAllTogetherByClass() {
         String formattedGetButtonFunction = String.format(mGetButtonFunction, mClassName);
         return mTriggerEventFunction + formattedGetButtonFunction + mSimulateButtonPressFunction;
-    }
-
-    private Boolean doCallCallable(Callable<Boolean> callable) {
-        if (callable == null) {
-            return false;
-        }
-        try {
-            return callable.call();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

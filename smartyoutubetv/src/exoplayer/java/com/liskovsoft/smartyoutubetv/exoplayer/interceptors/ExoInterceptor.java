@@ -9,6 +9,7 @@ import com.liskovsoft.smartyoutubetv.SmartYouTubeTVActivity.OnActivityResultList
 import com.liskovsoft.smartyoutubetv.exoplayer.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressBackCommand2;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressPrevCommand;
@@ -24,12 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.util.concurrent.Callable;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
     private InputStream mResponseStream;
     private MediaType mResponseType;
+    private GenericCommand mLastCommand;
 
     public ExoInterceptor(Context context) {
         mContext = context;
@@ -94,18 +97,22 @@ public class ExoInterceptor extends RequestInterceptor {
     private void bindActions(final String action) {
         switch (action) {
             case PlayerActivity.ACTION_NEXT:
-                new PressNextCommand(new PressBackCommand2()).call();
+                mLastCommand = new PressNextCommand(new PressBackCommand2());
                 break;
             case PlayerActivity.ACTION_PREV:
-                new PressPrevCommand(new PressBackCommand2()).call();
+                mLastCommand = new PressPrevCommand(new PressBackCommand2());
                 break;
             case PlayerActivity.ACTION_BACK:
-                new PressBackCommand2().call();
+                mLastCommand = new PressBackCommand2();
                 break;
         }
     }
 
     private String extractAction(Intent data) {
         return data.getStringExtra("action");
+    }
+
+    public GenericCommand getLastCommand() {
+        return mLastCommand;
     }
 }

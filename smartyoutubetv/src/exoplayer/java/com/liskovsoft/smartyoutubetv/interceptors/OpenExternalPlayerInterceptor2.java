@@ -8,8 +8,8 @@ import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.ExoInterceptor;
 
 public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final Context mContext;
-    private final RequestInterceptor mExoInterceptor;
-    private final RequestInterceptor mCipherInterceptor;
+    private final ExoInterceptor mExoInterceptor;
+    private final CipherInterceptor mCipherInterceptor;
     private final PlayEndInterceptor mPlayEndInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
@@ -33,11 +33,12 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
-        //// useful places: ptracking
-        //if (url.contains("ptracking")) {
-        //    mCurrentInterceptor = mPlayEndInterceptor;
-        //    return true;
-        //}
+        // useful places: ptracking
+        if (url.contains("ptracking")) {
+            mCurrentInterceptor = mPlayEndInterceptor;
+            mPlayEndInterceptor.setCommand(mExoInterceptor.getLastCommand());
+            return true;
+        }
 
         return false;
     }

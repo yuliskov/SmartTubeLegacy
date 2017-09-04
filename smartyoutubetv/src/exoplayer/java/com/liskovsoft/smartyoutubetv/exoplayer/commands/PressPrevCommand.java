@@ -1,16 +1,14 @@
 package com.liskovsoft.smartyoutubetv.exoplayer.commands;
 
-import java.util.concurrent.Callable;
-
 public class PressPrevCommand extends PressCommandBase {
-    private final Callable<Boolean> mCommand;
+    private final GenericCommand mCommand;
 
-    public PressPrevCommand(Callable<Boolean> command) {
+    public PressPrevCommand(GenericCommand command) {
         mCommand = command;
     }
 
     @Override
-    public Boolean call() {
+    public boolean call() {
         pressButtonByClass("icon-player-prev", mCommand);
         return true;
     }

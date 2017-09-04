@@ -1,24 +1,17 @@
 package com.liskovsoft.smartyoutubetv.exoplayer.interceptors;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressBackCommand2;
-import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressNextCommand;
+import com.liskovsoft.smartyoutubetv.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import okhttp3.MediaType;
-
-import java.io.ByteArrayInputStream;
 
 public class PlayEndInterceptor extends RequestInterceptor {
     private final Context mContext;
-    private final PressNextCommand mPressNextCommand;
+    private GenericCommand mCommand;
     private int mCounter;
 
     public PlayEndInterceptor(Context context) {
         mContext = context;
-        mPressNextCommand = new PressNextCommand(new PressBackCommand2());
     }
 
     @Override
@@ -28,8 +21,8 @@ public class PlayEndInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        if (mCounter == 0) {
-            mPressNextCommand.call();
+        if (mCounter == 0 && mCommand != null) {
+            mCommand.call();
         }
 
         mCounter++;
@@ -39,5 +32,9 @@ public class PlayEndInterceptor extends RequestInterceptor {
 
     public void reset() {
         mCounter = 0;
+    }
+
+    public void setCommand(GenericCommand command) {
+        mCommand = command;
     }
 }

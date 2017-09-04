@@ -3,14 +3,14 @@ package com.liskovsoft.smartyoutubetv.exoplayer.commands;
 import java.util.concurrent.Callable;
 
 public class PressNextCommand extends PressCommandBase {
-    private final Callable<Boolean> mCommand;
+    private final GenericCommand mCommand;
 
-    public PressNextCommand(Callable<Boolean> command) {
+    public PressNextCommand(GenericCommand command) {
         mCommand = command;
     }
 
     @Override
-    public Boolean call() {
+    public boolean call() {
         pressButtonByClass("icon-player-next", mCommand);
 
         return true;
