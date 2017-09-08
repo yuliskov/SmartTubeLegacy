@@ -374,8 +374,13 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             Uri[] uris;
             String[] extensions;
             if (ACTION_VIEW.equals(action)) {
+                //TODO: modified
                 uris = new Uri[]{intent.getData()};
+                //uris = new Uri[]{intent.getData(), Uri.parse("http://fakeurl.com")};
+
+                //TODO: modified
                 extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA)};
+                //extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA), "m3u8"};
             } else if (ACTION_VIEW_LIST.equals(action)) {
                 String[] uriStrings = intent.getStringArrayExtra(URI_LIST_EXTRA);
                 uris = new Uri[uriStrings.length];

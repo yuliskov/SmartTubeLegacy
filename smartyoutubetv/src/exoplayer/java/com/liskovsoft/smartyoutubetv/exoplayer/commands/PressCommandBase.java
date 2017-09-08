@@ -10,9 +10,9 @@ import com.squareup.otto.Subscribe;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
-public abstract class PressCommandBase implements GenericCommand {
+public abstract class PressCommandBase extends GenericCommand {
     private final String mTriggerEventFunction = "function triggerEvent(el, type, keyCode) {\n"
-            + 	"console.log('triggerEvent called', el, type, keyCode)\n"
+            + 	"console.log('triggerEvent called', el, type, keyCode);\n"
             + 	"if ('createEvent' in document) {\n"
             + 	        "// modern browsers, IE9+\n"
             + 	        "var e = document.createEvent('HTMLEvents');\n"
@@ -69,16 +69,12 @@ public abstract class PressCommandBase implements GenericCommand {
     }
 
 
-    protected void pressButtonByClass(String className, final GenericCommand command) {
+    protected void pressButtonByClassAsync(String className, final GenericCommand command) {
         mClassName = className;
         mCommand = command;
         mGenericButtonReceiver = new GenericBooleanResultReceiver();
         String hugeFunction = combineAllTogetherByClassAsync();
         passToBrowser(hugeFunction);
-    }
-
-    private void passToBrowser(String hugeFunction) {
-        Browser.getBus().post(new GenericEventResourceInjector.JSResourceEvent(hugeFunction));
     }
 
     private String combineAllTogetherByClassAsync() {

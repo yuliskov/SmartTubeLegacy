@@ -9,7 +9,7 @@ public class PressPrevCommand extends PressCommandBase {
 
     @Override
     public boolean call() {
-        pressButtonByClass("icon-player-prev", mCommand);
+        pressButtonByClassAsync("icon-player-prev", mCommand);
         return true;
     }
 
