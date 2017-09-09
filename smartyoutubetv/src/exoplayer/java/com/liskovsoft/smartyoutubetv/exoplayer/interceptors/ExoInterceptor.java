@@ -10,7 +10,6 @@ import com.liskovsoft.smartyoutubetv.exoplayer.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.exoplayer.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.exoplayer.commands.PausePlayerCommand;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressBackCommand2;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.exoplayer.commands.PressPrevCommand;
@@ -26,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.util.concurrent.Callable;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;

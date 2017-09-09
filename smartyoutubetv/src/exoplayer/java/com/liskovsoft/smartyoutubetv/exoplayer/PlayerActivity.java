@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.exoplayer;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -416,10 +417,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
             }
             // TODO: modified
-            MediaSource mediaSource = mediaSources.length == 1 ? new LoopingMediaSource(mediaSources[0]) :
-                    new LoopingMediaSource(new ConcatenatingMediaSource(mediaSources));
+            //MediaSource mediaSource = mediaSources.length == 1 ? new LoopingMediaSource(mediaSources[0]) :
+            //        new LoopingMediaSource(new ConcatenatingMediaSource(mediaSources));
 
-            //MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
+            MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
 
             boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
             if (haveResumePosition) {
@@ -533,21 +534,49 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
+        enableNextButton();
         // Do nothing.
     }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        enableNextButton();
         if (playbackState == ExoPlayer.STATE_ENDED) {
-            //doGracefulExit(PlayerActivity.ACTION_NEXT);
+            // TODO: modified
+            doGracefulExit(PlayerActivity.ACTION_NEXT);
             
             showControls();
         }
         updateButtonVisibilities();
     }
 
+    // TODO: modified
+    private void enableNextButton() {
+        final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
+        setButtonEnabled(true, nextButton);
+    }
+
+    private void setButtonEnabled(boolean enabled, View view) {
+        if (view == null) {
+            return;
+        }
+        view.setEnabled(enabled);
+        if (Util.SDK_INT >= 11) {
+            setViewAlphaV11(view, enabled ? 1f : 0.3f);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    @TargetApi(11)
+    private void setViewAlphaV11(View view, float alpha) {
+        view.setAlpha(alpha);
+    }
+
     @Override
     public void onPositionDiscontinuity() {
+        enableNextButton();
         if (needRetrySource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
@@ -558,12 +587,14 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+        enableNextButton();
         // Do nothing.
         int i = 0;
     }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
+        enableNextButton();
         // Do nothing.
         int i = 0;
     }
@@ -616,7 +647,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        passOneTimeAndDoExit();
+        // TODO: modified
+        //passOneTimeAndDoExit();
+        enableNextButton();
 
         updateButtonVisibilities();
         if (trackGroups != lastSeenTrackGroupArray) {

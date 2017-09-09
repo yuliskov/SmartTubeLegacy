@@ -2,8 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.CombinedInterceptor;
-import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.MuteAudioInterceptor;
+import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.MuteVideoInterceptor;
 import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.PlayEndInterceptor;
 import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.CipherInterceptor;
 import com.liskovsoft.smartyoutubetv.exoplayer.interceptors.ExoInterceptor;
@@ -13,7 +12,7 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
     private final ExoInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
     private final PlayEndInterceptor mPlayEndInterceptor;
-    private final MuteAudioInterceptor mMuteAudioInterceptor;
+    private final MuteVideoInterceptor mMuteVideoInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public OpenExternalPlayerInterceptor2(Context context) {
@@ -21,7 +20,7 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
         mExoInterceptor = new ExoInterceptor(context);
         mCipherInterceptor = new CipherInterceptor(context);
         mPlayEndInterceptor = new PlayEndInterceptor(context);
-        mMuteAudioInterceptor = new MuteAudioInterceptor(context);
+        mMuteVideoInterceptor = new MuteVideoInterceptor(context);
     }
 
     @Override
@@ -45,10 +44,10 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
-        //if (url.contains("videoplayback")) {
-        //    mCurrentInterceptor = mMuteAudioInterceptor;
-        //    return true;
-        //}
+        if (url.contains("videoplayback")) {
+            mCurrentInterceptor = mMuteVideoInterceptor;
+            return true;
+        }
 
         return false;
     }

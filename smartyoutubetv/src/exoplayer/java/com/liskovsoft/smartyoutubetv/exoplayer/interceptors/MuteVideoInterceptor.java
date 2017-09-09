@@ -2,14 +2,14 @@ package com.liskovsoft.smartyoutubetv.exoplayer.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.exoplayer.commands.PausePlayerCommand;
+import com.liskovsoft.smartyoutubetv.exoplayer.commands.MuteVideoCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
-public class MuteAudioInterceptor extends RequestInterceptor {
+public class MuteVideoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private long mPrevTime;
 
-    public MuteAudioInterceptor(Context context) {
+    public MuteVideoInterceptor(Context context) {
         mContext = context;
     }
 
@@ -35,6 +35,6 @@ public class MuteAudioInterceptor extends RequestInterceptor {
     }
 
     private void tryToPauseVideo() {
-        new PausePlayerCommand().call();
+        new MuteVideoCommand().call();
     }
 }
