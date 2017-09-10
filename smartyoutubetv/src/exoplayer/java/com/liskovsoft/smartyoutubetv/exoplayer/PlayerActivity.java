@@ -124,6 +124,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private OnClickListener mPrevNextListener;
     private EventListener mPlaybackEndListener;
     private TextView mVideoTitle;
+    private TextView mVideoTitle2;
 
     // Activity lifecycle
 
@@ -159,8 +160,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         if (videoTitle == null) {
             return;
         }
+        String[] titles = videoTitle.split("\\|");
         mVideoTitle = (TextView)findViewById(R.id.video_title);
-        mVideoTitle.setText(videoTitle);
+        mVideoTitle.setText(titles[0]);
+        mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
+        mVideoTitle2.setText(titles[1]);
     }
 
     private void initExoPlayerButtons() {
@@ -308,6 +312,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         debugRootView.setVisibility(visibility);
         debugTextView.setVisibility(visibility);
         mVideoTitle.setVisibility(visibility);
+        mVideoTitle2.setVisibility(visibility);
     }
 
     // Internal methods

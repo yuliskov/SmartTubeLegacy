@@ -18,8 +18,12 @@ public final class SampleHelpers {
         return new PlaylistSample("Sample Playlist", samples);
     }
 
+    public static Sample buildFromUri(Uri contentUrl, String title, String title2) {
+        return new UriSample(title + "|" + title2, contentUrl.toString());
+    }
+
     public static Sample buildFromUri(Uri contentUrl, String title) {
-        return new UriSample(title, contentUrl.toString());
+        return buildFromUri(contentUrl, title, "");
     }
 
     public static Sample buildFromUri(Uri contentUrl) {
@@ -30,8 +34,12 @@ public final class SampleHelpers {
         return new UriSample("Sample Video", String.format("%s|%s", video, audio));
     }
 
+    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title, String title2) {
+        return new MPDSample(title + "|" + title2, "https://example.com/test.mpd", mpdPlaylist);
+    }
+
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title) {
-        return new MPDSample(title, "https://example.com/test.mpd", mpdPlaylist);
+        return buildFromMPDPlaylist(mpdPlaylist, title, "");
     }
 
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {

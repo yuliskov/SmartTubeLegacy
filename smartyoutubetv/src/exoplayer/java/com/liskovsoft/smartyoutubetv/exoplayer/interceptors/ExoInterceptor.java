@@ -29,12 +29,14 @@ import java.io.InputStream;
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
+    private final CommandCallInterceptor mInterceptor;
     private InputStream mResponseStream;
     private MediaType mResponseType;
-    private GenericCommand mLastCommand;
+    private GenericCommand mLastCommand = new PressBackCommand2();
 
-    public ExoInterceptor(Context context) {
+    public ExoInterceptor(Context context, CommandCallInterceptor interceptor) {
         mContext = context;
+        mInterceptor = interceptor;
     }
 
     @Override
@@ -58,21 +60,23 @@ public class ExoInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer() {
         final YouTubeInfoParser3 dataParser = new SimpleYouTubeInfoParser3(mResponseStream, ITag.AVC);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
-            private String mTitle;
+            private String mTitle = "No title";
+            private String mTitle2 = "No title";
             @Override
             public void onVideoFound(final InputStream mpdContent) {
-                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent, mTitle);
+                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent, mTitle, mTitle2);
                 openExoPlayer(sample);
             }
             @Override
             public void onLiveFound(final Uri hlsUrl) {
-                Sample sample = SampleHelpers.buildFromUri(hlsUrl, mTitle);
+                Sample sample = SampleHelpers.buildFromUri(hlsUrl, mTitle, mTitle2);
                 openExoPlayer(sample);
             }
 
             @Override
             public void onInfoFound(YouTubeGenericInfo info) {
                 mTitle = String.format("%s: %s", info.getAuthor(), info.getTitle());
+                mTitle2 = String.format("View count: %s, Published: %s", info.getViewCount(), info.getPublishedDate());
             }
         });
     }
@@ -89,8 +93,14 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 bindActions(extractAction(data));
+                updateLastCommand();
             }
         });
+    }
+
+    private void updateLastCommand() {
+        mInterceptor.setCommand(getLastCommand());
+        mInterceptor.doDelayedCall();
     }
 
     private void bindActions(final String action) {

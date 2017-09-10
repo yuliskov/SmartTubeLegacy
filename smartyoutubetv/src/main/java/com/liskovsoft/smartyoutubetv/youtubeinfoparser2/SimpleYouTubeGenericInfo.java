@@ -1,9 +1,14 @@
 package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
+import java.util.Date;
+
 public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
+    private String mViewCount;
+    private String mTimestamp;
+    private Date mDate;
 
     @Override
     public String getLengthSeconds() {
@@ -33,5 +38,34 @@ public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
     @Override
     public void setAuthor(String author) {
         mAuthor = author;
+    }
+
+    @Override
+    public String getViewCount() {
+        return mViewCount;
+    }
+
+    @Override
+    public void setViewCount(String viewCount) {
+        mViewCount = viewCount;
+    }
+
+    @Override
+    public String getTimestamp() {
+        return mTimestamp;
+    }
+
+    @Override
+    public void setTimestamp(String timestamp) {
+        mTimestamp = timestamp;
+        mDate = new Date((long) Integer.parseInt(mTimestamp) * 1000);
+    }
+
+    @Override
+    public String getPublishedDate() {
+        if (mDate == null) {
+            return "Date unknown";
+        }
+        return mDate.toString();
     }
 }

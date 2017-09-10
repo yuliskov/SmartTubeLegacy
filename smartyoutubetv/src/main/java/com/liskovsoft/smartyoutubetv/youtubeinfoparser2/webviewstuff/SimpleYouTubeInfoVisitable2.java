@@ -32,7 +32,7 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
     public void accept(YouTubeInfoVisitor2 visitor) {
         mVisitor = visitor;
 
-        YouTubeGenericInfo info = extractInfo();
+        YouTubeGenericInfo info = obtainGenericInfo();
         mVisitor.onGenericInfo(info);
 
         Uri uri = extractHLSUrl();
@@ -118,12 +118,14 @@ public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
         }
     }
 
-    private YouTubeGenericInfo extractInfo() {
+    private YouTubeGenericInfo obtainGenericInfo() {
         YouTubeGenericInfo info = new SimpleYouTubeGenericInfo();
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
         info.setLengthSeconds(videoInfo.getQueryParameter(YouTubeGenericInfo.LENGTH_SECONDS));
         info.setTitle(videoInfo.getQueryParameter(YouTubeGenericInfo.TITLE));
         info.setAuthor(videoInfo.getQueryParameter(YouTubeGenericInfo.AUTHOR));
+        info.setViewCount(videoInfo.getQueryParameter(YouTubeGenericInfo.VIEW_COUNT));
+        info.setTimestamp(videoInfo.getQueryParameter(YouTubeGenericInfo.TIMESTAMP));
         return info;
     }
 
