@@ -36,16 +36,17 @@ public class OpenExternalPlayerInterceptor2 extends RequestInterceptor {
             return true;
         }
 
-        // useful places: ptracking
-        // at this moment video should be added to history
-        if (url.contains("ptracking")) {
-            mCurrentInterceptor = mPlayEndInterceptor;
-            mPlayEndInterceptor.setCommand(mExoInterceptor.getLastCommand());
+        if (url.contains("videoplayback")) {
+            mCurrentInterceptor = mMuteVideoInterceptor;
             return true;
         }
 
-        if (url.contains("videoplayback")) {
-            mCurrentInterceptor = mMuteVideoInterceptor;
+        // useful places: ptracking
+        // at this moment video should be added to history
+        // attention: not working when activity restored
+        if (url.contains("ptracking")) {
+            mCurrentInterceptor = mPlayEndInterceptor;
+            mPlayEndInterceptor.setCommand(mExoInterceptor.getLastCommand());
             return true;
         }
 

@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -166,15 +167,23 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
         final View prevButton = simpleExoPlayerView.findViewById(R.id.exo_prev);
         OnClickListener clickListener = obtainPrevNextListener(nextButton, prevButton);
+        OnGlobalLayoutListener setButtonEnabledListener = obtainSetButtonEnabledListener(nextButton);
         nextButton.setOnClickListener(clickListener);
+        nextButton.getViewTreeObserver().addOnGlobalLayoutListener(setButtonEnabledListener);
         prevButton.setOnClickListener(clickListener);
     }
 
+    private OnGlobalLayoutListener obtainSetButtonEnabledListener(final View nextButton) {
+        return new OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                setButtonEnabled(true, nextButton);
+            }
+        };
+    }
+
     private OnClickListener obtainPrevNextListener(final View nextButton, final View prevButton) {
-        if (mPrevNextListener != null) {
-            return mPrevNextListener;
-        }
-        mPrevNextListener = new OnClickListener() {
+        return new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == nextButton) {
@@ -184,7 +193,24 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 }
             }
         };
-        return mPrevNextListener;
+    }
+
+    private void setButtonEnabled(boolean enabled, View view) {
+        if (view == null) {
+            return;
+        }
+        view.setEnabled(enabled);
+        if (Util.SDK_INT >= 11) {
+            setViewAlphaV11(view, enabled ? 1f : 0.3f);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    @TargetApi(11)
+    private void setViewAlphaV11(View view, float alpha) {
+        view.setAlpha(alpha);
     }
 
     private void doGracefulExit(String action) {
@@ -534,13 +560,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
-        enableNextButton();
         // Do nothing.
     }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        enableNextButton();
         if (playbackState == ExoPlayer.STATE_ENDED) {
             // TODO: modified
             doGracefulExit(PlayerActivity.ACTION_NEXT);
@@ -550,33 +574,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         updateButtonVisibilities();
     }
 
-    // TODO: modified
-    private void enableNextButton() {
-        final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
-        setButtonEnabled(true, nextButton);
-    }
-
-    private void setButtonEnabled(boolean enabled, View view) {
-        if (view == null) {
-            return;
-        }
-        view.setEnabled(enabled);
-        if (Util.SDK_INT >= 11) {
-            setViewAlphaV11(view, enabled ? 1f : 0.3f);
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
-        }
-    }
-
-    @TargetApi(11)
-    private void setViewAlphaV11(View view, float alpha) {
-        view.setAlpha(alpha);
-    }
-
     @Override
     public void onPositionDiscontinuity() {
-        enableNextButton();
         if (needRetrySource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
@@ -587,16 +586,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-        enableNextButton();
         // Do nothing.
-        int i = 0;
     }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
-        enableNextButton();
         // Do nothing.
-        int i = 0;
     }
 
     @Override
@@ -636,20 +631,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private boolean mTrackChangedOnce;
 
-    private void passOneTimeAndDoExit() {
-        if (mTrackChangedOnce) {
-            doGracefulExit(PlayerActivity.ACTION_NEXT);
-        } else {
-            mTrackChangedOnce = true;
-        }
-    }
-
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        // TODO: modified
-        //passOneTimeAndDoExit();
-        enableNextButton();
 
         updateButtonVisibilities();
         if (trackGroups != lastSeenTrackGroupArray) {
