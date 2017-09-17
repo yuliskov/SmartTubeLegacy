@@ -102,6 +102,7 @@ public class TabControl {
                     && state.getBoolean(Tab.INCOGNITO)) {
                 // ignore tab
             } else if (id == currentId || restoreAll) {
+                // create tab and restore its state
                 Tab t = createNewTab(state, false);
                 if (t == null) {
                     // We could "break" at this point, but we want

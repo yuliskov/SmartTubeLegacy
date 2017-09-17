@@ -189,7 +189,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         } else {
             logger.info("Restoring browser state...");
             boolean needsRestoreAllTabs = mUi.needsRestoreAllTabs();
-            // TODO: restore incognito tabs
+            // TODO: restore incognito tabs not implemented
             mTabControl.restoreState(icicle, currentTabId, false, needsRestoreAllTabs);
             List<Tab> tabs = mTabControl.getTabs();
 
@@ -892,8 +892,10 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         // Save all the tabs
         Bundle saveState = createSaveState();
+        mPageDefaults.getPostProcessor().beforeSaveInstanceState(saveState);
 
         // crash recovery manages all save & restore state
         mCrashRecoveryHandler.writeState(saveState);

@@ -188,4 +188,11 @@ public class BrowserActivity extends AppCompatActivity {
         logger.info("ignore intents: {}", ignore);
         return ignore;
     }
+
+    @Override
+    public void finish() {
+        // NOTE: fix state saving when finishing activity
+        mController.onSaveInstanceState(null);
+        super.finish();
+    }
 }

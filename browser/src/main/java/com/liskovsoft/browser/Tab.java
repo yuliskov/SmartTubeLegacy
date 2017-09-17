@@ -129,7 +129,7 @@ public class Tab implements PictureListener {
             mId = TabControl.getNextId();
         }
 
-        // state restored here!!!
+        // NOTE: state restored here!!!
         setWebView(w);
 
         //((CustomHeadersWebViewClient) mWebViewClient).setPageDefaults(mWebViewController.getPageDefaults());
@@ -215,6 +215,7 @@ public class Tab implements PictureListener {
             }
             if (restore && (mSavedState != null)) {
                 restoreUserAgent();
+                // NOTE: webview state restored here (sate saved as binary data)
                 WebBackForwardList restoredState
                         = mMainView.restoreState(mSavedState);
                 if (restoredState == null || restoredState.getSize() == 0) {
@@ -489,6 +490,9 @@ public class Tab implements PictureListener {
         if (mMainView == null) {
             return mSavedState;
         }
+
+        // NOTE: don't count on WebViewClient. State might not be synced yet.
+        syncCurrentState(mMainView, null);
 
         if (TextUtils.isEmpty(mCurrentState.mUrl)) {
             return null;

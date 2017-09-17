@@ -16,7 +16,7 @@ import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.browser.custom.PageLoadHandler;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.misc.LangDetector;
+import com.liskovsoft.smartyoutubetv.misc.MyControllerEventHandler;
 import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
 import io.fabric.sdk.android.Fabric;
 
@@ -66,7 +66,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         mController = new SimpleUIController(this);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new LangDetector(mController));
+        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
         mController.start(intent, mPageDefaults);
         setController(mController);
     }
