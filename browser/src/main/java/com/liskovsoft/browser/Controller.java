@@ -125,7 +125,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mPageDefaults = pageDefaults;
         mFactory.setNextHeaders(mPageDefaults.getHeaders());
         if (pageDefaults.getPostProcessor() != null) {
-            pageDefaults.getPostProcessor().afterStart();
+            pageDefaults.getPostProcessor().onControllerStart();
         }
         // mCrashRecoverHandler has any previously saved state.
         mCrashRecoveryHandler.startRecovery(intent);
@@ -182,6 +182,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @param intent
      */
     public void doStart(Bundle icicle, Intent intent) {
+        mPageDefaults.getPostProcessor().beforeRestoreInstanceState(icicle);
+
         long currentTabId = mTabControl.canRestoreState(icicle, false);
         if (currentTabId == -1) { // no saved state
             logger.info("Browser state not found. Opening home page...");

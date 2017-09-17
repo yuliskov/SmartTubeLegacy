@@ -19,11 +19,11 @@ public class MyControllerEventHandler implements ControllerEventHandler {
         mContext = controller.getContext();
         mPageDefaults = mController.getPageDefaults();
         mLangUpdater = new LangUpdater(mContext);
-        mStateUpdater = new StateUpdater();
+        mStateUpdater = new StateUpdater(mController);
     }
 
     @Override
-    public void afterStart() {
+    public void onControllerStart() {
         mLangUpdater.update();
 
         // if you need to disable auto-saving webview state:
@@ -32,6 +32,11 @@ public class MyControllerEventHandler implements ControllerEventHandler {
 
     @Override
     public void beforeSaveInstanceState(Bundle state) {
-        mStateUpdater.fixPlaylistUrl(state);
+        // mStateUpdater.fixPlaylistUrl(state);
+    }
+
+    @Override
+    public void beforeRestoreInstanceState(Bundle state) {
+        mStateUpdater.updateState(state);
     }
 }
