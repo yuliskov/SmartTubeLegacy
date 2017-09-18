@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
@@ -42,7 +43,12 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public void closeApp() {
         if (mContext instanceof Activity) {
-            ((Activity) mContext).finish();
+            Helpers.postOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((Activity) mContext).finish();
+                }
+            });
         }
     }
 

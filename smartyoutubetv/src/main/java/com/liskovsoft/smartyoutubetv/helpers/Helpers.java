@@ -2,6 +2,8 @@ package com.liskovsoft.smartyoutubetv.helpers;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -104,5 +106,10 @@ public class Helpers {
         }
 
         return okHttpResponse;
+    }
+
+
+    public static void postOnUiThread(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
     }
 }

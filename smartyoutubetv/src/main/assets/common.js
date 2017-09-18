@@ -71,6 +71,7 @@ function addExitEvent() {
 	    element.addEventListener('keydown', function (e) {
 	        if (e.which == 13) { // click
 	            e.preventDefault();
+                console.log('before app.closeApp');
 	            app.closeApp();
 	        }
 	    });
