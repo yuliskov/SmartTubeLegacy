@@ -294,8 +294,10 @@ function createQualityToggleButton() {
     </div>');
 }
 
+
 function createQualityButtonsRow2(videoFormats) {
-    var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"></div>');
+    // NOTE: styling buttons-list: fixing obvious layout mess
+    var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1" style="position: relative; overflow: hidden; width: 80em; height: 100%;"></div>');
     var container2 = createElement('<div class="new-list-container horizontal" style="margin-left: 0em;"></div>');
     for (var idx in videoFormats) {
         var textColor = '';
@@ -336,10 +338,23 @@ function sortButtons(nodes) {
       return 0;
     }
 
+    // move transport-more-button to the left
+    function compareById(a, b) {
+        var leftId = a.getAttribute('id');
+        var rightId = b.getAttribute('id');
+        var leftContains = leftId ? leftId.indexOf('transport-more-button') >= 0 : false;
+        var rightContains = rightId ? rightId.indexOf('transport-more-button') >= 0 : false;
+        if (leftContains && rightContains)
+            return 0;
+        if (rightContains)
+            return 1;
+        return 0;
+    }
+
 
     var objArr = Array.prototype.slice.call(nodes);
 
-    return objArr.sort(compareByOffset);
+    return objArr.sort(compareById);
 }
 
 function addArrowKeysHandling(container) {
@@ -352,7 +367,7 @@ function addArrowKeysHandling(container) {
     // disabled - button not active 
 
     var buttons = container.querySelectorAll('.button, .toggle-button');
-    var buttons = sortButtons(buttons); // convert to array and sort
+    buttons = sortButtons(buttons); // convert to array and sort
 
     if (!buttons)
         console.log('Houston we have problems: cant find buttons');
@@ -470,6 +485,8 @@ function arrowKeysListener(event, objArr) {
 
 function getNextLeftFocus(objArr, currentFocus) {
     var currIdx = objArr.indexOf(currentFocus);
+    if (currIdx == -1)
+        return null;
     if (currIdx == 0)
         return null;
 
@@ -490,6 +507,8 @@ function getNextLeftFocus(objArr, currentFocus) {
 
 function getNextRightFocus(objArr, currentFocus) {
     var currIdx = objArr.indexOf(currentFocus);
+    if (currIdx == -1)
+        return null;
     if (currIdx == (objArr.length - 1))
         return null;
 

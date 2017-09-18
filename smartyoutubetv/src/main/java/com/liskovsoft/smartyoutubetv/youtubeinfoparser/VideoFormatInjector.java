@@ -1,9 +1,10 @@
-package com.liskovsoft.smartyoutubetv.injectors;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
 
 import android.content.Context;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
 import com.squareup.otto.Subscribe;
 
@@ -41,14 +42,17 @@ public class VideoFormatInjector extends ResourceInjectorBase {
         TreeSet<VideoFormat> sortedSet = new TreeSet<>(formats);
         sortedSet.add(VideoFormat._Auto_);
 
-        sortedSet.remove(VideoFormat._240p_);
-        sortedSet.remove(VideoFormat._480p_);
         sortedSet.remove(VideoFormat._720p60_);
         sortedSet.remove(VideoFormat._1080p60_);
+        sortedSet.remove(VideoFormat._1440p_);
         sortedSet.remove(VideoFormat._1440p60_);
+        sortedSet.remove(VideoFormat._2160p);
         sortedSet.remove(VideoFormat._2160p60);
         if (sortedSet.size() > 5) {
             sortedSet.remove(VideoFormat._144p_);
+        }
+        if (sortedSet.size() > 5) {
+            sortedSet.remove(VideoFormat._240p_);
         }
         if (sortedSet.size() > 5) {
             sortedSet.remove(VideoFormat._360p_);

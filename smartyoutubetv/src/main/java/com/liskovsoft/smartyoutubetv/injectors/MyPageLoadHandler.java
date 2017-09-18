@@ -6,6 +6,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.GenericEventResourceInjector;
 import org.slf4j.Logger;
