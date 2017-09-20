@@ -2,6 +2,7 @@
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+	'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
 	'MiTV3S-43 (hancock)': 'webm', // MiTV3S 43" ???
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
 	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???

@@ -34,7 +34,7 @@ public class BrowserWebViewFactory implements WebViewFactory {
 
         // real display size (virtual pixel == real pixel)
         // 100 - normal resolution, 50 - 2160p resolution
-        w.setInitialScale(100);
+        //w.setInitialScale(100);
 
         return w;
     }

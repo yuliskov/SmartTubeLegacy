@@ -297,7 +297,7 @@ function createQualityToggleButton() {
 
 function createQualityButtonsRow2(videoFormats) {
     // NOTE: styling buttons-list: fixing obvious layout mess
-    var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1" style="position: relative; overflow: hidden; width: 80em; height: 100%;"></div>');
+    var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1" style="position: relative; overflow: hidden; height: 100%;"></div>');
     var container2 = createElement('<div class="new-list-container horizontal" style="margin-left: 0em;"></div>');
     for (var idx in videoFormats) {
         var textColor = '';
