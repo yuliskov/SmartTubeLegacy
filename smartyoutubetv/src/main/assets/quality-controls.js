@@ -81,13 +81,22 @@ function firstRun() {
 //  var left = 37;
 //  var right = 39;
 //  var enter = 13;
-function onInterfaceVisible(fn) {
-    var playButton = document.querySelector('.icon-player-play');
-    if (!playButton){
-        setTimeout(function(){onInterfaceVisible(fn)}, 500);
-        return;
-    }
-    playButton.addEventListener('focus', fn);
+function setOnInterfaceVisible(fn) {
+    var container = document.getElementById('watch');
+    container.addEventListener('keydown', function(event){
+        var mainRow = querySelector('#transport-controls');
+        if (!hasClass(mainRow, 'hidden'))
+            return;
+        console.log('setOnInterfaceVisible handler called');
+        fn(event);
+    });
+
+    // var playButton = document.querySelector('.icon-player-play');
+    // if (!playButton){
+    //     setTimeout(function(){setOnInterfaceVisible(fn)}, 500);
+    //     return;
+    // }
+    // playButton.addEventListener('focus', fn);
 }
 
 /////////////////////////////////////////////////
@@ -373,7 +382,8 @@ function addArrowKeysHandling(container) {
         console.log('Houston we have problems: cant find buttons');
 
     var listener1 = function (event) {arrowKeysListener(event, buttons)};  
-    var listener2 = function (event) {moveOutListener(event, buttons)};  
+    var listener2 = function (event) {moveOutListener(event, buttons)};
+    // var listener3 = function (event) {resetButtonsState(null, buttons)};  
     addEventListenerAll(container, 'keydown', [listener1, listener2]);
     
     var onDomChanged = function(el) {
@@ -389,11 +399,8 @@ function addArrowKeysHandling(container) {
     };
 
     observeDOM(container, onDomChanged);
-    onInterfaceVisible(onDomChanged);
     // reset state of buttons that managed in this script
-    onInterfaceVisible(function(event){
-    	resetButtonsState(event.currentTarget, buttons);
-    });
+    setOnInterfaceVisible(function(ev){resetButtonsState(null, buttons);});
 }
 
 function moveOutListener(event, objArr) {
