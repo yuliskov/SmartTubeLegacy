@@ -76,27 +76,42 @@ function firstRun() {
     return false;
 }
 
-//  var up = 38;
-//  var down = 40;
-//  var left = 37;
-//  var right = 39;
-//  var enter = 13;
 function setOnInterfaceVisible(fn) {
+    var up = 38;
+    var down = 40;
+    var left = 37;
+    var right = 39;
+    var enter = 13;
+    var esc = 27;
     var container = document.getElementById('watch');
     container.addEventListener('keydown', function(event){
+        var keyCode = event.keyCode;
+
+        console.log('setOnInterfaceVisible pre handler called');
         var mainRow = querySelector('#transport-controls');
-        if (!hasClass(mainRow, 'hidden'))
+        var firstMoveSet = keyCode == enter || keyCode == esc;
+        var secondMoveSet = keyCode == left || keyCode == right || keyCode == up || keyCode == down;
+        var isInterfaceVisible = !hasClass(mainRow, 'hidden');
+        if (isInterfaceVisible && firstMoveSet)
             return;
+        if (!isInterfaceVisible && secondMoveSet)
+            return;
+
         console.log('setOnInterfaceVisible handler called');
         fn(event);
     });
+}
 
-    // var playButton = document.querySelector('.icon-player-play');
-    // if (!playButton){
-    //     setTimeout(function(){setOnInterfaceVisible(fn)}, 500);
-    //     return;
-    // }
-    // playButton.addEventListener('focus', fn);
+function setVisibility(obj, isVisible) {
+    if (obj == null)
+        return;
+    obj.style.display = isVisible ? '' : 'none';
+}
+
+function setEnabled(obj, isEnabled) {
+    if (obj == null)
+        return;
+    isEnabled ? removeClass(obj, 'disabled') : addClass(obj, 'disabled');
 }
 
 /////////////////////////////////////////////////
@@ -298,7 +313,7 @@ function addEventListenerAll(el, type, fnArr) {
 
 function createQualityToggleButton() {
     return createElement(
-    '<div id="transport-more-button" class="my-button toggle-button" tabindex="-1"> \
+    '<div id="transport-more-button" class="my-button toggle-button quality-toggle-buton" tabindex="-1"> \
         <span>' + localize('Quality') + '</span> \
     </div>');
 }
@@ -396,11 +411,19 @@ function addArrowKeysHandling(container) {
         // remove event handlers when content is changed
         removeEventListenerAll(container, 'keydown', [listener1, listener2]);
         addEventListenerAll(container, 'keydown', [listener1, listener2]);
+        showHideCustomElements();
     };
 
     observeDOM(container, onDomChanged);
     // reset state of buttons that managed in this script
     setOnInterfaceVisible(function(ev){resetButtonsState(null, buttons);});
+}
+
+function showHideCustomElements() {
+    var testElem = document.querySelector('.icon-bug_report.toggle-button');
+    var mainButton = document.querySelector('.quality-toggle-buton');
+    setVisibility(mainButton, testElem == null);
+    setEnabled(mainButton, testElem == null);
 }
 
 function moveOutListener(event, objArr) {

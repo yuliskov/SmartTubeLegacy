@@ -194,5 +194,6 @@ public class BrowserActivity extends AppCompatActivity {
         // NOTE: fix state saving when finishing activity
         mController.onSaveInstanceState(null);
         super.finish();
+        System.exit(0);
     }
 }
