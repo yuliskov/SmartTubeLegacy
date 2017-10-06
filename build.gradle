@@ -14,10 +14,13 @@ buildscript {
 
 allprojects {
     repositories {
+        // browse: https://bintray.com/bintray/jcenter
         jcenter()
         maven {
             url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2'
         }
+        // com.android.support libs
+        maven { url 'https://maven.google.com' }
     }
 }
 

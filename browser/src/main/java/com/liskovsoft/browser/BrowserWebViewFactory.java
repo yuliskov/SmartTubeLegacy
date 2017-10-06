@@ -25,7 +25,8 @@ public class BrowserWebViewFactory implements WebViewFactory {
 
     protected WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         WebView w;
-        if (Browser.getEngineType() == EngineType.XWalk) {
+        boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
+        if (isXWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         } else {
             // BUGFIX: rare memory leak in WebView

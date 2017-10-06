@@ -13,26 +13,72 @@
     <uses-feature android:name="android.hardware.sensor" android:required="false"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <!-- End Leanback required fields -->
+    <!-- NOTE: DemoApplication: exoplayer specific params -->
     <application android:largeHeap="true"
                  android:hardwareAccelerated="true"
                  tools:node="merge"
                  android:allowBackup="true"
-                 android:icon="@mipmap/ic_launcher"
-                 android:banner="@mipmap/ic_banner"
+                 android:icon="@mipmap/ic_launcher_webview"
+                 android:banner="@mipmap/ic_banner_webview"
                  android:label="@string/app_name"
-                 android:supportsRtl="true">
+                 android:supportsRtl="true"
+                 tools:replace="android:name"
+                 android:name=".flavours.exoplayer.player.DemoApplication">
         <!-- TODO: modified, DIAL integration for Amazon TV -->
         <meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2d068551b7d8e7635eb2fd339601762059ca0530"
         />
-        <activity android:name=".SmartYouTubeTVActivity"
+        <activity android:icon="@mipmap/ic_launcher_webview"
+                  android:label="@string/app_name_webview"
+                  android:name=".flavours.webview.SmartYouTubeTVActivity"
                   android:launchMode="singleTask"
                   android:alwaysRetainTaskState="true"
                   android:windowSoftInputMode="adjustResize"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
                   >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+            </intent-filter>
+            <!-- Pass url from other apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="youtu.be"/>
+                <data android:pathPattern=".*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="vnd.youtube"/>
+                <data android:scheme="vnd.youtube.launch"/>
+            </intent-filter>
+            <!-- End Pass url from other apps -->
+        </activity>
+
+        <activity android:icon="@mipmap/ic_launcher_xwalk"
+                  android:label="@string/app_name_xwalk"
+                  android:name=".flavours.xwalk.SmartYouTubeTVActivity"
+                  android:launchMode="singleTask"
+                  android:alwaysRetainTaskState="true"
+                  android:windowSoftInputMode="adjustResize"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -63,6 +109,67 @@
                 <data android:scheme="vnd.youtube.launch"/>
             </intent-filter>
             <!-- End Pass url from other apps -->
+        </activity>
+
+        <activity android:icon="@mipmap/ic_launcher_exo"
+                  android:label="@string/app_name_exo"
+                  android:name=".flavours.exoplayer.SmartYouTubeTVActivity"
+                  android:launchMode="singleTask"
+                  android:alwaysRetainTaskState="true"
+                  android:windowSoftInputMode="adjustResize"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+            </intent-filter>
+            <!-- Pass url from other apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="youtu.be"/>
+                <data android:pathPattern=".*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="vnd.youtube"/>
+                <data android:scheme="vnd.youtube.launch"/>
+            </intent-filter>
+            <!-- End Pass url from other apps -->
+        </activity>
+
+        <!-- NOTE: exoplayer specific section -->
+        <activity android:name=".flavours.exoplayer.player.PlayerActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+                  android:launchMode="singleTop"
+                  android:label="@string/application_name"
+                  android:theme="@style/PlayerTheme">
+            <intent-filter>
+                <action android:name="com.google.android.exoplayer.demo.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="content"/>
+                <data android:scheme="asset"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.exoplayer.demo.action.VIEW_LIST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
     </application>
 

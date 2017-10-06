@@ -30,13 +30,13 @@ android {
      * GPlay package name: com.firsthash.smartyoutubetv2
      * 4PDA package name: com.firsthash.smartyoutubetv
      */
-    
+
     defaultConfig {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 109
-        versionName "6.8.37"
+        versionCode 110
+        versionName "6.8.38"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -49,18 +49,14 @@ android {
     }
 
     productFlavors {
-        original {
-            // custom resources location: src/originalFlavor
-            // resValue "string", "app_name", "Smart YouTube TV"
+        full {
+            // all version in same place
         }
-        xwalk {
+        beta {
             applicationIdSuffix ".beta"
 
             // custom resources location: src/betaFlavor
             // resValue "string", "app_name", "Smart YouTube TV Beta"
-        }
-        exoplayer {
-            applicationIdSuffix ".exoplayer"
         }
     }
 
@@ -78,6 +74,18 @@ android {
             output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
+
+    // merging multiple resources (eg for added exoplayer component)
+    // NOTE: add suffix for files with different names: eg. strings_exo.xml
+    // https://developer.android.com/studio/write/add-resources.html#add_a_resource_directory
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res-exoplayer', 'src/main/res-xwalk', 'src/main/res-webview']
+        }
+        debug {
+            res.srcDirs = ['src/main/res', 'src/main/res-exoplayer', 'src/main/res-xwalk', 'src/main/res-webview']
+        }
+    }
 }
 
 dependencies {
@@ -89,7 +97,7 @@ dependencies {
     testCompile 'commons-io:commons-io:2.5'
     testCompile 'org.robolectric:robolectric:3.2.2'
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
 
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -106,5 +114,7 @@ dependencies {
     debugCompile project(path: ':browser', configuration: "liteDebug")
     releaseCompile project(path: ':browser', configuration: "liteRelease")
 
-    exoplayerCompile 'com.google.android.exoplayer:exoplayer:r2.4.4'
+    compile 'com.google.android.exoplayer:exoplayer:r2.5.3'
+
+    // exoplayerCompile 'com.google.android.exoplayer:exoplayer:r2.4.4'
 }
