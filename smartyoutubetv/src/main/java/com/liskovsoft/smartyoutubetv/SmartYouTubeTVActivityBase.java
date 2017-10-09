@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         createController(icicle);
 
         makeActivityFullscreen();
+        makeActivityHorizontal();
     }
     
     /**
@@ -80,13 +82,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         }
     }
 
-    private void makeActivityFullscreen_Old() {
-        if (VERSION.SDK_INT < 19) {
-            getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+    private void makeActivityHorizontal() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override

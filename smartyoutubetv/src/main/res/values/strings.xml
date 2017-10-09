@@ -2,4 +2,7 @@
     <string name="app_name">Smart YouTube TV Full</string>
     <string name="next_clicked">Next button clicked!</string>
     <string name="prev_clicked">Prev button clicked!</string>
+    <string name="button_webview">Origin</string>
+    <string name="button_xwalk">Alt</string>
+    <string name="button_exo">4K</string>
 </resources>

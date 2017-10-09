@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 110
-        versionName "6.8.38"
+        versionCode 111
+        versionName "6.8.39"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -48,15 +48,33 @@ android {
         }
     }
 
+    // dimensions: http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Multi-flavor-variants
+    flavorDimensions "webview", "xwalk", "exoplayer", "releaseType"
+
     productFlavors {
+        origin {
+            dimension "webview"
+        }
+        alt {
+            dimension "xwalk"
+        }
+        uhd {
+            dimension "exoplayer"
+        }
         full {
             // all version in same place
+            dimension "releaseType"
         }
         beta {
+            dimension "releaseType"
             applicationIdSuffix ".beta"
 
             // custom resources location: src/betaFlavor
             // resValue "string", "app_name", "Smart YouTube TV Beta"
+        }
+        // change the root folders for Android productFlavors
+        all {flavor ->
+            sourceSets[flavor.name].setRoot("src/flavors/${flavor.name}")
         }
     }
 
@@ -74,18 +92,6 @@ android {
             output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
-
-    // merging multiple resources (eg for added exoplayer component)
-    // NOTE: add suffix for files with different names: eg. strings_exo.xml
-    // https://developer.android.com/studio/write/add-resources.html#add_a_resource_directory
-    sourceSets {
-        main {
-            res.srcDirs = ['src/main/res', 'src/main/res-exoplayer', 'src/main/res-xwalk', 'src/main/res-webview']
-        }
-        debug {
-            res.srcDirs = ['src/main/res', 'src/main/res-exoplayer', 'src/main/res-xwalk', 'src/main/res-webview']
-        }
-    }
 }
 
 dependencies {
@@ -93,16 +99,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-    testCompile 'commons-io:commons-io:2.5'
-    testCompile 'org.robolectric:robolectric:3.2.2'
 
-    compile 'com.android.support:appcompat-v7:25.4.0'
 
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    compile 'com.noveogroup.android:android-logger:1.3.5'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
@@ -114,7 +113,13 @@ dependencies {
     debugCompile project(path: ':browser', configuration: "liteDebug")
     releaseCompile project(path: ':browser', configuration: "liteRelease")
 
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.noveogroup.android:android-logger:1.3.5'
     compile 'com.google.android.exoplayer:exoplayer:r2.5.3'
-
-    // exoplayerCompile 'com.google.android.exoplayer:exoplayer:r2.4.4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    testCompile 'junit:junit:4.12'
+    testCompile 'commons-io:commons-io:2.5'
+    testCompile 'org.robolectric:robolectric:3.2.2'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

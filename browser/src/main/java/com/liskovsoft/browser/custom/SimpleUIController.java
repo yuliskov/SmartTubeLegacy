@@ -11,8 +11,6 @@ import com.squareup.otto.Subscribe;
 public class SimpleUIController extends Controller {
     public SimpleUIController(Activity browser) {
         super(browser);
-        // we must set theme before ui instantiation
-        browser.setTheme(R.style.SimpleUITheme);
         initUi();
     }
 
