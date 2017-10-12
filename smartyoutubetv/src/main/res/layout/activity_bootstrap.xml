@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/default_bg">
 
-<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"
-              android:layout_centerVertical="true" android:layout_centerHorizontal="true">
-       <Button android:id="@+id/button_webview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/button_webview" android:onClick="selectFlavour"/>
-       <Button android:id="@+id/button_xwalk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/button_xwalk" android:onClick="selectFlavour"/>
-       <Button android:id="@+id/button_exo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/button_exo" android:onClick="selectFlavour"/>
-</LinearLayout>
+    <TextView android:layout_marginTop="60dp" android:textSize="30dp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"
+                  android:layout_centerVertical="true" android:layout_centerHorizontal="true">
+        <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_webview" android:onClick="selectFlavour"
+                                                               android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                app:mainIcon="@drawable/bootstrap_icon_1" app:titleText="@string/webview_desc"/>
+        <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
+                                                               android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                               app:mainIcon="@drawable/bootstrap_icon_2" app:titleText="@string/xwalk_desc"/>
+        <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_exo" android:onClick="selectFlavour"
+                                                               android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                               app:mainIcon="@drawable/bootstrap_icon_3" app:titleText="@string/exo_desc"/>
+    </LinearLayout>
 
 </RelativeLayout>

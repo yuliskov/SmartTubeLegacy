@@ -52,12 +52,11 @@
             android:value="2d068551b7d8e7635eb2fd339601762059ca0530"/>
 
         <!-- Root Activity -->
+        <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent -->
         <activity android:name=".bootstrap.BootstrapActivity"
-                  android:alwaysRetainTaskState="true"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
                   android:icon="@mipmap/ic_launcher_webview"
                   android:label="@string/app_name"
-                  android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

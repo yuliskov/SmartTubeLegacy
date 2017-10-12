@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BootstrapButton">
+        <attr name="mainIcon" format="reference"/>
+        <attr name="titleText" format="string"/>
+        <attr name="isSelected" format="boolean"/>
+    </declare-styleable>
+</resources>

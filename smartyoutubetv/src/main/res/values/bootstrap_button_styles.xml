@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="BootstrapButtonWrapper">
+        <item name="android:layout_width">195dp</item>
+        <item name="android:layout_height">136dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bootstrap_button_selector</item>
+        <item name="android:weightSum">1</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:descendantFocusability">blocksDescendants</item>
+        <item name="android:layout_marginLeft">10dip</item>
+        <item name="android:layout_marginRight">10dip</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_marginBottom">10dip</item>
+    </style>
+    <style name="BootstrapButtonTextFocused">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="BootstrapButtonTextUnfocused">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="BootstrapButtonWrapperFocused">
+        <item name="android:padding">0dp</item>
+    </style>
+    <style name="BootstrapButtonWrapperUnfocused">
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="BootstrapButtonWrapperContentFocused">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="BootstrapButtonWrapperContentUnfocused">
+        <item name="android:background">@color/black</item>
+    </style>
+</resources>

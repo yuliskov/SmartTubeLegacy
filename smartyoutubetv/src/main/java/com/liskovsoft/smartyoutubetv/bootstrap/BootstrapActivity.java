@@ -27,9 +27,11 @@ public class BootstrapActivity extends FullscreenActivity {
                 break;
         }
     }
-
+    
     private void startActivity(Context ctx, Class clazz) {
         Intent intent = new Intent();
+        // NOTE: make activity transparent (non-reachable from launcher or resents)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
         startActivity(intent);
     }

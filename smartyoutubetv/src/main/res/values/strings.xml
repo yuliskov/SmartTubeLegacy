@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">Smart YouTube TV Full</string>
+    <string name="app_name">Smart YouTube TV</string>
     <string name="next_clicked">Next button clicked!</string>
     <string name="prev_clicked">Prev button clicked!</string>
     <string name="button_webview">Origin</string>
     <string name="button_xwalk">Alt</string>
     <string name="button_exo">4K</string>
+    <string name="webview_desc">MiBox, FireTV</string>
+    <string name="xwalk_desc">MiTV and other devices</string>
+    <string name="exo_desc">4K: MiTV and others</string>
+    <string name="bootstrap_main_title">Please, select desired version of YouTube</string>
 </resources>
