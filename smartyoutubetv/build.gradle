@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 111
-        versionName "6.8.40"
+        versionCode 112
+        versionName "6.8.41"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -61,8 +61,7 @@ android {
         exo {
             dimension "exoplayer"
         }
-        full {
-            // all version in same place
+        orig {
             dimension "releaseType"
         }
         beta {
@@ -71,6 +70,10 @@ android {
 
             // custom resources location: src/betaFlavor
             // resValue "string", "app_name", "Smart YouTube TV Beta"
+        }
+        aptoide {
+            dimension "releaseType"
+            applicationIdSuffix ".aptoide"
         }
         // change the root folders for Android productFlavors
         all {flavor ->
