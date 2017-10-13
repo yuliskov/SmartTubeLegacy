@@ -36,7 +36,7 @@
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner_webview"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher_webview"
+        android:icon="@mipmap/ic_banner_main"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
@@ -52,10 +52,10 @@
             android:value="2d068551b7d8e7635eb2fd339601762059ca0530"/>
 
         <!-- Root Activity -->
-        <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent -->
+        <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent in stack -->
         <activity android:name=".bootstrap.BootstrapActivity"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-                  android:icon="@mipmap/ic_launcher_webview"
+                  android:icon="@mipmap/ic_launcher_main"
                   android:label="@string/app_name"
                   android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -102,8 +102,8 @@
             android:name=".flavours.webview.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-            android:icon="@mipmap/ic_launcher_webview"
-            android:label="@string/app_name_webview"
+            android:icon="@mipmap/ic_launcher_main"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
         </activity>
@@ -111,8 +111,8 @@
             android:name=".flavours.xwalk.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-            android:icon="@mipmap/ic_launcher_xwalk"
-            android:label="@string/app_name_xwalk"
+            android:icon="@mipmap/ic_launcher_main"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
         </activity>
@@ -120,8 +120,8 @@
             android:name=".flavours.exoplayer.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-            android:icon="@mipmap/ic_launcher_exo"
-            android:label="@string/app_name_exo"
+            android:icon="@mipmap/ic_launcher_main"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
         </activity>

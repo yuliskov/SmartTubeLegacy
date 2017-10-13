@@ -7,15 +7,16 @@
               android:layout_margin="0dp"
               android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">
     <LinearLayout android:id="@+id/bootstrap_button_content" android:layout_width="match_parent" android:layout_height="match_parent"
-                  android:gravity="center" android:orientation="vertical" android:weightSum="1">
+                  android:gravity="center_horizontal" android:orientation="vertical" android:weightSum="1" android:padding="5dp">
         <ImageView android:id="@+id/bootstrap_button_image" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                   app:srcCompat="@mipmap/ic_banner"
-                   android:layout_margin="10dp" android:clickable="false" android:focusable="false"
+                   app:srcCompat="@mipmap/ic_banner_main" android:paddingLeft="50dp" android:paddingRight="50dp"
+                   android:layout_margin="0dp" android:clickable="false" android:focusable="false"
                    android:layout_weight="1"/>
         <TextView android:id="@+id/bootstrap_button_text"
-                  android:text="Best fo modelA, modelB" android:layout_margin="10dp"
+                  android:text="Best fo modelA, modelB" android:layout_marginBottom="20dp"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_weight="4"/>
+                  android:layout_weight="4"
+                  android:textSize="12sp"/>
     </LinearLayout>
 </LinearLayout>

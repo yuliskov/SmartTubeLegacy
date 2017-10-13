@@ -1,12 +1,14 @@
 package com.liskovsoft.smartyoutubetv.widgets;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +26,7 @@ public class BootstrapButton extends LinearLayout {
     private ImageView image;
     private TextView text;
     private List<OnClickListener> mOnClickListeners;
-    private final int PADDING = 10;
+    private final int PADDING = convertDpToPixel(15, getContext());
 
     public BootstrapButton(Context context) {
         super(context);
@@ -99,7 +101,7 @@ public class BootstrapButton extends LinearLayout {
 
     private void makeUnfocused() {
         //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
-        text.setTextColor(Color.WHITE);
+        text.setTextColor(Color.GRAY);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
         content.setBackgroundColor(semitransparentBlack);
         wrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
@@ -137,5 +139,33 @@ public class BootstrapButton extends LinearLayout {
         content = (LinearLayout) findViewById(R.id.bootstrap_button_content);
         image = (ImageView) findViewById(R.id.bootstrap_button_image);
         text = (TextView) findViewById(R.id.bootstrap_button_text);
+    }
+
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    public static int convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return (int)px;
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static float convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
     }
 }

@@ -36,7 +36,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 111
-        versionName "6.8.39"
+        versionName "6.8.40"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -52,13 +52,13 @@ android {
     flavorDimensions "webview", "xwalk", "exoplayer", "releaseType"
 
     productFlavors {
-        origin {
+        webview {
             dimension "webview"
         }
-        alt {
+        xwalk {
             dimension "xwalk"
         }
-        uhd {
+        exo {
             dimension "exoplayer"
         }
         full {
@@ -83,7 +83,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def project = "SmartYouTubeTV"
-            def flavor = variant.productFlavors[0].name.capitalize()
+            def flavor = variant.productFlavors[-1].name.capitalize()
             def buildType = variant.variantData.variantConfiguration.buildType.name.take(1)
             def version = variant.versionName
 
