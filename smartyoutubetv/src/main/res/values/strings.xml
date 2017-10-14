@@ -9,4 +9,5 @@
     <string name="xwalk_desc">MiTV and other devices</string>
     <string name="exo_desc">4K: MiTV and others</string>
     <string name="bootstrap_main_title">Please, select desired version of YouTube</string>
+    <string name="exo_desc2">4K: alt version</string>
 </resources>

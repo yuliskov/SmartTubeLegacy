@@ -25,6 +25,9 @@ public class BootstrapActivity extends FullscreenActivity {
             case R.id.button_exo:
                 startActivity(this, com.liskovsoft.smartyoutubetv.flavours.exoplayer.SmartYouTubeTVActivity.class);
                 break;
+            case R.id.button_exo2:
+                startActivity(this, com.liskovsoft.smartyoutubetv.flavours.exoplayer.SmartYouTubeTVActivity2.class);
+                break;
         }
     }
     

@@ -2,7 +2,7 @@
 <!-- android:background="@drawable/bootstrap_button_selector" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/bootstrap_button_wrapper"
-              android:layout_width="185dp" android:layout_height="125dp"
+              android:layout_width="170dp" android:layout_height="110dp"
               android:gravity="center" android:orientation="vertical" android:weightSum="1"
               android:layout_margin="0dp"
               android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">
@@ -17,6 +17,6 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_weight="4"
-                  android:textSize="12sp"/>
+                  android:textSize="10sp"/>
     </LinearLayout>
 </LinearLayout>

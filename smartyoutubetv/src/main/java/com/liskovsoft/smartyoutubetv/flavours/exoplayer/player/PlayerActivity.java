@@ -220,6 +220,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         intent.putExtra("action", action);
         setResult(Activity.RESULT_OK, intent);
 
+        player.release();
         finish();
     }
 

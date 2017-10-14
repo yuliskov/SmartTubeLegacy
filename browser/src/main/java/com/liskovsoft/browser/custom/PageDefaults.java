@@ -1,5 +1,7 @@
 package com.liskovsoft.browser.custom;
 
+import android.os.Bundle;
+
 import java.util.Map;
 
 public class PageDefaults {
@@ -36,6 +38,28 @@ public class PageDefaults {
     }
 
     public ControllerEventHandler getPostProcessor() {
+        if (mPostProcessor == null) {
+            return getEmptyHandler();
+        }
         return mPostProcessor;
+    }
+
+    private ControllerEventHandler getEmptyHandler() {
+        return new ControllerEventHandler() {
+            @Override
+            public void onControllerStart() {
+                /* NOP */
+            }
+
+            @Override
+            public void beforeSaveInstanceState(Bundle state) {
+                /* NOP */
+            }
+
+            @Override
+            public void beforeRestoreInstanceState(Bundle state) {
+                /* NOP */
+            }
+        };
     }
 }

@@ -16,6 +16,9 @@
         <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_exo" android:onClick="selectFlavour"
                                                                android:layout_height="wrap_content" android:layout_width="wrap_content"
                                                                app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc"/>
+        <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
+                                                               android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                               app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
     </LinearLayout>
 
 </RelativeLayout>

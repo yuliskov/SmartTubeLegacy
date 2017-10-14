@@ -1,22 +1,19 @@
 package com.liskovsoft.smartyoutubetv.widgets;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BootstrapButton extends LinearLayout {
     private Drawable mMainIcon;
@@ -25,8 +22,9 @@ public class BootstrapButton extends LinearLayout {
     private LinearLayout content;
     private ImageView image;
     private TextView text;
-    private List<OnClickListener> mOnClickListeners;
-    private final int PADDING = convertDpToPixel(15, getContext());
+    private final int PADDING = Utils.convertDpToPixel(15, getContext());
+    private float mNormalTextSize;
+    private float mZoomedTextSize;
 
     public BootstrapButton(Context context) {
         super(context);
@@ -61,19 +59,21 @@ public class BootstrapButton extends LinearLayout {
         init();
     }
 
-    @Override
-    public void setOnClickListener(OnClickListener l) {
-        if (mOnClickListeners == null) {
-            mOnClickListeners = new ArrayList<>();
-        }
-        mOnClickListeners.add(l);
-    }
-
     private void init() {
         inflate();
         applyAttributes();
         transferClicks();
         setOnFocus();
+        calculateTextSize();
+        setDefaultState();
+    }
+
+    private void calculateTextSize() {
+        mNormalTextSize = Utils.convertPixelsToDp(text.getTextSize(), this.getContext());
+        mZoomedTextSize = mNormalTextSize * 1.3f;
+    }
+
+    private void setDefaultState() {
         makeUnfocused();
     }
 
@@ -102,6 +102,7 @@ public class BootstrapButton extends LinearLayout {
     private void makeUnfocused() {
         //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
         text.setTextColor(Color.GRAY);
+        text.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
         content.setBackgroundColor(semitransparentBlack);
         wrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
@@ -111,6 +112,7 @@ public class BootstrapButton extends LinearLayout {
     private void makeFocused() {
         //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextFocused);
         text.setTextColor(Color.BLACK);
+        text.setTextSize(mZoomedTextSize);
         content.setBackgroundColor(Color.WHITE);
         wrapper.setPadding(0, 0, 0, 0);
         resetGreyScaleFilter();
@@ -127,12 +129,6 @@ public class BootstrapButton extends LinearLayout {
         image.setColorFilter(filter); // greyscale
     }
 
-    private void transferClicks() {
-        for (OnClickListener l : mOnClickListeners) {
-            wrapper.setOnClickListener(l);
-        }
-    }
-
     private void inflate() {
         inflate(getContext(), R.layout.bootstrap_button, this);
         wrapper = (LinearLayout) findViewById(R.id.bootstrap_button_wrapper);
@@ -141,31 +137,13 @@ public class BootstrapButton extends LinearLayout {
         text = (TextView) findViewById(R.id.bootstrap_button_text);
     }
 
-    /**
-     * This method converts dp unit to equivalent pixels, depending on device density.
-     *
-     * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent px equivalent to dp depending on device density
-     */
-    public static int convertDpToPixel(float dp, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return (int)px;
+    private void transferClicks() {
+        wrapper.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BootstrapButton.this.performClick();
+            }
+        });
     }
 
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    public static float convertPixelsToDp(float px, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return dp;
-    }
 }

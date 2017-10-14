@@ -125,6 +125,15 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity
+            android:name=".flavours.exoplayer.SmartYouTubeTVActivity2"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:icon="@mipmap/ic_launcher_main"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
         <!-- End Flavours -->
 
         <!-- NOTE: exoplayer specific section -->
