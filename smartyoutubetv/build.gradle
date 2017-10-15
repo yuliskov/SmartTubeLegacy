@@ -91,6 +91,10 @@ android {
             output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
+
+    lintOptions {
+        disable 'MissingTranslation'
+    }
 }
 
 dependencies {
