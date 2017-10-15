@@ -7,8 +7,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -101,12 +99,12 @@ public class BootstrapButton extends LinearLayout {
 
     private void makeUnfocused() {
         //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
-        text.setTextColor(Color.GRAY);
+        text.setTextColor(Color.DKGRAY);
         text.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
         content.setBackgroundColor(semitransparentBlack);
         wrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
-        applyGreyScaleFilter();
+        setImageColor();
     }
 
     private void makeFocused() {
@@ -115,14 +113,14 @@ public class BootstrapButton extends LinearLayout {
         text.setTextSize(mZoomedTextSize);
         content.setBackgroundColor(Color.WHITE);
         wrapper.setPadding(0, 0, 0, 0);
-        resetGreyScaleFilter();
+        resetImageColor();
     }
 
-    private void resetGreyScaleFilter() {
+    private void resetImageColor() {
         image.setColorFilter(null); // reset Tint
     }
 
-    private void applyGreyScaleFilter() {
+    private void setImageColor() {
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);

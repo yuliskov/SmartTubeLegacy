@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 
 public class BootstrapActivity extends FullscreenActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new LangUpdater(this).update();
         setContentView(R.layout.activity_bootstrap);
     }
 
