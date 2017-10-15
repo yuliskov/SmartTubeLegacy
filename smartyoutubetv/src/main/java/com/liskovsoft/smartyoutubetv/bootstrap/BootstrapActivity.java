@@ -17,16 +17,16 @@ public class BootstrapActivity extends FullscreenActivity {
     public void selectFlavour(View view) {
         switch (view.getId()) {
             case R.id.button_webview:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavours.webview.SmartYouTubeTVActivity.class);
+                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity.class);
                 break;
             case R.id.button_xwalk:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavours.xwalk.SmartYouTubeTVActivity.class);
+                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class);
                 break;
             case R.id.button_exo:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavours.exoplayer.SmartYouTubeTVActivity.class);
+                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.class);
                 break;
             case R.id.button_exo2:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavours.exoplayer.SmartYouTubeTVActivity2.class);
+                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity2.class);
                 break;
         }
     }

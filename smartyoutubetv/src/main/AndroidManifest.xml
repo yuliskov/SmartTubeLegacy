@@ -32,7 +32,7 @@
 
     <!-- NOTE: DemoApplication: exoplayer specific params -->
     <application
-        android:name=".flavours.exoplayer.player.DemoApplication"
+        android:name=".flavors.exoplayer.player.DemoApplication"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner_webview"
         android:hardwareAccelerated="true"
@@ -99,7 +99,7 @@
 
         <!-- Flavours -->
         <activity
-            android:name=".flavours.webview.SmartYouTubeTVActivity"
+            android:name=".flavors.webview.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
@@ -108,7 +108,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavours.xwalk.SmartYouTubeTVActivity"
+            android:name=".flavors.xwalk.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
@@ -117,7 +117,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavours.exoplayer.SmartYouTubeTVActivity"
+            android:name=".flavors.exoplayer.SmartYouTubeTVActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
@@ -126,7 +126,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavours.exoplayer.SmartYouTubeTVActivity2"
+            android:name=".flavors.exoplayer.SmartYouTubeTVActivity2"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
@@ -138,7 +138,7 @@
 
         <!-- NOTE: exoplayer specific section -->
         <activity
-            android:name=".flavours.exoplayer.player.PlayerActivity"
+            android:name=".flavors.exoplayer.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/app_name_exo"
             android:launchMode="singleTop"
