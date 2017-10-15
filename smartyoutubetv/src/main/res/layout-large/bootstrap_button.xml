@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- android:background="@drawable/bootstrap_button_selector" -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/bootstrap_button_wrapper"
+              android:layout_width="195dp" android:layout_height="120dp"
+              android:gravity="center" android:orientation="vertical" android:weightSum="1"
+              android:layout_margin="0dp"
+              android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">
+    <LinearLayout android:id="@+id/bootstrap_button_content" android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:gravity="center_horizontal" android:orientation="vertical" android:weightSum="1" android:padding="5dp">
+        <ImageView android:id="@+id/bootstrap_button_image" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   app:srcCompat="@mipmap/ic_banner_main" android:padding="10dp"
+                   android:layout_margin="0dp" android:clickable="false" android:focusable="false"
+                   android:layout_weight="1"/>
+        <TextView android:id="@+id/bootstrap_button_text"
+                  android:text="Best fo modelA, modelB" android:layout_marginBottom="20dp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="4"
+                  android:textSize="13sp"/>
+    </LinearLayout>
+</LinearLayout>
