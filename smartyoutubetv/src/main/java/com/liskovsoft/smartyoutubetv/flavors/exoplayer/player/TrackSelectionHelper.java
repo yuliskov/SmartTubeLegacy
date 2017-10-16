@@ -140,8 +140,8 @@ import java.util.Arrays;
             boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
             haveAdaptiveTracks |= groupIsAdaptive;
             trackViews[groupIndex] = new CheckedTextView[group.length];
-            for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
-                if (trackIndex == 0) {
+            for (int trackIndex = (group.length - 1); trackIndex >= 0; trackIndex--) {
+                if (trackIndex == (group.length - 1)) {
                     root.addView(inflater.inflate(R.layout.list_divider, root, false));
                 }
                 int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
@@ -472,7 +472,8 @@ import java.util.Arrays;
                 return i;
             }
         }
-        return 0;
+        // if track not found, return topmost
+        return (trackGroup.length - 1);
     }
 
     /**

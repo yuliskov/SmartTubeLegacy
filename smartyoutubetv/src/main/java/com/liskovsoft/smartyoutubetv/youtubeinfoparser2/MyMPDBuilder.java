@@ -134,9 +134,11 @@ public class MyMPDBuilder implements MPDBuilder {
             return;
         }
         if (isVideo(mediaItem)) {
-            mVideos.add(mediaItem);
+            //mVideos.add(mediaItem);
+            mVideos.add(0, mediaItem); // NOTE: reverse order
         } else {
-            mAudios.add(mediaItem);
+            //mAudios.add(mediaItem);
+            mAudios.add(0, mediaItem);
         }
     }
 
