@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp;
 
 import java.io.InputStream;
 

@@ -1,15 +1,15 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import android.net.Uri;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.CipherUtils;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.DecipherSignaturesEvent;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 
@@ -18,18 +18,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimpleYouTubeInfoVisitable2 implements YouTubeInfoVisitable2 {
+public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
     private final String mContent;
-    private YouTubeInfoVisitor2 mVisitor;
+    private YouTubeInfoVisitor mVisitor;
     private List<YouTubeMediaItem> mMediaItems;
 
-    public SimpleYouTubeInfoVisitable2(String content) {
+    public SimpleYouTubeInfoVisitable(String content) {
         mContent = content;
         Browser.getBus().register(this);
     }
 
     @Override
-    public void accept(YouTubeInfoVisitor2 visitor) {
+    public void accept(YouTubeInfoVisitor visitor) {
         mVisitor = visitor;
 
         YouTubeGenericInfo info = obtainGenericInfo();

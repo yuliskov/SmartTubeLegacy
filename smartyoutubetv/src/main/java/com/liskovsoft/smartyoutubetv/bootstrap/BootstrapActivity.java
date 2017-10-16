@@ -4,16 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends FullscreenActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupLang();
+        setupCrashLogs();
         super.onCreate(savedInstanceState);
-        new LangUpdater(this).update();
         setContentView(R.layout.activity_bootstrap);
+    }
+
+    private void setupCrashLogs() {
+        Fabric.with(this, new Crashlytics());
+    }
+
+    private void setupLang() {
+        new LangUpdater(this).update();
     }
 
     public void selectFlavour(View view) {

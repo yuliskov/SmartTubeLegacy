@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events;
 
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 

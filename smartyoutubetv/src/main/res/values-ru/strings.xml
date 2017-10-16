@@ -4,6 +4,6 @@
     <string name="xwalk_desc">MiTV и др. устройства</string>
     <string name="exo_desc">4K: MiTV и прочее</string>
     <string name="exo_desc2">4K: доп. версия</string>
-    <string name="bootstrap_main_title">Пожалуйста, выберите желаемую версию YouTube</string>
-    <string name="bootstrap_bottom_title">Совет: если не уверены, то пробуйте каждую</string>
+    <string name="bootstrap_main_title">Пожалуйста, выберите версию YouTube</string>
+    <string name="bootstrap_bottom_title">Совет: если не уверены, то пробуйте каждую по-очереди</string>
 </resources>

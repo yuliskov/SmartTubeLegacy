@@ -1,12 +1,13 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
     private final String mContent;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;

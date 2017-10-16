@@ -1,4 +1,6 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp;
+
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 public interface YouTubeInfoVisitor {
     /**

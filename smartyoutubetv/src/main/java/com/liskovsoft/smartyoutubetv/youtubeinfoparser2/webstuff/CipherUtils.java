@@ -1,10 +1,10 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import java.io.InputStream;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class CipherUtils2 {
+public class CipherUtils {
     private static final String decipherPattern =
             "var\\ [A-Za-z]{2}\\=\\{.*\\n.*\\n.*\\nfunction\\ [A-Za-z]{2}\\(a\\)\\{.*\\;return\\ a\\.join\\(\\\"\\\"\\)\\}";
 

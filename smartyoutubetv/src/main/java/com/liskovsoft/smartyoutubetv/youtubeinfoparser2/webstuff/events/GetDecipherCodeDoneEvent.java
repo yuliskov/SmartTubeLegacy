@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events;
 
 public class GetDecipherCodeDoneEvent {
     private String mCode;

@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.GenericEventResourceInjector.GenericBooleanResultEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
 import com.squareup.otto.Subscribe;
 
 import java.util.Random;

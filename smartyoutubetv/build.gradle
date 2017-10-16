@@ -35,8 +35,8 @@ android {
         applicationId "com.firsthash.smartyoutubetv2"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 115
-        versionName "6.8.44"
+        versionCode 116
+        versionName "6.8.45"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -64,9 +64,9 @@ android {
         orig {
             dimension "releaseType"
         }
-        beta {
+        tmp {
             dimension "releaseType"
-            applicationIdSuffix ".beta"
+            applicationIdSuffix ".tmp"
 
             // custom resources location: src/betaFlavor
             // resValue "string", "app_name", "Smart YouTube TV Beta"

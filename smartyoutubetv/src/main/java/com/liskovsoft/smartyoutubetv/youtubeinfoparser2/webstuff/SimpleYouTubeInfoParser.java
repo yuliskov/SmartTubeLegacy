@@ -1,17 +1,18 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.MyMPDBuilder;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 import java.io.InputStream;
 
-public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
+public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String mContent;
     private final String mType;
 
-    private class CombineMediaVisitor extends YouTubeInfoVisitor2 {
+    private class CombineMediaVisitor extends YouTubeInfoVisitor {
         private final String mType;
         private final OnMediaFoundCallback mMediaFoundCallback;
         private MyMPDBuilder mMPDBuilder;
@@ -45,15 +46,15 @@ public class SimpleYouTubeInfoParser3 implements YouTubeInfoParser3 {
         }
     }
 
-    public SimpleYouTubeInfoParser3(InputStream stream, String type) {
+    public SimpleYouTubeInfoParser(InputStream stream, String type) {
         mContent = Helpers.toString(stream);
         mType = type;
     }
 
     @Override
     public void setOnMediaFoundCallback(OnMediaFoundCallback mpdFoundCallback) {
-        YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
-        YouTubeInfoVisitor2 visitor = new CombineMediaVisitor(mType, mpdFoundCallback);
+        YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
+        YouTubeInfoVisitor visitor = new CombineMediaVisitor(mType, mpdFoundCallback);
         visitable.accept(visitor);
     }
 }

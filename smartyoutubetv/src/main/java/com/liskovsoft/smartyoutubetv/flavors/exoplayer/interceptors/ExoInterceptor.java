@@ -16,9 +16,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.ITag;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.OnMediaFoundCallback;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.SimpleYouTubeInfoParser3;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.YouTubeInfoParser3;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.OnMediaFoundCallback;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.SimpleYouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.YouTubeInfoParser;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser3 dataParser = new SimpleYouTubeInfoParser3(mResponseStream, ITag.AVC);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream, ITag.AVC);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
             private String mTitle = "No title";
             private String mTitle2 = "No title";

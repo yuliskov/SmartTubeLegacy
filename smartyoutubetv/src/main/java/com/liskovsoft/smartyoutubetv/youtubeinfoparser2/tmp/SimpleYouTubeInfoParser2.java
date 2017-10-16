@@ -1,10 +1,15 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.MPDFoundCallback;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.MyMPDBuilder;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.SimpleYouTubeInfoVisitable;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.UrlFoundCallback;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.YouTubeInfoVisitable;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.YouTubeInfoVisitor;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -13,7 +18,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     private final String mContent;
     private UrlFoundCallback mUrlFoundCallback;
 
-    private class FindUriVisitor extends YouTubeInfoVisitor2 {
+    private class FindUriVisitor extends YouTubeInfoVisitor {
         private final YouTubeMediaItem mOriginItem;
         private YouTubeMediaItem mLastItem;
 
@@ -41,7 +46,7 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
         }
     }
 
-    private class CombineMPDPlaylistVisitor extends YouTubeInfoVisitor2 {
+    private class CombineMPDPlaylistVisitor extends YouTubeInfoVisitor {
         private final String mType;
         private final MPDFoundCallback mMpdFoundCallback;
         private MyMPDBuilder mMPDBuilder;
@@ -87,15 +92,15 @@ public class SimpleYouTubeInfoParser2 implements YouTubeInfoParser2 {
     @Override
     public void getUrlByTag(String iTag, UrlFoundCallback urlFoundCallback) {
         mUrlFoundCallback = urlFoundCallback;
-        YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
+        YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
         FindUriVisitor visitor = new FindUriVisitor(iTag);
         visitable.accept(visitor);
     }
 
     @Override
     public void getMPDByCodec(String type, MPDFoundCallback mpdFoundCallback) {
-        YouTubeInfoVisitable2 visitable = new SimpleYouTubeInfoVisitable2(mContent);
-        YouTubeInfoVisitor2 visitor = new CombineMPDPlaylistVisitor(type, mpdFoundCallback);
+        YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
+        YouTubeInfoVisitor visitor = new CombineMPDPlaylistVisitor(type, mpdFoundCallback);
         visitable.accept(visitor);
     }
 }

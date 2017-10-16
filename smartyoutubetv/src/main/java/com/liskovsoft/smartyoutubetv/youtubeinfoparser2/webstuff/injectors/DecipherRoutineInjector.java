@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,11 +6,11 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesDoneEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.DecipherSignaturesEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.GetDecipherCodeDoneEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.GetDecipherCodeEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff.events.PostDecipheredSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.DecipherSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.GetDecipherCodeDoneEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.GetDecipherCodeEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.PostDecipheredSignaturesEvent;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

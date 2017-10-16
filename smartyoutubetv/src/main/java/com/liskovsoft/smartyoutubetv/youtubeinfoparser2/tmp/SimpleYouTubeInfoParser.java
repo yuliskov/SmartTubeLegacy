@@ -1,6 +1,8 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
 import java.io.InputStream;
 import java.util.List;

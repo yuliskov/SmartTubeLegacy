@@ -1,12 +1,10 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webviewstuff;
+package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.YouTubeMediaItem;
 
-import java.io.InputStream;
-
-public abstract class YouTubeInfoVisitor2 {
+public abstract class YouTubeInfoVisitor {
     public void onMediaItem(YouTubeMediaItem mediaItem){}
     public void onLiveItem(Uri hlsUrl) {}
     public void doneVisiting(){}
