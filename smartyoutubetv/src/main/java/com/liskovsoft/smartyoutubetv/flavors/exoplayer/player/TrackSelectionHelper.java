@@ -99,13 +99,13 @@ import java.util.Arrays;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         // builder.setTitle(title).setView(buildView(builder.getContext())).setPositiveButton(android.R.string.ok, this).setNegativeButton(android.R
         //        .string.cancel, null).create().show();
-        alertDialog = builder.setTitle(title).setView(buildView2(builder.getContext())).create();
+        alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }
 
     // TODO: modified
     @SuppressLint("InflateParams")
-    private View buildView2(Context context) {
+    private View buildView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
         ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
@@ -191,7 +191,7 @@ import java.util.Arrays;
 
     // NOTE: original
     @SuppressLint("InflateParams")
-    private View buildView(Context context) {
+    private View buildView_Orig(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
         ViewGroup root = (ViewGroup) view.findViewById(R.id.root);

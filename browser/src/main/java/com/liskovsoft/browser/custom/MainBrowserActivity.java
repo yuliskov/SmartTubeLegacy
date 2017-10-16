@@ -9,7 +9,7 @@ public abstract class MainBrowserActivity extends XWalkBrowserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideTitleBar();
+        //hideTitleBar();
     }
 
     private void hideTitleBar() {

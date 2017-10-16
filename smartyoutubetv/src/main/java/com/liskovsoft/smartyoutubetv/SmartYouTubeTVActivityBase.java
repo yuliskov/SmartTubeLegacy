@@ -38,7 +38,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        //Fabric.with(this, new Crashlytics());
+        // Fabric.with(this, new Crashlytics());
 
         // clearCache();
 
