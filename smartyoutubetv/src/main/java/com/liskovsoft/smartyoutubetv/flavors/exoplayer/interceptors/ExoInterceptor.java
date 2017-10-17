@@ -6,11 +6,11 @@ import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -29,12 +29,12 @@ import java.io.InputStream;
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
-    private final CommandCallInterceptor mInterceptor;
+    private final MyCommandCallInterceptor mInterceptor;
     private InputStream mResponseStream;
     private MediaType mResponseType;
-    private GenericCommand mLastCommand = new PressBackCommand2();
+    private GenericCommand mLastCommand = new PressBackCommand();
 
-    public ExoInterceptor(Context context, CommandCallInterceptor interceptor) {
+    public ExoInterceptor(Context context, MyCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
     }
@@ -100,19 +100,20 @@ public class ExoInterceptor extends RequestInterceptor {
 
     private void updateLastCommand() {
         mInterceptor.setCommand(getLastCommand());
-        mInterceptor.doDelayedCall();
+        // force call command without adding to the history (in case WebView)
+        mInterceptor.forceIntercept();
     }
 
     private void bindActions(final String action) {
         switch (action) {
             case PlayerActivity.ACTION_NEXT:
-                mLastCommand = new PressNextCommand(new PressBackCommand2());
+                mLastCommand = new PressNextCommand(new PressBackCommand());
                 break;
             case PlayerActivity.ACTION_PREV:
-                mLastCommand = new PressPrevCommand(new PressBackCommand2());
+                mLastCommand = new PressPrevCommand(new PressBackCommand());
                 break;
             case PlayerActivity.ACTION_BACK:
-                mLastCommand = new PressBackCommand2();
+                mLastCommand = new PressBackCommand();
                 break;
         }
     }

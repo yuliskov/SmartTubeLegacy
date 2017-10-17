@@ -9,16 +9,16 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final ExoInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
-    private final CommandCallInterceptor mPlayEndInterceptor;
-    private final CommandCallInterceptor mMuteVideoInterceptor;
+    private final MyCommandCallInterceptor mDoOnPlayEndInterceptor;
+    private final MyCommandCallInterceptor mMuteVideoInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
-        mPlayEndInterceptor = new CommandCallInterceptor();
-        mExoInterceptor = new ExoInterceptor(context, mPlayEndInterceptor);
+        mDoOnPlayEndInterceptor = new MyCommandCallInterceptor();
+        mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
         mCipherInterceptor = new CipherInterceptor(context);
-        mMuteVideoInterceptor = new CommandCallInterceptor(new MuteVideoCommand());
+        mMuteVideoInterceptor = new MyCommandCallInterceptor(new MuteVideoCommand());
     }
 
     @Override
@@ -40,9 +40,9 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
         // useful places: ptracking
         // at this moment video should be added to history
-        // attention: not working when activity restored
+        // attention: not working when WebView restored
         if (url.contains("ptracking")) {
-            mCurrentInterceptor = mPlayEndInterceptor;
+            mCurrentInterceptor = mDoOnPlayEndInterceptor;
             return true;
         }
 

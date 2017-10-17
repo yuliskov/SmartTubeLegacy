@@ -5,14 +5,16 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
-public class CommandCallInterceptor extends RequestInterceptor {
+public class MyCommandCallInterceptor extends RequestInterceptor {
     private GenericCommand mCommand;
     private long mPrevTime;
+    private boolean mRunOnce;
+    private final int mTimeMillis = 10000;
 
-    public CommandCallInterceptor() {
+    public MyCommandCallInterceptor() {
     }
 
-    public CommandCallInterceptor(GenericCommand command) {
+    public MyCommandCallInterceptor(GenericCommand command) {
         mCommand = command;
     }
 
@@ -24,19 +26,24 @@ public class CommandCallInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         throttledCommandCall();
-
         return null;
     }
 
-    public void doDelayedCall() {
-        new Handler().postDelayed(obtainCommand(), 3000);
+    /**
+     * Forces command to run is case when 'intercept' hasn't been called
+     */
+    public void forceIntercept() {
+        mRunOnce = false; // reset calls
+        new Handler().postDelayed(obtainCommandWrapper(), mTimeMillis);
     }
 
-    private Runnable obtainCommand() {
+    private Runnable obtainCommandWrapper() {
         return new Runnable() {
             @Override
             public void run() {
-                throttledDelayedCommandCall();
+                if (mRunOnce)
+                    return;
+                throttledCommandCall();
             }
         };
     }
@@ -46,14 +53,8 @@ public class CommandCallInterceptor extends RequestInterceptor {
         mCommand = command;
     }
 
-    private void throttledDelayedCommandCall() {
-        long timeDelta = System.currentTimeMillis() - mPrevTime;
-        if (timeDelta > 3000) {
-            throttledCommandCall();
-        }
-    }
-
     protected void throttledCommandCall() {
+        mRunOnce = true;
         long currentTime = System.currentTimeMillis();
         long timeDelta = currentTime - mPrevTime;
         mPrevTime = currentTime;
@@ -63,7 +64,8 @@ public class CommandCallInterceptor extends RequestInterceptor {
     }
 
     protected void actuallyCallCommand() {
-        if (mCommand != null)
+        if (mCommand != null) {
             mCommand.call();
+        }
     }
 }
