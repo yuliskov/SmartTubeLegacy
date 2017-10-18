@@ -29,12 +29,12 @@ import java.io.InputStream;
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
-    private final MyCommandCallInterceptor mInterceptor;
+    private final SetterCommandCallInterceptor mInterceptor;
     private InputStream mResponseStream;
     private MediaType mResponseType;
     private GenericCommand mLastCommand = new PressBackCommand();
 
-    public ExoInterceptor(Context context, MyCommandCallInterceptor interceptor) {
+    public ExoInterceptor(Context context, SetterCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
     }
@@ -101,7 +101,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private void updateLastCommand() {
         mInterceptor.setCommand(getLastCommand());
         // force call command without adding to the history (in case WebView)
-        mInterceptor.forceIntercept();
+        mInterceptor.forceRun();
     }
 
     private void bindActions(final String action) {

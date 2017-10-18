@@ -9,16 +9,16 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final ExoInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
-    private final MyCommandCallInterceptor mDoOnPlayEndInterceptor;
-    private final MyCommandCallInterceptor mMuteVideoInterceptor;
+    private final SetterCommandCallInterceptor mDoOnPlayEndInterceptor;
+    private final SetterCommandCallInterceptor mMuteVideoInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
-        mDoOnPlayEndInterceptor = new MyCommandCallInterceptor();
+        mDoOnPlayEndInterceptor = new SetterCommandCallInterceptor();
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
         mCipherInterceptor = new CipherInterceptor(context);
-        mMuteVideoInterceptor = new MyCommandCallInterceptor(new MuteVideoCommand());
+        mMuteVideoInterceptor = new SetterCommandCallInterceptor(new MuteVideoCommand());
     }
 
     @Override

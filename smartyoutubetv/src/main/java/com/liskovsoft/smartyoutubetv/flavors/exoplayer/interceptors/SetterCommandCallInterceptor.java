@@ -5,16 +5,16 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
-public class MyCommandCallInterceptor extends RequestInterceptor {
+public class SetterCommandCallInterceptor extends RequestInterceptor {
     private GenericCommand mCommand;
     private long mPrevTime;
-    private boolean mRunOnce;
-    private final int mTimeMillis = 10000;
+    private final int mDelayMillis = 5000;
+    private boolean mInterceptReceived;
 
-    public MyCommandCallInterceptor() {
+    public SetterCommandCallInterceptor() {
     }
 
-    public MyCommandCallInterceptor(GenericCommand command) {
+    public SetterCommandCallInterceptor(GenericCommand command) {
         mCommand = command;
     }
 
@@ -25,36 +25,37 @@ public class MyCommandCallInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
+        mInterceptReceived = true;
         throttledCommandCall();
         return null;
     }
 
     /**
-     * Forces command to run is case when 'intercept' hasn't been called
+     * Forces command to run is case when 'intercept' hasn't been called <br/>
+     * Force call command without adding to the history (in case WebView).
      */
-    public void forceIntercept() {
-        mRunOnce = false; // reset calls
-        new Handler().postDelayed(obtainCommandWrapper(), mTimeMillis);
+    public void forceRun() {
+        startTimeBomb();
     }
 
-    private Runnable obtainCommandWrapper() {
-        return new Runnable() {
+    private void startTimeBomb() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mRunOnce)
+                if (mInterceptReceived) {
+                    mInterceptReceived = false;
                     return;
+                }
                 throttledCommandCall();
             }
-        };
+        }, mDelayMillis);
     }
-
 
     public void setCommand(GenericCommand command) {
         mCommand = command;
     }
 
     protected void throttledCommandCall() {
-        mRunOnce = true;
         long currentTime = System.currentTimeMillis();
         long timeDelta = currentTime - mPrevTime;
         mPrevTime = currentTime;
