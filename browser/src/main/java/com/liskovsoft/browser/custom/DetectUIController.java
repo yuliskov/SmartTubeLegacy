@@ -3,8 +3,8 @@ package com.liskovsoft.browser.custom;
 import android.app.Activity;
 import com.liskovsoft.browser.*;
 
-public class AutoUIController extends Controller {
-    public AutoUIController(Activity browser) {
+public class DetectUIController extends Controller {
+    public DetectUIController(Activity browser) {
         super(browser);
         initUi();
     }

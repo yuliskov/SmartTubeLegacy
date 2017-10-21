@@ -1,6 +1,8 @@
 package com.liskovsoft.browser.custom;
 
 import android.os.Bundle;
+import com.liskovsoft.browser.custom.events.ControllerEventHandler;
+import com.liskovsoft.browser.custom.events.PageLoadHandler;
 
 import java.util.Map;
 

@@ -10,16 +10,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
-import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.custom.MainBrowserActivity;
-import com.liskovsoft.browser.custom.PageDefaults;
 import com.liskovsoft.browser.custom.SimpleUIController;
-import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.misc.MyControllerEventHandler;
-import com.liskovsoft.smartyoutubetv.injectors.MyPageLoadHandler;
-import io.fabric.sdk.android.Fabric;
+import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +27,16 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private final String mYouTubeTVUrl = "https://youtube.com/tv";
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
-    private PageLoadHandler mPageLoadHandler;
-    private PageDefaults mPageDefaults;
+    private KeysTranslator mTranslator;
+    // TODO: remove
+    //private PageLoadHandler mPageLoadHandler;
+    //private PageDefaults mPageDefaults;
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        mTranslator = new KeysTranslator();
 
         // Fabric.with(this, new Crashlytics());
 
@@ -63,13 +63,17 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     private void createController(Bundle icicle) {
         mHeaders = new HashMap<>();
-        mPageLoadHandler = new MyPageLoadHandler(this);
+        //TODO: remove
+        //mPageLoadHandler = new MyPageLoadHandler(this);
         mHeaders.put("user-agent", mLGSmartTVUserAgent);
 
         mController = new SimpleUIController(this);
+        mController.setEventListener(new ControllerEventListener(this, mTranslator));
+        mController.setDefaultUrl(Uri.parse(mYouTubeTVUrl));
+        mController.setDefaultHeaders(mHeaders);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
-        mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
-        mController.start(intent, mPageDefaults);
+        //mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
+        mController.start(intent);
         setController(mController);
     }
 
@@ -88,7 +92,10 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        event = doTranslateKeys(event);
+        event = mTranslator.doTranslateKeys(event);
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
         return super.dispatchKeyEvent(event);
     }
 
@@ -138,63 +145,63 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         super.onNewIntent(transformIntent(intent));
     }
 
-    private boolean mDownFired;
-    private boolean isEventIgnored(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mDownFired = true;
-            return false;
-        }
-        if (event.getAction() == KeyEvent.ACTION_UP && mDownFired) {
-            mDownFired = false;
-            return false;
-        }
-
-        return true;
-    }
-
-    private KeyEvent doTranslateKeys(KeyEvent event) {
-        if (isEventIgnored(event)) {
-            return new KeyEvent(0, 0);
-        }
-
-        event = translateBackToEscape(event);
-        event = translateMenuToGuide(event);
-        event = translateNumpadEnterToEnter(event);
-        event = translateButtonAToEnter(event);
-        return event;
-    }
-
-    private KeyEvent translateButtonAToEnter(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_A) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
-        }
-        return event;
-    }
-
-    private KeyEvent translateNumpadEnterToEnter(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
-        }
-        return event;
-    }
-
-    private KeyEvent translateBackToEscape(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ESCAPE);
-        }
-        return event;
-    }
-
-    private KeyEvent translateMenuToGuide(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_G);
-        }
-        return event;
-    }
+    //private boolean mDownFired;
+    //private boolean isEventIgnored(KeyEvent event) {
+    //    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+    //        mDownFired = true;
+    //        return false;
+    //    }
+    //    if (event.getAction() == KeyEvent.ACTION_UP && mDownFired) {
+    //        mDownFired = false;
+    //        return false;
+    //    }
+    //
+    //    return true;
+    //}
+    //
+    //private KeyEvent doTranslateKeys(KeyEvent event) {
+    //    if (isEventIgnored(event)) {
+    //        return new KeyEvent(0, 0);
+    //    }
+    //
+    //    event = translateBackToEscape(event);
+    //    event = translateMenuToGuide(event);
+    //    event = translateNumpadEnterToEnter(event);
+    //    event = translateButtonAToEnter(event);
+    //    return event;
+    //}
+    //
+    //private KeyEvent translateButtonAToEnter(KeyEvent event) {
+    //    if (event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_A) {
+    //        // pay attention, you must pass action_up instead of action_down
+    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
+    //    }
+    //    return event;
+    //}
+    //
+    //private KeyEvent translateNumpadEnterToEnter(KeyEvent event) {
+    //    if (event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+    //        // pay attention, you must pass action_up instead of action_down
+    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
+    //    }
+    //    return event;
+    //}
+    //
+    //private KeyEvent translateBackToEscape(KeyEvent event) {
+    //    if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+    //        // pay attention, you must pass action_up instead of action_down
+    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ESCAPE);
+    //    }
+    //    return event;
+    //}
+    //
+    //private KeyEvent translateMenuToGuide(KeyEvent event) {
+    //    if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
+    //        // pay attention, you must pass action_up instead of action_down
+    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_G);
+    //    }
+    //    return event;
+    //}
 
     ///////////////////////// Begin Youtube filter /////////////////////
 

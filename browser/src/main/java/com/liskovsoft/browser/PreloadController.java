@@ -5,17 +5,23 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import com.liskovsoft.browser.Controller.EventListener;
 import com.liskovsoft.browser.custom.PageDefaults;
-import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.browser.custom.events.PageLoadHandler;
+
+import java.util.Map;
 
 public class PreloadController implements WebViewController {
 
@@ -251,14 +257,58 @@ public class PreloadController implements WebViewController {
         return false;
     }
 
+    // My Custom Methods
+
     @Override
-    public PageDefaults getPageDefaults() {
+    public void setEventListener(EventListener listener) {
+
+    }
+
+    @Override
+    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient) {
         return null;
     }
 
     @Override
-    public PageLoadHandler getPageLoadHandler() {
+    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient) {
         return null;
     }
+
+    @Override
+    public void onReceiveError(Tab tab) {
+
+    }
+
+    @Override
+    public void onControllerStart() {
+
+    }
+
+    @Override
+    public void onSaveControllerState(Bundle state) {
+
+    }
+
+    @Override
+    public void onRestoreControllerState(Bundle state) {
+
+    }
+
+    @Override
+    public void setDefaultUrl(Uri url) {
+
+    }
+
+    @Override
+    public void setDefaultHeaders(Map<String, String> headers) {
+
+    }
+
+    @Override
+    public Map<String, String> getDefaultHeaders() {
+        return null;
+    }
+
+    // End My Custom Methods
 
 }

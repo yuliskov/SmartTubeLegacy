@@ -12,6 +12,7 @@ public abstract class MainBrowserActivity extends XWalkBrowserActivity {
         //hideTitleBar();
     }
 
+    // NOTE: don't use this here or you'll get crash on some firmwares
     private void hideTitleBar() {
         // NOTE: we must set theme before ui instantiation
         setTheme(R.style.SimpleUITheme);

@@ -2,6 +2,7 @@ package com.liskovsoft.browser;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

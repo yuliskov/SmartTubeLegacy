@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.custom.events;
 
 import android.os.Bundle;
 

@@ -36,8 +36,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
-import com.liskovsoft.browser.custom.PageDefaults;
-import com.liskovsoft.browser.custom.PageLoadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +89,7 @@ public class Tab implements PictureListener {
     private DeviceAccountLogin mDeviceAccountLogin;
     private Bitmap mCapture;
     private Handler mHandler;
-    private PageLoadHandler mPageLoadHandler;
+    //private PageLoadHandler mPageLoadHandler;
 
 
     private int mCaptureWidth;
@@ -118,7 +116,8 @@ public class Tab implements PictureListener {
         mContext = mWebViewController.getContext();
         mSettings = BrowserSettings.getInstance();
         mDataController = DataController.getInstance(mContext);
-        mPageLoadHandler = mWebViewController.getPageLoadHandler();
+        //TODO: remove
+        //mPageLoadHandler = mWebViewController.getPageLoadHandler();
 
         mCurrentState = new PageState(mContext, w != null && w.isPrivateBrowsingEnabled());
 
@@ -131,8 +130,6 @@ public class Tab implements PictureListener {
 
         // NOTE: state restored here!!!
         setWebView(w);
-
-        //((CustomHeadersWebViewClient) mWebViewClient).setPageDefaults(mWebViewController.getPageDefaults());
     }
 
     public void loadUrl(String url, Map<String, String> headers) {
@@ -151,8 +148,9 @@ public class Tab implements PictureListener {
             return;
 
         String url = mMainView.getUrl();
-        PageDefaults pageDefaults = mWebViewController.getPageDefaults();
-        loadUrl(url, pageDefaults.getHeaders());
+        //TODO: remove
+        //PageDefaults pageDefaults = mWebViewController.getPageDefaults();
+        loadUrl(url, mWebViewController.getDefaultHeaders());
     }
 
     private static synchronized Bitmap getDefaultFavicon(Context context) {
@@ -200,7 +198,11 @@ public class Tab implements PictureListener {
         mMainView = w;
         // attach the WebViewClient, WebChromeClient and DownloadListener
         if (mMainView != null) {
-            overridePageLoadHandlerDelegates();
+            // mController.onSetClient();
+            // TODO: remove
+            //overridePageLoadHandlerDelegates();
+            onSetWebViewClient();
+            onSetWebChromeClient();
 
             mMainView.setWebViewClient(mWebViewClient);
             mMainView.setWebChromeClient(mWebChromeClient);
@@ -227,9 +229,22 @@ public class Tab implements PictureListener {
         }
     }
 
-    private void overridePageLoadHandlerDelegates() {
-        mWebViewClient = mPageLoadHandler.overrideWebViewClient(mWebViewClient);
-        mWebChromeClient = mPageLoadHandler.overrideWebChromeClient(mWebChromeClient);
+    // TODO: remove
+    //private void overridePageLoadHandlerDelegates() {
+    //    WebViewClient newWebViewClient = mPageLoadHandler.overrideWebViewClient(mWebViewClient);
+    //    mWebViewClient = newWebViewClient == null ? mWebViewClient : newWebViewClient;
+    //    WebChromeClient newWebChromeClient = mPageLoadHandler.overrideWebChromeClient(mWebChromeClient);
+    //    mWebChromeClient = newWebChromeClient == null ? mWebChromeClient : newWebChromeClient;
+    //}
+
+    private void onSetWebViewClient() {
+        WebViewClient newWebViewClient = mWebViewController.onSetWebViewClient(this, mWebViewClient);
+        mWebViewClient = newWebViewClient == null ? mWebViewClient : newWebViewClient;
+    }
+
+    private void onSetWebChromeClient() {
+        WebChromeClient newWebChromeClient = mWebViewController.onSetWebChromeClient(this, mWebChromeClient);
+        mWebChromeClient = newWebChromeClient == null ? mWebChromeClient : newWebChromeClient;
     }
 
     /**
@@ -860,6 +875,16 @@ public class Tab implements PictureListener {
     // -------------------------------------------------------------------------
     private WebViewClient mWebViewClient = new WebViewClient() {
         @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            mWebViewController.onReceiveError(Tab.this);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            mWebViewController.onReceiveError(Tab.this);
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
             mDisableOverrideUrlLoading = false;
             if (!isPrivateBrowsingEnabled()) {
@@ -867,7 +892,8 @@ public class Tab implements PictureListener {
             }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
-            mPageLoadHandler.onPageFinished(Tab.this);
+            // TODO: remove
+            //mPageLoadHandler.onPageFinished(Tab.this);
         }
 
         @Override
@@ -904,7 +930,8 @@ public class Tab implements PictureListener {
 
             // finally update the UI in the activity if it is in the foreground
             mWebViewController.onPageStarted(Tab.this, view, favicon);
-            mPageLoadHandler.onPageStarted(Tab.this);
+            // TODO: remove
+            //mPageLoadHandler.onPageStarted(Tab.this);
 
             updateBookmarkedStatus();
         }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
@@ -13,8 +14,12 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.liskovsoft.browser.custom.PageDefaults;
-import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.browser.custom.events.PageLoadHandler;
+
+import java.util.EventListener;
+import java.util.Map;
 
 /**
  * WebView aspect of the controller
@@ -103,11 +108,18 @@ public interface WebViewController {
 
     boolean shouldCaptureThumbnails();
 
-    /**
-     * My Custom Methods
-     */
+    // My Custom Methods
+    
+    void setEventListener(Controller.EventListener listener);
+    WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient);
+    WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient);
+    void onReceiveError(Tab tab);
+    void onControllerStart();
+    void onSaveControllerState(Bundle state);
+    void onRestoreControllerState(Bundle state);
+    void setDefaultUrl(Uri url);
+    void setDefaultHeaders(Map<String, String> headers);
+    Map<String,String> getDefaultHeaders();
 
-    PageDefaults getPageDefaults();
-
-    PageLoadHandler getPageLoadHandler();
+    // End My Custom Methods
 }

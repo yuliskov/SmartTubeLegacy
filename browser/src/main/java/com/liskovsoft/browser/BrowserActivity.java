@@ -190,6 +190,12 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void finish() {
         // NOTE: fix state saving when finishing activity
         mController.onSaveInstanceState(null);

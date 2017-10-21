@@ -23,8 +23,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.custom.PageDefaults;
-import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.browser.custom.events.PageLoadHandler;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,22 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private int mMenuState;
     private boolean mMenuIsDown;
     private boolean mShouldShowErrorConsole;
-    private PageDefaults mPageDefaults;
+    // TODO: remove
+    //private PageDefaults mPageDefaults;
+    private List<EventListener> mEventListeners = new ArrayList<>();
+    private Uri mDefaultUrl;
+    private Map<String, String> mDefaultHeaders;
+
+    public interface EventListener {
+        void onReceiveError(Tab tab);
+        WebViewClient onSetWebViewClient(Tab tab, WebViewClient client);
+        WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client);
+        void onPageFinished(Tab tab);
+        void onPageStarted(Tab tab);
+        void onControllerStart();
+        void onSaveControllerState(Bundle state);
+        void onRestoreControllerState(Bundle state);
+    }
 
     public Controller(Activity browser) {
         mActivity = browser;
@@ -96,7 +110,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
 
         setupBrowserActivity();
-        mPageDefaults = new PageDefaults(); // prevent NPE
+        //TODO: remove
+        //mPageDefaults = new PageDefaults(); // prevent NPE
     }
 
     protected void setupBrowserActivity() {
@@ -106,47 +121,63 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mActivity.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
+    // TODO: remove
+    //@Override
+    //public void start(final Intent intent) {
+    //    // mCrashRecoverHandler has any previously saved state.
+    //    //mCrashRecoveryHandler.startRecovery(intent);
+    //    start(intent, new PageDefaults(null, null, null));
+    //}
+
+    public void start(final Intent intent, final Uri url) {
+        mDefaultUrl = url;
+        start(intent);
+    }
+
     @Override
     public void start(final Intent intent) {
-        // mCrashRecoverHandler has any previously saved state.
-        //mCrashRecoveryHandler.startRecovery(intent);
-        start(intent, new PageDefaults(null, null, null));
-    }
-
-    public void start(final Intent intent, final String url) {
-        start(intent, new PageDefaults(url, null, null));
-    }
-
-    public void start(final Intent intent, final PageDefaults pageDefaults) {
-        if (delayStart(intent, pageDefaults)) {
+        // wait xwalk's initialization
+        if (delayStart(intent)) {
             return;
         }
 
-        mPageDefaults = pageDefaults;
-        mFactory.setNextHeaders(mPageDefaults.getHeaders());
-        if (pageDefaults.getPostProcessor() != null) {
-            pageDefaults.getPostProcessor().onControllerStart();
-        }
+        //TODO: remove
+        //mPageDefaults = pageDefaults;
+        //mFactory.setNextHeaders(mPageDefaults.getHeaders());
+
+        mFactory.setNextHeaders(mDefaultHeaders);
+
+        // TODO: remove
+        //if (pageDefaults.getPostProcessor() != null) {
+        //    pageDefaults.getPostProcessor().onControllerStart();
+        //}
+
+        onControllerStart();
+
         // mCrashRecoverHandler has any previously saved state.
         mCrashRecoveryHandler.startRecovery(intent);
     }
 
-    private boolean delayStart(final Intent intent, final PageDefaults pageDefaults) {
-        return XWalkInitHandler.add(new Runnable(){public void run(){start(intent, pageDefaults);}});
+    private boolean delayStart(final Intent intent) {
+        return XWalkInitHandler.add(new Runnable(){public void run(){start(intent);}});
     }
 
-    @Override
-    public PageDefaults getPageDefaults() {
-        return mPageDefaults;
-    }
+    //TODO: remove
+    //@Override
+    //public PageDefaults getPageDefaults() {
+    //    return mPageDefaults;
+    //}
 
-    @Override
-    public PageLoadHandler getPageLoadHandler() {
-        if (mPageDefaults.getHandler() == null) {
-            return emptyPageLoadHandler();
-        }
-        return mPageDefaults.getHandler();
-    }
+    //TODO: remove
+    //@Override
+    //public PageLoadHandler getPageLoadHandler() {
+    //    if (mPageDefaults.getHandler() == null) {
+    //        return emptyPageLoadHandler();
+    //    }
+    //    return mPageDefaults.getHandler();
+    //}
+
+
 
     private PageLoadHandler emptyPageLoadHandler() {
         return new PageLoadHandler() {
@@ -176,13 +207,16 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mUi = ui;
     }
 
+    // NOTE: entry point
     /**
      * Actually here restoration process begins.
      * @param icicle
      * @param intent
      */
     public void doStart(Bundle icicle, Intent intent) {
-        mPageDefaults.getPostProcessor().beforeRestoreInstanceState(icicle);
+        // TODO: remove
+        //mPageDefaults.getPostProcessor().beforeRestoreInstanceState(icicle);
+        onRestoreControllerState(icicle);
 
         long currentTabId = mTabControl.canRestoreState(icicle, false);
         if (currentTabId == -1) { // no saved state
@@ -209,8 +243,12 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     public Tab openTabToHomePage() {
-        if (mPageDefaults != null)
-            return loadUrl(mPageDefaults.getUrl(), mPageDefaults.getHeaders(), mPageDefaults.getHandler());
+        //TODO: remove
+        //if (mPageDefaults != null)
+        //    return loadUrl(mPageDefaults.getUrl(), mPageDefaults.getHeaders(), mPageDefaults.getHandler());
+
+        if (mDefaultUrl != null)
+            return loadUrl(mDefaultUrl.toString(), mDefaultHeaders);
 
         return openTab(mSettings.getHomePage(), false, true, false);
     }
@@ -287,20 +325,21 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @return Info about loaded page.
      */
     public Tab loadUrl(String url, Map<String, String> headers) {
-        return loadUrl(url, headers, null);
+        return load(url, headers);
     }
 
-    /**
-     * Use this method to control browser from outer world.
-     *
-     * @param url     Full site address.
-     * @param headers Can be null.
-     * @return Info about loaded page.
-     */
-    public Tab loadUrl(String url, Map<String, String> headers, PageLoadHandler handler) {
-        PageDefaults pageData = new PageDefaults(url, headers, handler);
-        return load(pageData);
-    }
+    //TODO: remove
+    ///**
+    // * Use this method to control browser from outer world.
+    // *
+    // * @param url     Full site address.
+    // * @param headers Can be null.
+    // * @return Info about loaded page.
+    // */
+    //public Tab loadUrl(String url, Map<String, String> headers, PageLoadHandler handler) {
+    //    PageDefaults pageData = new PageDefaults(url, headers, handler);
+    //    return load(pageData);
+    //}
 
 
     protected void loadUrl(Tab tab, String url, Map<String, String> headers) {
@@ -313,24 +352,25 @@ public class Controller implements UiController, WebViewController, ActivityCont
     /**
      * Use this method to control browser from outer world.
      *
-     * @param pageData page url, state and handlers
+     * @param url     Full site address.
+     * @param headers Can be null.
      * @return Info about loaded page.
      */
-    public Tab load(final PageDefaults pageData) {
-        if (delayLoad(pageData)) {
+    public Tab load(String url, Map<String, String> headers) {
+        if (delayLoad(url, headers)) {
             return null;
         }
 
-        mFactory.setNextHeaders(pageData.getHeaders());
+        mFactory.setNextHeaders(headers);
 
         Tab tab = createNewTab(false, true, false);
 
-        loadUrl(tab, pageData.getUrl(), pageData.getHeaders());
+        loadUrl(tab, url, headers);
         return tab;
     }
 
-    private boolean delayLoad(final PageDefaults pageData) {
-        return XWalkInitHandler.add(new Runnable(){public void run(){load(pageData);}});
+    private boolean delayLoad(final String url, final Map<String, String> headers) {
+        return XWalkInitHandler.add(new Runnable(){public void run(){load(url, headers);}});
     }
 
     private Map<String, String> convertToCaseInsensitiveMap(Map<String, String> headers) {
@@ -484,21 +524,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mUi.showAutoLogin(tab);
     }
 
-    @Override
-    public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
-        // NOP
-    }
 
-
-    /**
-     * inject here custom styles and scripts
-     *
-     * @param tab
-     */
-    @Override
-    public void onPageFinished(Tab tab) {
-        // NOP
-    }
 
     /**
      * TODO: bunch of non implemented methods
@@ -897,7 +923,9 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
         // Save all the tabs
         Bundle saveState = createSaveState();
-        mPageDefaults.getPostProcessor().beforeSaveInstanceState(saveState);
+        // TODO: remove
+        //mPageDefaults.getPostProcessor().beforeSaveInstanceState(saveState);
+        onSaveControllerState(saveState);
 
         // crash recovery manages all save & restore state
         mCrashRecoveryHandler.writeState(saveState);
@@ -1507,4 +1535,94 @@ public class Controller implements UiController, WebViewController, ActivityCont
         };
 
     }
+
+    // My Custom Methods
+
+    @Override
+    public void setEventListener(EventListener listener) {
+        mEventListeners.add(listener);
+    }
+
+    @Override
+    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient) {
+        WebViewClient result = null;
+        for (EventListener l : mEventListeners) {
+            result = l.onSetWebViewClient(tab, webViewClient);
+        }
+        return result;
+    }
+
+    @Override
+    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient) {
+        WebChromeClient result = null;
+        for (EventListener l : mEventListeners) {
+            result = l.onSetWebChromeClient(tab, webChromeClient);
+        }
+        return result;
+    }
+
+    @Override
+    public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
+        for (EventListener l : mEventListeners) {
+            l.onPageStarted(tab);
+        }
+    }
+
+
+    /**
+     * inject here custom styles and scripts
+     *
+     * @param tab
+     */
+    @Override
+    public void onPageFinished(Tab tab) {
+        for (EventListener l : mEventListeners) {
+            l.onPageFinished(tab);
+        }
+    }
+
+    @Override
+    public void onReceiveError(Tab tab) {
+        for (EventListener l : mEventListeners) {
+            l.onReceiveError(tab);
+        }
+    }
+
+    @Override
+    public void onControllerStart() {
+        for (EventListener l : mEventListeners) {
+            l.onControllerStart();
+        }
+    }
+
+    @Override
+    public void onSaveControllerState(Bundle state) {
+        for (EventListener l : mEventListeners) {
+            l.onSaveControllerState(state);
+        }
+    }
+
+    @Override
+    public void onRestoreControllerState(Bundle state) {
+        for (EventListener l : mEventListeners) {
+            l.onRestoreControllerState(state);
+        }
+    }
+
+    @Override
+    public void setDefaultUrl(Uri url){
+         mDefaultUrl = url;
+    }
+
+    @Override
+    public void setDefaultHeaders(Map<String, String> headers){
+         mDefaultHeaders = headers;
+    }
+
+    @Override
+    public Map<String,String> getDefaultHeaders() {
+        return mDefaultHeaders;
+    }
+
+    // End My Custom Methods
 }

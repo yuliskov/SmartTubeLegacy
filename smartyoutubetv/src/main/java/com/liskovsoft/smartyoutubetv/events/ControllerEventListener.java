@@ -1,28 +1,51 @@
-package com.liskovsoft.smartyoutubetv.injectors;
+package com.liskovsoft.smartyoutubetv.events;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.browser.custom.PageLoadHandler;
+import com.liskovsoft.smartyoutubetv.injectors.MyJsCssTweaksInjector;
+import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
+import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
+import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.GenericEventResourceInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MyPageLoadHandler implements PageLoadHandler {
+public class ControllerEventListener implements Controller.EventListener {
     private final Context mContext;
+    private final KeysTranslator mTranslator;
     private WebViewJavaScriptInterface mJS;
     private MyJsCssTweaksInjector mInjector;
     private VideoFormatInjector mNotification;
     private DecipherRoutineInjector mDecipherRoutineInjector;
-    private static final Logger logger = LoggerFactory.getLogger(MyPageLoadHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private GenericEventResourceInjector mEventResourceInjector;
+    private final LangUpdater mLangUpdater;
+    private final StateUpdater mStateUpdater;
 
-    public MyPageLoadHandler(Context context) {
+    public ControllerEventListener(Context context, KeysTranslator translator) {
         mContext = context;
+        mTranslator = translator;
+        mLangUpdater = new LangUpdater(mContext);
+        mStateUpdater = new StateUpdater(null);
+    }
+
+    @Override
+    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient client) {
+        return new MyWebViewClientDecorator(client, mContext);
+    }
+
+    @Override
+    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client) {
+        return null;
     }
 
     @Override
@@ -43,13 +66,26 @@ public class MyPageLoadHandler implements PageLoadHandler {
     }
 
     @Override
-    public WebViewClient overrideWebViewClient(WebViewClient client) {
-        return new MyWebViewClientDecorator(client, mContext);
+    public void onReceiveError(Tab tab) {
+        mTranslator.disable();
     }
 
     @Override
-    public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
-        return client;
+    public void onControllerStart() {
+        mLangUpdater.update();
+
+        // if you need to disable auto-saving webview state:
+        // mController.getCrashRecoveryHandler().pauseState();
+    }
+
+    @Override
+    public void onSaveControllerState(Bundle state) {
+        // mStateUpdater.fixPlaylistUrl(state);
+    }
+
+    @Override
+    public void onRestoreControllerState(Bundle state) {
+        mStateUpdater.updateState(state);
     }
 
     private void addJSInterface(Tab tab) {
