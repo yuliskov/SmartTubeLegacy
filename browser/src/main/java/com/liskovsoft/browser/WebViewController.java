@@ -15,10 +15,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.liskovsoft.browser.custom.PageDefaults;
-import com.liskovsoft.browser.custom.events.PageLoadHandler;
 
-import java.util.EventListener;
 import java.util.Map;
 
 /**

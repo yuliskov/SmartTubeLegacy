@@ -23,7 +23,6 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.custom.events.PageLoadHandler;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,29 +178,30 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
 
 
-    private PageLoadHandler emptyPageLoadHandler() {
-        return new PageLoadHandler() {
-            @Override
-            public void onPageFinished(Tab tab) {
-
-            }
-
-            @Override
-            public void onPageStarted(Tab tab) {
-
-            }
-
-            @Override
-            public WebViewClient overrideWebViewClient(WebViewClient client) {
-                return null;
-            }
-
-            @Override
-            public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
-                return null;
-            }
-        };
-    }
+    //TODO: remove
+    //private PageLoadHandler emptyPageLoadHandler() {
+    //    return new PageLoadHandler() {
+    //        @Override
+    //        public void onPageFinished(Tab tab) {
+    //
+    //        }
+    //
+    //        @Override
+    //        public void onPageStarted(Tab tab) {
+    //
+    //        }
+    //
+    //        @Override
+    //        public WebViewClient overrideWebViewClient(WebViewClient client) {
+    //            return null;
+    //        }
+    //
+    //        @Override
+    //        public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
+    //            return null;
+    //        }
+    //    };
+    //}
 
     public void setUi(UI ui) {
         mUi = ui;
