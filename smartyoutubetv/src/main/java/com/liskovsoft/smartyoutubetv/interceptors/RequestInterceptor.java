@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.text.TextUtils;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
+import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

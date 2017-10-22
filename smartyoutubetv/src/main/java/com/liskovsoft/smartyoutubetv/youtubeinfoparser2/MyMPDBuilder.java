@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.youtubeinfoparser2;
 
 import android.util.Xml;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;

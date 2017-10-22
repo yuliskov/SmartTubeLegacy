@@ -14,7 +14,7 @@ import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 
 import java.util.HashMap;

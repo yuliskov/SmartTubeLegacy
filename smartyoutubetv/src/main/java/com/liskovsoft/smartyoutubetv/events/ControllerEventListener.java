@@ -74,15 +74,23 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onReceiveError(Tab tab) {
-        Toast.makeText(mContext, "onReceiveError" + mCounter1++, Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "onReceiveError" + mCounter1++, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
-        Toast.makeText(mContext, "onLoadSuccess" + mCounter2++, Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "onLoadSuccess" + mCounter2++, Toast.LENGTH_LONG).show();
 
         //mLoadingManager.hide();
+    }
+
+    @Override
+    public void onTabCreated(Tab tab) {
+        //mLoadingManager.setTab(tab);
+        //mLoadingManager.show();
+
+        //Toast.makeText(mContext, "onTabCreated" + mCounter3++, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -101,14 +109,6 @@ public class ControllerEventListener implements Controller.EventListener {
     @Override
     public void onRestoreControllerState(Bundle state) {
         mStateUpdater.updateState(state);
-    }
-
-    @Override
-    public void onTabCreated(Tab tab) {
-        //mLoadingManager.setTab(tab);
-        //mLoadingManager.show();
-
-        Toast.makeText(mContext, "onTabCreated" + mCounter3++, Toast.LENGTH_LONG).show();
     }
 
     private void addJSInterface(Tab tab) {

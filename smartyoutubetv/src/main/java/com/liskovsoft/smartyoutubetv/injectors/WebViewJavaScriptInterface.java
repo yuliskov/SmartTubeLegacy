@@ -10,7 +10,7 @@ import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.PostDecipheredSignaturesEvent;
 import org.slf4j.Logger;

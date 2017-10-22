@@ -18,33 +18,44 @@ public class LangUpdater {
     }
 
     public void update() {
-        tryToSetupRussian();
+        tryToEnableRussian();
+        tryToBypassChinese();
     }
 
-    private boolean tryToSetupRussian() {
-        List<String> installedPackages = getListInstalledPackages();
-        for (String pkgName : installedPackages) {
-            if (isRussianPackage(pkgName)) {
-                forceRussianLocale();
+    private void tryToBypassChinese() {
+        String script = LocaleUtility.getScript(Locale.getDefault());
+        if (isChineseScript(script)) {
+            forceLocale("en");
+        }
+    }
+
+    private boolean isChineseScript(String script) {
+        switch (script) {
+            case "Hani":
+            case "Hans":
+            case "Hant":
                 return true;
-            }
         }
         return false;
     }
 
-    private void forceRussianLocale() {
-        Locale locale = new Locale("ru");
+    private void tryToEnableRussian() {
+        List<String> installedPackages = getListInstalledPackages();
+        for (String pkgName : installedPackages) {
+            if (isRussianPackage(pkgName)) {
+                forceLocale("ru");
+            }
+        }
+    }
+
+    private void forceLocale(String lang) {
+        Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = mContext.getResources().getConfiguration();
         config.locale = locale;
         mContext.getResources().updateConfiguration(config,
                 mContext.getResources().getDisplayMetrics());
     }
-
-    //private void addRussianHeaders() {
-    //    Map<String, String> headers = mPageDefaults.getHeaders();
-    //    headers.put("Accept-Language", "ru,en-US;q=0.8,en;q=0.6");
-    //}
 
     private boolean isRussianPackage(String pkgName) {
         for (String rusPackage : rusPackages) {

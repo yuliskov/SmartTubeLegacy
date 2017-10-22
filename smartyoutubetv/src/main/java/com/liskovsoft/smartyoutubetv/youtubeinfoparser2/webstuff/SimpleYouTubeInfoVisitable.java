@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff;
 
 import android.net.Uri;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.SimpleYouTubeMediaItem;

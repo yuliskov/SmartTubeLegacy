@@ -1,7 +1,5 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
-import com.liskovsoft.smartyoutubetv.helpers.Helpers;
-
 public class AdAwayClient {
     private static final String[] mAdAwayList = {"googleads.g.doubleclick.net",
             "pagead.l.doubleclick.net",

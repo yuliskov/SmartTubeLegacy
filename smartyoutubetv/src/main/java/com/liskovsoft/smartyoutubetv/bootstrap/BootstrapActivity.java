@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.LocaleUtility;
 import io.fabric.sdk.android.Fabric;
+import java.util.Locale;
 
 public class BootstrapActivity extends FullscreenActivity {
 
@@ -17,6 +20,11 @@ public class BootstrapActivity extends FullscreenActivity {
         setupCrashLogs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootstrap);
+    }
+
+    private void displayLocaleScript() {
+        String script = LocaleUtility.getScript(Locale.getDefault());
+        Toast.makeText(this, script, Toast.LENGTH_LONG).show();
     }
 
     private void setupCrashLogs() {

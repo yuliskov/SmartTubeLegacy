@@ -5,11 +5,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
-import com.liskovsoft.smartyoutubetv.helpers.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoInfoBuilder;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.YouTubeVideoInfoBuilder;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 
