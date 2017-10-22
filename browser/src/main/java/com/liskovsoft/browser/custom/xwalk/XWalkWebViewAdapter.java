@@ -1,13 +1,10 @@
-package com.liskovsoft.browser.xwalk;
+package com.liskovsoft.browser.custom.xwalk;
 
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.webkit.*;
 import com.liskovsoft.browser.custom.HeadersBrowserWebView;
 import com.liskovsoft.browser.custom.HeadersWebSettingsDecorator;

@@ -4,7 +4,7 @@ import android.view.KeyEvent;
 
 public class KeysTranslator {
     private boolean mDownFired;
-    private boolean mDisable;
+    private boolean mDisable = true;
 
     private boolean isEventIgnored(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -69,5 +69,9 @@ public class KeysTranslator {
 
     public void disable() {
         mDisable = true;
+    }
+
+    public void enable() {
+        mDisable = false;
     }
 }

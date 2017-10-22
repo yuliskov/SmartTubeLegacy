@@ -23,7 +23,7 @@ import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
-import com.liskovsoft.browser.xwalk.XWalkInitHandler;
+import com.liskovsoft.browser.custom.xwalk.XWalkInitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,6 +87,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     public interface EventListener {
         void onReceiveError(Tab tab);
+        void onLoadSuccess(Tab tab);
         WebViewClient onSetWebViewClient(Tab tab, WebViewClient client);
         WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client);
         void onPageFinished(Tab tab);
@@ -94,6 +95,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         void onControllerStart();
         void onSaveControllerState(Bundle state);
         void onRestoreControllerState(Bundle state);
+        void onTabCreated(Tab tab);
     }
 
     public Controller(Activity browser) {
@@ -1622,6 +1624,20 @@ public class Controller implements UiController, WebViewController, ActivityCont
     @Override
     public Map<String,String> getDefaultHeaders() {
         return mDefaultHeaders;
+    }
+
+    @Override
+    public void onLoadSuccess(Tab tab) {
+        for (EventListener l : mEventListeners) {
+            l.onLoadSuccess(tab);
+        }
+    }
+
+    @Override
+    public void onTabCreated(Tab tab) {
+        for (EventListener l : mEventListeners) {
+            l.onTabCreated(tab);
+        }
     }
 
     // End My Custom Methods

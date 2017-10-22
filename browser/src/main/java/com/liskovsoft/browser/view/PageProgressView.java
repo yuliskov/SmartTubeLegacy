@@ -21,13 +21,13 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  *
  */
-public class PageProgressView extends ImageView {
+public class PageProgressView extends AppCompatImageView {
 
     public static final int MAX_PROGRESS = 10000;
     private static final int MSG_UPDATE = 42;

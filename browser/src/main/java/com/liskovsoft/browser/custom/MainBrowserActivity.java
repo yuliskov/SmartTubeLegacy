@@ -2,7 +2,7 @@ package com.liskovsoft.browser.custom;
 
 import android.os.Bundle;
 import com.liskovsoft.browser.R;
-import com.liskovsoft.browser.xwalk.XWalkBrowserActivity;
+import com.liskovsoft.browser.custom.xwalk.XWalkBrowserActivity;
 
 public abstract class MainBrowserActivity extends XWalkBrowserActivity {
 

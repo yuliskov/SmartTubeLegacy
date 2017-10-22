@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.xwalk;
+package com.liskovsoft.browser.custom.xwalk;
 
 import android.content.Context;
 import android.webkit.WebSettings;

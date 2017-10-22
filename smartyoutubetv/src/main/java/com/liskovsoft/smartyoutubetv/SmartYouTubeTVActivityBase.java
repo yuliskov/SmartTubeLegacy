@@ -72,6 +72,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         mController.setDefaultUrl(Uri.parse(mYouTubeTVUrl));
         mController.setDefaultHeaders(mHeaders);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
+        // TODO: remove
         //mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
         mController.start(intent);
         setController(mController);

@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.xwalk;
+package com.liskovsoft.browser.custom.xwalk;
 
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -16,6 +16,11 @@ public class XWalkResourceClientAdapter extends XWalkResourceClient {
         super(view);
         mWebViewClient = client;
         mWebView = webView;
+    }
+
+    @Override
+    public void onReceivedLoadError(XWalkView view, int errorCode, String description, String failingUrl) {
+        mWebViewClient.onReceivedError(mWebView, errorCode, description, failingUrl);
     }
 
     public WebViewClient getWebViewClient() {

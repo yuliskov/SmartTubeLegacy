@@ -130,6 +130,8 @@ public class Tab implements PictureListener {
 
         // NOTE: state restored here!!!
         setWebView(w);
+
+        mWebViewController.onTabCreated(this);
     }
 
     public void loadUrl(String url, Map<String, String> headers) {
@@ -874,14 +876,28 @@ public class Tab implements PictureListener {
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
     private WebViewClient mWebViewClient = new WebViewClient() {
+        public boolean mLoadSuccess = true;
+
+        private void onReceiveError() {
+            mWebViewController.onReceiveError(Tab.this);
+            mLoadSuccess = false;
+        }
+
+        private void onLoadSuccess() {
+            if (mLoadSuccess)
+                mWebViewController.onLoadSuccess(Tab.this);
+
+            mLoadSuccess = false;
+        }
+
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            mWebViewController.onReceiveError(Tab.this);
+            onReceiveError();
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            mWebViewController.onReceiveError(Tab.this);
+            onReceiveError();
         }
 
         @Override
@@ -894,10 +910,14 @@ public class Tab implements PictureListener {
             mWebViewController.onPageFinished(Tab.this);
             // TODO: remove
             //mPageLoadHandler.onPageFinished(Tab.this);
+
+            onLoadSuccess();
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+
             mInPageLoad = true;
             mUpdateThumbnail = true;
             mPageLoadProgress = INITIAL_PROGRESS;
@@ -940,6 +960,9 @@ public class Tab implements PictureListener {
         // don't rely on it: shouldOverrideUrlLoading called one time fore session, use shouldInterceptLoadRequest instead
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // NOTE: don't place this block into onPageStarted because on XWalk it logic is differ
+            mLoadSuccess = true;
+
             if (!mDisableOverrideUrlLoading && mInForeground) {
                 return mWebViewController.shouldOverrideUrlLoading(Tab.this,
                         view, url);

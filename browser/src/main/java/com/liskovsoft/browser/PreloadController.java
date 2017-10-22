@@ -307,6 +307,16 @@ public class PreloadController implements WebViewController {
         return null;
     }
 
+    @Override
+    public void onLoadSuccess(Tab tab) {
+        
+    }
+
+    @Override
+    public void onTabCreated(Tab tab) {
+        
+    }
+
     // End My Custom Methods
 
 }

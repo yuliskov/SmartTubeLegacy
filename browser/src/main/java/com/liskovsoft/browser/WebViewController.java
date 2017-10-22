@@ -117,6 +117,8 @@ public interface WebViewController {
     void setDefaultUrl(Uri url);
     void setDefaultHeaders(Map<String, String> headers);
     Map<String,String> getDefaultHeaders();
+    void onLoadSuccess(Tab tab);
+    void onTabCreated(Tab tab);
 
     // End My Custom Methods
 }

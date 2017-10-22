@@ -1,17 +1,13 @@
 package com.liskovsoft.browser;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.custom.HeadersBrowserWebView;
-import com.liskovsoft.browser.custom.MainBrowserActivity;
-import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
-import com.liskovsoft.browser.xwalk.XWalkWebViewFactory;
+import com.liskovsoft.browser.custom.xwalk.XWalkWebViewAdapter;
 
 import java.util.Map;
 
