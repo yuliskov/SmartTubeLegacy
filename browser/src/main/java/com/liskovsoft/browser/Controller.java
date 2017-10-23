@@ -79,8 +79,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private int mMenuState;
     private boolean mMenuIsDown;
     private boolean mShouldShowErrorConsole;
-    // TODO: remove
-    //private PageDefaults mPageDefaults;
     private List<EventListener> mEventListeners = new ArrayList<>();
     private Uri mDefaultUrl;
     private Map<String, String> mDefaultHeaders;
@@ -111,8 +109,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
 
         setupBrowserActivity();
-        //TODO: remove
-        //mPageDefaults = new PageDefaults(); // prevent NPE
     }
 
     protected void setupBrowserActivity() {
@@ -122,19 +118,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mActivity.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
-    // TODO: remove
-    //@Override
-    //public void start(final Intent intent) {
-    //    // mCrashRecoverHandler has any previously saved state.
-    //    //mCrashRecoveryHandler.startRecovery(intent);
-    //    start(intent, new PageDefaults(null, null, null));
-    //}
-
-    public void start(final Intent intent, final Uri url) {
-        mDefaultUrl = url;
-        start(intent);
-    }
-
     @Override
     public void start(final Intent intent) {
         // wait xwalk's initialization
@@ -142,16 +125,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
             return;
         }
 
-        //TODO: remove
-        //mPageDefaults = pageDefaults;
-        //mFactory.setNextHeaders(mPageDefaults.getHeaders());
-
         mFactory.setNextHeaders(mDefaultHeaders);
-
-        // TODO: remove
-        //if (pageDefaults.getPostProcessor() != null) {
-        //    pageDefaults.getPostProcessor().onControllerStart();
-        //}
 
         onControllerStart();
 
@@ -159,51 +133,14 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mCrashRecoveryHandler.startRecovery(intent);
     }
 
+    public void start(final Intent intent, final Uri url) {
+        mDefaultUrl = url;
+        start(intent);
+    }
+
     private boolean delayStart(final Intent intent) {
         return XWalkInitHandler.add(new Runnable(){public void run(){start(intent);}});
     }
-
-    //TODO: remove
-    //@Override
-    //public PageDefaults getPageDefaults() {
-    //    return mPageDefaults;
-    //}
-
-    //TODO: remove
-    //@Override
-    //public PageLoadHandler getPageLoadHandler() {
-    //    if (mPageDefaults.getHandler() == null) {
-    //        return emptyPageLoadHandler();
-    //    }
-    //    return mPageDefaults.getHandler();
-    //}
-
-
-
-    //TODO: remove
-    //private PageLoadHandler emptyPageLoadHandler() {
-    //    return new PageLoadHandler() {
-    //        @Override
-    //        public void onPageFinished(Tab tab) {
-    //
-    //        }
-    //
-    //        @Override
-    //        public void onPageStarted(Tab tab) {
-    //
-    //        }
-    //
-    //        @Override
-    //        public WebViewClient overrideWebViewClient(WebViewClient client) {
-    //            return null;
-    //        }
-    //
-    //        @Override
-    //        public WebChromeClient overrideWebChromeClient(WebChromeClient client) {
-    //            return null;
-    //        }
-    //    };
-    //}
 
     public void setUi(UI ui) {
         mUi = ui;
@@ -216,8 +153,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @param intent
      */
     public void doStart(Bundle icicle, Intent intent) {
-        // TODO: remove
-        //mPageDefaults.getPostProcessor().beforeRestoreInstanceState(icicle);
         onRestoreControllerState(icicle);
 
         long currentTabId = mTabControl.canRestoreState(icicle, false);
@@ -245,9 +180,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     public Tab openTabToHomePage() {
-        //TODO: remove
-        //if (mPageDefaults != null)
-        //    return loadUrl(mPageDefaults.getUrl(), mPageDefaults.getHeaders(), mPageDefaults.getHandler());
 
         if (mDefaultUrl != null)
             return loadUrl(mDefaultUrl.toString(), mDefaultHeaders);
@@ -329,20 +261,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
     public Tab loadUrl(String url, Map<String, String> headers) {
         return load(url, headers);
     }
-
-    //TODO: remove
-    ///**
-    // * Use this method to control browser from outer world.
-    // *
-    // * @param url     Full site address.
-    // * @param headers Can be null.
-    // * @return Info about loaded page.
-    // */
-    //public Tab loadUrl(String url, Map<String, String> headers, PageLoadHandler handler) {
-    //    PageDefaults pageData = new PageDefaults(url, headers, handler);
-    //    return load(pageData);
-    //}
-
 
     protected void loadUrl(Tab tab, String url, Map<String, String> headers) {
         if (tab != null) {
@@ -922,11 +840,9 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
         // Save all the tabs
         Bundle saveState = createSaveState();
-        // TODO: remove
-        //mPageDefaults.getPostProcessor().beforeSaveInstanceState(saveState);
+
         onSaveControllerState(saveState);
 
         // crash recovery manages all save & restore state

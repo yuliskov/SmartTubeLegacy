@@ -9,6 +9,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" app:srcCompat="@drawable/youtube" android:id="@+id/imageView"
+        android:layout_height="200dp" app:srcCompat="@drawable/youtube" android:id="@+id/imageView"
     />
 </RelativeLayout>

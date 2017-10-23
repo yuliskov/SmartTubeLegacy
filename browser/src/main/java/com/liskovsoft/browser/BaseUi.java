@@ -324,6 +324,10 @@ public abstract class BaseUi implements UI {
                 parent.removeView(mainView);
             }
             wrapper.addView(mainView);
+
+            // TODO: find a better place
+            // NOTE: now you can add loading widget before WebView
+            mUiController.onTabCreated(tab);
         }
         parent = (ViewGroup) container.getParent();
         if (parent != mContentView) {

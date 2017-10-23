@@ -312,11 +312,6 @@ public class PreloadController implements WebViewController {
         
     }
 
-    @Override
-    public void onTabCreated(Tab tab) {
-        
-    }
-
     // End My Custom Methods
 
 }

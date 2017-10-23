@@ -95,4 +95,9 @@ public interface UiController {
 
     void startVoiceRecognizer();
 
+    // My custom methods
+
+    void onTabCreated(Tab tab);
+
+    // End my custom methods
 }

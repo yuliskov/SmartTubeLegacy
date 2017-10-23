@@ -2,13 +2,14 @@ package com.liskovsoft.smartyoutubetv.events;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
@@ -36,9 +37,6 @@ public class ControllerEventListener implements Controller.EventListener {
     private GenericEventResourceInjector mEventResourceInjector;
     private final LangUpdater mLangUpdater;
     private final StateUpdater mStateUpdater;
-    private int mCounter1;
-    private int mCounter2;
-    private int mCounter3;
 
     public ControllerEventListener(Context context, KeysTranslator translator) {
         mContext = context;
@@ -74,14 +72,12 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onReceiveError(Tab tab) {
-        //Toast.makeText(mContext, "onReceiveError" + mCounter1++, Toast.LENGTH_LONG).show();
+        logger.info("onReceiveError called");
     }
 
     @Override
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
-        //Toast.makeText(mContext, "onLoadSuccess" + mCounter2++, Toast.LENGTH_LONG).show();
-
         mLoadingManager.hide();
     }
 
@@ -89,8 +85,6 @@ public class ControllerEventListener implements Controller.EventListener {
     public void onTabCreated(Tab tab) {
         mLoadingManager.setTab(tab);
         mLoadingManager.show();
-
-        //Toast.makeText(mContext, "onTabCreated" + mCounter3++, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -149,22 +143,20 @@ public class ControllerEventListener implements Controller.EventListener {
                 return;
             }
             mWrapper = (FrameLayout) container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
+            mWrapper.addView(mLoadingWidget);
         }
 
         public void show() {
-            if (mWrapper == null) {
-                return;
-            }
-
-            mWrapper.addView(mLoadingWidget, 0);
+            mLoadingWidget.setVisibility(View.VISIBLE);
         }
 
         public void hide() {
-            if (mWrapper == null) {
-                return;
-            }
-
-            mWrapper.removeView(mLoadingWidget);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mLoadingWidget.setVisibility(View.GONE);
+                }
+            }, 1000);
         }
     }
 }
