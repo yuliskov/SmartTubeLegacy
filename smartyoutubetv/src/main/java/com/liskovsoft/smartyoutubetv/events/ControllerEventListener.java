@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public class ControllerEventListener implements Controller.EventListener {
     private final Context mContext;
     private final KeysTranslator mTranslator;
-    //private final LoadingManager mLoadingManager;
+    private final LoadingManager mLoadingManager;
     private WebViewJavaScriptInterface mJS;
     private MyJsCssTweaksInjector mInjector;
     private VideoFormatInjector mNotification;
@@ -45,7 +45,7 @@ public class ControllerEventListener implements Controller.EventListener {
         mTranslator = translator;
         mLangUpdater = new LangUpdater(mContext);
         mStateUpdater = new StateUpdater(null);
-        //mLoadingManager = new LoadingManager(context);
+        mLoadingManager = new LoadingManager(context);
     }
 
     @Override
@@ -82,13 +82,13 @@ public class ControllerEventListener implements Controller.EventListener {
         mTranslator.enable();
         //Toast.makeText(mContext, "onLoadSuccess" + mCounter2++, Toast.LENGTH_LONG).show();
 
-        //mLoadingManager.hide();
+        mLoadingManager.hide();
     }
 
     @Override
     public void onTabCreated(Tab tab) {
-        //mLoadingManager.setTab(tab);
-        //mLoadingManager.show();
+        mLoadingManager.setTab(tab);
+        mLoadingManager.show();
 
         //Toast.makeText(mContext, "onTabCreated" + mCounter3++, Toast.LENGTH_LONG).show();
     }
@@ -145,6 +145,9 @@ public class ControllerEventListener implements Controller.EventListener {
 
         public void setTab(Tab tab) {
             View container = tab.getViewContainer();
+            if (container == null) {
+                return;
+            }
             mWrapper = (FrameLayout) container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
         }
 

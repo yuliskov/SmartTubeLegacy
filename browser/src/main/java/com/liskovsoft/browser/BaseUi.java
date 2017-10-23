@@ -305,6 +305,7 @@ public abstract class BaseUi implements UI {
         }
     }
 
+    // NOTE: this method binds tab and webview
     protected void attachTabToContentView(Tab tab) {
         if ((tab == null) || (tab.getWebView() == null)) {
             return;

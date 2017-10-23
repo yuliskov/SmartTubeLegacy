@@ -131,6 +131,7 @@ public class Tab implements PictureListener {
         // NOTE: state restored here!!!
         setWebView(w);
 
+        // TODO: remove
         mWebViewController.onTabCreated(this);
     }
 
