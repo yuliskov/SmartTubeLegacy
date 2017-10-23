@@ -156,7 +156,7 @@ public class ControllerEventListener implements Controller.EventListener {
                 public void run() {
                     mLoadingWidget.setVisibility(View.GONE);
                 }
-            }, 1000);
+            }, 500);
         }
     }
 }
