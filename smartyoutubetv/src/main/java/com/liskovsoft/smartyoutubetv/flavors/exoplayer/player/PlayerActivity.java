@@ -50,6 +50,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
@@ -161,13 +162,32 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private void initExoPlayerButtons() {
+        initNextButton();
+        initPrevButton();
+        initTimeBar();
+    }
+
+    private void initNextButton() {
         final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
+        nextButton.getViewTreeObserver().addOnGlobalLayoutListener(obtainSetButtonEnabledListener(nextButton));
+        nextButton.setOnClickListener(obtainNextListener(nextButton));
+    }
+
+    private void initPrevButton() {
         final View prevButton = simpleExoPlayerView.findViewById(R.id.exo_prev);
-        OnClickListener clickListener = obtainPrevNextListener(nextButton, prevButton);
-        OnGlobalLayoutListener setButtonEnabledListener = obtainSetButtonEnabledListener(nextButton);
-        nextButton.setOnClickListener(clickListener);
-        nextButton.getViewTreeObserver().addOnGlobalLayoutListener(setButtonEnabledListener);
-        prevButton.setOnClickListener(clickListener);
+        prevButton.setOnClickListener(obtainPrevListener(prevButton));
+    }
+
+    private void initTimeBar() {
+        final int timeIncrementMS = 15000;
+
+        // time bar: rewind and fast forward to 15 secs
+        TimeBar timeBar = (TimeBar) simpleExoPlayerView.findViewById(R.id.exo_progress);
+        timeBar.setKeyTimeIncrement(timeIncrementMS);
+
+        // Playback control view.
+        simpleExoPlayerView.setRewindIncrementMs(timeIncrementMS);
+        simpleExoPlayerView.setFastForwardIncrementMs(timeIncrementMS);
     }
 
     private OnGlobalLayoutListener obtainSetButtonEnabledListener(final View nextButton) {
@@ -179,15 +199,20 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         };
     }
 
-    private OnClickListener obtainPrevNextListener(final View nextButton, final View prevButton) {
+    private OnClickListener obtainNextListener(final View nextButton) {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == nextButton) {
                     doGracefulExit(PlayerActivity.ACTION_NEXT);
-                } else if (v == prevButton) {
+            }
+        };
+    }
+
+    private OnClickListener obtainPrevListener(final View prevButton) {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                     doGracefulExit(PlayerActivity.ACTION_PREV);
-                }
             }
         };
     }

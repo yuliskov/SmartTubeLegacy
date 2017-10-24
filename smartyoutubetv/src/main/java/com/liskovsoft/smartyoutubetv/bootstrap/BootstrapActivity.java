@@ -15,8 +15,6 @@ import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
 
 public class BootstrapActivity extends FullscreenActivity {
-    private final static String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +26,7 @@ public class BootstrapActivity extends FullscreenActivity {
     }
 
     private void checkForUpdates() {
+        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
         AppUpdateChecker updateChecker = new AppUpdateChecker(this, sUpdateUrl, new OnUpdateDialog(this, getString(R.string.app_name)));
         updateChecker.forceCheckForUpdates();
     }

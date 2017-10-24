@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -139,7 +141,11 @@ public class BootstrapButton extends LinearLayout {
         wrapper.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                BootstrapButton.this.performClick();
+                if (VERSION.SDK_INT >= 15) {
+                    BootstrapButton.this.callOnClick();
+                } else {
+                    BootstrapButton.this.performClick();
+                }
             }
         });
     }
