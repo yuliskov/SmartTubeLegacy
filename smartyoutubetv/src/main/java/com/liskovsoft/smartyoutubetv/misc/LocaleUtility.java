@@ -729,7 +729,7 @@ public class LocaleUtility {
     }
 
     /**
-     * Gets the script for the given locale. For example, if a US citizen uses German Locale,
+     * Gets the script (writing type) for the given locale. For example, if a US citizen uses German Locale,
      * and calls this method with Locale.getDefault(), the result would be "Runr"
      *
      * @param locale

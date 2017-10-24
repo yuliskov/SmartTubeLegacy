@@ -1,1 +1,1 @@
-include ':smartyoutubetv', ':browser'
+include ':smartyoutubetv', ':browser', ':appupdatechecker'

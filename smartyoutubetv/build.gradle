@@ -113,8 +113,12 @@ dependencies {
     // originalFlavorCompile project(path: ':browser', configuration: "liteFlavorDebug")
     // betaFlavorCompile project(path: ':browser', configuration: "fullFlavorDebug")
 
+    // Browser component
     debugCompile project(path: ':browser', configuration: "liteDebug")
     releaseCompile project(path: ':browser', configuration: "liteRelease")
+
+    // AppUpdateChecker component
+    compile project(path: ':appupdatechecker')
 
     compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.jakewharton:butterknife:8.4.0'

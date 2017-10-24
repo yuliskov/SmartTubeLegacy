@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="app_update_new_version">Nova versão (%1$s) de %2$s disponível!</string>
+  <string name="upgrade">Nova versão</string>
+</resources>
