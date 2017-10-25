@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.events;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -20,8 +19,8 @@ import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormatInjector;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.DecipherRoutineInjector;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.GenericEventResourceInjector;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.DecipherRoutineInjector;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.GenericEventResourceInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

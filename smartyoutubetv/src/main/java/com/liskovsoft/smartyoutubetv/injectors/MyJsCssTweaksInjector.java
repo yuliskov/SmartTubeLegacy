@@ -4,7 +4,7 @@ import android.content.Context;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.smartyoutubetv.events.SupportedVideoFormatsEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.SupportedVideoFormatsEvent;
 import com.squareup.otto.Subscribe;
 
 public class MyJsCssTweaksInjector extends ResourceInjectorBase {

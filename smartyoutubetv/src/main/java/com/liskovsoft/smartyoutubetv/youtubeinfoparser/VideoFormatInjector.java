@@ -3,9 +3,8 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
 import android.content.Context;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
 import com.squareup.otto.Subscribe;
 
 import java.util.Set;

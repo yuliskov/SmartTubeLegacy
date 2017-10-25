@@ -9,10 +9,10 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
-import com.liskovsoft.smartyoutubetv.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser2.webstuff.events.PostDecipheredSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.PostDecipheredSignaturesEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
