@@ -34,7 +34,9 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     }
 
     private String downloadPackage(String uri) {
-        String basePath = null;
+        File file = mContext.getExternalCacheDir();
+        file.mkdirs();
+        File outputFile = new File(file, "update.apk");
         try {
             URL url = new URL(uri);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
@@ -42,12 +44,6 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             c.setDoOutput(false);
             c.connect();
 
-            basePath = Environment.getExternalStorageDirectory().getPath();
-
-            String PATH = basePath + "/Download/";
-            File file = new File(PATH);
-            file.mkdirs();
-            File outputFile = new File(file, "update.apk");
             if (outputFile.exists()) {
                 outputFile.delete();
             }
@@ -66,7 +62,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         } catch (IOException e) {
             Log.e("UpdateAPP", e.toString());
         }
-        return basePath + "/Download/update.apk";
+        return outputFile.getAbsolutePath();
     }
 
     private void installPackage(String packagePath) {
