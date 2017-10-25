@@ -135,15 +135,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <!-- End Flavours -->
-
-        <!-- NOTE: exoplayer specific section -->
-        <activity
-            android:name=".flavors.exoplayer.player.PlayerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:label="@string/app_name_exo"
-            android:launchMode="singleTop"
-            android:theme="@style/PlayerTheme">
-        </activity>
     </application>
 
 </manifest>

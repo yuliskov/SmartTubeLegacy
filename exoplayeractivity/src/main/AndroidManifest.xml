@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.liskovsoft.exoplayeractivity"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="com.liskovsoft.exoplayeractivity">
 
-    <uses-sdk android:minSdkVersion="4" />
-
+    <application>
+        <!-- NOTE: exoplayer specific section -->
+        <activity
+            android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:label="@string/app_name_exo"
+            android:launchMode="singleTop"
+            android:theme="@style/PlayerTheme"
+            android:screenOrientation="sensorLandscape">
+        </activity>
+    </application>
 </manifest>

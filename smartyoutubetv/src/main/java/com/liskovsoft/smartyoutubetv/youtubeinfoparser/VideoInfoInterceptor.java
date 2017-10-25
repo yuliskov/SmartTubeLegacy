@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -14,10 +15,13 @@ import java.util.Set;
 
 public class VideoInfoInterceptor extends RequestInterceptor {
     private final Context mContext;
-    private VideoFormat mSelectedFormat = VideoFormat._720p_;
+    private final SmartPreferences mPrefs;
+    private VideoFormat mSelectedFormat;
 
     public VideoInfoInterceptor(Context context) {
         mContext = context;
+        mPrefs = SmartPreferences.instance(mContext);
+        mSelectedFormat = mPrefs.getSelectedFormat();
 
         Browser.getBus().register(this);
     }
@@ -34,22 +38,18 @@ public class VideoInfoInterceptor extends RequestInterceptor {
     @Subscribe
     public void setDesiredResolution(SwitchResolutionEvent event) {
         mSelectedFormat = VideoFormat.fromName(event.getFormatName());
+        persistSelectedFormat();
     }
 
+    private void persistSelectedFormat() {
+        mPrefs.setSelectedFormat(mSelectedFormat);
+    }
 
     @Override
     public WebResourceResponse intercept(String url) {
         if (!test(url)) {
             return null;
         }
-
-        //// test code, delete in production
-        //if (true) {
-        //    InputStream inputStream = Helpers.getAsset(mContext, "get_video_info_4k_2");
-        //    return createResponse(MediaType.parse("application/x-www-form-urlencoded"), inputStream);
-        //}
-
-        //url = unlockAllFormats(url);
 
         Response response = doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new YouTubeVideoInfoBuilder(response.body().byteStream());

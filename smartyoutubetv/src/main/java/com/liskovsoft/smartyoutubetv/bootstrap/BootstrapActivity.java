@@ -14,7 +14,7 @@ import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
 
-public class BootstrapActivity extends FullscreenActivity {
+public class BootstrapActivity extends ActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setupLang();
