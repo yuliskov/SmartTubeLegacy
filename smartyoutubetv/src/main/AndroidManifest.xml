@@ -32,7 +32,7 @@
 
     <!-- NOTE: DemoApplication: exoplayer specific params -->
     <application
-        android:name=".flavors.exoplayer.player.DemoApplication"
+        android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.DemoApplication"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner_main"
         android:hardwareAccelerated="true"

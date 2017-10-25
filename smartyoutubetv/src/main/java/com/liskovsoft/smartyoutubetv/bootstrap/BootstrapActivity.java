@@ -17,10 +17,11 @@ import java.util.Locale;
 public class BootstrapActivity extends FullscreenActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupLang();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootstrap);
 
-        setupLang();
         setupCrashLogs();
         checkForUpdates();
     }

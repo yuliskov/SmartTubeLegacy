@@ -1,1 +1,1 @@
-xwalk --ignore-gpu-blacklist
+xwalk --ignore-gpu-blacklist --disk-cache-size=10485760
