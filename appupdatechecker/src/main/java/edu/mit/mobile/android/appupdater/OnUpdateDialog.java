@@ -65,7 +65,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
 			db.setMessage(sb);
 
 			db.setPositiveButton(R.string.upgrade, dialogOnClickListener);
-			db.setNegativeButton(android.R.string.cancel, dialogOnClickListener);
+			db.setNegativeButton(R.string.cancel, dialogOnClickListener);
 			mDialog = db.create();
 			mHandler.sendEmptyMessage(MSG_SHOW_DIALOG);
 

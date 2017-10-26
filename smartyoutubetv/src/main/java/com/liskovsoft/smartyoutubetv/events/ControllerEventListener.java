@@ -136,7 +136,7 @@ public class ControllerEventListener implements Controller.EventListener {
             public void run() {
                 checkForUpdates();
             }
-        }, 5000);
+        }, 3000);
     }
 
     private void checkForUpdates() {

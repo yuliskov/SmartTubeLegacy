@@ -5,10 +5,12 @@
     <string name="app_update_new_version">There is a new version (%1$s) of %2$s available!</string>
     
     <string name="upgrade">Upgrade</string>
-    
+
+    <string name="cancel">Cancel</string>
+
     <string name="pref_check_updates_title">Check for updates</string>
-    
+
     <string name="pref_min_interval_title">Minimum update frequency</string>
-    
+
     <string name="pref_min_interval_summary">Checks for updates at most this many minutes</string>
 </resources>
