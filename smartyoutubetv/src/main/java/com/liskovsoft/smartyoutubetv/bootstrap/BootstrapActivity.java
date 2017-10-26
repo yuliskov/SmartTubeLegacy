@@ -9,6 +9,7 @@ import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.LocaleUtility;
+import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import io.fabric.sdk.android.Fabric;
@@ -23,7 +24,16 @@ public class BootstrapActivity extends ActivityBase {
         setContentView(R.layout.activity_bootstrap);
 
         setupCrashLogs();
-        checkForUpdates();
+        //checkForUpdates();
+        tryToRestoreLastActivity();
+    }
+
+    private void tryToRestoreLastActivity() {
+        SmartPreferences prefs = SmartPreferences.instance(this);
+        String bootstrapActivityName = prefs.getBootstrapActivityName();
+        if (bootstrapActivityName != null) {
+            startActivity(this, bootstrapActivityName);
+        }
     }
 
     private void checkForUpdates() {
@@ -60,6 +70,14 @@ public class BootstrapActivity extends ActivityBase {
                 startActivity(this, com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity2.class);
                 break;
         }
+    }
+
+    private void startActivity(Context ctx, String clazz) {
+        Intent intent = new Intent();
+        // NOTE: make activity transparent (non-reachable from launcher or resents)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setClassName(ctx, clazz);
+        startActivity(intent);
     }
 
     private void startActivity(Context ctx, Class clazz) {

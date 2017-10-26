@@ -8,6 +8,7 @@ import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
+    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
     private static SmartPreferences mInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -33,5 +34,20 @@ public final class SmartPreferences {
     public VideoFormat getSelectedFormat() {
         String name = mPrefs.getString(VIDEO_FORMAT_NAME, "720p");
         return VideoFormat.fromName(name);
+    }
+
+    public void setBootstrapActivityName(String name) {
+        mPrefs.edit()
+                .putString(BOOTSTRAP_ACTIVITY_NAME, name)
+                .apply();
+    }
+
+    public String getBootstrapActivityName() {
+        String name = mPrefs.getString(BOOTSTRAP_ACTIVITY_NAME, null);
+        return name;
+    }
+
+    public void resetBootstrapActivityName() {
+        mPrefs.edit().remove(BOOTSTRAP_ACTIVITY_NAME).apply();
     }
 }

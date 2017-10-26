@@ -16,6 +16,9 @@ import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
+import edu.mit.mobile.android.appupdater.AppUpdateChecker;
+import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
+    private SmartPreferences mPrefs;
     // TODO: remove
     //private PageLoadHandler mPageLoadHandler;
     //private PageDefaults mPageDefaults;
@@ -46,8 +50,24 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+
+        saveActivityNameForFurtherLaunches();
+        //checkForUpdates();
     }
-    
+
+    private void saveActivityNameForFurtherLaunches() {
+        if (mPrefs == null)
+            mPrefs = SmartPreferences.instance(this);
+        mPrefs.setBootstrapActivityName(this.getClass().getCanonicalName());
+    }
+
+    private void checkForUpdates() {
+        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
+        OnUpdateDialog dialog = new OnUpdateDialog(this, getString(R.string.app_name));
+        AppUpdateChecker updateChecker = new AppUpdateChecker(this, sUpdateUrl, dialog);
+        updateChecker.forceCheckForUpdates();
+    }
+
     /**
      * WebView likes to cache js. So this is prevents my changes from applying.
      */
@@ -146,63 +166,11 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         super.onNewIntent(transformIntent(intent));
     }
 
-    //private boolean mDownFired;
-    //private boolean isEventIgnored(KeyEvent event) {
-    //    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-    //        mDownFired = true;
-    //        return false;
-    //    }
-    //    if (event.getAction() == KeyEvent.ACTION_UP && mDownFired) {
-    //        mDownFired = false;
-    //        return false;
-    //    }
-    //
-    //    return true;
-    //}
-    //
-    //private KeyEvent doTranslateKeys(KeyEvent event) {
-    //    if (isEventIgnored(event)) {
-    //        return new KeyEvent(0, 0);
-    //    }
-    //
-    //    event = translateBackToEscape(event);
-    //    event = translateMenuToGuide(event);
-    //    event = translateNumpadEnterToEnter(event);
-    //    event = translateButtonAToEnter(event);
-    //    return event;
-    //}
-    //
-    //private KeyEvent translateButtonAToEnter(KeyEvent event) {
-    //    if (event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_A) {
-    //        // pay attention, you must pass action_up instead of action_down
-    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
-    //    }
-    //    return event;
-    //}
-    //
-    //private KeyEvent translateNumpadEnterToEnter(KeyEvent event) {
-    //    if (event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
-    //        // pay attention, you must pass action_up instead of action_down
-    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
-    //    }
-    //    return event;
-    //}
-    //
-    //private KeyEvent translateBackToEscape(KeyEvent event) {
-    //    if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-    //        // pay attention, you must pass action_up instead of action_down
-    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ESCAPE);
-    //    }
-    //    return event;
-    //}
-    //
-    //private KeyEvent translateMenuToGuide(KeyEvent event) {
-    //    if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
-    //        // pay attention, you must pass action_up instead of action_down
-    //        event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_G);
-    //    }
-    //    return event;
-    //}
+    @Override
+    public void finish() {
+        mPrefs.resetBootstrapActivityName();
+        super.finish();
+    }
 
     ///////////////////////// Begin Youtube filter /////////////////////
 

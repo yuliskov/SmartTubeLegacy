@@ -21,6 +21,8 @@ import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.GenericEventResourceInjector;
+import edu.mit.mobile.android.appupdater.AppUpdateChecker;
+import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,6 +80,7 @@ public class ControllerEventListener implements Controller.EventListener {
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
         mLoadingManager.hide();
+        checkForUpdatesAfterDelay();
     }
 
     @Override
@@ -127,7 +130,23 @@ public class ControllerEventListener implements Controller.EventListener {
         mInjector.inject();
     }
 
+    private void checkForUpdatesAfterDelay() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkForUpdates();
+            }
+        }, 5000);
+    }
+
+    private void checkForUpdates() {
+        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
+        OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
+        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, sUpdateUrl, dialog);
+        updateChecker.forceCheckForUpdates();
+    }
     private class LoadingManager {
+
         private final View mLoadingWidget;
         private FrameLayout mWrapper;
 
