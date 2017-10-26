@@ -67,15 +67,9 @@ MyActivity extends MainBrowserActivity {
 - Butter Knife - simplify layout handling
 
 ## TODO
-- exo: fix play from phone (because web-app not running: mobizen_20170929_111409.mp4)
+- exo: fix play from phone (because main app not running: mobizen_20170929_111409.mp4)
 - exo: add 'share' button
-- XWalk: remember selected resolution
-- XWalk: add 4k version
-- auto update
-- live video > select higher quality
 - subtitle support
-- close app if connection cannot be made
-- show informative error when site not available
 
 ## Proposition list
 - playlist: more informative playlist layout
@@ -84,6 +78,14 @@ MyActivity extends MainBrowserActivity {
 - video-item: add description section
 
 ## DONE
+- XWalk: remember selected resolution
+- XWalk: add 4k version
+- auto update
+- live video > select higher quality
+- beta: remember selected resolution
+- exo: tune rewind step from 1min to 15 sec
+- auto update
+- exo: fix brightness (-webkit-filter:brightness(0))
 - market: add to aptoide
 - select version on launch
 - System.exit(0)

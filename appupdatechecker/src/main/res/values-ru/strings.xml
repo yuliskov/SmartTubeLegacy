@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppUpdateChecker -->
+    <!-- 											version_number ↓        ↓ app_name -->
+    <string name="app_update_new_version">Доступна новая версия (%1$s) %2$s!</string>
+    
+    <string name="upgrade">Обновить</string>
+</resources>

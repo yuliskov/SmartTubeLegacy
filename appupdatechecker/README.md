@@ -35,20 +35,34 @@ The JSON format looks like this:
 Publishing steps
 ----------------
 
-1. point the app updater to a URL you control (in the strings.xml file)
-2. upload apk to server
-3. generate the json document that the app updater looks at which contains information about the release. There's a python script that can generate such documents in the app updater's source.
-4. publish the json document at the URL in step 1
-5. every time the app starts, it'll check to see if there's an update to that json file. It has a backoff threshhold that's set compile time for the app updater so it won't check it if it already checked it within N minutes.
+1. Point the app updater to a URL you control (in the strings.xml file)
+2. Upload apk to server
+3. Generate the json document that the app updater looks at which contains information about the release. There's a python script that can generate such documents in the app updater's source.
+4. Publish the json document at the URL in step 1
+5. Every time the app starts, it'll check to see if there's an update to that json file. It has a backoff threshhold that's set compile time for the app updater so it won't check it if it already checked it within N minutes.
 
 
 Example code
 ------------
 
-Add this code into your launcher's activity.
+Add this code into your activity (no matter where).
 
     AppUpdateChecker updateChecker = new AppUpdateChecker(this, sUpdateUrl, new OnUpdateDialog(this, getString(R.string.app_name)));
     updateChecker.forceCheckForUpdates();
+
+Android 7.0 Note
+----------------
+
+Solution to **FileUriExposedException** is using the subclass of **FileProvider** (already in code).
+
+Another solution to **FileUriExposedException** would be next code. Add it to **Application.onCreate()** routine.
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+More info: 
+[stackoverflow](https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed), 
+[android docs](https://developer.android.com/reference/android/os/FileUriExposedException.html)
 
 License
 =======
