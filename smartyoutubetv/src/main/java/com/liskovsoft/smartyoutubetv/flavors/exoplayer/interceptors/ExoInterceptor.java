@@ -52,16 +52,16 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void makeResponseStream(String url) {
-        //Response response = doOkHttpRequest(unlockAllFormats(url));
-        Response response = doOkHttpRequest(url);
+        Response response = doOkHttpRequest(unlockAllFormats(url));
+        //Response response = doOkHttpRequest(url);
         mResponseStream = response.body().byteStream();
         mResponseType = response.body().contentType();
     }
 
     private void parseAndOpenExoPlayer() {
-        String fmt = ITag.WEBM;
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream, fmt);
-        //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream);
+        //String fmt = ITag.WEBM;
+        //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream, fmt);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
             private String mTitle = "No title";
             private String mTitle2 = "No title";

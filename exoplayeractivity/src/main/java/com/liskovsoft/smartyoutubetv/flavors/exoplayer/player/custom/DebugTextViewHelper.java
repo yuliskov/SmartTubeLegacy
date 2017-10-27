@@ -170,7 +170,7 @@ public final class DebugTextViewHelper implements Runnable, Player.EventListener
       return "";
     }
     // NOTE: add fps and bitrate to stats
-    return "\n" + format.sampleMimeType + "@" + format.frameRate + "fps_" + toHumanReadable(format.bitrate) + "(id:" + format.id + " r:" + format.width + "x"
+    return "\n" + format.sampleMimeType + "@" + format.frameRate + "fps*" + toHumanReadable(format.bitrate) + "(id:" + format.id + " r:" + format.width + "x"
         + format.height + getPixelAspectRatioString(format.pixelWidthHeightRatio)
         + getDecoderCountersBufferCountString(player.getVideoDecoderCounters()) + ")";
   }

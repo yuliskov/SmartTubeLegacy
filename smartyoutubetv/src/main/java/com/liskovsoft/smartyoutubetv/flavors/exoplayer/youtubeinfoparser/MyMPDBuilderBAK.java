@@ -15,27 +15,17 @@ import java.util.regex.Pattern;
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
  */
-public class MyMPDBuilder implements MPDBuilder {
-    private static final String MIME_WEBM_AUDIO = "audio/webm";
-    private static final String MIME_WEBM_VIDEO = "video/webm";
-    private static final String MIME_MP4_AUDIO = "audio/mp4";
-    private static final String MIME_MP4_VIDEO = "video/mp4";
+public class MyMPDBuilderBAK implements MPDBuilder {
+    private final List<YouTubeMediaItem> mVideos;
+    private final List<YouTubeMediaItem> mAudios;
     private final YouTubeGenericInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
-    private int mId;
-    private List<YouTubeMediaItem> mMP4Audios;
-    private List<YouTubeMediaItem> mMP4Videos;
-    private List<YouTubeMediaItem> mWEBMAudios;
-    private List<YouTubeMediaItem> mWEBMVideos;
 
-    public MyMPDBuilder(YouTubeGenericInfo info) {
+    public MyMPDBuilderBAK(YouTubeGenericInfo info) {
         mInfo = info;
-        mMP4Audios = new ArrayList<>();
-        mMP4Videos = new ArrayList<>();
-        mWEBMAudios = new ArrayList<>();
-        mWEBMVideos = new ArrayList<>();
-
+        mVideos = new ArrayList<>();
+        mAudios = new ArrayList<>();
         initXmlSerializer();
     }
 
@@ -47,9 +37,7 @@ public class MyMPDBuilder implements MPDBuilder {
 
         startDocument(mXmlSerializer);
         mXmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
-    }
 
-    private void writePrologue() {
         String duration = "PT309S";
         if (mInfo != null) {
             duration = String.format("PT%sS", mInfo.getLengthSeconds());
@@ -65,36 +53,17 @@ public class MyMPDBuilder implements MPDBuilder {
         attribute("", "type", "static");
         attribute("", "mediaPresentationDuration", duration);
 
+
         startTag("", "Period");
         attribute("", "duration", duration);
     }
 
-    private void writeEpilogue() {
-        endTag("", "Period");
-        endTag("", "MPD");
-        endDocument();
-    }
-
-    private void writeMediaTags() {
-        writeMediaTagsForGroup(mMP4Audios);
-        writeMediaTagsForGroup(mMP4Videos);
-        writeMediaTagsForGroup(mWEBMAudios);
-        writeMediaTagsForGroup(mWEBMVideos);
-    }
-
-    private void writeMediaTagsForGroup(List<YouTubeMediaItem> items) {
-        if (items.size() == 0) {
-            return;
+    private void setPrefix(String prefix, String namespace) {
+        try {
+            mXmlSerializer.setPrefix(prefix, namespace);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(items.get(0)));
-
-        // Representation
-        for (YouTubeMediaItem item : items) {
-            writeMediaItemTag(item);
-        }
-
-        endTag("", "AdaptationSet");
     }
 
     private XmlSerializer attribute(String namespace, String name, String value) {
@@ -167,27 +136,12 @@ public class MyMPDBuilder implements MPDBuilder {
         if (notDASH(mediaItem)) {
             return;
         }
-
-        List<YouTubeMediaItem> placeholder = null;
-        String mimeType = extractMimeType(mediaItem);
-        if (mimeType != null) {
-            switch (mimeType) {
-                case MIME_WEBM_AUDIO:
-                    placeholder = mWEBMAudios;
-                    break;
-                case MIME_WEBM_VIDEO:
-                    placeholder = mWEBMVideos;
-                    break;
-                case MIME_MP4_AUDIO:
-                    placeholder = mMP4Audios;
-                    break;
-                case MIME_MP4_VIDEO:
-                    placeholder = mMP4Videos;
-                    break;
-            }
-        }
-        if (placeholder != null) {
-            placeholder.add(0, mediaItem); // NOTE: reverse order
+        if (isVideo(mediaItem)) {
+            //mVideos.add(mediaItem);
+            mVideos.add(0, mediaItem); // NOTE: reverse order
+        } else {
+            //mAudios.add(mediaItem);
+            mAudios.add(0, mediaItem);
         }
     }
 
@@ -195,24 +149,56 @@ public class MyMPDBuilder implements MPDBuilder {
         return mediaItem.getInit() == null;
     }
 
+    private void writeVideoTags() {
+        writeMediaListPrologue("0", getVideoMimeType());
+
+        // Representation
+        for (YouTubeMediaItem item : mVideos) {
+            writeMediaItemTag(item);
+        }
+
+        endTag("", "AdaptationSet");
+    }
+
+    private void writeAudioTags() {
+        writeMediaListPrologue("1", getAudioMimeType());
+
+        // Representation
+        for (YouTubeMediaItem item : mAudios) {
+            writeMediaItemTag(item);
+        }
+
+        endTag("", "AdaptationSet");
+    }
+
+    private String getVideoMimeType() {
+        YouTubeMediaItem item = mVideos.get(0);
+        return extractMimeType(item);
+    }
+
+    private String getAudioMimeType() {
+        YouTubeMediaItem item = mAudios.get(0);
+        return extractMimeType(item);
+    }
+
     private String extractMimeType(YouTubeMediaItem item) {
         String codecs = extractCodecs(item);
 
         if (codecs.startsWith("vorbis") ||
             codecs.startsWith("opus")) {
-            return MIME_WEBM_AUDIO;
+            return "audio/webm";
         }
 
         if (codecs.startsWith("vp9")) {
-            return MIME_WEBM_VIDEO;
+            return "video/webm";
         }
 
         if (codecs.startsWith("mp4a")) {
-            return MIME_MP4_AUDIO;
+            return "audio/mp4";
         }
 
         if (codecs.startsWith("avc")) {
-            return MIME_MP4_VIDEO;
+            return "video/mp4";
         }
 
         return null;
@@ -299,14 +285,12 @@ public class MyMPDBuilder implements MPDBuilder {
 
     @Override
     public InputStream build() {
-        writePrologue();
-
-        writeMediaTags();
-
-        writeEpilogue();
+        writeAudioTags();
+        writeVideoTags();
+        endTag("", "Period");
+        endTag("", "MPD");
+        endDocument();
 
         return Helpers.toStream(mWriter.toString());
     }
-
-
 }
