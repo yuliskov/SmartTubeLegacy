@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
+ */
 public class MyMPDBuilder implements MPDBuilder {
     private final List<YouTubeMediaItem> mVideos;
     private final List<YouTubeMediaItem> mAudios;
@@ -147,7 +150,7 @@ public class MyMPDBuilder implements MPDBuilder {
     }
 
     private void writeVideoTags() {
-        writeMediaListPrologue("0", "video/mp4"); // TODO: detect codec
+        writeMediaListPrologue("0", getVideoMimeType());
 
         // Representation
         for (YouTubeMediaItem item : mVideos) {
@@ -158,7 +161,7 @@ public class MyMPDBuilder implements MPDBuilder {
     }
 
     private void writeAudioTags() {
-        writeMediaListPrologue("1", "audio/mp4"); // TODO: detect codec
+        writeMediaListPrologue("1", getAudioMimeType());
 
         // Representation
         for (YouTubeMediaItem item : mAudios) {
@@ -166,6 +169,39 @@ public class MyMPDBuilder implements MPDBuilder {
         }
 
         endTag("", "AdaptationSet");
+    }
+
+    private String getVideoMimeType() {
+        YouTubeMediaItem item = mVideos.get(0);
+        return extractMimeType(item);
+    }
+
+    private String getAudioMimeType() {
+        YouTubeMediaItem item = mAudios.get(0);
+        return extractMimeType(item);
+    }
+
+    private String extractMimeType(YouTubeMediaItem item) {
+        String codecs = extractCodecs(item);
+
+        if (codecs.startsWith("vorbis") ||
+            codecs.startsWith("opus")) {
+            return "audio/webm";
+        }
+
+        if (codecs.startsWith("vp9")) {
+            return "video/webm";
+        }
+
+        if (codecs.startsWith("mp4a")) {
+            return "audio/mp4";
+        }
+
+        if (codecs.startsWith("avc")) {
+            return "video/mp4";
+        }
+
+        return null;
     }
 
     private void writeMediaItemTag(YouTubeMediaItem item) {

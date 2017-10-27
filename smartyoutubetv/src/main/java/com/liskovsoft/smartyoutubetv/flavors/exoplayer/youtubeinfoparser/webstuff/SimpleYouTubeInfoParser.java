@@ -46,6 +46,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
     }
 
+    public SimpleYouTubeInfoParser(InputStream stream) {
+        this(stream, null);
+    }
+
     public SimpleYouTubeInfoParser(InputStream stream, String type) {
         mContent = Helpers.toString(stream);
         mType = type;
