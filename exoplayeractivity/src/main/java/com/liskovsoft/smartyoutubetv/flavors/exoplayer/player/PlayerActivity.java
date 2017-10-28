@@ -237,13 +237,14 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private void doGracefulExit(String action) {
         // NOTE: fix crash on back press (Mi TV 3S 55): pause video
-        player.setPlayWhenReady(false);
+        if (player != null) {
+            player.setPlayWhenReady(false);
+        }
 
         Intent intent = new Intent();
         intent.putExtra("action", action);
         setResult(Activity.RESULT_OK, intent);
 
-        player.release();
         finish();
     }
 

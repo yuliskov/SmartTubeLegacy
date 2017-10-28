@@ -347,7 +347,7 @@ import java.util.Arrays;
     }
 
     // View.OnClickListener
-    public void onClick_Orig(View view) {
+    public void onClickOld(View view) {
         if (view == disableView) {
             isDisabled = true;
             override = null;
@@ -454,12 +454,29 @@ import java.util.Arrays;
 
     private String extractCurrentTrackId() {
         int rendererIndex = 0; // video
-        int groupIndex = 0; // default
+        int groupIndex = override.groupIndex;
         int trackIndex = override.tracks[0];
         MappedTrackInfo trackInfo = selector.getCurrentMappedTrackInfo();
         TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
         Format format = trackGroups.get(groupIndex).getFormat(trackIndex);
         return format.id;
+    }
+
+    private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+        int rendererIndex = 0; // video
+        TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
+        TrackGroup defaultTrackGroup = groupArray.get(0);
+        for (int j = 0; j < groupArray.length; j++) {
+            TrackGroup trackGroup = groupArray.get(j);
+            for (int i = 0; i < trackGroup.length; i++) {
+                Format format = trackGroup.getFormat(i);
+                if (format.id.equals(selectedTrackId)) {
+                    return new int[]{j, i};
+                }
+            }
+        }
+        // if track not found, return topmost
+        return new int[]{0, (defaultTrackGroup.length - 1)};
     }
 
     private int findTrackIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
@@ -483,39 +500,23 @@ import java.util.Arrays;
      */
     private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
         int rendererIndex = 0; // video
-        int groupIndex = 0; // default
-        int trackIndex = findTrackIndex(rendererTrackGroupArrays, selectedTrackId);
+        int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId);
         TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex[0], trackGroupAndIndex[1]);
         selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
     }
 
     /**
      * Switch track
      * @param rendererTrackGroupArrays source of tracks
-     * @param rendererIndex video - 0, or audio - 1 (??)
-     * @param groupIndex usually 0
-     * @param trackIndex track num in list
+     * @param selectedTrackId dash format id
      */
-    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, int rendererIndex, int groupIndex, int trackIndex) {
+    private void loadTrackOld(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+        int rendererIndex = 0; // video
+        int groupIndex = 0; // default
+        int trackIndex = findTrackIndex(rendererTrackGroupArrays, selectedTrackId);
         TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
         selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
-    }
-
-    /**
-     * Switch track
-     * @param rendererIndex video - 0, or audio - 1 (??)
-     * @param groupIndex usually 0
-     * @param trackIndex track num in list
-     */
-    private void loadTrack(int rendererIndex, int groupIndex, int trackIndex) {
-        MappedTrackInfo trackInfo = selector.getCurrentMappedTrackInfo();
-        if (trackInfo == null) {
-            return;
-        }
-        TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
-        selector.setSelectionOverride(rendererIndex, trackGroups, override);
     }
 }
