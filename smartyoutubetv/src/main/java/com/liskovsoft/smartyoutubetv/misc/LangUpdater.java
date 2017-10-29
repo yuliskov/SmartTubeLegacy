@@ -19,7 +19,7 @@ public class LangUpdater {
 
     public void update() {
         tryToEnableRussian();
-        tryToBypassChinese();
+        //tryToBypassChinese();
     }
 
     private void tryToBypassChinese() {
