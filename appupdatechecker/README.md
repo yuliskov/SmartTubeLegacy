@@ -64,6 +64,17 @@ More info:
 [stackoverflow](https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed), 
 [android docs](https://developer.android.com/reference/android/os/FileUriExposedException.html)
 
+Changes
+-------
+
+Changes from [original version](https://github.com/mitmel/AppUpdateChecker):
+
+- support apk download & install
+- ready for Android 7.0 and above
+- get rid of legacy code
+- new localization
+
+
 License
 =======
 
