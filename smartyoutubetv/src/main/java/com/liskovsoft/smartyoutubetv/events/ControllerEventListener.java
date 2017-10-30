@@ -85,8 +85,7 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onTabCreated(Tab tab) {
-        mLoadingManager.setTab(tab);
-        mLoadingManager.show();
+        mLoadingManager.show(tab);
     }
 
     @Override
@@ -151,11 +150,19 @@ public class ControllerEventListener implements Controller.EventListener {
         private FrameLayout mWrapper;
 
         public LoadingManager(Context ctx) {
-            LayoutInflater li = LayoutInflater.from(ctx);
-            mLoadingWidget = li.inflate(R.layout.loading_main, null);
+            this(ctx, null);
         }
 
-        public void setTab(Tab tab) {
+        public LoadingManager(Context ctx, Tab tab) {
+            LayoutInflater li = LayoutInflater.from(ctx);
+            mLoadingWidget = li.inflate(R.layout.loading_main, null);
+            initTab(tab);
+        }
+
+        private void initTab(Tab tab) {
+            if (tab == null) {
+                return;
+            }
             View container = tab.getViewContainer();
             if (container == null) {
                 return;
@@ -163,6 +170,11 @@ public class ControllerEventListener implements Controller.EventListener {
             mWrapper = (FrameLayout) container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
             mWrapper.removeView(mLoadingWidget);
             mWrapper.addView(mLoadingWidget);
+        }
+
+        public void show(Tab tab) {
+            initTab(tab);
+            show();
         }
 
         public void show() {
