@@ -3,9 +3,7 @@
     <!-- AppUpdateChecker -->
     <!-- 											version_number ↓        ↓ app_name -->
     <string name="app_update_new_version">Доступна новая версия (%1$s) %2$s!</string>
-    
     <string name="upgrade">Установить</string>
-
     <string name="cancel">Отменить</string>
     <string name="no_external_storage_error">Невозможно установить обновление. Внешнее хранилище отсутствует.</string>
 </resources>
