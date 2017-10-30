@@ -161,6 +161,7 @@ public class ControllerEventListener implements Controller.EventListener {
                 return;
             }
             mWrapper = (FrameLayout) container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
+            mWrapper.removeView(mLoadingWidget);
             mWrapper.addView(mLoadingWidget);
         }
 

@@ -7,6 +7,8 @@ import android.os.Build.VERSION;
 import android.support.v4.content.FileProvider;
 import android.util.*;
 import android.webkit.*;
+import android.widget.Toast;
+import edu.mit.mobile.android.appupdater.R;
 
 import java.io.*;
 import java.net.*;
@@ -36,9 +38,13 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     }
 
     private String downloadPackage(String uri) {
-        File file = mContext.getExternalCacheDir();
-        file.mkdirs();
-        File outputFile = new File(file, "update.apk");
+        File cacheDir = mContext.getExternalCacheDir();
+        if (cacheDir == null) {
+            noExternalStorageError();
+            return null;
+        }
+        cacheDir.mkdirs();
+        File outputFile = new File(cacheDir, "update.apk");
         try {
             URL url = new URL(uri);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
@@ -67,7 +73,14 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         return outputFile.getAbsolutePath();
     }
 
+    private void noExternalStorageError() {
+        Toast.makeText(mContext, R.string.no_external_storage_error, Toast.LENGTH_LONG).show();
+    }
+
     private void installPackage(String packagePath) {
+        if (packagePath == null) {
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri file = getFileUri(packagePath);
         intent.setDataAndType(file, "application/vnd.android.package-archive");

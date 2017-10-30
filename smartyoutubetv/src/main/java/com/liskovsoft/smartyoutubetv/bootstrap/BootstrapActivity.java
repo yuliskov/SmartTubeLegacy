@@ -18,6 +18,7 @@ import java.util.Locale;
 public class BootstrapActivity extends ActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // do it before view instantiation
         setupLang();
 
         super.onCreate(savedInstanceState);

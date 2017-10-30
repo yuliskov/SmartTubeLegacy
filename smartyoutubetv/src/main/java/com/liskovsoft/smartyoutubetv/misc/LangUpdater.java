@@ -19,7 +19,15 @@ public class LangUpdater {
 
     public void update() {
         tryToEnableRussian();
-        //tryToBypassChinese();
+        tryToForceEnglishOnDevices();
+    }
+
+    private void tryToForceEnglishOnDevices() {
+        String deviceName = Helpers.getDeviceName();
+        switch (deviceName) {
+            case "ChangHong Android TV (full_mst638)":
+                forceLocale("en");
+        }
     }
 
     private void tryToBypassChinese() {

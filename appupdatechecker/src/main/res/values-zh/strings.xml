@@ -7,5 +7,6 @@
     <string name="upgrade">升级</string>
 
     <string name="cancel">取消</string>
-    
+    <string name="no_external_storage_error">无法安装更新。 外部存储不存在。</string>
+
 </resources>
