@@ -4,9 +4,10 @@ addExitEvent();
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
-    'MiBOX3 (JurassicPark)': 'mp4', // Xiaomi mibox3 S905 (github)
+    'MiBOX3 (JurassicPark)': 'webm', // Xiaomi mibox3 S905 (github)
 	'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
+	'MiTV3S-48 (hancock)': 'webm', // MiTV3S 48 (4pda)
 	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
 	'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
 	'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
