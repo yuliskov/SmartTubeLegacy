@@ -25,18 +25,12 @@ android {
     compileSdkVersion project.properties.projectCompileSdkVersion
     buildToolsVersion project.properties.projectBuildToolsVersion
 
-    /**
-     * Original package name: com.liskovsoft.smartyoutubetv
-     * GPlay package name: com.firsthash.smartyoutubetv2
-     * 4PDA package name: com.firsthash.smartyoutubetv
-     */
-
     defaultConfig {
         minSdkVersion project.properties.projectMinSdkVersion
         targetSdkVersion project.properties.projectTargetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 132
-        versionName "6.8.62"
+        versionCode 133
+        versionName "6.8.63"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

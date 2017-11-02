@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ControllerEventListener implements Controller.EventListener {
-    private final Context mContext;
+    private Context mContext;
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
     private WebViewJavaScriptInterface mJS;
@@ -152,22 +152,30 @@ public class ControllerEventListener implements Controller.EventListener {
             mLoadingWidget = li.inflate(R.layout.loading_main, null);
         }
 
-        private void showHideLoading(Tab tab, boolean add) {
-            if (tab == null) {
+        private void showHideLoading(Tab tab, boolean show) {
+            FrameLayout wrapper = getWrapper(tab);
+            if (wrapper == null) {
                 return;
             }
-            View container = tab.getViewContainer();
-            if (container == null) {
-                return;
-            }
-            FrameLayout wrapper = container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
 
-            if (add) {
+            boolean hasNoParent = mLoadingWidget.getParent() == null;
+            if (show && hasNoParent) {
                 wrapper.addView(mLoadingWidget);
             } else {
                 wrapper.removeView(mLoadingWidget);
             }
 
+        }
+
+        private FrameLayout getWrapper(Tab tab) {
+            if (tab == null) {
+                return null;
+            }
+            View container = tab.getViewContainer();
+            if (container == null) {
+                return null;
+            }
+            return container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
         }
 
         public void show(Tab tab) {

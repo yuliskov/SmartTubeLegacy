@@ -5,7 +5,7 @@ applyCodecFixes({
 	'MiBOX3 (JurassicPark)': 'webm', // Xiaomi mibox3 S905 (github)
 	'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
 	'MiTV3S-43 (hancock)': 'webm', // MiTV3S 43 ???
-	'MiTV3S-48 (hancock)': 'webm', // MiTV3S 48 (4pda)
+	'MiTV3S-48 (hancock)': 'mp4', // MiTV3S 48 (4pda)
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
 	'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
 	'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
