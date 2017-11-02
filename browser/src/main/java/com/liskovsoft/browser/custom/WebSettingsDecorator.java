@@ -19,6 +19,16 @@ public abstract class WebSettingsDecorator extends WebSettings {
      */
 
     @Override
+    public void setSafeBrowsingEnabled(boolean b) {
+        mWebSettings.setSafeBrowsingEnabled(b);
+    }
+
+    @Override
+    public boolean getSafeBrowsingEnabled() {
+        return mWebSettings.getSafeBrowsingEnabled();
+    }
+
+    @Override
     public void setSupportZoom(boolean support) {
         mWebSettings.setSupportZoom(support);
     }

@@ -10,6 +10,16 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    // https://stackoverflow.com/questions/20404476/how-to-define-common-android-properties-for-all-modules-using-gradle
+    // repo: https://maven.google.com
+    ext {
+        projectAppCompatVersion = 'com.android.support:appcompat-v7:26.1.0'
+        projectSupportVersion = 'com.android.support:support-v4:26.1.0'
+        projectCompileSdkVersion = 26
+        projectBuildToolsVersion = "26.0.2"
+        projectMinSdkVersion = 14
+        projectTargetSdkVersion = 26
+    }
 }
 
 allprojects {

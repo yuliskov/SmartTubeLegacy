@@ -4,14 +4,14 @@ android {
     // allow other modules import debug/release configurations
     publishNonDefault true
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion project.properties.projectCompileSdkVersion
+    buildToolsVersion project.properties.projectBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 3
-        versionName "0.1.1"
+        minSdkVersion project.properties.projectMinSdkVersion
+        targetSdkVersion project.properties.projectTargetSdkVersion
+        versionCode 4
+        versionName "0.4.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,6 +36,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile project.properties.projectAppCompatVersion
     compile 'com.noveogroup.android:android-logger:1.3.5'
 }

@@ -55,6 +55,18 @@ public class XWalkWebSettingsAdapter extends WebSettings {
 
     ////////////////////////////////////////////////////////////////////
 
+
+    @Override
+    public void setSafeBrowsingEnabled(boolean b) {
+        /* Not Implemented */
+    }
+
+    @Override
+    public boolean getSafeBrowsingEnabled() {
+        /* Not Implemented */
+        return false;
+    }
+
     @Override
     public void setSupportZoom(boolean support) {
         mXWalkSettings.setSupportZoom(support);

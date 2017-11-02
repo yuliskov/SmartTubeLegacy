@@ -2,6 +2,7 @@
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+	'MiBOX3 (JurassicPark)': 'mp4', // Xiaomi mibox3 S905 (github)
 	'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
 	'MiTV3S-43 (hancock)': 'webm', // MiTV3S 43" ???
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)

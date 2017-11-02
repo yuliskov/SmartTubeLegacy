@@ -79,7 +79,7 @@ public class ControllerEventListener implements Controller.EventListener {
     @Override
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
-        mLoadingManager.hide();
+        mLoadingManager.hide(tab);
         checkForUpdatesAfterDelay();
     }
 
@@ -145,21 +145,14 @@ public class ControllerEventListener implements Controller.EventListener {
         updateChecker.forceCheckForUpdates();
     }
     private class LoadingManager {
-
         private final View mLoadingWidget;
-        private FrameLayout mWrapper;
 
         public LoadingManager(Context ctx) {
-            this(ctx, null);
-        }
-
-        public LoadingManager(Context ctx, Tab tab) {
             LayoutInflater li = LayoutInflater.from(ctx);
             mLoadingWidget = li.inflate(R.layout.loading_main, null);
-            initTab(tab);
         }
 
-        private void initTab(Tab tab) {
+        private void showHideLoading(Tab tab, boolean add) {
             if (tab == null) {
                 return;
             }
@@ -167,25 +160,25 @@ public class ControllerEventListener implements Controller.EventListener {
             if (container == null) {
                 return;
             }
-            mWrapper = (FrameLayout) container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
-            mWrapper.removeView(mLoadingWidget);
-            mWrapper.addView(mLoadingWidget);
+            FrameLayout wrapper = container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
+
+            if (add) {
+                wrapper.addView(mLoadingWidget);
+            } else {
+                wrapper.removeView(mLoadingWidget);
+            }
+
         }
 
         public void show(Tab tab) {
-            initTab(tab);
-            show();
+            showHideLoading(tab, true);
         }
 
-        public void show() {
-            mLoadingWidget.setVisibility(View.VISIBLE);
-        }
-
-        public void hide() {
+        public void hide(final Tab tab) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mLoadingWidget.setVisibility(View.GONE);
+                    showHideLoading(tab, false);
                 }
             }, 500);
         }
