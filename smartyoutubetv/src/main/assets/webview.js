@@ -14,7 +14,7 @@ applyCodecFixes({
 	'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
 	'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
 	'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
-	'NG3128HD': 'webm, mp4', // (github)
+	'NG3128HD': 'webm, mp4', // (github > issues)
 	't95m': '', // (gmail) 
 	'32T18': '', // FAMILY GENERATION T18 BY (gmail)
 	'mt5882': '', // Generic Android on mt5882 (gmail)
