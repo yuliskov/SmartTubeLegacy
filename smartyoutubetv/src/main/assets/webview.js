@@ -4,6 +4,7 @@ addExitEvent();
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+    '3719C (Hi3719CV100)': 'mp4', // SYTV > Disqus
     'MiBOX3 (JurassicPark)': 'webm', // Xiaomi mibox3 S905 (github)
 	'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
 	'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
