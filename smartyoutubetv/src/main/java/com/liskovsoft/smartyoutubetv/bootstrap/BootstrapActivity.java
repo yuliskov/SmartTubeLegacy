@@ -20,13 +20,12 @@ public class BootstrapActivity extends ActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         // do it before view instantiation
         setupLang();
+        tryToRestoreLastActivity();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootstrap);
 
         setupCrashLogs();
-        //checkForUpdates();
-        tryToRestoreLastActivity();
     }
 
     private void tryToRestoreLastActivity() {
@@ -35,17 +34,6 @@ public class BootstrapActivity extends ActivityBase {
         if (bootstrapActivityName != null) {
             startActivity(this, bootstrapActivityName);
         }
-    }
-
-    private void checkForUpdates() {
-        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
-        AppUpdateChecker updateChecker = new AppUpdateChecker(this, sUpdateUrl, new OnUpdateDialog(this, getString(R.string.app_name)));
-        updateChecker.forceCheckForUpdates();
-    }
-
-    private void displayLocaleScript() {
-        String script = LocaleUtility.getScript(Locale.getDefault());
-        Toast.makeText(this, script, Toast.LENGTH_LONG).show();
     }
 
     private void setupCrashLogs() {
