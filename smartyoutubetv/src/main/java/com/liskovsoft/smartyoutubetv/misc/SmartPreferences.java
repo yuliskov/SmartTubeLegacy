@@ -31,7 +31,7 @@ public final class SmartPreferences {
     }
 
     public VideoFormat getSelectedFormat() {
-        String name = mPrefs.getString(VIDEO_FORMAT_NAME, "720p");
+        String name = mPrefs.getString(VIDEO_FORMAT_NAME, "Auto");
         return VideoFormat.fromName(name);
     }
 
