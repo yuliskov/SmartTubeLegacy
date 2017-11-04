@@ -1,11 +1,11 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.SwitchResolutionEvent;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
@@ -29,7 +29,8 @@ public class VideoInfoInterceptor extends RequestInterceptor {
     @Override
     public boolean test(String url) {
         // trying to manipulate with video formats
-        if (url.contains("get_video_info")) {
+        if (url.contains("get_video_info") &&
+            mSelectedFormat != VideoFormat._Auto_) {
             return true;
         }
         return false;

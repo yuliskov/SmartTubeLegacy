@@ -338,18 +338,6 @@ function createQualityButtonsRow2(videoFormats) {
     return container;
 }
 
-// function createQualityButtonsRow() {
-//     return createElement(
-//     '<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1"> \
-//         <div class="new-list-container horizontal" style="margin-left: 0em;"> \
-//             <div class="toggle-button" tabindex="-1" data-itag="278" style="min-width: 2.3em; width: initial;">144p</div> \
-//             <div class="toggle-button" tabindex="-1" data-itag="134" style="min-width: 2.3em; width: initial;">360p</div> \
-//             <div class="toggle-button" tabindex="-1" data-itag="136" style="min-width: 2.3em; width: initial;">720p</div> \
-//             <div class="toggle-button" tabindex="-1" data-itag="137" style="min-width: 2.3em; width: initial;">1080p</div> \
-//         </div> \
-//     </div>');
-// }
-
 ///// Remote Controller Navigation Handling /////
 
 function sortButtons(nodes) {
@@ -688,7 +676,7 @@ function addQualityControls() {
         return;
 
     // setup default, before 'videoformats' event is fired
-    setupQualityButtons([{name: '144p'},{name: '360p'},{name: '720p'},{name: '1080p'}]);
+    setupQualityButtons([{name: '144p'},{name: '360p'},{name: '720p'},{name: 'Auto', selected: true}]);
 
     document.addEventListener('videoformats', function(event){console.log('videoformats event fired'); setupQualityButtons(event.data)});
 

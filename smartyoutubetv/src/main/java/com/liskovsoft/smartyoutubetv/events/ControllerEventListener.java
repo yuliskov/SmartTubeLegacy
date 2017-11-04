@@ -18,7 +18,7 @@ import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormatInjector;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors.GenericEventResourceInjector;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;

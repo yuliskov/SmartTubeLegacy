@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoInfoInterceptor;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoInfoInterceptor;
 
 import java.util.ArrayList;
 

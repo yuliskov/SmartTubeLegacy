@@ -3,8 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoKeys;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoFormat;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormat;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'

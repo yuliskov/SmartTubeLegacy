@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv;
 
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.VideoInfoParser;
-import com.liskovsoft.smartyoutubetv.youtubeinfoparser.YouTubeVideoInfoParser;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoInfoParser;
+import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.YouTubeVideoInfoParser;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.youtubeinfoparser.events;
+package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events;
 
 public class SupportedVideoFormatsEvent {
     private final String mFormats;
