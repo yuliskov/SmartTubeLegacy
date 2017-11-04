@@ -51,11 +51,6 @@ public class MyWebViewClientDecorator extends WebViewClient {
             return mInterceptor.intercept(url);
         }
 
-        if (AdAwayClient.isAd(url)) {
-            // block url
-            return new WebResourceResponse(null, null, null);
-        }
-
         return null;
     }
 

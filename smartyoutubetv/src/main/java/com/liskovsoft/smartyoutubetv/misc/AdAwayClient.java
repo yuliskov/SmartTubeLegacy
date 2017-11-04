@@ -1,7 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 public class AdAwayClient {
-    private static final String[] mAdAwayList = {"googleads.g.doubleclick.net",
+    private static final String[] mAdAwayList = {
+            "googleads.g.doubleclick.net",
             "pagead.l.doubleclick.net",
             "ad.doubleclick.net",
             "partnerad.l.doubleclick.net",
@@ -13,9 +14,7 @@ public class AdAwayClient {
             "www.googleadservices.com",
             "syndication.exoclick.com",
             "ads.exoclick.com",
-            "cdn11.contentabc.com",
-            // button sounds
-            "youtube.com/s/tv/html5/*/sound"
+            "cdn11.contentabc.com"
     };
 
 
