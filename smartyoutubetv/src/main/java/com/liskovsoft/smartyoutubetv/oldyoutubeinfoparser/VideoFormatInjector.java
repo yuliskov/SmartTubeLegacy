@@ -54,7 +54,7 @@ public class VideoFormatInjector extends ResourceInjectorBase {
             sortedSet.remove(VideoFormat._480p_);
         }
         if (sortedSet.size() > 5) {
-            sortedSet.remove(VideoFormat._720p_);
+            sortedSet.remove(VideoFormat._360p_);
         }
         return sortedSet;
     }

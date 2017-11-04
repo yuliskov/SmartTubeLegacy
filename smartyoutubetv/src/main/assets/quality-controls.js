@@ -676,7 +676,7 @@ function addQualityControls() {
         return;
 
     // setup default, before 'videoformats' event is fired
-    setupQualityButtons([{name: '144p'},{name: '360p'},{name: '720p'},{name: 'Auto', selected: true}]);
+    setupQualityButtons([{name: '144p'},{name: '360p'},{name: '720p'},{name: '1080p'},{name: 'Auto', selected: true}]);
 
     document.addEventListener('videoformats', function(event){console.log('videoformats event fired'); setupQualityButtons(event.data)});
 
