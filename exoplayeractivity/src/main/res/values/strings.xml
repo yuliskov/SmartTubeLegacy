@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_options_btn">Options</string>
+    <string name="player_options_off">Options Off</string>
+    <string name="player_options_on">Options On</string>
+</resources>

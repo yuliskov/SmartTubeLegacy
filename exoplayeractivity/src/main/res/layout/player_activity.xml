@@ -28,7 +28,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="#88000000"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:paddingLeft="@dimen/player_main_padding"
+      android:paddingRight="@dimen/player_main_padding">
 
     <TextView android:id="@+id/debug_text_view"
         android:layout_width="match_parent"

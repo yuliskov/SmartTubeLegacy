@@ -20,11 +20,28 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
+    <style name="ExoMediaToggleButton">
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/exo_media_button_height</item>
+        <item name="android:padding">@dimen/exo_media_button_margin</item>
+    </style>
+
     <style name="ExoMediaButton">
         <item name="android:background">@null</item>
         <item name="android:layout_width">@dimen/exo_media_button_width</item>
         <item name="android:layout_height">@dimen/exo_media_button_height</item>
-        <item name="android:layout_margin">@dimen/exo_media_button_margin</item>
+        <item name="android:padding">@dimen/exo_media_button_margin</item>
+    </style>
+
+    <style name="ExoMediaButton.Like">
+        <item name="android:src">@drawable/exo_controls_fastforward</item>
+        <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
+    </style>
+
+    <style name="ExoMediaButton.Dislike">
+        <item name="android:src">@drawable/exo_controls_fastforward</item>
+        <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
     </style>
     
     <style name="ExoMediaButton.FastForward">
