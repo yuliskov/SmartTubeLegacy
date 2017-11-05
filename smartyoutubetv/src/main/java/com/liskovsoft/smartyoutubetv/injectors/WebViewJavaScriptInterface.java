@@ -33,6 +33,7 @@ public class WebViewJavaScriptInterface {
         mTab = tab;
     }
 
+    // TODO: not called in Android 8.0 (api 26)
     /*
      * This method can be called from Android. @JavascriptInterface
      * required after SDK version 17.

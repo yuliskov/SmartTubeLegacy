@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.view.View;
@@ -61,7 +60,7 @@ public class BootstrapButton extends LinearLayout {
 
     private void init() {
         inflate();
-        applyAttributes();
+        applyDefaultAttributes();
         transferClicks();
         setOnFocus();
         calculateTextSize();
@@ -77,13 +76,15 @@ public class BootstrapButton extends LinearLayout {
         makeUnfocused();
     }
 
-    private void applyAttributes() {
+    private void applyDefaultAttributes() {
         if (mMainIcon != null) {
             image.setImageDrawable(mMainIcon);
         }
         if (mTitleText != null) {
             text.setText(mTitleText);
         }
+        setFocusable(false);
+        setClickable(false);
     }
 
     private void setOnFocus() {
