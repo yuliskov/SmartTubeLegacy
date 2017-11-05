@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="exo_media_button_height">52dp</dimen>
+    <dimen name="exo_media_button_width">52dp</dimen>
+    <dimen name="exo_media_button_margin">8dp</dimen>
+</resources>
