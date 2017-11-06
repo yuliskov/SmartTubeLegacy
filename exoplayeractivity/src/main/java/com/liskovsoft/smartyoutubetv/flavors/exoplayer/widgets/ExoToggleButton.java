@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import com.liskovsoft.exoplayeractivity.R;
 
@@ -55,6 +57,25 @@ public class ExoToggleButton extends LinearLayout {
 
     private void applyDefaultAttributes() {
         setOrientation(LinearLayout.VERTICAL);
+        applyDefaultDimens();
+        commonAttrs();
+    }
+
+    private void commonAttrs() {
+        setClickable(true);
+        setFocusable(true);
+        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        setWeightSum(1);
+    }
+
+    private void applyDefaultDimens() {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        if (layoutParams.width > 0) { // number == don't override
+            return;
+        }
+        layoutParams.width = getResources().getInteger(R.dimen.exo_media_button_width);
+        layoutParams.height = getResources().getInteger(R.dimen.exo_media_button_height);
+        setLayoutParams(layoutParams);
     }
 
     private void inflate() {
