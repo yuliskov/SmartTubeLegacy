@@ -4,6 +4,7 @@ addExitEvent();
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+    'OzoneHD (m201)': 'webm', // 4pda
     '3719C (Hi3719CV100)': 'webm', // SYTV > Disqus
     'MiTV3S-48 (hancock)': 'webm', // MiTV3S 48 (4pda)
     'MiBOX3 (JurassicPark)': 'webm', // Xiaomi mibox3 S905 (github)
