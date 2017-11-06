@@ -86,6 +86,21 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ExoButton
+                android:id="@id/exo_rew"
+                android:image="@drawable/exo_controls_rewind"
+                android:desc="@string/rewind_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ExoToggleButton
+                android:id="@+id/exo_like"
+                android:imageOff="@drawable/exo_like_white"
+                android:imageOn="@drawable/exo_like_blue"
+                android:desc="@string/exo_like_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <ImageButton android:id="@id/exo_prev"
                          style="@style/ExoMediaButton.Previous"/>
 
@@ -117,8 +132,10 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <ImageButton android:id="@+id/exo_like"
-                         style="@style/ExoMediaButton.Like"/>
+
+
+            <!--<ImageButton android:id="@+id/exo_like"-->
+                         <!--style="@style/ExoMediaButton.Like"/>-->
 
             <ImageButton android:id="@+id/exo_dislike"
                          style="@style/ExoMediaButton.Dislike"/>
