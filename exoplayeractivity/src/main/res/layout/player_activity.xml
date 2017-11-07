@@ -27,7 +27,7 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="#88000000"
+      android:background="#00000000"
       android:orientation="vertical"
       android:paddingLeft="@dimen/player_main_padding"
       android:paddingRight="@dimen/player_main_padding">
@@ -61,7 +61,8 @@
               android:paddingLeft="4dp"
               android:paddingRight="4dp"
               android:textSize="20sp"
-              tools:ignore="SmallSp"/>
+              tools:ignore="SmallSp"
+              android:textColor="@color/white"/>
     <TextView android:id="@+id/video_title2"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

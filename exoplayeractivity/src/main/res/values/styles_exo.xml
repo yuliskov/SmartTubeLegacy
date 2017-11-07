@@ -28,10 +28,8 @@
     </style>
 
     <style name="ExoMediaButton">
-        <item name="android:background">@null</item>
-        <item name="android:layout_width">@dimen/exo_media_button_width</item>
-        <item name="android:layout_height">@dimen/exo_media_button_height</item>
-        <item name="android:padding">@dimen/exo_media_button_margin</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="ExoMediaButton.Like">
@@ -61,7 +59,9 @@
         <item name="android:contentDescription">@string/exo_controls_play_description</item>
     </style>
     <style name="ExoMediaButton.Previous">
-        <item name="android:src">@drawable/exo_controls_previous</item>
+        <item name="desc">@string/prev_video</item>
+        <item name="imageOn">@drawable/exo_controls_previous</item>
+        <item name="imageOff">@drawable/exo_controls_previous</item>
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
     </style>
     <style name="ExoMediaButton.Rewind">
@@ -69,4 +69,5 @@
         <item name="android:contentDescription">@string/exo_controls_rewind_description</item>
     </style>
 
+    <string name="prev_video">Prev video</string>
 </resources>

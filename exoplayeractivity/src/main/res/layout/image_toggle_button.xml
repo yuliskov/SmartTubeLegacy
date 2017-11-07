@@ -6,12 +6,17 @@
               android:weightSum="1"
               android:orientation="vertical">
     <ImageButton
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/btn_like_off"
         android:background="@color/transparent"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:id="@+id/image_button"
         android:layout_weight="0.30"/>
     <TextView
+        android:textSize="12sp"
+        android:textColor="@color/white"
         android:text="Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -28,6 +28,7 @@
               android:paddingBottom="@dimen/player_main_padding">
 
     <LinearLayout
+        android:id="@+id/time_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -44,13 +45,17 @@
                   android:paddingLeft="4dp"
                   android:paddingRight="4dp"
                   android:includeFontPadding="false"
-                  android:textColor="#FFBEBEBE"/>
+                  android:textColor="#ffffff"/>
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="26dp"/>
+            android:layout_height="26dp"
+            app:played_color="@color/red"
+            app:unplayed_color="@color/semi_white"
+            app:buffered_color="@color/white"
+            app:scrubber_color="@color/white"/>
 
         <TextView android:id="@id/exo_duration"
                   android:layout_width="wrap_content"
@@ -60,11 +65,12 @@
                   android:paddingLeft="4dp"
                   android:paddingRight="4dp"
                   android:includeFontPadding="false"
-                  android:textColor="#FFBEBEBE"/>
+                  android:textColor="#ffffff"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/buttons_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -88,14 +94,19 @@
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_like"
-                app:imageOff="@drawable/ic_search"
-                app:imageOn="@drawable/ic_search"
+                app:imageOff="@mipmap/btn_like_off"
+                app:imageOn="@mipmap/btn_like_on"
                 app:desc="@string/exo_like_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <ImageButton android:id="@id/exo_prev"
-                         style="@style/ExoMediaButton.Previous"/>
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:id="@id/exo_prev"
+                app:imageOff="@drawable/exo_controls_previous"
+                app:imageOn="@drawable/exo_controls_previous"
+                app:desc="@string/prev_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <!--<ImageButton android:id="@id/exo_rew"-->
             <!--style="@style/ExoMediaButton.Rewind"/>-->

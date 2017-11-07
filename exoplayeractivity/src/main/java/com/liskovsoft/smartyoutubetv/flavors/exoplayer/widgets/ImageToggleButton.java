@@ -17,7 +17,7 @@ public class ImageToggleButton extends LinearLayout {
     private Drawable mImageOff;
     private String mDescText;
     private TextView mDescView;
-    private ImageButton mImageToggle;
+    private ImageButton mImageButton;
     private boolean mIsChecked;
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -54,28 +54,20 @@ public class ImageToggleButton extends LinearLayout {
 
     private void init() {
         inflate();
-        applyDefaultAttributes();
+        applyCommonProps();
         setOnFocus();
-        //setDefaultState();
+        setOnClick();
+        initElems();
+        makeUnfocused();
     }
 
-    private void inflate() {
-        inflate(getContext(), R.layout.image_toggle_button, this);
-        mDescView = (TextView) findViewById(R.id.description);
-        mImageToggle = (ImageButton) findViewById(R.id.image_button);
-    }
-
-    private void applyDefaultAttributes() {
-        setOrientation(LinearLayout.VERTICAL);
-        // applyDefaultDimens();
-        commonAttrs();
-        initToggleAndDesc();
-    }
-
-    private void commonAttrs() {
-        setClickable(true);
-        setFocusable(true);
-        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    private void setOnClick() {
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle();
+            }
+        });
     }
 
     private void setOnFocus() {
@@ -91,21 +83,34 @@ public class ImageToggleButton extends LinearLayout {
         });
     }
 
+    private void inflate() {
+        inflate(getContext(), R.layout.image_toggle_button, this);
+        mDescView = (TextView) findViewById(R.id.description);
+        mImageButton = (ImageButton) findViewById(R.id.image_button);
+    }
+
+    private void applyCommonProps() {
+        setOrientation(LinearLayout.VERTICAL);
+        setClickable(true);
+        setFocusable(true);
+        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    }
+
     private void makeUnfocused() {
         mDescView.setText("");
-        mImageToggle.setBackgroundResource(R.color.transparent);
+        mImageButton.setBackgroundResource(R.color.transparent);
     }
 
     private void makeFocused() {
         mDescView.setText(mDescText);
-        mImageToggle.setBackgroundResource(R.color.white_semitransparent);
+        mImageButton.setBackgroundResource(R.color.semi_white);
     }
 
-    private void initToggleAndDesc() {
+    private void initElems() {
         if (isChecked()) {
-            mImageToggle.setImageDrawable(mImageOn);
+            mImageButton.setImageDrawable(mImageOn);
         } else {
-            mImageToggle.setImageDrawable(mImageOff);
+            mImageButton.setImageDrawable(mImageOff);
         }
     }
 
@@ -115,6 +120,7 @@ public class ImageToggleButton extends LinearLayout {
     
     private void toggle() {
         mIsChecked = !mIsChecked;
+        initElems();
     }
 
     private void applyDefaultDimens() {

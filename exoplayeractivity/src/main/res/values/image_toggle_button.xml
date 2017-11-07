@@ -7,10 +7,11 @@
         <attr name="desc" format="string"/>
     </declare-styleable>
 
-    <color name="white">#ffffffff</color>
-    <color name="white_semitransparent">#96ffffff</color>
-    <color name="black">#ff000000</color>
-    <color name="red">#ffff0000</color>
+    <color name="white">#ffffff</color>
+    <color name="semi_white">#7dffffff</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
     <color name="transparent">#00ffffff</color>
+    <color name="light_blue">#2793e6</color>
 
 </resources>
