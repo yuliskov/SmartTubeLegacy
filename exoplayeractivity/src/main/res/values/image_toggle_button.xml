@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ImageToggleButton">
+        <attr name="image" format="reference"/>
+        <attr name="imageOff" format="reference"/>
+        <attr name="imageOn" format="reference"/>
+        <attr name="desc" format="string"/>
+    </declare-styleable>
+
+    <color name="white">#ffffffff</color>
+    <color name="white_semitransparent">#96ffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="red">#ffff0000</color>
+    <color name="transparent">#00ffffff</color>
+
+</resources>

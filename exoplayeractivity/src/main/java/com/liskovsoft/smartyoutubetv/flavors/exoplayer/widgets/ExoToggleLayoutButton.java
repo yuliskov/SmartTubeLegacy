@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class ExoToggleLayoutButton extends ExoToggleButton {
+public class ExoToggleLayoutButton extends ImageToggleButton {
     public ExoToggleLayoutButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

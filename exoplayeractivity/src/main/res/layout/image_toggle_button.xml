@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/exo_media_button_width"
+              android:layout_height="@dimen/exo_media_button_height"
+              android:gravity="center_horizontal"
+              android:weightSum="1"
+              android:orientation="vertical">
+    <ImageButton
+        android:background="@color/transparent"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:id="@+id/image_button"
+        android:layout_weight="0.30"/>
+    <TextView
+        android:text="Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"/>
+</LinearLayout>

@@ -1,0 +1,132 @@
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.liskovsoft.exoplayeractivity.R;
+
+public class ImageToggleButton extends LinearLayout {
+    private Drawable mImage;
+    private Drawable mImageOn;
+    private Drawable mImageOff;
+    private String mDescText;
+    private TextView mDescView;
+    private ImageButton mImageToggle;
+    private boolean mIsChecked;
+
+    public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public ImageToggleButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.ImageToggleButton,
+                0, 0);
+
+        try {
+            mImage = a.getDrawable(R.styleable.ImageToggleButton_image);
+            mImageOn = a.getDrawable(R.styleable.ImageToggleButton_imageOn);
+            mImageOff = a.getDrawable(R.styleable.ImageToggleButton_imageOff);
+            mDescText = a.getString(R.styleable.ImageToggleButton_desc);
+        } finally {
+            a.recycle();
+        }
+
+        init();
+    }
+
+    public ImageToggleButton(Context context) {
+        super(context);
+    }
+
+    private void init() {
+        inflate();
+        applyDefaultAttributes();
+        setOnFocus();
+        //setDefaultState();
+    }
+
+    private void inflate() {
+        inflate(getContext(), R.layout.image_toggle_button, this);
+        mDescView = (TextView) findViewById(R.id.description);
+        mImageToggle = (ImageButton) findViewById(R.id.image_button);
+    }
+
+    private void applyDefaultAttributes() {
+        setOrientation(LinearLayout.VERTICAL);
+        // applyDefaultDimens();
+        commonAttrs();
+        initToggleAndDesc();
+    }
+
+    private void commonAttrs() {
+        setClickable(true);
+        setFocusable(true);
+        setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    private void setOnFocus() {
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    makeFocused();
+                } else {
+                    makeUnfocused();
+                }
+            }
+        });
+    }
+
+    private void makeUnfocused() {
+        mDescView.setText("");
+        mImageToggle.setBackgroundResource(R.color.transparent);
+    }
+
+    private void makeFocused() {
+        mDescView.setText(mDescText);
+        mImageToggle.setBackgroundResource(R.color.white_semitransparent);
+    }
+
+    private void initToggleAndDesc() {
+        if (isChecked()) {
+            mImageToggle.setImageDrawable(mImageOn);
+        } else {
+            mImageToggle.setImageDrawable(mImageOff);
+        }
+    }
+
+    private boolean isChecked() {
+        return mIsChecked;
+    }
+    
+    private void toggle() {
+        mIsChecked = !mIsChecked;
+    }
+
+    private void applyDefaultDimens() {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        if (layoutParams == null) {
+            float width = getResources().getDimension(R.dimen.exo_media_button_width);
+            float height = getResources().getDimension(R.dimen.exo_media_button_height);
+            int realWidth = Utils.convertDpToPixel(width, getContext());
+            int realHeight = Utils.convertDpToPixel(height, getContext());
+            layoutParams = new ViewGroup.LayoutParams(new LayoutParams(realWidth, realHeight));
+            setLayoutParams(layoutParams);
+            return;
+        }
+    }
+}
