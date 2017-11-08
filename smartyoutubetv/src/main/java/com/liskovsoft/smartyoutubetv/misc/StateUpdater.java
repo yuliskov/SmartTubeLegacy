@@ -1,13 +1,19 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import com.liskovsoft.browser.Controller;
+import android.content.Context;
+import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 
 public class StateUpdater {
     private final Controller mController;
+    private final Context mContext;
 
-    public StateUpdater(Controller controller) {
+    public StateUpdater(Controller controller, Context ctx) {
         mController = controller;
+        mContext = ctx;
     }
 
     public void fixPlaylistUrl(Bundle state) {
@@ -32,6 +38,17 @@ public class StateUpdater {
     public void updateState(Bundle state) {
         if (isThisPlaylistBundle(state))
             state.clear();
+        if (isThisActivityStartedFormBootstrap(state))
+            state.clear();
+    }
+
+    private boolean isThisActivityStartedFormBootstrap(Bundle state) {
+        if (state == null) {
+            return false;
+        }
+        Intent intent = ((AppCompatActivity) mContext).getIntent();
+        boolean fromBootstrap = intent.getBooleanExtra(BootstrapActivity.FROM_BOOTSTRAP, false);
+        return fromBootstrap;
     }
 
     private boolean isThisPlaylistBundle(Bundle state) {

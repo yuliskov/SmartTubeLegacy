@@ -33,41 +33,41 @@
     </style>
 
     <style name="ExoMediaButton.Like">
-        <item name="android:src">@drawable/exo_controls_fastforward</item>
+        <item name="desc">@string/like</item>
+        <item name="imageOff">@mipmap/btn_like_off</item>
+        <item name="imageOn">@mipmap/btn_like_on</item>
         <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
     </style>
 
     <style name="ExoMediaButton.Dislike">
-        <item name="android:src">@drawable/exo_controls_fastforward</item>
+        <item name="desc">@string/dislike</item>
+        <item name="imageOff">@mipmap/btn_dislike_off</item>
+        <item name="imageOn">@mipmap/btn_dislike_on</item>
         <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
     </style>
     
-    <style name="ExoMediaButton.FastForward">
-        <item name="android:src">@drawable/exo_controls_fastforward</item>
-        <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
-    </style>
     <style name="ExoMediaButton.Next">
-        <item name="android:src">@drawable/exo_controls_next</item>
+        <item name="desc">@string/next_video</item>
+        <item name="imageOff">@mipmap/btn_next</item>
+        <item name="imageOn">@mipmap/btn_next</item>
         <item name="android:contentDescription">@string/exo_controls_next_description</item>
     </style>
     <style name="ExoMediaButton.Pause">
-        <item name="android:src">@drawable/exo_controls_pause</item>
+        <item name="desc">@string/pause</item>
+        <item name="imageOff">@mipmap/btn_pause</item>
+        <item name="imageOn">@mipmap/btn_pause</item>
         <item name="android:contentDescription">@string/exo_controls_pause_description</item>
     </style>
     <style name="ExoMediaButton.Play">
-        <item name="android:src">@drawable/exo_controls_play</item>
+        <item name="desc">@string/play</item>
+        <item name="imageOff">@mipmap/btn_play</item>
+        <item name="imageOn">@mipmap/btn_play</item>
         <item name="android:contentDescription">@string/exo_controls_play_description</item>
     </style>
     <style name="ExoMediaButton.Previous">
         <item name="desc">@string/prev_video</item>
-        <item name="imageOn">@drawable/exo_controls_previous</item>
-        <item name="imageOff">@drawable/exo_controls_previous</item>
+        <item name="imageOff">@mipmap/btn_prev</item>
+        <item name="imageOn">@mipmap/btn_prev</item>
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
     </style>
-    <style name="ExoMediaButton.Rewind">
-        <item name="android:src">@drawable/exo_controls_rewind</item>
-        <item name="android:contentDescription">@string/exo_controls_rewind_description</item>
-    </style>
-
-    <string name="prev_video">Prev video</string>
 </resources>

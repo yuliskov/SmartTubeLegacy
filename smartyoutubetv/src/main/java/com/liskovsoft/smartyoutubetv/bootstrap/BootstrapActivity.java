@@ -16,6 +16,8 @@ import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
 
 public class BootstrapActivity extends ActivityBase {
+    public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // do it before view instantiation
@@ -63,6 +65,8 @@ public class BootstrapActivity extends ActivityBase {
 
     private void startActivity(Context ctx, String clazz) {
         Intent intent = new Intent();
+        // value used in StateUpdater class
+        intent.putExtra(FROM_BOOTSTRAP, true);
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClassName(ctx, clazz);

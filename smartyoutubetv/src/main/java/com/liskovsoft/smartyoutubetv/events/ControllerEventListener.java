@@ -43,7 +43,7 @@ public class ControllerEventListener implements Controller.EventListener {
         mContext = context;
         mTranslator = translator;
         mLangUpdater = new LangUpdater(mContext);
-        mStateUpdater = new StateUpdater(null);
+        mStateUpdater = new StateUpdater(null, context);
         mLoadingManager = new LoadingManager(context);
     }
 

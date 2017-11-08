@@ -94,6 +94,8 @@ public class ImageToggleButton extends LinearLayout {
         setClickable(true);
         setFocusable(true);
         setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        // NOTE: disable background when using style attribute
+        setBackgroundDrawable(getResources().getDrawable(R.color.transparent));
     }
 
     private void makeUnfocused() {
