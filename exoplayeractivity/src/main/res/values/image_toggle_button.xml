@@ -4,6 +4,8 @@
         <attr name="image" format="reference"/>
         <attr name="imageOff" format="reference"/>
         <attr name="imageOn" format="reference"/>
+        <attr name="textOff" format="string"/>
+        <attr name="textOn" format="string"/>
         <attr name="desc" format="string"/>
     </declare-styleable>
 

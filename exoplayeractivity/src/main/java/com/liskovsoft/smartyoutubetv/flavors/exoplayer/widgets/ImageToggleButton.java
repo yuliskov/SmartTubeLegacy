@@ -6,19 +6,23 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.exoplayeractivity.R;
 
-public class ImageToggleButton extends LinearLayout {
-    private Drawable mImage;
-    private Drawable mImageOn;
-    private Drawable mImageOff;
-    private String mDescText;
-    private TextView mDescView;
-    private ImageButton mImageButton;
-    private boolean mIsChecked;
+public abstract class ImageToggleButton extends LinearLayout {
+    protected Drawable mImage;
+    protected Drawable mImageOn;
+    protected Drawable mImageOff;
+    protected String mDescText;
+    protected TextView mDescView;
+    protected ImageButton mImageButton;
+    protected boolean mIsChecked;
+    protected String mTextOn;
+    protected String mTextOff;
+    protected Button mTextButton;
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -40,6 +44,8 @@ public class ImageToggleButton extends LinearLayout {
             mImage = a.getDrawable(R.styleable.ImageToggleButton_image);
             mImageOn = a.getDrawable(R.styleable.ImageToggleButton_imageOn);
             mImageOff = a.getDrawable(R.styleable.ImageToggleButton_imageOff);
+            mTextOn = a.getString(R.styleable.ImageToggleButton_textOn);
+            mTextOff = a.getString(R.styleable.ImageToggleButton_textOff);
             mDescText = a.getString(R.styleable.ImageToggleButton_desc);
         } finally {
             a.recycle();
@@ -87,6 +93,7 @@ public class ImageToggleButton extends LinearLayout {
         inflate(getContext(), R.layout.image_toggle_button, this);
         mDescView = (TextView) findViewById(R.id.description);
         mImageButton = (ImageButton) findViewById(R.id.image_button);
+        mTextButton = (Button) findViewById(R.id.text_button);
     }
 
     private void applyCommonProps() {
@@ -100,21 +107,32 @@ public class ImageToggleButton extends LinearLayout {
 
     private void makeUnfocused() {
         mDescView.setText("");
-        mImageButton.setBackgroundResource(R.color.transparent);
+        onButtonUnfocused();
+        //mImageButton.setBackgroundResource(R.color.transparent);
     }
+
+    protected abstract void onButtonUnfocused();
 
     private void makeFocused() {
         mDescView.setText(mDescText);
-        mImageButton.setBackgroundResource(R.color.white_50);
+        onButtonFocused();
+        //mImageButton.setBackgroundResource(R.color.white_50);
     }
+
+    protected abstract void onButtonFocused();
 
     private void initElems() {
         if (isChecked()) {
-            mImageButton.setImageDrawable(mImageOn);
+            onButtonOn();
+            //mImageButton.setImageDrawable(mImageOn);
         } else {
-            mImageButton.setImageDrawable(mImageOff);
+            onButtonOff();
+            //mImageButton.setImageDrawable(mImageOff);
         }
     }
+
+    protected abstract void onButtonOn();
+    protected abstract void onButtonOff();
 
     private boolean isChecked() {
         return mIsChecked;

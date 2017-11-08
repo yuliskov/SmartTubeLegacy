@@ -4,7 +4,8 @@
               android:layout_height="@dimen/exo_media_button_height"
               android:gravity="center_horizontal"
               android:weightSum="1"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:background="@color/transparent">
     <ImageButton
         android:padding="10dp"
         android:scaleType="fitCenter"
@@ -14,6 +15,13 @@
         android:layout_height="38dp"
         android:id="@+id/image_button"
         android:layout_weight="0.30"/>
+    <Button
+        android:background="@color/transparent"
+        android:text="Hello World"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/text_button"/>
     <TextView
         android:textSize="12sp"
         android:textColor="@color/white"
