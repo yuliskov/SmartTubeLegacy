@@ -32,20 +32,6 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="ExoMediaButton.Like">
-        <item name="desc">@string/like</item>
-        <item name="imageOff">@mipmap/btn_like_off</item>
-        <item name="imageOn">@mipmap/btn_like_on</item>
-        <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
-    </style>
-
-    <style name="ExoMediaButton.Dislike">
-        <item name="desc">@string/dislike</item>
-        <item name="imageOff">@mipmap/btn_dislike_off</item>
-        <item name="imageOn">@mipmap/btn_dislike_on</item>
-        <item name="android:contentDescription">@string/exo_controls_fastforward_description</item>
-    </style>
-    
     <style name="ExoMediaButton.Next">
         <item name="desc">@string/next_video</item>
         <item name="imageOff">@mipmap/btn_next</item>
@@ -69,5 +55,29 @@
         <item name="imageOff">@mipmap/btn_prev</item>
         <item name="imageOn">@mipmap/btn_prev</item>
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+    </style>
+
+    <style name="ExoMediaButton.Like">
+        <item name="desc">@string/like</item>
+        <item name="imageOff">@mipmap/btn_like_off</item>
+        <item name="imageOn">@mipmap/btn_like_on</item>
+    </style>
+
+    <style name="ExoMediaButton.Dislike">
+        <item name="desc">@string/dislike</item>
+        <item name="imageOff">@mipmap/btn_dislike_off</item>
+        <item name="imageOn">@mipmap/btn_dislike_on</item>
+    </style>
+
+    <style name="ExoMediaButton.Subscribe">
+        <item name="desc">@string/subscribe</item>
+        <item name="imageOff">@mipmap/btn_subscribe_off</item>
+        <item name="imageOn">@mipmap/btn_subscribe_on</item>
+    </style>
+
+    <style name="ExoMediaButton.Stats">
+        <item name="desc">@string/stats</item>
+        <item name="imageOff">@mipmap/btn_stats_off</item>
+        <item name="imageOn">@mipmap/btn_stats_on</item>
     </style>
 </resources>

@@ -5,4 +5,6 @@
     <string name="play">Play</string>
     <string name="dislike">Dislike</string>
     <string name="like">Like</string>
+    <string name="stats">Stats</string>
+    <string name="subscribe">Subscribed</string>
 </resources>

@@ -93,16 +93,13 @@
             android:orientation="horizontal">
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-                android:id="@+id/exo_like"
-                style="@style/ExoMediaButton.Like"/>
-
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_prev"
                 style="@style/ExoMediaButton.Previous"/>
 
             <!--<ImageButton android:id="@id/exo_rew"-->
             <!--style="@style/ExoMediaButton.Rewind"/>-->
 
+            <!-- NOTE: must be ImageButton -->
             <ImageButton
                 android:id="@id/exo_repeat_toggle"
                 style="@style/ExoMediaButton"/>
@@ -132,13 +129,21 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-
-            <!--<ImageButton android:id="@+id/exo_like"-->
-            <!--style="@style/ExoMediaButton.Like"/>-->
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:id="@+id/exo_like"
+                style="@style/ExoMediaButton.Like"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_dislike"
                 style="@style/ExoMediaButton.Dislike"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:id="@+id/exo_subscribe"
+                style="@style/ExoMediaButton.Subscribe"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:id="@+id/exo_stats"
+                style="@style/ExoMediaButton.Stats"/>
 
         </LinearLayout>
 
