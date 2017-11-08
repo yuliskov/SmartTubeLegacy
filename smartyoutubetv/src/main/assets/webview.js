@@ -4,6 +4,7 @@ addExitEvent();
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+    'MiTV3S (pulpfiction)': 'webm', // MiTV3S 55/60 (4pda)
     'OzoneHD (m201)': 'webm', // 4pda
     '3719C (Hi3719CV100)': 'webm', // SYTV > Disqus
     'MiTV3S-48 (hancock)': 'webm', // MiTV3S 48 (4pda)
@@ -11,7 +12,6 @@ applyCodecFixes({
     'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
     'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
     'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
-    'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
     'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
     'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
