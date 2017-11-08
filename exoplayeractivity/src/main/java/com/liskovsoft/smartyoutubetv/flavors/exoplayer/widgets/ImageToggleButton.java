@@ -105,7 +105,7 @@ public class ImageToggleButton extends LinearLayout {
 
     private void makeFocused() {
         mDescView.setText(mDescText);
-        mImageButton.setBackgroundResource(R.color.semi_white);
+        mImageButton.setBackgroundResource(R.color.white_50);
     }
 
     private void initElems() {
