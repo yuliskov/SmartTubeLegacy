@@ -76,7 +76,7 @@
             android:layout_gravity="start"
             android:text="@string/player_options_btn"
             android:id="@+id/player_options_btn"
-            style="@style/ExoMediaToggleButton"
+            style="@style/ExoMediaButton.Options"
             android:textOff="@string/player_options_btn"
             android:textOn="@string/player_options_btn"/>
 

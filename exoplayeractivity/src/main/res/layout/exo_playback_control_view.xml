@@ -23,9 +23,7 @@
               android:layoutDirection="ltr"
               android:background="@drawable/exo_background_bottom"
               android:orientation="vertical"
-              android:paddingLeft="@dimen/player_main_padding"
-              android:paddingRight="@dimen/player_main_padding"
-              android:paddingBottom="@dimen/player_main_padding">
+              android:padding="@dimen/player_main_padding">
 
     <LinearLayout
         android:id="@+id/time_bar"
@@ -34,8 +32,8 @@
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/player_main_padding"
-        android:paddingRight="@dimen/player_main_padding">
+        android:paddingLeft="@dimen/player_second_padding"
+        android:paddingRight="@dimen/player_second_padding">
 
         <TextView android:id="@id/exo_position"
                   android:layout_width="wrap_content"
@@ -76,7 +74,9 @@
         android:gravity="start"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/player_second_padding"
+        android:paddingRight="@dimen/player_second_padding">
 
         <!--<ToggleButton-->
         <!--android:layout_gravity="start"-->
@@ -86,7 +86,12 @@
         <!--android:textOff="@string/player_options_btn"-->
         <!--android:textOn="@string/player_options_btn"/>-->
 
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton2
+            android:id="@+id/player_options_btn"
+            style="@style/ExoMediaButton.Options"/>
+
         <LinearLayout
+            android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

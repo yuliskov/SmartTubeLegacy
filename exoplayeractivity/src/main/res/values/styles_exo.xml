@@ -20,11 +20,12 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
-    <style name="ExoMediaToggleButton">
-        <item name="android:background">@null</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/exo_media_button_height</item>
-        <item name="android:padding">@dimen/exo_media_button_padding</item>
+    <style name="ExoMediaButton.Options">
+        <item name="layout1">@+id/layout1</item>
+        <item name="layout2">@+id/player_options_row</item>
+        <item name="textOff">@string/options</item>
+        <item name="textOn">@string/options</item>
+        <item name="android:layout_gravity">start</item>
     </style>
 
     <style name="ExoMediaButton">
@@ -80,4 +81,5 @@
         <item name="imageOff">@mipmap/btn_stats_off</item>
         <item name="imageOn">@mipmap/btn_stats_on</item>
     </style>
+    <string name="options">Options</string>
 </resources>

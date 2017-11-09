@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import com.liskovsoft.exoplayeractivity.R;
 
 public class TextToggleButton extends ImageToggleButton {
     public TextToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -29,21 +30,21 @@ public class TextToggleButton extends ImageToggleButton {
 
     @Override
     protected void onButtonUnfocused() {
-
+        mTextButton.setBackgroundResource(R.color.transparent);
     }
 
     @Override
     protected void onButtonFocused() {
-
+        mTextButton.setBackgroundResource(R.color.white_50);
     }
 
     @Override
-    protected void onButtonOn() {
-
+    protected void onButtonUnchecked() {
+        mTextButton.setText(mTextOff);
     }
 
     @Override
-    protected void onButtonOff() {
-
+    protected void onButtonChecked() {
+        mTextButton.setText(mTextOn);
     }
 }

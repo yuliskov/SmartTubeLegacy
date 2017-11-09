@@ -39,12 +39,12 @@ public class ImageToggleButton2 extends ImageToggleButton {
     }
 
     @Override
-    protected void onButtonOn() {
+    protected void onButtonChecked() {
         mImageButton.setImageDrawable(mImageOn);
     }
 
     @Override
-    protected void onButtonOff() {
+    protected void onButtonUnchecked() {
         mImageButton.setImageDrawable(mImageOff);
     }
 }

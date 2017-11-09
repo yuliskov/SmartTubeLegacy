@@ -17,4 +17,10 @@
     <color name="transparent">#00ffffff</color>
     <color name="light_blue">#2793e6</color>
 
+    <dimen name="compound_button_width">38dp</dimen>
+    <dimen name="compound_button_height">38dp</dimen>
+    <dimen name="compound_button_wrapper_width">60dp</dimen>
+    <dimen name="compound_button_wrapper_height">60dp</dimen>
+    <dimen name="compound_button_padding">10dp</dimen>
+    <dimen name="compound_button_text_size">12sp</dimen>
 </resources>

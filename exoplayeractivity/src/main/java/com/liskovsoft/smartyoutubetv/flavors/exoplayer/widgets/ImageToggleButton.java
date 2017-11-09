@@ -123,18 +123,18 @@ public abstract class ImageToggleButton extends LinearLayout {
 
     private void initElems() {
         if (isChecked()) {
-            onButtonOn();
+            onButtonChecked();
             //mImageButton.setImageDrawable(mImageOn);
         } else {
-            onButtonOff();
+            onButtonUnchecked();
             //mImageButton.setImageDrawable(mImageOff);
         }
     }
 
-    protected abstract void onButtonOn();
-    protected abstract void onButtonOff();
+    protected abstract void onButtonUnchecked();
+    protected abstract void onButtonChecked();
 
-    private boolean isChecked() {
+    protected boolean isChecked() {
         return mIsChecked;
     }
     

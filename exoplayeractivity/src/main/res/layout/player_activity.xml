@@ -29,9 +29,7 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       android:background="@drawable/exo_background_top"
-      android:paddingTop="@dimen/player_main_padding"
-      android:paddingLeft="@dimen/player_main_padding"
-      android:paddingRight="@dimen/player_main_padding">
+      android:padding="@dimen/player_main_padding">
 
     <LinearLayout android:id="@+id/controls_root"
         android:layout_width="match_parent"
