@@ -6,7 +6,9 @@
               android:gravity="center_horizontal"
               android:weightSum="1"
               android:orientation="vertical"
-              android:background="@color/transparent">
+              android:background="@color/transparent"
+              android:id="@+id/toggle_button_wrapper"
+              android:clickable="true">
     <ImageButton
         android:padding="@dimen/compound_button_padding"
         android:scaleType="fitCenter"

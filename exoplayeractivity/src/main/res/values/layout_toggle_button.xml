@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="TextToggleButton2">
+    <declare-styleable name="LayoutToggleButton">
         <attr name="layout1" format="reference"/>
         <attr name="layout2" format="reference"/>
     </declare-styleable>

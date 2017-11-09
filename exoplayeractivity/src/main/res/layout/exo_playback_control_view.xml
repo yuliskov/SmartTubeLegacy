@@ -86,7 +86,7 @@
         <!--android:textOff="@string/player_options_btn"-->
         <!--android:textOn="@string/player_options_btn"/>-->
 
-        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton2
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
             android:id="@+id/player_options_btn"
             style="@style/ExoMediaButton.Options"/>
 

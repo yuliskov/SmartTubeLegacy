@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
 
 public abstract class ImageToggleButton extends LinearLayout {
@@ -23,7 +24,8 @@ public abstract class ImageToggleButton extends LinearLayout {
     protected String mTextOn;
     protected String mTextOff;
     protected Button mTextButton;
-
+    protected LinearLayout mToggleButtonWrapper;
+    
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -74,6 +76,20 @@ public abstract class ImageToggleButton extends LinearLayout {
                 toggle();
             }
         });
+
+        //mImageButton.setOnClickListener(new OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        Toast.makeText(getContext(), "on click", Toast.LENGTH_LONG).show();
+        //    }
+        //});
+        //
+        //mToggleButtonWrapper.setOnClickListener(new OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        Toast.makeText(getContext(), "on click 2222", Toast.LENGTH_LONG).show();
+        //    }
+        //});
     }
 
     private void setOnFocus() {
@@ -94,6 +110,7 @@ public abstract class ImageToggleButton extends LinearLayout {
         mDescView = (TextView) findViewById(R.id.description);
         mImageButton = (ImageButton) findViewById(R.id.image_button);
         mTextButton = (Button) findViewById(R.id.text_button);
+        mToggleButtonWrapper = (LinearLayout) findViewById(R.id.toggle_button_wrapper);
     }
 
     private void applyCommonProps() {
