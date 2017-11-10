@@ -90,6 +90,10 @@
             android:id="@+id/player_options_btn"
             style="@style/ExoMediaButton.Options"/>
 
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
+            android:id="@+id/player_quality_btn"
+            style="@style/ExoMediaButton.Quality"/>
+
         <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="match_parent"
@@ -149,6 +153,29 @@
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
                 android:id="@+id/exo_stats"
                 style="@style/ExoMediaButton.Stats"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/player_quality_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_video"
+                style="@style/ExoMediaButton.Video"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_audio"
+                style="@style/ExoMediaButton.Audio"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_retry"
+                style="@style/ExoMediaButton.Retry"/>
+
 
         </LinearLayout>
 

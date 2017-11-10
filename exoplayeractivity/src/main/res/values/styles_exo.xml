@@ -25,6 +25,16 @@
         <item name="layout2">@+id/player_options_row</item>
         <item name="textOff">@string/options</item>
         <item name="textOn">@string/options</item>
+        <item name="other_toggle">@+id/player_quality_btn</item>
+        <item name="android:layout_gravity">start</item>
+    </style>
+
+    <style name="ExoMediaButton.Quality">
+        <item name="layout1">@+id/layout1</item>
+        <item name="layout2">@+id/player_quality_row</item>
+        <item name="textOff">@string/quality</item>
+        <item name="textOn">@string/quality</item>
+        <item name="other_toggle">@+id/player_options_btn</item>
         <item name="android:layout_gravity">start</item>
     </style>
 
@@ -81,5 +91,22 @@
         <item name="imageOff">@mipmap/btn_stats_off</item>
         <item name="imageOn">@mipmap/btn_stats_on</item>
     </style>
+
+    <style name="ExoMediaButton.Video">
+        <item name="textOff">@string/video</item>
+        <item name="textOn">@string/video</item>
+    </style>
+
+    <style name="ExoMediaButton.Audio">
+        <item name="textOff">@string/audio</item>
+        <item name="textOn">@string/audio</item>
+    </style>
+
+    <style name="ExoMediaButton.Retry">
+        <item name="textOff">@string/retry</item>
+        <item name="textOn">@string/retry</item>
+    </style>
+
+
     <string name="options">Options</string>
 </resources>

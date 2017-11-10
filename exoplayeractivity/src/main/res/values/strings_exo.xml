@@ -1,6 +1,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name_exo">Smart YouTube TV 4K</string>
 
+    <string name="quality">Quality</string>
+
     <string name="video">Video</string>
 
     <string name="audio">Audio</string>
