@@ -78,14 +78,6 @@
         android:paddingLeft="@dimen/player_second_padding"
         android:paddingRight="@dimen/player_second_padding">
 
-        <!--<ToggleButton-->
-        <!--android:layout_gravity="start"-->
-        <!--android:text="@string/player_options_btn"-->
-        <!--android:id="@+id/player_options_btn"-->
-        <!--style="@style/ExoMediaToggleButton"-->
-        <!--android:textOff="@string/player_options_btn"-->
-        <!--android:textOn="@string/player_options_btn"/>-->
-
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
             android:id="@+id/player_options_btn"
             style="@style/ExoMediaButton.Options"/>
@@ -157,23 +149,23 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/player_quality_row"
+            android:id="@+id/controls_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-                android:id="@+id/exo_video"
-                style="@style/ExoMediaButton.Video"/>
+            <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
+                <!--android:id="@+id/exo_video"-->
+                <!--style="@style/ExoMediaButton.Video"/>-->
+
+            <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
+                <!--android:id="@+id/exo_audio"-->
+                <!--style="@style/ExoMediaButton.Audio"/>-->
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-                android:id="@+id/exo_audio"
-                style="@style/ExoMediaButton.Audio"/>
-
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-                android:id="@+id/exo_retry"
+                android:id="@+id/retry_button"
                 style="@style/ExoMediaButton.Retry"/>
 
 

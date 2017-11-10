@@ -63,6 +63,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -105,7 +106,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private SimpleExoPlayerView simpleExoPlayerView;
     private LinearLayout debugRootView;
     private TextView debugTextView;
-    private Button retryButton;
+    private TextToggleButton retryButton;
 
     private DataSource.Factory mediaDataSourceFactory;
     private SimpleExoPlayer player;
@@ -122,6 +123,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private EventListener mPlaybackEndListener;
     private TextView mVideoTitle;
     private TextView mVideoTitle2;
+    private LinearLayout mPlayerTopBar;
 
     // Activity lifecycle
 
@@ -141,7 +143,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         rootView.setOnClickListener(this);
         debugRootView = (LinearLayout) findViewById(R.id.controls_root);
         debugTextView = (TextView) findViewById(R.id.debug_text_view);
-        retryButton = (Button) findViewById(R.id.retry_button);
+        mPlayerTopBar = (LinearLayout) findViewById(R.id.player_top_bar);
+        retryButton = (TextToggleButton) findViewById(R.id.retry_button);
         retryButton.setOnClickListener(this);
 
         simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.player_view);
@@ -350,7 +353,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         } else if (view.getParent() == debugRootView) {
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
-                trackSelectionHelper.showSelectionDialog(this, ((Button) view).getText(), trackSelector.getCurrentMappedTrackInfo(), (int) view
+                trackSelectionHelper.showSelectionDialog(this, ((TextToggleButton) view).getText(), trackSelector.getCurrentMappedTrackInfo(), (int) view
                         .getTag());
             }
         }
@@ -360,10 +363,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onVisibilityChange(int visibility) {
-        debugRootView.setVisibility(visibility);
-        debugTextView.setVisibility(visibility);
-        mVideoTitle.setVisibility(visibility);
-        mVideoTitle2.setVisibility(visibility);
+        mPlayerTopBar.setVisibility(visibility);
+        //debugRootView.setVisibility(visibility);
+        //debugTextView.setVisibility(visibility);
+        //mVideoTitle.setVisibility(visibility);
+        //mVideoTitle2.setVisibility(visibility);
     }
 
     // Internal methods
@@ -713,6 +717,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     // User controls
 
+    // NOTE: dynamically create quality buttons
     private void updateButtonVisibilities() {
         debugRootView.removeAllViews();
 
@@ -731,7 +736,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
             if (trackGroups.length != 0) {
-                Button button = new Button(this);
+                TextToggleButton button = new TextToggleButton(this);
                 int label;
                 switch (player.getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
@@ -755,8 +760,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private void showControls() {
-        debugRootView.setVisibility(View.VISIBLE);
-        debugTextView.setVisibility(View.VISIBLE);
+        //debugRootView.setVisibility(View.VISIBLE);
+        //debugTextView.setVisibility(View.VISIBLE);
     }
 
     private void showToast(int messageId) {

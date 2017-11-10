@@ -30,7 +30,7 @@
 
     <style name="ExoMediaButton.Quality">
         <item name="layout1">@+id/layout1</item>
-        <item name="layout2">@+id/player_quality_row</item>
+        <item name="layout2">@+id/controls_root</item>
         <item name="textOff">@string/quality</item>
         <item name="textOn">@string/quality</item>
         <item name="android:layout_gravity">start</item>

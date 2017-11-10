@@ -20,17 +20,22 @@
         android:id="@+id/image_button"
         android:layout_weight="0.30"
         android:visibility="gone"/>
-    <Button
-        android:maxLines="1"
-        android:clickable="false"
-        android:textSize="@dimen/compound_button_text_size"
-        android:textColor="@color/white"
-        android:background="@color/transparent"
-        android:text="Hello World"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/compound_button_height"
-        android:visibility="visible"
-        android:id="@+id/text_button"/>
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp">
+        <Button
+            android:clickable="false"
+            android:textSize="@dimen/compound_button_text_size"
+            android:textColor="@color/white"
+            android:background="@color/transparent"
+            android:text="Hello World"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/compound_button_height"
+            android:visibility="visible"
+            android:id="@+id/text_button"/>
+    </LinearLayout>
     <TextView
         android:maxLines="1"
         android:textSize="@dimen/compound_button_text_size"

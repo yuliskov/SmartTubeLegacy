@@ -28,10 +28,12 @@ public abstract class ImageToggleButton extends LinearLayout {
     
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     public ImageToggleButton(Context context, AttributeSet attrs) {
@@ -58,6 +60,7 @@ public abstract class ImageToggleButton extends LinearLayout {
 
     public ImageToggleButton(Context context) {
         super(context);
+        init();
     }
 
     private void init() {

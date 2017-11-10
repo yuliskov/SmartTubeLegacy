@@ -47,4 +47,12 @@ public class TextToggleButton extends ImageToggleButton {
     protected void onButtonChecked() {
         mTextButton.setText(mTextOn);
     }
+
+    public void setText(int label) {
+        mTextButton.setText(label);
+    }
+
+    public CharSequence getText() {
+        return mTextButton.getText();
+    }
 }
