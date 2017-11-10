@@ -25,7 +25,6 @@
         <item name="layout2">@+id/player_options_row</item>
         <item name="textOff">@string/options</item>
         <item name="textOn">@string/options</item>
-        <item name="other_toggle">@+id/player_quality_btn</item>
         <item name="android:layout_gravity">start</item>
     </style>
 
@@ -34,7 +33,6 @@
         <item name="layout2">@+id/player_quality_row</item>
         <item name="textOff">@string/quality</item>
         <item name="textOn">@string/quality</item>
-        <item name="other_toggle">@+id/player_options_btn</item>
         <item name="android:layout_gravity">start</item>
     </style>
 
