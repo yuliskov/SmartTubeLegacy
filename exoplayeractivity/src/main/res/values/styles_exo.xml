@@ -41,6 +41,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="ExoMediaButton.User">
+        <item name="desc">@string/user_page</item>
+        <item name="imageOff">@mipmap/btn_user</item>
+        <item name="imageOn">@mipmap/btn_user</item>
+    </style>
+
     <style name="ExoMediaButton.Next">
         <item name="desc">@string/next_video</item>
         <item name="imageOff">@mipmap/btn_next</item>
@@ -107,4 +113,6 @@
 
 
     <string name="options">Options</string>
+    <string name="home">Home</string>
+    <string name="user_page">User page</string>
 </resources>

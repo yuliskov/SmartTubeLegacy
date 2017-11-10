@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +26,12 @@ public abstract class ImageToggleButton extends LinearLayout {
     protected String mTextOff;
     protected Button mTextButton;
     protected LinearLayout mToggleButtonWrapper;
-    
+    private OnCheckedChangeListener mCheckedListener;
+
+    public interface OnCheckedChangeListener {
+        void onCheckedChanged(ImageToggleButton button, boolean isChecked);
+    }
+
     public ImageToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -79,20 +85,6 @@ public abstract class ImageToggleButton extends LinearLayout {
                 toggle();
             }
         });
-
-        //mImageButton.setOnClickListener(new OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Toast.makeText(getContext(), "on click", Toast.LENGTH_LONG).show();
-        //    }
-        //});
-        //
-        //mToggleButtonWrapper.setOnClickListener(new OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Toast.makeText(getContext(), "on click 2222", Toast.LENGTH_LONG).show();
-        //    }
-        //});
     }
 
     private void setOnFocus() {
@@ -144,11 +136,18 @@ public abstract class ImageToggleButton extends LinearLayout {
     private void initElems() {
         if (isChecked()) {
             onButtonChecked();
-            //mImageButton.setImageDrawable(mImageOn);
+            callCheckedListener(true);
         } else {
             onButtonUnchecked();
-            //mImageButton.setImageDrawable(mImageOff);
+            callCheckedListener(false);
         }
+    }
+
+    private void callCheckedListener(boolean isChecked) {
+        if (mCheckedListener == null) {
+            return;
+        }
+        mCheckedListener.onCheckedChanged(this, isChecked);
     }
 
     protected abstract void onButtonUnchecked();
@@ -161,6 +160,15 @@ public abstract class ImageToggleButton extends LinearLayout {
     private void toggle() {
         mIsChecked = !mIsChecked;
         initElems();
+    }
+
+    public void resetState() {
+        mIsChecked = false;
+        initElems();
+    }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        mCheckedListener = listener;
     }
 
     private void applyDefaultDimens() {

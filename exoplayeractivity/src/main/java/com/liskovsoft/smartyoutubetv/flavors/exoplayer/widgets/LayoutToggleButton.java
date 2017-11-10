@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
 
@@ -21,10 +22,12 @@ public class LayoutToggleButton extends TextToggleButton {
 
     public LayoutToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
     }
 
     public LayoutToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     public LayoutToggleButton(Context context, AttributeSet attrs) {
@@ -47,10 +50,21 @@ public class LayoutToggleButton extends TextToggleButton {
 
     public LayoutToggleButton(Context context) {
         super(context);
+        init();
     }
 
     private void init() {
-        
+        // setOnVisibilityChangeListener();
+    }
+
+    private void setOnVisibilityChangeListener() {
+        getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (getVisibility() != View.VISIBLE)
+                    resetState();
+            }
+        });
     }
 
     public List<View> findViewsByType(ViewGroup root, Class clazz) {

@@ -63,6 +63,9 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
 import java.io.IOException;
@@ -186,8 +189,28 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         initNextButton();
         initPrevButton();
         initTimeBar();
+        initStatsButton();
     }
 
+    private void initStatsButton() {
+        ImageToggleButton statsButton = (ImageToggleButton)findViewById(R.id.exo_stats);
+        statsButton.setOnCheckedChangeListener(new ImageToggleButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(ImageToggleButton button, boolean isChecked) {
+                if (isChecked)
+                {
+                    debugTextView.setVisibility(View.VISIBLE);
+                } else {
+                    debugTextView.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+    }
+
+    // NOTE: example of visibility change listener
     private void initNextButton() {
         final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
         nextButton.getViewTreeObserver().addOnGlobalLayoutListener(obtainSetButtonEnabledListener(nextButton));
@@ -211,6 +234,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         simpleExoPlayerView.setFastForwardIncrementMs(timeIncrementMS);
     }
 
+    // TODO: improve this
     private OnGlobalLayoutListener obtainSetButtonEnabledListener(final View nextButton) {
         return new OnGlobalLayoutListener() {
             @Override
@@ -364,10 +388,16 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onVisibilityChange(int visibility) {
         mPlayerTopBar.setVisibility(visibility);
-        //debugRootView.setVisibility(visibility);
-        //debugTextView.setVisibility(visibility);
-        //mVideoTitle.setVisibility(visibility);
-        //mVideoTitle2.setVisibility(visibility);
+
+        if (visibility == View.GONE)
+            resetStateOfLayoutToggleButtons();
+    }
+
+    private void resetStateOfLayoutToggleButtons() {
+        LayoutToggleButton toggleButton1 = (LayoutToggleButton) findViewById(R.id.player_options_btn);
+        LayoutToggleButton toggleButton2 = (LayoutToggleButton) findViewById(R.id.player_quality_btn);
+        toggleButton1.resetState();
+        toggleButton2.resetState();
     }
 
     // Internal methods
