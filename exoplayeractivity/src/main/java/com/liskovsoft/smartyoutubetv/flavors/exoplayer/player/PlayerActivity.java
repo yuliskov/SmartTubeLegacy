@@ -351,29 +351,39 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     // Activity input
 
+    // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (isVolumeEvent(event))
             return false;
-
-        boolean isBack = event.getKeyCode() == KeyEvent.KEYCODE_BACK;
-        if (isBack) {
+        
+        if (isBackKey(event)) {
             return handleBack(event);
         }
 
-        // Show the controls on key event.
+        // Show the controls on any key event.
         simpleExoPlayerView.showController();
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return super.dispatchKeyEvent(event) || simpleExoPlayerView.dispatchMediaKeyEvent(event);
     }
 
+    private boolean isBackKey(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.KEYCODE_BACK;
+    }
+
     private boolean handleBack(KeyEvent event) {
+        boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
         boolean isVisible = mInterfaceVisibilityState == View.VISIBLE;
+
         if (isVisible) {
-            simpleExoPlayerView.hideController();
-            return true;
+            if (isUp) {
+                simpleExoPlayerView.hideController();
+                return true;
+            }
+            return false;
         }
+
         return super.dispatchKeyEvent(event);
     }
 

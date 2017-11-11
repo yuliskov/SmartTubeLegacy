@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
@@ -79,7 +80,11 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void onInfoFound(YouTubeGenericInfo info) {
                 mTitle = String.format("%s: %s", info.getAuthor(), info.getTitle());
-                mTitle2 = String.format("View count: %s, Published: %s", info.getViewCount(), info.getPublishedDate());
+                mTitle2 = String.format("%s: %s, %s: %s",
+                        mContext.getString(R.string.view_count),
+                        info.getViewCount(),
+                        mContext.getString(R.string.published),
+                        info.getPublishedDate());
             }
         });
     }

@@ -6,4 +6,6 @@
     <string name="exo_desc2">4K: доп. версия</string>
     <string name="bootstrap_main_title">Пожалуйста, выберите версию YouTube</string>
     <string name="bootstrap_bottom_title">Чтобы этот диалог снова появился, выйдите из приложения</string>
+    <string name="view_count">Колич просмотров</string>
+    <string name="published">Опубликовано</string>
 </resources>

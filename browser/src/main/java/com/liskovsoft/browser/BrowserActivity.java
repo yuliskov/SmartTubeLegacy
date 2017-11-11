@@ -60,6 +60,27 @@ public class BrowserActivity extends AppCompatActivity {
         mController = controller;
     }
 
+    private void saveBrowserState(Bundle outState) {
+        if (mController == null)
+            return;
+        logger.info("BrowserActivity.onSaveInstanceState: this=", this);
+        mController.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        // NOTE: fix state saving when finishing activity
+        saveBrowserState(null);
+        super.finish();
+        System.exit(0);
+    }
+
     /**
      *  onSaveInstanceState(Bundle map)
      *  onSaveInstanceState is called right before onStop(). The map contains
@@ -67,10 +88,14 @@ public class BrowserActivity extends AppCompatActivity {
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (mController == null)
-            return;
-        logger.info("BrowserActivity.onSaveInstanceState: this=", this);
-        mController.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+        saveBrowserState(outState);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        saveBrowserState(null);
     }
 
     ///**
@@ -187,19 +212,5 @@ public class BrowserActivity extends AppCompatActivity {
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
         logger.info("ignore intents: {}", ignore);
         return ignore;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
-    public void finish() {
-        // NOTE: fix state saving when finishing activity
-        mController.onSaveInstanceState(null);
-        super.finish();
-        System.exit(0);
     }
 }

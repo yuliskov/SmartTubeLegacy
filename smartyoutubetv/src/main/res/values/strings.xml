@@ -11,4 +11,6 @@
     <string name="bootstrap_main_title">Please, select desired version of YouTube</string>
     <string name="exo_desc2">4K: alt version</string>
     <string name="bootstrap_bottom_title">To show this dialog again, exit the app</string>
+    <string name="view_count">View count</string>
+    <string name="published">Published</string>
 </resources>
