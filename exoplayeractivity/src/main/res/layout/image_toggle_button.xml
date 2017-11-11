@@ -4,7 +4,6 @@
               android:layout_width="wrap_content"
               android:layout_height="@dimen/compound_button_wrapper_height"
               android:gravity="center_horizontal"
-              android:weightSum="1"
               android:orientation="vertical"
               android:background="@color/transparent"
               android:id="@+id/toggle_button_wrapper"
@@ -18,24 +17,17 @@
         android:layout_width="@dimen/compound_button_width"
         android:layout_height="@dimen/compound_button_height"
         android:id="@+id/image_button"
-        android:layout_weight="0.30"
         android:visibility="gone"/>
-    <LinearLayout
+    <Button
+        android:clickable="false"
+        android:textSize="@dimen/compound_button_text_size"
+        android:textColor="@color/white"
+        android:background="@color/transparent"
+        android:text="Hello World"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="@dimen/compound_button_padding"
-        android:paddingLeft="@dimen/compound_button_padding">
-        <Button
-            android:clickable="false"
-            android:textSize="@dimen/compound_button_text_size"
-            android:textColor="@color/white"
-            android:background="@color/transparent"
-            android:text="Hello World"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/compound_button_height"
-            android:visibility="visible"
-            android:id="@+id/text_button"/>
-    </LinearLayout>
+        android:layout_height="@dimen/compound_button_height"
+        android:visibility="visible"
+        android:id="@+id/text_button"/>
     <TextView
         android:maxLines="1"
         android:textSize="@dimen/compound_button_text_size"

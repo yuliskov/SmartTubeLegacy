@@ -110,9 +110,4 @@
         <item name="textOff">@string/retry</item>
         <item name="textOn">@string/retry</item>
     </style>
-
-
-    <string name="options">Options</string>
-    <string name="home">Home</string>
-    <string name="user_page">User page</string>
 </resources>

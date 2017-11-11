@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +63,6 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -127,6 +125,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private TextView mVideoTitle;
     private TextView mVideoTitle2;
     private LinearLayout mPlayerTopBar;
+    private int mInterfaceVisibilityState;
 
     // Activity lifecycle
 
@@ -295,7 +294,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onBackPressed() {
-         doGracefulExit(PlayerActivity.ACTION_BACK);
+        doGracefulExit(PlayerActivity.ACTION_BACK);
+
         // moveTaskToBack(true); // don't exit at this point
     }
 
@@ -353,6 +353,20 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        if (isVolumeEvent(event))
+            return false;
+
+        boolean isVisible = mInterfaceVisibilityState == View.VISIBLE;
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_BACK:
+                if (isVisible) {
+                    simpleExoPlayerView.hideController();
+                    return true;
+                }
+                return super.dispatchKeyEvent(event);
+        }
+
+
         // Show the controls on key event.
         simpleExoPlayerView.showController();
 
@@ -387,6 +401,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onVisibilityChange(int visibility) {
+        mInterfaceVisibilityState = visibility;
+
         mPlayerTopBar.setVisibility(visibility);
 
         if (visibility == View.GONE)
