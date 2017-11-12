@@ -19,4 +19,5 @@
     <string name="retry">Повторить</string>
     <string name="selection_disabled">Отключить</string>
     <string name="selection_default">Авто</string>
+    <string name="captions">Субтитры</string>
 </resources>
