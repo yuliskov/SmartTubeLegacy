@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser;
 
 import java.io.InputStream;
 import java.util.Scanner;

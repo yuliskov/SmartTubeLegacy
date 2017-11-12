@@ -1,16 +1,16 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.injectors;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.DecipherSignaturesDoneEvent;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.DecipherSignaturesEvent;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.GetDecipherCodeDoneEvent;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.GetDecipherCodeEvent;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events.PostDecipheredSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeDoneEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.PostDecipheredSignaturesEvent;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
     @Subscribe
     public void decipherSignature(DecipherSignaturesEvent event) {
         mMediaItems = event.getMediaItems();
-        if (isSignatureNotCiphered()) {
+        if (signatureNotCiphered()) {
             Browser.getBus().post(new DecipherSignaturesDoneEvent(mMediaItems));
             return;
         }
@@ -82,7 +82,7 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
         mCombinedSignatures = "var rawSignatures = [" + TextUtils.join(",", mSignatures) + "];";
     }
 
-    private boolean isSignatureNotCiphered() {
+    private boolean signatureNotCiphered() {
         return mMediaItems.size() == 0 || mMediaItems.get(0).getS() == null;
     }
 }

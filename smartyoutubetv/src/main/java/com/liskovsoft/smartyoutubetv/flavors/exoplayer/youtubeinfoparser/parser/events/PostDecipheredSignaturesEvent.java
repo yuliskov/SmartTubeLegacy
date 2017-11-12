@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff.events;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events;
 
 public class PostDecipheredSignaturesEvent {
     private final String[] mSignatures;

@@ -1,10 +1,10 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.webstuff;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.MyMPDBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeMediaItem;
 
 import java.io.InputStream;
 

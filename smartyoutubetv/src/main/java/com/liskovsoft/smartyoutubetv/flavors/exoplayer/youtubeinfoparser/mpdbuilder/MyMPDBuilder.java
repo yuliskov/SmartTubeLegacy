@@ -1,6 +1,9 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder;
 
 import android.util.Xml;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import org.xmlpull.v1.XmlSerializer;
 
