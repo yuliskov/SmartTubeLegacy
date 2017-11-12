@@ -62,7 +62,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -192,11 +192,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private void initStatsButton() {
-        ImageToggleButton statsButton = (ImageToggleButton)findViewById(R.id.exo_stats);
-        statsButton.setOnCheckedChangeListener(new ImageToggleButton.OnCheckedChangeListener()
+        ToggleButtonBase statsButton = (ToggleButtonBase)findViewById(R.id.exo_stats);
+        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener()
         {
             @Override
-            public void onCheckedChanged(ImageToggleButton button, boolean isChecked) {
+            public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
                 if (isChecked)
                 {
                     debugTextView.setVisibility(View.VISIBLE);

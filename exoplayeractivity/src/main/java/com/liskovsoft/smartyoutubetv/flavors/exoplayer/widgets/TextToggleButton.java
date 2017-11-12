@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import com.liskovsoft.exoplayeractivity.R;
 
-public class TextToggleButton extends ImageToggleButton {
+public class TextToggleButton extends ToggleButtonBase {
     public TextToggleButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

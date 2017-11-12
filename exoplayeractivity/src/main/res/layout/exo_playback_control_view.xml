@@ -98,7 +98,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_prev"
                 style="@style/ExoMediaButton.Previous"/>
 
@@ -110,18 +110,18 @@
                 android:id="@id/exo_repeat_toggle"
                 style="@style/ExoMediaButton"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_play"
                 style="@style/ExoMediaButton.Play"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_pause"
                 style="@style/ExoMediaButton.Pause"/>
 
             <!--<ImageButton android:id="@id/exo_ffwd"-->
             <!--style="@style/ExoMediaButton.FastForward"/>-->
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_next"
                 style="@style/ExoMediaButton.Next"/>
 
@@ -135,27 +135,27 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_home"
                 style="@style/ExoMediaButton.User"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_captions"
                 style="@style/ExoMediaButton.Captions"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_like"
                 style="@style/ExoMediaButton.Like"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_dislike"
                 style="@style/ExoMediaButton.Dislike"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_subscribe"
                 style="@style/ExoMediaButton.Subscribe"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton2
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_stats"
                 style="@style/ExoMediaButton.Stats"/>
 

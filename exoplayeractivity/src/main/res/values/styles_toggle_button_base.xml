@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ImageToggleButton">
+    <declare-styleable name="ToggleButtonBase">
         <attr name="image" format="reference"/>
         <attr name="imageOff" format="reference"/>
         <attr name="imageOn" format="reference"/>
@@ -17,10 +17,10 @@
     <color name="transparent">#00ffffff</color>
     <color name="light_blue">#2793e6</color>
 
-    <dimen name="compound_button_width">38dp</dimen>
-    <dimen name="compound_button_height">38dp</dimen>
-    <dimen name="compound_button_wrapper_width">60dp</dimen>
-    <dimen name="compound_button_wrapper_height">60dp</dimen>
-    <dimen name="compound_button_padding">10dp</dimen>
-    <dimen name="compound_button_text_size">12sp</dimen>
+    <dimen name="toggle_button_width">38dp</dimen>
+    <dimen name="toggle_button_height">38dp</dimen>
+    <dimen name="toggle_button_wrapper_width">60dp</dimen>
+    <dimen name="toggle_button_wrapper_height">60dp</dimen>
+    <dimen name="toggle_button_padding">10dp</dimen>
+    <dimen name="toggle_button_text_size">12sp</dimen>
 </resources>

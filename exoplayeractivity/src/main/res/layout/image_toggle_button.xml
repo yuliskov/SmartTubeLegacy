@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:minWidth="80dp"
               android:layout_width="wrap_content"
-              android:layout_height="@dimen/compound_button_wrapper_height"
+              android:layout_height="@dimen/toggle_button_wrapper_height"
               android:gravity="center_horizontal"
               android:orientation="vertical"
               android:background="@color/transparent"
@@ -10,30 +10,30 @@
               android:clickable="false">
     <ImageButton
         android:clickable="false"
-        android:padding="@dimen/compound_button_padding"
+        android:padding="@dimen/toggle_button_padding"
         android:scaleType="fitCenter"
         android:src="@mipmap/btn_like_off"
         android:background="@color/transparent"
-        android:layout_width="@dimen/compound_button_width"
-        android:layout_height="@dimen/compound_button_height"
+        android:layout_width="@dimen/toggle_button_width"
+        android:layout_height="@dimen/toggle_button_height"
         android:id="@+id/image_button"
         android:visibility="gone"/>
 
     <Button
         android:maxLines="1"
         android:clickable="false"
-        android:textSize="@dimen/compound_button_text_size"
+        android:textSize="@dimen/toggle_button_text_size"
         android:textColor="@color/white"
         android:background="@color/transparent"
         android:text="Hello World"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/compound_button_height"
+        android:layout_height="@dimen/toggle_button_height"
         android:visibility="visible"
         android:id="@+id/text_button"/>
 
     <TextView
         android:maxLines="1"
-        android:textSize="@dimen/compound_button_text_size"
+        android:textSize="@dimen/toggle_button_text_size"
         android:textColor="@color/white"
         android:text="Description"
         android:layout_width="wrap_content"

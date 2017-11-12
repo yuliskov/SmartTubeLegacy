@@ -31,8 +31,8 @@
         <item name="layout2">@+id/player_options_row</item>
         <item name="textOff">@string/options</item>
         <item name="textOn">@string/options</item>
-        <item name="android:layout_marginLeft">@dimen/compound_button_padding</item>
-        <item name="android:layout_marginRight">@dimen/compound_button_padding</item>
+        <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
     </style>
 
     <style name="ExoMediaButton.Quality">
@@ -40,8 +40,8 @@
         <item name="layout2">@+id/controls_root</item>
         <item name="textOff">@string/quality</item>
         <item name="textOn">@string/quality</item>
-        <item name="android:layout_marginLeft">@dimen/compound_button_padding</item>
-        <item name="android:layout_marginRight">@dimen/compound_button_padding</item>
+        <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
     </style>
 
     <style name="ExoMediaButton.Captions">
