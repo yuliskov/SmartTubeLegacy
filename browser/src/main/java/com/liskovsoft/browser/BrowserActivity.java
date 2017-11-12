@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.widget.Toast;
 import com.liskovsoft.browser.custom.SimpleUIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,7 @@ public class BrowserActivity extends AppCompatActivity {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        Toast.makeText(this, "Warning: memory is low. Saving state...", Toast.LENGTH_LONG).show();
         saveBrowserState(null);
     }
 

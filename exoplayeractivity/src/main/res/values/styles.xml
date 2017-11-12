@@ -20,12 +20,18 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
+    <style name="ExoMediaButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="ExoMediaButton.Options">
         <item name="layout1">@+id/layout1</item>
         <item name="layout2">@+id/player_options_row</item>
         <item name="textOff">@string/options</item>
         <item name="textOn">@string/options</item>
-        <item name="android:layout_gravity">start</item>
+        <item name="android:layout_marginLeft">@dimen/compound_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/compound_button_padding</item>
     </style>
 
     <style name="ExoMediaButton.Quality">
@@ -33,12 +39,8 @@
         <item name="layout2">@+id/controls_root</item>
         <item name="textOff">@string/quality</item>
         <item name="textOn">@string/quality</item>
-        <item name="android:layout_gravity">start</item>
-    </style>
-
-    <style name="ExoMediaButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/compound_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/compound_button_padding</item>
     </style>
 
     <style name="ExoMediaButton.User">

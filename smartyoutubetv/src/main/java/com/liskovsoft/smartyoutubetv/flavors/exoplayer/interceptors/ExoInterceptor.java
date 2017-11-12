@@ -79,12 +79,13 @@ public class ExoInterceptor extends RequestInterceptor {
 
             @Override
             public void onInfoFound(YouTubeGenericInfo info) {
-                mTitle = String.format("%s: %s", info.getAuthor(), info.getTitle());
-                mTitle2 = String.format("%s: %s, %s: %s",
-                        mContext.getString(R.string.view_count),
-                        info.getViewCount(),
+                mTitle = String.format("%s", info.getTitle());
+                mTitle2 = String.format("%s      %s: %s      %s %s",
+                        info.getAuthor(),
                         mContext.getString(R.string.published),
-                        info.getPublishedDate());
+                        info.getPublishedDate(),
+                        info.getViewCount(),
+                        mContext.getString(R.string.view_count));
             }
         });
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:minWidth="@dimen/compound_button_wrapper_width"
+              android:minWidth="80dp"
               android:layout_width="wrap_content"
               android:layout_height="@dimen/compound_button_wrapper_height"
               android:gravity="center_horizontal"
@@ -18,7 +18,9 @@
         android:layout_height="@dimen/compound_button_height"
         android:id="@+id/image_button"
         android:visibility="gone"/>
+
     <Button
+        android:maxLines="1"
         android:clickable="false"
         android:textSize="@dimen/compound_button_text_size"
         android:textColor="@color/white"
@@ -28,6 +30,7 @@
         android:layout_height="@dimen/compound_button_height"
         android:visibility="visible"
         android:id="@+id/text_button"/>
+
     <TextView
         android:maxLines="1"
         android:textSize="@dimen/compound_button_text_size"

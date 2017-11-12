@@ -379,9 +379,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         if (isVisible) {
             if (isUp) {
                 simpleExoPlayerView.hideController();
-                return true;
             }
-            return false;
+            return true;
         }
 
         return super.dispatchKeyEvent(event);
@@ -418,7 +417,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
         mPlayerTopBar.setVisibility(visibility);
 
-        if (visibility == View.GONE)
+        // NOTE: don't set to GONE or you will get fathom events
+        if (visibility == View.VISIBLE)
             resetStateOfLayoutToggleButtons();
     }
 
