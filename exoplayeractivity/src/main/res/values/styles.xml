@@ -18,8 +18,7 @@
     <style name="PlayerTheme" parent="android:Theme.Holo">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@null</item>
+        <!--<item name="android:windowAnimationStyle">@null</item>-->
     </style>
 
     <style name="ExoMediaButton">

@@ -145,10 +145,12 @@
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_like"
+                app:bindTo="@+id/exo_dislike"
                 style="@style/ExoMediaButton.Like"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_dislike"
+                app:bindTo="@+id/exo_like"
                 style="@style/ExoMediaButton.Dislike"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton

@@ -132,6 +132,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0, 0);
+
         shouldAutoPlay = true;
         clearResumePosition();
         mediaDataSourceFactory = buildDataSourceFactory(true);
@@ -290,6 +292,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         setResult(Activity.RESULT_OK, intent);
 
         finish();
+        overridePendingTransition(0, 0);
     }
 
     @Override

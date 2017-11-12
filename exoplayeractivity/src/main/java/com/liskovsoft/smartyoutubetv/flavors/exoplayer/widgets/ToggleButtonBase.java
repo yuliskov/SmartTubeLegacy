@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.liskovsoft.exoplayeractivity.R;
 
 public abstract class ToggleButtonBase extends LinearLayout {
+    private int mBindToId;
     protected Drawable mImage;
     protected Drawable mImageOn;
     protected Drawable mImageOff;
@@ -55,6 +56,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
             mTextOn = a.getString(R.styleable.ToggleButtonBase_textOn);
             mTextOff = a.getString(R.styleable.ToggleButtonBase_textOff);
             mDescText = a.getString(R.styleable.ToggleButtonBase_desc);
+            mBindToId = a.getResourceId(R.styleable.ToggleButtonBase_bindTo, 0);
         } finally {
             a.recycle();
         }
@@ -135,10 +137,22 @@ public abstract class ToggleButtonBase extends LinearLayout {
         if (isChecked()) {
             onButtonChecked();
             callCheckedListener(true);
+            uncheckBindToView();
         } else {
             onButtonUnchecked();
             callCheckedListener(false);
         }
+    }
+
+    private void uncheckBindToView() {
+        View bindToView = getRootView().findViewById(mBindToId);
+        if (bindToView != null)
+            ((ToggleButtonBase) bindToView).uncheck();
+    }
+
+    private void uncheck() {
+        mIsChecked = false;
+        initElems();
     }
 
     private void callCheckedListener(boolean isChecked) {

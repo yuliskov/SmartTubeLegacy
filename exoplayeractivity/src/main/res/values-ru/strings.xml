@@ -3,15 +3,15 @@
 
     <string name="options">Дополн</string>
     <string name="home">Домой</string>
-    <string name="user_page">Пользоват</string>
-    <string name="prev_video">Предыдущ</string>
-    <string name="next_video">Следующ</string>
+    <string name="user_page">Пользов</string>
+    <string name="prev_video">Пред</string>
+    <string name="next_video">След</string>
     <string name="pause">Пауза</string>
     <string name="play">Играть</string>
-    <string name="dislike">Ненравится</string>
-    <string name="like">Нравится</string>
+    <string name="dislike">Ненрав</string>
+    <string name="like">Нрав</string>
     <string name="stats">Информ</string>
-    <string name="subscribe">Подписаться</string>
+    <string name="subscribe">Подпис</string>
     <string name="quality">Качество</string>
     <string name="video">Видео</string>
     <string name="audio">Аудио</string>
