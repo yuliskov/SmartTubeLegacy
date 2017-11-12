@@ -132,6 +132,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // NOTE: completely disable open/close animation for activity
         overridePendingTransition(0, 0);
 
         shouldAutoPlay = true;
