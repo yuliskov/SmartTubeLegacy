@@ -96,29 +96,9 @@ public class BrowserActivity extends AppCompatActivity {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Toast.makeText(this, "Warning: memory is low. Saving state...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.low_memory_notify, Toast.LENGTH_LONG).show();
         saveBrowserState(null);
     }
-
-    ///**
-    // * Break down initialization so you can do it later if you want.
-    // * @param icicle state
-    // * @return
-    // */
-    //protected Controller beforeCreateAndInitController(Bundle icicle) {
-    //    return createAndInitController(icicle);
-    //}
-    //
-    //protected Controller createAndInitController(Bundle icicle) {
-    //    mHeaders = new HashMap<>();
-    //    mHeaders.put("user-agent", mDefaultUserAgent);
-    //
-    //    mController = new SimpleUIController(this);
-    //    Intent intent = (icicle == null) ? getIntent() : null;
-    //    mController.start(intent);
-    //    mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    //    return mController;
-    //}
 
     @Override
     protected void onPause() {

@@ -19,6 +19,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -82,7 +83,7 @@ public class ExoInterceptor extends RequestInterceptor {
                 mTitle2 = String.format("%s      %s: %s      %s %s",
                         info.getAuthor(),
                         mContext.getString(R.string.published),
-                        info.getPublishedDate(),
+                        Helpers.unixToLocalDate(mContext, info.getTimestamp()),
                         info.getViewCount(),
                         mContext.getString(R.string.view_count));
             }

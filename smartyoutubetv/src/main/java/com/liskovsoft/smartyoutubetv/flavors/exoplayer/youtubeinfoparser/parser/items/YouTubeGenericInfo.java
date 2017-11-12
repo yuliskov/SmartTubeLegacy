@@ -16,5 +16,4 @@ public interface YouTubeGenericInfo {
     void setViewCount(String viewCount);
     String getTimestamp();
     void setTimestamp(String timestamp);
-    String getPublishedDate();
 }

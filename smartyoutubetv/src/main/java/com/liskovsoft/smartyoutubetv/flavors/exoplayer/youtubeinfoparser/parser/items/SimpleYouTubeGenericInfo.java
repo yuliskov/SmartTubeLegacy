@@ -1,14 +1,11 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items;
 
-import java.util.Date;
-
 public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
     private String mViewCount;
     private String mTimestamp;
-    private Date mDate;
 
     @Override
     public String getLengthSeconds() {
@@ -58,14 +55,5 @@ public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
     @Override
     public void setTimestamp(String timestamp) {
         mTimestamp = timestamp;
-        mDate = new Date((long) Integer.parseInt(mTimestamp) * 1000);
-    }
-
-    @Override
-    public String getPublishedDate() {
-        if (mDate == null) {
-            return "Date unknown";
-        }
-        return mDate.toString();
     }
 }

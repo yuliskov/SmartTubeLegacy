@@ -14,6 +14,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Helpers {
@@ -111,5 +114,12 @@ public class Helpers {
 
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
+    }
+
+    public static String unixToLocalDate(Context ctx, String timestamp) {
+        Locale current = ctx.getResources().getConfiguration().locale;
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, current);
+        Date date = new Date((long) Integer.parseInt(timestamp) * 1000);
+        return dateFormat.format(date);
     }
 }

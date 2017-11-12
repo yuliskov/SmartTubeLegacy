@@ -449,4 +449,5 @@
             subwindow because only one can be open at a time. -->
     <string name="too_many_subwindows_dialog_message">Only one pop-up can be open
         at a time.</string>
+    <string name="low_memory_notify">Warning: memory is low. Saving state...</string>
 </resources>
