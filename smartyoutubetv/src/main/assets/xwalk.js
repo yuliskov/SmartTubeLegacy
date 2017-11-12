@@ -2,7 +2,7 @@
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
-    'MiTV3S (pulpfiction)': 'webm', // MiTV3S 55/60 (4pda)
+    'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'OzoneHD (m201)': 'webm', // 4pda
     '3719C (Hi3719CV100)': 'webm', // SYTV > Disqus
     'MiTV3S-48 (hancock)': 'webm', // MiTV3S 48 (4pda)
