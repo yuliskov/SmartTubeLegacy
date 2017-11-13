@@ -8,6 +8,7 @@
         <attr name="textOn" format="string"/>
         <attr name="desc" format="string"/>
         <attr name="bindTo" format="reference"/>
+        <attr name="onCheckedChanged" format="string"/>
     </declare-styleable>
 
     <color name="white">#ffffff</color>

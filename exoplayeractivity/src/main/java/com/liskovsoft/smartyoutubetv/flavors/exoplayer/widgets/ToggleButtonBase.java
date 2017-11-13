@@ -1,8 +1,11 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.exoplayeractivity.R;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ToggleButtonBase extends LinearLayout {
     private int mBindToId;
@@ -25,7 +33,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     protected String mTextOff;
     protected Button mTextButton;
     protected LinearLayout mToggleButtonWrapper;
-    private OnCheckedChangeListener mCheckedListener;
+    private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(ToggleButtonBase button, boolean isChecked);
@@ -57,6 +65,10 @@ public abstract class ToggleButtonBase extends LinearLayout {
             mTextOff = a.getString(R.styleable.ToggleButtonBase_textOff);
             mDescText = a.getString(R.styleable.ToggleButtonBase_desc);
             mBindToId = a.getResourceId(R.styleable.ToggleButtonBase_bindTo, 0);
+            String handlerName = a.getString(R.styleable.ToggleButtonBase_onCheckedChanged);
+            if (handlerName != null) {
+                setOnCheckedChangeListener(new DeclaredOnCheckedChangeListener(this, handlerName));
+            }
         } finally {
             a.recycle();
         }
@@ -156,10 +168,10 @@ public abstract class ToggleButtonBase extends LinearLayout {
     }
 
     private void callCheckedListener(boolean isChecked) {
-        if (mCheckedListener == null) {
-            return;
+        for (OnCheckedChangeListener listener : mCheckedListeners) {
+             if (listener != null)
+                 listener.onCheckedChanged(this, isChecked);
         }
-        mCheckedListener.onCheckedChanged(this, isChecked);
     }
 
     protected abstract void onButtonUnchecked();
@@ -180,7 +192,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        mCheckedListener = listener;
+        mCheckedListeners.add(listener);
     }
 
     private void applyDefaultDimens() {
@@ -193,6 +205,72 @@ public abstract class ToggleButtonBase extends LinearLayout {
             layoutParams = new ViewGroup.LayoutParams(new LayoutParams(realWidth, realHeight));
             setLayoutParams(layoutParams);
             return;
+        }
+    }
+
+    /**
+     * An implementation of Listener that attempts to lazily load a
+     * named handling method from a parent or ancestor context.
+     */
+    private class DeclaredOnCheckedChangeListener implements OnCheckedChangeListener {
+        private final View mHostView;
+        private final String mMethodName;
+
+        private Method mResolvedMethod;
+        private Context mResolvedContext;
+
+        public DeclaredOnCheckedChangeListener(@NonNull View hostView, @NonNull String methodName) {
+            mHostView = hostView;
+            mMethodName = methodName;
+        }
+
+        @Override
+        public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
+            if (mResolvedMethod == null) {
+                resolveMethod(mHostView.getContext(), mMethodName);
+            }
+
+            try {
+                mResolvedMethod.invoke(mResolvedContext, compoundButton, b);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(
+                        "Could not execute non-public method for app:onCheckedChanged", e);
+            } catch (InvocationTargetException e) {
+                throw new IllegalStateException(
+                        "Could not execute method for app:onCheckedChanged", e);
+            }
+        }
+
+        @NonNull
+        private void resolveMethod(@Nullable Context context, @NonNull String name) {
+            while (context != null) {
+                try {
+                    if (!context.isRestricted()) {
+                        final Method method = context.getClass().getMethod(mMethodName, ToggleButtonBase.class, boolean.class);
+                        if (method != null) {
+                            mResolvedMethod = method;
+                            mResolvedContext = context;
+                            return;
+                        }
+                    }
+                } catch (NoSuchMethodException e) {
+                    // Failed to find method, keep searching up the hierarchy.
+                }
+
+                if (context instanceof ContextWrapper) {
+                    context = ((ContextWrapper) context).getBaseContext();
+                } else {
+                    // Can't search up the hierarchy, null out and fail.
+                    context = null;
+                }
+            }
+
+            final int id = mHostView.getId();
+            final String idText = id == NO_ID ? "" : " with id '"
+                    + mHostView.getContext().getResources().getResourceEntryName(id) + "'";
+            throw new IllegalStateException("Could not find method " + mMethodName
+                    + "(ToggleButtonBase, boolean) in a parent or ancestor Context for app:onCheckedChanged "
+                    + "attribute defined on view " + mHostView.getClass() + idText);
         }
     }
 }

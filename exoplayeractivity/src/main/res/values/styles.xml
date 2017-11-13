@@ -18,6 +18,7 @@
     <style name="PlayerTheme" parent="android:Theme.Holo">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
+        <!--<item name="android:windowActivityTransitions">true</item>-->
         <!--<item name="android:windowAnimationStyle">@null</item>-->
     </style>
 
@@ -42,18 +43,6 @@
         <item name="textOn">@string/quality</item>
         <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
         <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
-    </style>
-
-    <style name="ExoMediaButton.Captions">
-        <item name="desc">@string/captions</item>
-        <item name="imageOff">@mipmap/btn_captions_off</item>
-        <item name="imageOn">@mipmap/btn_captions_off</item>
-    </style>
-
-    <style name="ExoMediaButton.User">
-        <item name="desc">@string/user_page</item>
-        <item name="imageOff">@mipmap/btn_user</item>
-        <item name="imageOn">@mipmap/btn_user</item>
     </style>
 
     <style name="ExoMediaButton.Next">
@@ -81,19 +70,36 @@
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
     </style>
 
+    <style name="ExoMediaButton.Captions">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/captions</item>
+        <item name="imageOff">@mipmap/btn_captions_off</item>
+        <item name="imageOn">@mipmap/btn_captions_off</item>
+    </style>
+
+    <style name="ExoMediaButton.User">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/user_page</item>
+        <item name="imageOff">@mipmap/btn_user</item>
+        <item name="imageOn">@mipmap/btn_user</item>
+    </style>
+
     <style name="ExoMediaButton.Like">
+        <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/like</item>
         <item name="imageOff">@mipmap/btn_like_off</item>
         <item name="imageOn">@mipmap/btn_like_on</item>
     </style>
 
     <style name="ExoMediaButton.Dislike">
+        <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/dislike</item>
         <item name="imageOff">@mipmap/btn_dislike_off</item>
         <item name="imageOn">@mipmap/btn_dislike_on</item>
     </style>
 
     <style name="ExoMediaButton.Subscribe">
+        <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/subscribe</item>
         <item name="imageOff">@mipmap/btn_subscribe_off</item>
         <item name="imageOn">@mipmap/btn_subscribe_on</item>
