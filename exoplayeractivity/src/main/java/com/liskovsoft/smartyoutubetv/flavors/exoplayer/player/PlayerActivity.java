@@ -126,6 +126,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private TextView mVideoTitle2;
     private LinearLayout mPlayerTopBar;
     private int mInterfaceVisibilityState;
+    private PlayerPresenter mPresenter;
 
     // Activity lifecycle
 
@@ -156,18 +157,20 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
 
+        initPresenter();
         initExoPlayerButtons();
         initVideoTitle();
         makeActivityFullscreen();
         makeActivityHorizontal();
     }
 
+    private void initPresenter() {
+        mPresenter = new PlayerPresenter(this);
+    }
+
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
-        String checked = "checked";
-        if (!b) {
-            checked = "unchecked";
-        }
-        Toast.makeText(this, checked, Toast.LENGTH_LONG).show();
+        if (mPresenter != null)
+            mPresenter.onCheckedChanged(compoundButton, b);
     }
 
     private void makeActivityFullscreen() {
