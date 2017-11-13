@@ -74,14 +74,14 @@
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/captions</item>
         <item name="imageOff">@mipmap/btn_captions_off</item>
-        <item name="imageOn">@mipmap/btn_captions_off</item>
+        <item name="imageOn">@mipmap/btn_captions_on</item>
     </style>
 
     <style name="ExoMediaButton.User">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/user_page</item>
-        <item name="imageOff">@mipmap/btn_user</item>
-        <item name="imageOn">@mipmap/btn_user</item>
+        <item name="imageOff">@mipmap/btn_user_off</item>
+        <item name="imageOn">@mipmap/btn_user_on</item>
     </style>
 
     <style name="ExoMediaButton.Like">
