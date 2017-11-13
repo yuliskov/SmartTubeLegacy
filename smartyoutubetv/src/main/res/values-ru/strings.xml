@@ -8,4 +8,5 @@
     <string name="bootstrap_bottom_title">Чтобы этот диалог снова появился, выйдите из приложения</string>
     <string name="view_count">просмотров</string>
     <string name="published">Опубликовано</string>
+    <string name="starting_popup">Запуск из главного лаунчера</string>
 </resources>

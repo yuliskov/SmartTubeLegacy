@@ -34,6 +34,7 @@ public class BootstrapActivity extends ActivityBase {
         SmartPreferences prefs = SmartPreferences.instance(this);
         String bootstrapActivityName = prefs.getBootstrapActivityName();
         if (bootstrapActivityName != null) {
+            Toast.makeText(this, R.string.starting_popup, Toast.LENGTH_LONG).show();
             startActivity(this, bootstrapActivityName);
         }
     }

@@ -13,4 +13,5 @@
     <string name="bootstrap_bottom_title">To show this dialog again, exit the app</string>
     <string name="view_count">views</string>
     <string name="published">Published</string>
+    <string name="starting_popup">Starting from the main launcher</string>
 </resources>
