@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GoogleConstants;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressButtonCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SimpleCombinedCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -32,7 +33,7 @@ public class ActionBinder {
         boolean checked = intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false);
         if (checked) {
             Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
-            return new PressButtonCommand("pivot-channel-tile");
+            return new PressButtonCommand(GoogleConstants.BUTTON_USER_PAGE);
         }
         return null;
     }

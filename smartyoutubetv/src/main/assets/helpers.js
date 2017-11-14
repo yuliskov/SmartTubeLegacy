@@ -1,4 +1,4 @@
-function EventTrigger() {
+function Helpers() {
     this.triggerEvent = function(el, type, keyCode) {
         console.log('triggerEvent called', el, type, keyCode);
         if ('createEvent' in document) {
@@ -19,16 +19,8 @@ function EventTrigger() {
     this.triggerEnter = function(el) {
         // simulate mouse/enter key press
         this.triggerEvent(el, 'keyup', 13);
-    }
-}
+    };
 
-window.eventTrigger = new EventTrigger();
-
-// Usage: PressCommandBase.java
-// var targetButton = document.getElementsByClassName('%s')[0];
-// eventTrigger.triggerEvent(targetButton, 'keyup', 13);
-
-function Helpers() {
     this.hasClass = function(elem, klass) {
         return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
     };
@@ -36,9 +28,16 @@ function Helpers() {
     this.isDisabled = function(elem) {
         return this.hasClass(elem, 'disabled');
     };
+
+    this.$ = function(selector) {
+        return document.querySelectorAll(selector)[0];
+    }
 }
 
 window.helpers = new Helpers();
+
+// Usage: PressCommandBase.java
+// helpers.triggerEvent(helpers.$('%s'), 'keyup', 13);
 
 // Usage: PressCommandBase.java
 // helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);

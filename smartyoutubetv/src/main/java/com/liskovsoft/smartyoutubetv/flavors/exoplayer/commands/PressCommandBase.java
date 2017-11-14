@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Random;
 
 public abstract class PressCommandBase extends GenericCommand {
-    private final String mSimulateButtonPressFunction = "eventTrigger.triggerEnter(document.getElementsByClassName('%s')[0]);\n";
+    private final String mSimulateButtonPressFunction = "helpers.triggerEnter(helpers.$('%s'));\n";
     private final String mAsyncResultCallback = "helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
     private String mClassName;
     private GenericCommand mCallback;
