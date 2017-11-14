@@ -20,6 +20,7 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
 
     public void inject() {
         injectCSSAssetOnce("main.css");
+        injectJSAssetOnce("helpers.js");
         injectJSAssetOnce("common.js");
         injectJSAssetOnce("quality-controls.js");
         if (Browser.getEngineType() == EngineType.XWalk) {

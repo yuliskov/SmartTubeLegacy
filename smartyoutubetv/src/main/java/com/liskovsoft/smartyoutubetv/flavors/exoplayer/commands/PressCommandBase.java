@@ -2,38 +2,15 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
 
+import java.io.InputStream;
 import java.util.Random;
 
 public abstract class PressCommandBase extends GenericCommand {
-    private final String mTriggerEventFunction = "function triggerEvent(el, type, keyCode) {\n"
-            + 	"console.log('triggerEvent called', el, type, keyCode);\n"
-            + 	"if ('createEvent' in document) {\n"
-            + 	        "// modern browsers, IE9+\n"
-            + 	        "var e = document.createEvent('HTMLEvents');\n"
-            + 	        "e.keyCode = keyCode;\n"
-            + 	        "e.initEvent(type, false, true);\n"
-            + 	        "el.dispatchEvent(e);\n"
-            +     "} else {\n"
-            +         "// IE 8\n"
-            +         "var e = document.createEventObject();\n"
-            +         "e.keyCode = keyCode;\n"
-            +         "e.eventType = type;\n"
-            +         "el.fireEvent('on'+e.eventType, e);\n"
-            +     "}\n"
-            + "}\n";
-    private final String mGetButtonFunction = "var targetButton = document.getElementsByClassName('%s')[0];\n";
-    private final String mSimulateButtonPressFunction = "triggerEvent(targetButton, 'keyup', 13); // simulate mouse/enter key press\n";
-    private final String mAsyncResultCallback = "function hasClass(elem, klass) {\n"
-            + "    return (\" \" + elem.className + \" \" ).indexOf( \" \"+klass+\" \" ) > -1;\n"
-            + "}\n"
-            + "\n"
-            + "function isDisabled(elem) {\n"
-            + "	return hasClass(elem, 'disabled');\n"
-            + "}\n"
-            + "\n"
-            + "isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
+    private final String mSimulateButtonPressFunction = "eventTrigger.triggerEnter(document.getElementsByClassName('%s')[0]);\n";
+    private final String mAsyncResultCallback = "helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
     private String mClassName;
     private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
@@ -78,7 +55,6 @@ public abstract class PressCommandBase extends GenericCommand {
     }
 
     private String combineAllTogetherByClass() {
-        String formattedGetButtonFunction = String.format(mGetButtonFunction, mClassName);
-        return mTriggerEventFunction + formattedGetButtonFunction + mSimulateButtonPressFunction;
+        return String.format(mSimulateButtonPressFunction, mClassName);
     }
 }
