@@ -35,7 +35,7 @@ public abstract class PressCommandBase extends GenericCommand {
             + "\n"
             + "isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
     private String mClassName;
-    private GenericCommand mCommand;
+    private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
     private final int mMyId = new Random().nextInt();
 
@@ -51,7 +51,7 @@ public abstract class PressCommandBase extends GenericCommand {
             }
 
             if (!event.getResult()) {
-                mCommand.call();
+                mCallback.call();
             }
             Browser.getBus().unregister(this);
         }
@@ -65,9 +65,9 @@ public abstract class PressCommandBase extends GenericCommand {
     }
 
 
-    protected void pressButtonByClassAsync(String className, final GenericCommand command) {
+    protected void pressButtonByClassAsync(String className, final GenericCommand callback) {
         mClassName = className;
-        mCommand = command;
+        mCallback = callback;
         mGenericButtonReceiver = new GenericBooleanResultReceiver();
         String hugeFunction = combineAllTogetherByClassAsync();
         passToBrowser(hugeFunction);

@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
-public class PressBackCommand extends PressCommandBase {
+public class NoneCommand extends PressCommandBase {
     @Override
     public boolean call() {
-        return pressButtonByClass(GoogleConstants.BUTTON_BACK);
+        return true;
     }
 }

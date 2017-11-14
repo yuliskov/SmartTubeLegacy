@@ -7,6 +7,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
@@ -31,13 +32,14 @@ public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
     private final SetterCommandCallInterceptor mInterceptor;
+    private final ActionBinder mActionBinder;
     private InputStream mResponseStream;
     private MediaType mResponseType;
-    private GenericCommand mLastCommand = new PressBackCommand();
 
     public ExoInterceptor(Context context, SetterCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
+        mActionBinder = new ActionBinder(context, this);
     }
 
     @Override
@@ -101,37 +103,16 @@ public class ExoInterceptor extends RequestInterceptor {
         activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                bindActions(extractAction(data));
-                updateLastCommand();
+                //bindActions(extractAction(data));
+                mActionBinder.bindActions(data);
+                //updateLastCommand();
             }
         });
     }
 
-    private void updateLastCommand() {
-        mInterceptor.setCommand(getLastCommand());
+    public void updateLastCommand(GenericCommand command) {
+        mInterceptor.setCommand(command);
         // force call command without adding to the history (in case WebView)
         mInterceptor.forceRun();
-    }
-
-    private void bindActions(final String action) {
-        switch (action) {
-            case PlayerActivity.ACTION_NEXT:
-                mLastCommand = new PressNextCommand(new PressBackCommand());
-                break;
-            case PlayerActivity.ACTION_PREV:
-                mLastCommand = new PressPrevCommand(new PressBackCommand());
-                break;
-            case PlayerActivity.ACTION_BACK:
-                mLastCommand = new PressBackCommand();
-                break;
-        }
-    }
-
-    private String extractAction(Intent data) {
-        return data.getStringExtra("action");
-    }
-
-    public GenericCommand getLastCommand() {
-        return mLastCommand;
     }
 }

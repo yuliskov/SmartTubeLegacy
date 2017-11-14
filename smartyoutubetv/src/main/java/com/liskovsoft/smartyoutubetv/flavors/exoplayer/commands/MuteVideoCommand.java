@@ -1,7 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-
 public class MuteVideoCommand extends GenericCommand {
     private final String mJSCode = "(function () {\n"
             + "\n"

@@ -96,6 +96,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String ACTION_PREV = "ACTION_PREV";
     public static final String ACTION_BACK = "ACTION_BACK";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
+    public static final String BUTTON_USER_PAGE = "button_user_page";
+    public static final String BUTTON_LIKE = "button_like";
+    public static final String BUTTON_DISLIKE = "button_dislike";
+    public static final String BUTTON_SUBSCRIBE = "button_subscribe";
+    public static final String ACTION_NONE = "action_none";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -293,14 +298,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         view.setAlpha(alpha);
     }
 
-    private void doGracefulExit(String action) {
-        // NOTE: fix crash on back press (Mi TV 3S 55): pause video
-        //if (player != null) {
-        //    player.stop();
-        //    //player.setPlayWhenReady(false);
-        //}
-
-        Intent intent = new Intent();
+    public void doGracefulExit(String action) {
+        Intent intent = mPresenter.createResultIntent();
         intent.putExtra("action", action);
         setResult(Activity.RESULT_OK, intent);
 

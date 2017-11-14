@@ -9,7 +9,7 @@ public class PressNextCommand extends PressCommandBase {
 
     @Override
     public boolean call() {
-        pressButtonByClassAsync("icon-player-next", mCommand);
+        pressButtonByClassAsync(GoogleConstants.BUTTON_NEXT, mCommand);
 
         return true;
     }
