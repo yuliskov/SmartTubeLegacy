@@ -1,5 +1,13 @@
 function Helpers() {
+    function isSelector(el) {
+        return typeof el === 'string' || el instanceof String;
+    }
+
     this.triggerEvent = function(el, type, keyCode) {
+        if (isSelector(el)) {
+            el = this.$(el);
+        }
+
         console.log('triggerEvent called', el, type, keyCode);
         if ('createEvent' in document) {
             // modern browsers, IE9+
@@ -35,10 +43,16 @@ function Helpers() {
     
     this.skipLastHistoryItem = function() {
         console.log('running skipLastHistoryItem');
+        var $this = this;
         var listener = function(e) {
             window.removeEventListener('popstate', listener);
+            console.log('running on popstate event');
             // e.state is equal to the data-attribute of the last image we clicked
-            window.history.back();
+            // window.history.go(-1);
+            // window.location.href = "/tv"
+            setTimeout(function() {
+                $this.triggerEnter(".back.no-model.legend-item");
+            }, 3000);
         };
         window.addEventListener('popstate', listener);
     }

@@ -101,6 +101,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_DISLIKE = "button_dislike";
     public static final String BUTTON_SUBSCRIBE = "button_subscribe";
     public static final String ACTION_NONE = "action_none";
+    public static final String DELIMITER = "------";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -196,7 +197,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         if (videoTitle == null) {
             return;
         }
-        String[] titles = videoTitle.split("\\|");
+        String[] titles = videoTitle.split(DELIMITER);
         mVideoTitle = (TextView)findViewById(R.id.video_title);
         mVideoTitle.setText(titles[0]);
         mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
@@ -563,7 +564,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             MediaSource[] mediaSources = new MediaSource[uris.length];
             for (int i = 0; i < uris.length; i++) {
                 // TODO: modified
-                String[] split = uris[i].toString().split("\\|");
+                String[] split = uris[i].toString().split(DELIMITER);
                 if (split.length == 2) {
                     mediaSources[i] = new MergingMediaSource(buildMediaSource(Uri.parse(split[0]), null), buildMediaSource(Uri.parse(split[1]),
                             null));

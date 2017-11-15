@@ -51,7 +51,7 @@ public class ActionBinder {
             commands.add(new PressButtonCommand(GoogleConstants.BUTTON_SUBSCRIBE));
         }
 
-        return new SimpleCombinedCommand(((GenericCommand[]) commands.toArray()));
+        return new SimpleCombinedCommand(commands.toArray(new GenericCommand[commands.size()]));
     }
 
     private String extractAction(Intent data) {

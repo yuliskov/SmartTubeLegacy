@@ -19,7 +19,7 @@ public final class SampleHelpers {
     }
 
     public static Sample buildFromUri(Uri contentUrl, String title, String title2) {
-        return new UriSample(title + "|" + title2, contentUrl.toString());
+        return new UriSample(mergeTitles(title, title2), contentUrl.toString());
     }
 
     public static Sample buildFromUri(Uri contentUrl, String title) {
@@ -30,12 +30,8 @@ public final class SampleHelpers {
         return buildFromUri(contentUrl, "Sample Video");
     }
 
-    public static Sample buildFromVideoAndAudio(Uri video, Uri audio) {
-        return new UriSample("Sample Video", String.format("%s|%s", video, audio));
-    }
-
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title, String title2) {
-        return new MPDSample(title + "|" + title2, "https://example.com/test.mpd", mpdPlaylist);
+        return new MPDSample(mergeTitles(title, title2), "https://example.com/test.mpd", mpdPlaylist);
     }
 
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title) {
@@ -44,6 +40,10 @@ public final class SampleHelpers {
 
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
         return buildFromMPDPlaylist(mpdPlaylist, "Sample Video");
+    }
+
+    private static String mergeTitles(String title, String title2) {
+        return title + PlayerActivity.DELIMITER + title2;
     }
 
     public abstract static class Sample {
