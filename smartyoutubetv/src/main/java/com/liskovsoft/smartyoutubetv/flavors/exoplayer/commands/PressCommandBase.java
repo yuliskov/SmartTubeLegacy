@@ -15,6 +15,7 @@ public abstract class PressCommandBase extends GenericCommand {
     private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
     private final int mMyId = new Random().nextInt();
+    private String mAdditionalJSCode;
 
     private class GenericBooleanResultReceiver {
         public GenericBooleanResultReceiver() {
@@ -27,6 +28,7 @@ public abstract class PressCommandBase extends GenericCommand {
                 return;
             }
 
+            // button is disabled
             if (!event.getResult()) {
                 mCallback.call();
             }
@@ -55,6 +57,11 @@ public abstract class PressCommandBase extends GenericCommand {
     }
 
     private String combineAllTogetherByClass() {
-        return String.format(mSimulateButtonPressFunction, mClassName);
+        return String.format(mSimulateButtonPressFunction, mClassName) + mAdditionalJSCode;
+    }
+
+
+    protected void setAdditionalJSCode(String jsCode) {
+        mAdditionalJSCode = jsCode;
     }
 }

@@ -31,6 +31,16 @@ function Helpers() {
 
     this.$ = function(selector) {
         return document.querySelectorAll(selector)[0];
+    };
+    
+    this.skipLastHistoryItem = function() {
+        console.log('running skipLastHistoryItem');
+        var listener = function(e) {
+            window.removeEventListener('popstate', listener);
+            // e.state is equal to the data-attribute of the last image we clicked
+            window.history.back();
+        };
+        window.addEventListener('popstate', listener);
     }
 }
 

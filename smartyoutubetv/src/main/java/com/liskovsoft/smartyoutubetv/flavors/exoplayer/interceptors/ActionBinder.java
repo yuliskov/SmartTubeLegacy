@@ -13,6 +13,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressNextCommand
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
+import java.util.ArrayList;
+
 public class ActionBinder {
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
@@ -23,19 +25,33 @@ public class ActionBinder {
     }
 
     public void bindActions(Intent intent) {
-        GenericCommand command1 = createCommandForAction(intent);
-        GenericCommand command2 = createCommandForButton(intent);
+        GenericCommand lastCommand = createCommandForAction(intent);
+        GenericCommand commands = createCommandForButton(intent);
 
-        mInterceptor.updateLastCommand(new SimpleCombinedCommand(command1, command2));
+        mInterceptor.updateLastCommand(new SimpleCombinedCommand(commands, lastCommand));
     }
 
     private GenericCommand createCommandForButton(Intent intent) {
-        boolean checked = intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false);
-        if (checked) {
+        ArrayList<GenericCommand> commands = new ArrayList<>();
+
+        if (intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false)) {
             Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
-            return new PressButtonCommand(GoogleConstants.BUTTON_USER_PAGE);
+            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
         }
-        return null;
+
+        if (intent.getBooleanExtra(PlayerActivity.BUTTON_LIKE, false)) {
+            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_LIKE));
+        }
+
+        if (intent.getBooleanExtra(PlayerActivity.BUTTON_DISLIKE, false)) {
+            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_DISLIKE));
+        }
+
+        if (intent.getBooleanExtra(PlayerActivity.BUTTON_SUBSCRIBE, false)) {
+            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_SUBSCRIBE));
+        }
+
+        return new SimpleCombinedCommand(((GenericCommand[]) commands.toArray()));
     }
 
     private String extractAction(Intent data) {
