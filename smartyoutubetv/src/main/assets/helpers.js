@@ -1,12 +1,27 @@
+/////////// GoogleButton ////////////////
+
+function GoogleButton() {
+    this.selectedClass = 'toggle-selected';
+    this.optionsBtnSelector = '#transport-more-button';
+    this.backBtnSelector = '.back.no-model.legend-item';
+}
+
+////////// End GoogleButton //////////////////
+
+/////////// Helpers ////////////////
+
 function Helpers() {
     function isSelector(el) {
         return typeof el === 'string' || el instanceof String;
     }
 
-    this.triggerEvent = function(el, type, keyCode) {
-        if (isSelector(el)) {
-            el = this.$(el);
+    this.triggerEvent = function(selector, type, keyCode) {
+        console.log("calling dispatchEvent on", selector);
+        if (isSelector(selector)) {
+            var el = this.$(selector);
         }
+
+        el || console.warn("unable to find", selector);
 
         console.log('triggerEvent called', el, type, keyCode);
         if ('createEvent' in document) {
@@ -24,9 +39,9 @@ function Helpers() {
         }
     };
 
-    this.triggerEnter = function(el) {
+    this.triggerEnter = function(selector) {
         // simulate mouse/enter key press
-        this.triggerEvent(el, 'keyup', 13);
+        this.triggerEvent(selector, 'keyup', 13);
     };
 
     this.hasClass = function(elem, klass) {
@@ -50,13 +65,37 @@ function Helpers() {
             // e.state is equal to the data-attribute of the last image we clicked
             // window.history.go(-1);
             // window.location.href = "/tv"
-            setTimeout(function() {
-                $this.triggerEnter(".back.no-model.legend-item");
-            }, 3000);
+            $this.muteVideo(); // fix background sound playing
+            $this.triggerEnter($this.backBtnSelector);
         };
         window.addEventListener('popstate', listener);
-    }
+    };
+
+    this.muteVideo = function() {
+        var player = document.getElementsByTagName('video')[0];
+        if (!player)
+            return;
+
+        // we can't pause video because history will not work
+        function muteVideo() {
+            var player = document.getElementsByTagName('video')[0];
+            console.log('muteVideo called');
+            player.muted = true;
+            player.setAttribute('style', '-webkit-filter:brightness(0)');
+        }
+
+        function onLoadData() {
+            console.log('loadeddata called');
+            muteVideo();
+            player.removeEventListener('loadeddata', onLoadData);
+        }
+
+        // load events: loadedmetadata, loadeddata
+        player.addEventListener('loadeddata', onLoadData, false);
+    };
 }
+
+Helpers.prototype = new GoogleButton();
 
 window.helpers = new Helpers();
 
@@ -65,3 +104,47 @@ window.helpers = new Helpers();
 
 // Usage: PressCommandBase.java
 // helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);
+
+/////////// End Helpers ////////////////
+
+/////////// Player Button ////////////////
+
+function YouButton(selector) {
+    this.doPressOnOptionsBtn = function() {
+        console.log('this.optionsBtnSelector', this.optionsBtnSelector);
+        helpers.triggerEnter(this.optionsBtnSelector);
+    };
+
+    this.findToggle = function() {
+        var btn = helpers.$(selector);
+        if (!btn) {
+            this.doPressOnOptionsBtn();
+            btn = helpers.$(selector);
+        }
+
+        btn || console.warn("unable to find", selector);
+
+        return btn;
+    };
+    
+    this.getChecked = function() {
+        return helpers.hasClass(this.findToggle(), this.selectedClass);
+    };
+
+    this.setChecked = function(doChecked) {
+        var isChecked = this.getChecked();
+        if (isChecked === doChecked) {
+            return;
+        }
+        helpers.triggerEnter(this.findToggle());
+    }
+}
+
+YouButton.prototype = new GoogleButton();
+YouButton.fromSelector = function(selector) {
+    return new YouButton(selector);
+};
+
+/////////// End Player Button ////////////////
+
+

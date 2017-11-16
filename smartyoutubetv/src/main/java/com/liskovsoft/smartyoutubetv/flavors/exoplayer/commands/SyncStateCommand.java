@@ -12,6 +12,6 @@ public class SyncStateCommand extends BooleanCommandBase {
 
     @Override
     protected String getActionFunction() {
-        return "helpers.syncButtonState();";
+        return String.format("YouButton.fromSelector('%s').setChecked(%s);", mButtonSelector, mIsChecked);
     }
 }

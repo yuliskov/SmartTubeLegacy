@@ -59,14 +59,12 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
-        logger.info("onPageFinished called");
         WebView w = tab.getWebView();
         injectWebFiles(w);
     }
 
     @Override
     public void onPageStarted(Tab tab) {
-        logger.info("onPageStarted called");
         // js must be added before page fully loaded
         addJSInterface(tab);
     }
