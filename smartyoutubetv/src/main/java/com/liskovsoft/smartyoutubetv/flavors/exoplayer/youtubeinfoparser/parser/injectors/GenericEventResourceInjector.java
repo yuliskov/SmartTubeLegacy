@@ -25,6 +25,18 @@ public class GenericEventResourceInjector extends ResourceInjectorBase {
         }
     }
 
+    public static class GenericStringResultEvent {
+        private String mResult;
+
+        public GenericStringResultEvent(String result) {
+            mResult = result;
+        }
+
+        public String getResult() {
+            return mResult;
+        }
+    }
+
     public static class JSResourceEvent {
         private String mCode;
 

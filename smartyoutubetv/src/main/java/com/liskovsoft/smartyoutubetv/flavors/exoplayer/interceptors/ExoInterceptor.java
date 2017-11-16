@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.ButtonStatesProcessor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
@@ -94,18 +95,27 @@ public class ExoInterceptor extends RequestInterceptor {
 
     private void openExoPlayer(Sample sample) {
         sLogger.info("About to start ExoPlayer activity for Regular item");
-        SmartYouTubeTVActivity activity = (SmartYouTubeTVActivity) mContext;
-        activity.startActivityForResult(sample.buildIntent(mContext), 1);
-        setupResultListener(activity);
+        final SmartYouTubeTVActivity activity = (SmartYouTubeTVActivity) mContext;
+        final Intent playerIntent = sample.buildIntent(mContext);
+        fetchButtonStates(playerIntent, new Runnable(){
+            @Override
+            public void run() {
+                activity.startActivityForResult(playerIntent, 1);
+                setupResultListener(activity);
+            }
+        });
+    }
+
+    private void fetchButtonStates(Intent intent, Runnable onDone) {
+        Runnable processor = new ButtonStatesProcessor(mContext, intent, onDone);
+        processor.run();
     }
 
     private void setupResultListener(SmartYouTubeTVActivity activity) {
         activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                //bindActions(extractAction(data));
                 mActionBinder.bindActions(data);
-                //updateLastCommand();
             }
         });
     }

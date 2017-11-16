@@ -9,6 +9,7 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
@@ -115,7 +116,14 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void onGenericBooleanResult(boolean result, int id) {
-        sLogger.info("Just now received generic boolean result from webview.");
+        sLogger.info("Received generic boolean result from webview.");
         Browser.getBus().post(new GenericBooleanResultEvent(result, id));
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void onGenericStringResult(String result) {
+        sLogger.info("Received generic string result from webview.");
+        Browser.getBus().post(new GenericStringResultEvent(result));
     }
 }
