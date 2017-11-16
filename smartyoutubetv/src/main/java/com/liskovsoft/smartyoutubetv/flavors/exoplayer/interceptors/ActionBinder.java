@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.ArrayMap;
 import android.widget.Toast;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GoogleConstants;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressButtonCommand;
@@ -11,17 +12,28 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressNextCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncStateCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ActionBinder {
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
+    private final HashMap<String, String> mMapping;
 
     public ActionBinder(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
+        mMapping = new HashMap<>();
+        setUpMapping();
+    }
+
+    private void setUpMapping() {
+        mMapping.put(PlayerActivity.BUTTON_LIKE, GoogleConstants.BUTTON_LIKE);
+        mMapping.put(PlayerActivity.BUTTON_DISLIKE, GoogleConstants.BUTTON_DISLIKE);
+        mMapping.put(PlayerActivity.BUTTON_SUBSCRIBE, GoogleConstants.BUTTON_SUBSCRIBE);
     }
 
     public void bindActions(Intent intent) {
@@ -39,16 +51,10 @@ public class ActionBinder {
             commands.add(new PressButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
         }
 
-        if (intent.getBooleanExtra(PlayerActivity.BUTTON_LIKE, false)) {
-            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_LIKE));
-        }
-
-        if (intent.getBooleanExtra(PlayerActivity.BUTTON_DISLIKE, false)) {
-            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_DISLIKE));
-        }
-
-        if (intent.getBooleanExtra(PlayerActivity.BUTTON_SUBSCRIBE, false)) {
-            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_SUBSCRIBE));
+        for (HashMap.Entry<String, String> entry : mMapping.entrySet()) {
+            boolean isChecked = intent.getBooleanExtra(entry.getKey(), false);
+            String buttonSelector = entry.getValue();
+            commands.add(new SyncStateCommand(buttonSelector, isChecked));
         }
 
         return new SimpleCombinedCommand(commands.toArray(new GenericCommand[commands.size()]));

@@ -2,15 +2,13 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
-import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
 
-import java.io.InputStream;
 import java.util.Random;
 
 public abstract class PressCommandBase extends GenericCommand {
-    private final String mSimulateButtonPressFunction = "helpers.triggerEnter('%s');\n";
-    private final String mAsyncResultCallback = "helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
+    private final String mButtonPressFunction = "helpers.triggerEnter('%s');\n";
+    private final String mCallbackFunction = "helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
     private String mClassName;
     private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
@@ -53,11 +51,11 @@ public abstract class PressCommandBase extends GenericCommand {
     }
 
     private String combineAllTogetherByClassAsync() {
-        return combineAllTogetherByClass() + String.format(mAsyncResultCallback, mMyId);
+        return combineAllTogetherByClass() + String.format(mCallbackFunction, mMyId);
     }
 
     private String combineAllTogetherByClass() {
-        return String.format(mSimulateButtonPressFunction, mClassName) + mAdditionalJSCode;
+        return String.format(mButtonPressFunction, mClassName) + mAdditionalJSCode;
     }
 
 
