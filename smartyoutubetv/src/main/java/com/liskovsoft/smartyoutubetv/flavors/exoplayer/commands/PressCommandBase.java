@@ -34,7 +34,7 @@ public abstract class PressCommandBase extends GenericCommand {
         }
     }
 
-    protected boolean pressButtonByClass(String className) {
+    protected boolean pressButtonBySelector(String className) {
         mClassName = className;
         String hugeFunction = combineAllTogetherByClass();
         passToBrowser(hugeFunction);

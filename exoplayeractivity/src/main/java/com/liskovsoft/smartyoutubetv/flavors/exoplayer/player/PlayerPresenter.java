@@ -18,6 +18,16 @@ public class PlayerPresenter {
         mButtonStates = new HashMap<>();
         mIdTagMapping = new HashMap<>();
         initIdTagMapping();
+        syncButtonStates();
+    }
+
+    private void syncButtonStates() {
+        Intent intent = mView.getIntent();
+        for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
+            boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
+            ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(entry.getKey());
+            btn.setChecked(isChecked);
+        }
     }
 
     private void initIdTagMapping() {

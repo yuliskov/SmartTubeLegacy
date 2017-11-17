@@ -16,7 +16,7 @@ public class PressButtonCommand extends PressCommandBase {
     @Override
     public boolean call() {
         setAdditionalJSCode(mJSCode);
-        return pressButtonByClass(mSelector);
+        return pressButtonBySelector(mSelector);
     }
 
 }

@@ -162,6 +162,11 @@ public abstract class ToggleButtonBase extends LinearLayout {
             ((ToggleButtonBase) bindToView).uncheck();
     }
 
+    public void setChecked(boolean isChecked) {
+        mIsChecked = isChecked;
+        initElems();
+    }
+
     private void uncheck() {
         mIsChecked = false;
         initElems();

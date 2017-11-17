@@ -1,5 +1,19 @@
 /////////// GoogleButton ////////////////
 
+var PlayerActivity = {
+    BUTTON_USER_PAGE: "button_user_page",
+    BUTTON_LIKE: "button_like",
+    BUTTON_DISLIKE: "button_dislike",
+    BUTTON_SUBSCRIBE: "button_subscribe"
+};
+
+var GoogleConstants = {
+    BUTTON_USER_PAGE: ".pivot-channel-tile",
+    BUTTON_LIKE: ".icon-like.toggle-button",
+    BUTTON_DISLIKE: ".icon-dislike.toggle-button",
+    BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button"
+};
+
 function GoogleButton() {
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
@@ -55,7 +69,7 @@ function Helpers() {
     this.$ = function(selector) {
         return document.querySelectorAll(selector)[0];
     };
-    
+
     this.skipLastHistoryItem = function() {
         console.log('running skipLastHistoryItem');
         var $this = this;
@@ -93,6 +107,35 @@ function Helpers() {
         // load events: loadedmetadata, loadeddata
         player.addEventListener('loadeddata', onLoadData, false);
     };
+
+    // // supply selector list
+    // this.getButtonStates = function() {
+    //     if (arguments.length === 0) {
+    //         console.warn('selector list is empty');
+    //     }
+    //
+    //     var states = {};
+    //     for(var i = 0; i < arguments.length; i++) {
+    //         var selector = arguments[i];
+    //         var btn = YouButton.fromSelector(selector);
+    //         states[selector] = btn.getChecked();
+    //     }
+    //
+    //     return states;
+    // };
+
+    // supply selector list
+    this.getButtonStates = function() {
+        var states = {};
+        for(var key in GoogleConstants) {
+            var selector = GoogleConstants[key];
+            var btn = YouButton.fromSelector(selector);
+            var newName = PlayerActivity[key];
+            states[newName] = btn.getChecked();
+        }
+
+        return states;
+    };
 }
 
 Helpers.prototype = new GoogleButton();
@@ -109,9 +152,11 @@ window.helpers = new Helpers();
 
 /////////// Player Button ////////////////
 
+// Usage: YouButton.fromSelector('.my-selector').setChecked(true);
+
 function YouButton(selector) {
     this.doPressOnOptionsBtn = function() {
-        console.log('this.optionsBtnSelector', this.optionsBtnSelector);
+        console.log('this.optionsBtnSelector: ' + this.optionsBtnSelector);
         helpers.triggerEnter(this.optionsBtnSelector);
     };
 
@@ -122,11 +167,11 @@ function YouButton(selector) {
             btn = helpers.$(selector);
         }
 
-        btn || console.warn("unable to find", selector);
+        btn || console.warn("unable to find " + selector);
 
         return btn;
     };
-    
+
     this.getChecked = function() {
         return helpers.hasClass(this.findToggle(), this.selectedClass);
     };

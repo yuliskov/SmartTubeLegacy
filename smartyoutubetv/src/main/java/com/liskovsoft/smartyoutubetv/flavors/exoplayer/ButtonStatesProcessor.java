@@ -2,10 +2,17 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
 
 import android.content.Context;
 import android.content.Intent;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GoogleConstants;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.squareup.otto.Subscribe;
+
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ButtonStatesProcessor implements Runnable {
@@ -13,7 +20,8 @@ public class ButtonStatesProcessor implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
-    private final String mJSCommandString = "app && app.onGenericStringResult(helpers.getButtonStates());";
+    private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
+    private Map<String, String> mSelectorNameMap;
 
     private class GenericStringResultReceiver {
         public GenericStringResultReceiver() {
@@ -35,17 +43,29 @@ public class ButtonStatesProcessor implements Runnable {
     }
 
     private void syncWithIntent(Map<String, Boolean> states) {
-        
+        for (Map.Entry<String, Boolean> entry : states.entrySet()) {
+            mIntent.putExtra(entry.getKey(), entry.getValue());
+        }
     }
 
+    // "{'.btn-selector': true, '.btn-selector2': false}"
     private Map<String, Boolean> convertToObj(String result) {
-        return null;
+        Type type = new TypeToken<Map<String, Boolean>>(){}.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(result, type);
     }
 
     public ButtonStatesProcessor(Context context, Intent intent, Runnable onDone) {
         mContext = context;
         mIntent = intent;
         mOnDone = onDone;
+        mSelectorNameMap = initSelectorNameMap();
+    }
+
+    private Map<String, String> initSelectorNameMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put(GoogleConstants.BUTTON_SUBSCRIBE, PlayerActivity.BUTTON_SUBSCRIBE);
+        return map;
     }
 
     @Override
