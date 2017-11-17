@@ -59,6 +59,8 @@ function Helpers() {
     };
 
     this.hasClass = function(elem, klass) {
+        if (!elem)
+            return false;
         return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
     };
 
