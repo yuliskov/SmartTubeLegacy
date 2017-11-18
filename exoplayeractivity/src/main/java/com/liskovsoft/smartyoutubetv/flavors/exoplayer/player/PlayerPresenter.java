@@ -18,14 +18,14 @@ public class PlayerPresenter {
         mButtonStates = new HashMap<>();
         mIdTagMapping = new HashMap<>();
         initIdTagMapping();
-        syncButtonStates();
     }
 
-    private void syncButtonStates() {
+    public void syncButtonStates() {
         Intent intent = mView.getIntent();
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
-            ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(entry.getKey());
+            Integer btnId = entry.getKey();
+            ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(btnId);
             btn.setChecked(isChecked);
         }
     }
@@ -40,7 +40,8 @@ public class PlayerPresenter {
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         int id = button.getId();
         mButtonStates.put(id, isChecked);
-        if (id == R.id.exo_user) {
+        boolean userPageClicked = id == R.id.exo_user && isChecked;
+        if (userPageClicked) {
             Toast.makeText(mView, "Go to the user page", Toast.LENGTH_LONG).show();
             mView.doGracefulExit(PlayerActivity.ACTION_NONE);
         }

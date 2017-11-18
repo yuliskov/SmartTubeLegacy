@@ -30,14 +30,17 @@ function Helpers() {
     }
 
     this.triggerEvent = function(selector, type, keyCode) {
-        console.log("calling dispatchEvent on", selector);
         if (isSelector(selector)) {
             var el = this.$(selector);
         }
 
-        el || console.warn("unable to find", selector);
+        console.log("Helpers.triggerEvent: " + selector + " " + type + " " + keyCode);
 
-        console.log('triggerEvent called', el, type, keyCode);
+        if (!el) {
+            console.warn("Helpers.triggerEvent: unable to find " + selector);
+            return;
+        }
+
         if ('createEvent' in document) {
             // modern browsers, IE9+
             var e = document.createEvent('HTMLEvents');
@@ -59,8 +62,9 @@ function Helpers() {
     };
 
     this.hasClass = function(elem, klass) {
-        if (!elem)
+        if (!elem) {
             return false;
+        }
         return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
     };
 
@@ -73,11 +77,11 @@ function Helpers() {
     };
 
     this.skipLastHistoryItem = function() {
-        console.log('running skipLastHistoryItem');
+        console.log('Helpers.skipLastHistoryItem called');
         var $this = this;
         var listener = function(e) {
             window.removeEventListener('popstate', listener);
-            console.log('running on popstate event');
+            console.log('Helpers.skipLastHistoryItem: running on popstate event');
             // e.state is equal to the data-attribute of the last image we clicked
             // window.history.go(-1);
             // window.location.href = "/tv"
@@ -95,13 +99,13 @@ function Helpers() {
         // we can't pause video because history will not work
         function muteVideo() {
             var player = document.getElementsByTagName('video')[0];
-            console.log('muteVideo called');
+            console.log('Helpers.muteVideo called');
             player.muted = true;
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
 
         function onLoadData() {
-            console.log('loadeddata called');
+            console.log('Helpers.onLoadData called');
             muteVideo();
             player.removeEventListener('loadeddata', onLoadData);
         }
@@ -109,22 +113,6 @@ function Helpers() {
         // load events: loadedmetadata, loadeddata
         player.addEventListener('loadeddata', onLoadData, false);
     };
-
-    // // supply selector list
-    // this.getButtonStates = function() {
-    //     if (arguments.length === 0) {
-    //         console.warn('selector list is empty');
-    //     }
-    //
-    //     var states = {};
-    //     for(var i = 0; i < arguments.length; i++) {
-    //         var selector = arguments[i];
-    //         var btn = YouButton.fromSelector(selector);
-    //         states[selector] = btn.getChecked();
-    //     }
-    //
-    //     return states;
-    // };
 
     // supply selector list
     this.getButtonStates = function() {
@@ -158,7 +146,6 @@ window.helpers = new Helpers();
 
 function YouButton(selector) {
     this.doPressOnOptionsBtn = function() {
-        console.log('this.optionsBtnSelector: ' + this.optionsBtnSelector);
         helpers.triggerEnter(this.optionsBtnSelector);
     };
 
@@ -169,13 +156,15 @@ function YouButton(selector) {
             btn = helpers.$(selector);
         }
 
-        btn || console.warn("unable to find " + selector);
+        btn || console.warn("YouButton.findToggle: unable to find " + selector);
 
         return btn;
     };
 
     this.getChecked = function() {
-        return helpers.hasClass(this.findToggle(), this.selectedClass);
+        var isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
+        console.log("YouButton.getChecked: " + selector + " " + isChecked);
+        return isChecked;
     };
 
     this.setChecked = function(doChecked) {
@@ -183,8 +172,9 @@ function YouButton(selector) {
         if (isChecked === doChecked) {
             return;
         }
+        console.log("YouButton.setChecked: " + selector + " " + doChecked);
         helpers.triggerEnter(this.findToggle());
-    }
+    };
 }
 
 YouButton.prototype = new GoogleButton();

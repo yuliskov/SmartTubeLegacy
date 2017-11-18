@@ -5,17 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.ButtonStatesProcessor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressNextCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
@@ -32,12 +26,12 @@ import java.io.InputStream;
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
-    private final SetterCommandCallInterceptor mInterceptor;
+    private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionBinder mActionBinder;
     private InputStream mResponseStream;
     private MediaType mResponseType;
 
-    public ExoInterceptor(Context context, SetterCommandCallInterceptor interceptor) {
+    public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
         mActionBinder = new ActionBinder(context, this);

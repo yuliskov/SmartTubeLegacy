@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,8 @@ public class ButtonStatesProcessor implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
-    private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
+    private final String mJSCommandString = "setTimeout(function(){app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));}, 2000);";
+    //private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
     private Map<String, String> mSelectorNameMap;
 
     private class GenericStringResultReceiver {

@@ -5,16 +5,16 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
-public class SetterCommandCallInterceptor extends RequestInterceptor {
+public class DelayedCommandCallInterceptor extends RequestInterceptor {
     private GenericCommand mCommand;
     private long mPrevTime;
-    private final int mDelayMillis = 5000;
     private boolean mInterceptReceived;
 
-    public SetterCommandCallInterceptor() {
+    public DelayedCommandCallInterceptor() {
+        
     }
 
-    public SetterCommandCallInterceptor(GenericCommand command) {
+    public DelayedCommandCallInterceptor(GenericCommand command) {
         mCommand = command;
     }
 
@@ -26,7 +26,6 @@ public class SetterCommandCallInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         mInterceptReceived = true;
-        throttledCommandCall();
         return null;
     }
 
@@ -35,20 +34,22 @@ public class SetterCommandCallInterceptor extends RequestInterceptor {
      * Force call command without adding to the history (in case WebView).
      */
     public void forceRun() {
-        startTimeBomb();
+        if (mInterceptReceived) {
+            mInterceptReceived = false;
+            throttledCommandCall();
+        } else {
+            postDelayed();
+        }
     }
 
-    private void startTimeBomb() {
+    private void postDelayed() {
+        int delayMillis = 5000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mInterceptReceived) {
-                    mInterceptReceived = false;
-                    return;
-                }
                 throttledCommandCall();
             }
-        }, mDelayMillis);
+        }, delayMillis);
     }
 
     public void setCommand(GenericCommand command) {

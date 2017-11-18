@@ -172,6 +172,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private void initPresenter() {
         mPresenter = new PlayerPresenter(this);
+        // we need to call this method after mPresenter initialization
+        mPresenter.syncButtonStates();
     }
 
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
