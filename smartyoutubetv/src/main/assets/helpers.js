@@ -15,6 +15,7 @@ var GoogleConstants = {
 };
 
 function GoogleButton() {
+    this.disabledClass = 'disabled';
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
     this.backBtnSelector = '.back.no-model.legend-item';
@@ -69,8 +70,12 @@ function Helpers() {
         return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
     };
 
-    this.isDisabled = function(elem) {
-        return this.hasClass(elem, 'disabled');
+    this.isDisabled = function(element) {
+        var el = element;
+        if (isSelector(element)) {
+            el = this.$(element);
+        }
+        return this.hasClass(el, 'disabled');
     };
 
     this.$ = function(selector) {
@@ -113,6 +118,7 @@ function Helpers() {
 
         // load events: loadedmetadata, loadeddata
         player.addEventListener('loadeddata', onLoadData, false);
+        muteVideo();
     };
 
     // supply selector list

@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class PressCommandBase extends GenericCommand {
     private final String mButtonPressFunction = "helpers.triggerEnter('%s');\n";
-    private final String mCallbackFunction = "helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);\n";
+    private final String mButtonPressFunctionAsync = "helpers.isDisabled('%s') ? app.onGenericBooleanResult(false, %s) : helpers.triggerEnter('%s');\n";
     private String mClassName;
     private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
@@ -51,7 +51,7 @@ public abstract class PressCommandBase extends GenericCommand {
     }
 
     private String combineAllTogetherByClassAsync() {
-        return combineAllTogetherByClass() + String.format(mCallbackFunction, mMyId);
+        return String.format(mButtonPressFunctionAsync, mClassName, mMyId, mClassName);
     }
 
     private String combineAllTogetherByClass() {
