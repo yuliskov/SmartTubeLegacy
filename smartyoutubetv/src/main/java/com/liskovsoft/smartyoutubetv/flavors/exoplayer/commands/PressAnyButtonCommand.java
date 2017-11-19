@@ -1,14 +1,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
-public class PressButtonCommand extends PressCommandBase {
+public class PressAnyButtonCommand extends PressCommandBase {
     private final String mSelector;
     private final String mJSCode;
 
-    public PressButtonCommand(String selector) {
+    public PressAnyButtonCommand(String selector) {
         this(selector, null);
     }
 
-    public PressButtonCommand(String selector, String additionalJSCode) {
+    public PressAnyButtonCommand(String selector, String additionalJSCode) {
         mSelector = selector;
         mJSCode = additionalJSCode;
     }

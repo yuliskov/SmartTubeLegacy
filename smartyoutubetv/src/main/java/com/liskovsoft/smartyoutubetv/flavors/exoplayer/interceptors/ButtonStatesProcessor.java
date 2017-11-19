@@ -20,6 +20,7 @@ public class ButtonStatesProcessor implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
+    // TODO: fixme: remove delay
     private final String mJSCommandString = "setTimeout(function(){app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));}, 2000);";
     //private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
     private Map<String, String> mSelectorNameMap;

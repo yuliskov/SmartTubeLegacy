@@ -117,6 +117,6 @@ public class ExoInterceptor extends RequestInterceptor {
     public void updateLastCommand(GenericCommand command) {
         mInterceptor.setCommand(command);
         // force call command without adding to the history (in case WebView)
-        mInterceptor.forceRun();
+        mInterceptor.forceRun(false);
     }
 }

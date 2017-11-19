@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public class OpenExternalPlayerInterceptor extends RequestInterceptor {
+public class OpenExternalPlayerInterceptorBAK extends RequestInterceptor {
     private final Context mContext;
     private final String[] mDevicesToProcess = {
             "mbx reference board (g18ref) (g18ref)",
@@ -28,7 +28,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     };
     private Boolean mCachedDeviceMatchResult = null;
 
-    public OpenExternalPlayerInterceptor(Context context) {
+    public OpenExternalPlayerInterceptorBAK(Context context) {
         mContext = context;
     }
 

@@ -2,10 +2,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.ArrayMap;
 import android.widget.Toast;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GoogleConstants;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressButtonCommand;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressAnyButtonCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SimpleCombinedCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
@@ -37,18 +36,18 @@ public class ActionBinder {
     }
 
     public void bindActions(Intent intent) {
-        GenericCommand lastCommand = createCommandForAction(intent);
-        GenericCommand commands = createCommandForButton(intent);
+        GenericCommand lastCommand = createCommandForPressAction(intent);
+        GenericCommand commands = createCommandForToggleAction(intent);
 
         mInterceptor.updateLastCommand(new SimpleCombinedCommand(commands, lastCommand));
     }
 
-    private GenericCommand createCommandForButton(Intent intent) {
+    private GenericCommand createCommandForToggleAction(Intent intent) {
         ArrayList<GenericCommand> commands = new ArrayList<>();
 
         if (intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false)) {
             Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
-            commands.add(new PressButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
+            commands.add(new PressAnyButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
         }
 
         for (HashMap.Entry<String, String> entry : mMapping.entrySet()) {
@@ -64,7 +63,7 @@ public class ActionBinder {
         return data.getStringExtra("action");
     }
 
-    private GenericCommand createCommandForAction(Intent intent) {
+    private GenericCommand createCommandForPressAction(Intent intent) {
         String action = extractAction(intent);
         GenericCommand command = new NoneCommand();
         switch (action) {

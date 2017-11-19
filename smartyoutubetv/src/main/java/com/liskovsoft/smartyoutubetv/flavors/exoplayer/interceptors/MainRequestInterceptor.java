@@ -5,7 +5,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.MuteVideoCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
-public class OpenExternalPlayerInterceptor extends RequestInterceptor {
+public class MainRequestInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final ExoInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
@@ -13,7 +13,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final CommandCallInterceptor mMuteVideoInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
-    public OpenExternalPlayerInterceptor(Context context) {
+    public MainRequestInterceptor(Context context) {
         mContext = context;
         mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor();
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
@@ -38,7 +38,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
             return true;
         }
 
-        // useful places: ptracking
+        // useful places: ptracking, log_event, log_interaction
         // at this moment video should be added to history
         // attention: not working when WebView restored
         if (url.contains("ptracking")) {

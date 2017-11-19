@@ -29,15 +29,16 @@ function Helpers() {
         return typeof el === 'string' || el instanceof String;
     }
 
-    this.triggerEvent = function(selector, type, keyCode) {
-        if (isSelector(selector)) {
-            var el = this.$(selector);
+    this.triggerEvent = function(element, type, keyCode) {
+        var el = element;
+        if (isSelector(element)) {
+            el = this.$(element);
         }
 
-        console.log("Helpers.triggerEvent: " + selector + " " + type + " " + keyCode);
+        console.log("Helpers.triggerEvent: " + element + " " + type + " " + keyCode);
 
         if (!el) {
-            console.warn("Helpers.triggerEvent: unable to find " + selector);
+            console.warn("Helpers.triggerEvent: unable to find " + element);
             return;
         }
 
