@@ -39,7 +39,7 @@ public class ActionBinder {
         GenericCommand lastCommand = createCommandForPressAction(intent);
         GenericCommand commands = createCommandForToggleAction(intent);
 
-        mInterceptor.updateLastCommand(new SimpleCombinedCommand(commands, lastCommand));
+        mInterceptor.updateLastCommand(new SimpleCombinedCommand(null, lastCommand));
     }
 
     private GenericCommand createCommandForToggleAction(Intent intent) {

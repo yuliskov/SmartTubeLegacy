@@ -243,7 +243,7 @@ function YouButton(selector) {
     };
 
     this.getChecked = function() {
-        this.initializer.ensureInitialized();
+        // this.initializer.ensureInitialized();
         var isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
         console.log("YouButton.getChecked: " + selector + " " + isChecked);
         return isChecked;
@@ -256,10 +256,7 @@ function YouButton(selector) {
         }
         console.log("YouButton.setChecked: " + selector + " " + doChecked);
 
-        var $this = this;
-        setTimeout(function() {
-            helpers.triggerEnter($this.findToggle());
-        }, 500);
+        helpers.triggerEnter(this.findToggle());
     };
 }
 
