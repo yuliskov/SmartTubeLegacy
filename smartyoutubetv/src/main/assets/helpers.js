@@ -20,6 +20,7 @@ function GoogleButton() {
     this.optionsBtnSelector = '#transport-more-button';
     this.backBtnSelector = '.back.no-model.legend-item';
     this.bottomBarSelector = '#transport-controls';
+    this.bottomBarControllerSelector = '#watch';
 }
 
 ////////// End GoogleButton //////////////////
@@ -165,13 +166,14 @@ function YouButtonInitializer(selector) {
         return len !== 0;
     };
     this.openBottomBar = function() {
-        var isHidden = helpers.$(this.bottomBarSelector).getAttribute('aria-hidden');
+        var bottomBar = helpers.$('#watch');
+        var isShown = helpers.hasClass(bottomBar, 'transport-showing');
 
         var upKey = 38;
         var downKey = 40;
 
-        if (isHidden) {
-            helpers.triggerEvent(document, 'keyup', upKey);
+        if (!isShown) {
+            helpers.triggerEvent(bottomBar, 'keydown', upKey);
         }
     };
     this.closeOptionsBar = function() {
@@ -198,21 +200,21 @@ function YouButtonInitializer(selector) {
         this.openControlsBar();
     };
     this.ensureInitialized = function(){
-        var exists = this.isElementExists(selector);
-        if (exists)
-            return;
-
         this.initOptionsBar();
-        exists = this.isElementExists(selector);
-        if (exists)
+        var exists = this.isElementExists(selector);
+        if (exists) {
+            console.log("YouButtonInitializer: element initialized " + selector);
             return;
+        }
 
         this.initControlsBar();
-        exists = this.isElementExists(selector);
-        if (exists)
+        var exists = this.isElementExists(selector);
+        if (exists) {
+            console.log("YouButtonInitializer: element initialized " + selector);
             return;
+        }
 
-        console.log("YouButtonInitializer: can't find element " + selector);
+        this.isElementExists(selector) || console.log("YouButtonInitializer: can't find element " + selector);
     };
 }
 
@@ -241,6 +243,7 @@ function YouButton(selector) {
     };
 
     this.getChecked = function() {
+        this.initializer.ensureInitialized();
         var isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
         console.log("YouButton.getChecked: " + selector + " " + isChecked);
         return isChecked;
@@ -253,8 +256,10 @@ function YouButton(selector) {
         }
         console.log("YouButton.setChecked: " + selector + " " + doChecked);
 
-        this.initializer.ensureInitialized();
-        helpers.triggerEnter(this.findToggle());
+        var $this = this;
+        setTimeout(function() {
+            helpers.triggerEnter($this.findToggle());
+        }, 500);
     };
 }
 
