@@ -4,19 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import com.liskovsoft.smartyoutubetv.misc.LocaleUtility;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
-import edu.mit.mobile.android.appupdater.AppUpdateChecker;
-import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import io.fabric.sdk.android.Fabric;
-import java.util.Locale;
 
 public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
+    private SmartPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +29,10 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void tryToRestoreLastActivity() {
-        SmartPreferences prefs = SmartPreferences.instance(this);
-        String bootstrapActivityName = prefs.getBootstrapActivityName();
+        if (mPrefs == null) {
+            mPrefs = SmartPreferences.instance(this);
+        }
+        String bootstrapActivityName = mPrefs.getBootstrapActivityName();
         if (bootstrapActivityName != null) {
             Toast.makeText(this, R.string.starting_popup, Toast.LENGTH_LONG).show();
             startActivity(this, bootstrapActivityName);
@@ -80,5 +80,15 @@ public class BootstrapActivity extends ActivityBase {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
         startActivity(intent);
+        saveActivityNameForFurtherLaunches(clazz);
+    }
+
+    private void saveActivityNameForFurtherLaunches(Class clazz) {
+        CheckBox chk = (CheckBox) findViewById(R.id.chk_save_selection);
+        if (chk.isChecked()) {
+            mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+        } else {
+            mPrefs.setBootstrapActivityName(null);
+        }
     }
 }

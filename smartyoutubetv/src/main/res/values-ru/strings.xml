@@ -9,4 +9,6 @@
     <string name="view_count">просмотров</string>
     <string name="published">Опубликовано</string>
     <string name="starting_popup">Запуск из главного лаунчера</string>
+    <string name="save_selection">Запомнить выбор</string>
+    <string name="bootstrap_bottom_title2">Если не уверены, то пробуйте каждый из лаунчеров</string>
 </resources>

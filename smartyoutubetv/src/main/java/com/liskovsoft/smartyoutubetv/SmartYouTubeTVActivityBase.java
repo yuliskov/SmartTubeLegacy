@@ -16,7 +16,6 @@ import com.liskovsoft.browser.custom.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
-import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 
@@ -31,10 +30,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
-    private SmartPreferences mPrefs;
-    // TODO: remove
-    //private PageLoadHandler mPageLoadHandler;
-    //private PageDefaults mPageDefaults;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -42,23 +37,12 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         mTranslator = new KeysTranslator();
 
-        // Fabric.with(this, new Crashlytics());
-
         // clearCache();
 
         createController(icicle);
 
         makeActivityFullscreen();
         makeActivityHorizontal();
-
-        saveActivityNameForFurtherLaunches();
-        //checkForUpdates();
-    }
-
-    private void saveActivityNameForFurtherLaunches() {
-        if (mPrefs == null)
-            mPrefs = SmartPreferences.instance(this);
-        mPrefs.setBootstrapActivityName(this.getClass().getCanonicalName());
     }
 
     private void checkForUpdates() {
@@ -168,7 +152,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     public void finish() {
-        mPrefs.resetBootstrapActivityName();
         super.finish();
     }
 

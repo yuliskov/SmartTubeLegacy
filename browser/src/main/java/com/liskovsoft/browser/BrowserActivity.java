@@ -97,7 +97,7 @@ public class BrowserActivity extends AppCompatActivity {
     public void onLowMemory() {
         super.onLowMemory();
         //Toast.makeText(this, R.string.low_memory_notify, Toast.LENGTH_LONG).show();
-        //saveBrowserState(null);
+        saveBrowserState(null);
     }
 
     @Override
