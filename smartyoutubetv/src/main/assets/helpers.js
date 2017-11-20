@@ -19,6 +19,7 @@ function GoogleButton() {
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
     this.backBtnSelector = '.back.no-model.legend-item';
+    this.bottomBarSelector = '#transport-controls';
 }
 
 ////////// End GoogleButton //////////////////
@@ -75,10 +76,14 @@ function Helpers() {
         if (isSelector(element)) {
             el = this.$(element);
         }
-        return this.hasClass(el, 'disabled');
+        var hasClass = this.hasClass(el, this.disabledClass);
+        console.log("Helpers.isDisabled: " + element + " " + hasClass);
+        return hasClass;
     };
 
     this.$ = function(selector) {
+        if (!isSelector(selector))
+            return selector;
         return document.querySelectorAll(selector)[0];
     };
 
@@ -151,7 +156,71 @@ window.helpers = new Helpers();
 
 // Usage: YouButton.fromSelector('.my-selector').setChecked(true);
 
+function YouButtonInitializer(selector) {
+    this.isElementExists = function(selector) {
+        var el = helpers.$(selector);
+        var len = 0;
+        if (el)
+            len = el.children.length;
+        return len !== 0;
+    };
+    this.openBottomBar = function() {
+        var isHidden = helpers.$(this.bottomBarSelector).getAttribute('aria-hidden');
+
+        var upKey = 38;
+        var downKey = 40;
+
+        if (isHidden) {
+            helpers.triggerEvent(document, 'keyup', upKey);
+        }
+    };
+    this.closeOptionsBar = function() {
+        var bar = helpers.$(this.optionsBtnSelector);
+        var isSelected = helpers.hasClass(bar, this.selectedClass);
+        if (isSelected)
+            helpers.triggerEnter(bar);
+    };
+    this.openOptionsBar = function() {
+        var bar = helpers.$(this.optionsBtnSelector);
+        var isSelected = helpers.hasClass(bar, this.selectedClass);
+        if (!isSelected)
+            helpers.triggerEnter(bar);
+    };
+    this.openControlsBar = function() {
+        this.closeOptionsBar();
+    };
+    this.initOptionsBar = function() {
+        this.openBottomBar();
+        this.openOptionsBar();
+    };
+    this.initControlsBar = function() {
+        this.openBottomBar();
+        this.openControlsBar();
+    };
+    this.ensureInitialized = function(){
+        var exists = this.isElementExists(selector);
+        if (exists)
+            return;
+
+        this.initOptionsBar();
+        exists = this.isElementExists(selector);
+        if (exists)
+            return;
+
+        this.initControlsBar();
+        exists = this.isElementExists(selector);
+        if (exists)
+            return;
+
+        console.log("YouButtonInitializer: can't find element " + selector);
+    };
+}
+
+YouButtonInitializer.prototype = new GoogleButton();
+
 function YouButton(selector) {
+    this.initializer = new YouButtonInitializer(selector);
+
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
     };
@@ -159,8 +228,11 @@ function YouButton(selector) {
     this.findToggle = function() {
         var btn = helpers.$(selector);
         if (!btn) {
-            this.doPressOnOptionsBtn();
+            // NOTE: needed button is hidden so open bar first
+            // this.doPressOnOptionsBtn();
             btn = helpers.$(selector);
+            // NOTE: give a change to other buttons to appear like next/prev
+            // this.doPressOnOptionsBtn();
         }
 
         btn || console.warn("YouButton.findToggle: unable to find " + selector);
@@ -180,6 +252,8 @@ function YouButton(selector) {
             return;
         }
         console.log("YouButton.setChecked: " + selector + " " + doChecked);
+
+        this.initializer.ensureInitialized();
         helpers.triggerEnter(this.findToggle());
     };
 }

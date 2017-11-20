@@ -500,10 +500,19 @@ import java.util.Arrays;
      */
     private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
         int rendererIndex = 0; // video
+        if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
+            return;
+        }
         int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId);
         TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex[0], trackGroupAndIndex[1]);
         selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+    }
+
+    private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
+        int rendererIndex = 0; // video
+        TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
+        return groupArray.length == 0;
     }
 
     /**

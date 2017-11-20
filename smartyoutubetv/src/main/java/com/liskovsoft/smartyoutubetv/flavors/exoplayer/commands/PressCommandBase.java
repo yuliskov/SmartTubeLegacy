@@ -7,8 +7,8 @@ import com.squareup.otto.Subscribe;
 import java.util.Random;
 
 public abstract class PressCommandBase extends GenericCommand {
-    private final String mButtonPressFunction = "helpers.triggerEnter('%s');\n";
-    private final String mButtonPressFunctionAsync = "helpers.isDisabled('%s') ? app.onGenericBooleanResult(false, %s) : helpers.triggerEnter('%s');\n";
+    private final String mButtonPressFunction = "YouButton.fromSelector('%s').setChecked(true);\n";
+    private final String mButtonPressFunctionAsync = "helpers.isDisabled('%s') ? app.onGenericBooleanResult(false, %s) : YouButton.fromSelector('%s').setChecked(true);\n";
     private String mClassName;
     private GenericCommand mCallback;
     private GenericBooleanResultReceiver mGenericButtonReceiver;
