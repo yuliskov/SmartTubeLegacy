@@ -7,8 +7,7 @@ import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormat;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
-    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
-    private static final String RESTORE_ACTIVITY_ON_LAUNCH = "restoreActivityOnLaunch";
+    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName2";
     private static SmartPreferences mInstance;
     private Context mContext;
     private SharedPreferences mPrefs;

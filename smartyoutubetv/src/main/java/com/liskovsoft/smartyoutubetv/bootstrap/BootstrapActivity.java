@@ -1,15 +1,19 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -34,9 +38,23 @@ public class BootstrapActivity extends ActivityBase {
         }
         String bootstrapActivityName = mPrefs.getBootstrapActivityName();
         if (bootstrapActivityName != null) {
-            Toast.makeText(this, R.string.starting_popup, Toast.LENGTH_LONG).show();
+            String activityLabel = getActivityLabelByClass(bootstrapActivityName);
+            String popupText = String.format(getString(R.string.starting_popup_fmt), activityLabel);
+            Toast.makeText(this, popupText, Toast.LENGTH_LONG).show();
             startActivity(this, bootstrapActivityName);
         }
+    }
+
+    private String getActivityLabelByClass(String clazz) {
+        PackageManager pm = getPackageManager();
+        String activityLabel = null;
+        try {
+            ActivityInfo activityInfo = pm.getActivityInfo(new ComponentName(this, clazz), 0);
+            activityLabel = getString(activityInfo.labelRes);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return activityLabel;
     }
 
     private void setupCrashLogs() {
@@ -84,7 +102,7 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void saveActivityNameForFurtherLaunches(Class clazz) {
-        CheckBox chk = (CheckBox) findViewById(R.id.chk_save_selection);
+        BootstrapCheckBox chk = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
         if (chk.isChecked()) {
             mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
         } else {

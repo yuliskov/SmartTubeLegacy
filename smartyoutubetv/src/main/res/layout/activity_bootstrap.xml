@@ -21,12 +21,12 @@
                                                                    android:layout_height="wrap_content" android:layout_width="wrap_content"
                                                                    app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
         </LinearLayout>
-        <CheckBox
+        <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
             android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:text="@string/save_selection"
+            app:titleText="@string/save_selection"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/chk_save_selection"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/chk_save_selection"/>
     </LinearLayout>
     <TextView android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title2"/>
 </RelativeLayout>

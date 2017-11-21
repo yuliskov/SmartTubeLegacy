@@ -16,4 +16,9 @@
     <string name="starting_popup">Starting from the main launcher</string>
     <string name="save_selection">Remember selection</string>
     <string name="bootstrap_bottom_title2">If you unsure, try lauchers one by one</string>
+    <string name="starting_popup_fmt">Starting %s launcher...</string>
+    <string name="app_name_720">720</string>
+    <string name="app_name_1080">1080</string>
+    <string name="app_name_4k">4K</string>
+    <string name="app_name_4k_alt">4K Alt</string>
 </resources>
