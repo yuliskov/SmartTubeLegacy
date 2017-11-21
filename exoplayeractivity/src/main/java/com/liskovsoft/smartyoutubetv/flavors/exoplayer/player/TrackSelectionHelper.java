@@ -441,7 +441,7 @@ import java.util.Arrays;
         mPrefs.setSelectedTrackId(null);
     }
 
-    // TODO: modified
+    // TODO: modified: remove
     private void persistPlayerState() {
         if (mPrefs == null) {
             return;

@@ -52,4 +52,14 @@ public class ExoPreferences implements ExoKeys {
                 .putString(ExoKeys.SELECTED_TRACK_ID, id)
                 .apply();
     }
+
+    public void setPosition(String key, long val) {
+        mPrefs.edit()
+                .putLong(key, val)
+                .apply();
+    }
+
+    public long getPosition(String key) {
+        return mPrefs.getLong(key, 0);
+    }
 }

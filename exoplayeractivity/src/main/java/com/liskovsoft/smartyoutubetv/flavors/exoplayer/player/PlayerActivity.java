@@ -62,6 +62,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
@@ -133,6 +134,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private LinearLayout mPlayerTopBar;
     private int mInterfaceVisibilityState;
     private PlayerPresenter mPresenter;
+    private PlayerStateManager mStateManager;
 
     // Activity lifecycle
 
@@ -318,6 +320,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     @Override
+    public void finish() {
+        mStateManager.persistState();
+        super.finish();
+    }
+
+    @Override
     public void onNewIntent(Intent intent) {
         releasePlayer();
         shouldAutoPlay = true;
@@ -463,8 +471,14 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
-                    // do restore as early as possible
-                    trackSelectionHelper.restore(getApplicationContext(), rendererTrackGroupArrays);
+                    // NOTE: do restore as early as possible
+                    // trackSelectionHelper.restore(getApplicationContext(), rendererTrackGroupArrays);
+
+                    if (mStateManager == null) {
+                        mStateManager = new PlayerStateManager(PlayerActivity.this, player, trackSelector);
+                    }
+                    mStateManager.restoreState(rendererTrackGroupArrays);
+
                     forceAllFormatsSupport(rendererFormatSupports);
 
                     return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
@@ -863,4 +877,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         return false;
     }
 
+    public String getVideoTitle() {
+        return getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
+    }
 }
