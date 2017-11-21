@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bootstrap_chkbox_text_size">13sp</dimen>
+    <dimen name="bootstrap_chkbox_width">195dp</dimen>
+    <dimen name="bootstrap_chkbox_height">90dp</dimen>
+</resources>

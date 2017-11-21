@@ -2,14 +2,15 @@
 <!-- android:background="@drawable/bootstrap_button_selector" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/bootstrap_checkbox_wrapper"
-              android:layout_width="170dp" android:layout_height="80dp"
+              android:layout_width="@dimen/bootstrap_chkbox_width" android:layout_height="@dimen/bootstrap_chkbox_height"
               android:gravity="center" android:orientation="vertical" android:weightSum="1"
               android:layout_margin="0dp"
               android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">
     <LinearLayout android:id="@+id/bootstrap_checkbox_content" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:gravity="center_horizontal" android:layout_gravity="center" android:orientation="vertical" android:weightSum="1" android:padding="5dp">
         <CheckBox
-            android:textSize="10sp"
+            android:maxLines="1"
+            android:textSize="@dimen/bootstrap_chkbox_text_size"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:text="@string/save_selection"
