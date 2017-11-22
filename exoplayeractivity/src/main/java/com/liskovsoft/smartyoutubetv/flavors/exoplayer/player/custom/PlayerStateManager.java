@@ -118,7 +118,9 @@ public class PlayerStateManager {
 
     private void persistTrackIndex() {
         String trackId = extractCurrentTrackId();
-        mPrefs.setSelectedTrackId(trackId);
+        if (trackId != null) {
+            mPrefs.setSelectedTrackId(trackId);
+        }
     }
 
     private String extractCurrentTrackId() {

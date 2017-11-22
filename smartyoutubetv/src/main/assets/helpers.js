@@ -112,7 +112,10 @@ function Helpers() {
         function muteVideo() {
             var player = document.getElementsByTagName('video')[0];
             console.log('Helpers.muteVideo called');
+            // msg 4 future me
+            // 'paused' video won't invoke history update
             player.muted = true;
+            player.preload = false;
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
 

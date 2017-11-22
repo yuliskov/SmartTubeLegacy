@@ -337,8 +337,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void finish() {
+        if (mStateManager != null)
+            mStateManager.persistState();
         super.finish();
-        mStateManager.persistState();
     }
 
     @Override
