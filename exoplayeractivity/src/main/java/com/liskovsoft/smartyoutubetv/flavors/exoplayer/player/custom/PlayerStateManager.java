@@ -24,6 +24,7 @@ public class PlayerStateManager {
         mContext = context;
         mPlayer = player;
         mSelector = selector;
+        mPrefs = new ExoPreferences(context);
     }
 
     public void restoreState(TrackGroupArray[] rendererTrackGroupArrays) {
@@ -39,11 +40,11 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
-        if (mPrefs != null) { // run once
-            return;
-        }
-
-        mPrefs = new ExoPreferences(mContext);
+        //if (mPrefs != null) { // run once
+        //    return;
+        //}
+        //
+        //mPrefs = new ExoPreferences(mContext);
 
         restorePlayerState(rendererTrackGroupArrays);
     }

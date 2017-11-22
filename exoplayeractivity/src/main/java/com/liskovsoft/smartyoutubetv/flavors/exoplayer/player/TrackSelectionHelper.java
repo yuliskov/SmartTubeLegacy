@@ -300,10 +300,10 @@ import java.util.Arrays;
         selector.setRendererDisabled(rendererIndex, isDisabled);
         if (override != null) {
             selector.setSelectionOverride(rendererIndex, trackGroups, override);
-            persistPlayerState();
+            // persistPlayerState();
         } else {
             selector.clearSelectionOverrides(rendererIndex);
-            resetPlayerState();
+            // resetPlayerState();
         }
     }
 

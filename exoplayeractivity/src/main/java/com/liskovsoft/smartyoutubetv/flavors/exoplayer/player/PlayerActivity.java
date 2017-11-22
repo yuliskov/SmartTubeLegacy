@@ -496,10 +496,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                     // NOTE: do restore as early as possible
                     // trackSelectionHelper.restore(getApplicationContext(), rendererTrackGroupArrays);
 
-                    if (mStateManager == null) {
+                    if (mStateManager == null) { // run once
                         mStateManager = new PlayerStateManager(PlayerActivity.this, player, trackSelector);
+                        mStateManager.restoreState(rendererTrackGroupArrays);
                     }
-                    mStateManager.restoreState(rendererTrackGroupArrays);
 
                     forceAllFormatsSupport(rendererFormatSupports);
 
