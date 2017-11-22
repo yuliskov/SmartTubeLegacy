@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
@@ -18,29 +17,49 @@ import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
+    public static final String DO_NOT_RESTORE = "doNotRestore";
     private SmartPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // do it before view instantiation
+        initPrefs();
         setupLang();
         tryToRestoreLastActivity();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bootstrap);
+        initLayout();
 
         setupCrashLogs();
     }
 
-    private void tryToRestoreLastActivity() {
+    private void initPrefs() {
         if (mPrefs == null) {
             mPrefs = SmartPreferences.instance(this);
         }
+    }
+
+    private void initLayout() {
+        setContentView(R.layout.activity_bootstrap);
+        boolean isChecked = mPrefs.getBootstrapSaveSelection();
+        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
+        chkbox.setChecked(isChecked);
+    }
+
+    public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
+        mPrefs.setBootstrapSaveSelection(b);
+    }
+
+    private void tryToRestoreLastActivity() {
+        if (getIntent().getBooleanExtra(DO_NOT_RESTORE, false)) {
+            mPrefs.setBootstrapActivityName(null);
+        }
+
         String bootstrapActivityName = mPrefs.getBootstrapActivityName();
         if (bootstrapActivityName != null) {
-            String activityLabel = getActivityLabelByClass(bootstrapActivityName);
-            String popupText = String.format(getString(R.string.starting_popup_fmt), activityLabel);
-            Toast.makeText(this, popupText, Toast.LENGTH_LONG).show();
+            // String activityLabel = getActivityLabelByClass(bootstrapActivityName);
+            // String popupText = String.format(getString(R.string.starting_popup_fmt), activityLabel);
+            // Toast.makeText(this, popupText, Toast.LENGTH_LONG).show();
             startActivity(this, bootstrapActivityName);
         }
     }

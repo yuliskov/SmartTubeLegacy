@@ -61,4 +61,5 @@
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
     <string name="exo_like_desc">Like</string>
     <string name="captions">Captions</string>
+    <string name="not_implemented_msg">Not implemented yet</string>
 </resources>

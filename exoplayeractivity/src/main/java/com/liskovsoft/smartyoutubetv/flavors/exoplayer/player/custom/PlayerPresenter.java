@@ -1,8 +1,9 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
 
 import android.content.Intent;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
 import java.util.HashMap;
@@ -40,11 +41,13 @@ public class PlayerPresenter {
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         int id = button.getId();
         mButtonStates.put(id, isChecked);
-        boolean userPageClicked = id == R.id.exo_user && isChecked;
-        if (userPageClicked) {
-            Toast.makeText(mView, "Go to the user page", Toast.LENGTH_LONG).show();
-            mView.doGracefulExit(PlayerActivity.ACTION_NONE);
-        }
+
+        Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+        //boolean userPageClicked = id == R.id.exo_user && isChecked;
+        //if (userPageClicked) {
+        //    Toast.makeText(mView, "Go to the user page", Toast.LENGTH_LONG).show();
+        //    mView.doGracefulExit(PlayerActivity.ACTION_NONE);
+        //}
     }
 
     public Intent createResultIntent() {

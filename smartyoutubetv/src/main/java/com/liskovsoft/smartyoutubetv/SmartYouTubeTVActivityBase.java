@@ -13,6 +13,7 @@ import android.view.WindowManager.LayoutParams;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.SimpleUIController;
+import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
@@ -99,7 +100,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = mTranslator.doTranslateKeys(event);
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            finish();
+            onBackPressed();
         }
         return super.dispatchKeyEvent(event);
     }
@@ -153,6 +154,19 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     @Override
     public void finish() {
         super.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        returnToLaunchersDialog();
+        super.onBackPressed();
+    }
+
+    private void returnToLaunchersDialog() {
+        Intent intent = new Intent();
+        intent.setClass(this, BootstrapActivity.class);
+        intent.putExtra(BootstrapActivity.DO_NOT_RESTORE, true);
+        startActivity(intent);
     }
 
     ///////////////////////// Begin Youtube filter /////////////////////

@@ -62,6 +62,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.PlayerPresenter;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
@@ -197,15 +198,30 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private void initVideoTitle() {
+        mVideoTitle = (TextView)findViewById(R.id.video_title);
+        mVideoTitle.setText(getVideoMainTitle());
+        mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
+        mVideoTitle2.setText(getVideoSecondTitle());
+    }
+
+    private String getVideoTitleByIndex(int idx) {
         String videoTitle = getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
         if (videoTitle == null) {
-            return;
+            return null;
         }
         String[] titles = videoTitle.split(DELIMITER);
-        mVideoTitle = (TextView)findViewById(R.id.video_title);
-        mVideoTitle.setText(titles[0]);
-        mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
-        mVideoTitle2.setText(titles[1]);
+        if (titles.length != 2) {
+            return null;
+        }
+        return titles[idx];
+    }
+
+    public String getVideoMainTitle() {
+        return getVideoTitleByIndex(0);
+    }
+
+    public String getVideoSecondTitle() {
+        return getVideoTitleByIndex(1);
     }
 
     private void initExoPlayerButtons() {
@@ -321,8 +337,14 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void finish() {
-        mStateManager.persistState();
         super.finish();
+        mStateManager.persistState();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mStateManager.persistState();
     }
 
     @Override
@@ -875,9 +897,5 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             cause = cause.getCause();
         }
         return false;
-    }
-
-    public String getVideoTitle() {
-        return getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
     }
 }

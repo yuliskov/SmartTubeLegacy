@@ -12,4 +12,5 @@
     <string name="save_selection">Запомнить выбор</string>
     <string name="bootstrap_bottom_title2">Если не уверены, то пробуйте каждый из лаунчеров</string>
     <string name="starting_popup_fmt">Запускается %s лаунчер...</string>
+    <string name="loading_bottom_msg">Нажмите назад, чтобы вернуться к выбору лаунчеров</string>
 </resources>

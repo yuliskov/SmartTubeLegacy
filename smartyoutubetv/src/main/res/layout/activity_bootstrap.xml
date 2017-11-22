@@ -24,6 +24,7 @@
         <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
             android:layout_gravity="center"
             app:titleText="@string/save_selection"
+            app:onCheckedChanged="onCheckedChanged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/chk_save_selection"/>

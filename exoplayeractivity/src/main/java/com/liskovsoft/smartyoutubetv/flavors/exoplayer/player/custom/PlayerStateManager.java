@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -17,6 +18,7 @@ public class PlayerStateManager {
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
+    private long MIN_PERSIST_DURATION_MILLIS = 10 * 60 * 1000; // 10 min
 
     public PlayerStateManager(PlayerActivity context, SimpleExoPlayer player, DefaultTrackSelector selector) {
         mContext = context;
@@ -30,9 +32,10 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackPosition(TrackGroupArray[] groupArrays) {
-        String title = mContext.getVideoTitle();
+        String title = mContext.getVideoMainTitle();
         long pos = mPrefs.getPosition(title);
-        mPlayer.seekTo(pos);
+        if (pos != C.TIME_UNSET)
+            mPlayer.seekTo(pos);
     }
 
     private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
@@ -103,8 +106,12 @@ public class PlayerStateManager {
     }
 
     private void persistTrackPosition() {
+        long duration = mPlayer.getDuration();
+        if (duration < MIN_PERSIST_DURATION_MILLIS) {
+            return;
+        }
         long currentPosition = mPlayer.getCurrentPosition();
-        String title = mContext.getVideoTitle();
+        String title = mContext.getVideoMainTitle();
         mPrefs.setPosition(title, currentPosition);
     }
 
@@ -114,16 +121,10 @@ public class PlayerStateManager {
     }
 
     private String extractCurrentTrackId() {
-        //int rendererIndex = 0; // video
-        //SelectionOverride override = mSelector.getSelectionOverride(rendererIndex, mPlayer.getCurrentTrackGroups()); // NOTE: may fail
-        //int groupIndex = override.groupIndex;
-        //int trackIndex = override.tracks[0];
-        //
-        //MappedTrackInfo trackInfo = mSelector.getCurrentMappedTrackInfo();
-        //TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
-        //Format format = trackGroups.get(groupIndex).getFormat(trackIndex);
-        //return format.id;
-
-        return mPlayer.getVideoFormat().id;
+        Format videoFormat = mPlayer.getVideoFormat();
+        if (videoFormat == null) {
+            return null;
+        }
+        return videoFormat.id;
     }
 }

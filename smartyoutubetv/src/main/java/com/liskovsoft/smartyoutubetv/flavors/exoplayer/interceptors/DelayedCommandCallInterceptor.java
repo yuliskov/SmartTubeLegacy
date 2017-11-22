@@ -43,7 +43,7 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     }
 
     private void postDelayed() {
-        int delayMillis = 5000;
+        int delayMillis = 3000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

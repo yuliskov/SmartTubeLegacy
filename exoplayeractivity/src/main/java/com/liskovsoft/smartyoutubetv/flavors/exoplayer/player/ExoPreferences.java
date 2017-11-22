@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.google.android.exoplayer2.C;
 
 public class ExoPreferences implements ExoKeys {
     private final Context mContext;
@@ -60,6 +61,6 @@ public class ExoPreferences implements ExoKeys {
     }
 
     public long getPosition(String key) {
-        return mPrefs.getLong(key, 0);
+        return mPrefs.getLong(key, C.TIME_UNSET);
     }
 }

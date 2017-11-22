@@ -7,7 +7,8 @@ import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormat;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
-    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName2";
+    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
+    private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
     private static SmartPreferences mInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -48,5 +49,16 @@ public final class SmartPreferences {
 
     public void resetBootstrapActivityName() {
         mPrefs.edit().remove(BOOTSTRAP_ACTIVITY_NAME).apply();
+    }
+
+    public boolean getBootstrapSaveSelection() {
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_CHECKBOX_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setBootstrapSaveSelection(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_CHECKBOX_CHECKED, isChecked)
+                .apply();
     }
 }

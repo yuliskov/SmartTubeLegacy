@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="BootstrapCheckBox">
         <attr name="titleText"/>
+        <attr name="onCheckedChanged" format="string"/>
     </declare-styleable>
 </resources>
