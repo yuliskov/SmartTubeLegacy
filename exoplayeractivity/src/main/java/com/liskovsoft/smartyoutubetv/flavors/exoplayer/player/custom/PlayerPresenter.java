@@ -42,7 +42,9 @@ public class PlayerPresenter {
         int id = button.getId();
         mButtonStates.put(id, isChecked);
 
-        Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+        if (isChecked)
+            Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+        
         //boolean userPageClicked = id == R.id.exo_user && isChecked;
         //if (userPageClicked) {
         //    Toast.makeText(mView, "Go to the user page", Toast.LENGTH_LONG).show();
