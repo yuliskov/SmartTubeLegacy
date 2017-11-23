@@ -18,7 +18,8 @@ public class PlayerStateManager {
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
-    private long MIN_PERSIST_DURATION_MILLIS = 10 * 60 * 1000; // 10 min
+    private long MIN_PERSIST_DURATION_MILLIS = 10 * 60 * 1000; // don't save if duration < 10 min
+    private long MAX_TRAIL_DURATION_MILLIS = 5 * 60 * 1000; // don't save if 5 min of unseen video remains
 
     public PlayerStateManager(PlayerActivity context, SimpleExoPlayer player, DefaultTrackSelector selector) {
         mContext = context;
@@ -111,9 +112,14 @@ public class PlayerStateManager {
         if (duration < MIN_PERSIST_DURATION_MILLIS) {
             return;
         }
-        long currentPosition = mPlayer.getCurrentPosition();
+        long position = mPlayer.getCurrentPosition();
         String title = mContext.getVideoMainTitle();
-        mPrefs.setPosition(title, currentPosition);
+        boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
+        if (almostAllVideoSeen) {
+            mPrefs.resetPosition(title);
+        } else {
+            mPrefs.setPosition(title, position);
+        }
     }
 
     private void persistTrackIndex() {

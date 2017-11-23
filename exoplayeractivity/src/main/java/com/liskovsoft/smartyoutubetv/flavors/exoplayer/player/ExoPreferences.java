@@ -54,6 +54,12 @@ public class ExoPreferences implements ExoKeys {
                 .apply();
     }
 
+    public void resetPosition(String key) {
+        mPrefs.edit()
+                .remove(key)
+                .apply();
+    }
+
     public void setPosition(String key, long val) {
         mPrefs.edit()
                 .putLong(key, val)
