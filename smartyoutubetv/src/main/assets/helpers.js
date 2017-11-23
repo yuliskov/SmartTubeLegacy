@@ -230,43 +230,53 @@ YouButtonInitializer2.prototype = new GoogleButton();
 
 function YouButtonInitializer(btn) {
     this.btn = btn;
-    // this.moveControlButtonsToSafePlace = function() {
-    //     // #buttons-list
-    //     var controls = helpers.$('#buttons-list > .new-list-container .icon-player-next');
-    //     var fragment = document.createDocumentFragment();
-    //     fragment.appendChild(controls);
-    //     // .overlay-row
-    //     var destination = helpers.$('.overlay-row');
-    //     destination.appendChild(fragment);
-    // };
-    
-    // this.ensureInitialized = function(){
-    //     var btn = helpers.$(btn.selector);
-    //     if (btn) {
-    //         return;
-    //     }
-    //
-    //
-    // };
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
     };
-    
+
+    this.initBtn = function(callback) {
+        var obj = helpers.$(this.btn.selector);
+        if (!obj || !obj.children.length) {
+            this.doPressOnOptionsBtn();
+            console.log('YouButtonInitializer.initBtn: btn not initialized: ' + this.btn.selector);
+            setTimeout(function() {
+                callback();
+            }, 1000);
+            return;
+        }
+        callback();
+    };
+
+    this.initBtn2 = function(callback) {
+        var obj = helpers.$(this.btn.selector);
+        if (!obj || !obj.children.length) {
+            console.log('YouButtonInitializer.initBtn2: btn not initialized: ' + this.btn.selector);
+            this.doPressOnOptionsBtn();
+        }
+        return callback();
+    };
+
     this.apply = function() {
         var $this = this;
 
         var realSetChecked = this.btn.setChecked;
         this.btn.setChecked = function(doChecked) {
            console.log('YouButtonInitializer: YouButton.setChecked called');
-           realSetChecked.call(this, doChecked);
+           var thisBtn = this;
+           $this.initBtn(function() {
+               realSetChecked.call(thisBtn, doChecked);
+           });
         };
 
-        var realGetChecked = this.btn.getChecked;
-        this.btn.getChecked = function() {
-           console.log('YouButtonInitializer: YouButton.getChecked called');
-           realGetChecked.call(this);
-        };
+        // var realGetChecked = this.btn.getChecked;
+        // this.btn.getChecked = function() {
+        //    console.log('YouButtonInitializer: YouButton.getChecked called');
+        //    var thisBtn = this;
+        //    return $this.initBtn2(function() {
+        //        return realGetChecked.call(thisBtn);
+        //    });
+        // };
     };
 }
 
