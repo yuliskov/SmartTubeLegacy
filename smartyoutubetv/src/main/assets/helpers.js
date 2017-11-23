@@ -235,14 +235,23 @@ function YouButtonInitializer(btn) {
         helpers.triggerEnter(this.optionsBtnSelector);
     };
 
+    this.doCallbackIfReady = function(callback) {
+        var obj = helpers.$(this.btn.selector);
+        if (obj && (obj.children.length >= 1)) {
+            console.log('YouButtonInitializer.initBtn: doing un-delayed call: ' + this.btn.selector);
+            callback();
+        }
+
+        setTimeout(function() {
+            callback();
+        }, 1000);
+    };
     this.initBtn = function(callback) {
         var obj = helpers.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             this.doPressOnOptionsBtn();
             console.log('YouButtonInitializer.initBtn: btn not initialized: ' + this.btn.selector);
-            setTimeout(function() {
-                callback();
-            }, 1000);
+            this.doCallbackIfReady(callback);
             return;
         }
         callback();

@@ -20,6 +20,7 @@ public class PlayerStateManager {
     private ExoPreferences mPrefs;
     private long MIN_PERSIST_DURATION_MILLIS = 10 * 60 * 1000; // don't save if duration < 10 min
     private long MAX_TRAIL_DURATION_MILLIS = 5 * 60 * 1000; // don't save if 5 min of unseen video remains
+    private String mDefaultTrackId;
 
     public PlayerStateManager(PlayerActivity context, SimpleExoPlayer player, DefaultTrackSelector selector) {
         mContext = context;
@@ -41,12 +42,6 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
-        //if (mPrefs != null) { // run once
-        //    return;
-        //}
-        //
-        //mPrefs = new ExoPreferences(mContext);
-
         restorePlayerState(rendererTrackGroupArrays);
     }
 
@@ -76,6 +71,8 @@ public class PlayerStateManager {
     }
 
     private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+        mDefaultTrackId = null;
+
         int rendererIndex = 0; // video
         TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
         TrackGroup defaultTrackGroup = groupArray.get(0);
@@ -89,7 +86,9 @@ public class PlayerStateManager {
             }
         }
         // if track not found, return topmost
-        return new int[]{0, (defaultTrackGroup.length - 1)};
+        int lastIdx = defaultTrackGroup.length - 1;
+        mDefaultTrackId = defaultTrackGroup.getFormat(lastIdx).id;
+        return new int[]{0, lastIdx};
     }
 
     private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
@@ -124,7 +123,8 @@ public class PlayerStateManager {
 
     private void persistTrackIndex() {
         String trackId = extractCurrentTrackId();
-        if (trackId != null) {
+        // mDefaultTrackId: usually this happens when video does not contain preferred format
+        if (trackId != null && !trackId.equals(mDefaultTrackId)) {
             mPrefs.setSelectedTrackId(trackId);
         }
     }
