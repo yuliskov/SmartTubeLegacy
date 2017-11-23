@@ -39,16 +39,16 @@ public class ActionBinder {
         GenericCommand lastCommand = createCommandForPressAction(intent);
         GenericCommand commands = createCommandForToggleAction(intent);
 
-        mInterceptor.updateLastCommand(new SimpleCombinedCommand(null, lastCommand));
+        mInterceptor.updateLastCommand(new SimpleCombinedCommand(commands, lastCommand));
     }
 
     private GenericCommand createCommandForToggleAction(Intent intent) {
         ArrayList<GenericCommand> commands = new ArrayList<>();
 
-        if (intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false)) {
-            Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
-            commands.add(new PressAnyButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
-        }
+        //if (intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false)) {
+        //    Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
+        //    commands.add(new PressAnyButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
+        //}
 
         for (HashMap.Entry<String, String> entry : mMapping.entrySet()) {
             boolean isChecked = intent.getBooleanExtra(entry.getKey(), false);

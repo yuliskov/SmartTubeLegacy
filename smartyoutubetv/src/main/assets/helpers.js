@@ -11,7 +11,10 @@ var GoogleConstants = {
     BUTTON_USER_PAGE: ".pivot-channel-tile",
     BUTTON_LIKE: ".icon-like.toggle-button",
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
-    BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button"
+    BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button",
+    BUTTON_BACK: ".back.no-model.legend-item",
+    BUTTON_NEXT: ".icon-player-next",
+    BUTTON_PREV: ".icon-player-prev"
 };
 
 function GoogleButton() {
@@ -21,6 +24,7 @@ function GoogleButton() {
     this.backBtnSelector = '.back.no-model.legend-item';
     this.bottomBarSelector = '#transport-controls';
     this.bottomBarControllerSelector = '#watch';
+    this.controlsBarSelector = '#buttons-list';
 }
 
 ////////// End GoogleButton //////////////////
@@ -115,7 +119,6 @@ function Helpers() {
             // msg 4 future me
             // 'paused' video won't invoke history update
             player.muted = true;
-            player.preload = false;
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
 
@@ -160,7 +163,7 @@ window.helpers = new Helpers();
 
 // Usage: YouButton.fromSelector('.my-selector').setChecked(true);
 
-function YouButtonInitializer(selector) {
+function YouButtonInitializer2(selector) {
     this.isElementExists = function(selector) {
         var el = helpers.$(selector);
         var len = 0;
@@ -221,10 +224,60 @@ function YouButtonInitializer(selector) {
     };
 }
 
+YouButtonInitializer2.prototype = new GoogleButton();
+
+///////////////// YouButtonInitializer /////////////////////////
+
+function YouButtonInitializer(btn) {
+    this.btn = btn;
+    // this.moveControlButtonsToSafePlace = function() {
+    //     // #buttons-list
+    //     var controls = helpers.$('#buttons-list > .new-list-container .icon-player-next');
+    //     var fragment = document.createDocumentFragment();
+    //     fragment.appendChild(controls);
+    //     // .overlay-row
+    //     var destination = helpers.$('.overlay-row');
+    //     destination.appendChild(fragment);
+    // };
+    
+    // this.ensureInitialized = function(){
+    //     var btn = helpers.$(btn.selector);
+    //     if (btn) {
+    //         return;
+    //     }
+    //
+    //
+    // };
+
+    this.doPressOnOptionsBtn = function() {
+        helpers.triggerEnter(this.optionsBtnSelector);
+    };
+    
+    this.apply = function() {
+        var $this = this;
+
+        var realSetChecked = this.btn.setChecked;
+        this.btn.setChecked = function(doChecked) {
+           console.log('YouButtonInitializer: YouButton.setChecked called');
+           realSetChecked.call(this, doChecked);
+        };
+
+        var realGetChecked = this.btn.getChecked;
+        this.btn.getChecked = function() {
+           console.log('YouButtonInitializer: YouButton.getChecked called');
+           realGetChecked.call(this);
+        };
+    };
+}
+
 YouButtonInitializer.prototype = new GoogleButton();
 
+/////////////////// End YouButtonInitializer ///////////////////////
+
 function YouButton(selector) {
-    this.initializer = new YouButtonInitializer(selector);
+    this.selector = selector;
+
+    this.initializer = new YouButtonInitializer(this);
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
@@ -232,13 +285,13 @@ function YouButton(selector) {
 
     this.findToggle = function() {
         var btn = helpers.$(selector);
-        if (!btn) {
-            // NOTE: needed button is hidden so open bar first
-            // this.doPressOnOptionsBtn();
-            btn = helpers.$(selector);
-            // NOTE: give a change to other buttons to appear like next/prev
-            // this.doPressOnOptionsBtn();
-        }
+        // if (!btn) {
+        //     // NOTE: needed button is hidden so open bar first
+        //     this.doPressOnOptionsBtn();
+        //     btn = helpers.$(selector);
+        //     // NOTE: give a change to other buttons to appear like next/prev
+        //     this.doPressOnOptionsBtn();
+        // }
 
         btn || console.warn("YouButton.findToggle: unable to find " + selector);
 
@@ -246,7 +299,6 @@ function YouButton(selector) {
     };
 
     this.getChecked = function() {
-        // this.initializer.ensureInitialized();
         var isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
         console.log("YouButton.getChecked: " + selector + " " + isChecked);
         return isChecked;
@@ -261,6 +313,8 @@ function YouButton(selector) {
 
         helpers.triggerEnter(this.findToggle());
     };
+
+    this.initializer.apply();
 }
 
 YouButton.prototype = new GoogleButton();
