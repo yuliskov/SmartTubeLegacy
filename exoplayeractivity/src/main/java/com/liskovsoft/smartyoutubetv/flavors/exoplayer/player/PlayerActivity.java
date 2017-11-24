@@ -337,15 +337,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void finish() {
-        if (mStateManager != null)
-            mStateManager.persistState();
         super.finish();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mStateManager.persistState();
     }
 
     @Override
@@ -374,6 +371,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onPause() {
+        if (mStateManager != null) {
+            mStateManager.persistState();
+            mStateManager = null; // force restore state
+        }
+
         super.onPause();
         if (Util.SDK_INT <= 23) {
             releasePlayer();
