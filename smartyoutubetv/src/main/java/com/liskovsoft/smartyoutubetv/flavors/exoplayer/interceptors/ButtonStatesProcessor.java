@@ -20,10 +20,9 @@ public class ButtonStatesProcessor implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
-    // TODO: fixme: remove delay
+    // TODO: fixme: remove delay (button uninitialized)
     private final String mJSCommandString = "setTimeout(function(){app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));}, 2000);";
     //private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
-    private Map<String, String> mSelectorNameMap;
 
     private class GenericStringResultReceiver {
         public GenericStringResultReceiver() {
@@ -61,7 +60,6 @@ public class ButtonStatesProcessor implements Runnable {
         mContext = context;
         mIntent = intent;
         mOnDone = onDone;
-        mSelectorNameMap = initSelectorNameMap();
     }
 
     private Map<String, String> initSelectorNameMap() {
