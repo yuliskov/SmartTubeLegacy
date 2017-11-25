@@ -1,20 +1,20 @@
 /////////// GoogleButton ////////////////
 
 var PlayerActivity = {
-    BUTTON_USER_PAGE: "button_user_page",
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
     BUTTON_SUBSCRIBE: "button_subscribe",
+    BUTTON_USER_PAGE: "button_user_page",
     BUTTON_PREV: "button_prev",
     BUTTON_NEXT: "button_next",
     BUTTON_BACK: "button_back"
 };
 
 var GoogleConstants = {
-    BUTTON_USER_PAGE: ".pivot-channel-tile",
     BUTTON_LIKE: ".icon-like.toggle-button",
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
     BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button",
+    BUTTON_USER_PAGE: ".pivot-channel-tile",
     BUTTON_NEXT: ".icon-player-next",
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: ".back.no-model.legend-item"
@@ -151,6 +151,13 @@ function Helpers() {
 
     this.syncButtons = function(states) {
         console.log("Helpers.syncButtons: " + JSON.stringify(states));
+        for (var key in PlayerActivity) {
+            var btnId = PlayerActivity[key];
+            var isChecked = states[btnId];
+            var selector = GoogleConstants[key];
+            var btn = YouButton.fromSelector(selector);
+            btn.setChecked(isChecked);
+        }
     }
 }
 
@@ -303,7 +310,7 @@ YouButtonInitializer.prototype = new GoogleButton();
 function YouButton(selector) {
     this.selector = selector;
 
-    this.initializer = new YouButtonInitializer(this);
+    // this.initializer = new YouButtonInitializer(this);
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
@@ -325,9 +332,11 @@ function YouButton(selector) {
     };
 
     this.getChecked = function() {
-        var isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
-        console.log("YouButton.getChecked: " + selector + " " + isChecked);
-        return isChecked;
+        if (this.isChecked === undefined) {
+            this.isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
+        }
+        console.log("YouButton.getChecked: " + selector + " " + this.isChecked);
+        return this.isChecked;
     };
 
     this.setChecked = function(doChecked) {
@@ -335,17 +344,25 @@ function YouButton(selector) {
         if (isChecked === doChecked) {
             return;
         }
-        console.log("YouButton.setChecked: " + selector + " " + doChecked);
 
+        console.log("YouButton.setChecked: " + selector + " " + doChecked);
         helpers.triggerEnter(this.findToggle());
+        this.isChecked = doChecked;
     };
 
-    this.initializer.apply();
+    // this.initializer.apply();
 }
 
 YouButton.prototype = new GoogleButton();
 YouButton.fromSelector = function(selector) {
-    return new YouButton(selector);
+    if (!this.btnMap)
+        this.btnMap = {};
+    if (!this.btnMap[selector]) {
+        this.btnMap[selector] = new YouButton(selector);
+    } else {
+        console.log("YouButton.fromSelector: getting button from cache");
+    }
+    return this.btnMap[selector];
 };
 
 /////////// End Player Button ////////////////
