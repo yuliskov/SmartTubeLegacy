@@ -138,6 +138,7 @@ function Helpers() {
 
     // supply selector list
     this.getButtonStates = function() {
+        YouButton.resetCache(); // activity just started
         var states = {};
         for(var key in GoogleConstants) {
             var selector = GoogleConstants[key];
@@ -363,6 +364,11 @@ YouButton.fromSelector = function(selector) {
         console.log("YouButton.fromSelector: getting button from cache");
     }
     return this.btnMap[selector];
+};
+
+YouButton.resetCache = function() {
+    if (this.btnMap)
+        delete this.btnMap;
 };
 
 /////////// End Player Button ////////////////
