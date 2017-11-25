@@ -4,7 +4,10 @@ var PlayerActivity = {
     BUTTON_USER_PAGE: "button_user_page",
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
-    BUTTON_SUBSCRIBE: "button_subscribe"
+    BUTTON_SUBSCRIBE: "button_subscribe",
+    BUTTON_PREV: "button_prev",
+    BUTTON_NEXT: "button_next",
+    BUTTON_BACK: "button_back"
 };
 
 var GoogleConstants = {
@@ -12,9 +15,9 @@ var GoogleConstants = {
     BUTTON_LIKE: ".icon-like.toggle-button",
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
     BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button",
-    BUTTON_BACK: ".back.no-model.legend-item",
     BUTTON_NEXT: ".icon-player-next",
-    BUTTON_PREV: ".icon-player-prev"
+    BUTTON_PREV: ".icon-player-prev",
+    BUTTON_BACK: ".back.no-model.legend-item"
 };
 
 function GoogleButton() {
@@ -145,6 +148,10 @@ function Helpers() {
 
         return states;
     };
+
+    this.syncButtons = function(states) {
+        console.log("Helpers.syncButtons: " + JSON.stringify(states));
+    }
 }
 
 Helpers.prototype = new GoogleButton();

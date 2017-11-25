@@ -102,6 +102,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_LIKE = "button_like";
     public static final String BUTTON_DISLIKE = "button_dislike";
     public static final String BUTTON_SUBSCRIBE = "button_subscribe";
+    public static final String BUTTON_PREV = "button_prev";
+    public static final String BUTTON_NEXT = "button_next";
+    public static final String BUTTON_BACK = "button_back";
     public static final String ACTION_NONE = "action_none";
     public static final String DELIMITER = "------";
 
@@ -253,12 +256,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private void initNextButton() {
         final View nextButton = simpleExoPlayerView.findViewById(R.id.exo_next);
         nextButton.getViewTreeObserver().addOnGlobalLayoutListener(obtainSetButtonEnabledListener(nextButton));
-        nextButton.setOnClickListener(obtainNextListener(nextButton));
+        // nextButton.setOnClickListener(obtainNextListener(nextButton));
     }
 
     private void initPrevButton() {
         final View prevButton = simpleExoPlayerView.findViewById(R.id.exo_prev);
-        prevButton.setOnClickListener(obtainPrevListener(prevButton));
+        // prevButton.setOnClickListener(obtainPrevListener(prevButton));
     }
 
     private void initTimeBar() {

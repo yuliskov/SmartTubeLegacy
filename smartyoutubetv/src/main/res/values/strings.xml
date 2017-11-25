@@ -20,5 +20,5 @@
     <string name="app_name_1080">1080</string>
     <string name="app_name_4k">4K</string>
     <string name="app_name_4k_alt">4K Alt</string>
-    <string name="loading_bottom_msg">Press back button to return to launchers dialog</string>
+    <string name="loading_bottom_msg">Press back button to return to the launchers dialog</string>
 </resources>

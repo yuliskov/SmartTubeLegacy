@@ -2,84 +2,44 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GoogleConstants;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressAnyButtonCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SimpleCombinedCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.NoneCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressBackCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressNextCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.PressPrevCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncStateCommand;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ActionBinder {
+    private static final String ACTION_KEY = "action";
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
-    private final HashMap<String, String> mMapping;
+    private final String[] mPlayerButtons = {
+            PlayerActivity.BUTTON_LIKE,
+            PlayerActivity.BUTTON_DISLIKE,
+            PlayerActivity.BUTTON_SUBSCRIBE,
+            PlayerActivity.BUTTON_USER_PAGE,
+            PlayerActivity.BUTTON_PREV,
+            PlayerActivity.BUTTON_NEXT,
+            PlayerActivity.BUTTON_BACK
+    };
 
     public ActionBinder(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
-        mMapping = new HashMap<>();
-        setUpMapping();
-    }
-
-    private void setUpMapping() {
-        mMapping.put(PlayerActivity.BUTTON_LIKE, GoogleConstants.BUTTON_LIKE);
-        mMapping.put(PlayerActivity.BUTTON_DISLIKE, GoogleConstants.BUTTON_DISLIKE);
-        mMapping.put(PlayerActivity.BUTTON_SUBSCRIBE, GoogleConstants.BUTTON_SUBSCRIBE);
     }
 
     public void bindActions(Intent intent) {
-        GenericCommand lastCommand = createCommandForPressAction(intent);
-        GenericCommand commands = createCommandForToggleAction(intent);
-
-        mInterceptor.updateLastCommand(new SimpleCombinedCommand(null, lastCommand));
+        Map<String, Boolean> buttonStates = extractButtonStates(intent);
+        SyncButtonsCommand myCommand = new SyncButtonsCommand(buttonStates);
+        mInterceptor.updateLastCommand(myCommand);
     }
 
-    private GenericCommand createCommandForToggleAction(Intent intent) {
-        ArrayList<GenericCommand> commands = new ArrayList<>();
-
-        //if (intent.getBooleanExtra(PlayerActivity.BUTTON_USER_PAGE, false)) {
-        //    Toast.makeText(mContext, "Going to user page...", Toast.LENGTH_LONG).show();
-        //    commands.add(new PressAnyButtonCommand(GoogleConstants.BUTTON_USER_PAGE, "helpers.skipLastHistoryItem();"));
-        //}
-
-        for (HashMap.Entry<String, String> entry : mMapping.entrySet()) {
-            boolean isChecked = intent.getBooleanExtra(entry.getKey(), false);
-            String buttonSelector = entry.getValue();
-            commands.add(new SyncStateCommand(buttonSelector, isChecked));
+    private Map<String, Boolean> extractButtonStates(Intent intent) {
+        Map<String, Boolean> result = new HashMap<>();
+        for (String buttonId : mPlayerButtons) {
+            boolean isChecked = intent.getBooleanExtra(buttonId, false);
+            result.put(buttonId, isChecked);
         }
-
-        return new SimpleCombinedCommand(commands.toArray(new GenericCommand[commands.size()]));
-    }
-
-    private String extractAction(Intent data) {
-        return data.getStringExtra("action");
-    }
-
-    private GenericCommand createCommandForPressAction(Intent intent) {
-        String action = extractAction(intent);
-        GenericCommand command = new NoneCommand();
-        switch (action) {
-            case PlayerActivity.ACTION_NEXT:
-                command = new PressNextCommand(new PressBackCommand());
-                break;
-            case PlayerActivity.ACTION_PREV:
-                command = new PressPrevCommand(new PressBackCommand());
-                break;
-            case PlayerActivity.ACTION_BACK:
-                command = new PressBackCommand();
-                break;
-            case PlayerActivity.ACTION_NONE:
-                command = new NoneCommand();
-                break;
-        }
-        return command;
+        // result.put(intent.getStringExtra(ACTION_KEY), true);
+        return result;
     }
 }

@@ -90,8 +90,18 @@ public abstract class ToggleButtonBase extends LinearLayout {
         makeUnfocused();
     }
 
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        // NOTE: android doesn't allow multiple onClick listeners
+        if (mCheckedListeners.size() > 0) {
+            return;
+        }
+        super.setOnClickListener(l);
+    }
+
     private void setOnClick() {
-        setOnClickListener(new OnClickListener() {
+        // NOTE: android doesn't allow multiple onClick listeners
+        super.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggle();

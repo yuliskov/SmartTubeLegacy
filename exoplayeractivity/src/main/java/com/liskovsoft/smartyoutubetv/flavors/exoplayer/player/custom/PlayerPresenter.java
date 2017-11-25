@@ -36,24 +36,29 @@ public class PlayerPresenter {
         mIdTagMapping.put(R.id.exo_like, PlayerActivity.BUTTON_LIKE);
         mIdTagMapping.put(R.id.exo_dislike, PlayerActivity.BUTTON_DISLIKE);
         mIdTagMapping.put(R.id.exo_subscribe, PlayerActivity.BUTTON_SUBSCRIBE);
+        mIdTagMapping.put(R.id.exo_prev, PlayerActivity.BUTTON_PREV);
+        mIdTagMapping.put(R.id.exo_next, PlayerActivity.BUTTON_NEXT);
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         int id = button.getId();
         mButtonStates.put(id, isChecked);
 
-        boolean isUserPageButton = button.getId() == R.id.exo_user;
-        boolean isSubscribeButton = button.getId() == R.id.exo_subtitles;
-        if (isChecked && isUserPageButton)
+        boolean isUserPageButton = button.getId() == R.id.exo_user && isChecked;
+        boolean isSubtitleButton = button.getId() == R.id.exo_subtitles && isChecked;
+        boolean isNextButton = button.getId() == R.id.exo_next && isChecked;
+        boolean isPrevButton = button.getId() == R.id.exo_prev && isChecked;
+
+        if (isUserPageButton)
             Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
-        if (isChecked && isSubscribeButton)
+        if (isSubtitleButton)
             Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
-        
-        //boolean userPageClicked = id == R.id.exo_user && isChecked;
-        //if (userPageClicked) {
-        //    Toast.makeText(mView, "Go to the user page", Toast.LENGTH_LONG).show();
-        //    mView.doGracefulExit(PlayerActivity.ACTION_NONE);
-        //}
+
+        if (isUserPageButton    ||
+            isNextButton        ||
+            isPrevButton) {
+            mView.doGracefulExit(PlayerActivity.ACTION_NONE);
+        }
     }
 
     public Intent createResultIntent() {

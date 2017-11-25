@@ -17,6 +17,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 
@@ -34,6 +35,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
+        setupLang();
         super.onCreate(icicle);
 
         mTranslator = new KeysTranslator();
@@ -44,6 +46,10 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private void setupLang() {
+        new LangUpdater(this).update();
     }
 
     private void checkForUpdates() {

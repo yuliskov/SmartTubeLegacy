@@ -105,7 +105,7 @@
             <!--<ImageButton android:id="@id/exo_rew"-->
             <!--style="@style/ExoMediaButton.Rewind"/>-->
 
-            <!-- NOTE: must be ImageButton -->
+            <!-- NOTE: must be ImageButton (not visible) -->
             <ImageButton
                 android:id="@id/exo_repeat_toggle"
                 style="@style/ExoMediaButton"/>

@@ -36,13 +36,13 @@ public class ControllerEventListener implements Controller.EventListener {
     private DecipherRoutineInjector mDecipherRoutineInjector;
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private GenericEventResourceInjector mEventResourceInjector;
-    private final LangUpdater mLangUpdater;
+    // private final LangUpdater mLangUpdater;
     private final StateUpdater mStateUpdater;
 
     public ControllerEventListener(Context context, KeysTranslator translator) {
         mContext = context;
         mTranslator = translator;
-        mLangUpdater = new LangUpdater(mContext);
+        // mLangUpdater = new LangUpdater(mContext);
         mStateUpdater = new StateUpdater(null, context);
         mLoadingManager = new LoadingManager(context);
     }
@@ -88,7 +88,7 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onControllerStart() {
-        mLangUpdater.update();
+        // mLangUpdater.update();
 
         // if you need to disable auto-saving webview state:
         // mController.getCrashRecoveryHandler().pauseState();
