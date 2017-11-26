@@ -45,12 +45,10 @@ public class PlayerPresenter {
         mButtonStates.put(id, isChecked);
 
         boolean isUserPageButton = button.getId() == R.id.exo_user && isChecked;
-        boolean isSubtitleButton = button.getId() == R.id.exo_subtitles && isChecked;
+        boolean isSubtitleButton = button.getId() == R.id.exo_captions && isChecked;
         boolean isNextButton = button.getId() == R.id.exo_next && isChecked;
         boolean isPrevButton = button.getId() == R.id.exo_prev && isChecked;
-
-        if (isUserPageButton)
-            Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+        
         if (isSubtitleButton)
             Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
 

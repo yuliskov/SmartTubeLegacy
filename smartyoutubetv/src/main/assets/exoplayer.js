@@ -140,12 +140,24 @@ function Helpers() {
     this.getButtonStates = function() {
         YouButton.resetCache(); // activity just started
         var states = {};
-        for(var key in GoogleConstants) {
+
+        // NOTE: do reverse so all btns do proper init
+        var reversedKeys = Object.keys(GoogleConstants).reverse();
+
+        for (var idx in reversedKeys) {
+            var key = reversedKeys[idx];
             var selector = GoogleConstants[key];
             var btn = YouButton.fromSelector(selector);
             var newName = PlayerActivity[key];
             states[newName] = btn.getChecked();
         }
+
+        // for(var key in GoogleConstants) {
+        //     var selector = GoogleConstants[key];
+        //     var btn = YouButton.fromSelector(selector);
+        //     var newName = PlayerActivity[key];
+        //     states[newName] = btn.getChecked();
+        // }
 
         return states;
     };
@@ -174,73 +186,6 @@ window.helpers = new Helpers();
 // helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);
 
 /////////// End Helpers ////////////////
-
-/////////// Player Button ////////////////
-
-// Usage: YouButton.fromSelector('.my-selector').setChecked(true);
-
-function YouButtonInitializer2(selector) {
-    this.isElementExists = function(selector) {
-        var el = helpers.$(selector);
-        var len = 0;
-        if (el)
-            len = el.children.length;
-        return len !== 0;
-    };
-    this.openBottomBar = function() {
-        var bottomBar = helpers.$('#watch');
-        var isShown = helpers.hasClass(bottomBar, 'transport-showing');
-
-        var upKey = 38;
-        var downKey = 40;
-
-        if (!isShown) {
-            helpers.triggerEvent(bottomBar, 'keydown', upKey);
-        }
-    };
-    this.closeOptionsBar = function() {
-        var bar = helpers.$(this.optionsBtnSelector);
-        var isSelected = helpers.hasClass(bar, this.selectedClass);
-        if (isSelected)
-            helpers.triggerEnter(bar);
-    };
-    this.openOptionsBar = function() {
-        var bar = helpers.$(this.optionsBtnSelector);
-        var isSelected = helpers.hasClass(bar, this.selectedClass);
-        if (!isSelected)
-            helpers.triggerEnter(bar);
-    };
-    this.openControlsBar = function() {
-        this.closeOptionsBar();
-    };
-    this.initOptionsBar = function() {
-        this.openBottomBar();
-        this.openOptionsBar();
-    };
-    this.initControlsBar = function() {
-        this.openBottomBar();
-        this.openControlsBar();
-    };
-    this.ensureInitialized = function(){
-        this.initOptionsBar();
-        var exists = this.isElementExists(selector);
-        if (exists) {
-            console.log("YouButtonInitializer: element initialized " + selector);
-            return;
-        }
-
-        this.initControlsBar();
-        var exists = this.isElementExists(selector);
-        if (exists) {
-            console.log("YouButtonInitializer: element initialized " + selector);
-            return;
-        }
-
-        this.isElementExists(selector) || console.log("YouButtonInitializer: can't find element " + selector);
-    };
-}
-
-YouButtonInitializer2.prototype = new GoogleButton();
 
 ///////////////// YouButtonInitializer /////////////////////////
 
@@ -350,7 +295,10 @@ function YouButton(selector) {
 
     this.getChecked = function() {
         if (this.isChecked === undefined) {
-            this.isChecked = helpers.hasClass(this.findToggle(), this.selectedClass);
+            var toggle = this.findToggle();
+            var isChecked = helpers.hasClass(toggle, this.selectedClass);
+            var isDisabled = helpers.hasClass(toggle, this.disabledClass);
+            this.isChecked = isDisabled ? null : isChecked;
         }
         console.log("YouButton.getChecked: " + selector + " " + this.isChecked);
         return this.isChecked;
@@ -358,6 +306,10 @@ function YouButton(selector) {
 
     this.setChecked = function(doChecked) {
         var isChecked = this.getChecked();
+        if (isChecked === null) {
+            console.log("YouButton: button is disabled: exiting: " + this.selector);
+            return;
+        }
         if (isChecked === doChecked) {
             return;
         }
