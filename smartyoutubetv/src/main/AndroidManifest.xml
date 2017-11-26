@@ -118,7 +118,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavors.exoplayer.SmartYouTubeTVActivity"
+            android:name=".flavors.exoplayer.SmartYouTubeTVExoWebView"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
@@ -127,7 +127,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavors.exoplayer.SmartYouTubeTVActivity2"
+            android:name=".flavors.exoplayer.SmartYouTubeTVExoXWalk"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"

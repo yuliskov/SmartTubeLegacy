@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
@@ -93,10 +96,10 @@ public class BootstrapActivity extends ActivityBase {
                 startActivity(this, com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class);
                 break;
             case R.id.button_exo:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.class);
+                startActivity(this, SmartYouTubeTVExoWebView.class);
                 break;
             case R.id.button_exo2:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity2.class);
+                startActivity(this, SmartYouTubeTVExoXWalk.class);
                 break;
         }
     }
@@ -107,7 +110,13 @@ public class BootstrapActivity extends ActivityBase {
         intent.putExtra(FROM_BOOTSTRAP, true);
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.setClassName(ctx, clazz);
+
+        try {
+            intent.setClassName(ctx, clazz);
+        } catch (ActivityNotFoundException e) { // activity's name changed (choose again)
+            e.printStackTrace();
+        }
+
         startActivity(intent);
     }
 

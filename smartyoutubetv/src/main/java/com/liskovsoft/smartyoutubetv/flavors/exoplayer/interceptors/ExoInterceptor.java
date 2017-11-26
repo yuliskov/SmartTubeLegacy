@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVActivity.OnActivityResultListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -89,7 +89,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
     private void openExoPlayer(Sample sample) {
         sLogger.info("About to start ExoPlayer activity for Regular item");
-        final SmartYouTubeTVActivity activity = (SmartYouTubeTVActivity) mContext;
+        final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
         final Intent playerIntent = sample.buildIntent(mContext);
         fetchButtonStates(playerIntent, new Runnable(){
             @Override
@@ -105,7 +105,7 @@ public class ExoInterceptor extends RequestInterceptor {
         processor.run();
     }
 
-    private void setupResultListener(SmartYouTubeTVActivity activity) {
+    private void setupResultListener(SmartYouTubeTVExoBase activity) {
         activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
