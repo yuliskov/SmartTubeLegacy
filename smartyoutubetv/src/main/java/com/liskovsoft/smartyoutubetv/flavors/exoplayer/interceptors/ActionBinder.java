@@ -39,7 +39,10 @@ public class ActionBinder {
             boolean isChecked = intent.getBooleanExtra(buttonId, false);
             result.put(buttonId, isChecked);
         }
-        // result.put(intent.getStringExtra(ACTION_KEY), true);
+        String action = intent.getStringExtra(ACTION_KEY);
+        if (action.equals(PlayerActivity.ACTION_BACK)) {
+            result.put(PlayerActivity.BUTTON_BACK, true);
+        }
         return result;
     }
 }
