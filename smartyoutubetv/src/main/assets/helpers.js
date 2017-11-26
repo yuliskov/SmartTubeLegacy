@@ -151,6 +151,7 @@ function Helpers() {
     };
 
     this.syncButtons = function(states) {
+        YouButton.resetCache(); // activity just started
         console.log("Helpers.syncButtons: " + JSON.stringify(states));
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
@@ -245,6 +246,7 @@ YouButtonInitializer2.prototype = new GoogleButton();
 
 function YouButtonInitializer(btn) {
     this.btn = btn;
+    this.callbackStack = [];
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
@@ -255,10 +257,18 @@ function YouButtonInitializer(btn) {
         if (obj && (obj.children.length >= 1)) {
             console.log('YouButtonInitializer.initBtn: doing un-delayed call: ' + this.btn.selector);
             callback();
+            this.callbackStack.shift();
+            if (this.callbackStack[0])
+                this.callbackStack[0]();
+            return;
         }
 
+        var $this = this;
         setTimeout(function() {
             callback();
+            $this.callbackStack.shift();
+            if ($this.callbackStack[0])
+                $this.callbackStack[0]();
         }, 1000);
     };
     this.initBtn = function(callback) {
@@ -270,6 +280,9 @@ function YouButtonInitializer(btn) {
             return;
         }
         callback();
+        this.callbackStack.shift();
+        if (this.callbackStack[0])
+            this.callbackStack[0]();
     };
 
     this.initBtn2 = function(callback) {
@@ -286,21 +299,31 @@ function YouButtonInitializer(btn) {
 
         var realSetChecked = this.btn.setChecked;
         this.btn.setChecked = function(doChecked) {
-           console.log('YouButtonInitializer: YouButton.setChecked called');
-           var thisBtn = this;
-           $this.initBtn(function() {
-               realSetChecked.call(thisBtn, doChecked);
-           });
+            console.log('YouButtonInitializer: YouButton.setChecked called');
+            var thisBtn = this;
+            var callback = function() {
+                $this.initBtn(function() {
+                    realSetChecked.call(thisBtn, doChecked);
+                });
+            };
+            if ($this.callbackStack.length === 0) {
+                $this.callbackStack.push(callback);
+                callback();
+            } else {
+                // simply push (call it later)
+                $this.callbackStack.push(callback);
+            }
         };
 
-        // var realGetChecked = this.btn.getChecked;
-        // this.btn.getChecked = function() {
-        //    console.log('YouButtonInitializer: YouButton.getChecked called');
-        //    var thisBtn = this;
-        //    return $this.initBtn2(function() {
-        //        return realGetChecked.call(thisBtn);
-        //    });
-        // };
+        // can't use stack! we have to return immediately! no delays allowed!
+        var realGetChecked = this.btn.getChecked;
+        this.btn.getChecked = function() {
+            console.log('YouButtonInitializer: YouButton.getChecked called');
+            var thisBtn = this;
+            return $this.initBtn2(function() {
+                return realGetChecked.call(thisBtn);
+            });
+        };
     };
 }
 
@@ -311,7 +334,7 @@ YouButtonInitializer.prototype = new GoogleButton();
 function YouButton(selector) {
     this.selector = selector;
 
-    // this.initializer = new YouButtonInitializer(this);
+    this.initializer = new YouButtonInitializer(this);
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
@@ -319,13 +342,6 @@ function YouButton(selector) {
 
     this.findToggle = function() {
         var btn = helpers.$(selector);
-        // if (!btn) {
-        //     // NOTE: needed button is hidden so open bar first
-        //     this.doPressOnOptionsBtn();
-        //     btn = helpers.$(selector);
-        //     // NOTE: give a change to other buttons to appear like next/prev
-        //     this.doPressOnOptionsBtn();
-        // }
 
         btn || console.warn("YouButton.findToggle: unable to find " + selector);
 
@@ -351,7 +367,7 @@ function YouButton(selector) {
         this.isChecked = doChecked;
     };
 
-    // this.initializer.apply();
+    this.initializer.apply();
 }
 
 YouButton.prototype = new GoogleButton();
