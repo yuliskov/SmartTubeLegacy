@@ -110,14 +110,13 @@ public class BootstrapActivity extends ActivityBase {
         intent.putExtra(FROM_BOOTSTRAP, true);
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setClassName(ctx, clazz);
 
         try {
-            intent.setClassName(ctx, clazz);
+            startActivity(intent);
         } catch (ActivityNotFoundException e) { // activity's name changed (choose again)
             e.printStackTrace();
         }
-
-        startActivity(intent);
     }
 
     private void startActivity(Context ctx, Class clazz) {
