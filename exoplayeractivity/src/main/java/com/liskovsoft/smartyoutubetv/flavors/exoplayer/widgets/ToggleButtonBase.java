@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,11 +28,11 @@ public abstract class ToggleButtonBase extends LinearLayout {
     protected Drawable mImageOff;
     protected String mDescText;
     protected TextView mDescView;
-    protected ImageButton mImageButton;
+    protected ImageButton mImageButton; // image variant
     protected boolean mIsChecked;
     protected String mTextOn;
     protected String mTextOff;
-    protected Button mTextButton;
+    protected Button mTextButton; // text variant
     protected LinearLayout mToggleButtonWrapper;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
 
@@ -204,6 +205,20 @@ public abstract class ToggleButtonBase extends LinearLayout {
     public void resetState() {
         mIsChecked = false;
         initElems();
+    }
+
+    public void disable() {
+        setFocusable(false);
+        setClickable(false);
+        if (mTextButton != null)
+            mTextButton.setTextColor(Color.DKGRAY);
+    }
+
+    public void enable() {
+        setFocusable(true);
+        setClickable(true);
+        if (mTextButton != null)
+            mTextButton.setTextColor(Color.WHITE);
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {

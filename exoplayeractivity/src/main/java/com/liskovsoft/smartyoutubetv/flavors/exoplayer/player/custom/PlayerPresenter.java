@@ -24,6 +24,14 @@ public class PlayerPresenter {
     public void syncButtonStates() {
         Intent intent = mView.getIntent();
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
+            boolean isButtonDisabled = !intent.getExtras().containsKey(entry.getValue());
+            if (isButtonDisabled) {
+                //Toast.makeText(mView, "Button is disabled", Toast.LENGTH_LONG).show();
+                Integer btnId = entry.getKey();
+                ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(btnId);
+                btn.disable();
+                continue;
+            }
             boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
             Integer btnId = entry.getKey();
             ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(btnId);
