@@ -39,7 +39,8 @@
               android:paddingRight="4dp"
               android:textSize="20sp"
               tools:ignore="SmallSp"
-              android:textColor="@color/white"/>
+              android:textColor="@color/white"
+              android:maxLines="1"/>
     <TextView android:id="@+id/video_title2"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -47,7 +48,8 @@
               android:paddingRight="4dp"
               android:textSize="14sp"
               android:textColor="@color/white_70"
-              tools:ignore="SmallSp"/>
+              tools:ignore="SmallSp"
+              android:maxLines="1"/>
 
   </LinearLayout>
 

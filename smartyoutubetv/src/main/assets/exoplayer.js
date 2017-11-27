@@ -141,7 +141,7 @@ function Helpers() {
         YouButton.resetCache(); // activity just started
         var states = {};
 
-        // NOTE: do reverse so all btns do proper init
+        // NOTE: we can't delay here so process in reverse order
         var reversedKeys = Object.keys(GoogleConstants).reverse();
 
         for (var idx in reversedKeys) {
@@ -149,15 +149,11 @@ function Helpers() {
             var selector = GoogleConstants[key];
             var btn = YouButton.fromSelector(selector);
             var newName = PlayerActivity[key];
-            states[newName] = btn.getChecked();
+            var isChecked = btn.getChecked();
+            if (isChecked === null) // exclude disabled buttons from result
+                continue;
+            states[newName] = isChecked;
         }
-
-        // for(var key in GoogleConstants) {
-        //     var selector = GoogleConstants[key];
-        //     var btn = YouButton.fromSelector(selector);
-        //     var newName = PlayerActivity[key];
-        //     states[newName] = btn.getChecked();
-        // }
 
         return states;
     };
@@ -191,32 +187,33 @@ window.helpers = new Helpers();
 
 function YouButtonInitializer(btn) {
     this.btn = btn;
-    this.callbackStack = [];
+    this.callbackStack = YouButtonInitializer.callbackStack;
 
     this.doPressOnOptionsBtn = function() {
         helpers.triggerEnter(this.optionsBtnSelector);
     };
 
     this.doCallbackIfReady = function(callback) {
-        var obj = helpers.$(this.btn.selector);
-        if (obj && (obj.children.length >= 1)) {
-            console.log('YouButtonInitializer.initBtn: doing un-delayed call: ' + this.btn.selector);
-            callback();
-            this.callbackStack.shift();
-            if (this.callbackStack[0])
-                this.callbackStack[0]();
-            return;
-        }
+        // var obj = helpers.$(this.btn.selector);
+        // if (obj && (obj.children.length >= 1)) {
+        //     console.log('YouButtonInitializer.initBtn: doing un-delayed call: ' + this.btn.selector);
+        //     callback();
+        //     this.callbackStack.shift();
+        //     if (this.callbackStack[0])
+        //         this.callbackStack[0]();
+        //     return;
+        // }
 
         var $this = this;
+        var timeout = 1000; // timeout until Options show on/off
         setTimeout(function() {
             callback();
             $this.callbackStack.shift();
             if ($this.callbackStack[0])
                 $this.callbackStack[0]();
-        }, 1000);
+        }, timeout);
     };
-    this.initBtn = function(callback) {
+    this.setCheckedWrapper = function(callback) {
         var obj = helpers.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             this.doPressOnOptionsBtn();
@@ -230,7 +227,7 @@ function YouButtonInitializer(btn) {
             this.callbackStack[0]();
     };
 
-    this.initBtn2 = function(callback) {
+    this.getCheckedWrapper = function(callback) {
         var obj = helpers.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             console.log('YouButtonInitializer.initBtn2: btn not initialized: ' + this.btn.selector);
@@ -247,7 +244,7 @@ function YouButtonInitializer(btn) {
             console.log('YouButtonInitializer: YouButton.setChecked called');
             var thisBtn = this;
             var callback = function() {
-                $this.initBtn(function() {
+                $this.setCheckedWrapper(function() {
                     realSetChecked.call(thisBtn, doChecked);
                 });
             };
@@ -265,7 +262,7 @@ function YouButtonInitializer(btn) {
         this.btn.getChecked = function() {
             console.log('YouButtonInitializer: YouButton.getChecked called');
             var thisBtn = this;
-            return $this.initBtn2(function() {
+            return $this.getCheckedWrapper(function() {
                 return realGetChecked.call(thisBtn);
             });
         };
@@ -273,6 +270,7 @@ function YouButtonInitializer(btn) {
 }
 
 YouButtonInitializer.prototype = new GoogleButton();
+YouButtonInitializer.callbackStack = [];
 
 /////////////////// End YouButtonInitializer ///////////////////////
 
@@ -324,10 +322,20 @@ function YouButton(selector) {
 
 YouButton.prototype = new GoogleButton();
 YouButton.fromSelector = function(selector) {
+    function createButton(selector) {
+        if (selector === GoogleConstants.BUTTON_USER_PAGE) {
+            return new UserPageButton(selector);
+        }
+        // if (selector === GoogleConstants.BUTTON_PREV) {
+        //     return new PrevButton(selector);
+        // }
+        return new YouButton(selector);
+    }
+
     if (!this.btnMap)
         this.btnMap = {};
     if (!this.btnMap[selector]) {
-        this.btnMap[selector] = new YouButton(selector);
+        this.btnMap[selector] = createButton(selector);
     } else {
         console.log("YouButton.fromSelector: getting button from cache");
     }
@@ -340,5 +348,39 @@ YouButton.resetCache = function() {
 };
 
 /////////// End Player Button ////////////////
+
+//////////// User Page Button Wrapper ///////////////
+
+function UserPageButton(selector) {
+    this.btn = new YouButton(selector);
+
+    this.getChecked = function() {
+        return this.btn.getChecked();
+    };
+
+    this.setChecked = function(doChecked) {
+        this.btn.setChecked(doChecked);
+        console.log("UserPageButton: skipping last history item");
+        if (doChecked)
+            helpers.skipLastHistoryItem();
+    };
+}
+
+function PrevButton(selector) {
+    this.btn = new YouButton(selector);
+
+    this.getChecked = function() {
+        return this.btn.getChecked();
+    };
+
+    this.setChecked = function(doChecked) {
+        this.btn.setChecked(doChecked);
+        console.log("PrevButton: prev button is disabled... going back");
+        if (this.btn.getChecked() === null)
+            YouButton.fromSelector(GoogleConstants.BUTTON_BACK).setChecked(true);
+    };
+}
+
+//////////// End User Page Button Wrapper ///////////////
 
 
