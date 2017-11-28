@@ -8,11 +8,12 @@
               android:background="@color/transparent"
               android:id="@+id/toggle_button_wrapper"
               android:clickable="false">
+    <!-- NOTE: don't use real image here. Or will get unwanted side effects. See ToggleButtonBase.makeImageDisabled() -->
     <ImageButton
         android:clickable="false"
         android:padding="@dimen/toggle_button_padding"
         android:scaleType="fitCenter"
-        android:src="@mipmap/btn_like_off"
+        android:src="@mipmap/btn_placeholder"
         android:background="@color/transparent"
         android:layout_width="@dimen/toggle_button_width"
         android:layout_height="@dimen/toggle_button_height"

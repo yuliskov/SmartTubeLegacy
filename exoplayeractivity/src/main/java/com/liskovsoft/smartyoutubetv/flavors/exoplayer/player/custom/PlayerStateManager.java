@@ -18,8 +18,8 @@ public class PlayerStateManager {
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
-    private long MIN_PERSIST_DURATION_MILLIS = 10 * 60 * 1000; // don't save if total duration < 10 min
-    private long MAX_TRAIL_DURATION_MILLIS = 5 * 60 * 1000; // don't save if 5 min of unseen video remains
+    private long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min
+    private long MAX_TRAIL_DURATION_MILLIS = 2 * 60 * 1000; // don't save if 2 min of unseen video remains
     private long MAX_START_DURATION_MILLIS = 1 * 60 * 1000; // don't save if video just starts playing < 1 min
     private String mDefaultTrackId;
 

@@ -22,6 +22,7 @@ public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String DO_NOT_RESTORE = "doNotRestore";
     private SmartPreferences mPrefs;
+    private BootstrapCheckBox mChkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,10 @@ public class BootstrapActivity extends ActivityBase {
 
     private void initLayout() {
         setContentView(R.layout.activity_bootstrap);
+        
+        mChkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
-        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
-        chkbox.setChecked(isChecked);
+        mChkbox.setChecked(isChecked);
     }
 
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
@@ -129,8 +131,10 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void saveActivityNameForFurtherLaunches(Class clazz) {
-        BootstrapCheckBox chk = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
-        if (chk.isChecked()) {
+        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+
+        boolean isGone = mChkbox.getVisibility() == View.GONE;
+        if (mChkbox.isChecked() || isGone) {
             mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
         } else {
             mPrefs.setBootstrapActivityName(null);

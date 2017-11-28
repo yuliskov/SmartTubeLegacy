@@ -35,6 +35,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     protected Button mTextButton; // text variant
     protected LinearLayout mToggleButtonWrapper;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
+    private boolean mIsDisabled;
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(ToggleButtonBase button, boolean isChecked);
@@ -124,7 +125,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     }
 
     private void inflate() {
-        inflate(getContext(), R.layout.image_toggle_button, this);
+        inflate(getContext(), R.layout.toggle_button_base, this);
         mDescView = (TextView) findViewById(R.id.description);
         mImageButton = (ImageButton) findViewById(R.id.image_button);
         mTextButton = (Button) findViewById(R.id.text_button);
@@ -207,18 +208,52 @@ public abstract class ToggleButtonBase extends LinearLayout {
         initElems();
     }
 
+    public boolean isDisabled() {
+        return mIsDisabled;
+    }
+
     public void disable() {
         setFocusable(false);
         setClickable(false);
-        if (mTextButton != null)
-            mTextButton.setTextColor(Color.DKGRAY);
+        makeTextDisabled();
+        makeImageDisabled();
+        mIsDisabled = true;
     }
 
     public void enable() {
         setFocusable(true);
         setClickable(true);
+        makeTextEnabled();
+        makeImageEnabled();
+        mIsDisabled = false;
+    }
+
+    private void makeTextEnabled() {
         if (mTextButton != null)
             mTextButton.setTextColor(Color.WHITE);
+    }
+
+    private void makeTextDisabled() {
+        if (mTextButton != null)
+            mTextButton.setTextColor(Color.DKGRAY);
+    }
+
+    private void makeImageEnabled() {
+        if (mImageButton == null) {
+            return;
+        }
+
+        Drawable image = mImageButton.getDrawable();
+        image.setAlpha(255);
+    }
+
+    private void makeImageDisabled() {
+        if (mImageButton == null) {
+            return;
+        }
+
+        Drawable image = mImageButton.getDrawable();
+        image.setAlpha(30);
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
