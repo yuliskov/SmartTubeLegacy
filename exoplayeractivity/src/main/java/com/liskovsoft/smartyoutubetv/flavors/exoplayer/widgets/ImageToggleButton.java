@@ -27,24 +27,4 @@ public class ImageToggleButton extends ToggleButtonBase {
         mImageButton.setVisibility(View.VISIBLE);
         mTextButton.setVisibility(View.GONE);
     }
-
-    @Override
-    protected void onButtonUnfocused() {
-        mImageButton.setBackgroundResource(R.color.transparent);
-    }
-
-    @Override
-    protected void onButtonFocused() {
-        mImageButton.setBackgroundResource(R.color.white_50);
-    }
-
-    @Override
-    protected void onButtonChecked() {
-        mImageButton.setImageDrawable(mImageOn);
-    }
-
-    @Override
-    protected void onButtonUnchecked() {
-        mImageButton.setImageDrawable(mImageOff);
-    }
 }

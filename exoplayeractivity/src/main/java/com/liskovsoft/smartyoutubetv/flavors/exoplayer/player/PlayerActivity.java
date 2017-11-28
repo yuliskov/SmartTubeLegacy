@@ -94,9 +94,6 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
-    public static final String ACTION_NEXT = "ACTION_NEXT";
-    public static final String ACTION_PREV = "ACTION_PREV";
-    public static final String ACTION_BACK = "ACTION_BACK";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String BUTTON_USER_PAGE = "button_user_page";
     public static final String BUTTON_LIKE = "button_like";
@@ -105,7 +102,6 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_PREV = "button_prev";
     public static final String BUTTON_NEXT = "button_next";
     public static final String BUTTON_BACK = "button_back";
-    public static final String ACTION_NONE = "action_none";
     public static final String DELIMITER = "------";
 
     static {
@@ -290,7 +286,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
-                    doGracefulExit(PlayerActivity.ACTION_NEXT);
+                    doGracefulExit(PlayerActivity.BUTTON_NEXT);
             }
         };
     }
@@ -299,7 +295,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
-                    doGracefulExit(PlayerActivity.ACTION_PREV);
+                    doGracefulExit(PlayerActivity.BUTTON_PREV);
             }
         };
     }
@@ -322,9 +318,18 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         view.setAlpha(alpha);
     }
 
+    public void doGracefulExit() {
+        Intent intent = mPresenter.createResultIntent();
+        doGracefulExit(intent);
+    }
+
     public void doGracefulExit(String action) {
         Intent intent = mPresenter.createResultIntent();
-        intent.putExtra("action", action);
+        intent.putExtra(action, true);
+        doGracefulExit(intent);
+    }
+
+    private void doGracefulExit(Intent intent) {
         setResult(Activity.RESULT_OK, intent);
 
         finish();
@@ -333,7 +338,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     @Override
     public void onBackPressed() {
-        doGracefulExit(PlayerActivity.ACTION_BACK);
+        doGracefulExit(PlayerActivity.BUTTON_BACK);
 
         // moveTaskToBack(true); // don't exit at this point
     }
@@ -746,7 +751,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == Player.STATE_ENDED) {
             // TODO: modified
-            doGracefulExit(PlayerActivity.ACTION_NEXT);
+            doGracefulExit(PlayerActivity.BUTTON_NEXT);
             
             showControls();
         }

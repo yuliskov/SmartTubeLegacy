@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActionBinder {
-    private static final String ACTION_KEY = "action";
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
     private final String[] mPlayerButtons = {
@@ -38,10 +37,6 @@ public class ActionBinder {
         for (String buttonId : mPlayerButtons) {
             boolean isChecked = intent.getBooleanExtra(buttonId, false);
             result.put(buttonId, isChecked);
-        }
-        String action = intent.getStringExtra(ACTION_KEY);
-        if (action.equals(PlayerActivity.ACTION_BACK)) {
-            result.put(PlayerActivity.BUTTON_BACK, true);
         }
         return result;
     }

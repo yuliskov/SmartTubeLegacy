@@ -147,15 +147,11 @@ public abstract class ToggleButtonBase extends LinearLayout {
         //mImageButton.setBackgroundResource(R.color.transparent);
     }
 
-    protected abstract void onButtonUnfocused();
-
     private void makeFocused() {
         mDescView.setText(mDescText);
         onButtonFocused();
         //mImageButton.setBackgroundResource(R.color.white_50);
     }
-
-    protected abstract void onButtonFocused();
 
     private void initElems() {
         if (isChecked()) {
@@ -190,9 +186,6 @@ public abstract class ToggleButtonBase extends LinearLayout {
                  listener.onCheckedChanged(this, isChecked);
         }
     }
-
-    protected abstract void onButtonUnchecked();
-    protected abstract void onButtonChecked();
 
     protected boolean isChecked() {
         return mIsChecked;
@@ -244,6 +237,9 @@ public abstract class ToggleButtonBase extends LinearLayout {
         }
 
         Drawable image = mImageButton.getDrawable();
+        if (image == null) {
+            return;
+        }
         image.setAlpha(255);
     }
 
@@ -253,7 +249,50 @@ public abstract class ToggleButtonBase extends LinearLayout {
         }
 
         Drawable image = mImageButton.getDrawable();
+        if (image == null) {
+            return;
+        }
         image.setAlpha(30);
+    }
+
+    protected void onButtonFocused() {
+        if (mTextButton != null)
+            mTextButton.setBackgroundResource(R.color.white_50);
+
+        if (mImageButton != null)
+            mImageButton.setBackgroundResource(R.color.white_50);
+    }
+
+    protected void onButtonUnfocused() {
+        if (mTextButton != null)
+            mTextButton.setBackgroundResource(R.color.transparent);
+
+        if (mImageButton != null)
+            mImageButton.setBackgroundResource(R.color.transparent);
+    }
+
+    protected void onButtonChecked() {
+        if (mTextButton != null)
+            mTextButton.setText(mTextOn);
+
+        if (mImageButton != null)
+            mImageButton.setImageDrawable(mImageOn);
+    }
+
+    protected void onButtonUnchecked() {
+        if (mTextButton != null)
+            mTextButton.setText(mTextOff);
+
+        if (mImageButton != null)
+            mImageButton.setImageDrawable(mImageOff);
+    }
+
+    public void setText(int label) {
+        mTextButton.setText(label);
+    }
+
+    public CharSequence getText() {
+        return mTextButton.getText();
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {

@@ -134,16 +134,4 @@ public class LayoutToggleButton extends TextToggleButton {
                 ((LayoutToggleButton) button).enable();
         }
     }
-
-    //private void disable() {
-    //    setFocusable(false);
-    //    setClickable(false);
-    //    mTextButton.setTextColor(Color.DKGRAY);
-    //}
-    //
-    //private void enable() {
-    //    setFocusable(true);
-    //    setClickable(true);
-    //    mTextButton.setTextColor(Color.WHITE);
-    //}
 }

@@ -63,7 +63,7 @@ public class PlayerPresenter {
         if (isUserPageButton    ||
             isNextButton        ||
             isPrevButton) {
-            mView.doGracefulExit(PlayerActivity.ACTION_NONE);
+            mView.doGracefulExit();
         }
     }
 

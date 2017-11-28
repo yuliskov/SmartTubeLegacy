@@ -27,32 +27,4 @@ public class TextToggleButton extends ToggleButtonBase {
         mImageButton.setVisibility(View.GONE);
         mTextButton.setVisibility(View.VISIBLE);
     }
-
-    @Override
-    protected void onButtonUnfocused() {
-        mTextButton.setBackgroundResource(R.color.transparent);
-    }
-
-    @Override
-    protected void onButtonFocused() {
-        mTextButton.setBackgroundResource(R.color.white_50);
-    }
-
-    @Override
-    protected void onButtonUnchecked() {
-        mTextButton.setText(mTextOff);
-    }
-
-    @Override
-    protected void onButtonChecked() {
-        mTextButton.setText(mTextOn);
-    }
-
-    public void setText(int label) {
-        mTextButton.setText(label);
-    }
-
-    public CharSequence getText() {
-        return mTextButton.getText();
-    }
 }
