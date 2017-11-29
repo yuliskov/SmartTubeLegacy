@@ -22,7 +22,6 @@
                                                                    app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
         </LinearLayout>
         <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
-            android:visibility="gone"
             android:layout_gravity="center"
             app:titleText="@string/save_selection"
             app:onCheckedChanged="onCheckedChanged"

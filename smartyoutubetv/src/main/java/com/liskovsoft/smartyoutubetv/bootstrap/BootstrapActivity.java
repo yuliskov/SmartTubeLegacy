@@ -20,9 +20,8 @@ import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
-    public static final String DO_NOT_RESTORE = "doNotRestore";
+    public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
-    private BootstrapCheckBox mChkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,10 @@ public class BootstrapActivity extends ActivityBase {
 
     private void initLayout() {
         setContentView(R.layout.activity_bootstrap);
-        
-        mChkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
+
+        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
-        mChkbox.setChecked(isChecked);
+        chkbox.setChecked(isChecked);
     }
 
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
@@ -56,29 +55,17 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void tryToRestoreLastActivity() {
-        if (getIntent().getBooleanExtra(DO_NOT_RESTORE, false)) {
-            mPrefs.setBootstrapActivityName(null);
+        boolean skipRestore = getIntent().getBooleanExtra(SKIP_RESTORE, false);
+        if (skipRestore) {
+            return;
         }
 
         String bootstrapActivityName = mPrefs.getBootstrapActivityName();
-        if (bootstrapActivityName != null) {
-            // String activityLabel = getActivityLabelByClass(bootstrapActivityName);
-            // String popupText = String.format(getString(R.string.starting_popup_fmt), activityLabel);
-            // Toast.makeText(this, popupText, Toast.LENGTH_LONG).show();
+        boolean isChecked = mPrefs.getBootstrapSaveSelection();
+        boolean activityHasName = bootstrapActivityName != null;
+        if (isChecked && activityHasName) {
             startActivity(this, bootstrapActivityName);
         }
-    }
-
-    private String getActivityLabelByClass(String clazz) {
-        PackageManager pm = getPackageManager();
-        String activityLabel = null;
-        try {
-            ActivityInfo activityInfo = pm.getActivityInfo(new ComponentName(this, clazz), 0);
-            activityLabel = getString(activityInfo.labelRes);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return activityLabel;
     }
 
     private void setupCrashLogs() {
@@ -90,20 +77,24 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     public void selectFlavour(View view) {
+        Class clazz = com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity.class;
         switch (view.getId()) {
             case R.id.button_webview:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity.class);
+                clazz = com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity.class;
                 break;
             case R.id.button_xwalk:
-                startActivity(this, com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class);
+                clazz = com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class;
                 break;
             case R.id.button_exo:
-                startActivity(this, SmartYouTubeTVExoWebView.class);
+                clazz = SmartYouTubeTVExoWebView.class;
                 break;
             case R.id.button_exo2:
-                startActivity(this, SmartYouTubeTVExoXWalk.class);
+                clazz = SmartYouTubeTVExoXWalk.class;
                 break;
         }
+
+        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+        startActivity(this, clazz);
     }
 
     private void startActivity(Context ctx, String clazz) {
@@ -127,17 +118,5 @@ public class BootstrapActivity extends ActivityBase {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
         startActivity(intent);
-        saveActivityNameForFurtherLaunches(clazz);
-    }
-
-    private void saveActivityNameForFurtherLaunches(Class clazz) {
-        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
-
-        boolean isGone = mChkbox.getVisibility() == View.GONE;
-        if (mChkbox.isChecked() || isGone) {
-            mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
-        } else {
-            mPrefs.setBootstrapActivityName(null);
-        }
     }
 }

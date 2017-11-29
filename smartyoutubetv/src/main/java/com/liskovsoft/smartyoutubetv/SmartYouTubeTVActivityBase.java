@@ -171,7 +171,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private void returnToLaunchersDialog() {
         Intent intent = new Intent();
         intent.setClass(this, BootstrapActivity.class);
-        intent.putExtra(BootstrapActivity.DO_NOT_RESTORE, true);
+        intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
         startActivity(intent);
     }
 
