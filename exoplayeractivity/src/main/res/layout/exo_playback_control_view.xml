@@ -136,6 +136,7 @@
             android:visibility="gone">
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:visibility="gone"
                 android:id="@+id/exo_user"
                 style="@style/ExoMediaButton.User"/>
 

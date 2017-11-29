@@ -129,6 +129,139 @@ import java.util.Arrays;
         defaultView.setFocusable(true);
         defaultView.setOnClickListener(this);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        root.addView(defaultView); // Auto quality button
+
+        //////////// MERGE TRACKS FROM DIFFERENT CODECS ////////////
+
+        root.addView(inflater.inflate(R.layout.list_divider, root, false));
+
+        // Per-track views.
+        boolean haveSupportedTracks = false;
+        boolean haveAdaptiveTracks = false;
+        trackViews = new CheckedTextView[trackGroups.length][];
+        int maxTracks = 0;
+        for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
+            TrackGroup group = trackGroups.get(groupIndex);
+            int maxTracksInGroup = group.length;
+            if (maxTracksInGroup > maxTracks) {
+                maxTracks = maxTracksInGroup;
+            }
+
+            trackViews[groupIndex] = new CheckedTextView[group.length];
+        }
+
+        for (int trackIndex = (maxTracks - 1); trackIndex >= 0; trackIndex--) {
+            for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
+                TrackGroup group = trackGroups.get(groupIndex);
+
+                if (group.length <= trackIndex) { // one of the group have different number of tracks
+                    continue;
+                }
+
+                boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
+                haveAdaptiveTracks |= groupIsAdaptive;
+
+                int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
+                        .simple_list_item_single_choice;
+                CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
+                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
+
+                trackView.setFocusable(true);
+                trackView.setTag(Pair.create(groupIndex, trackIndex));
+                trackView.setOnClickListener(this);
+                haveSupportedTracks = true;
+                trackViews[groupIndex][trackIndex] = trackView;
+                root.addView(trackView);
+            }
+        }
+
+        //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////
+
+        //// Per-track views.
+        //boolean haveSupportedTracks = false;
+        //boolean haveAdaptiveTracks = false;
+        //trackViews = new CheckedTextView[trackGroups.length][];
+        //for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
+        //    TrackGroup group = trackGroups.get(groupIndex);
+        //    boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
+        //    haveAdaptiveTracks |= groupIsAdaptive;
+        //    trackViews[groupIndex] = new CheckedTextView[group.length];
+        //    for (int trackIndex = (group.length - 1); trackIndex >= 0; trackIndex--) {
+        //        if (trackIndex == (group.length - 1)) {
+        //            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        //        }
+        //        int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
+        //                .simple_list_item_single_choice;
+        //        CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
+        //        trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+        //        trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
+        //
+        //        //if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
+        //        //    == RendererCapabilities.FORMAT_HANDLED) {
+        //        //  trackView.setFocusable(true);
+        //        //  trackView.setTag(Pair.create(groupIndex, trackIndex));
+        //        //  trackView.setOnClickListener(this);
+        //        //  haveSupportedTracks = true;
+        //        //} else {
+        //        //  trackView.setFocusable(false);
+        //        //  trackView.setEnabled(false);
+        //        //}
+        //
+        //        // TODO: modified
+        //        trackView.setFocusable(true);
+        //        trackView.setTag(Pair.create(groupIndex, trackIndex));
+        //        trackView.setOnClickListener(this);
+        //        haveSupportedTracks = true;
+        //
+        //        trackViews[groupIndex][trackIndex] = trackView;
+        //        root.addView(trackView);
+        //    }
+        //}
+
+        if (!haveSupportedTracks) {
+            // Indicate that the default selection will be nothing.
+            defaultView.setText(R.string.selection_default_none);
+        } else if (haveAdaptiveTracks) {
+            // View for using random adaptation.
+            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
+            enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
+            enableRandomAdaptationView.setOnClickListener(this);
+            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+            root.addView(enableRandomAdaptationView);
+        }
+
+        updateViews();
+        return view;
+    }
+
+    // TODO: modified
+    @SuppressLint("InflateParams")
+    private View buildViewBAK2(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.track_selection_dialog, null);
+        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
+
+        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        attributeArray.recycle();
+
+        // View for disabling the renderer.
+        disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
+        disableView.setText(R.string.selection_disabled);
+        disableView.setFocusable(true);
+        disableView.setOnClickListener(this);
+        root.addView(disableView);
+
+        // View for clearing the override to allow the selector to use its default selection logic.
+        defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
+        defaultView.setText(R.string.selection_default);
+        defaultView.setFocusable(true);
+        defaultView.setOnClickListener(this);
+        root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView);
 
         // Per-track views.
@@ -191,7 +324,7 @@ import java.util.Arrays;
 
     // NOTE: original
     @SuppressLint("InflateParams")
-    private View buildView_Orig(Context context) {
+    private View buildViewBAK1(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
         ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
@@ -393,7 +526,6 @@ import java.util.Arrays;
         override = new SelectionOverride(factory, group, tracks);
     }
 
-
     // Track array manipulation.
     private static int[] getTracksAdding(SelectionOverride override, int addedTrack) {
         int[] tracks = override.tracks;
@@ -412,120 +544,5 @@ import java.util.Arrays;
             }
         }
         return tracks;
-    }
-
-    public void restore(Context context, TrackGroupArray[] rendererTrackGroupArrays) {
-        if (mPrefs != null) { // run once
-            return;
-        }
-
-        mPrefs = new ExoPreferences(context);
-
-        restorePlayerState(rendererTrackGroupArrays);
-    }
-
-    private void restorePlayerState(TrackGroupArray[] rendererTrackGroupArrays) {
-        String selectedTrackId = mPrefs.getSelectedTrackId();
-        if (selectedTrackId == null) {
-            return;
-        }
-
-        loadTrack(rendererTrackGroupArrays, selectedTrackId);
-    }
-
-    private void resetPlayerState() {
-        if (mPrefs == null) {
-            return;
-        }
-
-        mPrefs.setSelectedTrackId(null);
-    }
-
-    // TODO: modified: remove
-    private void persistPlayerState() {
-        if (mPrefs == null) {
-            return;
-        }
-
-        String trackId = extractCurrentTrackId();
-
-        mPrefs.setSelectedTrackId(trackId);
-    }
-
-    private String extractCurrentTrackId() {
-        int rendererIndex = 0; // video
-        int groupIndex = override.groupIndex;
-        int trackIndex = override.tracks[0];
-        MappedTrackInfo trackInfo = selector.getCurrentMappedTrackInfo();
-        TrackGroupArray trackGroups = trackInfo.getTrackGroups(rendererIndex);
-        Format format = trackGroups.get(groupIndex).getFormat(trackIndex);
-        return format.id;
-    }
-
-    private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
-        int rendererIndex = 0; // video
-        TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
-        TrackGroup defaultTrackGroup = groupArray.get(0);
-        for (int j = 0; j < groupArray.length; j++) {
-            TrackGroup trackGroup = groupArray.get(j);
-            for (int i = 0; i < trackGroup.length; i++) {
-                Format format = trackGroup.getFormat(i);
-                if (format.id.equals(selectedTrackId)) {
-                    return new int[]{j, i};
-                }
-            }
-        }
-        // if track not found, return topmost
-        return new int[]{0, (defaultTrackGroup.length - 1)};
-    }
-
-    private int findTrackIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
-        int rendererIndex = 0; // video
-        int groupIndex = 0; // default
-        TrackGroup trackGroup = rendererTrackGroupArrays[rendererIndex].get(groupIndex);
-        for (int i = 0; i < trackGroup.length; i++) {
-            Format format = trackGroup.getFormat(i);
-            if (format.id.equals(selectedTrackId)) {
-                return i;
-            }
-        }
-        // if track not found, return topmost
-        return (trackGroup.length - 1);
-    }
-
-    /**
-     * Switch track
-     * @param rendererTrackGroupArrays source of tracks
-     * @param selectedTrackId dash format id
-     */
-    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
-        int rendererIndex = 0; // video
-        if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
-            return;
-        }
-        int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId);
-        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex[0], trackGroupAndIndex[1]);
-        selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
-    }
-
-    private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
-        int rendererIndex = 0; // video
-        TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
-        return groupArray.length == 0;
-    }
-
-    /**
-     * Switch track
-     * @param rendererTrackGroupArrays source of tracks
-     * @param selectedTrackId dash format id
-     */
-    private void loadTrackOld(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
-        int rendererIndex = 0; // video
-        int groupIndex = 0; // default
-        int trackIndex = findTrackIndex(rendererTrackGroupArrays, selectedTrackId);
-        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
-        selector.setSelectionOverride(rendererIndex, trackGroupArray, override);
     }
 }

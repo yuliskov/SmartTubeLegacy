@@ -164,6 +164,8 @@ function Helpers() {
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
             var isChecked = states[btnId];
+            if (isChecked === undefined) // button gone, removed etc..
+                continue;
             var selector = GoogleConstants[key];
             var btn = YouButton.fromSelector(selector);
             btn.setChecked(isChecked);
