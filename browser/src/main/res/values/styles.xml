@@ -9,6 +9,8 @@
     </style>
 
     <style name="SimpleUITheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- NOTE: fix background on Android 8.0 -->
+        <item name="android:defaultFocusHighlightEnabled">false</item>
     </style>
 
     <style name="BrowserTheme" parent="Theme.AppCompat.NoActionBar">

@@ -18,7 +18,9 @@
     <style name="PlayerTheme" parent="android:Theme.Holo">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
-        <!--<item name="android:windowActivityTransitions">true</item>-->
+        <!-- NOTE: fix background on Android 8.0 -->
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+        <!--<item name="android:windowActivityTransitions">false</item>-->
         <!--<item name="android:windowAnimationStyle">@null</item>-->
     </style>
 
