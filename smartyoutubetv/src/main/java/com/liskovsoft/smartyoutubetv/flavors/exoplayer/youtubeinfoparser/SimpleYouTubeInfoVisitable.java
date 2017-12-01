@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
@@ -23,11 +24,17 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
 
         mVisitor.onGenericInfo(info);
 
-        Uri uri = mParser.extractHLSUrl();
+        Uri hlsUri = mParser.extractHLSUrl();
 
-        if (uri != null) {
-            mVisitor.onLiveItem(uri);
+        if (hlsUri != null) {
+            mVisitor.onLiveItem(hlsUri);
             // this is live so other items is useless
+            return;
+        }
+
+        InputStream dash = mParser.extractDashMPD();
+        if (dash != null) {
+            mVisitor.onDashMPDItem(dash);
             return;
         }
 

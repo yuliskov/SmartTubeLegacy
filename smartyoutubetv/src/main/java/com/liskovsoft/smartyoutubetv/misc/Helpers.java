@@ -95,7 +95,8 @@ public class Helpers {
     }
 
     public static Response doOkHttpRequest(String url) {
-        mClient = new OkHttpClient();
+        if (mClient == null)
+            mClient = new OkHttpClient();
 
         Request okHttpRequest = new Request.Builder()
                 .url(url)

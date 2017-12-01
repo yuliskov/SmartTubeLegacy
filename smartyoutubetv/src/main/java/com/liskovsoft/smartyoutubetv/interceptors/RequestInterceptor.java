@@ -73,20 +73,6 @@ public abstract class RequestInterceptor {
         return resultMap;
     }
 
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    protected String unlockAllFormats(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("c", "HTML5");
-
-        return query.toString();
-    }
-
     protected WebResourceResponse createEmptyResponse() {
         return createResponse(MediaType.parse("video/mp4"), new ByteArrayInputStream("".getBytes(Charset.forName("UTF8"))));
     }

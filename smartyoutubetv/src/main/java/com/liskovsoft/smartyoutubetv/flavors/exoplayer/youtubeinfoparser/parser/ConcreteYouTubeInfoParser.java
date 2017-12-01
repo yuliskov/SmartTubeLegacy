@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConcreteYouTubeInfoParser {
+    private static final String DASH_MPD_PARAM = "dashmpd";
+    private static final String HLS_PARAM = "hlsvp";
     private final String mContent;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mDecipheredItems;
@@ -41,9 +43,18 @@ public class ConcreteYouTubeInfoParser {
 
     public Uri extractHLSUrl() {
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-        String hlsUrl = videoInfo.getQueryParameter("hlsvp");
+        String hlsUrl = videoInfo.getQueryParameter(HLS_PARAM);
         if (hlsUrl != null) {
             return Uri.parse(hlsUrl);
+        }
+        return null;
+    }
+
+    public InputStream extractDashMPD() {
+        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        String url = videoInfo.getQueryParameter(DASH_MPD_PARAM);
+        if (url != null) {
+            return Helpers.doOkHttpRequest(url).body().byteStream();
         }
         return null;
     }

@@ -6,7 +6,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import java.io.InputStream;
 
 public abstract class OnMediaFoundCallback {
-    public void onVideoFound(InputStream mpdContent){}
-    public void onLiveFound(Uri hlsUrl){}
+    public void onDashMPDFound(InputStream mpdContent){}
+    public void onLiveUrlFound(Uri hlsUrl){}
     public void onInfoFound(YouTubeGenericInfo info){}
 }

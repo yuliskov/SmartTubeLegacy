@@ -16,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMedia
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -64,12 +65,12 @@ public class ExoInterceptor extends RequestInterceptor {
             private String mTitle = "No title";
             private String mTitle2 = "No title";
             @Override
-            public void onVideoFound(final InputStream mpdContent) {
+            public void onDashMPDFound(final InputStream mpdContent) {
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent, mTitle, mTitle2);
                 openExoPlayer(sample);
             }
             @Override
-            public void onLiveFound(final Uri hlsUrl) {
+            public void onLiveUrlFound(final Uri hlsUrl) {
                 Sample sample = SampleHelpers.buildFromUri(hlsUrl, mTitle, mTitle2);
                 openExoPlayer(sample);
             }
@@ -118,5 +119,24 @@ public class ExoInterceptor extends RequestInterceptor {
         mInterceptor.setCommand(command);
         // force call command without adding to the history (in case WebView)
         mInterceptor.forceRun(false);
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    protected String unlockAllFormats(String url) {
+        // youtube-dl > dashmpd:
+        // {'video_id': 'q89s_1o6LLw', 'el': 'info', 'gl': 'US', 'eurl': '', 'disable_polymer': 'true', 'ps': 'default', 'sts': 17492, 'hl': 'en'}
+
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("c", "HTML5"); // unlock adaptive fmts
+        query.set("el", "info"); // unlock dashmpd url
+
+
+        return query.toString();
     }
 }

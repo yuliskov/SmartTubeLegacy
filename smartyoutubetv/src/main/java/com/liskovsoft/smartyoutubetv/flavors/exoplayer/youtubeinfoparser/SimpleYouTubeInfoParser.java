@@ -12,12 +12,12 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String mContent;
     private final String mType;
 
-    private class CombineMediaVisitor extends YouTubeInfoVisitor {
+    private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final String mType;
         private final OnMediaFoundCallback mMediaFoundCallback;
         private MyMPDBuilder mMPDBuilder;
 
-        public CombineMediaVisitor(String type, OnMediaFoundCallback mediaFoundCallback) {
+        public MergeMediaVisitor(String type, OnMediaFoundCallback mediaFoundCallback) {
             mType = type;
             mMediaFoundCallback = mediaFoundCallback;
         }
@@ -36,13 +36,18 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         @Override
+        public void onDashMPDItem(InputStream dash) {
+            mMediaFoundCallback.onDashMPDFound(dash);
+        }
+
+        @Override
         public void onLiveItem(Uri hlsUrl) {
-            mMediaFoundCallback.onLiveFound(hlsUrl);
+            mMediaFoundCallback.onLiveUrlFound(hlsUrl);
         }
 
         @Override
         public void doneVisiting() {
-            mMediaFoundCallback.onVideoFound(mMPDBuilder.build());
+            mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
         }
     }
 
@@ -58,7 +63,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     @Override
     public void setOnMediaFoundCallback(OnMediaFoundCallback mpdFoundCallback) {
         YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
-        YouTubeInfoVisitor visitor = new CombineMediaVisitor(mType, mpdFoundCallback);
+        YouTubeInfoVisitor visitor = new MergeMediaVisitor(mType, mpdFoundCallback);
         visitable.accept(visitor);
     }
 }
