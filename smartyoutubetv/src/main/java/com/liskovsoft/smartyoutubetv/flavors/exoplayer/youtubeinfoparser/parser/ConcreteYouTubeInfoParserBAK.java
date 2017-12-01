@@ -2,12 +2,10 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser
 
 import android.net.Uri;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDParser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherOnlySignaturesDoneEvent;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherOnlySignaturesEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesDoneEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.WeirdUrl;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
@@ -20,19 +18,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConcreteYouTubeInfoParser {
+public class ConcreteYouTubeInfoParserBAK {
     private static final String DASH_MPD_PARAM = "dashmpd";
     private static final String HLS_PARAM = "hlsvp";
     private final String mContent;
     private ParserListener mListener;
-    private List<YouTubeMediaItem> mMediaItems;
-    private WeirdUrl mDashMPDUrl;
+    private List<YouTubeMediaItem> mDecipheredItems;
+    private List<YouTubeMediaItem> mItems;
 
-    public ConcreteYouTubeInfoParser(String content) {
+    public ConcreteYouTubeInfoParserBAK(String content) {
         mContent = content;
     }
 
-    public YouTubeGenericInfo extractGenericInfo() {
+    public YouTubeGenericInfo obtainGenericInfo() {
         YouTubeGenericInfo info = new SimpleYouTubeGenericInfo();
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
         info.setLengthSeconds(videoInfo.getQueryParameter(YouTubeGenericInfo.LENGTH_SECONDS));
@@ -52,35 +50,26 @@ public class ConcreteYouTubeInfoParser {
         return null;
     }
 
-    //private InputStream extractDashMPD() {
-    //    String url = extractParam(DASH_MPD_PARAM);
-    //    if (url != null) {
-    //        return Helpers.doOkHttpRequest(url).body().byteStream();
-    //    }
-    //    return null;
-    //}
-
-    private void extractDashMPDUrl() {
-        String url = extractParam(DASH_MPD_PARAM);
-        // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mDashMPDUrl = new WeirdUrl(url);
-    }
-
-    private String extractParam(String param) {
+    public InputStream extractDashMPD() {
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-        return videoInfo.getQueryParameter(param);
+        String url = videoInfo.getQueryParameter(DASH_MPD_PARAM);
+        if (url != null) {
+            return Helpers.doOkHttpRequest(url).body().byteStream();
+        }
+        return null;
     }
 
-    private void extractMediaItems() {
-        if (mMediaItems != null) {
-            return;
+    public List<YouTubeMediaItem> parseToMediaItems() {
+        if (mItems != null) {
+            return mItems;
         }
         List<YouTubeMediaItem> list = new ArrayList<>();
         List<String> items = splitContent(mContent);
         for (String item : items) {
             list.add(createMediaItem(item));
         }
-        mMediaItems = list;
+        mItems = list;
+        return list;
     }
 
     private YouTubeMediaItem createMediaItem(String content) {
@@ -96,6 +85,7 @@ public class ConcreteYouTubeInfoParser {
         mediaItem.setIndex(mediaUrl.getQueryParameter(YouTubeMediaItem.INDEX));
         mediaItem.setInit(mediaUrl.getQueryParameter(YouTubeMediaItem.INIT));
         mediaItem.setSize(mediaUrl.getQueryParameter(YouTubeMediaItem.SIZE));
+        //decipherSignature(mediaItem);
         return mediaItem;
     }
 
@@ -117,18 +107,9 @@ public class ConcreteYouTubeInfoParser {
         return list;
     }
 
-    //private InputStream extractRawMPD() {
-    //    Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-    //    String dashmpdUrl = videoInfo.getQueryParameter("dashmpd");
-    //    if (dashmpdUrl != null) {
-    //        Response response = Helpers.doOkHttpRequest(dashmpdUrl);
-    //        return response.body().byteStream();
-    //    }
-    //    return null;
-    //}
-
     private InputStream extractRawMPD() {
-        String dashmpdUrl = mDashMPDUrl.toString();
+        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        String dashmpdUrl = videoInfo.getQueryParameter("dashmpd");
         if (dashmpdUrl != null) {
             Response response = Helpers.doOkHttpRequest(dashmpdUrl);
             return response.body().byteStream();
@@ -136,65 +117,27 @@ public class ConcreteYouTubeInfoParser {
         return null;
     }
 
-    private void decipherSignatures() {
-        if (mMediaItems == null) {
+    private void decipherSignaturesAndDoCallback(List<YouTubeMediaItem> items) {
+        if (items == null) {
             throw new IllegalStateException("No media items found!");
         }
 
-        Browser.getBus().register(this);
-        Browser.getBus().post(new DecipherOnlySignaturesEvent(extractSignatures()));
-    }
-
-    private List<String> extractSignatures() {
-        List<String> result = new ArrayList<>();
-        for (YouTubeMediaItem item : mMediaItems) {
-            result.add(item.getS());
+        if (mDecipheredItems != null) {
+            mListener.onParseToMediaItemsAndDecipher(mDecipheredItems);
+            return;
         }
-        String rawSignature = mDashMPDUrl.getParam(YouTubeMediaItem.S);
-        result.add(rawSignature);
-        return result;
+
+        Browser.getBus().register(this);
+        Browser.getBus().post(new DecipherSignaturesEvent(items));
     }
 
     @Subscribe
-    public void decipherSignaturesDone(DecipherOnlySignaturesDoneEvent doneEvent) {
+    public void decipherSignaturesDone(DecipherSignaturesDoneEvent doneEvent) {
         Browser.getBus().unregister(this);
 
-        List<String> signatures = doneEvent.getSignatures();
-        String lastSignature = signatures.get(signatures.size() - 1);
-        applySignatureToDashMPDUrl(lastSignature);
-        applySignaturesToMediaItems(signatures);
-        mergeMediaItems();
-        mListener.onExtractMediaItemsAndDecipher(mMediaItems);
-    }
-
-    private void mergeMediaItems() {
-        InputStream inputStream = extractRawMPD();
-        MyMPDParser parser = new MyMPDParser(inputStream);
-        List<YouTubeMediaItem> items = parser.parse();
-
-    }
-
-    private void applySignatureToDashMPDUrl(String signature) {
-        mDashMPDUrl.removeParam(YouTubeMediaItem.S);
-        mDashMPDUrl.setParam(YouTubeMediaItem.SIGNATURE, signature);
-    }
-
-    private void applySignaturesToMediaItems(List<String> signatures) {
-        if (signatures.size() < mMediaItems.size()) {
-            throw new IllegalStateException("Signatures and media items aren't match");
-        }
-
-        for (int i = 0; i < mMediaItems.size(); i++) {
-            String signature = signatures.get(i);
-            if (signature == null) {
-                continue;
-            }
-            YouTubeMediaItem item = mMediaItems.get(i);
-            String url = item.getUrl();
-            item.setUrl(String.format("%s&signature=%s", url, signature));
-            item.setSignature(signature);
-            item.setS(null);
-        }
+        List<YouTubeMediaItem> items = doneEvent.getMediaItems();
+        mDecipheredItems = items;
+        mListener.onParseToMediaItemsAndDecipher(items);
     }
 
     // not used code
@@ -207,18 +150,16 @@ public class ConcreteYouTubeInfoParser {
         }
     }
 
-    public void extractMediaItemsAndDecipher(ParserListener parserListener) {
+    public void parseToMediaItemsAndDecipher(ParserListener parserListener) {
         if (parserListener == null) {
             throw new IllegalStateException("You must supply a parser listener");
         }
         mListener = parserListener;
 
-        extractMediaItems();
-        extractDashMPDUrl();
-        decipherSignatures();
+        decipherSignaturesAndDoCallback(parseToMediaItems());
     }
 
     public interface ParserListener {
-        void onExtractMediaItemsAndDecipher(List<YouTubeMediaItem> items);
+        void onParseToMediaItemsAndDecipher(List<YouTubeMediaItem> items);
     }
 }

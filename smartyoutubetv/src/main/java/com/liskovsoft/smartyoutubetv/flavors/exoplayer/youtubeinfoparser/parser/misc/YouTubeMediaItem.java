@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
 public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     // Common params
@@ -6,6 +6,7 @@ public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     String TYPE = "type";
     String ITAG = "itag";
     String S = "s";
+    String SIGNATURE = "signature";
     // End Common params
 
     // DASH params
@@ -61,4 +62,6 @@ public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     String getQuality();
     void setQuality(String quality);
     boolean belongsToType(String type);
+    void setSignature(String signature);
+    String getSignature();
 }

@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;

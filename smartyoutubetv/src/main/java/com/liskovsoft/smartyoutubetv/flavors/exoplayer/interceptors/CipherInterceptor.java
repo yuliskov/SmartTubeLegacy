@@ -12,6 +12,7 @@ import okhttp3.Response;
 
 import java.io.InputStream;
 
+// intercepts "tv-player.js"
 public class CipherInterceptor extends RequestInterceptor {
     private String mJSDecipherCode;
 

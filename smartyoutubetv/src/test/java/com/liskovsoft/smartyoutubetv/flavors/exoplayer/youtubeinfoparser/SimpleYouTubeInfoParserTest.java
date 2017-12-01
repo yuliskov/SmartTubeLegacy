@@ -4,7 +4,7 @@ import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.YouTubeInfoParser;

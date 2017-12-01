@@ -12,14 +12,13 @@ import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.DecipherSimpleRoutineInjector;
 import com.liskovsoft.smartyoutubetv.injectors.MyJsCssTweaksInjector;
 import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
-import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
@@ -33,7 +32,7 @@ public class ControllerEventListener implements Controller.EventListener {
     private WebViewJavaScriptInterface mJS;
     private MyJsCssTweaksInjector mInjector;
     private VideoFormatInjector mNotification;
-    private DecipherRoutineInjector mDecipherRoutineInjector;
+    private DecipherSimpleRoutineInjector mDecipherRoutineInjector;
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private GenericEventResourceInjector mEventResourceInjector;
     // private final LangUpdater mLangUpdater;
@@ -120,7 +119,7 @@ public class ControllerEventListener implements Controller.EventListener {
         if (mNotification == null)
             mNotification = new VideoFormatInjector(mContext, w);
         if (mDecipherRoutineInjector == null)
-            mDecipherRoutineInjector = new DecipherRoutineInjector(mContext, w);
+            mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext, w);
         if (mEventResourceInjector == null)
             mEventResourceInjector = new GenericEventResourceInjector(mContext, w);
 

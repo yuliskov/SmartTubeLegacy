@@ -2,9 +2,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbui
 
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 
-import java.io.InputStream;
+import java.util.List;
 
-public interface MPDBuilder {
-    void append(YouTubeMediaItem mediaItem);
-    InputStream build();
+public interface MPDParser {
+    List<YouTubeMediaItem> parse();
 }

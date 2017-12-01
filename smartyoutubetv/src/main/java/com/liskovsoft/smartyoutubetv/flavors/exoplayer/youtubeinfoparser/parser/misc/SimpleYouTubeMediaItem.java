@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
 
@@ -18,6 +18,7 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     private String mLmt;
     private String mQualityLabel;
     private String mQuality;
+    private String mRealSignature;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -179,6 +180,16 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     @Override
     public boolean belongsToType(String type) {
         return type == null || ITag.belongsToType(type, getITag());
+    }
+
+    @Override
+    public void setSignature(String signature) {
+        mRealSignature = signature;
+    }
+
+    @Override
+    public String getSignature() {
+        return mRealSignature;
     }
 
     @Override

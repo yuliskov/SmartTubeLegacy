@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp;
 
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 
 public interface YouTubeInfoVisitor {
     /**

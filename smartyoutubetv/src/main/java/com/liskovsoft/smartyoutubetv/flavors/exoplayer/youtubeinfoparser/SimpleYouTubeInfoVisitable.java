@@ -2,10 +2,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.ConcreteYouTubeInfoParser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
@@ -20,7 +19,7 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
     public void accept(YouTubeInfoVisitor visitor) {
         mVisitor = visitor;
 
-        YouTubeGenericInfo info = mParser.obtainGenericInfo();
+        YouTubeGenericInfo info = mParser.extractGenericInfo();
 
         mVisitor.onGenericInfo(info);
 
@@ -32,15 +31,15 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
             return;
         }
 
-        InputStream dash = mParser.extractDashMPD();
-        if (dash != null) {
-            mVisitor.onDashMPDItem(dash);
-            return;
-        }
+        //InputStream dash = mParser.extractDashMPD();
+        //if (dash != null) {
+        //    mVisitor.onDashMPDItem(dash);
+        //    return;
+        //}
 
-        mParser.parseToMediaItemsAndDecipher(new ConcreteYouTubeInfoParser.ParserListener() {
+        mParser.extractMediaItemsAndDecipher(new ConcreteYouTubeInfoParser.ParserListener() {
             @Override
-            public void onParseToMediaItemsAndDecipher(List<YouTubeMediaItem> items) {
+            public void onExtractMediaItemsAndDecipher(List<YouTubeMediaItem> items) {
                 assert items != null;
                 for (YouTubeMediaItem item : items) {
                     mVisitor.onMediaItem(item);

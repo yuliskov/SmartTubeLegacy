@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
 public interface YouTubeGenericInfo {
     String LENGTH_SECONDS = "length_seconds";

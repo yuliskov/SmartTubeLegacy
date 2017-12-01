@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 
 import java.io.InputStream;
 import java.util.ArrayList;

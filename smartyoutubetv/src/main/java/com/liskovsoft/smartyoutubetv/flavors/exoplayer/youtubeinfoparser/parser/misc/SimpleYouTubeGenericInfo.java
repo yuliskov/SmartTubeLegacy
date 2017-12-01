@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.items;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
 public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
     private String mLengthSeconds;
