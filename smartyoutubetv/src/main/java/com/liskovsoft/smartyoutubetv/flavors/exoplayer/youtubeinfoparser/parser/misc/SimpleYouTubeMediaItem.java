@@ -28,6 +28,18 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof YouTubeMediaItem)) {
+            return false;
+        }
+        YouTubeMediaItem rightItem = (YouTubeMediaItem) obj;
+        return getITag().equals(rightItem.getITag());
+    }
+
+    @Override
     public String getUrl() {
         return mUrl;
     }
@@ -197,7 +209,7 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
         if (item == null) {
             return 1;
         }
-        
+
         return ITag.compare(getITag(), item.getITag());
     }
 }

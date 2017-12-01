@@ -27,6 +27,7 @@ public class ConcreteYouTubeInfoParser {
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
     private WeirdUrl mDashMPDUrl;
+    private List<YouTubeMediaItem> mNewMediaItems;
 
     public ConcreteYouTubeInfoParser(String content) {
         mContent = content;
@@ -51,14 +52,6 @@ public class ConcreteYouTubeInfoParser {
         }
         return null;
     }
-
-    //private InputStream extractDashMPD() {
-    //    String url = extractParam(DASH_MPD_PARAM);
-    //    if (url != null) {
-    //        return Helpers.doOkHttpRequest(url).body().byteStream();
-    //    }
-    //    return null;
-    //}
 
     private void extractDashMPDUrl() {
         String url = extractParam(DASH_MPD_PARAM);
@@ -117,17 +110,7 @@ public class ConcreteYouTubeInfoParser {
         return list;
     }
 
-    //private InputStream extractRawMPD() {
-    //    Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-    //    String dashmpdUrl = videoInfo.getQueryParameter("dashmpd");
-    //    if (dashmpdUrl != null) {
-    //        Response response = Helpers.doOkHttpRequest(dashmpdUrl);
-    //        return response.body().byteStream();
-    //    }
-    //    return null;
-    //}
-
-    private InputStream extractRawMPD() {
+    private InputStream extractDashMPDContent() {
         String dashmpdUrl = mDashMPDUrl.toString();
         if (dashmpdUrl != null) {
             Response response = Helpers.doOkHttpRequest(dashmpdUrl);
@@ -168,15 +151,20 @@ public class ConcreteYouTubeInfoParser {
     }
 
     private void mergeMediaItems() {
-        InputStream inputStream = extractRawMPD();
-        MyMPDParser parser = new MyMPDParser(inputStream);
-        List<YouTubeMediaItem> items = parser.parse();
-
+        for (YouTubeMediaItem item : mNewMediaItems) {
+            if (!mMediaItems.contains(item)) {
+                mMediaItems.add(item);
+            }
+        }
     }
 
     private void applySignatureToDashMPDUrl(String signature) {
         mDashMPDUrl.removeParam(YouTubeMediaItem.S);
         mDashMPDUrl.setParam(YouTubeMediaItem.SIGNATURE, signature);
+
+        InputStream inputStream = extractDashMPDContent();
+        MyMPDParser parser = new MyMPDParser(inputStream);
+        mNewMediaItems = parser.parse();
     }
 
     private void applySignaturesToMediaItems(List<String> signatures) {
