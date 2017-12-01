@@ -17,6 +17,9 @@ public class MyMPDParser implements MPDParser {
     private static final String TAG_MPD = "MPD";
     private static final String TAG_MEDIA_ITEM = "Representation";
     private static final String TAG_BASE_URL = "BaseURL";
+    private static final String TAG_MEDIA_GROUP = "AdaptationSet";
+    private static final String TAG_SEGMENT_BASE = "SegmentBase";
+    private static final String TAG_INITIALIZATION = "Initialization";
     private InputStream mMpdContent;
     private XmlPullParser mParser;
 
@@ -57,8 +60,8 @@ public class MyMPDParser implements MPDParser {
             }
             String name = mParser.getName();
             // Starts by looking for the entry tag
-            if (name.equals(TAG_MEDIA_ITEM)) {
-                mediaItems.add(readMediaItem(mParser));
+            if (name.equals(TAG_MEDIA_GROUP)) {
+                mediaItems.addAll(readMediaGroup(mParser));
             } else {
                 skip(mParser);
             }
@@ -83,39 +86,77 @@ public class MyMPDParser implements MPDParser {
         }
     }
 
-    private YouTubeMediaItem readMediaItem(XmlPullParser parser) throws IOException, XmlPullParserException {
+    private List<YouTubeMediaItem> readMediaGroup(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_GROUP);
+        List<YouTubeMediaItem> mediaItems = new ArrayList<>();
+        String mimeType = parser.getAttributeValue(ns, "mimeType");
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals(TAG_MEDIA_ITEM)) {
+                mediaItems.add(readMediaItem(parser, mimeType));
+            } else {
+                skip(parser);
+            }
+        }
+        return mediaItems;
+    }
+
+    private YouTubeMediaItem readMediaItem(XmlPullParser parser, String mimeType) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_ITEM);
-        String url = null;
         YouTubeMediaItem item = new SimpleYouTubeMediaItem();
         item.setITag(parser.getAttributeValue(ns, "id"));
         item.setBitrate(parser.getAttributeValue(ns, "bandwidth"));
         String size = String.format("%sx%s", parser.getAttributeValue(ns, "width"), parser.getAttributeValue(ns, "height"));
         item.setSize(size);
         item.setFps(parser.getAttributeValue(ns, "frameRate"));
-        //contentLength
-        //indexRange
-        //range
-        //mimeType + codecs
+        item.setType(String.format("%s;+codecs=\"%s\"", mimeType, parser.getAttributeValue(ns, "codecs")));
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
             if (name.equals(TAG_BASE_URL)) {
-                url = readUrl(parser);
+                readUrl(parser, item);
+            } else if (name.equals(TAG_SEGMENT_BASE)) {
+                readSegmentBase(parser, item);
             } else {
                 skip(parser);
             }
         }
-        item.setUrl(url);
         return item;
     }
 
-    private String readUrl(XmlPullParser parser) throws IOException, XmlPullParserException {
+    private void readSegmentBase(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_BASE);
+        item.setIndex(parser.getAttributeValue(ns, "indexRange"));
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals(TAG_INITIALIZATION)) {
+                readInitialization(parser, item);
+            } else {
+                skip(parser);
+            }
+        }
+    }
+
+    private void readInitialization(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, TAG_INITIALIZATION);
+        item.setInit(parser.getAttributeValue(ns, "range"));
+        parser.require(XmlPullParser.END_TAG, ns, TAG_INITIALIZATION);
+    }
+
+    private void readUrl(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_BASE_URL);
         String url = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, TAG_BASE_URL);
-        return url;
+        item.setUrl(url);
+        item.setClen(parser.getAttributeValue(ns, "yt:contentLength"));
     }
 
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
