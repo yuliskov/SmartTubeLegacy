@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.Utils;
 
 import java.util.Arrays;
 
@@ -169,6 +171,7 @@ import java.util.Arrays;
 
                 trackView.setFocusable(true);
                 trackView.setTag(Pair.create(groupIndex, trackIndex));
+                trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                 trackView.setOnClickListener(this);
                 haveSupportedTracks = true;
                 trackViews[groupIndex][trackIndex] = trackView;

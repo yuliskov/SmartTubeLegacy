@@ -35,7 +35,7 @@ import java.util.Locale;
     String trackName;
     if (MimeTypes.isVideo(format.sampleMimeType)) {
       trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(
-          buildResolutionString(format), buildBitrateString(format)), buildTrackIdString(format)),
+          joinWithSeparator(buildResolutionString(format), buildFPSString(format)), buildBitrateString(format)), buildTrackIdString(format)),
           buildSampleMimeTypeString(format));
     } else if (MimeTypes.isAudio(format.sampleMimeType)) {
       trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(
@@ -48,6 +48,11 @@ import java.util.Locale;
           buildSampleMimeTypeString(format));
     }
     return trackName.length() == 0 ? "unknown" : trackName;
+  }
+
+  private static String buildFPSString(Format format) {
+    return format.frameRate == Format.NO_VALUE
+        ? "" : format.frameRate + "fps";
   }
 
   private static String buildResolutionString(Format format) {

@@ -133,22 +133,11 @@ public class ExoInterceptor extends RequestInterceptor {
 
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        //query.set("c", "HTML5"); // unlock adaptive fmts
-        //query.set("el", "info"); // unlock dashmpd url
-        //query.set("ps", "default");
-        //query.set("disable_polymer", "true");
+        query.set("c", "HTML5"); // unlock adaptive fmts
+        query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps
+        query.set("disable_polymer", "true");
 
-        String baseUrl = "https://www.youtube.com/get_video_info";
-        MyUrlEncodedQueryString newQuery = MyUrlEncodedQueryString.parse(baseUrl);
-        newQuery.set("video_id", query.get("video_id"));
-        newQuery.set("el", "info");
-        newQuery.set("gl", "US");
-        newQuery.set("eurl", "");
-        newQuery.set("disable_polymer", "true");
-        newQuery.set("ps", "default");
-        newQuery.set("sts", query.get("sts"));
-        newQuery.set("hl", "en");
-
-        return newQuery.toString();
+        return query.toString();
     }
 }

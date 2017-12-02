@@ -252,7 +252,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         if (image == null) {
             return;
         }
-        image.setAlpha(50);
+        image.setAlpha(80);
     }
 
     protected void onButtonFocused() {
