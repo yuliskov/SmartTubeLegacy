@@ -151,6 +151,12 @@ public class ConcreteYouTubeInfoParser {
     }
 
     private void mergeMediaItems() {
+        // We also try looking in get_video_info since it may contain different dashmpd
+        // URL that points to a DASH manifest with possibly different itag set (some itags
+        // are missing from DASH manifest pointed by webpage's dashmpd, some - from DASH
+        // manifest pointed by get_video_info's dashmpd).
+        // The general idea is to take a union of itags of both DASH manifests (for example
+        // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
         for (YouTubeMediaItem item : mNewMediaItems) {
             if (!mMediaItems.contains(item)) {
                 mMediaItems.add(0, item);
