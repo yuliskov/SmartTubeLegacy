@@ -133,10 +133,10 @@ public class ExoInterceptor extends RequestInterceptor {
 
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        query.set("c", "HTML5"); // unlock adaptive fmts
+        // query.set("c", "HTML5"); // unlock adaptive fmts
         query.set("el", "info"); // unlock dashmpd url
-        query.set("ps", "default"); // unlock 60fps
-        query.set("disable_polymer", "true");
+        query.set("ps", "default"); // unlock 60fps formats
+        // query.set("disable_polymer", "true");
 
         return query.toString();
     }

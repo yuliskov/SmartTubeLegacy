@@ -49,6 +49,7 @@ import java.util.Arrays;
 
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
+    private static final int TEXT_SIZE_DP = 15;
 
     private final MappingTrackSelector selector;
     private final TrackSelection.Factory adaptiveTrackSelectionFactory;
@@ -122,6 +123,7 @@ import java.util.Arrays;
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setOnClickListener(this);
+        disableView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
@@ -130,6 +132,7 @@ import java.util.Arrays;
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setOnClickListener(this);
+        defaultView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView); // Auto quality button
 
@@ -171,7 +174,7 @@ import java.util.Arrays;
 
                 trackView.setFocusable(true);
                 trackView.setTag(Pair.create(groupIndex, trackIndex));
-                trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+                trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
                 trackView.setOnClickListener(this);
                 haveSupportedTracks = true;
                 trackViews[groupIndex][trackIndex] = trackView;
