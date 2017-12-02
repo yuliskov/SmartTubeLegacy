@@ -42,6 +42,9 @@ public class MyMPDParser implements MPDParser {
 
     @Override
     public List<YouTubeMediaItem> parse() {
+        if (mMpdContent == null) {
+            return new ArrayList<>();
+        }
         List<YouTubeMediaItem> result = null;
         try {
             result = readDashMPD();
