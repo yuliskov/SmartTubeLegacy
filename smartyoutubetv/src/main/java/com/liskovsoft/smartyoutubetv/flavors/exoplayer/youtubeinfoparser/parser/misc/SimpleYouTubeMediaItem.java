@@ -19,6 +19,7 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     private String mQualityLabel;
     private String mQuality;
     private String mRealSignature;
+    private String mAudioSamplingRate;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -38,6 +39,8 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
         YouTubeMediaItem rightItem = (YouTubeMediaItem) obj;
         return getITag().equals(rightItem.getITag());
     }
+
+
 
     @Override
     public String getUrl() {
@@ -202,6 +205,16 @@ public class SimpleYouTubeMediaItem implements YouTubeMediaItem {
     @Override
     public String getSignature() {
         return mRealSignature;
+    }
+
+    @Override
+    public void setAudioSamplingRate(String audioSamplingRate) {
+        mAudioSamplingRate = audioSamplingRate;
+    }
+
+    @Override
+    public String getAudioSamplingRate() {
+        return mAudioSamplingRate;
     }
 
     @Override

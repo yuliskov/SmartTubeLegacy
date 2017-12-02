@@ -249,8 +249,10 @@ public class MyMPDBuilder implements MPDBuilder {
 
         startTag("", "SegmentBase");
 
-        attribute("", "indexRange", item.getIndex());
-        attribute("", "indexRangeExact", "true");
+        if (item.getIndex() != null) {
+            attribute("", "indexRange", item.getIndex());
+            attribute("", "indexRangeExact", "true");
+        }
 
         startTag("", "Initialization");
 

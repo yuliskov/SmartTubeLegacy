@@ -64,4 +64,6 @@ public interface YouTubeMediaItem extends Comparable<YouTubeMediaItem> {
     boolean belongsToType(String type);
     void setSignature(String signature);
     String getSignature();
+    void setAudioSamplingRate(String audioSamplingRate);
+    String getAudioSamplingRate();
 }

@@ -153,7 +153,7 @@ public class ConcreteYouTubeInfoParser {
     private void mergeMediaItems() {
         for (YouTubeMediaItem item : mNewMediaItems) {
             if (!mMediaItems.contains(item)) {
-                mMediaItems.add(item);
+                mMediaItems.add(0, item);
             }
         }
     }
