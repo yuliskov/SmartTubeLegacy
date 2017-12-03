@@ -12,6 +12,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private final PlayerActivity mContext;
@@ -19,7 +22,7 @@ public class PlayerStateManager {
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
     private long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min
-    private long MAX_TRAIL_DURATION_MILLIS = 2 * 60 * 1000; // don't save if 2 min of unseen video remains
+    private long MAX_TRAIL_DURATION_MILLIS = 2 * 60 * 1000; // don't save if 1 min of unseen video remains
     private long MAX_START_DURATION_MILLIS = 1 * 60 * 1000; // don't save if video just starts playing < 1 min
     private String mDefaultTrackId;
 
@@ -43,14 +46,7 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
-        restorePlayerState(rendererTrackGroupArrays);
-    }
-
-    private void restorePlayerState(TrackGroupArray[] rendererTrackGroupArrays) {
         String selectedTrackId = mPrefs.getSelectedTrackId();
-        if (selectedTrackId == null) {
-            return;
-        }
 
         loadTrack(rendererTrackGroupArrays, selectedTrackId);
     }
@@ -81,7 +77,7 @@ public class PlayerStateManager {
             TrackGroup trackGroup = groupArray.get(j);
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
-                if (format.id.equals(selectedTrackId)) {
+                if (trackEquals(format.id, selectedTrackId)) {
                     return new int[]{j, i};
                 }
             }
@@ -90,6 +86,21 @@ public class PlayerStateManager {
         int lastIdx = defaultTrackGroup.length - 1;
         mDefaultTrackId = defaultTrackGroup.getFormat(lastIdx).id;
         return new int[]{0, lastIdx};
+    }
+
+    private boolean trackEquals(String leftTrackId, String rightTrackId) {
+        if (leftTrackId == null || rightTrackId == null) {
+            return false;
+        }
+
+        int i = Integer.parseInt(leftTrackId);
+        int j = Integer.parseInt(rightTrackId);
+        // presume that 30fps and 60fps is the same format
+        if (Math.abs(i - j) == 162) {
+            return true;
+        }
+
+        return leftTrackId.equals(rightTrackId);
     }
 
     private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
@@ -126,7 +137,8 @@ public class PlayerStateManager {
     private void persistTrackIndex() {
         String trackId = extractCurrentTrackId();
         // mDefaultTrackId: usually this happens when video does not contain preferred format
-        if (trackId != null && !trackId.equals(mDefaultTrackId)) {
+        boolean isTrackChanged = trackId != null && !trackId.equals(mDefaultTrackId);
+        if (isTrackChanged) {
             mPrefs.setSelectedTrackId(trackId);
         }
     }

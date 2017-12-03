@@ -54,6 +54,26 @@ public class ExoPreferences implements ExoKeys {
                 .apply();
     }
 
+    public int getSelectedTrackHeight() {
+        return mPrefs.getInt(ExoKeys.SELECTED_TRACK_ID, 0);
+    }
+
+    public void setSelectedTrackHeight(int height) {
+        mPrefs.edit()
+                .putInt(ExoKeys.SELECTED_TRACK_HEIGHT, height)
+                .apply();
+    }
+
+    public String getSelectedTrackCodec() {
+        return mPrefs.getString(ExoKeys.SELECTED_TRACK_CODEC, null);
+    }
+
+    public void setSelectedTrackCodec(String codec) {
+        mPrefs.edit()
+                .putString(ExoKeys.SELECTED_TRACK_ID, codec)
+                .apply();
+    }
+
     public void resetPosition(String key) {
         mPrefs.edit()
                 .remove(key)

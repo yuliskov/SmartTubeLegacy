@@ -120,7 +120,12 @@ public class Helpers {
     public static String unixToLocalDate(Context ctx, String timestamp) {
         Locale current = ctx.getResources().getConfiguration().locale;
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, current);
-        Date date = new Date((long) Integer.parseInt(timestamp) * 1000);
+        Date date;
+        if (timestamp == null) {
+            date = new Date();
+        } else {
+            date = new Date((long) Integer.parseInt(timestamp) * 1000);
+        }
         return dateFormat.format(date);
     }
 }
