@@ -23,10 +23,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ConcreteYouTubeInfoParser {
-    private static final String DASH_MPD_PARAM = "dashmpd";
-    private static final String HLS_PARAM = "hlsvp";
+    private static final String DASH_MPD_URL = "dashmpd";
+    private static final String HLS_URL = "hlsvp";
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
+    private static final String FORMATS_DELIM = ","; // %2C
     private final String mContent;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
@@ -50,7 +51,7 @@ public class ConcreteYouTubeInfoParser {
 
     public Uri extractHLSUrl() {
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-        String hlsUrl = videoInfo.getQueryParameter(HLS_PARAM);
+        String hlsUrl = videoInfo.getQueryParameter(HLS_URL);
         if (hlsUrl != null) {
             return Uri.parse(hlsUrl);
         }
@@ -58,7 +59,7 @@ public class ConcreteYouTubeInfoParser {
     }
 
     private void extractDashMPDUrl() {
-        String url = extractParam(DASH_MPD_PARAM);
+        String url = extractParam(DASH_MPD_URL);
         // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
         mDashMPDUrl = new WeirdUrl(url);
     }
@@ -102,7 +103,7 @@ public class ConcreteYouTubeInfoParser {
         String adaptiveFormats = videoInfo.getQueryParameter(DASH_FORMATS);
         // stream may not contain dash formats
         if (adaptiveFormats != null) {
-            String[] fmts = adaptiveFormats.split(",");
+            String[] fmts = adaptiveFormats.split(FORMATS_DELIM);
             list.addAll(Arrays.asList(fmts));
         }
 

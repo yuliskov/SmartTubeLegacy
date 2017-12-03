@@ -102,14 +102,14 @@ public class MyMPDBuilder implements MPDBuilder {
 
     private XmlSerializer attribute(String namespace, String name, String value) {
         if (value == null) {
-            value = "";
+            return mXmlSerializer;
         }
         try {
             return mXmlSerializer.attribute(namespace, name, value);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return mXmlSerializer;
     }
 
     private XmlSerializer startTag(String namespace, String name) {

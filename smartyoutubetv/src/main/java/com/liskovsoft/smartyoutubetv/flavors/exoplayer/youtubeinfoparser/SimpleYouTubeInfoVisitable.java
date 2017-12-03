@@ -40,7 +40,6 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
         mParser.extractMediaItemsAndDecipher(new ConcreteYouTubeInfoParser.ParserListener() {
             @Override
             public void onExtractMediaItemsAndDecipher(List<YouTubeMediaItem> items) {
-                assert items != null;
                 for (YouTubeMediaItem item : items) {
                     mVisitor.onMediaItem(item);
                 }
