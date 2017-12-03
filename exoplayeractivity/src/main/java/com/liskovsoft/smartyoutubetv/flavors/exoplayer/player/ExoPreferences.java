@@ -14,36 +14,6 @@ public class ExoPreferences implements ExoKeys {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
-    public int getRendererIndex() {
-        return mPrefs.getInt(ExoKeys.RENDERER_INDEX, -1);
-    }
-
-    public int getGroupIndex() {
-        return mPrefs.getInt(ExoKeys.GROUP_INDEX, -1);
-    }
-
-    public int getTrackIndex() {
-        return mPrefs.getInt(ExoKeys.TRACK_INDEX, -1);
-    }
-
-    public void setRendererIndex(int rendererIndex) {
-        mPrefs.edit()
-                .putInt(ExoKeys.RENDERER_INDEX, rendererIndex)
-                .apply();
-    }
-
-    public void setGroupIndex(int groupIndex) {
-        mPrefs.edit()
-                .putInt(ExoKeys.GROUP_INDEX, groupIndex)
-                .apply();
-    }
-
-    public void setTrackIndex(int trackIndex) {
-        mPrefs.edit()
-                .putInt(ExoKeys.TRACK_INDEX, trackIndex)
-                .apply();
-    }
-
     public String getSelectedTrackId() {
         return mPrefs.getString(ExoKeys.SELECTED_TRACK_ID, null);
     }
@@ -51,26 +21,6 @@ public class ExoPreferences implements ExoKeys {
     public void setSelectedTrackId(String id) {
         mPrefs.edit()
                 .putString(ExoKeys.SELECTED_TRACK_ID, id)
-                .apply();
-    }
-
-    public int getSelectedTrackHeight() {
-        return mPrefs.getInt(ExoKeys.SELECTED_TRACK_ID, 0);
-    }
-
-    public void setSelectedTrackHeight(int height) {
-        mPrefs.edit()
-                .putInt(ExoKeys.SELECTED_TRACK_HEIGHT, height)
-                .apply();
-    }
-
-    public String getSelectedTrackCodec() {
-        return mPrefs.getString(ExoKeys.SELECTED_TRACK_CODEC, null);
-    }
-
-    public void setSelectedTrackCodec(String codec) {
-        mPrefs.edit()
-                .putString(ExoKeys.SELECTED_TRACK_ID, codec)
                 .apply();
     }
 
