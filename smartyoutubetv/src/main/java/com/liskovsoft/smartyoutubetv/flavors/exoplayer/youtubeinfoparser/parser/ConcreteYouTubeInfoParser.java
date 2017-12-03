@@ -18,11 +18,15 @@ import okhttp3.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ConcreteYouTubeInfoParser {
     private static final String DASH_MPD_PARAM = "dashmpd";
     private static final String HLS_PARAM = "hlsvp";
+    private static final String DASH_FORMATS = "adaptive_fmts";
+    private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private final String mContent;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
@@ -95,14 +99,14 @@ public class ConcreteYouTubeInfoParser {
     private List<String> splitContent(String content) {
         List<String> list = new ArrayList<>();
         Uri videoInfo = Uri.parse("http://example.com?" + content);
-        String adaptiveFormats = videoInfo.getQueryParameter("adaptive_fmts");
+        String adaptiveFormats = videoInfo.getQueryParameter(DASH_FORMATS);
         // stream may not contain dash formats
         if (adaptiveFormats != null) {
             String[] fmts = adaptiveFormats.split(",");
             list.addAll(Arrays.asList(fmts));
         }
 
-        String regularFormats = videoInfo.getQueryParameter("url_encoded_fmt_stream_map");
+        String regularFormats = videoInfo.getQueryParameter(REGULAR_FORMATS);
         if (regularFormats != null) {
             String[] fmts = regularFormats.split(",");
             list.addAll(Arrays.asList(fmts));
@@ -147,7 +151,24 @@ public class ConcreteYouTubeInfoParser {
         applySignatureToDashMPDUrl(lastSignature);
         applySignaturesToMediaItems(signatures);
         mergeMediaItems();
+        sortMediaItems();
         mListener.onExtractMediaItemsAndDecipher(mMediaItems);
+    }
+
+    private void sortMediaItems() {
+        Collections.sort(mMediaItems, new Comparator<YouTubeMediaItem>() {
+            @Override
+            public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
+                if (leftItem.getBitrate() == null || rightItem.getBitrate() == null) {
+                    return 0;
+                }
+
+                int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
+                int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
+                
+                return rightItemBitrate - leftItemBitrate;
+            }
+        });
     }
 
     private void mergeMediaItems() {
