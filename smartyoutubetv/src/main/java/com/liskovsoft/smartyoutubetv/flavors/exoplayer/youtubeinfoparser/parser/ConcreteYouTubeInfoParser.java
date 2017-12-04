@@ -28,13 +28,13 @@ public class ConcreteYouTubeInfoParser {
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
-    private final String[] mContent;
+    private final String mContent;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
     private WeirdUrl mDashMPDUrl;
     private List<YouTubeMediaItem> mNewMediaItems;
 
-    public ConcreteYouTubeInfoParser(String ...content) {
+    public ConcreteYouTubeInfoParser(String content) {
         mContent = content;
     }
 
@@ -74,10 +74,7 @@ public class ConcreteYouTubeInfoParser {
             return;
         }
         List<YouTubeMediaItem> list = new ArrayList<>();
-        List<String> items = new ArrayList<>();
-        for (String content : mContent) {
-            items.addAll(splitContent(content));
-        }
+        List<String> items = splitContent(mContent);
         for (String item : items) {
             list.add(createMediaItem(item));
         }
@@ -155,37 +152,12 @@ public class ConcreteYouTubeInfoParser {
         applySignatureToDashMPDUrl(lastSignature);
         applySignaturesToMediaItems(signatures);
         mergeMediaItems();
-        sortMediaItems();
         mListener.onExtractMediaItemsAndDecipher(mMediaItems);
     }
 
-    private void sortMediaItems() {
-        Collections.sort(mMediaItems, new Comparator<YouTubeMediaItem>() {
-            @Override
-            public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
-                if (leftItem.getBitrate() == null || rightItem.getBitrate() == null) {
-                    return 0;
-                }
-
-                int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
-                int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
-                
-                return rightItemBitrate - leftItemBitrate;
-            }
-        });
-    }
-
     private void mergeMediaItems() {
-        // We also try looking in get_video_info since it may contain different dashmpd
-        // URL that points to a DASH manifest with possibly different itag set (some itags
-        // are missing from DASH manifest pointed by webpage's dashmpd, some - from DASH
-        // manifest pointed by get_video_info's dashmpd).
-        // The general idea is to take a union of itags of both DASH manifests (for example
-        // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
-        for (YouTubeMediaItem item : mNewMediaItems) {
-            if (!mMediaItems.contains(item)) {
-                mMediaItems.add(0, item);
-            }
+        if (mNewMediaItems != null) {
+            mMediaItems.addAll(mNewMediaItems);
         }
     }
 

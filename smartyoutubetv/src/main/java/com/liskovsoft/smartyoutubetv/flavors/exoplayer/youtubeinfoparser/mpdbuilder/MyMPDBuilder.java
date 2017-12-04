@@ -11,7 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,17 +30,32 @@ public class MyMPDBuilder implements MPDBuilder {
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
-    private List<YouTubeMediaItem> mMP4Audios;
-    private List<YouTubeMediaItem> mMP4Videos;
-    private List<YouTubeMediaItem> mWEBMAudios;
-    private List<YouTubeMediaItem> mWEBMVideos;
+    private Set<YouTubeMediaItem> mMP4Audios;
+    private Set<YouTubeMediaItem> mMP4Videos;
+    private Set<YouTubeMediaItem> mWEBMAudios;
+    private Set<YouTubeMediaItem> mWEBMVideos;
+
+    private class MyComparator implements Comparator<YouTubeMediaItem> {
+        @Override
+        public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
+            if (leftItem.getBitrate() == null || rightItem.getBitrate() == null) {
+                return 0;
+            }
+
+            int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
+            int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
+
+            return leftItemBitrate - rightItemBitrate;
+        }
+    }
 
     public MyMPDBuilder(YouTubeGenericInfo info) {
         mInfo = info;
-        mMP4Audios = new ArrayList<>();
-        mMP4Videos = new ArrayList<>();
-        mWEBMAudios = new ArrayList<>();
-        mWEBMVideos = new ArrayList<>();
+        MyComparator comp = new MyComparator();
+        mMP4Audios = new TreeSet<>(comp);
+        mMP4Videos = new TreeSet<>(comp);
+        mWEBMAudios = new TreeSet<>(comp);
+        mWEBMVideos = new TreeSet<>(comp);
 
         initXmlSerializer();
     }
@@ -85,12 +103,17 @@ public class MyMPDBuilder implements MPDBuilder {
         writeMediaTagsForGroup(mWEBMVideos);
     }
 
-    private void writeMediaTagsForGroup(List<YouTubeMediaItem> items) {
+    private void writeMediaTagsForGroup(Set<YouTubeMediaItem> items) {
         if (items.size() == 0) {
             return;
         }
 
-        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(items.get(0)));
+        YouTubeMediaItem firstItem = null;
+        for (YouTubeMediaItem item : items) {
+            firstItem = item;
+            break;
+        }
+        writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
 
         // Representation
         for (YouTubeMediaItem item : items) {
@@ -171,7 +194,7 @@ public class MyMPDBuilder implements MPDBuilder {
             return;
         }
 
-        List<YouTubeMediaItem> placeholder = null;
+        Set<YouTubeMediaItem> placeholder = null;
         String mimeType = extractMimeType(mediaItem);
         if (mimeType != null) {
             switch (mimeType) {
@@ -190,7 +213,7 @@ public class MyMPDBuilder implements MPDBuilder {
             }
         }
         if (placeholder != null) {
-            placeholder.add(0, mediaItem); // NOTE: reverse order
+            placeholder.add(mediaItem); // NOTE: reverse order
         }
     }
 

@@ -8,21 +8,14 @@ import com.liskovsoft.smartyoutubetv.misc.Helpers;
 
 import java.io.InputStream;
 
-public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
-    private final String[] mContent;
+public class SimpleYouTubeInfoParserBAK implements YouTubeInfoParser {
+    private final String mContent;
+    private final String mType;
 
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final String mType;
         private final OnMediaFoundCallback mMediaFoundCallback;
         private MyMPDBuilder mMPDBuilder;
-        private int mCounter = 1;
-        private YouTubeGenericInfo mInfo;
-        private InputStream mDash;
-        private Uri mHlsUrl;
-
-        public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
-            this(null, mediaFoundCallback);
-        }
 
         public MergeMediaVisitor(String type, OnMediaFoundCallback mediaFoundCallback) {
             mType = type;
@@ -31,11 +24,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onGenericInfo(YouTubeGenericInfo info) {
-            if (mMPDBuilder == null)
-                mMPDBuilder = new MyMPDBuilder(info);
-            if (mCounter == 1) {
-                mMediaFoundCallback.onInfoFound(info);
-            }
+            mMPDBuilder = new MyMPDBuilder(info);
+            mMediaFoundCallback.onInfoFound(info);
         }
 
         @Override
@@ -47,48 +37,33 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onDashMPDItem(InputStream dash) {
-            if (mCounter == 1) {
-                mMediaFoundCallback.onDashMPDFound(dash);
-            }
+            mMediaFoundCallback.onDashMPDFound(dash);
         }
 
         @Override
         public void onLiveItem(Uri hlsUrl) {
-            if (mCounter == 1) {
-                mMediaFoundCallback.onLiveUrlFound(hlsUrl);
-            }
+            mMediaFoundCallback.onLiveUrlFound(hlsUrl);
         }
 
         @Override
         public void doneVisiting() {
-            if (mCounter != mContent.length) {
-                mCounter++;
-                return;
-            }
-
             mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
         }
     }
 
-    public SimpleYouTubeInfoParser(InputStream ...content) {
-        mContent = new String[content.length];
-        readContent(content);
+    public SimpleYouTubeInfoParserBAK(InputStream stream) {
+        this(stream, null);
     }
 
-    private void readContent(InputStream[] content) {
-        for (int i = 0; i < content.length; i++) {
-            mContent[i] = Helpers.toString(content[i]);
-        }
+    public SimpleYouTubeInfoParserBAK(InputStream stream, String type) {
+        mContent = Helpers.toString(stream);
+        mType = type;
     }
 
     @Override
     public void setOnMediaFoundCallback(OnMediaFoundCallback mpdFoundCallback) {
-        YouTubeInfoVisitor visitor = new MergeMediaVisitor(mpdFoundCallback);
-
-        for (String content : mContent) {
-            YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(content);
-            visitable.accept(visitor);
-        }
-
+        YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(mContent);
+        YouTubeInfoVisitor visitor = new MergeMediaVisitor(mType, mpdFoundCallback);
+        visitable.accept(visitor);
     }
 }

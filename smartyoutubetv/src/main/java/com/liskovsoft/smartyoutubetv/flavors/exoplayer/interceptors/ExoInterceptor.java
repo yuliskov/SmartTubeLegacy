@@ -29,8 +29,8 @@ public class ExoInterceptor extends RequestInterceptor {
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionBinder mActionBinder;
-    private InputStream mResponseStream;
-    private MediaType mResponseType;
+    private InputStream mResponseStream30Fps;
+    private InputStream mResponseStream60Fps;
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
@@ -50,17 +50,21 @@ public class ExoInterceptor extends RequestInterceptor {
         return null;
     }
 
+    // We also try looking in get_video_info since it may contain different dashmpd
+    // URL that points to a DASH manifest with possibly different itag set (some itags
+    // are missing from DASH manifest pointed by webpage's dashmpd, some - from DASH
+    // manifest pointed by get_video_info's dashmpd).
+    // The general idea is to take a union of itags of both DASH manifests (for example
+    // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void makeResponseStream(String url) {
-        Response response = doOkHttpRequest(unlockAllFormats(url));
-        //Response response = doOkHttpRequest(url);
-        mResponseStream = response.body().byteStream();
-        mResponseType = response.body().contentType();
+        Response response30Fps = doOkHttpRequest(unlock30FpsFormats(url));
+        Response response60Fps = doOkHttpRequest(unlock60FpsFormats(url));
+        mResponseStream30Fps = response30Fps.body().byteStream();
+        mResponseStream60Fps = response60Fps.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {
-        //String fmt = ITag.WEBM;
-        //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream, fmt);
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream30Fps, mResponseStream60Fps);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
             private String mTitle = "No title";
             private String mTitle2 = "No title";
@@ -127,16 +131,25 @@ public class ExoInterceptor extends RequestInterceptor {
      * @param url
      * @return
      */
-    protected String unlockAllFormats(String url) {
-        // youtube-dl > dashmpd:
-        // {'video_id': 'q89s_1o6LLw', 'el': 'info', 'gl': 'US', 'eurl': '', 'disable_polymer': 'true', 'ps': 'default', 'sts': 17492, 'hl': 'en'}
-
+    protected String unlock30FpsFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        // query.set("c", "HTML5"); // unlock adaptive fmts
         query.set("el", "info"); // unlock dashmpd url
-        // query.set("ps", "default"); // unlock 60fps formats
-        // query.set("disable_polymer", "true");
+
+        return query.toString();
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    protected String unlock60FpsFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps formats
 
         return query.toString();
     }
