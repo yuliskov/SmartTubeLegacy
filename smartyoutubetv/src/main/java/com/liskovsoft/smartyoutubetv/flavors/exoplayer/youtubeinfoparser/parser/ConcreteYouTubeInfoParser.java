@@ -156,7 +156,7 @@ public class ConcreteYouTubeInfoParser {
     }
 
     private void mergeMediaItems() {
-        if (mNewMediaItems != null) {
+        if (mNewMediaItems != null) { // NOTE: NPE here
             mMediaItems.addAll(mNewMediaItems);
         }
     }
