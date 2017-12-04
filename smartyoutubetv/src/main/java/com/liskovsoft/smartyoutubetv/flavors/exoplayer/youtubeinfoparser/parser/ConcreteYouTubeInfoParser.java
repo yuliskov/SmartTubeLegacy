@@ -28,13 +28,13 @@ public class ConcreteYouTubeInfoParser {
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
-    private final String mContent;
+    private final String[] mContent;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
     private WeirdUrl mDashMPDUrl;
     private List<YouTubeMediaItem> mNewMediaItems;
 
-    public ConcreteYouTubeInfoParser(String content) {
+    public ConcreteYouTubeInfoParser(String ...content) {
         mContent = content;
     }
 
@@ -74,7 +74,10 @@ public class ConcreteYouTubeInfoParser {
             return;
         }
         List<YouTubeMediaItem> list = new ArrayList<>();
-        List<String> items = splitContent(mContent);
+        List<String> items = new ArrayList<>();
+        for (String content : mContent) {
+            items.addAll(splitContent(content));
+        }
         for (String item : items) {
             list.add(createMediaItem(item));
         }

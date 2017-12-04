@@ -135,7 +135,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
         // query.set("c", "HTML5"); // unlock adaptive fmts
         query.set("el", "info"); // unlock dashmpd url
-        query.set("ps", "default"); // unlock 60fps formats
+        // query.set("ps", "default"); // unlock 60fps formats
         // query.set("disable_polymer", "true");
 
         return query.toString();
