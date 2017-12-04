@@ -9,6 +9,7 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     private GenericCommand mCommand;
     private long mPrevTime;
     private boolean mInterceptReceived;
+    private boolean mForceRun;
 
     public DelayedCommandCallInterceptor() {
         
@@ -26,6 +27,7 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         mInterceptReceived = true;
+        throttledCommandCall();
         return null;
     }
 
@@ -34,8 +36,8 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
      * Force call command without adding to the history (in case WebView).
      */
     public void forceRun(boolean doNotDelay) {
+        mForceRun = true;
         if (mInterceptReceived || doNotDelay) {
-            mInterceptReceived = false;
             throttledCommandCall();
         } else {
             postDelayed();
@@ -57,6 +59,11 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     }
 
     protected void throttledCommandCall() {
+        if (!mForceRun)
+            return;
+        mInterceptReceived = false;
+        mForceRun = false;
+
         long currentTime = System.currentTimeMillis();
         long timeDelta = currentTime - mPrevTime;
         mPrevTime = currentTime;

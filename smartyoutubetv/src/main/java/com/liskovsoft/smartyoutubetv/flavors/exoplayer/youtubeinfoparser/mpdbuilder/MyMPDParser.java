@@ -180,8 +180,10 @@ public class MyMPDParser implements MPDParser {
         String range = parser.getAttributeValue(ns, "range");
         if (range == null) { // 4k@60fps
             // sourceURL="range/0-712"
+            // extremal situation: sourceURL="sq/0" (don't parse at all)
             String sourceURL = parser.getAttributeValue(ns, "sourceURL");
             range = sourceURL.replaceAll("range\\/", "");
+            range = sourceURL.equals(range) ? null : range;
         }
         item.setInit(range);
         parser.next();
