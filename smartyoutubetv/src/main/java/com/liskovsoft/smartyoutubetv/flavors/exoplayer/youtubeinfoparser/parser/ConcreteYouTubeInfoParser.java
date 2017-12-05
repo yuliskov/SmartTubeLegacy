@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class ConcreteYouTubeInfoParser {
     private static final String DASH_MPD_URL = "dashmpd";
@@ -29,6 +30,7 @@ public class ConcreteYouTubeInfoParser {
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
     private final String mContent;
+    private final int mId;
     private ParserListener mListener;
     private List<YouTubeMediaItem> mMediaItems;
     private WeirdUrl mDashMPDUrl;
@@ -36,6 +38,7 @@ public class ConcreteYouTubeInfoParser {
 
     public ConcreteYouTubeInfoParser(String content) {
         mContent = content;
+        mId = new Random().nextInt();
     }
 
     public YouTubeGenericInfo extractGenericInfo() {
@@ -130,7 +133,7 @@ public class ConcreteYouTubeInfoParser {
         }
 
         Browser.getBus().register(this);
-        Browser.getBus().post(new DecipherOnlySignaturesEvent(extractSignatures()));
+        Browser.getBus().post(new DecipherOnlySignaturesEvent(extractSignatures(), mId));
     }
 
     private List<String> extractSignatures() {
@@ -145,6 +148,9 @@ public class ConcreteYouTubeInfoParser {
 
     @Subscribe
     public void decipherSignaturesDone(DecipherOnlySignaturesDoneEvent doneEvent) {
+        if (doneEvent.getId() != mId) {
+            return;
+        }
         Browser.getBus().unregister(this);
 
         List<String> signatures = doneEvent.getSignatures();

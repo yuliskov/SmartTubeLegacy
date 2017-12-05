@@ -22,6 +22,8 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
     private String mDecipherRoutine;
     private String mDecipherCode;
     private List<String> mRawSignatures;
+    private String mEventId;
+    private int mId;
 
     public DecipherSimpleRoutineInjector(Context context, WebView webView) {
         super(context, webView);
@@ -31,8 +33,9 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
     @Subscribe
     public void decipherSignature(DecipherOnlySignaturesEvent event) {
         mRawSignatures = event.getSignatures();
+        mId = event.getId();
         if (signaturesAreNotCiphered()) {
-            Browser.getBus().post(new DecipherOnlySignaturesDoneEvent(mRawSignatures));
+            Browser.getBus().post(new DecipherOnlySignaturesDoneEvent(mRawSignatures, mId));
             return;
         }
 
@@ -45,6 +48,7 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
 
         extractSignatures();
         combineSignatures();
+        combineId();
         combineDecipherRoutine();
         injectJSContentUnicode(mDecipherRoutine);
     }
@@ -52,13 +56,14 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
     @Subscribe
     public void receiveDecipheredSignatures(PostDecipheredSignaturesEvent event) {
         String[] signatures = event.getSignatures();
-        Browser.getBus().post(new DecipherOnlySignaturesDoneEvent(Arrays.asList(signatures)));
+        Browser.getBus().post(new DecipherOnlySignaturesDoneEvent(Arrays.asList(signatures), event.getId()));
     }
 
     private void combineDecipherRoutine() {
         mDecipherRoutine = mDecipherCode + ";";
         mDecipherRoutine += mCombinedSignatures;
-        mDecipherRoutine += "for (var i = 0; i < rawSignatures.length; i++) {rawSignatures[i] = decipherSignature(rawSignatures[i]);}; app.postDecipheredSignatures(rawSignatures);";
+        mDecipherRoutine += mEventId;
+        mDecipherRoutine += "for (var i = 0; i < rawSignatures.length; i++) {rawSignatures[i] = decipherSignature(rawSignatures[i]);}; app.postDecipheredSignatures(rawSignatures, eventId);";
     }
 
     private void extractSignatures() {
@@ -70,6 +75,10 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
 
     private void combineSignatures() {
         mCombinedSignatures = "var rawSignatures = [" + TextUtils.join(",", mSignatures) + "];";
+    }
+
+    private void combineId() {
+        mEventId = "var eventId = " + mId + ";";
     }
 
     private boolean signaturesAreNotCiphered() {

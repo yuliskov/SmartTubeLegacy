@@ -108,9 +108,9 @@ public class WebViewJavaScriptInterface {
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
-    public void postDecipheredSignatures(String[] signatures) {
+    public void postDecipheredSignatures(String[] signatures, int id) {
         sLogger.info("Just now received deciphered signatures from webview.");
-        Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures));
+        Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures, id));
     }
 
     @JavascriptInterface
