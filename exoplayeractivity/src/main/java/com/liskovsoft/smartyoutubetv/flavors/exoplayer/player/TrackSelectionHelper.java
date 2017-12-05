@@ -265,6 +265,14 @@ import java.util.Arrays;
         return view;
     }
 
+    /**
+     * Get the number of tracks with the same resolution.
+     * <p>I assume that the tracks already have been sorted in descendants order. <br/>
+     * <p>Details: {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder MyMPDBuilder}
+     * @param group the group
+     * @param trackIndex current track in group
+     * @return
+     */
     private int getRelatedTrackOffsets(TrackGroup group, int trackIndex) {
         int prevHeight = 0;
         int offset = 0;
