@@ -1,11 +1,18 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
+import java.util.Random;
+
 public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
+    private final Random mRandrom;
     private String mLengthSeconds;
     private String mTitle;
     private String mAuthor;
     private String mViewCount;
     private String mTimestamp;
+
+    public SimpleYouTubeGenericInfo() {
+        mRandrom = new Random();
+    }
 
     @Override
     public String getLengthSeconds() {
@@ -49,7 +56,12 @@ public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
 
     @Override
     public String getTimestamp() {
-        return mTimestamp;
+        // random date within a year
+        int max = Integer.parseInt(mTimestamp);
+        int oneYear = 31_536_000;
+        int min = max - oneYear;
+        int randomNum = mRandrom.nextInt(max + 1 - min) + min;
+        return String.valueOf(randomNum);
     }
 
     @Override
