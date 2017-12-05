@@ -38,6 +38,9 @@ public class MyMPDBuilder implements MPDBuilder {
     private class MyComparator implements Comparator<YouTubeMediaItem> {
         @Override
         public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
+            if (leftItem.getSize() == null || rightItem.getSize() == null) {
+                return 0;
+            }
             if (leftItem.getBitrate() == null || rightItem.getBitrate() == null) {
                 return 0;
             }
@@ -45,7 +48,14 @@ public class MyMPDBuilder implements MPDBuilder {
             int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
             int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
 
-            return leftItemBitrate - rightItemBitrate;
+            int leftItemHeight = Integer.parseInt(getHeight(leftItem));
+            int rightItemHeight = Integer.parseInt(getHeight(rightItem));
+
+            int delta = leftItemHeight - rightItemHeight;
+            if (delta == 0) {
+                delta = leftItemBitrate - rightItemBitrate;
+            }
+            return delta;
         }
     }
 

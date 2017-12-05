@@ -158,12 +158,10 @@ import java.util.Arrays;
         // NOTE: group track by resolution
         int[] trackOffsets = new int[trackGroups.length];
         for (int trackIndex = (maxTracks - 1); trackIndex >= 0; trackIndex--) {
-            boolean addDivider = true;
             for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
                 int newTrackIndex = trackIndex - trackOffsets[groupIndex];
                 if (newTrackIndex < 0) {
-                    addDivider = false;
-                    break;
+                    continue;
                 }
 
                 TrackGroup group = trackGroups.get(groupIndex);
@@ -201,52 +199,9 @@ import java.util.Arrays;
                 trackOffsets[groupIndex] += offset;
 
             }
-            if (addDivider)
-                root.addView(inflater.inflate(R.layout.list_divider, root, false));
         }
 
         //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////
-
-        //// Per-track views.
-        //boolean haveSupportedTracks = false;
-        //boolean haveAdaptiveTracks = false;
-        //trackViews = new CheckedTextView[trackGroups.length][];
-        //for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
-        //    TrackGroup group = trackGroups.get(groupIndex);
-        //    boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
-        //    haveAdaptiveTracks |= groupIsAdaptive;
-        //    trackViews[groupIndex] = new CheckedTextView[group.length];
-        //    for (int trackIndex = (group.length - 1); trackIndex >= 0; trackIndex--) {
-        //        if (trackIndex == (group.length - 1)) {
-        //            root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        //        }
-        //        int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
-        //                .simple_list_item_single_choice;
-        //        CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-        //        trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-        //        trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
-        //
-        //        //if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
-        //        //    == RendererCapabilities.FORMAT_HANDLED) {
-        //        //  trackView.setFocusable(true);
-        //        //  trackView.setTag(Pair.create(groupIndex, trackIndex));
-        //        //  trackView.setOnClickListener(this);
-        //        //  haveSupportedTracks = true;
-        //        //} else {
-        //        //  trackView.setFocusable(false);
-        //        //  trackView.setEnabled(false);
-        //        //}
-        //
-        //        // TODO: modified
-        //        trackView.setFocusable(true);
-        //        trackView.setTag(Pair.create(groupIndex, trackIndex));
-        //        trackView.setOnClickListener(this);
-        //        haveSupportedTracks = true;
-        //
-        //        trackViews[groupIndex][trackIndex] = trackView;
-        //        root.addView(trackView);
-        //    }
-        //}
 
         if (!haveSupportedTracks) {
             // Indicate that the default selection will be nothing.
@@ -289,178 +244,6 @@ import java.util.Arrays;
         return offset;
     }
 
-    // TODO: modified
-    @SuppressLint("InflateParams")
-    private View buildViewBAK2(Context context) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.track_selection_dialog, null);
-        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
-
-        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        attributeArray.recycle();
-
-        // View for disabling the renderer.
-        disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
-        disableView.setText(R.string.selection_disabled);
-        disableView.setFocusable(true);
-        disableView.setOnClickListener(this);
-        root.addView(disableView);
-
-        // View for clearing the override to allow the selector to use its default selection logic.
-        defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
-        defaultView.setText(R.string.selection_default);
-        defaultView.setFocusable(true);
-        defaultView.setOnClickListener(this);
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        root.addView(defaultView);
-
-        // Per-track views.
-        boolean haveSupportedTracks = false;
-        boolean haveAdaptiveTracks = false;
-        trackViews = new CheckedTextView[trackGroups.length][];
-        for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
-            TrackGroup group = trackGroups.get(groupIndex);
-            boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
-            haveAdaptiveTracks |= groupIsAdaptive;
-            trackViews[groupIndex] = new CheckedTextView[group.length];
-            for (int trackIndex = (group.length - 1); trackIndex >= 0; trackIndex--) {
-                if (trackIndex == (group.length - 1)) {
-                    root.addView(inflater.inflate(R.layout.list_divider, root, false));
-                }
-                int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
-                        .simple_list_item_single_choice;
-                CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
-
-                //if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
-                //    == RendererCapabilities.FORMAT_HANDLED) {
-                //  trackView.setFocusable(true);
-                //  trackView.setTag(Pair.create(groupIndex, trackIndex));
-                //  trackView.setOnClickListener(this);
-                //  haveSupportedTracks = true;
-                //} else {
-                //  trackView.setFocusable(false);
-                //  trackView.setEnabled(false);
-                //}
-
-                // TODO: modified
-                trackView.setFocusable(true);
-                trackView.setTag(Pair.create(groupIndex, trackIndex));
-                trackView.setOnClickListener(this);
-                haveSupportedTracks = true;
-
-                trackViews[groupIndex][trackIndex] = trackView;
-                root.addView(trackView);
-            }
-        }
-
-        if (!haveSupportedTracks) {
-            // Indicate that the default selection will be nothing.
-            defaultView.setText(R.string.selection_default_none);
-        } else if (haveAdaptiveTracks) {
-            // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
-            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
-            enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            enableRandomAdaptationView.setOnClickListener(this);
-            root.addView(inflater.inflate(R.layout.list_divider, root, false));
-            root.addView(enableRandomAdaptationView);
-        }
-
-        updateViews();
-        return view;
-    }
-
-    // NOTE: original
-    @SuppressLint("InflateParams")
-    private View buildViewBAK1(Context context) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.track_selection_dialog, null);
-        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
-
-        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        attributeArray.recycle();
-
-        // View for disabling the renderer.
-        disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
-        disableView.setText(R.string.selection_disabled);
-        disableView.setFocusable(true);
-        disableView.setOnClickListener(this);
-        root.addView(disableView);
-
-        // View for clearing the override to allow the selector to use its default selection logic.
-        defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
-        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
-        defaultView.setText(R.string.selection_default);
-        defaultView.setFocusable(true);
-        defaultView.setOnClickListener(this);
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        root.addView(defaultView);
-
-        // Per-track views.
-        boolean haveSupportedTracks = false;
-        boolean haveAdaptiveTracks = false;
-        trackViews = new CheckedTextView[trackGroups.length][];
-        for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
-            TrackGroup group = trackGroups.get(groupIndex);
-            boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
-            haveAdaptiveTracks |= groupIsAdaptive;
-            trackViews[groupIndex] = new CheckedTextView[group.length];
-            for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
-                if (trackIndex == 0) {
-                    root.addView(inflater.inflate(R.layout.list_divider, root, false));
-                }
-                int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_multiple_choice : android.R.layout
-                        .simple_list_item_single_choice;
-                CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
-
-                //if (trackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex)
-                //    == RendererCapabilities.FORMAT_HANDLED) {
-                //  trackView.setFocusable(true);
-                //  trackView.setTag(Pair.create(groupIndex, trackIndex));
-                //  trackView.setOnClickListener(this);
-                //  haveSupportedTracks = true;
-                //} else {
-                //  trackView.setFocusable(false);
-                //  trackView.setEnabled(false);
-                //}
-
-                // TODO: modified
-                trackView.setFocusable(true);
-                trackView.setTag(Pair.create(groupIndex, trackIndex));
-                trackView.setOnClickListener(this);
-                haveSupportedTracks = true;
-
-                trackViews[groupIndex][trackIndex] = trackView;
-                root.addView(trackView);
-            }
-        }
-
-        if (!haveSupportedTracks) {
-            // Indicate that the default selection will be nothing.
-            defaultView.setText(R.string.selection_default_none);
-        } else if (haveAdaptiveTracks) {
-            // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
-            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
-            enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            enableRandomAdaptationView.setOnClickListener(this);
-            root.addView(inflater.inflate(R.layout.list_divider, root, false));
-            root.addView(enableRandomAdaptationView);
-        }
-
-        updateViews();
-        return view;
-    }
-
     private void updateViews() {
         disableView.setChecked(isDisabled);
         defaultView.setChecked(!isDisabled && override == null);
@@ -492,8 +275,6 @@ import java.util.Arrays;
             // resetPlayerState();
         }
     }
-
-
 
     // TODO: modified
     // View.OnClickListener
