@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -132,10 +133,11 @@ import java.util.Arrays;
         defaultView.setOnClickListener(this);
         defaultView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        root.addView(defaultView); // Auto quality button
+        root.addView(defaultView); // Auto check box
 
         //////////// MERGE TRACKS FROM DIFFERENT CODECS ////////////
 
+        // divider
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
 
         // Per-track views.
@@ -153,31 +155,54 @@ import java.util.Arrays;
             trackViews[groupIndex] = new CheckedTextView[group.length];
         }
 
+        // NOTE: group track by resolution
+        int[] trackOffsets = new int[trackGroups.length];
         for (int trackIndex = (maxTracks - 1); trackIndex >= 0; trackIndex--) {
+            boolean addDivider = true;
             for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
+                int newTrackIndex = trackIndex - trackOffsets[groupIndex];
+                if (newTrackIndex < 0) {
+                    addDivider = false;
+                    break;
+                }
+
                 TrackGroup group = trackGroups.get(groupIndex);
 
-                if (group.length <= trackIndex) { // one of the group have different number of tracks
-                    continue;
+                if (group.length <= newTrackIndex) { // one of the group have different number of tracks
+                    trackOffsets[groupIndex] = maxTracks - group.length;
+                    newTrackIndex = trackIndex - trackOffsets[groupIndex];;
                 }
 
                 boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
                 haveAdaptiveTracks |= groupIsAdaptive;
+                haveSupportedTracks = true;
 
                 int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
                         .simple_list_item_single_choice;
-                CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                trackView.setText(DemoUtil.buildTrackName(group.getFormat(trackIndex)));
 
-                trackView.setFocusable(true);
-                trackView.setTag(Pair.create(groupIndex, trackIndex));
-                trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
-                trackView.setOnClickListener(this);
-                haveSupportedTracks = true;
-                trackViews[groupIndex][trackIndex] = trackView;
-                root.addView(trackView);
+                int offset = getRelatedTrackOffsets(group, newTrackIndex);
+
+                for (int startOffset = 0; startOffset <= offset; startOffset++) {
+                    CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
+                    trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                    int index = newTrackIndex - startOffset;
+                    if (index < 0)
+                        break;
+                    trackView.setText(DemoUtil.buildTrackName(group.getFormat(index)));
+
+                    trackView.setFocusable(true);
+                    trackView.setTag(Pair.create(groupIndex, index));
+                    trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+                    trackView.setOnClickListener(this);
+                    trackViews[groupIndex][index] = trackView;
+                    root.addView(trackView);
+                }
+
+                trackOffsets[groupIndex] += offset;
+
             }
+            if (addDivider)
+                root.addView(inflater.inflate(R.layout.list_divider, root, false));
         }
 
         //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////
@@ -238,6 +263,22 @@ import java.util.Arrays;
 
         updateViews();
         return view;
+    }
+
+    private int getRelatedTrackOffsets(TrackGroup group, int trackIndex) {
+        int prevHeight = 0;
+        int offset = 0;
+        for (int i = trackIndex; i > 0; i--) {
+            Format format = group.getFormat(i);
+            if (prevHeight == 0) {
+                prevHeight = format.height;
+            } else if (prevHeight == format.height) {
+                offset++;
+            } else {
+                break;
+            }
+        }
+        return offset;
     }
 
     // TODO: modified
