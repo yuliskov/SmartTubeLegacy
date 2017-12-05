@@ -57,14 +57,14 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void makeResponseStream(String url) {
-        Response response30Fps = doOkHttpRequest(unlock30FpsFormats(url));
+        Response response30Fps = doOkHttpRequest(unlockRegularFormats(url));
         Response response60Fps = doOkHttpRequest(unlock60FpsFormats(url));
         mResponseStream30Fps = response30Fps.body().byteStream();
         mResponseStream60Fps = response60Fps.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream30Fps, mResponseStream60Fps);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
             private String mTitle = "No title";
             private String mTitle2 = "No title";
@@ -131,10 +131,24 @@ public class ExoInterceptor extends RequestInterceptor {
      * @param url
      * @return
      */
-    protected String unlock30FpsFormats(String url) {
+    protected String unlockRegularFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
         
-        query.set("c", "HTML5"); // unlock dashmpd url
+        query.set("c", "HTML5");
+
+        return query.toString();
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    protected String unlock30FpsFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("el", "info"); // unlock dashmpd url
 
         return query.toString();
     }
