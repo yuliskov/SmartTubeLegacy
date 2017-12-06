@@ -9,6 +9,7 @@ public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
     private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
+    private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static SmartPreferences mInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -60,5 +61,16 @@ public final class SmartPreferences {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_CHECKBOX_CHECKED, isChecked)
                 .apply();
+    }
+
+    public void setPreferredLanguage(String name) {
+        mPrefs.edit()
+                .putString(BOOTSTRAP_SELECTED_LANGUAGE, name)
+                .apply();
+    }
+
+    public String getPreferredLanguage() {
+        String name = mPrefs.getString(BOOTSTRAP_SELECTED_LANGUAGE, null);
+        return name;
     }
 }

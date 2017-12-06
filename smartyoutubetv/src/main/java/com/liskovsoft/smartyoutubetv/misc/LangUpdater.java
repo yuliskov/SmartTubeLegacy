@@ -20,6 +20,14 @@ public class LangUpdater {
     public void update() {
         tryToEnableRussian();
         tryToForceEnglishOnDevices();
+        tryToRestoreLanguage();
+    }
+
+    private void tryToRestoreLanguage() {
+        String langCode = SmartPreferences.instance(mContext).getPreferredLanguage();
+        if (langCode != null) {
+            forceLocale(langCode);
+        }
     }
 
     private void tryToForceEnglishOnDevices() {
@@ -56,8 +64,9 @@ public class LangUpdater {
         }
     }
 
-    private void forceLocale(String lang) {
-        Locale locale = new Locale(lang);
+    // short lang code. ex: "ru"
+    private void forceLocale(String langCode) {
+        Locale locale = new Locale(langCode);
         Locale.setDefault(locale);
         Configuration config = mContext.getResources().getConfiguration();
         config.locale = locale;
@@ -83,5 +92,14 @@ public class LangUpdater {
             result.add(info.activityInfo.packageName);
         }
         return result;
+    }
+
+    public String getLocale() {
+        Configuration config = mContext.getResources().getConfiguration();
+        return config.locale.getLanguage();
+    }
+
+    public void setLocale(String langCode) {
+        SmartPreferences.instance(mContext).setPreferredLanguage(langCode);
     }
 }

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
-import android.widget.Toast;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,29 +19,31 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LanguageSelector implements OnClickListener {
-    private final Context mCtx;
+    private final BootstrapActivity mActivity;
     private AlertDialog alertDialog;
     private HashMap<String, String> mLangMap;
     private ArrayList<CheckedTextView> mLangViews;
     private static final int TEXT_SIZE_DP = 15;
     private String mCurrentLang = "ru";
+    private LangUpdater mLangUpdater;
 
-    public LanguageSelector(Context ctx) {
-        mCtx = ctx;
+    public LanguageSelector(BootstrapActivity activity) {
+        mActivity = activity;
         initLangMap();
         initCurrentLang();
     }
 
     private void initCurrentLang() {
-
+        mLangUpdater = new LangUpdater(mActivity);
+        mCurrentLang = mLangUpdater.getLocale();
     }
 
     private void initLangMap() {
         mLangMap = new LinkedHashMap<>();
-        mLangMap.put(mCtx.getString(R.string.english_lang), "en");
-        mLangMap.put(mCtx.getString(R.string.ukrainian_lang), "uk");
-        mLangMap.put(mCtx.getString(R.string.russian_lang), "ru");
-        mLangMap.put(mCtx.getString(R.string.chinese_lang), "zh");
+        mLangMap.put(mActivity.getString(R.string.english_lang), "en");
+        mLangMap.put(mActivity.getString(R.string.chinese_lang), "zh");
+        mLangMap.put(mActivity.getString(R.string.ukrainian_lang), "uk");
+        mLangMap.put(mActivity.getString(R.string.russian_lang), "ru");
     }
 
     public void run() {
@@ -49,7 +51,7 @@ public class LanguageSelector implements OnClickListener {
     }
 
     private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         alertDialog = builder.setTitle(R.string.language_dialog_title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }
@@ -95,7 +97,13 @@ public class LanguageSelector implements OnClickListener {
 
     @Override
     public void onClick(View view) {
-        String tag = (String) view.getTag();
-        Toast.makeText(mCtx, tag, Toast.LENGTH_LONG).show();
+        String newLang = (String) view.getTag();
+        if (!newLang.equals(mCurrentLang)) {
+            mLangUpdater.setLocale(newLang);
+            mActivity.restart();
+            // close dialog
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
     }
 }

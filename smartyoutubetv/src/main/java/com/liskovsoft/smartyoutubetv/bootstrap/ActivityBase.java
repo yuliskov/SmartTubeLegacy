@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
 import android.os.Bundle;
@@ -32,5 +33,14 @@ public class ActivityBase extends AppCompatActivity {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+    }
+
+    public void restart() {
+        finish();
+
+        Intent intent = new Intent();
+        intent.setClass(this, BootstrapActivity.class);
+        intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
+        startActivity(intent);
     }
 }
