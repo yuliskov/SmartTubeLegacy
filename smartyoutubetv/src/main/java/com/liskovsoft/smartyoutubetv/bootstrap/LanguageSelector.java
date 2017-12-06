@@ -1,0 +1,101 @@
+package com.liskovsoft.smartyoutubetv.bootstrap;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.CheckedTextView;
+import android.widget.Toast;
+import com.liskovsoft.smartyoutubetv.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class LanguageSelector implements OnClickListener {
+    private final Context mCtx;
+    private AlertDialog alertDialog;
+    private HashMap<String, String> mLangMap;
+    private ArrayList<CheckedTextView> mLangViews;
+    private static final int TEXT_SIZE_DP = 15;
+    private String mCurrentLang = "ru";
+
+    public LanguageSelector(Context ctx) {
+        mCtx = ctx;
+        initLangMap();
+        initCurrentLang();
+    }
+
+    private void initCurrentLang() {
+
+    }
+
+    private void initLangMap() {
+        mLangMap = new LinkedHashMap<>();
+        mLangMap.put(mCtx.getString(R.string.english_lang), "en");
+        mLangMap.put(mCtx.getString(R.string.ukrainian_lang), "uk");
+        mLangMap.put(mCtx.getString(R.string.russian_lang), "ru");
+        mLangMap.put(mCtx.getString(R.string.chinese_lang), "zh");
+    }
+
+    public void run() {
+        showDialog();
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
+        alertDialog = builder.setTitle(R.string.language_dialog_title).setView(buildView(builder.getContext())).create();
+        alertDialog.show();
+    }
+
+    @SuppressLint("InflateParams")
+    private View buildView(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.lang_selection_dialog, null);
+        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
+
+        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        attributeArray.recycle();
+
+        mLangViews = new ArrayList<>();
+
+        for (Map.Entry<String, String> entry : mLangMap.entrySet()) {
+            CheckedTextView langView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+            langView.setBackgroundResource(selectableItemBackgroundResourceId);
+            langView.setText(entry.getKey());
+
+            langView.setFocusable(true);
+            langView.setTag(entry.getValue());
+            langView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+            langView.setOnClickListener(this);
+            mLangViews.add(langView);
+            root.addView(langView);
+        }
+
+        updateViews();
+
+        return view;
+    }
+
+    private void updateViews() {
+        for (CheckedTextView view : mLangViews) {
+            if (view.getTag().equals(mCurrentLang)) {
+                view.setChecked(true);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        String tag = (String) view.getTag();
+        Toast.makeText(mCtx, tag, Toast.LENGTH_LONG).show();
+    }
+}

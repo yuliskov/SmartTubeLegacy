@@ -16,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
+import com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -48,6 +49,12 @@ public class BootstrapActivity extends ActivityBase {
         BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
         chkbox.setChecked(isChecked);
+    }
+
+    public void onClick(View button) {
+        if (button.getId() == R.id.btn_select_lang) {
+            new LanguageSelector(this).run();
+        }
     }
 
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {

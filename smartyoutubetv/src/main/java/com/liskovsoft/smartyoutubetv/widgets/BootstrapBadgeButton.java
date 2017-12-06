@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
-public class BootstrapButton extends LinearLayout {
+public class BootstrapBadgeButton extends LinearLayout {
     private Drawable mMainIcon;
     private String mTitleText;
     private LinearLayout wrapper;
@@ -25,22 +25,22 @@ public class BootstrapButton extends LinearLayout {
     private float mNormalTextSize;
     private float mZoomedTextSize;
 
-    public BootstrapButton(Context context) {
+    public BootstrapBadgeButton(Context context) {
         super(context);
         init();
     }
 
-    public BootstrapButton(Context context, AttributeSet attrs) {
+    public BootstrapBadgeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.BootstrapButton,
+                R.styleable.BootstrapBadgeButton,
                 0, 0);
 
         try {
-            mMainIcon = a.getDrawable(R.styleable.BootstrapButton_mainIcon);
-            mTitleText = a.getString(R.styleable.BootstrapButton_titleText);
+            mMainIcon = a.getDrawable(R.styleable.BootstrapBadgeButton_mainIcon);
+            mTitleText = a.getString(R.styleable.BootstrapBadgeButton_titleText);
         } finally {
             a.recycle();
         }
@@ -48,12 +48,12 @@ public class BootstrapButton extends LinearLayout {
         init();
     }
 
-    public BootstrapButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BootstrapBadgeButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public BootstrapButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BootstrapBadgeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -101,7 +101,7 @@ public class BootstrapButton extends LinearLayout {
     }
 
     private void makeUnfocused() {
-        //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
+        //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
         text.setTextColor(Color.DKGRAY);
         text.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
@@ -111,7 +111,7 @@ public class BootstrapButton extends LinearLayout {
     }
 
     private void makeFocused() {
-        //text.setTextAppearance(BootstrapButton.this.getContext(), R.style.BootstrapButtonTextFocused);
+        //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextFocused);
         text.setTextColor(Color.BLACK);
         text.setTextSize(mZoomedTextSize);
         content.setBackgroundColor(Color.WHITE);
@@ -131,7 +131,7 @@ public class BootstrapButton extends LinearLayout {
     }
 
     private void inflate() {
-        inflate(getContext(), R.layout.bootstrap_button, this);
+        inflate(getContext(), R.layout.bootstrap_badge_button, this);
         wrapper = (LinearLayout) findViewById(R.id.bootstrap_button_wrapper);
         content = (LinearLayout) findViewById(R.id.bootstrap_button_content);
         image = (ImageView) findViewById(R.id.bootstrap_button_image);
@@ -143,9 +143,9 @@ public class BootstrapButton extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
-                    BootstrapButton.this.callOnClick();
+                    BootstrapBadgeButton.this.callOnClick();
                 } else {
-                    BootstrapButton.this.performClick();
+                    BootstrapBadgeButton.this.performClick();
                 }
             }
         });

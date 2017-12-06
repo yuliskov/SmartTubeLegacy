@@ -21,4 +21,10 @@
     <string name="app_name_4k">4K</string>
     <string name="app_name_4k_alt">4K Alt</string>
     <string name="loading_bottom_msg">Press back button to return to the launchers dialog</string>
+    <string name="language">Language</string>
+    <string name="language_dialog_title">Select language</string>
+    <string name="english_lang">English</string>
+    <string name="ukrainian_lang">Ukrainian</string>
+    <string name="russian_lang">Russian</string>
+    <string name="chinese_lang">Chinese</string>
 </resources>

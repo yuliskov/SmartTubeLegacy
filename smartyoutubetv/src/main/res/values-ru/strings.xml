@@ -12,4 +12,10 @@
     <string name="bootstrap_bottom_title">Если не уверены, то пробуйте каждую из версий</string>
     <string name="starting_popup_fmt">Запускается %s лаунчер...</string>
     <string name="loading_bottom_msg">Нажмите "Назад", чтобы вернуться к выбору версий</string>
+    <string name="language">Язык</string>
+    <string name="language_dialog_title">Выберите язык</string>
+    <string name="english_lang">English</string>
+    <string name="ukrainian_lang">Украинский</string>
+    <string name="russian_lang">Русский</string>
+    <string name="chinese_lang">Китайский</string>
 </resources>

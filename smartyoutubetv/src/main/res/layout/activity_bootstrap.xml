@@ -8,26 +8,33 @@
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_centerVertical="true" android:layout_centerHorizontal="true">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_webview" android:onClick="selectFlavour"
-                                                                   android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                    app:mainIcon="@drawable/bootstrap_icon_webview" app:titleText="@string/webview_desc"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
-                                                                   android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                   app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_exo" android:onClick="selectFlavour"
-                                                                   android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                   app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
-                                                                   android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                   app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_webview" app:titleText="@string/webview_desc"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_exo" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
         </LinearLayout>
-        <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
-            android:layout_gravity="center"
-            app:titleText="@string/save_selection"
-            app:onCheckedChanged="onCheckedChanged"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chk_save_selection"/>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
+                app:titleText="@string/save_selection"
+                app:onCheckedChanged="onCheckedChanged"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chk_save_selection"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+                app:titleText="@string/language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:id="@+id/btn_select_lang"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
 </RelativeLayout>

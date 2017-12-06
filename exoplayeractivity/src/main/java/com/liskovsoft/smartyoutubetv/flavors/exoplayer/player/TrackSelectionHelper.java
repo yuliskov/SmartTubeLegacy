@@ -64,7 +64,6 @@ import java.util.Arrays;
     private CheckedTextView defaultView;
     private CheckedTextView enableRandomAdaptationView;
     private CheckedTextView[][] trackViews;
-    private ExoPreferences mPrefs;
     private AlertDialog alertDialog;
 
     /**
@@ -99,8 +98,6 @@ import java.util.Arrays;
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        // builder.setTitle(title).setView(buildView(builder.getContext())).setPositiveButton(android.R.string.ok, this).setNegativeButton(android.R
-        //        .string.cancel, null).create().show();
         alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }
@@ -269,10 +266,8 @@ import java.util.Arrays;
         selector.setRendererDisabled(rendererIndex, isDisabled);
         if (override != null) {
             selector.setSelectionOverride(rendererIndex, trackGroups, override);
-            // persistPlayerState();
         } else {
             selector.clearSelectionOverrides(rendererIndex);
-            // resetPlayerState();
         }
     }
 
@@ -311,47 +306,6 @@ import java.util.Arrays;
         // close dialog
         alertDialog.dismiss();
         alertDialog = null;
-    }
-
-    // View.OnClickListener
-    public void onClickOld(View view) {
-        if (view == disableView) {
-            isDisabled = true;
-            override = null;
-        } else if (view == defaultView) {
-            isDisabled = false;
-            override = null;
-        } else if (view == enableRandomAdaptationView) {
-            setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
-        } else {
-            isDisabled = false;
-            @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
-            int groupIndex = tag.first;
-            int trackIndex = tag.second;
-
-            if (!trackGroupsAdaptive[groupIndex] || override == null || override.groupIndex != groupIndex) {
-                override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
-            } else {
-                // The group being modified is adaptive and we already have a non-null override.
-                boolean isEnabled = ((CheckedTextView) view).isChecked();
-                int overrideLength = override.length;
-                if (isEnabled) {
-                    // Remove the track from the override.
-                    if (overrideLength == 1) {
-                        // The last track is being removed, so the override becomes empty.
-                        override = null;
-                        isDisabled = true;
-                    } else {
-                        setOverride(groupIndex, getTracksRemoving(override, trackIndex), enableRandomAdaptationView.isChecked());
-                    }
-                } else {
-                    // Add the track to the override.
-                    setOverride(groupIndex, getTracksAdding(override, trackIndex), enableRandomAdaptationView.isChecked());
-                }
-            }
-        }
-        // Update the views with the new state.
-        updateViews();
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {

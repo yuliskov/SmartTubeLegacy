@@ -2,7 +2,7 @@
 <!-- android:background="@drawable/bootstrap_button_selector" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/bootstrap_checkbox_wrapper"
-              android:layout_width="@dimen/bootstrap_chkbox_width" android:layout_height="@dimen/bootstrap_chkbox_height"
+              android:layout_width="wrap_content" android:layout_height="@dimen/bootstrap_chkbox_height"
               android:gravity="center" android:orientation="vertical" android:weightSum="1"
               android:layout_margin="0dp"
               android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">

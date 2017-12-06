@@ -5,12 +5,16 @@ import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import com.liskovsoft.smartyoutubetv.R;
@@ -20,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BootstrapCheckBox extends LinearLayout {
+public class BootstrapTextButton extends LinearLayout {
     private String mTitleText;
     private LinearLayout wrapper;
     private LinearLayout content;
@@ -30,12 +34,12 @@ public class BootstrapCheckBox extends LinearLayout {
     private float mZoomedTextSize;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
 
-    public BootstrapCheckBox(Context context) {
+    public BootstrapTextButton(Context context) {
         super(context);
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs) {
+    public BootstrapTextButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
@@ -56,12 +60,12 @@ public class BootstrapCheckBox extends LinearLayout {
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BootstrapTextButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BootstrapTextButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -81,8 +85,18 @@ public class BootstrapCheckBox extends LinearLayout {
     }
 
     private void setDefaultState() {
+        Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
+        mChkbox.setButtonDrawable(transparentDrawable);
         makeUnfocused();
     }
+
+    //@Override
+    //protected void onAttachedToWindow() {
+    //    super.onAttachedToWindow();
+    //    ViewGroup.LayoutParams layoutParams = getLayoutParams();
+    //    layoutParams.width = getWidth();
+    //    setLayoutParams(layoutParams);
+    //}
 
     private void applyDefaultAttributes() {
         if (mTitleText != null) {
@@ -139,9 +153,9 @@ public class BootstrapCheckBox extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
-                    BootstrapCheckBox.this.callOnClick();
+                    BootstrapTextButton.this.callOnClick();
                 } else {
-                    BootstrapCheckBox.this.performClick();
+                    BootstrapTextButton.this.performClick();
                 }
                 mChkbox.setChecked(!mChkbox.isChecked());
                 callCheckedListener(mChkbox.isChecked());
@@ -169,7 +183,7 @@ public class BootstrapCheckBox extends LinearLayout {
     }
 
     public interface OnCheckedChangeListener {
-        void onCheckedChanged(BootstrapCheckBox button, boolean isChecked);
+        void onCheckedChanged(BootstrapTextButton button, boolean isChecked);
     }
 
     /**
@@ -189,7 +203,7 @@ public class BootstrapCheckBox extends LinearLayout {
         }
 
         @Override
-        public void onCheckedChanged(@NonNull BootstrapCheckBox compoundButton, boolean b) {
+        public void onCheckedChanged(@NonNull BootstrapTextButton compoundButton, boolean b) {
             if (mResolvedMethod == null) {
                 resolveMethod(mHostView.getContext(), mMethodName);
             }
@@ -210,7 +224,7 @@ public class BootstrapCheckBox extends LinearLayout {
             while (context != null) {
                 try {
                     if (!context.isRestricted()) {
-                        final Method method = context.getClass().getMethod(mMethodName, BootstrapCheckBox.class, boolean.class);
+                        final Method method = context.getClass().getMethod(mMethodName, BootstrapTextButton.class, boolean.class);
                         if (method != null) {
                             mResolvedMethod = method;
                             mResolvedContext = context;
