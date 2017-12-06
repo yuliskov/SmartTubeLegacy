@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="webview_desc">MiBox, FireTV та ін.</string>
+    <string name="xwalk_desc">MiTV та ін. пристр.</string>
+    <string name="exo_desc">4K: MiTV та інше</string>
+    <string name="exo_desc2">4K: дод. версія</string>
+    <string name="bootstrap_main_title">Будьласка, оберіть версію YouTube</string>
+    <string name="view_count">переглядов</string>
+    <string name="published">Опубліковано</string>
+    <string name="starting_popup">Запуск із головного лаунчеру</string>
+    <string name="save_selection">Запам`ятати</string>
+    <string name="bootstrap_bottom_title">Якщо не впевнені, то пробуйте кожну з версій</string>
+    <string name="starting_popup_fmt">Запускається %s лаунчер...</string>
+    <string name="loading_bottom_msg">Натисніть \"Назад\", щоб повернутися до вибору версій</string>
+    <string name="language_dialog_title">Оберіть мову</string>
+</resources>

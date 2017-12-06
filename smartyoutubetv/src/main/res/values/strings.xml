@@ -13,18 +13,18 @@
     <string name="view_count">views</string>
     <string name="published">Published</string>
     <string name="starting_popup">Starting from the main launcher</string>
-    <string name="save_selection">Remember selection</string>
-    <string name="bootstrap_bottom_title">If you unsure, try lauchers one by one</string>
+    <string name="save_selection">Remember</string>
+    <string name="bootstrap_bottom_title">If you unsure, try launchers one by one</string>
     <string name="starting_popup_fmt">Starting %s launcher...</string>
     <string name="app_name_720">720</string>
     <string name="app_name_1080">1080</string>
     <string name="app_name_4k">4K</string>
     <string name="app_name_4k_alt">4K Alt</string>
-    <string name="loading_bottom_msg">Press back button to return to the launchers dialog</string>
+    <string name="loading_bottom_msg">Press Back button to return to the launchers dialog</string>
     <string name="language">Language</string>
     <string name="language_dialog_title">Select language</string>
     <string name="english_lang">English</string>
-    <string name="ukrainian_lang">Ukrainian</string>
-    <string name="russian_lang">Russian</string>
-    <string name="chinese_lang">Chinese</string>
+    <string name="ukrainian_lang">Українська</string>
+    <string name="russian_lang">Русский</string>
+    <string name="chinese_lang">中文</string>
 </resources>

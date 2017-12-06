@@ -22,10 +22,10 @@ import java.util.List;
 
 public class BootstrapCheckBox extends LinearLayout {
     private String mTitleText;
-    private LinearLayout wrapper;
-    private LinearLayout content;
+    private LinearLayout mWrapper;
+    private LinearLayout mContent;
     private CheckBox mChkbox;
-    private final int PADDING = Utils.convertDpToPixel(15, getContext());
+    private final int PADDING = Utils.convertDpToPixel(5, getContext());
     private float mNormalTextSize;
     private float mZoomedTextSize;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
@@ -100,7 +100,7 @@ public class BootstrapCheckBox extends LinearLayout {
     }
 
     private void setOnFocus() {
-        wrapper.setOnFocusChangeListener(new OnFocusChangeListener() {
+        mWrapper.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -116,26 +116,26 @@ public class BootstrapCheckBox extends LinearLayout {
         mChkbox.setTextColor(Color.DKGRAY);
         mChkbox.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
-        content.setBackgroundColor(semitransparentBlack);
-        wrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
+        mContent.setBackgroundColor(semitransparentBlack);
+        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
     }
 
     private void makeFocused() {
         mChkbox.setTextColor(Color.BLACK);
         mChkbox.setTextSize(mZoomedTextSize);
-        content.setBackgroundColor(Color.WHITE);
-        wrapper.setPadding(0, 0, 0, 0);
+        mContent.setBackgroundColor(Color.WHITE);
+        mWrapper.setPadding(0, 0, 0, 0);
     }
 
     private void inflate() {
         inflate(getContext(), R.layout.bootstrap_checkbox, this);
-        wrapper = (LinearLayout) findViewById(R.id.bootstrap_checkbox_wrapper);
-        content = (LinearLayout) findViewById(R.id.bootstrap_checkbox_content);
+        mWrapper = (LinearLayout) findViewById(R.id.bootstrap_checkbox_wrapper);
+        mContent = (LinearLayout) findViewById(R.id.bootstrap_checkbox_content);
         mChkbox = (CheckBox) findViewById(R.id.bootstrap_checkbox);
     }
 
     private void transferClicks() {
-        wrapper.setOnClickListener(new OnClickListener() {
+        OnClickListener clickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
@@ -146,7 +146,9 @@ public class BootstrapCheckBox extends LinearLayout {
                 mChkbox.setChecked(!mChkbox.isChecked());
                 callCheckedListener(mChkbox.isChecked());
             }
-        });
+        };
+        mWrapper.setOnClickListener(clickListener);
+        mChkbox.setOnClickListener(clickListener);
     }
 
     public boolean isChecked() {

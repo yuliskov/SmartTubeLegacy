@@ -5,4 +5,6 @@
     <string name="bootstrap_main_title">请选择所需的YouTube版本</string>
     <string name="exo_desc2">4K:替代版本</string>
     <string name="bootstrap_bottom_title">要再次显示此对话框，请退出该应用程序</string>
+    <string name="loading_bottom_msg">按返回按钮返回到启动器对话框</string>
+    <string name="save_selection">记得</string>
 </resources>
