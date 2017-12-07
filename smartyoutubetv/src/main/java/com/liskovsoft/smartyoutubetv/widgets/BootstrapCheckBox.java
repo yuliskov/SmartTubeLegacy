@@ -148,7 +148,6 @@ public class BootstrapCheckBox extends LinearLayout {
             }
         };
         mWrapper.setOnClickListener(clickListener);
-        mChkbox.setOnClickListener(clickListener);
     }
 
     public boolean isChecked() {

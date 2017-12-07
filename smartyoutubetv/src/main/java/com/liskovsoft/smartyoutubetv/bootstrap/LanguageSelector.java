@@ -35,7 +35,7 @@ public class LanguageSelector implements OnClickListener {
 
     private void initCurrentLang() {
         mLangUpdater = new LangUpdater(mActivity);
-        mCurrentLang = mLangUpdater.getLocale();
+        mCurrentLang = mLangUpdater.getPreferredLocale();
     }
 
     private void initLangMap() {
@@ -100,11 +100,13 @@ public class LanguageSelector implements OnClickListener {
     public void onClick(View view) {
         String newLang = (String) view.getTag();
         if (!newLang.equals(mCurrentLang)) {
-            mLangUpdater.setLocale(newLang);
-            mActivity.restart();
+            mLangUpdater.setPreferredLocale(newLang);
+
             // close dialog
             alertDialog.dismiss();
             alertDialog = null;
+
+            mActivity.restart();
         }
     }
 }

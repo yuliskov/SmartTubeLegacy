@@ -9,8 +9,9 @@
     <LinearLayout android:id="@+id/bootstrap_checkbox_content"
                   android:layout_width="match_parent" android:layout_height="match_parent"
                   android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:weightSum="1" android:padding="5dp"
-                  android:clickable="true" android:descendantFocusability="blocksDescendants">
+                  android:clickable="false" android:descendantFocusability="blocksDescendants">
         <CheckBox
+            android:clickable="false"
             android:maxLines="1"
             android:textSize="@dimen/bootstrap_chkbox_text_size"
             android:layout_gravity="center"

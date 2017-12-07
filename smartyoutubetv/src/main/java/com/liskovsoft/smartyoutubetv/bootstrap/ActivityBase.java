@@ -1,5 +1,8 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
@@ -36,11 +39,11 @@ public class ActivityBase extends AppCompatActivity {
     }
 
     public void restart() {
-        finish();
-
         Intent intent = new Intent();
         intent.setClass(this, BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
         startActivity(intent);
+
+        System.exit(0);
     }
 }

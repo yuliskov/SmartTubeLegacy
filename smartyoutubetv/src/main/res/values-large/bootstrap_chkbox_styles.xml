@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bootstrap_chkbox_text_size">13sp</dimen>
-    <dimen name="bootstrap_chkbox_width">130dp</dimen>
+    <dimen name="bootstrap_chkbox_width">135dp</dimen>
     <dimen name="bootstrap_chkbox_height">50dp</dimen>
 </resources>

@@ -98,16 +98,16 @@ public class LangUpdater {
         return result;
     }
 
-    //public String getLocale() {
-    //    Configuration config = mContext.getResources().getConfiguration();
-    //    return config.locale.getLanguage();
-    //}
-
     public String getLocale() {
+        Configuration config = mContext.getResources().getConfiguration();
+        return config.locale.getLanguage();
+    }
+
+    public String getPreferredLocale() {
         return SmartPreferences.instance(mContext).getPreferredLanguage();
     }
 
-    public void setLocale(String langCode) {
+    public void setPreferredLocale(String langCode) {
         SmartPreferences.instance(mContext).setPreferredLanguage(langCode);
     }
 }
