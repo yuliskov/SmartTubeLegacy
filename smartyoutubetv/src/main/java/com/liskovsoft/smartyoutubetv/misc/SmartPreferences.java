@@ -70,7 +70,7 @@ public final class SmartPreferences {
     }
 
     public String getPreferredLanguage() {
-        String name = mPrefs.getString(BOOTSTRAP_SELECTED_LANGUAGE, null);
+        String name = mPrefs.getString(BOOTSTRAP_SELECTED_LANGUAGE, "");
         return name;
     }
 }

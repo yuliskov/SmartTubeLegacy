@@ -66,6 +66,10 @@ public class LangUpdater {
 
     // short lang code. ex: "ru"
     private void forceLocale(String langCode) {
+        if (langCode == null || langCode.isEmpty()) {
+            return;
+        }
+
         Locale locale = new Locale(langCode);
         Locale.setDefault(locale);
         Configuration config = mContext.getResources().getConfiguration();
@@ -94,9 +98,13 @@ public class LangUpdater {
         return result;
     }
 
+    //public String getLocale() {
+    //    Configuration config = mContext.getResources().getConfiguration();
+    //    return config.locale.getLanguage();
+    //}
+
     public String getLocale() {
-        Configuration config = mContext.getResources().getConfiguration();
-        return config.locale.getLanguage();
+        return SmartPreferences.instance(mContext).getPreferredLanguage();
     }
 
     public void setLocale(String langCode) {

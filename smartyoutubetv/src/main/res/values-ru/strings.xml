@@ -13,4 +13,6 @@
     <string name="starting_popup_fmt">Запускается %s лаунчер...</string>
     <string name="loading_bottom_msg">Нажмите \"Назад\", чтобы вернуться к выбору версий</string>
     <string name="language_dialog_title">Выберите язык</string>
+    <string name="system_lang">Системный</string>
+    <string name="language">Язык</string>
 </resources>

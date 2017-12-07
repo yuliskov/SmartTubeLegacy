@@ -40,6 +40,7 @@ public class LanguageSelector implements OnClickListener {
 
     private void initLangMap() {
         mLangMap = new LinkedHashMap<>();
+        mLangMap.put(mActivity.getString(R.string.system_lang), "");
         mLangMap.put(mActivity.getString(R.string.english_lang), "en");
         mLangMap.put(mActivity.getString(R.string.chinese_lang), "zh");
         mLangMap.put(mActivity.getString(R.string.ukrainian_lang), "uk");

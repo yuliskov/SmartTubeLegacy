@@ -27,4 +27,5 @@
     <string name="ukrainian_lang">Українська</string>
     <string name="russian_lang">Русский</string>
     <string name="chinese_lang">中文</string>
+    <string name="system_lang">System</string>
 </resources>
