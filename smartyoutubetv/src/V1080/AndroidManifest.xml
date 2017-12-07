@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto"
+          package="com.liskovsoft.smartyoutubetv">
+
+    <!-- NOTE: use older sdk -->
+    <uses-sdk tools:overrideLibrary="org.xwalk.core"/>
+
+    <!-- Leanback required fields -->
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.sensor"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <!-- End Leanback required fields -->
+
+    <!-- NOTE: DemoApplication: exoplayer specific params -->
+    <application
+        android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.DemoApplication"
+        android:allowBackup="true"
+        android:banner="@mipmap/ic_banner_main"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher_main"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        tools:node="replace"
+        tools:replace="android:name">
+
+        <!-- NOTE: DIAL integration for Amazon TV -->
+        <meta-data
+            android:name="whisperplay"
+            android:resource="@xml/whisperplay"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2d068551b7d8e7635eb2fd339601762059ca0530"/>
+
+        <!-- Root (bootstrap) Activity -->
+        <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent in stack -->
+        <activity android:name=".flavors.xwalk.SmartYouTubeTVActivity"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+                  android:icon="@mipmap/ic_launcher_main"
+                  android:label="@string/app_name"
+                  android:alwaysRetainTaskState="true"
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+            </intent-filter>
+            <!-- Pass url from other apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="youtu.be"/>
+                <data android:pathPattern=".*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="vnd.youtube"/>
+                <data android:scheme="vnd.youtube.launch"/>
+            </intent-filter>
+            <!-- End Pass url from other apps -->
+        </activity>
+        <!-- End Root Activity -->
+        
+        <!-- End Flavours -->
+    </application>
+
+</manifest>

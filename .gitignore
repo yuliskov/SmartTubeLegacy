@@ -2,9 +2,9 @@ notes.txt
 /files
 /misc
 /TODO.txt
-*_bak
+*_bak*
 *_tmp
-*.bak
+*.bak*
 /.idea
 *.apk
 *.7z
