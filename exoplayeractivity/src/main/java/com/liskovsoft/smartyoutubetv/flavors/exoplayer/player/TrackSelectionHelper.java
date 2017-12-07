@@ -293,7 +293,9 @@ import java.util.Arrays;
             // imitate radio button behaviour
             boolean isEnabled = ((CheckedTextView) view).isChecked();
             if (isEnabled) {
-                override = null;
+                // override = null;
+                // item already checked - do nothing
+                return;
             } else {
                 override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
             }

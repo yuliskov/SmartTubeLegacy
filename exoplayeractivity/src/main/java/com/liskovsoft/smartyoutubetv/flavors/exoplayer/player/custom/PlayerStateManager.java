@@ -73,22 +73,46 @@ public class PlayerStateManager {
         int rendererIndex = 0; // video
         TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
         TrackGroup defaultTrackGroup = groupArray.get(0);
+
+        // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
             TrackGroup trackGroup = groupArray.get(j);
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
-                if (trackEquals(format.id, selectedTrackId)) {
+                if (tracksEquals(format.id, selectedTrackId)) {
+                    mDefaultTrackId = format.id;
                     return new int[]{j, i};
                 }
             }
         }
+
+        // search the related tracks
+        for (int j = 0; j < groupArray.length; j++) {
+            TrackGroup trackGroup = groupArray.get(j);
+            for (int i = 0; i < trackGroup.length; i++) {
+                Format format = trackGroup.getFormat(i);
+                if (tracksRelated(format.id, selectedTrackId)) {
+                    mDefaultTrackId = format.id;
+                    return new int[]{j, i};
+                }
+            }
+        }
+
         // if track not found, return topmost
         int lastIdx = defaultTrackGroup.length - 1;
         mDefaultTrackId = defaultTrackGroup.getFormat(lastIdx).id;
         return new int[]{0, lastIdx};
     }
 
-    private boolean trackEquals(String leftTrackId, String rightTrackId) {
+    private boolean tracksEquals(String leftTrackId, String rightTrackId) {
+        if (leftTrackId == null || rightTrackId == null) {
+            return false;
+        }
+
+        return leftTrackId.equals(rightTrackId);
+    }
+
+    private boolean tracksRelated(String leftTrackId, String rightTrackId) {
         if (leftTrackId == null || rightTrackId == null) {
             return false;
         }
@@ -96,11 +120,7 @@ public class PlayerStateManager {
         int i = Integer.parseInt(leftTrackId);
         int j = Integer.parseInt(rightTrackId);
         // presume that 30fps and 60fps is the same format
-        if (Math.abs(i - j) == 162) {
-            return true;
-        }
-
-        return leftTrackId.equals(rightTrackId);
+        return Math.abs(i - j) == 162;
     }
 
     private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
