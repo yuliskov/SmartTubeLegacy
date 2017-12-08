@@ -105,15 +105,20 @@ public class SimpleYouTubeInfoParserTest {
 
     @Test
     public void mpdBuilderTest() {
-        InputStream emptyMpd = TestHelpers.openResource("empty_mpd");
+        InputStream emptyMpd = TestHelpers.openResource("mpd_no_items");
         MyMPDBuilder builder = new MyMPDBuilder(null);
         String expected = Helpers.toString(emptyMpd);
         assertEquals(expected, Helpers.toString(builder.build()));
+    }
 
-        InputStream oneItem = TestHelpers.openResource("mpd_one_item");
+    @Test
+    public void mpdBuilderTest2() {
+        InputStream oneItem = TestHelpers.openResource("mpd_with_one_item");
         SimpleYouTubeMediaItem fakeItem = new SimpleYouTubeMediaItem();
         fakeItem.setUrl("http://empty.url");
         fakeItem.setType("video/mp4;+codecs=\"avc1.640033\"");
+        fakeItem.setInit("0-759");
+        fakeItem.setITag("133");
         MyMPDBuilder fakeBuilder = new MyMPDBuilder(null);
         fakeBuilder.append(fakeItem);
         assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
