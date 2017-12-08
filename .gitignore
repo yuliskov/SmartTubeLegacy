@@ -2,7 +2,7 @@ notes.txt
 /files
 /misc
 /TODO.txt
-/tmp
+tmp/
 *_bak*
 *_tmp
 *.bak*
