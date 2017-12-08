@@ -24,6 +24,17 @@ public class ExoPreferences implements ExoKeys {
                 .apply();
     }
 
+
+    public int getSelectedTrackHeight() {
+        return mPrefs.getInt(ExoKeys.SELECTED_TRACK_HEIGHT, 0);
+    }
+
+    public void setSelectedTrackHeight(int height) {
+        mPrefs.edit()
+                .putInt(ExoKeys.SELECTED_TRACK_HEIGHT, height)
+                .apply();
+    }
+
     public void resetPosition(String key) {
         mPrefs.edit()
                 .remove(key)

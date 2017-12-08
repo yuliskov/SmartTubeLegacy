@@ -12,11 +12,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
+    private static final String AVC_PART = "avc";
     private final PlayerActivity mContext;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -47,27 +45,29 @@ public class PlayerStateManager {
 
     private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
         String selectedTrackId = mPrefs.getSelectedTrackId();
+        int selectedTrackHeight = mPrefs.getSelectedTrackHeight();
 
-        loadTrack(rendererTrackGroupArrays, selectedTrackId);
+        loadTrack(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
     }
 
     /**
      * Switch track
      * @param rendererTrackGroupArrays source of tracks
      * @param selectedTrackId dash format id
+     * @param selectedTrackHeight
      */
-    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId, int selectedTrackHeight) {
         int rendererIndex = 0; // video
         if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
             return;
         }
-        int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId);
+        int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
         TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex[0], trackGroupAndIndex[1]);
         mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
     }
 
-    private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId) {
+    private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId, int selectedTrackHeight) {
         mDefaultTrackId = null;
 
         int rendererIndex = 0; // video
@@ -92,6 +92,19 @@ public class PlayerStateManager {
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
                 if (tracksRelated(format.id, selectedTrackId)) {
+                    mDefaultTrackId = format.id;
+                    return new int[]{j, i};
+                }
+            }
+        }
+
+        // search the same resolution tracks (LIVE translation)
+        for (int j = 0; j < groupArray.length; j++) {
+            TrackGroup trackGroup = groupArray.get(j);
+            for (int i = 0; i < trackGroup.length; i++) {
+                Format format = trackGroup.getFormat(i);
+                if (format.height == selectedTrackHeight &&
+                    format.codecs.contains(AVC_PART)) {
                     mDefaultTrackId = format.id;
                     return new int[]{j, i};
                 }
@@ -156,10 +169,13 @@ public class PlayerStateManager {
 
     private void persistTrackIndex() {
         String trackId = extractCurrentTrackId();
+        int height = extractCurrentTrackHeight();
+        String codecs = extractCurrentTrackCodecs(); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
         // mDefaultTrackId: usually this happens when video does not contain preferred format
-        boolean isTrackChanged = trackId != null && !trackId.equals(mDefaultTrackId);
+        boolean isTrackChanged = codecs != null && trackId != null && !trackId.equals(mDefaultTrackId);
         if (isTrackChanged) {
             mPrefs.setSelectedTrackId(trackId);
+            mPrefs.setSelectedTrackHeight(height);
         }
     }
 
@@ -169,5 +185,21 @@ public class PlayerStateManager {
             return null;
         }
         return videoFormat.id;
+    }
+
+    private String extractCurrentTrackCodecs() {
+        Format videoFormat = mPlayer.getVideoFormat();
+        if (videoFormat == null) {
+            return null;
+        }
+        return videoFormat.codecs;
+    }
+
+    private int extractCurrentTrackHeight() {
+        Format videoFormat = mPlayer.getVideoFormat();
+        if (videoFormat == null) {
+            return 0;
+        }
+        return videoFormat.height;
     }
 }
