@@ -34,6 +34,7 @@ public class MyMPDBuilder implements MPDBuilder {
     private Set<YouTubeMediaItem> mMP4Videos;
     private Set<YouTubeMediaItem> mWEBMAudios;
     private Set<YouTubeMediaItem> mWEBMVideos;
+    private int mCounter;
 
     private class MyComparator implements Comparator<YouTubeMediaItem> {
         @Override
@@ -225,6 +226,8 @@ public class MyMPDBuilder implements MPDBuilder {
         if (placeholder != null) {
             placeholder.add(mediaItem); // NOTE: reverse order
         }
+
+        mCounter++;
     }
 
     private boolean notDASH(YouTubeMediaItem mediaItem) {
@@ -346,5 +349,9 @@ public class MyMPDBuilder implements MPDBuilder {
         return Helpers.toStream(mWriter.toString());
     }
 
+    @Override
+    public boolean isEmpty() {
+        return mCounter == 0;
+    }
 
 }

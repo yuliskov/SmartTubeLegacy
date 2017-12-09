@@ -153,6 +153,10 @@ public class ConcreteYouTubeInfoParser {
         }
         Browser.getBus().unregister(this);
 
+        if (mMediaItems.size() == 0) {
+            mListener.onExtractMediaItemsAndDecipher(mMediaItems);
+        }
+
         List<String> signatures = doneEvent.getSignatures();
         String lastSignature = signatures.get(signatures.size() - 1);
         applySignatureToDashMPDUrl(lastSignature);

@@ -28,14 +28,9 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
         if (hlsUri != null) {
             mVisitor.onLiveItem(hlsUri);
             // this is live so other items is useless
+            mVisitor.doneVisiting();
             return;
         }
-
-        //InputStream dash = mParser.extractDashMPD();
-        //if (dash != null) {
-        //    mVisitor.onDashMPDItem(dash);
-        //    return;
-        //}
 
         mParser.extractMediaItemsAndDecipher(new ConcreteYouTubeInfoParser.ParserListener() {
             @Override

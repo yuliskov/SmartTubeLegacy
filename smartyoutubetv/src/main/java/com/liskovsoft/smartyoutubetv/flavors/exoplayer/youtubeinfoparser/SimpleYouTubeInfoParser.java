@@ -17,7 +17,6 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private MyMPDBuilder mMPDBuilder;
         private int mCounter = 1;
         private YouTubeGenericInfo mInfo;
-        private InputStream mDash;
         private Uri mHlsUrl;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
@@ -33,9 +32,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         public void onGenericInfo(YouTubeGenericInfo info) {
             if (mMPDBuilder == null)
                 mMPDBuilder = new MyMPDBuilder(info);
-            if (mCounter == 1) {
-                mMediaFoundCallback.onInfoFound(info);
-            }
+
+            mInfo = info;
         }
 
         @Override
@@ -46,17 +44,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         @Override
-        public void onDashMPDItem(InputStream dash) {
-            if (mCounter == 1) {
-                mMediaFoundCallback.onDashMPDFound(dash);
-            }
-        }
-
-        @Override
         public void onLiveItem(Uri hlsUrl) {
-            if (mCounter == 1) {
-                mMediaFoundCallback.onLiveUrlFound(hlsUrl);
-            }
+            mHlsUrl = hlsUrl;
         }
 
         @Override
@@ -66,7 +55,14 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 return;
             }
 
-            mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+            // callback on the last loop (resolve problems with async processing)
+
+            if (mInfo != null)
+                mMediaFoundCallback.onInfoFound(mInfo);
+            if (mHlsUrl != null)
+                mMediaFoundCallback.onLiveUrlFound(mHlsUrl);
+            if (!mMPDBuilder.isEmpty())
+                mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
         }
     }
 
