@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Controller mController;
-    private final String mYouTubeTVUrl = "https://youtube.com/tv";
+    private String mServiceUrl; // youtube url here
     private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
@@ -38,6 +38,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         setupLang();
         super.onCreate(icicle);
 
+        initRemoteUrl();
         mTranslator = new KeysTranslator();
 
         // clearCache();
@@ -46,6 +47,10 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private void initRemoteUrl() {
+        mServiceUrl = getString(R.string.service_url);
     }
 
     private void setupLang() {
@@ -80,7 +85,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         mController = new SimpleUIController(this);
         mController.setEventListener(new ControllerEventListener(this, mTranslator));
-        mController.setDefaultUrl(Uri.parse(mYouTubeTVUrl));
+        mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);
         Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
         // TODO: remove

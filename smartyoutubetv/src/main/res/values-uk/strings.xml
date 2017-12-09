@@ -13,6 +13,6 @@
     <string name="starting_popup_fmt">Запускається %s лаунчер...</string>
     <string name="loading_bottom_msg">Натисніть \"Назад\", щоб повернутися до вибору версій</string>
     <string name="language_dialog_title">Оберіть мову</string>
-    <string name="system_lang">Системна</string>
+    <string name="system_lang">За-замовчуванням</string>
     <string name="language">Мова</string>
 </resources>

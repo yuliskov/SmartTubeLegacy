@@ -48,6 +48,9 @@ android {
         V1080 {
             versionCode 999 // don't auto-update
         }
+        Vkids {
+            applicationIdSuffix ".kids"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk

@@ -1,4 +1,5 @@
 <resources>
+    <string name="service_url">https://youtube.com/tv</string>
     <string name="app_name">Smart YouTube TV</string>
     <string name="next_clicked">Next button clicked!</string>
     <string name="prev_clicked">Prev button clicked!</string>
@@ -27,5 +28,5 @@
     <string name="ukrainian_lang">Українська</string>
     <string name="russian_lang">Русский</string>
     <string name="chinese_lang">中文</string>
-    <string name="system_lang">System</string>
+    <string name="system_lang">Default</string>
 </resources>
