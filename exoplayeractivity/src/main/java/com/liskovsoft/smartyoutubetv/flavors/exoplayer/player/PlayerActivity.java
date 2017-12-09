@@ -103,6 +103,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_NEXT = "button_next";
     public static final String BUTTON_BACK = "button_back";
     public static final String DELIMITER = "------";
+    public static final String PUBLISH_AT = "publish_at";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -201,6 +202,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         mVideoTitle.setText(getVideoMainTitle());
         mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
         mVideoTitle2.setText(getVideoSecondTitle());
+
+        Toast.makeText(this, getIntent().getStringExtra(PUBLISH_AT), Toast.LENGTH_LONG).show();
     }
 
     private String getVideoTitleByIndex(int idx) {

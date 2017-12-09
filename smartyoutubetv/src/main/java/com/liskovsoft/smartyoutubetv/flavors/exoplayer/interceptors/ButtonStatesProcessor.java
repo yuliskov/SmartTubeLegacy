@@ -64,7 +64,7 @@ public class ButtonStatesProcessor implements Runnable {
     }
 
     private void processDate(String result) {
-        
+        mIntent.putExtra(PlayerActivity.PUBLISH_AT, result);
     }
 
     private void processJSON(String result) {
