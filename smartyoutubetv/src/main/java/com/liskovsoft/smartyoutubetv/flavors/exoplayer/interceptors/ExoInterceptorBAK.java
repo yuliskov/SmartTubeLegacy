@@ -4,17 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import okhttp3.Response;
 import org.slf4j.Logger;
@@ -22,15 +23,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
-public class ExoInterceptor extends RequestInterceptor {
+public class ExoInterceptorBAK extends RequestInterceptor {
     private final Context mContext;
-    private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
+    private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptorBAK.class);
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionBinder mActionBinder;
     private InputStream mResponseStream30Fps;
     private InputStream mResponseStream60Fps;
 
-    public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
+    public ExoInterceptorBAK(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
         mActionBinder = new ActionBinder(context, this);
@@ -64,37 +65,28 @@ public class ExoInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer() {
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
         dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
-            private YouTubeGenericInfo mInfo;
+            private String mTitle = "No title";
+            private String mTitle2 = "No title";
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
-                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
-                openExoPlayer(sample, mInfo);
+                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent, mTitle, mTitle2);
+                openExoPlayer(sample);
             }
             @Override
             public void onLiveUrlFound(final Uri hlsUrl) {
-                Sample sample = SampleHelpers.buildFromUri(hlsUrl);
-                openExoPlayer(sample, mInfo);
+                Sample sample = SampleHelpers.buildFromUri(hlsUrl, mTitle, mTitle2);
+                openExoPlayer(sample);
             }
 
             @Override
             public void onInfoFound(YouTubeGenericInfo info) {
-                mInfo = info;
-            }
-        });
-    }
-
-    private void openExoPlayer(Sample sample, YouTubeGenericInfo info) {
-        sLogger.info("About to start ExoPlayer activity for Regular item");
-        final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
-        final Intent playerIntent = sample.buildIntent(mContext);
-        playerIntent.putExtra(PlayerActivity.VIDEO_TITLE, info.getTitle());
-        playerIntent.putExtra(PlayerActivity.VIDEO_AUTHOR, info.getAuthor());
-        playerIntent.putExtra(PlayerActivity.VIDEO_VIEWS, info.getViewCount());
-        fetchButtonStates(playerIntent, new Runnable(){
-            @Override
-            public void run() {
-                activity.startActivityForResult(playerIntent, 1);
-                setupResultListener(activity);
+                mTitle = String.format("%s", info.getTitle());
+                mTitle2 = String.format("%s      %s: %s      %s %s",
+                        info.getAuthor(),
+                        mContext.getString(R.string.published),
+                        Helpers.unixToLocalDate(mContext, info.getTimestamp()),
+                        info.getViewCount(),
+                        mContext.getString(R.string.view_count));
             }
         });
     }

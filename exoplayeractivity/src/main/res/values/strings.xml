@@ -62,4 +62,6 @@
     <string name="exo_like_desc">Like</string>
     <string name="captions">Captions</string>
     <string name="not_implemented_msg">Not implemented yet</string>
+    <string name="published">Published</string>
+    <string name="view_count">views</string>
 </resources>

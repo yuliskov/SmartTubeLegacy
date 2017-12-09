@@ -94,7 +94,6 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
-    public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String BUTTON_USER_PAGE = "button_user_page";
     public static final String BUTTON_LIKE = "button_like";
     public static final String BUTTON_DISLIKE = "button_dislike";
@@ -103,7 +102,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_NEXT = "button_next";
     public static final String BUTTON_BACK = "button_back";
     public static final String DELIMITER = "------";
-    public static final String PUBLISH_AT = "publish_at";
+    public static final String VIDEO_DATE = "video_date";
+    public static final String VIDEO_TITLE = "video_title";
+    public static final String VIDEO_AUTHOR = "video_author";
+    public static final String VIDEO_VIEWS = "video_views";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -199,31 +201,27 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private void initVideoTitle() {
         mVideoTitle = (TextView)findViewById(R.id.video_title);
-        mVideoTitle.setText(getVideoMainTitle());
+        mVideoTitle.setText(getMainTitle());
         mVideoTitle2 = (TextView)findViewById(R.id.video_title2);
-        mVideoTitle2.setText(getVideoSecondTitle());
-
-        Toast.makeText(this, getIntent().getStringExtra(PUBLISH_AT), Toast.LENGTH_LONG).show();
+        mVideoTitle2.setText(getSecondTitle());
     }
 
-    private String getVideoTitleByIndex(int idx) {
-        String videoTitle = getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
-        if (videoTitle == null) {
-            return null;
-        }
-        String[] titles = videoTitle.split(DELIMITER);
-        if (titles.length != 2) {
-            return null;
-        }
-        return titles[idx];
+    public String getMainTitle() {
+        return getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
     }
 
-    public String getVideoMainTitle() {
-        return getVideoTitleByIndex(0);
-    }
+    public String getSecondTitle() {
+        Intent intent = getIntent();
 
-    public String getVideoSecondTitle() {
-        return getVideoTitleByIndex(1);
+        String secondTitle = String.format(
+                "%s      %s      %s %s",
+                intent.getStringExtra(VIDEO_AUTHOR),
+                intent.getStringExtra(VIDEO_DATE),
+                intent.getStringExtra(VIDEO_VIEWS),
+                getString(R.string.view_count)
+        );
+
+        return secondTitle;
     }
 
     private void initExoPlayerButtons() {

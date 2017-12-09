@@ -18,28 +18,28 @@ public final class SampleHelpers {
         return new PlaylistSample("Sample Playlist", samples);
     }
 
-    public static Sample buildFromUri(Uri contentUrl, String title, String title2) {
-        return new UriSample(mergeTitles(title, title2), contentUrl.toString());
+    public static Sample buildFromUri(Uri contentUrl) {
+        return buildFromUri(contentUrl, "Sample Video");
     }
 
     public static Sample buildFromUri(Uri contentUrl, String title) {
         return buildFromUri(contentUrl, title, "");
     }
 
-    public static Sample buildFromUri(Uri contentUrl) {
-        return buildFromUri(contentUrl, "Sample Video");
+    public static Sample buildFromUri(Uri contentUrl, String title, String title2) {
+        return new UriSample(mergeTitles(title, title2), contentUrl.toString());
     }
 
-    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title, String title2) {
-        return new MPDSample(mergeTitles(title, title2), "https://example.com/test.mpd", mpdPlaylist);
+    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
+        return buildFromMPDPlaylist(mpdPlaylist, "Sample Video");
     }
 
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title) {
         return buildFromMPDPlaylist(mpdPlaylist, title, "");
     }
 
-    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
-        return buildFromMPDPlaylist(mpdPlaylist, "Sample Video");
+    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title, String title2) {
+        return new MPDSample(mergeTitles(title, title2), "https://example.com/test.mpd", mpdPlaylist);
     }
 
     private static String mergeTitles(String title, String title2) {

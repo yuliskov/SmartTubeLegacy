@@ -37,7 +37,7 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackPosition(TrackGroupArray[] groupArrays) {
-        String title = mContext.getVideoMainTitle();
+        String title = mContext.getMainTitle();
         long pos = mPrefs.getPosition(title);
         if (pos != C.TIME_UNSET)
             mPlayer.seekTo(pos);
@@ -157,7 +157,7 @@ public class PlayerStateManager {
             return;
         }
         long position = mPlayer.getCurrentPosition();
-        String title = mContext.getVideoMainTitle();
+        String title = mContext.getMainTitle();
         boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
         boolean isVideoJustStarts = position < MAX_START_DURATION_MILLIS;
         if (almostAllVideoSeen || isVideoJustStarts) {

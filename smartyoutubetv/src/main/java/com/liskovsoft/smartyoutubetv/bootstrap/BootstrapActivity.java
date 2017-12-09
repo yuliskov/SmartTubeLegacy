@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import com.crashlytics.android.Crashlytics;
@@ -115,6 +116,7 @@ public class BootstrapActivity extends ActivityBase {
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClassName(ctx, clazz);
+        intent.setData(getOriginData());
 
         try {
             startActivity(intent);
@@ -128,6 +130,12 @@ public class BootstrapActivity extends ActivityBase {
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
+
+        intent.setData(getOriginData());
         startActivity(intent);
+    }
+
+    private Uri getOriginData() {
+        return getIntent().getData();
     }
 }
