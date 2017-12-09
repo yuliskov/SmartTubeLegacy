@@ -7,6 +7,8 @@ import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 
 public class GenericEventResourceInjector extends ResourceInjectorBase {
+    private final String mStringResultCommand = "setTimeout(function(){app.onGenericStringResultWithId(%s, %s);}, 2000);";
+
     public static class GenericBooleanResultEvent {
         private int mId;
         private boolean mResult;
@@ -37,6 +39,24 @@ public class GenericEventResourceInjector extends ResourceInjectorBase {
         }
     }
 
+    public static class GenericStringResultEventWithId {
+        private String mResult;
+        private final int mId;
+
+        public GenericStringResultEventWithId(String result, int id) {
+            mResult = result;
+            mId = id;
+        }
+
+        public String getResult() {
+            return mResult;
+        }
+
+        public int getId() {
+            return mId;
+        }
+    }
+
     public static class JSResourceEvent {
         private String mCode;
 
@@ -49,14 +69,39 @@ public class GenericEventResourceInjector extends ResourceInjectorBase {
         }
     }
 
+    public static class JSStringResultEvent {
+        private final String mCode;
+        private final int mId;
+
+        public JSStringResultEvent(String code, int id) {
+            mCode = code;
+            mId = id;
+        }
+
+        public String getCode() {
+            return mCode;
+        }
+
+        public int getId() {
+            return mId;
+        }
+    }
+
     public GenericEventResourceInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);
     }
 
     @Subscribe
-    public void processResource(JSResourceEvent evnt) {
-        String jscode = evnt.getCode();
+    public void processResource(JSStringResultEvent event) {
+        String jscode = event.getCode();
+        int id = event.getId();
+        injectJSContentUnicode(String.format(mStringResultCommand, jscode, id));
+    }
+
+    @Subscribe
+    public void processResource(JSResourceEvent event) {
+        String jscode = event.getCode();
         injectJSContentUnicode(jscode);
     }
 }
