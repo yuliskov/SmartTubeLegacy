@@ -56,12 +56,7 @@ public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
 
     @Override
     public String getTimestamp() {
-        // random date within a year
-        int max = Integer.parseInt(mTimestamp);
-        int oneYear = 31_536_000;
-        int min = max - oneYear;
-        int randomNum = mRandrom.nextInt(max + 1 - min) + min;
-        return String.valueOf(randomNum);
+        return mTimestamp;
     }
 
     @Override

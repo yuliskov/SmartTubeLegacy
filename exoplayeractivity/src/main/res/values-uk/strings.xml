@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name_exo">Smart YouTube TV 4K</string>
+
+    <string name="options">Додатк</string>
+    <string name="home">Додому</string>
+    <string name="user_page">Пользов</string>
+    <string name="prev_video">Попер</string>
+    <string name="next_video">Слід</string>
+    <string name="pause">Пауза</string>
+    <string name="play">Грати</string>
+    <string name="dislike">Неподоб</string>
+    <string name="like">Подоб</string>
+    <string name="stats">Інформ</string>
+    <string name="subscribe">Підпис</string>
+    <string name="quality">Якість</string>
+    <string name="video">Відео</string>
+    <string name="audio">Аудіо</string>
+    <string name="text">Текст</string>
+    <string name="retry">Повтор</string>
+    <string name="selection_disabled">Відкл</string>
+    <string name="selection_default">Авто</string>
+    <string name="captions">Субтітри</string>
+    <string name="not_implemented_msg">Функціонал поки що не реалізован</string>
+    <string name="published">Опубліковано</string>
+    <string name="view_count">переглядів</string>
+</resources>
