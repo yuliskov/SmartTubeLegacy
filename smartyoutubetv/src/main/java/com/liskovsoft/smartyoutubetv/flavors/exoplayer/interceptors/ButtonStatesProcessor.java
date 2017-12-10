@@ -21,11 +21,11 @@ public class ButtonStatesProcessor implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
-    // TODO: fixme: remove delay (button uninitialized)
+    /**
+     * for details see {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector}
+     */
     private final String mStatesCommand = "JSON.stringify(helpers.getButtonStates())";
     private final String mDateCommand = "document.querySelector('.uploaded-date').innerHTML";
-    //private final String mStatesCommand = "setTimeout(function(){app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));}, 2000);";
-    //private final String mJSCommandString = "app.onGenericStringResult(JSON.stringify(helpers.getButtonStates()));";
     private final int mStatesId = new Random().nextInt();
     private final int mDateId = new Random().nextInt();
 

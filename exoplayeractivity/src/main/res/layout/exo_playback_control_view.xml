@@ -23,8 +23,12 @@
               android:layoutDirection="ltr"
               android:background="@drawable/exo_background_bottom"
               android:orientation="vertical"
-              android:padding="@dimen/player_main_padding">
+              android:paddingLeft="@dimen/player_main_padding"
+              android:paddingRight="@dimen/player_main_padding"
+              android:paddingBottom="@dimen/player_main_padding"
+              android:paddingTop="@dimen/player_main_padding">
 
+    <!-- top row (time bar) -->
     <LinearLayout
         android:id="@+id/time_bar"
         android:layout_width="match_parent"
@@ -67,6 +71,7 @@
 
     </LinearLayout>
 
+    <!-- middle row (player's controls) -->
     <FrameLayout
         android:id="@+id/buttons_bar"
         android:layout_width="match_parent"
@@ -102,9 +107,6 @@
                 android:id="@id/exo_prev"
                 style="@style/ExoMediaButton.Previous"/>
 
-            <!--<ImageButton android:id="@id/exo_rew"-->
-            <!--style="@style/ExoMediaButton.Rewind"/>-->
-
             <!-- NOTE: must be ImageButton (not visible) -->
             <ImageButton
                 android:id="@id/exo_repeat_toggle"
@@ -117,9 +119,6 @@
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_pause"
                 style="@style/ExoMediaButton.Pause"/>
-
-            <!--<ImageButton android:id="@id/exo_ffwd"-->
-            <!--style="@style/ExoMediaButton.FastForward"/>-->
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_next"
@@ -189,4 +188,20 @@
 
     </FrameLayout>
 
+    <!-- bottom row (thumbnail list) -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/player_second_padding"
+        android:paddingRight="@dimen/player_second_padding">
+
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+            android:id="@+id/exo_suggestions"
+            style="@style/ExoMediaButton.Suggestions"/>
+    </LinearLayout>
 </LinearLayout>

@@ -64,4 +64,5 @@
     <string name="not_implemented_msg">Not implemented yet</string>
     <string name="published">Published</string>
     <string name="view_count">views</string>
+    <string name="suggested_videos">Suggestions</string>
 </resources>

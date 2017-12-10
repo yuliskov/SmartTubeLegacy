@@ -101,6 +101,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String BUTTON_PREV = "button_prev";
     public static final String BUTTON_NEXT = "button_next";
     public static final String BUTTON_BACK = "button_back";
+    public static final String BUTTON_SUGGESTIONS = "button_suggestions";
     public static final String DELIMITER = "------";
     public static final String VIDEO_DATE = "video_date";
     public static final String VIDEO_TITLE = "video_title";

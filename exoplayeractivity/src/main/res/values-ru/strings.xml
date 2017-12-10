@@ -23,4 +23,5 @@
     <string name="not_implemented_msg">Функционал пока не реализован</string>
     <string name="published">Опубликовано</string>
     <string name="view_count">просмотров</string>
+    <string name="suggested_videos">Рекомендации</string>
 </resources>

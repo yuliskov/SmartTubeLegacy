@@ -26,9 +26,9 @@ public class PlayerPresenter {
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !intent.getExtras().containsKey(entry.getValue());
             if (isButtonDisabled) {
-                //Toast.makeText(mView, "Button is disabled", Toast.LENGTH_LONG).show();
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = (ToggleButtonBase) mView.findViewById(btnId);
+                // NOTE: if no such state then mark button as disabled
                 btn.disable();
                 continue;
             }
@@ -56,9 +56,13 @@ public class PlayerPresenter {
         boolean isSubtitleButton = button.getId() == R.id.exo_captions && isChecked;
         boolean isNextButton = button.getId() == R.id.exo_next && isChecked;
         boolean isPrevButton = button.getId() == R.id.exo_prev && isChecked;
-        
+        boolean isSuggestions = button.getId() == R.id.exo_suggestions && isChecked;
+
         if (isSubtitleButton)
             Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+
+        if (isSuggestions)
+            mView.moveTaskToBack(true);
 
         if (isUserPageButton    ||
             isNextButton        ||
@@ -70,7 +74,10 @@ public class PlayerPresenter {
     public Intent createResultIntent() {
         Intent resultIntent = new Intent();
         for (Map.Entry<Integer, Boolean> entry : mButtonStates.entrySet()) {
-            resultIntent.putExtra(mIdTagMapping.get(entry.getKey()), entry.getValue());
+            String realKey = mIdTagMapping.get(entry.getKey());
+            if (realKey == null)
+                continue;
+            resultIntent.putExtra(realKey, entry.getValue());
         }
         return resultIntent;
     }

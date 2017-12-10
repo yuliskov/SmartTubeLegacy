@@ -18,7 +18,8 @@ public class ActionBinder {
             PlayerActivity.BUTTON_USER_PAGE,
             PlayerActivity.BUTTON_PREV,
             PlayerActivity.BUTTON_NEXT,
-            PlayerActivity.BUTTON_BACK
+            PlayerActivity.BUTTON_BACK,
+            PlayerActivity.BUTTON_SUGGESTIONS
     };
 
     public ActionBinder(Context context, ExoInterceptor interceptor) {

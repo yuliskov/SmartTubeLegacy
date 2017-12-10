@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 
 public class GenericEventResourceInjector extends ResourceInjectorBase {
+    // TODO: fixme: remove delay (button uninitialized)
     private final String mStringResultCommand = "setTimeout(function(){app.onGenericStringResultWithId(%s, %s);}, 2000);";
 
     public static class GenericBooleanResultEvent {
