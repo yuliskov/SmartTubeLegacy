@@ -19,7 +19,7 @@ var GoogleConstants = {
     BUTTON_NEXT: ".icon-player-next",
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: ".back.no-model.legend-item",
-    BUTTON_SUGGESTIONS: ".fake_button"
+    BUTTON_SUGGESTIONS: "div" // fake button (internal logic)
 };
 
 function GoogleButton() {
@@ -76,7 +76,7 @@ function Helpers() {
 
     this.hasClass = function(elem, klass) {
         if (!elem) {
-            return false;
+            return null;
         }
         return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
     };
@@ -123,6 +123,7 @@ function Helpers() {
             console.log('Helpers.muteVideo called');
             // msg 4 future me
             // 'paused' video won't invoke history update
+            player.play();
             player.muted = true;
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
@@ -327,12 +328,6 @@ function YouButton(selector) {
 YouButton.prototype = new GoogleButton();
 YouButton.fromSelector = function(selector) {
     function createButton(selector) {
-        if (selector === GoogleConstants.BUTTON_USER_PAGE) {
-            return new UserPageButton(selector);
-        }
-        // if (selector === GoogleConstants.BUTTON_PREV) {
-        //     return new PrevButton(selector);
-        // }
         return new YouButton(selector);
     }
 
@@ -352,39 +347,5 @@ YouButton.resetCache = function() {
 };
 
 /////////// End Player Button ////////////////
-
-//////////// User Page Button Wrapper ///////////////
-
-function UserPageButton(selector) {
-    this.btn = new YouButton(selector);
-
-    this.getChecked = function() {
-        return this.btn.getChecked();
-    };
-
-    this.setChecked = function(doChecked) {
-        this.btn.setChecked(doChecked);
-        console.log("UserPageButton: skipping last history item");
-        if (doChecked)
-            helpers.skipLastHistoryItem();
-    };
-}
-
-function PrevButton(selector) {
-    this.btn = new YouButton(selector);
-
-    this.getChecked = function() {
-        return this.btn.getChecked();
-    };
-
-    this.setChecked = function(doChecked) {
-        this.btn.setChecked(doChecked);
-        console.log("PrevButton: prev button is disabled... going back");
-        if (this.btn.getChecked() === null)
-            YouButton.fromSelector(GoogleConstants.BUTTON_BACK).setChecked(true);
-    };
-}
-
-//////////// End User Page Button Wrapper ///////////////
 
 
