@@ -46,6 +46,7 @@ public class PlayerPresenter {
         mIdTagMapping.put(R.id.exo_subscribe, PlayerActivity.BUTTON_SUBSCRIBE);
         mIdTagMapping.put(R.id.exo_prev, PlayerActivity.BUTTON_PREV);
         mIdTagMapping.put(R.id.exo_next, PlayerActivity.BUTTON_NEXT);
+        mIdTagMapping.put(R.id.exo_suggestions, PlayerActivity.BUTTON_SUGGESTIONS);
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
@@ -61,12 +62,10 @@ public class PlayerPresenter {
         if (isSubtitleButton)
             Toast.makeText(mView, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
 
-        if (isSuggestions)
-            mView.moveTaskToBack(true);
-
         if (isUserPageButton    ||
             isNextButton        ||
-            isPrevButton) {
+            isPrevButton        ||
+            isSuggestions) {
             mView.doGracefulExit();
         }
     }
