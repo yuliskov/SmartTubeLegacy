@@ -8,7 +8,8 @@ var PlayerActivity = {
     BUTTON_PREV: "button_prev",
     BUTTON_NEXT: "button_next",
     BUTTON_BACK: "button_back",
-    BUTTON_SUGGESTIONS: "button_suggestions"
+    BUTTON_SUGGESTIONS: "button_suggestions",
+    TRACK_ENDED: "track_ended"
 };
 
 var GoogleConstants = {
@@ -19,7 +20,8 @@ var GoogleConstants = {
     BUTTON_NEXT: ".icon-player-next",
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: ".back.no-model.legend-item",
-    BUTTON_SUGGESTIONS: "div" // fake button (internal logic)
+    BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
+    TRACK_ENDED: "track_ended" // fake button (use internal logic)
 };
 
 function GoogleButton() {
@@ -97,21 +99,6 @@ function Helpers() {
         return document.querySelectorAll(selector)[0];
     };
 
-    this.skipLastHistoryItem = function() {
-        console.log('Helpers.skipLastHistoryItem called');
-        var $this = this;
-        var listener = function(e) {
-            window.removeEventListener('popstate', listener);
-            console.log('Helpers.skipLastHistoryItem: running on popstate event');
-            // e.state is equal to the data-attribute of the last image we clicked
-            // window.history.go(-1);
-            // window.location.href = "/tv"
-            $this.muteVideo(); // fix background sound playing
-            $this.triggerEnter($this.backBtnSelector);
-        };
-        window.addEventListener('popstate', listener);
-    };
-
     this.muteVideo = function() {
         var player = document.getElementsByTagName('video')[0];
         if (!player)
@@ -124,6 +111,7 @@ function Helpers() {
             // msg 4 future me
             // 'paused' video won't invoke history update
             player.muted = true;
+            player.volume = 0
             player.play();
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
@@ -143,6 +131,8 @@ function Helpers() {
     this.getButtonStates = function() {
         YouButton.resetCache(); // activity just started
         var states = {};
+
+        this.muteVideo();
 
         // NOTE: we can't delay here so process in reverse order
         var reversedKeys = Object.keys(GoogleConstants).reverse();
@@ -328,6 +318,9 @@ function YouButton(selector) {
 YouButton.prototype = new GoogleButton();
 YouButton.fromSelector = function(selector) {
     function createButton(selector) {
+        if (selector === GoogleConstants.TRACK_ENDED) {
+            return new TrackEndFakeButton(selector);
+        }
         return new YouButton(selector);
     }
 
@@ -348,4 +341,28 @@ YouButton.resetCache = function() {
 
 /////////// End Player Button ////////////////
 
+/////////// YouButton Wrapper //////////////////
+
+function TrackEndFakeButton(selector) {
+    this.selector = selector;
+
+    this.getChecked = function() {
+        return null; // not exists
+    };
+
+    this.playerJumpToEnd = function() {
+        var player = document.getElementsByTagName('video')[0];
+        if (player) {
+            console.log("TrackEndFakeButton: jump to the end");
+            player.currentTime = player.duration;
+        }
+    };
+    this.setChecked = function(doChecked) {
+        console.log("FakeButton: clicking on the fake item");
+        if (doChecked)
+            this.playerJumpToEnd();
+    };
+}
+
+/////////// End YouButton Wrapper //////////////////
 

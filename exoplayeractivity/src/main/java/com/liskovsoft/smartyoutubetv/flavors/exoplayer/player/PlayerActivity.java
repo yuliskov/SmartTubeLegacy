@@ -108,6 +108,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String VIDEO_TITLE = "video_title";
     public static final String VIDEO_AUTHOR = "video_author";
     public static final String VIDEO_VIEWS = "video_views";
+    public static final String TRACK_ENDED = "track_ended";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -752,13 +753,13 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == Player.STATE_ENDED) {
-            // TODO: modified
-            doGracefulExit(PlayerActivity.BUTTON_NEXT);
+            doGracefulExit(PlayerActivity.TRACK_ENDED);
             
             showControls();
         }
         if (playbackState == Player.STATE_READY) {
-            mAutoFrameRateManager.apply();
+            // comment out until the behaviour will be fixed
+            // mAutoFrameRateManager.apply();
         }
         updateButtonVisibilities();
     }
