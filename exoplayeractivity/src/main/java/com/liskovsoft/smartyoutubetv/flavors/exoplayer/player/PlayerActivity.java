@@ -54,6 +54,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
@@ -139,6 +140,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private int mInterfaceVisibilityState;
     private PlayerPresenter mPresenter;
     private PlayerStateManager mStateManager;
+    private AutoFrameRateManager mAutoFrameRateManager;
 
     // Activity lifecycle
 
@@ -498,8 +500,6 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         if (needNewPlayer) {
             TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
 
-            //trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
-
             // TODO: modified: force all format support
             trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
                 @Override
@@ -579,6 +579,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugTextViewHelper(player, debugTextView);
             debugViewHelper.start();
+
+            mAutoFrameRateManager = new AutoFrameRateManager(this, player);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
@@ -754,6 +756,9 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             doGracefulExit(PlayerActivity.BUTTON_NEXT);
             
             showControls();
+        }
+        if (playbackState == Player.STATE_READY) {
+            mAutoFrameRateManager.apply();
         }
         updateButtonVisibilities();
     }

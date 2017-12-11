@@ -123,8 +123,8 @@ function Helpers() {
             console.log('Helpers.muteVideo called');
             // msg 4 future me
             // 'paused' video won't invoke history update
-            player.play();
             player.muted = true;
+            player.play();
             player.setAttribute('style', '-webkit-filter:brightness(0)');
         }
 
