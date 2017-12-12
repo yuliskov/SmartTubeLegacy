@@ -101,7 +101,12 @@ import java.util.Locale;
   }
 
   @Override
-  public void onPositionDiscontinuity() {
+  public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+    
+  }
+
+  @Override
+  public void onPositionDiscontinuity(int reason) {
     Log.d(TAG, "positionDiscontinuity");
   }
 
@@ -109,6 +114,11 @@ import java.util.Locale;
   public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
     Log.d(TAG, "playbackParameters " + String.format(
         "[speed=%.2f, pitch=%.2f]", playbackParameters.speed, playbackParameters.pitch));
+  }
+
+  @Override
+  public void onSeekProcessed() {
+
   }
 
   @Override
@@ -239,14 +249,14 @@ import java.util.Locale;
   }
 
   @Override
-  public void onAudioDisabled(DecoderCounters counters) {
-    Log.d(TAG, "audioDisabled [" + getSessionTimeString() + "]");
+  public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
+    printInternalError("audioTrackUnderrun [" + bufferSize + ", " + bufferSizeMs + ", "
+            + elapsedSinceLastFeedMs + "]", null);
   }
 
   @Override
-  public void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-    printInternalError("audioTrackUnderrun [" + bufferSize + ", " + bufferSizeMs + ", "
-        + elapsedSinceLastFeedMs + "]", null);
+  public void onAudioDisabled(DecoderCounters counters) {
+    Log.d(TAG, "audioDisabled [" + getSessionTimeString() + "]");
   }
 
   // VideoRendererEventListener

@@ -60,7 +60,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     }
 
     private WebResourceResponse cleanupDashInfo(String url) {
-        Response response = doOkHttpRequest(url);
+        Response response = Helpers.doOkHttpRequest(url);
         InputStream videoInfo = response.body().byteStream();
         Scanner s = new Scanner(videoInfo).useDelimiter("\\A");
         String queryUrl = s.hasNext() ? s.next() : "";
@@ -77,13 +77,6 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
         AppCompatActivity activity = (AppCompatActivity) mContext;
         activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
         activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
-    }
-
-    private String getVideoLink(String url) {
-        Response response = doOkHttpRequest(url);
-        InputStream videoInfo = response.body().byteStream();
-        VideoInfoParser parser = new YouTubeVideoInfoParser(videoInfo);
-        return parser.getHDVideoLink();
     }
 
     private void openExternalPlayer(String url) {

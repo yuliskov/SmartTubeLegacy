@@ -43,7 +43,7 @@ public class ActionBinder {
             result.put(buttonId, isChecked);
         }
         // fixes for old android
-        applyFixesForOldWebView(result);
+        // applyFixesForOldWebView(result);
         return result;
     }
 

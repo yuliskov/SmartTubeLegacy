@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
@@ -52,7 +53,7 @@ public class VideoInfoInterceptor extends RequestInterceptor {
             return null;
         }
 
-        Response response = doOkHttpRequest(url);
+        Response response = Helpers.doOkHttpRequest(url);
         VideoInfoBuilder videoInfoBuilder = new YouTubeVideoInfoBuilder(response.body().byteStream());
 
         Set<VideoFormat> supportedFormats = videoInfoBuilder.getSupportedFormats();

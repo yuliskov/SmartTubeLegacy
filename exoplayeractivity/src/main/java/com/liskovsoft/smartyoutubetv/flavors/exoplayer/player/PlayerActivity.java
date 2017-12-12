@@ -759,7 +759,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         }
         if (playbackState == Player.STATE_READY) {
             // comment out until the behaviour will be fixed
-            // mAutoFrameRateManager.apply();
+            mAutoFrameRateManager.apply();
         }
         updateButtonVisibilities();
     }
@@ -770,7 +770,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+        
+    }
+
+    @Override
+    public void onPositionDiscontinuity(int reason) {
         if (needRetrySource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
@@ -782,6 +787,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
         // Do nothing.
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
     }
 
     @Override

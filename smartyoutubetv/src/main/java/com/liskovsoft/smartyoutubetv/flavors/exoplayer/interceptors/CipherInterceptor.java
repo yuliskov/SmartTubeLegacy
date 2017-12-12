@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.CipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeEvent;
+import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 
@@ -46,7 +47,7 @@ public class CipherInterceptor extends RequestInterceptor {
     }
 
     private void cacheResponse(String url) {
-        Response response = doOkHttpRequest(url);
+        Response response = Helpers.doOkHttpRequest(url);
         InputStream is = response.body().byteStream();
         mJSDecipherCode = CipherUtils.extractDecipherCode(is);
     }

@@ -351,9 +351,9 @@ function TrackEndFakeButton(selector) {
     };
 
     this.playerJumpToEnd = function() {
-        var player = document.getElementsByTagName('video')[0];
+        var player = helpers.$('video');
         if (player) {
-            console.log("TrackEndFakeButton: jump to the end");
+            console.log("TrackEndFakeButton: before jump to the end: " + player.currentTime + " " + player.duration);
             player.currentTime = player.duration;
         }
     };

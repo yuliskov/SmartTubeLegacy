@@ -42,6 +42,40 @@ public class AutoFrameRateManager {
         Display display = mCtx.getWindowManager().getDefaultDisplay();
         WindowManager.LayoutParams windowLayoutParams = mCtx.getWindow().getAttributes();
 
+        Display.Mode bestMode = display.getMode();
+
+        for (Display.Mode candidate : display.getSupportedModes()) {
+            boolean refreshRateOk = candidate.getRefreshRate() > 49 &&
+                    candidate.getRefreshRate() < 51;
+            boolean resolutionOk = candidate.getPhysicalWidth() == bestMode.getPhysicalWidth() &&
+                    candidate.getPhysicalHeight() == bestMode.getPhysicalHeight();
+
+            if (!refreshRateOk) {
+                continue;
+            }
+
+            if (!resolutionOk) {
+                continue;
+            }
+
+            bestMode = candidate;
+        }
+
+        windowLayoutParams.preferredDisplayModeId = bestMode.getModeId();
+    }
+
+    private void prepareDisplayBAK(float fps) {
+        if (fps < 20) { // Hz
+            return;
+        }
+
+        if (Util.SDK_INT < 23) {
+            return;
+        }
+
+        Display display = mCtx.getWindowManager().getDefaultDisplay();
+        WindowManager.LayoutParams windowLayoutParams = mCtx.getWindow().getAttributes();
+
         float doubleFps = fps;
 
         if ((fps > 24.8 && fps < 25.2) || (fps > 29.7 && fps < 30.2)) doubleFps = fps * 2.0f;
