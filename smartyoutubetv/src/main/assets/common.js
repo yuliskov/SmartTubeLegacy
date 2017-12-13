@@ -268,9 +268,9 @@ function commonLogs() {
 
 ////////////////////////////////////////////
 
-console.log('common.js is starting...');
-
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
 // applyFakeResolution();
 // fixWrongPixelRatio();
 commonLogs();
+
+console.log('injecting common.js into ' + document.location.href);

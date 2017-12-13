@@ -23,4 +23,4 @@ applyCodecFixes({
     '': 'webm' // all devices (entry must be last in the list)
 });
 
-console.log('xwalk.js is starting...');
+console.log('injecting xwalk.js into ' + document.location.href);

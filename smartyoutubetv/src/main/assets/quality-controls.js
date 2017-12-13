@@ -695,3 +695,5 @@ function addQualityControls() {
 
 // add quality settings to video
 delayUntilPlayerBeInitialized(addQualityControls);
+
+console.log('injecting quality-controls.js into ' + document.location.href);

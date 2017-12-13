@@ -27,4 +27,4 @@ applyCodecFixes({
     '': 'webm' // all devices (entry must be last in the list)
 });
 
-console.log('webview.js is starting...');
+console.log('injecting webview.js into ' + document.location.href);

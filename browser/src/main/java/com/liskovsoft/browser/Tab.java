@@ -16,6 +16,7 @@
 
 package com.liskovsoft.browser;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -125,6 +126,8 @@ public class Tab implements PictureListener {
         if (getId() == -1) {
             mId = TabControl.getNextId();
         }
+
+        sLogger.info("Creating tab with id " + mId);
 
         // NOTE: state restored here!!!
         setWebView(w);
@@ -1344,6 +1347,7 @@ public class Tab implements PictureListener {
                                        SslError error) {
             mClient.onReceivedSslError(view, handler, error);
         }
+        @TargetApi(21)
         @Override
         public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
             mClient.onReceivedClientCertRequest(view, request);

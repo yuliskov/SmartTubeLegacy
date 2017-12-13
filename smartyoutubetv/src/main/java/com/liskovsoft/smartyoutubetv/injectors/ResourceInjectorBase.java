@@ -33,8 +33,8 @@ public abstract class ResourceInjectorBase {
             "parent.appendChild(element)" +
             "})()";
 
-    private static final String testJSFnTemplate = "function testInject(fileName){if (window[fileName]) return; window[fileName] = true; app.onJSFileInject(fileName)}; testInject('%s');";
-    private static final String testCSSFnTemplate = "function testInject(fileName){if (window[fileName]) return; window[fileName] = true; app.onCSSFileInject(fileName)}; testInject('%s');";
+    private static final String testJSFnTemplate = "(function (fileName){if (window[fileName]) return; window[fileName] = true; app.onJSFileInject(fileName)})('%s');";
+    private static final String testCSSFnTemplate = "(function (fileName){if (window[fileName]) return; window[fileName] = true; app.onCSSFileInject(fileName)})('%s');";
 
     private final EventHandler mHandler;
 

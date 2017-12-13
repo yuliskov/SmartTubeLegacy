@@ -369,3 +369,4 @@ function TrackEndFakeButton(selector) {
 
 /////////// End YouButton Wrapper //////////////////
 
+console.log('injecting exoplayer.js into ' + document.location.href);

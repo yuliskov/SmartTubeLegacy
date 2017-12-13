@@ -99,11 +99,10 @@ public class ControllerEventListener implements Controller.EventListener {
     }
 
     private void addJSInterface(Tab tab) {
-        if (mJS != null) {
-            return;
+        if (mJS == null) {
+            mJS = new WebViewJavaScriptInterface(mContext, tab);
         }
 
-        mJS = new WebViewJavaScriptInterface(mContext, tab);
         WebView webView = tab.getWebView();
         webView.addJavascriptInterface(mJS, "app");
     }
