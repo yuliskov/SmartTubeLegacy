@@ -325,11 +325,20 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     private Tab createNewTab(boolean incognito, boolean setActive, boolean useCurrent) {
-        Tab tab = mTabControl.createNewTab(incognito);
-        addTab(tab);
+        Tab tab = null;
+        if (useCurrent) {
+            tab = mTabControl.getCurrentTab();
+        }
+
+        if (tab == null) {
+            tab = mTabControl.createNewTab(incognito);
+            addTab(tab);
+        }
+
         if (setActive) {
             setActiveTab(tab);
         }
+
         return tab;
     }
 

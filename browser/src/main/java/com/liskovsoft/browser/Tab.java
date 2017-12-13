@@ -862,6 +862,7 @@ public class Tab implements PictureListener {
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
     private WebViewClient mWebViewClient = new WebViewClient() {
+        public boolean mFirstStarted;
         public boolean mLoadSuccess = true;
 
         private void onReceiveError() {
@@ -888,6 +889,11 @@ public class Tab implements PictureListener {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            // usually finish called after start
+            // but sometimes there is fake finish
+            if (!mFirstStarted)
+                return;
+
             mDisableOverrideUrlLoading = false;
             if (!isPrivateBrowsingEnabled()) {
                 sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
@@ -900,7 +906,9 @@ public class Tab implements PictureListener {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
+            // usually finish called after start
+            // but sometimes there is fake finish
+            mFirstStarted = true;
 
             mInPageLoad = true;
             mUpdateThumbnail = true;
