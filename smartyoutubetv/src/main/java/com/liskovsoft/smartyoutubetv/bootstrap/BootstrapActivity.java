@@ -130,8 +130,8 @@ public class BootstrapActivity extends ActivityBase {
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
-
         transferOriginData(intent);
+        
         startActivity(intent);
     }
 
