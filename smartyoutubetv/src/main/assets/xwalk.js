@@ -2,6 +2,7 @@
 
 // some devices have buggy codec support, so disable them
 applyCodecFixes({
+    'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9
     'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'OzoneHD (m201)': 'webm', // 4pda
     '3719C (Hi3719CV100)': 'webm', // SYTV > Disqus
