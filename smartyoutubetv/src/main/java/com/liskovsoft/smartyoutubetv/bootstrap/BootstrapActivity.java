@@ -116,7 +116,7 @@ public class BootstrapActivity extends ActivityBase {
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClassName(ctx, clazz);
-        intent.setData(getOriginData());
+        transferOriginData(intent);
 
         try {
             startActivity(intent);
@@ -131,11 +131,13 @@ public class BootstrapActivity extends ActivityBase {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
 
-        intent.setData(getOriginData());
+        transferOriginData(intent);
         startActivity(intent);
     }
 
-    private Uri getOriginData() {
-        return getIntent().getData();
+    private void transferOriginData(Intent intent) {
+        Intent origin = getIntent();
+        intent.setData(origin.getData());
+        intent.setAction(origin.getAction());
     }
 }
