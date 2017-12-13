@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
@@ -43,7 +44,7 @@ public class ActionBinder {
             result.put(buttonId, isChecked);
         }
         // fixes for old android
-        // applyFixesForOldWebView(result);
+        applyFixesForOldWebView(result);
         return result;
     }
 
@@ -54,6 +55,7 @@ public class ActionBinder {
         if (mContext instanceof SmartYouTubeTVExoXWalk) {
             return;
         }
+        // replace track_ended with button_next
         if (buttons.get(PlayerActivity.TRACK_ENDED)) {
             buttons.put(PlayerActivity.TRACK_ENDED, false);
             buttons.put(PlayerActivity.BUTTON_NEXT, true);

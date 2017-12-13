@@ -111,9 +111,8 @@ function Helpers() {
             // msg 4 future me
             // 'paused' video won't invoke history update
             player.muted = true;
-            player.volume = 0
-            player.play();
             player.setAttribute('style', '-webkit-filter:brightness(0)');
+            player.play();
         }
 
         function onLoadData() {
@@ -122,17 +121,19 @@ function Helpers() {
             player.removeEventListener('loadeddata', onLoadData);
         }
 
+        muteVideo();
+
         // load events: loadedmetadata, loadeddata
         player.addEventListener('loadeddata', onLoadData, false);
-        muteVideo();
     };
 
     // supply selector list
     this.getButtonStates = function() {
-        YouButton.resetCache(); // activity just started
-        var states = {};
-
         this.muteVideo();
+
+        YouButton.resetCache(); // activity just started
+
+        var states = {};
 
         // NOTE: we can't delay here so process in reverse order
         var reversedKeys = Object.keys(GoogleConstants).reverse();
@@ -152,6 +153,8 @@ function Helpers() {
     };
 
     this.syncButtons = function(states) {
+        this.muteVideo();
+
         YouButton.resetCache(); // activity just started
         console.log("Helpers.syncButtons: " + JSON.stringify(states));
         for (var key in PlayerActivity) {
