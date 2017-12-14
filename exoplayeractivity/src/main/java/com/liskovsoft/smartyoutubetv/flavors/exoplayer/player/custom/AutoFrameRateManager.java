@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import net.gtvbox.videoplayer.mediaengine.displaymode.DisplaySyncHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,10 +16,12 @@ import java.util.List;
 public class AutoFrameRateManager {
     private final PlayerActivity mCtx;
     private final SimpleExoPlayer mPlayer;
+    private final DisplaySyncHelper mSyncHelper;
 
     public AutoFrameRateManager(PlayerActivity ctx, SimpleExoPlayer player) {
         mCtx = ctx;
         mPlayer = player;
+        mSyncHelper = new DisplaySyncHelper(mCtx);
     }
 
     public void apply() {
@@ -27,10 +30,11 @@ public class AutoFrameRateManager {
         }
         Format videoFormat = mPlayer.getVideoFormat();
         float frameRate = videoFormat.frameRate;
-        prepareDisplay(frameRate);
+        int width = videoFormat.width;
+        mSyncHelper.syncDisplayMode(mCtx.getWindow(), width, frameRate);
     }
 
-    private void prepareDisplay(float fps) {
+    private void prepareDisplay1(float fps) {
         if (fps < 20) { // Hz
             return;
         }
@@ -64,7 +68,7 @@ public class AutoFrameRateManager {
         windowLayoutParams.preferredDisplayModeId = bestMode.getModeId();
     }
 
-    private void prepareDisplayBAK(float fps) {
+    private void prepareDisplay2(float fps) {
         if (fps < 20) { // Hz
             return;
         }
