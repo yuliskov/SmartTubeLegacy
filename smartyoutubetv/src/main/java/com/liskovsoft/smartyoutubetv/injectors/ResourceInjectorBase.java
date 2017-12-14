@@ -12,10 +12,12 @@ import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class ResourceInjectorBase {
     private final Context mContext;
-    private final WebView mWebView;
+    private final Set<WebView> mWebViews = new HashSet<>();
     private static final String cssInjectTemplate = "javascript:(function() {" +
             "var parent = document.getElementsByTagName('head').item(0);" +
             "var element = document.createElement('style');" +
@@ -65,10 +67,20 @@ public abstract class ResourceInjectorBase {
         }
     }
 
+    public ResourceInjectorBase(Context context) {
+        this(context, null);
+    }
+
     public ResourceInjectorBase(Context context, WebView webView) {
         mContext = context;
-        mWebView = webView;
+        if (webView != null)
+            mWebViews.add(webView);
         mHandler = new EventHandler(this);
+    }
+
+    public void add(WebView webView) {
+        if (webView != null)
+            mWebViews.add(webView);
     }
 
     /**
@@ -133,7 +145,9 @@ public abstract class ResourceInjectorBase {
     private void loadUrlSafe(final String content) {
         if(Looper.myLooper() == Looper.getMainLooper()) {
             // Current Thread is Main Thread.
-            mWebView.loadUrl(content);
+            for (WebView webView : mWebViews) {
+                webView.loadUrl(content);
+            }
             return;
         }
 
@@ -141,7 +155,9 @@ public abstract class ResourceInjectorBase {
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                mWebView.loadUrl(content);
+                for (WebView webView : mWebViews) {
+                    webView.loadUrl(content);
+                }
             }
         });
     }

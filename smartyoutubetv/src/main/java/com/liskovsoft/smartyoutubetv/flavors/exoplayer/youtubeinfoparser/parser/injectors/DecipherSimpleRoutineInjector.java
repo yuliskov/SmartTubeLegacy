@@ -25,6 +25,10 @@ public class DecipherSimpleRoutineInjector extends ResourceInjectorBase {
     private String mEventId;
     private int mId;
 
+    public DecipherSimpleRoutineInjector(Context context) {
+        this(context, null);
+    }
+
     public DecipherSimpleRoutineInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);

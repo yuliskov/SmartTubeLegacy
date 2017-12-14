@@ -10,13 +10,15 @@ import com.squareup.otto.Subscribe;
 
 public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     private final Context mContext;
-    private final WebView mWebView;
+
+    public MyJsCssTweaksInjector(Context context) {
+        this(context, null);
+    }
 
     public MyJsCssTweaksInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);
         mContext = context;
-        mWebView = webView;
     }
 
     public void inject() {

@@ -13,6 +13,10 @@ import java.util.TreeSet;
 public class VideoFormatInjector extends ResourceInjectorBase {
     private final Context mContext;
 
+    public VideoFormatInjector(Context context) {
+        this(context, null);
+    }
+
     public VideoFormatInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);

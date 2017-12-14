@@ -88,6 +88,10 @@ public class GenericEventResourceInjector extends ResourceInjectorBase {
         }
     }
 
+    public GenericEventResourceInjector(Context context) {
+        this(context, null);
+    }
+
     public GenericEventResourceInjector(Context context, WebView webView) {
         super(context, webView);
         Browser.getBus().register(this);

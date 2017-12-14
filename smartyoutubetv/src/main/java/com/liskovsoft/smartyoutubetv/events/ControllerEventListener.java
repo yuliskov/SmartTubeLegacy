@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.events;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,16 +26,19 @@ import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ControllerEventListener implements Controller.EventListener {
     private Context mContext;
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
-    private WebViewJavaScriptInterface mJS;
-    private MyJsCssTweaksInjector mInjector;
-    private VideoFormatInjector mNotification;
-    private DecipherSimpleRoutineInjector mDecipherRoutineInjector;
+    private final WebViewJavaScriptInterface mJSInterface;
+    private final MyJsCssTweaksInjector mTweakInjector;
+    private final VideoFormatInjector mFormatInjector;
+    private final DecipherSimpleRoutineInjector mDecipherRoutineInjector;
+    private final GenericEventResourceInjector mEventResourceInjector;
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
-    private GenericEventResourceInjector mEventResourceInjector;
     private final StateUpdater mStateUpdater;
 
     public ControllerEventListener(Context context, KeysTranslator translator) {
@@ -42,6 +46,12 @@ public class ControllerEventListener implements Controller.EventListener {
         mTranslator = translator;
         mStateUpdater = new StateUpdater(null, context);
         mLoadingManager = new LoadingManager(context);
+
+        mTweakInjector = new MyJsCssTweaksInjector(mContext);
+        mFormatInjector = new VideoFormatInjector(mContext);
+        mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
+        mEventResourceInjector = new GenericEventResourceInjector(mContext);
+        mJSInterface = new WebViewJavaScriptInterface(mContext);
     }
 
     @Override
@@ -98,26 +108,21 @@ public class ControllerEventListener implements Controller.EventListener {
         mStateUpdater.updateState(state);
     }
 
+    @TargetApi(17)
     private void addJSInterface(Tab tab) {
-        if (mJS == null) {
-            mJS = new WebViewJavaScriptInterface(mContext, tab);
-        }
+        mJSInterface.add(tab);
 
         WebView webView = tab.getWebView();
-        webView.addJavascriptInterface(mJS, "app");
+        webView.addJavascriptInterface(mJSInterface, "app");
     }
 
     private void injectWebFiles(WebView w) {
-        if (mInjector == null)
-            mInjector = new MyJsCssTweaksInjector(mContext, w);
-        if (mNotification == null)
-            mNotification = new VideoFormatInjector(mContext, w);
-        if (mDecipherRoutineInjector == null)
-            mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext, w);
-        if (mEventResourceInjector == null)
-            mEventResourceInjector = new GenericEventResourceInjector(mContext, w);
+        mTweakInjector.add(w);
+        mFormatInjector.add(w);
+        mDecipherRoutineInjector.add(w);
+        mEventResourceInjector.add(w);
 
-        mInjector.inject();
+        mTweakInjector.inject();
     }
 
     private void checkForUpdatesAfterDelay() {

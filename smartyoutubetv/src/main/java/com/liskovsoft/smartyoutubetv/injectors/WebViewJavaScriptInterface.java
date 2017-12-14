@@ -18,21 +18,34 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /*
  * JavaScript Interface. Web code can access methods in here
  * (as long as they have the @JavascriptInterface annotation)
  */
 public class WebViewJavaScriptInterface {
-    private final Tab mTab;
     private Context mContext;
+    private final Set<Tab> mTabs = new HashSet<>();
     private static final Logger sLogger = LoggerFactory.getLogger(WebViewJavaScriptInterface.class);
+
+    public WebViewJavaScriptInterface(Context context) {
+        this(context, null);
+    }
 
     /*
      * Need a reference to the context in order to sent a post message
      */
     public WebViewJavaScriptInterface(Context context, Tab tab) {
         mContext = context;
-        mTab = tab;
+        if (tab != null)
+            mTabs.add(tab);
+    }
+
+    public void add(Tab tab) {
+        if (tab != null)
+            mTabs.add(tab);
     }
 
     // TODO: not called in Android 8.0 (api 26)
@@ -90,7 +103,9 @@ public class WebViewJavaScriptInterface {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                mTab.reload();
+                for (Tab tab : mTabs) {
+                    tab.reload();
+                }
             }
         });
     }
