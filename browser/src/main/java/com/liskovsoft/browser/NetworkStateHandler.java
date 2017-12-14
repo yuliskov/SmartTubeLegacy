@@ -63,6 +63,7 @@ public class NetworkStateHandler {
     }
 
     void onResume() {
+        // NOTE: fix: leaked receiver. Are you missing a call to unregisterReceiver()?
         mActivity.registerReceiver(mNetworkStateIntentReceiver, mNetworkStateChangedFilter);
         BrowserSettings.getInstance().updateConnectionType();
     }

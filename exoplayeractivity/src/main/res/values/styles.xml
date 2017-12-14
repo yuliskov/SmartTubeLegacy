@@ -16,6 +16,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="PlayerTheme" parent="android:Theme.Holo">
+        <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
         <!-- NOTE: fix background on Android 8.0 -->

@@ -73,6 +73,7 @@ import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -214,6 +215,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         return getIntent().getStringExtra(PlayerActivity.VIDEO_TITLE);
     }
 
+    private String formatViews(String num) {
+        int no = Integer.parseInt(num);
+        String str = String.format(Locale.US, "%,d", no);
+        return str.replace(",", " ");
+    }
+
     public String getSecondTitle() {
         Intent intent = getIntent();
 
@@ -221,7 +228,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 "%s      %s      %s %s",
                 intent.getStringExtra(VIDEO_AUTHOR),
                 intent.getStringExtra(VIDEO_DATE),
-                intent.getStringExtra(VIDEO_VIEWS),
+                formatViews(intent.getStringExtra(VIDEO_VIEWS)),
                 getString(R.string.view_count)
         );
 
@@ -578,7 +585,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
-            debugViewHelper = new DebugTextViewHelper(player, debugTextView);
+            debugViewHelper = new DebugTextViewHelper(player, debugTextView, PlayerActivity.this);
             debugViewHelper.start();
 
             mAutoFrameRateManager = new AutoFrameRateManager(this, player);
