@@ -10,6 +10,7 @@ import android.view.Window;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class DisplaySyncHelper implements UhdHelperListener {
    static final String TAG = "DisplaySyncHelper";
@@ -19,43 +20,43 @@ public class DisplaySyncHelper implements UhdHelperListener {
    private boolean mSwitchToUHD;
 
    public DisplaySyncHelper(Context var1) {
-      SharedPreferences var2 = PreferenceManager.getDefaultSharedPreferences(var1);
-      this.mNeedDisplaySync = var2.getBoolean("display_rate_switch", false);
-      this.mSwitchToUHD = var2.getBoolean("switch_to_uhd", true);
+      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(var1);
+      this.mNeedDisplaySync = prefs.getBoolean("display_rate_switch", true);
+      this.mSwitchToUHD = prefs.getBoolean("switch_to_uhd", true);
    }
 
-   private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] var1, Display.Mode var2) {
-      ArrayList var5 = new ArrayList();
-      int var4 = var1.length;
+   private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
+      ArrayList<Display.Mode> newModes = new ArrayList<>();
+      int oldModesLen = oldModes.length;
 
-      for(int var3 = 0; var3 < var4; ++var3) {
-         Display.Mode var6 = var1[var3];
-         if (var6.getPhysicalHeight() == var2.getPhysicalHeight() && var6.getPhysicalWidth() == var2.getPhysicalWidth()) {
-            var5.add(var6);
+      for(int i = 0; i < oldModesLen; ++i) {
+         Display.Mode mode = oldModes[i];
+         if (mode.getPhysicalHeight() == currentMode.getPhysicalHeight() && mode.getPhysicalWidth() == currentMode.getPhysicalWidth()) {
+            newModes.add(mode);
          }
       }
 
-      return var5;
+      return newModes;
    }
 
-   private ArrayList<Display.Mode> filterUHDModes(Display.Mode[] var1) {
-      ArrayList var4 = new ArrayList();
-      int var3 = var1.length;
+   private ArrayList<Display.Mode> filterUHDModes(Display.Mode[] oldModes) {
+      ArrayList<Display.Mode> newModes = new ArrayList<>();
+      int modesNum = oldModes.length;
 
-      for(int var2 = 0; var2 < var3; ++var2) {
-         Display.Mode var5 = var1[var2];
-         Log.i("DisplaySyncHelper", "Check fo UHD: " + var5.getPhysicalWidth() + "x" + var5.getPhysicalHeight() + "@" + var5.getRefreshRate());
-         if (var5.getPhysicalHeight() >= 2160) {
+      for(int i = 0; i < modesNum; ++i) {
+         Display.Mode mode = oldModes[i];
+         Log.i("DisplaySyncHelper", "Check fo UHD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
+         if (mode.getPhysicalHeight() >= 2160) {
             Log.i("DisplaySyncHelper", "Found! UHD");
-            var4.add(var5);
+            newModes.add(mode);
          }
       }
 
-      if (var4.isEmpty()) {
+      if (newModes.isEmpty()) {
          Log.i("DisplaySyncHelper", "NO UHD MODES FOUND!!");
       }
 
-      return var4;
+      return newModes;
    }
 
    private Display.Mode findCloserMode(ArrayList<Display.Mode> var1, float var2) {
@@ -102,9 +103,9 @@ public class DisplaySyncHelper implements UhdHelperListener {
    }
 
    private boolean supportsDisplayModeChange() {
-      boolean var1 = true;
+      boolean result = true;
       if (VERSION.SDK_INT < 21) {
-         var1 = false;
+         result = false;
       } else {
          switch(VERSION.SDK_INT) {
          case 21:
@@ -120,7 +121,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
          }
       }
 
-      return var1;
+      return result;
    }
 
    public boolean displayModeSyncInProgress() {
@@ -135,45 +136,38 @@ public class DisplaySyncHelper implements UhdHelperListener {
       if (this.supportsDisplayModeChange() && videoWidth >= 10) {
          UhdHelper uhdHelper = new UhdHelper(this.mContext);
          Display.Mode[] modes = uhdHelper.getSupportedModes();
-         ArrayList var7 = new ArrayList();
-         boolean var5 = false;
-         boolean var4 = var5;
-         ArrayList var6 = var7;
+         boolean isUHD = false;
+         ArrayList<Display.Mode> resultModes = new ArrayList<>();
          if (this.mSwitchToUHD) {
-            var4 = var5;
-            var6 = var7;
             if (videoWidth > 1920) {
-               var7 = this.filterUHDModes(modes);
-               var4 = var5;
-               var6 = var7;
-               if (!var7.isEmpty()) {
-                  var4 = true;
-                  var6 = var7;
+               resultModes = this.filterUHDModes(modes);
+               if (!resultModes.isEmpty()) {
+                  isUHD = true;
                }
             }
          }
 
-         if (this.mNeedDisplaySync || var4) {
-            Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + this.mNeedDisplaySync + " Need UHD switch: " + var4);
-            Display.Mode var10 = uhdHelper.getMode();
-            if (!var4) {
-               var6 = this.filterSameResolutionModes(modes, var10);
+         if (this.mNeedDisplaySync || isUHD) {
+            Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + this.mNeedDisplaySync + " Need UHD switch: " + isUHD);
+            Display.Mode mode = uhdHelper.getMode();
+            if (!isUHD) {
+               resultModes = this.filterSameResolutionModes(modes, mode);
             }
 
-            Display.Mode var11 = this.findCloserMode(var6, videoFramerate);
-            if (var11 == null) {
+            Display.Mode closerMode = this.findCloserMode(resultModes, videoFramerate);
+            if (closerMode == null) {
                Log.i("DisplaySyncHelper", "Could not find closer refresh rate for " + videoFramerate + "fps");
                return false;
             }
 
-            Log.i("DisplaySyncHelper", "Found closer framerate: " + var11.getRefreshRate() + " for fps " + videoFramerate);
-            if (var11.equals(var10)) {
+            Log.i("DisplaySyncHelper", "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
+            if (closerMode.equals(mode)) {
                Log.i("DisplaySyncHelper", "Do not need to change mode.");
                return false;
             }
 
             uhdHelper.registerModeChangeListener(this);
-            uhdHelper.setPreferredDisplayModeId(window, var11.getModeId(), true);
+            uhdHelper.setPreferredDisplayModeId(window, closerMode.getModeId(), true);
             this.mDisplaySyncInProgress = true;
             return true;
          }

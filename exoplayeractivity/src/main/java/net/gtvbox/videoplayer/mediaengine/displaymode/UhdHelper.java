@@ -8,13 +8,15 @@ import android.content.IntentFilter;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.DisplayManager.DisplayListener;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Build.VERSION;
 import android.util.Log;
 import android.view.Display.Mode;
 import android.view.Window;
+import android.view.WindowManager.LayoutParams;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -103,8 +105,29 @@ public class UhdHelper {
       Log.i(TAG, "Sending the broadcast to hide display overlay");
    }
 
-   private void initModeChange(int param1, Field param2) {
-      // $FF: Couldn't be decompiled
+   private void initModeChange(int modeId, Field attributeFlagField) {
+       LayoutParams params = mTargetWindow.getAttributes();
+
+       try {
+           if (attributeFlagField == null) {
+               Class<? extends LayoutParams> aLayoutParams = params.getClass();
+               attributeFlagField = aLayoutParams.getDeclaredField(sPreferredDisplayModeIdFieldName);
+           }
+
+           attributeFlagField.setInt(params, modeId);
+           mTargetWindow.setAttributes(params);
+       } catch (Exception e) {
+           Message message2 = mWorkHandler.obtainMessage(0x3, 1,1);
+           mWorkHandler.sendMessage(message2);
+
+           throw new IllegalStateException(e);
+       }
+
+       Message message = mWorkHandler.obtainMessage(0x2);
+       mWorkHandler.sendMessageDelayed(message, 0x3a98);
+
+
+       // $FF: Couldn't be decompiled
    }
 
    private boolean isAmazonFireTVDevice() {
@@ -161,71 +184,69 @@ public class UhdHelper {
    }
 
    @TargetApi(17)
-   public void setPreferredDisplayModeId(Window var1, int var2, boolean var3) {
-      String var10 = Build.MODEL;
-      boolean var4 = true;
+   public void setPreferredDisplayModeId(Window targetWindow, int modeId, boolean allowOverlayDisplay) {
+      String model = Build.MODEL;
+      boolean deviceSupported = true;
       this.mWorkHandler.setCallbackListener(this.mListener);
       if (VERSION.SDK_INT < 21) {
-         var4 = false;
+         deviceSupported = false;
       } else {
          switch(VERSION.SDK_INT) {
          case 21:
          case 22:
             if (!this.isAmazonFireTVDevice()) {
-               var4 = false;
+               deviceSupported = false;
             }
          }
       }
 
-      if (!var4) {
-         Log.i(TAG, "Attempt to set preferred Display mode on an unsupported device: " + var10);
+      if (!deviceSupported) {
+         Log.i(TAG, "Attempt to set preferred Display mode on an unsupported device: " + model);
          this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
       } else {
          if (!this.isAmazonFireTVDevice()) {
-            var3 = false;
+            allowOverlayDisplay = false;
          }
 
          if (this.mIsSetModeInProgress.get()) {
             Log.e(TAG, "setPreferredDisplayModeId is already in progress! Cannot set another while it is in progress");
             this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, (Object)null));
          } else {
-            Display.Mode var15 = this.getMode();
-            if (var15 != null && var15.getModeId() != var2) {
-               Display.Mode[] var16 = this.getSupportedModes();
-               boolean var7 = false;
-               boolean var8 = false;
-               int var9 = var16.length;
-               int var5 = 0;
+            Display.Mode currentMode = this.getMode();
+            if (currentMode != null && currentMode.getModeId() != modeId) {
+               Display.Mode[] supportedModes = this.getSupportedModes();
+               int supportedModesLen = supportedModes.length;
+               int idx = 0;
 
-               boolean var6;
+               boolean modeIdSupported;
                while(true) {
-                  var6 = var7;
-                  var4 = var8;
-                  if (var5 >= var9) {
+                  modeIdSupported = false;
+                  deviceSupported = false;
+                  if (idx >= supportedModesLen) {
                      break;
                   }
 
-                  Display.Mode var11 = var16[var5];
-                  if (var11.getModeId() == var2) {
-                     if (var11.getPhysicalHeight() >= 2160) {
-                        var4 = true;
+                  Display.Mode mode = supportedModes[idx];
+                  if (mode.getModeId() == modeId) {
+                     if (mode.getPhysicalHeight() >= 2160) {
+                        deviceSupported = true;
                      } else {
-                        var4 = false;
+                        deviceSupported = false;
                      }
 
-                     var6 = true;
+                     modeIdSupported = true;
                      break;
                   }
 
-                  ++var5;
+                  ++idx;
                }
 
-               if (!var6) {
+               if (!modeIdSupported) {
                   Log.e(TAG, "Requested mode id not among the supported Mode Id.");
                   this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
                } else {
                   this.mIsSetModeInProgress.set(true);
-                  this.mWorkHandler.setExpectedMode(var2);
+                  this.mWorkHandler.setExpectedMode(modeId);
                   this.mContext.registerReceiver(this.overlayStateChangeReceiver, new IntentFilter("com.amazon.tv.notification.modeswitch_overlay.action.STATE_CHANGED"));
                   this.mDisplayListener = new DisplayListener() {
                      public void onDisplayAdded(int var1) {
@@ -241,21 +262,21 @@ public class UhdHelper {
                   };
                   this.mDisplayManager.registerDisplayListener(this.mDisplayListener, this.mWorkHandler);
                   this.isReceiversRegistered = true;
-                  this.mTargetWindow = var1;
-                  if (var3 && var4) {
-                     var3 = true;
+                  this.mTargetWindow = targetWindow;
+                  if (allowOverlayDisplay && deviceSupported) {
+                     allowOverlayDisplay = true;
                   } else {
-                     var3 = false;
+                     allowOverlayDisplay = false;
                   }
 
-                  this.showInterstitial = var3;
-                  Class var13 = this.mTargetWindow.getAttributes().getClass();
+                  this.showInterstitial = allowOverlayDisplay;
+                  Class aLayoutParams = this.mTargetWindow.getAttributes().getClass();
 
-                  Field var14;
+                  Field aPreferredDisplayModeId;
                   try {
-                     var14 = var13.getDeclaredField(this.sPreferredDisplayModeIdFieldName);
-                  } catch (Exception var12) {
-                     Log.e(TAG, var12.getLocalizedMessage());
+                     aPreferredDisplayModeId = aLayoutParams.getDeclaredField(this.sPreferredDisplayModeIdFieldName);
+                  } catch (Exception ex) {
+                     Log.e(TAG, ex.getLocalizedMessage());
                      this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
                      return;
                   }
@@ -265,12 +286,12 @@ public class UhdHelper {
                      this.showOptimizingOverlay();
                      this.mWorkHandler.sendMessageDelayed(this.mWorkHandler.obtainMessage(5), 2000L);
                   } else {
-                     this.initModeChange(var2, var14);
+                     this.initModeChange(modeId, aPreferredDisplayModeId);
                   }
                }
             } else {
                Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
-               this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, var15));
+               this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, currentMode));
             }
          }
       }
@@ -306,7 +327,19 @@ public class UhdHelper {
          super(var2);
       }
 
+      @TargetApi(17)
       private void doPostModeSetCleanup() {
+         mWorkHandler.removeMessages(0x2);
+          if (isReceiversRegistered) {
+              mDisplayManager.unregisterDisplayListener(mDisplayListener);
+              mContext.unregisterReceiver(overlayStateChangeReceiver);
+              isReceiversRegistered = false;
+          }
+
+          mWorkHandler.removeMessages(0x1);
+          mWorkHandler.mCallbackListener = null;
+          mIsSetModeInProgress.set(false);
+
          // $FF: Couldn't be decompiled
       }
 
