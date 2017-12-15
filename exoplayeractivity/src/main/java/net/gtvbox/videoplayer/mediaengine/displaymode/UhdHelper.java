@@ -39,10 +39,10 @@ public class UhdHelper {
    public static final String version = "v1.1";
    private int currentOverlayStatus;
    private boolean isInterstitialFadeReceived = false;
-   boolean isReceiversRegistered;
-   Context mContext;
-   DisplayListener mDisplayListener;
-   DisplayManager mDisplayManager;
+   private boolean isReceiversRegistered;
+   private final Context mContext;
+   private DisplayListener mDisplayListener;
+   private DisplayManager mDisplayManager;
    private Display mInternalDisplay;
    private AtomicBoolean mIsSetModeInProgress;
    private UhdHelperListener mListener;
@@ -59,27 +59,27 @@ public class UhdHelper {
    private String sSupportedModesMethodName = "getSupportedModes";
    private boolean showInterstitial = false;
 
-   public UhdHelper(Context var1) {
-      this.mContext = var1;
-      this.mInternalDisplay = new Display();
-      this.mIsSetModeInProgress = new AtomicBoolean(false);
-      this.mWorkHandler = new UhdHelper.WorkHandler(Looper.getMainLooper());
-      this.overlayStateChangeReceiver = new UhdHelper.OverlayStateChangeReceiver();
-      this.mDisplayManager = (DisplayManager)this.mContext.getSystemService("display");
-      this.isReceiversRegistered = false;
+   public UhdHelper(Context context) {
+      mContext = context;
+      mInternalDisplay = new Display();
+      mIsSetModeInProgress = new AtomicBoolean(false);
+      mWorkHandler = new UhdHelper.WorkHandler(Looper.getMainLooper());
+      overlayStateChangeReceiver = new UhdHelper.OverlayStateChangeReceiver();
+      mDisplayManager = (DisplayManager) mContext.getSystemService("display");
+      isReceiversRegistered = false;
    }
 
-   private Display.Mode convertReturnedModeToInternalMode(Object var1) {
+   private Display.Mode convertReturnedModeToInternalMode(Object mode) {
       try {
-         Class var6 = var1.getClass();
-         int var3 = (Integer)var6.getDeclaredMethod(this.sGetModeIdMethodName).invoke(var1);
-         int var4 = (Integer)var6.getDeclaredMethod(this.sGetPhysicalWidthMethodName).invoke(var1);
-         int var5 = (Integer)var6.getDeclaredMethod(this.sGetPhysicalHeightMethodName).invoke(var1);
-         float var2 = (Float)var6.getDeclaredMethod(this.sGetRefreshRateMethodName).invoke(var1);
-         Display.Mode var8 = this.mInternalDisplay.getModeInstance(var3, var4, var5, var2);
-         return var8;
-      } catch (Exception var7) {
-         Log.e(TAG, "error converting", var7);
+         Class<?> aMode = mode.getClass();
+         int id = (Integer)aMode.getDeclaredMethod(sGetModeIdMethodName).invoke(mode);
+         int width = (Integer)aMode.getDeclaredMethod(sGetPhysicalWidthMethodName).invoke(mode);
+         int height = (Integer)aMode.getDeclaredMethod(sGetPhysicalHeightMethodName).invoke(mode);
+         float rate = (Float)aMode.getDeclaredMethod(sGetRefreshRateMethodName).invoke(mode);
+         Display.Mode newMode = this.mInternalDisplay.getModeInstance(id, width, height, rate);
+         return newMode;
+      } catch (Exception ex) {
+         Log.e(TAG, "error converting", ex);
          return null;
       }
    }
