@@ -45,6 +45,7 @@ public class LanguageSelector implements OnClickListener {
         mLangMap.put(mActivity.getString(R.string.chinese_lang), "zh");
         mLangMap.put(mActivity.getString(R.string.ukrainian_lang), "uk");
         mLangMap.put(mActivity.getString(R.string.russian_lang), "ru");
+        mLangMap.put(mActivity.getString(R.string.german_lang), "de");
     }
 
     public void run() {

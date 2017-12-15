@@ -5,9 +5,18 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
 
-public class ExoPreferences implements ExoKeys {
+public final class ExoPreferences {
+    private static final String SELECTED_TRACK_ID = "selectedTrackId";
+    private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
+    private static ExoPreferences sInstance;
     private final Context mContext;
     private SharedPreferences mPrefs;
+
+    public static ExoPreferences instance(Context ctx) {
+        if (sInstance == null)
+            sInstance = new ExoPreferences(ctx);
+        return sInstance;
+    }
 
     public ExoPreferences(Context context) {
         mContext = context.getApplicationContext();
@@ -15,23 +24,23 @@ public class ExoPreferences implements ExoKeys {
     }
 
     public String getSelectedTrackId() {
-        return mPrefs.getString(ExoKeys.SELECTED_TRACK_ID, null);
+        return mPrefs.getString(SELECTED_TRACK_ID, null);
     }
 
     public void setSelectedTrackId(String id) {
         mPrefs.edit()
-                .putString(ExoKeys.SELECTED_TRACK_ID, id)
+                .putString(SELECTED_TRACK_ID, id)
                 .apply();
     }
 
 
     public int getSelectedTrackHeight() {
-        return mPrefs.getInt(ExoKeys.SELECTED_TRACK_HEIGHT, 0);
+        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 0);
     }
 
     public void setSelectedTrackHeight(int height) {
         mPrefs.edit()
-                .putInt(ExoKeys.SELECTED_TRACK_HEIGHT, height)
+                .putInt(SELECTED_TRACK_HEIGHT, height)
                 .apply();
     }
 

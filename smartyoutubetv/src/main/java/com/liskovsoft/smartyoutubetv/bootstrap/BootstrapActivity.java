@@ -1,23 +1,18 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
-import com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -34,7 +29,8 @@ public class BootstrapActivity extends ActivityBase {
         tryToRestoreLastActivity();
 
         super.onCreate(savedInstanceState);
-        initLayout();
+        setContentView(R.layout.activity_bootstrap);
+        initButtons();
 
         setupCrashLogs();
     }
@@ -45,11 +41,13 @@ public class BootstrapActivity extends ActivityBase {
         }
     }
 
-    private void initLayout() {
-        setContentView(R.layout.activity_bootstrap);
+    private void initButtons() {
+        initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
+        initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
+    }
 
-        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(R.id.chk_save_selection);
-        boolean isChecked = mPrefs.getBootstrapSaveSelection();
+    private void initCheckbox(int id, boolean isChecked) {
+        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(id);
         chkbox.setChecked(isChecked);
     }
 
@@ -63,7 +61,14 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
-        mPrefs.setBootstrapSaveSelection(b);
+        switch (checkBox.getId()) {
+            case R.id.chk_save_selection:
+                mPrefs.setBootstrapSaveSelection(b);
+                break;
+            case R.id.chk_autoframerate:
+                mPrefs.setBootstrapAutoframerate(b);
+                break;
+        }
     }
 
     private void tryToRestoreLastActivity() {

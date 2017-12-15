@@ -9,15 +9,16 @@ public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
     private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
+    private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
-    private static SmartPreferences mInstance;
+    private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
 
     public static SmartPreferences instance(Context ctx) {
-        if (mInstance == null)
-            mInstance = new SmartPreferences(ctx);
-        return mInstance;
+        if (sInstance == null)
+            sInstance = new SmartPreferences(ctx);
+        return sInstance;
     }
 
     private SmartPreferences(Context context) {
@@ -60,6 +61,17 @@ public final class SmartPreferences {
     public void setBootstrapSaveSelection(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_CHECKBOX_CHECKED, isChecked)
+                .apply();
+    }
+
+    public boolean getBootstrapAutoframerate() {
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setBootstrapAutoframerate(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, isChecked)
                 .apply();
     }
 

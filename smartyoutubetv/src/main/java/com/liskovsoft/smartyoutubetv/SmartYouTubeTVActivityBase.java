@@ -209,9 +209,14 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         return result;
     }
 
-    private String extractVideoIdFromUrl(String url) {
-        // https://www.youtube.com/watch?v=xtx33RuFCik
-        String[] patterns = {"v=(\\w*)", "/(\\w*)$"};
+    private String extractVideoParamsFromUrl(String url) {
+        // origin video: https://www.youtube.com/watch?v=xtx33RuFCik
+        // needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
+
+        // origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
+        // needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
+
+        String[] patterns = {"(v=\\w*)", "(list=\\w*)", "/(\\w*)$"};
         return runMultiMatcher(url, patterns);
     }
 
@@ -219,8 +224,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         if (uri == null)
             return null;
         String url = uri.toString();
-        String videoId = extractVideoIdFromUrl(url);
-        String videoUrlTemplate = "https://www.youtube.com/tv#/watch/video/control?v=%s";
+        String videoId = extractVideoParamsFromUrl(url);
+        String videoUrlTemplate = "https://www.youtube.com/tv#/watch/video/control?%s";
         String format = String.format(videoUrlTemplate, videoId);
         return Uri.parse(format);
     }

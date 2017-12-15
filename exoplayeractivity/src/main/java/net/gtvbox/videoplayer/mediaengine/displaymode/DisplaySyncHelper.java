@@ -21,7 +21,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
    public DisplaySyncHelper(Context var1) {
       SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(var1);
-      this.mNeedDisplaySync = prefs.getBoolean("display_rate_switch", true);
+      this.mNeedDisplaySync = prefs.getBoolean("display_rate_switch", false);
       this.mSwitchToUHD = prefs.getBoolean("switch_to_uhd", true);
    }
 
