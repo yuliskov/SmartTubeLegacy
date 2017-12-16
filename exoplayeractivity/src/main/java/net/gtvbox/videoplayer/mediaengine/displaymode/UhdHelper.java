@@ -179,15 +179,15 @@ public class UhdHelper {
        // $FF: Couldn't be decompiled
    }
 
-   public void registerModeChangeListener(UhdHelperListener var1) {
-      this.mListener = var1;
+   public void registerModeChangeListener(UhdHelperListener listener) {
+      mListener = listener;
    }
 
    @TargetApi(17)
    public void setPreferredDisplayModeId(Window targetWindow, int modeId, boolean allowOverlayDisplay) {
       String model = Build.MODEL;
       boolean deviceSupported = true;
-      this.mWorkHandler.setCallbackListener(this.mListener);
+      mWorkHandler.setCallbackListener(mListener);
       if (VERSION.SDK_INT < 21) {
          deviceSupported = false;
       } else {
@@ -202,19 +202,19 @@ public class UhdHelper {
 
       if (!deviceSupported) {
          Log.i(TAG, "Attempt to set preferred Display mode on an unsupported device: " + model);
-         this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
+         mWorkHandler.sendMessage(mWorkHandler.obtainMessage(3, 1, 1, null));
       } else {
          if (!this.isAmazonFireTVDevice()) {
             allowOverlayDisplay = false;
          }
 
-         if (this.mIsSetModeInProgress.get()) {
+         if (mIsSetModeInProgress.get()) {
             Log.e(TAG, "setPreferredDisplayModeId is already in progress! Cannot set another while it is in progress");
-            this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, (Object)null));
+            mWorkHandler.sendMessage(mWorkHandler.obtainMessage(3, null));
          } else {
             Display.Mode currentMode = this.getMode();
             if (currentMode != null && currentMode.getModeId() != modeId) {
-               Display.Mode[] supportedModes = this.getSupportedModes();
+               Display.Mode[] supportedModes = getSupportedModes();
                int supportedModesLen = supportedModes.length;
                int idx = 0;
 
@@ -243,12 +243,12 @@ public class UhdHelper {
 
                if (!modeIdSupported) {
                   Log.e(TAG, "Requested mode id not among the supported Mode Id.");
-                  this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
+                  mWorkHandler.sendMessage(mWorkHandler.obtainMessage(3, 1, 1, null));
                } else {
-                  this.mIsSetModeInProgress.set(true);
-                  this.mWorkHandler.setExpectedMode(modeId);
-                  this.mContext.registerReceiver(this.overlayStateChangeReceiver, new IntentFilter("com.amazon.tv.notification.modeswitch_overlay.action.STATE_CHANGED"));
-                  this.mDisplayListener = new DisplayListener() {
+                  mIsSetModeInProgress.set(true);
+                  mWorkHandler.setExpectedMode(modeId);
+                  mContext.registerReceiver(overlayStateChangeReceiver, new IntentFilter("com.amazon.tv.notification.modeswitch_overlay.action.STATE_CHANGED"));
+                  mDisplayListener = new DisplayListener() {
                      public void onDisplayAdded(int var1) {
                      }
 
@@ -260,38 +260,38 @@ public class UhdHelper {
                      public void onDisplayRemoved(int var1) {
                      }
                   };
-                  this.mDisplayManager.registerDisplayListener(this.mDisplayListener, this.mWorkHandler);
-                  this.isReceiversRegistered = true;
-                  this.mTargetWindow = targetWindow;
+                  mDisplayManager.registerDisplayListener(mDisplayListener, mWorkHandler);
+                  isReceiversRegistered = true;
+                  mTargetWindow = targetWindow;
                   if (allowOverlayDisplay && deviceSupported) {
                      allowOverlayDisplay = true;
                   } else {
                      allowOverlayDisplay = false;
                   }
 
-                  this.showInterstitial = allowOverlayDisplay;
-                  Class aLayoutParams = this.mTargetWindow.getAttributes().getClass();
+                  showInterstitial = allowOverlayDisplay;
+                  Class aLayoutParams = mTargetWindow.getAttributes().getClass();
 
                   Field aPreferredDisplayModeId;
                   try {
-                     aPreferredDisplayModeId = aLayoutParams.getDeclaredField(this.sPreferredDisplayModeIdFieldName);
+                     aPreferredDisplayModeId = aLayoutParams.getDeclaredField(sPreferredDisplayModeIdFieldName);
                   } catch (Exception ex) {
                      Log.e(TAG, ex.getLocalizedMessage());
                      this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, (Object)null));
                      return;
                   }
 
-                  if (this.showInterstitial) {
-                     this.isInterstitialFadeReceived = false;
-                     this.showOptimizingOverlay();
-                     this.mWorkHandler.sendMessageDelayed(this.mWorkHandler.obtainMessage(5), 2000L);
+                  if (showInterstitial) {
+                     isInterstitialFadeReceived = false;
+                     showOptimizingOverlay();
+                     mWorkHandler.sendMessageDelayed(mWorkHandler.obtainMessage(5), 2000L);
                   } else {
-                     this.initModeChange(modeId, aPreferredDisplayModeId);
+                     initModeChange(modeId, aPreferredDisplayModeId);
                   }
                }
             } else {
                Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
-               this.mWorkHandler.sendMessage(this.mWorkHandler.obtainMessage(3, 1, 1, currentMode));
+               mWorkHandler.sendMessage(mWorkHandler.obtainMessage(3, 1, 1, currentMode));
             }
          }
       }

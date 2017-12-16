@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name_exo">Smart YouTube TV 4K</string>
+
+    <string name="options">Optionen</string>
+    <string name="home">Zuhause</string>
+    <string name="user_page">Benutzer</string>
+    <string name="prev_video">Bisherige</string>
+    <string name="next_video">Nächster</string>
+    <string name="pause">Pause</string>
+    <string name="play">Abspielen</string>
+    <string name="dislike">Nicht gefallen</string>
+    <string name="like">Gefällt</string>
+    <string name="stats">Informationen</string>
+    <string name="subscribe">Abonnieren</string>
+    <string name="quality">Qualität</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="text">Text</string>
+    <string name="retry">Wiederholen</string>
+    <string name="selection_disabled">Behindert</string>
+    <string name="selection_default">Standard</string>
+    <string name="captions">Bildunterschriften</string>
+    <string name="not_implemented_msg">Noch nicht implementiert</string>
+    <string name="published">Veröffentlicht</string>
+    <string name="view_count">ansichten</string>
+    <string name="suggested_videos">Empfohlen</string>
+</resources>

@@ -216,7 +216,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         // origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
         // needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
 
-        String[] patterns = {"(v=\\w*)", "(list=\\w*)", "/(\\w*)$"};
+        String[] patterns = {"(list=\\w*)", "(v=\\w*)", "/(\\w*)$"};
         return runMultiMatcher(url, patterns);
     }
 

@@ -113,23 +113,13 @@ public final class DebugTextViewHelper implements Runnable, Player.EventListener
     }
 
     @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity(int reason) {
+    public void onPositionDiscontinuity() {
         updateAndPost();
     }
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
         // Do nothing.
-    }
-
-    @Override
-    public void onSeekProcessed() {
-
     }
 
     @Override
@@ -233,7 +223,7 @@ public final class DebugTextViewHelper implements Runnable, Player.EventListener
             return "";
         }
         counters.ensureUpdated();
-        return " rb:" + counters.renderedOutputBufferCount + " sb:" + counters.skippedOutputBufferCount + " db:" + counters.droppedBufferCount + " mcdb:" + counters.maxConsecutiveDroppedBufferCount;
+        return " rb:" + counters.renderedOutputBufferCount + " sb:" + counters.skippedOutputBufferCount + " db:" + counters.droppedOutputBufferCount + " mcdb:" + counters.maxConsecutiveDroppedOutputBufferCount;
     }
 
     private static String getPixelAspectRatioString(float pixelAspectRatio) {

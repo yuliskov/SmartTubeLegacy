@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="webview_desc">MiBox, FireTV usw</string>
+    <string name="xwalk_desc">MiTV usw</string>
+    <string name="exo_desc">4K: MiTV usw</string>
+    <string name="exo_desc2">4K: alt</string>
+    <string name="bootstrap_main_title">Bitte wählen sie die version von YouTube</string>
+    <string name="starting_popup">Ausgehend vom Haupt-Launcher</string>
+    <string name="save_selection">Merken</string>
+    <string name="bootstrap_bottom_title">Wenn Sie sich nicht sicher sind, versuchen Sie die Trägerraketen nacheinander</string>
+    <string name="starting_popup_fmt">Den %s Launcher starten...</string>
+    <string name="loading_bottom_msg">Drücken Sie die Zurück-Taste, um zum Launcher-Dialog zurückzukehren</string>
+    <string name="language_dialog_title">Sprache auswählen</string>
+    <string name="system_lang">Standard</string>
+    <string name="language">Sprache</string>
+</resources>
