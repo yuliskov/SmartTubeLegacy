@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-rotate android:drawable="@drawable/spinner_black_76" android:pivotX="50.0%" android:pivotY="50.0%" android:frameDuration="100" android:framesCount="12"
+  xmlns:android="http://schemas.android.com/apk/res/android" />

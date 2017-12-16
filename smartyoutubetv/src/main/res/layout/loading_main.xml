@@ -6,7 +6,7 @@
                 android:background="@drawable/default_bg">
 
     <ProgressBar
-        android:indeterminateDrawable="@drawable/progress_circle"
+        android:indeterminateDrawable="@drawable/progress_large_holo"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:id="@+id/progressBar1"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <rotate android:drawable="@drawable/spinner_76_outer_holo" android:fromDegrees="0.0" android:toDegrees="1080.0" android:pivotX="50.0%" android:pivotY="50.0%" />
+    </item>
+    <item>
+        <rotate android:drawable="@drawable/spinner_76_inner_holo" android:fromDegrees="720.0" android:toDegrees="0.0" android:pivotX="50.0%" android:pivotY="50.0%" />
+    </item>
+</layer-list>
