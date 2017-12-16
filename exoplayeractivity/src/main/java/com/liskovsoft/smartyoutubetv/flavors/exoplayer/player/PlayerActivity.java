@@ -217,8 +217,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private String formatViews(String num) {
         int no = Integer.parseInt(num);
-        String str = String.format(Locale.US, "%,d", no);
-        return str.replace(",", " ");
+        String str = String.format("%,d", no);
+        return str;
     }
 
     public String getSecondTitle() {

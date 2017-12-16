@@ -33,6 +33,7 @@
         android:id="@+id/text_button"/>
 
     <TextView
+        android:gravity="center_horizontal"
         android:maxLines="1"
         android:textSize="@dimen/toggle_button_text_size"
         android:textColor="@color/white"

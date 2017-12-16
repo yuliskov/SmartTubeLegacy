@@ -42,5 +42,5 @@
                 android:id="@+id/chk_autoframerate"/>
         </LinearLayout>
     </LinearLayout>
-    <TextView android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
+    <TextView android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
 </RelativeLayout>
