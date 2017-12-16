@@ -13,4 +13,5 @@
     <string name="language_dialog_title">Оберіть мову</string>
     <string name="system_lang">За-замовчуванням</string>
     <string name="language">Мова</string>
+    <string name="autoframerate">Автофреймрейт</string>
 </resources>

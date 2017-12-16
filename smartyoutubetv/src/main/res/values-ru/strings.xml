@@ -13,4 +13,5 @@
     <string name="language_dialog_title">Выберите язык</string>
     <string name="system_lang">По-умолчанию</string>
     <string name="language">Язык</string>
+    <string name="autoframerate">Автофреймрейт</string>
 </resources>
