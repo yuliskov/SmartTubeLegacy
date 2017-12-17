@@ -8,14 +8,16 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.webkit.WebView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handle network state changes
  */
 public class NetworkStateHandler {
-
-    Activity mActivity;
-    Controller mController;
+    private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
+    private Activity mActivity;
+    private Controller mController;
 
     // monitor platform changes
     private IntentFilter mNetworkStateChangedFilter;
@@ -41,11 +43,15 @@ public class NetworkStateHandler {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-
                     NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-                    String typeName = info.getTypeName();
-                    String subtypeName = info.getSubtypeName();
-                    sendNetworkType(typeName.toLowerCase(), (subtypeName != null ? subtypeName.toLowerCase() : ""));
+                    if (info != null) {
+                        String typeName = info.getTypeName();
+                        String subtypeName = info.getSubtypeName();
+                        sendNetworkType(typeName.toLowerCase(), (subtypeName != null ? subtypeName.toLowerCase() : ""));
+                    } else {
+                        logger.warn("Intent doesn't contain EXTRA_NETWORK_INFO");
+                    }
+
                     BrowserSettings.getInstance().updateConnectionType();
 
                     boolean noConnection = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);

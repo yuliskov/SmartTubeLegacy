@@ -356,33 +356,33 @@ public class UhdHelper {
          this.mCallbackListener = var1;
       }
 
-      public void handleMessage(Message var1) {
-         switch(var1.what) {
+      public void handleMessage(Message msg) {
+         switch(msg.what) {
          case 1:
-            Display.Mode var2 = UhdHelper.this.getMode();
-            if (var2 == null) {
+            Display.Mode mode = UhdHelper.this.getMode();
+            if (mode == null) {
                Log.w(UhdHelper.TAG, "Mode query returned null after onDisplayChanged callback");
                return;
             }
 
-            if (var2.getModeId() == this.mRequestedModeId) {
-               Log.i(UhdHelper.TAG, "Callback for expected change Id= " + this.mRequestedModeId);
-               this.maybeDoACallback(var2);
-               this.doPostModeSetCleanup();
+            if (mode.getModeId() == mRequestedModeId) {
+               Log.i(UhdHelper.TAG, "Callback for expected change Id= " + mRequestedModeId);
+               maybeDoACallback(mode);
+               doPostModeSetCleanup();
                return;
             }
 
-            Log.w(UhdHelper.TAG, "Callback received but not expected mode. Mode= " + var2 + " expected= " + this.mRequestedModeId);
+            Log.w(UhdHelper.TAG, "Callback received but not expected mode. Mode= " + mode + " expected= " + this.mRequestedModeId);
             return;
          case 2:
             Log.i(UhdHelper.TAG, "Time out without mode change");
-            this.maybeDoACallback((Display.Mode)null);
-            this.doPostModeSetCleanup();
+            maybeDoACallback(null);
+            doPostModeSetCleanup();
             return;
          case 3:
-            this.maybeDoACallback((Display.Mode)var1.obj);
-            if (var1.arg1 == 1) {
-               this.doPostModeSetCleanup();
+            maybeDoACallback((Display.Mode)msg.obj);
+            if (msg.arg1 == 1) {
+               doPostModeSetCleanup();
                return;
             }
             break;

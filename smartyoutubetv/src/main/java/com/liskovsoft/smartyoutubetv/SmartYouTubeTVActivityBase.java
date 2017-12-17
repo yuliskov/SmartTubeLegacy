@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.custom.MainBrowserActivity;
 import com.liskovsoft.browser.custom.SimpleUIController;

@@ -305,8 +305,10 @@ import java.util.Arrays;
 
         // save immediately
         onClick(null, 0);
+
         // close dialog
-        alertDialog.dismiss();
+        if (alertDialog != null)
+            alertDialog.dismiss();
         alertDialog = null;
     }
 
