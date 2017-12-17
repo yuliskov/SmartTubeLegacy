@@ -25,6 +25,7 @@ var GoogleConstants = {
 };
 
 function GoogleButton() {
+    this.hiddenClass = 'hidden';
     this.disabledClass = 'disabled';
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
@@ -32,6 +33,9 @@ function GoogleButton() {
     this.bottomBarSelector = '#transport-controls';
     this.bottomBarControllerSelector = '#watch';
     this.controlsBarSelector = '#buttons-list';
+    this.playButtonSelector = ".icon-player-play.toggle-button";
+    this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
+    this.keysContainerSelector = '#watch';
 }
 
 ////////// End GoogleButton //////////////////
@@ -71,6 +75,12 @@ function Helpers() {
         }
     };
 
+    this.triggerButton = function(keyCode) {
+        var container = this.$(this.keysContainerSelector);
+        var type = 'keydown';
+        this.triggerEvent(container, type, keyCode);
+    };
+
     this.triggerEnter = function(selector) {
         // simulate mouse/enter key press
         this.triggerEvent(selector, 'keyup', 13);
@@ -90,6 +100,16 @@ function Helpers() {
         }
         var hasClass = this.hasClass(el, this.disabledClass);
         console.log("Helpers.isDisabled: " + element + " " + hasClass);
+        return hasClass;
+    };
+
+    this.isHidden = function(element) {
+        var el = element;
+        if (isSelector(element)) {
+            el = this.$(element);
+        }
+        var hasClass = this.hasClass(el, this.hiddenClass);
+        console.log("Helpers.isHidden: " + element + " " + hasClass);
         return hasClass;
     };
 
@@ -166,7 +186,11 @@ function Helpers() {
             var btn = YouButton.fromSelector(selector);
             btn.setChecked(isChecked);
         }
-    }
+    };
+
+    this.sendAction = function() {
+        // TODO: add code that sends string constant to activity
+    };
 }
 
 Helpers.prototype = new GoogleButton();
@@ -324,6 +348,9 @@ YouButton.fromSelector = function(selector) {
         if (selector === GoogleConstants.TRACK_ENDED) {
             return new TrackEndFakeButton(selector);
         }
+        if (selector === GoogleConstants.BUTTON_SUGGESTIONS) {
+            return new SuggestionsFakeButton(selector);
+        }
         return new YouButton(selector);
     }
 
@@ -349,10 +376,6 @@ YouButton.resetCache = function() {
 function TrackEndFakeButton(selector) {
     this.selector = selector;
 
-    this.getChecked = function() {
-        return null; // not exists
-    };
-
     this.playerJumpToEnd = function() {
         var player = helpers.$('video');
         if (player) {
@@ -360,12 +383,62 @@ function TrackEndFakeButton(selector) {
             player.currentTime = player.duration;
         }
     };
+
+    this.getChecked = function() {
+        return null; // not exists
+    };
+
     this.setChecked = function(doChecked) {
         console.log("FakeButton: clicking on the fake item");
         if (doChecked)
             this.playerJumpToEnd();
     };
 }
+
+function SuggestionsFakeButton(selector) {
+    this.selector = selector;
+    this.CLOSE_SUGGESTIONS = "action_close_suggestions";
+
+    function KeyUpDownWatcher(host) {
+        this.host = host;
+        
+    }
+
+    this.isMainControlsHidden = function() {
+        return helpers.isHidden(this.mainControlsSelector);
+    };
+
+    this.openSuggestions = function() {
+        console.log("SuggestionsFakeButton: showing suggestions list");
+
+        // disable interface auto-hide by pausing a video
+
+        var downCode = 40;
+        // we assume that no interface currently shown
+        // press twice
+        helpers.triggerButton(downCode);
+        helpers.triggerButton(downCode);
+
+        // start point
+        this.watcher = new KeyUpDownWatcher(this);
+    };
+
+    this.needToCloseSuggestions = function() {
+        helpers.sendAction(this.CLOSE_SUGGESTIONS);
+    };
+
+    this.getChecked = function() {
+        return false; // not exists
+    };
+
+    this.setChecked = function(doChecked) {
+        console.log("FakeButton: clicking on the fake item");
+        if (doChecked) // fake btn can only be checked
+            this.openSuggestions();
+    };
+}
+
+SuggestionsFakeButton.prototype = new GoogleButton();
 
 /////////// End YouButton Wrapper //////////////////
 
