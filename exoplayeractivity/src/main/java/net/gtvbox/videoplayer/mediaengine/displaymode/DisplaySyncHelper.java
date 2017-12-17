@@ -24,7 +24,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
         mContext = context;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         mNeedDisplaySync = prefs.getBoolean("display_rate_switch", false);
-        mSwitchToUHD = prefs.getBoolean("switch_to_uhd", true);
+        mSwitchToUHD = prefs.getBoolean("switch_to_uhd", false);
     }
 
     private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
@@ -124,33 +124,33 @@ public class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public boolean displayModeSyncInProgress() {
-        return this.mDisplaySyncInProgress;
+        return mDisplaySyncInProgress;
     }
 
     public void onModeChanged(Display.Mode var1) {
-        this.mDisplaySyncInProgress = false;
+        mDisplaySyncInProgress = false;
     }
 
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
-        if (this.supportsDisplayModeChange() && videoWidth >= 10) {
+        if (supportsDisplayModeChange() && videoWidth >= 10) {
             UhdHelper uhdHelper = new UhdHelper(mContext);
             Display.Mode[] modes = uhdHelper.getSupportedModes();
             boolean isUHD = false;
             ArrayList<Display.Mode> resultModes = new ArrayList<>();
-            if (this.mSwitchToUHD) {
+            if (mSwitchToUHD) {
                 if (videoWidth > 1920) {
-                    resultModes = this.filterUHDModes(modes);
+                    resultModes = filterUHDModes(modes);
                     if (!resultModes.isEmpty()) {
                         isUHD = true;
                     }
                 }
             }
 
-            if (this.mNeedDisplaySync || isUHD) {
-                Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + this.mNeedDisplaySync + " Need UHD switch: " + isUHD);
+            if (mNeedDisplaySync || isUHD) {
+                Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + mNeedDisplaySync + " Need UHD switch: " + isUHD);
                 Display.Mode mode = uhdHelper.getMode();
                 if (!isUHD) {
-                    resultModes = this.filterSameResolutionModes(modes, mode);
+                    resultModes = filterSameResolutionModes(modes, mode);
                 }
 
                 Display.Mode closerMode = findCloserMode(resultModes, videoFramerate);

@@ -216,7 +216,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private String formatViews(String num) {
-        int no = Integer.parseInt(num);
+        long no = Long.parseLong(num);
         String str = String.format("%,d", no);
         return str;
     }
