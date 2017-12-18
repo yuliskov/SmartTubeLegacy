@@ -3,10 +3,14 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
+import android.os.Handler;
+import android.widget.Toast;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
+import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +29,34 @@ public class ActionBinder {
             PlayerActivity.BUTTON_SUGGESTIONS,
             PlayerActivity.TRACK_ENDED
     };
+    private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private final GenericStringResultReceiver mReceiver;
+
+    private class GenericStringResultReceiver {
+        private int counter;
+
+        public GenericStringResultReceiver() {
+            Browser.getBus().register(this);
+        }
+
+        @Subscribe
+        public void onGenericStringResult(GenericStringResultEvent event) {
+            String action = event.getResult();
+            if (action.equals(CLOSE_SUGGESTIONS)) {
+                new Handler(mContext.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "CLOSE_SUGGESTIONS: " + counter++, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }
+    }
 
     public ActionBinder(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
+        mReceiver = new GenericStringResultReceiver();
     }
 
     public void bindActions(Intent intent) {

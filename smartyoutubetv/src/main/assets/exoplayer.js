@@ -188,8 +188,13 @@ function Helpers() {
         }
     };
 
-    this.sendAction = function() {
-        // TODO: add code that sends string constant to activity
+    this.sendAction = function(action) {
+        // code that sends string constant to activity
+        if (app && app.onGenericStringResult) {
+            app.onGenericStringResult(action);
+        } else {
+            console.log('Helpers: app not found');
+        }
     };
 }
 
@@ -216,16 +221,6 @@ function YouButtonInitializer(btn) {
     };
 
     this.doCallbackIfReady = function(callback) {
-        // var obj = helpers.$(this.btn.selector);
-        // if (obj && (obj.children.length >= 1)) {
-        //     console.log('YouButtonInitializer.initBtn: doing un-delayed call: ' + this.btn.selector);
-        //     callback();
-        //     this.callbackStack.shift();
-        //     if (this.callbackStack[0])
-        //         this.callbackStack[0]();
-        //     return;
-        // }
-
         var $this = this;
         var timeout = 1000; // timeout until Options show on/off
         setTimeout(function() {
@@ -401,8 +396,20 @@ function SuggestionsFakeButton(selector) {
 
     function KeyUpDownWatcher(host) {
         this.host = host;
-        
+        var container = helpers.$(this.keysContainerSelector);
+        var type = 'keydown';
+        var up = 38;
+        var $this = this;
+        container.addEventListener(type, function(e) {
+            var code = e.keyCode;
+            if (code === up) {
+                $this.host.needToCloseSuggestions();
+            }
+            console.log("SuggestionsFakeButton: on keydown: " + code);
+        });
     }
+
+    KeyUpDownWatcher.prototype = new GoogleButton();
 
     this.isMainControlsHidden = function() {
         return helpers.isHidden(this.mainControlsSelector);
@@ -425,6 +432,7 @@ function SuggestionsFakeButton(selector) {
 
     this.needToCloseSuggestions = function() {
         helpers.sendAction(this.CLOSE_SUGGESTIONS);
+        console.log("SuggestionsFakeButton: needToCloseSuggestions");
     };
 
     this.getChecked = function() {
