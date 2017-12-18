@@ -48,6 +48,10 @@ public class CipherInterceptor extends RequestInterceptor {
 
     private void cacheResponse(String url) {
         Response response = Helpers.doOkHttpRequest(url);
+        if (response == null) {
+            return;
+        }
+
         InputStream is = response.body().byteStream();
         mJSDecipherCode = CipherUtils.extractDecipherCode(is);
     }

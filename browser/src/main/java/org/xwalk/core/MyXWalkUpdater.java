@@ -13,6 +13,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build.VERSION;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
@@ -518,10 +520,30 @@ public class MyXWalkUpdater {
             mDialogManager.dismissDialog();
 
             Log.d(TAG, "Install the Crosswalk runtime: " + uri.toString());
+
+            installPackage(uri.getPath());
+        }
+
+        // NOTE: contains fixes for Android 7.0
+        private void installPackage(String packagePath) {
+            if (packagePath == null) {
+                return;
+            }
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            Uri file = getFileUri(packagePath);
+            intent.setDataAndType(file, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
             mContext.startActivity(intent);
+        }
+
+        private Uri getFileUri(String packagePath) {
+            // if your targetSdkVersion is 24 or higher, we have to use FileProvider class
+            // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+            if (VERSION.SDK_INT >= 24) {
+                return FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".update_provider", new File(packagePath));
+            } else {
+                return Uri.fromFile(new File(packagePath));
+            }
         }
     }
 
