@@ -390,26 +390,33 @@ function TrackEndFakeButton(selector) {
     };
 }
 
+function KeyUpDownWatcher() {
+    var container = helpers.$(this.keysContainerSelector);
+    var type = 'keydown';
+    var up = 38;
+    var $this = this;
+    var myListener = function(e) {
+        var code = e.keyCode;
+        if (code === up && $this.host) {
+            $this.host.needToCloseSuggestions();
+        }
+        console.log("SuggestionsFakeButton: on keydown: " + code);
+    };
+    container.addEventListener(type, myListener);
+}
+
+KeyUpDownWatcher.prototype = new GoogleButton();
+KeyUpDownWatcher.instance = function(host) {
+    if (!window.singletonKeyUpDownWatcher) {
+        window.singletonKeyUpDownWatcher = new KeyUpDownWatcher();
+    }
+    window.singletonKeyUpDownWatcher.host = host;
+    return window.singletonKeyUpDownWatcher;
+};
+
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
-
-    function KeyUpDownWatcher(host) {
-        this.host = host;
-        var container = helpers.$(this.keysContainerSelector);
-        var type = 'keydown';
-        var up = 38;
-        var $this = this;
-        container.addEventListener(type, function(e) {
-            var code = e.keyCode;
-            if (code === up) {
-                $this.host.needToCloseSuggestions();
-            }
-            console.log("SuggestionsFakeButton: on keydown: " + code);
-        });
-    }
-
-    KeyUpDownWatcher.prototype = new GoogleButton();
 
     this.isMainControlsHidden = function() {
         return helpers.isHidden(this.mainControlsSelector);
@@ -427,7 +434,7 @@ function SuggestionsFakeButton(selector) {
         helpers.triggerButton(downCode);
 
         // start point
-        this.watcher = new KeyUpDownWatcher(this);
+        this.watcher = KeyUpDownWatcher.instance(this);
     };
 
     this.needToCloseSuggestions = function() {

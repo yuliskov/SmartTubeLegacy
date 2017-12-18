@@ -31,9 +31,10 @@ public class ActionBinder {
     };
     private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
     private final GenericStringResultReceiver mReceiver;
+    private static int sCounter;
 
     private class GenericStringResultReceiver {
-        private int counter;
+
 
         public GenericStringResultReceiver() {
             Browser.getBus().register(this);
@@ -46,7 +47,7 @@ public class ActionBinder {
                 new Handler(mContext.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, "CLOSE_SUGGESTIONS: " + counter++, Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "CLOSE_SUGGESTIONS: " + sCounter++, Toast.LENGTH_LONG).show();
                     }
                 });
             }
