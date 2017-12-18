@@ -862,10 +862,14 @@ public class Tab implements PictureListener {
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
     private WebViewClient mWebViewClient = new WebViewClient() {
-        public boolean mFirstStarted;
-        public boolean mLoadSuccess = true;
+        boolean mFirstStarted;
+        boolean mLoadSuccess = true;
 
-        private void onReceiveError() {
+        private void onReceiveError(int errorCode) {
+            // fix for Android 7.0
+            if (errorCode == WebViewClient.ERROR_UNKNOWN)
+                return;
+
             mWebViewController.onReceiveError(Tab.this);
             mLoadSuccess = false;
         }
@@ -877,14 +881,15 @@ public class Tab implements PictureListener {
             mLoadSuccess = false;
         }
 
+        @TargetApi(23)
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            onReceiveError();
+            onReceiveError(error.getErrorCode());
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            onReceiveError();
+            onReceiveError(errorCode);
         }
 
         @Override

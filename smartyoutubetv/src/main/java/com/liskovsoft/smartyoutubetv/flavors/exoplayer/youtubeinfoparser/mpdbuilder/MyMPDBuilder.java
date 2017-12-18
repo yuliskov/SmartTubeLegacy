@@ -82,8 +82,8 @@ public class MyMPDBuilder implements MPDBuilder {
     }
 
     private void writePrologue() {
-        String duration = "PT309S";
-        if (mInfo != null) {
+        String duration = null;
+        if (mInfo != null && mInfo.getLengthSeconds() != null) {
             duration = String.format("PT%sS", mInfo.getLengthSeconds());
         }
 

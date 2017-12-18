@@ -23,5 +23,5 @@
     <string name="not_implemented_msg">Noch nicht implementiert</string>
     <string name="published">Veröffentlicht</string>
     <string name="view_count">ansichten</string>
-    <string name="suggested_videos">Empfohlen</string>
+    <string name="suggested_videos">Vorgeschlagene videos</string>
 </resources>

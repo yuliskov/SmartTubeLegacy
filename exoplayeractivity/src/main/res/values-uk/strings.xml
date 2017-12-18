@@ -23,5 +23,5 @@
     <string name="not_implemented_msg">Функціонал поки що не реалізован</string>
     <string name="published">Опубліковано</string>
     <string name="view_count">переглядів</string>
-    <string name="suggested_videos">Рекомендації</string>
+    <string name="suggested_videos">Рекомендовані відео</string>
 </resources>

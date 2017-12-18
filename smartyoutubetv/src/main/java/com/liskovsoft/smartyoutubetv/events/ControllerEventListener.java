@@ -10,6 +10,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
@@ -179,7 +180,8 @@ public class ControllerEventListener implements Controller.EventListener {
         }
 
         public void hide(final Tab tab) {
-            new Handler().postDelayed(new Runnable() {
+            new Handler(mContext.getMainLooper())
+                    .postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     showHideLoading(tab, false);
