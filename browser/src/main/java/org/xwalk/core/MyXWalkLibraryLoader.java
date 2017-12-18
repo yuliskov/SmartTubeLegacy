@@ -4,6 +4,7 @@
 
 package org.xwalk.core;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.app.DownloadManager.Query;
@@ -462,8 +463,10 @@ class MyXWalkLibraryLoader {
                     Query query = new Query().setFilterById(mDownloadId);
                     Cursor cursor = mDownloadManager.query(query);
                     if (cursor != null && cursor.moveToFirst()) {
-                        int index = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
-                        uri = Uri.parse("file://" + cursor.getString(index));
+                        //int index = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+                        // NOTE: Android 7.0 fix
+                        int index = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                        uri = Uri.parse(cursor.getString(index));
                     }
                 }
 
