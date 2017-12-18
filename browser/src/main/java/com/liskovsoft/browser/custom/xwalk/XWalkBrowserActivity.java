@@ -7,12 +7,13 @@ import android.os.Bundle;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.BrowserActivity;
+import org.xwalk.core.MyXWalkUpdater;
 import org.xwalk.core.XWalkInitializer;
 import org.xwalk.core.XWalkUpdater;
 
-public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, XWalkUpdater.XWalkUpdateListener {
+public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
-    private XWalkUpdater mXWalkUpdater;
+    private MyXWalkUpdater mXWalkUpdater;
     private Bundle mBundle;
 
     @Override
@@ -127,8 +128,9 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
 
     @Override
     public void onXWalkInitFailed() {
+        // source taken from: https://github.com/crosswalk-project/crosswalk
         if (mXWalkUpdater == null) {
-            mXWalkUpdater = new XWalkUpdater(this, this);
+            mXWalkUpdater = new MyXWalkUpdater(this, this);
         }
         setUpdateApkUrl();
         mXWalkUpdater.updateXWalkRuntime();

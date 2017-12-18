@@ -38,6 +38,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     }
 
     private String downloadPackage(String uri) {
+        // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
         if (cacheDir == null) {
             noExternalStorageError();
