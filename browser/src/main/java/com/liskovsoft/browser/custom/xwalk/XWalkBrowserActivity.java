@@ -128,7 +128,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
 
     @Override
     public void onXWalkInitFailed() {
-        // source taken from: https://github.com/crosswalk-project/crosswalk
+        // source taken from: https://github.com/crosswalk-project/crosswalk/tree/e3259b966dcedd18dc456b8cc97cd1a52aad58ea/runtime/android/core/src/org/xwalk/core
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new MyXWalkUpdater(this, this);
         }
