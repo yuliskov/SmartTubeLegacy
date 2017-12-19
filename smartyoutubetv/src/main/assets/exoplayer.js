@@ -422,8 +422,14 @@ function SuggestionsFakeButton(selector) {
         return helpers.isHidden(this.mainControlsSelector);
     };
 
+    this.hideUnneededControls = function() {
+        var controls = helpers.$(this.mainControlsSelector);
+    };
+
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
+
+        this.hideUnneededControls();
 
         // disable interface auto-hide by pausing a video
 

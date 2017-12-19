@@ -136,7 +136,7 @@ public class ControllerEventListener implements Controller.EventListener {
     }
 
     private void checkForUpdates() {
-        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
+        final String sUpdateUrl = mContext.getString(R.string.update_url);
         OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
         AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, sUpdateUrl, dialog);
         updateChecker.forceCheckForUpdates();

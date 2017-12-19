@@ -18,8 +18,6 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import edu.mit.mobile.android.appupdater.AppUpdateChecker;
-import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,13 +53,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     private void setupLang() {
         new LangUpdater(this).update();
-    }
-
-    private void checkForUpdates() {
-        final String sUpdateUrl = "https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc";
-        OnUpdateDialog dialog = new OnUpdateDialog(this, getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(this, sUpdateUrl, dialog);
-        updateChecker.forceCheckForUpdates();
     }
 
     /**

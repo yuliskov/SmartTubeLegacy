@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="service_url">https://youtube.com/tv/kids</string>
+    <string name="update_url">https://drive.google.com/uc?id=1dxbmQ8siAPizVJplZ_tYiOldW46Xf9q2</string>
     <string name="app_name">Kids YouTube TV</string>
 </resources>

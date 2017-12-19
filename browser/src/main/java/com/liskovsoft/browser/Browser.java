@@ -51,7 +51,7 @@ public class Browser extends Application {
         try {
             sProperties = new Properties();
             AssetManager assetManager = this.getAssets();
-            InputStream inputStream = assetManager.open("app.properties");
+            InputStream inputStream = assetManager.open("browser.properties");
             sProperties.load(inputStream);
         } catch (IOException ex) {
             throw new RuntimeException(ex);

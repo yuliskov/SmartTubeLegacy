@@ -134,6 +134,10 @@ public class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
+        if (!mNeedDisplaySync && !mSwitchToUHD) { // none of the vars is set to true
+            return false;
+        }
+
         if (supportsDisplayModeChange() && videoWidth >= 10) {
             UhdHelper uhdHelper = new UhdHelper(mContext);
             Display.Mode[] modes = uhdHelper.getSupportedModes();

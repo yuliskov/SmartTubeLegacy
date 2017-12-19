@@ -50,6 +50,7 @@ android {
         }
         Vkids {
             applicationIdSuffix ".kids"
+            versionCode 999 // don't auto-update
         }
     }
 

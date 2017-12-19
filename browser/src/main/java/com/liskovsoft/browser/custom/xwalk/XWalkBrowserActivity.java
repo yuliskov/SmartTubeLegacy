@@ -132,7 +132,8 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new MyXWalkUpdater(this, this);
         }
-        setUpdateApkUrl();
+        // setUpdateApkUrl();
+        setupXWalkApkUrl();
         mXWalkUpdater.updateXWalkRuntime();
     }
 
