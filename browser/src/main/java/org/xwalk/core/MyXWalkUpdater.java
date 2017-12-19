@@ -524,7 +524,7 @@ public class MyXWalkUpdater {
             installPackage(uri.getPath());
         }
 
-        // NOTE: contains fixes for Android 7.0
+        // NOTE: Android 7.0 fixes
         private void installPackage(String packagePath) {
             if (packagePath == null) {
                 return;
@@ -536,6 +536,7 @@ public class MyXWalkUpdater {
             mContext.startActivity(intent);
         }
 
+        // NOTE: Android 7.0 fixes
         private Uri getFileUri(String packagePath) {
             // if your targetSdkVersion is 24 or higher, we have to use FileProvider class
             // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
