@@ -3,13 +3,17 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.webkit.WebResourceResponse;
+import android.widget.Toast;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
@@ -17,6 +21,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleY
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
+import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +36,36 @@ public class ExoInterceptor extends RequestInterceptor {
     private InputStream mResponseStream30Fps;
     private InputStream mResponseStream60Fps;
 
+    private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private final GenericStringResultReceiver mReceiver;
+    private Intent mCachedIntent;
+
+    private class GenericStringResultReceiver {
+        GenericStringResultReceiver() {
+            Browser.getBus().register(this);
+        }
+
+        @Subscribe
+        public void onGenericStringResult(GenericStringResultEvent event) {
+            String action = event.getResult();
+            if (action.equals(CLOSE_SUGGESTIONS)) {
+                new Handler(mContext.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCachedIntent != null) {
+                            openExoPlayer(mCachedIntent);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
         mActionBinder = new ActionBinder(context, this);
+        mReceiver = new GenericStringResultReceiver();
     }
 
     @Override
@@ -69,12 +100,14 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
-                openExoPlayer(sample, mInfo);
+                Intent exoIntent = createExoIntent(sample, mInfo);
+                openExoPlayer(exoIntent);
             }
             @Override
             public void onLiveUrlFound(final Uri hlsUrl) {
                 Sample sample = SampleHelpers.buildFromUri(hlsUrl);
-                openExoPlayer(sample, mInfo);
+                Intent exoIntent = createExoIntent(sample, mInfo);
+                openExoPlayer(exoIntent);
             }
 
             @Override
@@ -84,26 +117,18 @@ public class ExoInterceptor extends RequestInterceptor {
         });
     }
 
-    private void openExoPlayer(Sample sample, YouTubeGenericInfo info) {
-        sLogger.info("About to start ExoPlayer activity for Regular item");
-        final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
+    private Intent createExoIntent(Sample sample, YouTubeGenericInfo info) {
         final Intent playerIntent = sample.buildIntent(mContext);
         playerIntent.putExtra(PlayerActivity.VIDEO_TITLE, info.getTitle());
         playerIntent.putExtra(PlayerActivity.VIDEO_AUTHOR, info.getAuthor());
         playerIntent.putExtra(PlayerActivity.VIDEO_VIEWS, info.getViewCount());
-        fetchButtonStates(playerIntent, new Runnable(){
-            @Override
-            public void run() {
-                activity.startActivityForResult(playerIntent, 1);
-                setupResultListener(activity);
-            }
-        });
+        mCachedIntent = playerIntent;
+        return playerIntent;
     }
 
-    private void openExoPlayer(Sample sample) {
+    private void openExoPlayer(final Intent playerIntent) {
         sLogger.info("About to start ExoPlayer activity for Regular item");
         final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
-        final Intent playerIntent = sample.buildIntent(mContext);
         fetchButtonStates(playerIntent, new Runnable(){
             @Override
             public void run() {

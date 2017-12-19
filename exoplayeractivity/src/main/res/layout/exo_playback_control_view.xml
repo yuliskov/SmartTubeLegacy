@@ -27,7 +27,6 @@
               android:orientation="vertical"
               android:paddingLeft="@dimen/player_main_padding"
               android:paddingRight="@dimen/player_main_padding"
-              android:paddingBottom="@dimen/player_main_padding"
               android:paddingTop="@dimen/player_main_padding">
 
     <!-- top row (time bar) -->
@@ -202,8 +201,7 @@
         android:paddingRight="@dimen/player_second_padding">
 
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-            android:visibility="gone"
             android:id="@+id/exo_suggestions"
-            style="@style/ExoMediaButtonSuggestions"/>
+            style="@style/ExoMediaButton.Suggestions"/>
     </LinearLayout>
 </LinearLayout>

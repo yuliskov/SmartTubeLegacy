@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.TypedArray;
@@ -10,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -41,6 +43,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         void onCheckedChanged(ToggleButtonBase button, boolean isChecked);
     }
 
+    @TargetApi(21)
     public ToggleButtonBase(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -139,6 +142,22 @@ public abstract class ToggleButtonBase extends LinearLayout {
         setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         // NOTE: disable background when using style attribute
         setBackgroundDrawable(getResources().getDrawable(R.color.transparent));
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        // measureWidth();
+    }
+
+    private void measureWidth() {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        int userWidth = layoutParams.width;
+        if (userWidth > 0) { // manual width
+            ViewGroup.LayoutParams params = mTextButton.getLayoutParams();
+            params.width = userWidth;
+            mToggleButtonWrapper.setLayoutParams(params);
+        }
     }
 
     private void makeUnfocused() {
