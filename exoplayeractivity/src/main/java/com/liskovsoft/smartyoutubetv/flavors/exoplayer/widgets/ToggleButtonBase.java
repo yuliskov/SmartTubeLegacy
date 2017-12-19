@@ -144,22 +144,6 @@ public abstract class ToggleButtonBase extends LinearLayout {
         setBackgroundDrawable(getResources().getDrawable(R.color.transparent));
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        // measureWidth();
-    }
-
-    private void measureWidth() {
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        int userWidth = layoutParams.width;
-        if (userWidth > 0) { // manual width
-            ViewGroup.LayoutParams params = mTextButton.getLayoutParams();
-            params.width = userWidth;
-            mToggleButtonWrapper.setLayoutParams(params);
-        }
-    }
-
     private void makeUnfocused() {
         mDescView.setText("");
         onButtonUnfocused();
