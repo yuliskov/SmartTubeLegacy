@@ -424,6 +424,8 @@ function SuggestionsFakeButton(selector) {
 
     this.hideUnneededControls = function() {
         var controls = helpers.$(this.mainControlsSelector);
+        if (controls)
+            controls.style.display = 'none';
     };
 
     this.openSuggestions = function() {
