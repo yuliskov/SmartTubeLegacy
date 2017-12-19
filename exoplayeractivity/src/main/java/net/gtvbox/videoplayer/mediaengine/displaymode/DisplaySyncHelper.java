@@ -24,7 +24,9 @@ public class DisplaySyncHelper implements UhdHelperListener {
         mContext = context;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         mNeedDisplaySync = prefs.getBoolean("display_rate_switch", false);
-        mSwitchToUHD = prefs.getBoolean("switch_to_uhd", false);
+        //mSwitchToUHD = prefs.getBoolean("switch_to_uhd", false);
+        // NOTE: switch not only framerate but resolution too
+        mSwitchToUHD = mNeedDisplaySync;
     }
 
     private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {

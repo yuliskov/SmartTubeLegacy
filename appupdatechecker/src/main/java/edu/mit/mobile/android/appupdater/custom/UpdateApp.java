@@ -78,6 +78,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         Toast.makeText(mContext, R.string.no_external_storage_error, Toast.LENGTH_LONG).show();
     }
 
+    // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails
     private void installPackage(String packagePath) {
         if (packagePath == null) {
             return;
