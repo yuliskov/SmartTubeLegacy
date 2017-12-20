@@ -390,49 +390,53 @@ function TrackEndFakeButton(selector) {
     };
 }
 
-function KeyUpDownWatcher() {
-    var container = helpers.$(this.keysContainerSelector);
-    var type = 'keydown';
-    var up = 38;
-    var $this = this;
-    var myListener = function(e) {
-        var code = e.keyCode;
-        if (code === up && $this.host) {
-            $this.host.needToCloseSuggestions();
-            // $this.stopUserActivity();
-        }
-        console.log("SuggestionsFakeButton: on keydown: " + code);
-    };
+function KeyUpDownWatcher(host) {
+    function KeyUpDownWatcherService() {
+        var container = helpers.$(this.keysContainerSelector);
+        var type = 'keydown';
+        var up = 38;
+        var $this = this;
 
-    container.addEventListener(type, myListener);
-    var playBtn = YouButton.fromSelector(this.playButtonSelector);
-    var doSimpleClick = function() {
-        playBtn.setChecked(!playBtn.getChecked());
-    };
+        var myListener = function(e) {
+            var code = e.keyCode;
+            if (code === up && $this.host) {
+                $this.host.needToCloseSuggestions();
+                container.removeEventListener(type, myListener);
+                // $this.stopUserActivity();
+            }
+            console.log("SuggestionsFakeButton: on keydown: " + code);
+        };
 
-    this.startUserActivity = function() {
-        // disable auto hide
-        this.timeout = window.setInterval(doSimpleClick, 1000);
-    };
+        this.setHost = function(host) {
+            this.host = host;
+            container.addEventListener(type, myListener);
+            // this.startUserActivity();
+        };
 
-    this.stopUserActivity = function() {
-        window.clearInterval(this.timeout);
-    };
+        var playBtn = YouButton.fromSelector(this.playButtonSelector);
+        var doSimpleClick = function() {
+            playBtn.setChecked(!playBtn.getChecked());
+        };
 
-    this.setHost = function(host) {
-        this.host = host;
-        // this.startUserActivity();
-    };
+        this.startUserActivity = function() {
+            // disable auto hide
+            this.timeout = window.setInterval(doSimpleClick, 1000);
+        };
+
+        this.stopUserActivity = function() {
+            window.clearInterval(this.timeout);
+        };
+    }
+
+    KeyUpDownWatcherService.prototype = new GoogleButton();
+
+    if (!window.keyUpDownWatcherService) {
+        window.keyUpDownWatcherService = new KeyUpDownWatcherService();
+    }
+    window.keyUpDownWatcherService.setHost(host);
 }
 
 KeyUpDownWatcher.prototype = new GoogleButton();
-KeyUpDownWatcher.instance = function(host) {
-    if (!window.singletonKeyUpDownWatcher) {
-        window.singletonKeyUpDownWatcher = new KeyUpDownWatcher();
-    }
-    window.singletonKeyUpDownWatcher.setHost(host);
-    return window.singletonKeyUpDownWatcher;
-};
 
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
@@ -460,7 +464,7 @@ function SuggestionsFakeButton(selector) {
         helpers.triggerButton(downCode);
 
         // start point
-        this.watcher = KeyUpDownWatcher.instance(this);
+        this.watcher = new KeyUpDownWatcher(this);
     };
 
     this.needToCloseSuggestions = function() {
