@@ -8,6 +8,9 @@
               android:background="@color/transparent"
               android:id="@+id/toggle_button_wrapper"
               android:clickable="false">
+
+    <!-- ImageToggleButton -->
+
     <!-- NOTE: don't use real image here. Or will get unwanted side effects. See ToggleButtonBase.makeImageDisabled() -->
     <ImageButton
         android:clickable="false"
@@ -20,6 +23,19 @@
         android:id="@+id/image_button"
         android:visibility="gone"/>
 
+    <TextView
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:textSize="@dimen/toggle_button_text_size"
+        android:textColor="@color/white"
+        android:text="Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"/>
+
+    <!-- End ImageToggleButton -->
+
     <Button
         android:maxLines="1"
         android:clickable="false"
@@ -31,14 +47,4 @@
         android:layout_height="@dimen/toggle_button_height"
         android:visibility="visible"
         android:id="@+id/text_button"/>
-
-    <TextView
-        android:gravity="center_horizontal"
-        android:maxLines="1"
-        android:textSize="@dimen/toggle_button_text_size"
-        android:textColor="@color/white"
-        android:text="Description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/description"/>
 </LinearLayout>

@@ -302,18 +302,18 @@ public abstract class ToggleButtonBase extends LinearLayout {
         mCheckedListeners.add(listener);
     }
 
-    private void applyDefaultDimens() {
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        if (layoutParams == null) {
-            float width = getResources().getDimension(R.dimen.exo_media_button_width);
-            float height = getResources().getDimension(R.dimen.exo_media_button_height);
-            int realWidth = Utils.convertDpToPixel(width, getContext());
-            int realHeight = Utils.convertDpToPixel(height, getContext());
-            layoutParams = new ViewGroup.LayoutParams(new LayoutParams(realWidth, realHeight));
-            setLayoutParams(layoutParams);
-            return;
-        }
-    }
+    //private void applyDefaultDimens() {
+    //    ViewGroup.LayoutParams layoutParams = getLayoutParams();
+    //    if (layoutParams == null) {
+    //        float width = getResources().getDimension(R.dimen.exo_media_button_width);
+    //        float height = getResources().getDimension(R.dimen.exo_media_button_height);
+    //        int realWidth = Utils.convertDpToPixel(width, getContext());
+    //        int realHeight = Utils.convertDpToPixel(height, getContext());
+    //        layoutParams = new ViewGroup.LayoutParams(new LayoutParams(realWidth, realHeight));
+    //        setLayoutParams(layoutParams);
+    //        return;
+    //    }
+    //}
 
     /**
      * An implementation of Listener that attempts to lazily load a

@@ -24,7 +24,8 @@ public class ImageToggleButton extends ToggleButtonBase {
     }
 
     private void init() {
-        mImageButton.setVisibility(View.VISIBLE);
         mTextButton.setVisibility(View.GONE);
+        mImageButton.setVisibility(View.VISIBLE);
+        mDescView.setVisibility(View.VISIBLE);
     }
 }

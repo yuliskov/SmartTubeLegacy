@@ -399,10 +399,30 @@ function KeyUpDownWatcher() {
         var code = e.keyCode;
         if (code === up && $this.host) {
             $this.host.needToCloseSuggestions();
+            // $this.stopUserActivity();
         }
         console.log("SuggestionsFakeButton: on keydown: " + code);
     };
+
     container.addEventListener(type, myListener);
+    var playBtn = YouButton.fromSelector(this.playButtonSelector);
+    var doSimpleClick = function() {
+        playBtn.setChecked(!playBtn.getChecked());
+    };
+
+    this.startUserActivity = function() {
+        // disable auto hide
+        this.timeout = window.setInterval(doSimpleClick, 1000);
+    };
+
+    this.stopUserActivity = function() {
+        window.clearInterval(this.timeout);
+    };
+
+    this.setHost = function(host) {
+        this.host = host;
+        // this.startUserActivity();
+    };
 }
 
 KeyUpDownWatcher.prototype = new GoogleButton();
@@ -410,7 +430,7 @@ KeyUpDownWatcher.instance = function(host) {
     if (!window.singletonKeyUpDownWatcher) {
         window.singletonKeyUpDownWatcher = new KeyUpDownWatcher();
     }
-    window.singletonKeyUpDownWatcher.host = host;
+    window.singletonKeyUpDownWatcher.setHost(host);
     return window.singletonKeyUpDownWatcher;
 };
 
@@ -427,13 +447,11 @@ function SuggestionsFakeButton(selector) {
         if (controls)
             controls.style.display = 'none';
     };
-
+    
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
         this.hideUnneededControls();
-
-        // disable interface auto-hide by pausing a video
 
         var downCode = 40;
         // we assume that no interface currently shown
