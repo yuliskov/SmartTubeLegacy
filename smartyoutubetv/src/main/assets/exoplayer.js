@@ -35,6 +35,7 @@ function GoogleButton() {
     this.controlsBarSelector = '#buttons-list';
     this.playButtonSelector = ".icon-player-play.toggle-button";
     this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
+    this.mainTitleSelector = '.title-card.watch-title-tray';
     this.keysContainerSelector = '#watch';
 }
 
@@ -450,6 +451,10 @@ function SuggestionsFakeButton(selector) {
         var controls = helpers.$(this.mainControlsSelector);
         if (controls)
             controls.style.display = 'none';
+
+        var title = helpers.$(this.mainTitleSelector);
+        if (title)
+            title.style.display = 'none';
     };
     
     this.openSuggestions = function() {
