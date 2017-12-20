@@ -517,7 +517,7 @@ public class MyXWalkUpdater {
 
         @Override
         public void onDownloadCompleted(Uri uri) {
-            mDialogManager.dismissDialog();
+             mDialogManager.dismissDialog();
 
             Log.d(TAG, "Install the Crosswalk runtime: " + uri.toString());
 

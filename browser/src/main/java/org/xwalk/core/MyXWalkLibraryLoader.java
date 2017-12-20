@@ -4,7 +4,6 @@
 
 package org.xwalk.core;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.app.DownloadManager.Query;
@@ -16,7 +15,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -27,7 +25,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.Thread;
 import java.net.HttpURLConnection;
-import java.net.URLConnection;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.Arrays;
@@ -359,10 +356,127 @@ class MyXWalkLibraryLoader {
         private DownloadListener mListener;
         private Context mContext;
         private String mDownloadUrl;
+        private String mApkPath;
+
+        DownloadManagerTask(DownloadListener listener, Context context, String url) {
+            super();
+            mListener = listener;
+            mContext = context;
+            mDownloadUrl = url;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "DownloadManagerTask started, " + mDownloadUrl);
+            sActiveTask = this;
+
+            mListener.onDownloadStarted();
+        }
+
+        private String downloadPackage(String uri) {
+            // NOTE: Android 6.0 fix
+            File cacheDir = mContext.getCacheDir();
+            if (cacheDir == null) {
+                return null;
+            }
+            cacheDir.mkdirs();
+            File outputFile = new File(cacheDir, "update.apk");
+            try {
+                URL url = new URL(uri);
+                HttpURLConnection c = (HttpURLConnection) url.openConnection();
+                c.setRequestMethod("GET");
+                c.setDoOutput(false);
+                c.connect();
+
+                if (outputFile.exists()) {
+                    outputFile.delete();
+                }
+                FileOutputStream fos = new FileOutputStream(outputFile);
+
+                InputStream is = c.getInputStream();
+
+                byte[] buffer = new byte[1024];
+                int len1 = 0;
+                while ((len1 = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len1);
+                }
+                fos.close();
+                is.close();
+
+            } catch (IOException e) {
+                Log.e("UpdateAPP", e.toString());
+            }
+            return outputFile.getAbsolutePath();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            if (mDownloadUrl == null) return DownloadManager.STATUS_FAILED;
+
+            mApkPath = downloadPackage(mDownloadUrl);
+
+            if (mApkPath != null) {
+                return DownloadManager.STATUS_SUCCESSFUL;
+            }
+
+            return DownloadManager.STATUS_FAILED;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            Log.d(TAG, "DownloadManagerTask updated: " + progress[0] + "/" + progress[1]);
+            int percentage = 0;
+            if (progress[1] > 0) percentage = (int) (progress[0] * 100.0 / progress[1]);
+            mListener.onDownloadUpdated(percentage);
+        }
+
+        @Override
+        protected void onCancelled(Integer result) {
+            Log.d(TAG, "DownloadManagerTask cancelled");
+            sActiveTask = null;
+            mListener.onDownloadCancelled();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            Log.d(TAG, "DownloadManagerTask finished, " + result);
+            sActiveTask = null;
+
+            if (result == DownloadManager.STATUS_SUCCESSFUL) {
+                Uri uri = Uri.fromFile(new File(mApkPath));
+                Log.d(TAG, "Uri for downloaded file:" + uri.toString());
+
+                mListener.onDownloadCompleted(uri);
+            } else {
+                int error = DownloadManager.ERROR_UNKNOWN;
+                mListener.onDownloadFailed(result, error);
+            }
+        }
+
+        private boolean isSilentDownload() {
+            try {
+                PackageManager packageManager = mContext.getPackageManager();
+                PackageInfo packageInfo = packageManager.getPackageInfo(
+                        mContext.getPackageName(), PackageManager.GET_PERMISSIONS);
+                return Arrays.asList(packageInfo.requestedPermissions).contains(
+                        DOWNLOAD_WITHOUT_NOTIFICATION);
+            } catch (NameNotFoundException | NullPointerException e) {
+            }
+            return false;
+        }
+    }
+
+    private static class DownloadManagerTaskOld extends AsyncTask<Void, Integer, Integer> {
+        private static final int QUERY_INTERVAL_MS = 100;
+        private static final int MAX_PAUSED_COUNT = 6000; // 10 minutes
+
+        private DownloadListener mListener;
+        private Context mContext;
+        private String mDownloadUrl;
         private DownloadManager mDownloadManager;
         private long mDownloadId;
 
-        DownloadManagerTask(DownloadListener listener, Context context, String url) {
+        DownloadManagerTaskOld(DownloadListener listener, Context context, String url) {
             super();
             mListener = listener;
             mContext = context;

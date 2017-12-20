@@ -16,6 +16,7 @@
         android:authorities="${applicationId}.update_provider"
         android:exported="false"
         android:grantUriPermissions="true">
+        <!-- Details: https://developer.android.com/reference/android/support/v4/content/FileProvider.html#SpecifyFiles -->
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/provider_paths"/>
