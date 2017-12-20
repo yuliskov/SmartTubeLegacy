@@ -375,7 +375,7 @@ class MyXWalkLibraryLoader {
 
         private String downloadPackage(String uri) {
             // NOTE: Android 6.0 fix
-            File cacheDir = mContext.getCacheDir();
+            File cacheDir = mContext.getExternalCacheDir();
             if (cacheDir == null) {
                 return null;
             }
