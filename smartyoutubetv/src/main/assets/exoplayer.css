@@ -1,3 +1,6 @@
-/*div#watch {
+/* hide unneeded elements when opening suggestions */
+/* this includes the titlebar and the player's buttons (timer, play, pause etc) */
+.fresh-transport-controls.transport-controls,
+.title-card.watch-title-tray {
     display: none !important;
-}*/
+}

@@ -2,107 +2,157 @@ package net.gtvbox.videoplayer.mediaengine.displaymode;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
-public class Display {
-   public Display.Mode getModeInstance(int var1, int var2, int var3, float var4) {
-      return new Display.Mode(var1, var2, var3, var4);
-   }
+/**
+ * Convenience class to hold {@link Display} Display object.
+ *
+ */
+public class Display{
 
-   public static class Mode implements Parcelable {
-      public static final Creator<Display.Mode> CREATOR = new Creator<Display.Mode>() {
-         public Display.Mode createFromParcel(Parcel var1) {
-            return new Display.Mode(var1);
-         }
+    /**
+     * Stub method to create the ModeInstance. In real world we need not to do it here.
+     * @param modeId Mode Id
+     * @param width Display mode's width
+     * @param height Display mode's height
+     * @param refreshRate Display mode's refresh rate
+     *
+     * @return {@link com.amazon.firetvsample.uhdhelper.Display.Mode} Display.Mode instance object.
+     */
+    public Mode getModeInstance(int modeId,int width,int height,float refreshRate){
+        return new Mode(modeId,width,height,refreshRate);
+    }
 
-         public Display.Mode[] newArray(int var1) {
-            return new Display.Mode[var1];
-         }
-      };
-      private int mHeight;
-      private int mModeId;
-      private float mRefreshRate;
-      private int mWidth;
+    /**
+     * Inner class {@link com.amazon.firetvsample.uhdhelper.Display.Mode} Display.Mode holds the
+     * mode information.
+     */
+    public static class Mode  implements Parcelable {
 
-      Mode(int var1, int var2, int var3, float var4) {
-         this.mModeId = var1;
-         this.mWidth = var2;
-         this.mHeight = var3;
-         this.mRefreshRate = var4;
-      }
+        private int mModeId;
+        private int mHeight;
+        private int mWidth;
+        private float mRefreshRate;
 
-      private Mode(Parcel var1) {
-         this(var1.readInt(), var1.readInt(), var1.readInt(), var1.readFloat());
-      }
+        Mode(int mModeId,int mWidth, int mHeight, float refreshRate){
+            this.mModeId = mModeId;
+            this.mWidth = mWidth;
+            this.mHeight = (mHeight);
+            this.mRefreshRate = (refreshRate);
+        }
+        /**
+         * Returns this mode's id.
+         * @return mode id
+         */
+        public int getModeId(){
+            return mModeId;
+        }
 
-      public int describeContents() {
-         return 0;
-      }
+        /**
+         * Returns the physical height of the display in pixels when configured in this mode's resolution.
+         * @return display height
+         */
+        public int getPhysicalHeight(){
+            return mHeight;
+        }
 
-      public boolean equals(Object var1) {
-         if (this != var1) {
-            if (var1 == null) {
-               return false;
+        /**
+         * Returns the physical width of the display in pixels when configured in this mode's
+         * resolution.
+         * @return display width
+         */
+        public int getPhysicalWidth() {
+            return mWidth;
+        }
+
+        /**
+         * Returns the refresh rate in frames per second.
+         * @return refresh rate
+         */
+        public float getRefreshRate() {
+            return mRefreshRate;
+
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + mModeId;
+            result = prime * result + mHeight;
+            result = prime * result + mWidth;
+            result = prime * result + Float.floatToIntBits(mRefreshRate);
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            Mode other = (Mode) obj;
+            if (mModeId != other.mModeId)
+                return false;
+            if (mHeight != other.mHeight)
+                return false;
+            if (mWidth != other.mWidth)
+                return false;
+            if (Float.floatToIntBits(mRefreshRate) != Float.floatToIntBits(other.mRefreshRate))
+                return false;
+            return true;
+        }
+
+        /**
+         * Returns {@code true} if this mode matches the given parameters.
+         * @param width of the given display
+         * @param height of the given display
+         * @param refreshRate refresh rate of the current display
+         * @return {@code true} if width, height and refresh rate matches with the current mode.
+         */
+        public boolean matches(int width, int height, float refreshRate) {
+            return mWidth == width &&
+                    mHeight == height &&
+                    Float.floatToIntBits(mRefreshRate) == Float.floatToIntBits(refreshRate);
+        }
+
+        @Override
+        public String toString() {
+            return "Mode [mModeId=" + mModeId + ", mHeight=" + mHeight + ", mWidth=" + mWidth
+                    + ", mRefreshRate=" + mRefreshRate + "]";
+        }
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        private Mode(Parcel in) {
+            this(in.readInt(), in.readInt(), in.readInt(), in.readFloat());
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int parcelableFlags) {
+            out.writeInt(mModeId);
+            out.writeInt(mWidth);
+            out.writeInt(mHeight);
+            out.writeFloat(mRefreshRate);
+        }
+
+        @SuppressWarnings("hiding")
+        public static final Creator<Mode> CREATOR
+                = new Creator<Mode>() {
+            @Override
+            public Mode createFromParcel(Parcel in) {
+                return new Mode(in);
             }
 
-            if (this.getClass() != var1.getClass()) {
-               return false;
+            @Override
+            public Mode[] newArray(int size) {
+                return new Mode[size];
             }
+        };
 
-            Display.Mode var2 = (Display.Mode)var1;
-            if (this.mModeId != var2.mModeId) {
-               return false;
-            }
 
-            if (this.mHeight != var2.mHeight) {
-               return false;
-            }
-
-            if (this.mWidth != var2.mWidth) {
-               return false;
-            }
-
-            if (Float.floatToIntBits(this.mRefreshRate) != Float.floatToIntBits(var2.mRefreshRate)) {
-               return false;
-            }
-         }
-
-         return true;
-      }
-
-      public int getModeId() {
-         return this.mModeId;
-      }
-
-      public int getPhysicalHeight() {
-         return this.mHeight;
-      }
-
-      public int getPhysicalWidth() {
-         return this.mWidth;
-      }
-
-      public float getRefreshRate() {
-         return this.mRefreshRate;
-      }
-
-      public int hashCode() {
-         return (((this.mModeId + 31) * 31 + this.mHeight) * 31 + this.mWidth) * 31 + Float.floatToIntBits(this.mRefreshRate);
-      }
-
-      public boolean matches(int var1, int var2, float var3) {
-         return this.mWidth == var1 && this.mHeight == var2 && Float.floatToIntBits(this.mRefreshRate) == Float.floatToIntBits(var3);
-      }
-
-      public String toString() {
-         return "Mode [mModeId=" + this.mModeId + ", mHeight=" + this.mHeight + ", mWidth=" + this.mWidth + ", mRefreshRate=" + this.mRefreshRate + "]";
-      }
-
-      public void writeToParcel(Parcel var1, int var2) {
-         var1.writeInt(this.mModeId);
-         var1.writeInt(this.mWidth);
-         var1.writeInt(this.mHeight);
-         var1.writeFloat(this.mRefreshRate);
-      }
-   }
+    }
 }

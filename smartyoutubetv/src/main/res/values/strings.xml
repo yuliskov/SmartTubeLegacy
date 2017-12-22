@@ -32,4 +32,5 @@
     <string name="system_lang">Default</string>
     <string name="autoframerate">Autoframerate</string>
     <string name="german_lang">Deutsche</string>
+    <string name="returning_to_the_video">Returning to the opened video</string>
 </resources>

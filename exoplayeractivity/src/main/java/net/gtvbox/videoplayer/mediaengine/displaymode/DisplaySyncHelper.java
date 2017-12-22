@@ -7,11 +7,13 @@ import android.os.Build.VERSION;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+
+// Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
 public class DisplaySyncHelper implements UhdHelperListener {
     static final String TAG = "DisplaySyncHelper";
@@ -19,6 +21,8 @@ public class DisplaySyncHelper implements UhdHelperListener {
     private boolean mDisplaySyncInProgress = false;
     private final boolean mNeedDisplaySync;
     private boolean mSwitchToUHD;
+    private UhdHelper mUhdHelper;
+    private int mNewMode;
 
     public DisplaySyncHelper(Context context) {
         mContext = context;
@@ -103,7 +107,38 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return null;
     }
 
+    /**
+     * Utility method to check if device is Amazon Fire TV device
+     * @return {@code true} true if device is Amazon Fire TV device.
+     */
+    private boolean isAmazonFireTVDevice(){
+        String deviceName = Build.MODEL;
+        String manufacturerName = Build.MANUFACTURER;
+        return (deviceName.startsWith("AFT")
+                && "Amazon".equalsIgnoreCase(manufacturerName));
+    }
+
     private boolean supportsDisplayModeChange() {
+        boolean supportedDevice = true;
+
+        //We fail for following conditions
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            supportedDevice = false;
+        } else {
+            switch (Build.VERSION.SDK_INT) {
+                case Build.VERSION_CODES.LOLLIPOP:
+                case Build.VERSION_CODES.LOLLIPOP_MR1:
+                    if (!isAmazonFireTVDevice()) {
+                        supportedDevice = false;
+                    }
+                    break;
+            }
+        }
+
+        return supportedDevice;
+    }
+
+    private boolean supportsDisplayModeChange2() {
         boolean result = true;
         if (VERSION.SDK_INT < 21) {
             result = false;
@@ -111,9 +146,10 @@ public class DisplaySyncHelper implements UhdHelperListener {
             switch (VERSION.SDK_INT) {
                 case 21:
                 case 22:
-                    String var2 = Build.MODEL;
-                    String var3 = Build.MANUFACTURER;
-                    if (!var2.startsWith("AFT") || !"Amazon".equalsIgnoreCase(var3)) {
+                    String model = Build.MODEL;
+                    String manufacturer = Build.MANUFACTURER;
+                    // amazon devices only (Android L)
+                    if (!model.startsWith("AFT") || !"Amazon".equalsIgnoreCase(manufacturer)) {
                         return false;
                     }
                     break;
@@ -129,8 +165,24 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return mDisplaySyncInProgress;
     }
 
-    public void onModeChanged(Display.Mode var1) {
+    @Override
+    public void onModeChanged(Display.Mode mode) {
         mDisplaySyncInProgress = false;
+
+        if (mode == null && mUhdHelper.getMode() == null) {
+            String msg = "Mode changed Failure, Internal error occurred.";
+            Log.w(TAG, msg);
+            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+        } else if (mUhdHelper.getMode().getModeId() != mNewMode) {
+            // Once onDisplayChangedListener sends proper callback, the above if condition
+            // need to changed to mode.getModeId() != modeId
+            String msg = "Mode changed Failure, Current mode id is " + mode.getModeId();
+            Log.w(TAG, msg);
+            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+        }
+        else {
+            Log.i(TAG, "Mode changed Success");
+        }
     }
 
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
@@ -139,8 +191,11 @@ public class DisplaySyncHelper implements UhdHelperListener {
         }
 
         if (supportsDisplayModeChange() && videoWidth >= 10) {
-            UhdHelper uhdHelper = new UhdHelper(mContext);
-            Display.Mode[] modes = uhdHelper.getSupportedModes();
+            if (mUhdHelper == null) {
+                mUhdHelper = new UhdHelper(mContext);
+            }
+
+            Display.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
             ArrayList<Display.Mode> resultModes = new ArrayList<>();
             if (mSwitchToUHD) {
@@ -154,7 +209,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
             if (mNeedDisplaySync || isUHD) {
                 Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + mNeedDisplaySync + " Need UHD switch: " + isUHD);
-                Display.Mode mode = uhdHelper.getMode();
+                Display.Mode mode = mUhdHelper.getMode();
                 if (!isUHD) {
                     resultModes = filterSameResolutionModes(modes, mode);
                 }
@@ -171,8 +226,9 @@ public class DisplaySyncHelper implements UhdHelperListener {
                     return false;
                 }
 
-                uhdHelper.registerModeChangeListener(this);
-                uhdHelper.setPreferredDisplayModeId(window, closerMode.getModeId(), true);
+                mUhdHelper.registerModeChangeListener(this);
+                mNewMode = closerMode.getModeId();
+                mUhdHelper.setPreferredDisplayModeId(window, mNewMode, true);
                 mDisplaySyncInProgress = true;
                 return true;
             }

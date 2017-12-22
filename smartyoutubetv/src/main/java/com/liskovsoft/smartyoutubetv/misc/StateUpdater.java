@@ -55,7 +55,11 @@ public class StateUpdater {
         if (state == null) {
             return false;
         }
-        String currentUrl = state.getBundle(String.valueOf(state.get("current"))).getString("currentUrl");
+        Bundle curState = state.getBundle(String.valueOf(state.get("current")));
+        if (curState == null) {
+            return false;
+        }
+        String currentUrl = curState.getString("currentUrl");
         return currentUrl != null && currentUrl.contains("list=");
     }
 }

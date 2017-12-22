@@ -13,4 +13,5 @@
     <string name="language_dialog_title">Sprache auswählen</string>
     <string name="system_lang">Standard</string>
     <string name="language">Sprache</string>
+    <string name="returning_to_the_video">Zurück zum geöffneten video</string>
 </resources>

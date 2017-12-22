@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.webkit.WebResourceResponse;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
@@ -53,6 +54,7 @@ public class ExoInterceptor extends RequestInterceptor {
                     @Override
                     public void run() {
                         if (mCachedIntent != null) {
+                            Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
                             openExoPlayer(mCachedIntent);
                         }
                     }

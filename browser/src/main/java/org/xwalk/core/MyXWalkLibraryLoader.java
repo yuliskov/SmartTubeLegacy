@@ -405,6 +405,7 @@ class MyXWalkLibraryLoader {
 
             } catch (IOException e) {
                 Log.e("UpdateAPP", e.toString());
+                throw new IllegalStateException(e);
             }
             return outputFile.getAbsolutePath();
         }
@@ -693,7 +694,9 @@ class MyXWalkLibraryLoader {
                 }
                 output.flush();
             } catch (Exception e) {
-                return DOWNLOAD_FAILED;
+                // TODO: modified
+                // return DOWNLOAD_FAILED;
+                throw new IllegalStateException(e);
             } finally {
                 try {
                     if (output != null) output.close();

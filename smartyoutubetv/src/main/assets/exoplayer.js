@@ -460,7 +460,7 @@ function SuggestionsFakeButton(selector) {
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
-        this.hideUnneededControls();
+        // this.hideUnneededControls();
 
         var downCode = 40;
         // we assume that no interface currently shown

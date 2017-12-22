@@ -90,11 +90,11 @@
             android:orientation="horizontal">
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
                 android:id="@+id/player_options_btn"
-                style="@style/ExoMediaButton.Options"/>
+                style="@style/ExoMediaButton2.Options"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
                 android:id="@+id/player_quality_btn"
-                style="@style/ExoMediaButton.Quality"/>
+                style="@style/ExoMediaButton2.Quality"/>
         </LinearLayout>
 
         <LinearLayout
@@ -106,24 +106,24 @@
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_prev"
-                style="@style/ExoMediaButton.Previous"/>
+                style="@style/ExoMediaButton2.Previous"/>
 
             <!-- NOTE: must be ImageButton (not visible) -->
             <ImageButton
                 android:id="@id/exo_repeat_toggle"
-                style="@style/ExoMediaButton"/>
+                style="@style/ExoMediaButton2"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_play"
-                style="@style/ExoMediaButton.Play"/>
+                style="@style/ExoMediaButton2.Play"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_pause"
-                style="@style/ExoMediaButton.Pause"/>
+                style="@style/ExoMediaButton2.Pause"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@id/exo_next"
-                style="@style/ExoMediaButton.Next"/>
+                style="@style/ExoMediaButton2.Next"/>
 
         </LinearLayout>
 
@@ -138,29 +138,29 @@
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:visibility="gone"
                 android:id="@+id/exo_user"
-                style="@style/ExoMediaButton.User"/>
+                style="@style/ExoMediaButton2.User"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_captions"
-                style="@style/ExoMediaButton.Captions"/>
+                style="@style/ExoMediaButton2.Captions"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_like"
                 app:bindTo="@+id/exo_dislike"
-                style="@style/ExoMediaButton.Like"/>
+                style="@style/ExoMediaButton2.Like"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_dislike"
                 app:bindTo="@+id/exo_like"
-                style="@style/ExoMediaButton.Dislike"/>
+                style="@style/ExoMediaButton2.Dislike"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_subscribe"
-                style="@style/ExoMediaButton.Subscribe"/>
+                style="@style/ExoMediaButton2.Subscribe"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_stats"
-                style="@style/ExoMediaButton.Stats"/>
+                style="@style/ExoMediaButton2.Stats"/>
 
         </LinearLayout>
 
@@ -174,15 +174,15 @@
 
             <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
                 <!--android:id="@+id/exo_video"-->
-                <!--style="@style/ExoMediaButton.Video"/>-->
+                <!--style="@style/ExoMediaButton2.Video"/>-->
 
             <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
                 <!--android:id="@+id/exo_audio"-->
-                <!--style="@style/ExoMediaButton.Audio"/>-->
+                <!--style="@style/ExoMediaButton2.Audio"/>-->
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
                 android:id="@+id/retry_button"
-                style="@style/ExoMediaButton.Retry"/>
+                style="@style/ExoMediaButton2.Retry"/>
 
 
         </LinearLayout>
@@ -202,6 +202,6 @@
 
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
             android:id="@+id/exo_suggestions"
-            style="@style/ExoMediaButton.Suggestions"/>
+            style="@style/ExoMediaButton2.Suggestions"/>
     </LinearLayout>
 </LinearLayout>
