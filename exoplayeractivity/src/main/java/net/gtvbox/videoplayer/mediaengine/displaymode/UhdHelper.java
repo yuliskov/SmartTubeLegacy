@@ -74,6 +74,7 @@ public class UhdHelper {
      * Construct a UhdHelper object.
      * @param context Activity context.
      */
+    @TargetApi(17)
     public UhdHelper(Context context) {
         mContext = context;
         mInternalDisplay = new Display();
@@ -229,8 +230,8 @@ public class UhdHelper {
         }
         try {
             Class<?> classToInvestigate = Class.forName(sDisplayClassName);
-            Method getModeMethod = classToInvestigate.getDeclaredMethod(sGetModeMethodName, null);
-            Object currentMode = getModeMethod.invoke(currentDisplay, null);
+            Method getModeMethod = classToInvestigate.getDeclaredMethod(sGetModeMethodName, (Class<?>) null);
+            Object currentMode = getModeMethod.invoke(currentDisplay, (Object) null);
             return convertReturnedModeToInternalMode(currentMode);
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
@@ -249,7 +250,7 @@ public class UhdHelper {
     private Display.Mode convertReturnedModeToInternalMode(Object systemMode) {
         Display.Mode returnedInstance = null;
         try {
-            Class modeClass = systemMode.getClass();
+            Class<?> modeClass = systemMode.getClass();
             int modeId = (int) modeClass.getDeclaredMethod(sGetModeIdMethodName).invoke(systemMode);
             int width = (int) modeClass.getDeclaredMethod(sGetPhysicalWidthMethodName).invoke(systemMode);
             int height = (int) modeClass.getDeclaredMethod(sGetPhysicalHeightMethodName).invoke(systemMode);
@@ -271,9 +272,9 @@ public class UhdHelper {
     public Display.Mode[] getSupportedModes() {
         Display.Mode[] returnedSupportedModes = null;
         try {
-            Class classToInvestigate = Class.forName(sDisplayClassName);
-            Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName, null);
-            Object[] SupportedModes = (Object[]) getSupportedMethod.invoke(getCurrentDisplay(), null);
+            Class<?> classToInvestigate = Class.forName(sDisplayClassName);
+            Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName, (Class<?>) null);
+            Object[] SupportedModes = (Object[]) getSupportedMethod.invoke(getCurrentDisplay(), (Object) null);
             returnedSupportedModes = new Display.Mode[SupportedModes.length];
             int i = 0;
             for (Object mode : SupportedModes) {

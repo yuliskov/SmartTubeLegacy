@@ -29,7 +29,7 @@
               android:paddingRight="@dimen/player_main_padding"
               android:paddingTop="@dimen/player_main_padding">
 
-    <!-- top row (time bar) -->
+    <!-- timebar row -->
     <LinearLayout
         android:id="@+id/time_bar"
         android:layout_width="match_parent"
@@ -71,8 +71,9 @@
                   android:textColor="#ffffff"/>
 
     </LinearLayout>
+    <!-- end timebar row -->
 
-    <!-- middle row (player's controls) -->
+    <!-- player's controls row -->
     <FrameLayout
         android:id="@+id/buttons_bar"
         android:layout_width="match_parent"
@@ -188,8 +189,9 @@
         </LinearLayout>
 
     </FrameLayout>
+    <!-- end player's controls row -->
 
-    <!-- bottom row (suggestion list) -->
+    <!-- suggestions row -->
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
@@ -204,4 +206,5 @@
             android:id="@+id/exo_suggestions"
             style="@style/ExoMediaButton2.Suggestions"/>
     </LinearLayout>
+    <!-- end suggestions row -->
 </LinearLayout>
