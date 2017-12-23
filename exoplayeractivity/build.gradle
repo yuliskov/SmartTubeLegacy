@@ -42,5 +42,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project.properties.projectAppCompatVersion
     compile 'com.noveogroup.android:android-logger:1.3.5'
-    compile 'com.google.android.exoplayer:exoplayer:r2.5.3' // https://bintray.com/google/exoplayer/exoplayer
+    compile 'com.google.android.exoplayer:exoplayer:r2.5.4' // https://bintray.com/google/exoplayer/exoplayer
 }
