@@ -230,8 +230,8 @@ public class UhdHelper {
         }
         try {
             Class<?> classToInvestigate = Class.forName(sDisplayClassName);
-            Method getModeMethod = classToInvestigate.getDeclaredMethod(sGetModeMethodName, (Class<?>) null);
-            Object currentMode = getModeMethod.invoke(currentDisplay, (Object) null);
+            Method getModeMethod = classToInvestigate.getDeclaredMethod(sGetModeMethodName);
+            Object currentMode = getModeMethod.invoke(currentDisplay);
             return convertReturnedModeToInternalMode(currentMode);
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
@@ -273,8 +273,8 @@ public class UhdHelper {
         Display.Mode[] returnedSupportedModes = null;
         try {
             Class<?> classToInvestigate = Class.forName(sDisplayClassName);
-            Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName, (Class<?>) null);
-            Object[] SupportedModes = (Object[]) getSupportedMethod.invoke(getCurrentDisplay(), (Object) null);
+            Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName);
+            Object[] SupportedModes = (Object[]) getSupportedMethod.invoke(getCurrentDisplay());
             returnedSupportedModes = new Display.Mode[SupportedModes.length];
             int i = 0;
             for (Object mode : SupportedModes) {
