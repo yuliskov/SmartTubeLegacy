@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,11 +6,12 @@ import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
 
 public final class ExoPreferences {
-    private static final String SELECTED_TRACK_ID = "selectedTrackId";
-    private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
     private static ExoPreferences sInstance;
     private final Context mContext;
     private SharedPreferences mPrefs;
+    private static final String SELECTED_TRACK_ID = "selectedTrackId";
+    private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
+    private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -58,5 +59,16 @@ public final class ExoPreferences {
 
     public long getPosition(String key) {
         return mPrefs.getLong(key, C.TIME_UNSET);
+    }
+
+    public boolean getAutoframerateChecked() {
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setAutoframerateChecked(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, isChecked)
+                .apply();
     }
 }

@@ -38,6 +38,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.ExoPreferences;
 
 import java.util.Arrays;
 
@@ -63,8 +64,10 @@ import java.util.Arrays;
     private CheckedTextView disableView;
     private CheckedTextView defaultView;
     private CheckedTextView enableRandomAdaptationView;
+    private CheckedTextView autoframerateView;
     private CheckedTextView[][] trackViews;
     private AlertDialog alertDialog;
+    private Context context;
 
     /**
      * @param selector                      The track selector.
@@ -101,10 +104,11 @@ import java.util.Arrays;
         alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }
-
-    // TODO: modified
+    
     @SuppressLint("InflateParams")
     private View buildView(Context context) {
+        this.context = context;
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
         ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
@@ -112,6 +116,14 @@ import java.util.Arrays;
         TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
         int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
         attributeArray.recycle();
+
+        // View for Autoframerate checkbox.
+        autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+        autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
+        autoframerateView.setText(R.string.enable_autoframerate);
+        autoframerateView.setOnClickListener(this);
+        root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        root.addView(autoframerateView);
 
         // View for disabling the renderer.
         disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
@@ -220,7 +232,7 @@ import java.util.Arrays;
     /**
      * Get the number of tracks with the same resolution.
      * <p>I assume that the tracks already have been sorted in descendants order. <br/>
-     * <p>Details: {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder MyMPDBuilder}
+     * <p>Details: {@code com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder}
      * @param group the group
      * @param trackIndex current track in group
      * @return
@@ -242,6 +254,9 @@ import java.util.Arrays;
     }
 
     private void updateViews() {
+        boolean autoframerateChecked = ExoPreferences.instance(context).getAutoframerateChecked();
+        autoframerateView.setChecked(autoframerateChecked);
+
         disableView.setChecked(isDisabled);
         defaultView.setChecked(!isDisabled && override == null);
         for (int i = 0; i < trackViews.length; i++) {
@@ -283,6 +298,10 @@ import java.util.Arrays;
             override = null;
         } else if (view == enableRandomAdaptationView) {
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
+        } else if (view == autoframerateView) {
+            ExoPreferences prefs = ExoPreferences.instance(context);
+            boolean checked = autoframerateView.isChecked();
+            prefs.setAutoframerateChecked(checked);
         } else { // change quality
             isDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
