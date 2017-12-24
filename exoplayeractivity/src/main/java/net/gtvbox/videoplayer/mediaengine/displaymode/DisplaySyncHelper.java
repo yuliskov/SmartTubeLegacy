@@ -1,14 +1,13 @@
 package net.gtvbox.videoplayer.mediaengine.displaymode;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Build.VERSION;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.ExoPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,18 +19,11 @@ public class DisplaySyncHelper implements UhdHelperListener {
     static final String TAG = "DisplaySyncHelper";
     private final Context mContext;
     private boolean mDisplaySyncInProgress = false;
-    private final boolean mNeedDisplaySync;
-    private boolean mSwitchToUHD;
     private UhdHelper mUhdHelper;
     private int mNewMode;
 
     public DisplaySyncHelper(Context context) {
         mContext = context;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        mNeedDisplaySync = prefs.getBoolean("display_rate_switch", false);
-        //mSwitchToUHD = prefs.getBoolean("switch_to_uhd", false);
-        // NOTE: switch not only framerate but resolution too
-        mSwitchToUHD = mNeedDisplaySync;
     }
 
     private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
@@ -190,8 +182,18 @@ public class DisplaySyncHelper implements UhdHelperListener {
         }
     }
 
+    private boolean getNeedDisplaySync() {
+        ExoPreferences prefs = ExoPreferences.instance(mContext);
+        return prefs.getAutoframerateChecked();
+    }
+
+    // NOTE: switch not only framerate but resolution too
+    private boolean getSwitchToUHD() {
+        return getNeedDisplaySync();
+    }
+
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
-        if (!mNeedDisplaySync && !mSwitchToUHD) { // none of the vars is set to true
+        if (!getNeedDisplaySync() && !getSwitchToUHD()) { // none of the vars is set to true
             return false;
         }
 
@@ -203,7 +205,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
             Display.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
             ArrayList<Display.Mode> resultModes = new ArrayList<>();
-            if (mSwitchToUHD) {
+            if (getSwitchToUHD()) {
                 if (videoWidth > 1920) {
                     resultModes = filterUHDModes(modes);
                     if (!resultModes.isEmpty()) {
@@ -212,8 +214,8 @@ public class DisplaySyncHelper implements UhdHelperListener {
                 }
             }
 
-            if (mNeedDisplaySync || isUHD) {
-                Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + mNeedDisplaySync + " Need UHD switch: " + isUHD);
+            if (getNeedDisplaySync() || isUHD) {
+                Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + getNeedDisplaySync() + " Need UHD switch: " + isUHD);
                 Display.Mode mode = mUhdHelper.getMode();
                 if (!isUHD) {
                     resultModes = filterSameResolutionModes(modes, mode);

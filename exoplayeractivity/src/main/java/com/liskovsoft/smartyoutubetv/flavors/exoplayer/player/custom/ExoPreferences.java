@@ -11,7 +11,8 @@ public final class ExoPreferences {
     private SharedPreferences mPrefs;
     private static final String SELECTED_TRACK_ID = "selectedTrackId";
     private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
-    private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
+    private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
+    private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -62,13 +63,24 @@ public final class ExoPreferences {
     }
 
     public boolean getAutoframerateChecked() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, false);
+        boolean isChecked = mPrefs.getBoolean(AUTOFRAMERATE_CHECKED, false);
         return isChecked;
     }
 
     public void setAutoframerateChecked(boolean isChecked) {
         mPrefs.edit()
-                .putBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, isChecked)
+                .putBoolean(AUTOFRAMERATE_CHECKED, isChecked)
+                .apply();
+    }
+
+    public boolean getSwitchToUHDChecked() {
+        boolean isChecked = mPrefs.getBoolean(SWITCH_TO_UHD_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setSwitchToUHDChecked(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(SWITCH_TO_UHD_CHECKED, isChecked)
                 .apply();
     }
 }
