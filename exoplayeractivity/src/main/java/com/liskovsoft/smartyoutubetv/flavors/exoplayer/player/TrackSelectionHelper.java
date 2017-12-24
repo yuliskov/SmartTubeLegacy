@@ -121,8 +121,9 @@ import java.util.Arrays;
         autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
         autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
         autoframerateView.setText(R.string.enable_autoframerate);
+        autoframerateView.setFocusable(true);
         autoframerateView.setOnClickListener(this);
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
         root.addView(autoframerateView);
 
         // View for disabling the renderer.
@@ -132,6 +133,7 @@ import java.util.Arrays;
         disableView.setFocusable(true);
         disableView.setOnClickListener(this);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
@@ -301,7 +303,7 @@ import java.util.Arrays;
         } else if (view == autoframerateView) {
             ExoPreferences prefs = ExoPreferences.instance(context);
             boolean checked = autoframerateView.isChecked();
-            prefs.setAutoframerateChecked(checked);
+            prefs.setAutoframerateChecked(!checked);
         } else { // change quality
             isDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
@@ -326,9 +328,9 @@ import java.util.Arrays;
         onClick(null, 0);
 
         // close dialog
-        if (alertDialog != null)
-            alertDialog.dismiss();
-        alertDialog = null;
+        //if (alertDialog != null)
+        //    alertDialog.dismiss();
+        //alertDialog = null;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {

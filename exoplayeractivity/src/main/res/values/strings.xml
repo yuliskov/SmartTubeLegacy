@@ -65,6 +65,6 @@
     <string name="published">Published</string>
     <string name="view_count">views</string>
     <string name="suggested_videos">Suggested videos</string>
-    <string name="enable_autoframerate">Enable Autoframerate</string>
+    <string name="enable_autoframerate">Autoframerate</string>
     <string name="autoframerate_not_supported">Your device doesn\'t support Autoframerate</string>
 </resources>

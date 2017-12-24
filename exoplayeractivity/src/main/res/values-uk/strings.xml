@@ -25,4 +25,5 @@
     <string name="view_count">переглядів</string>
     <string name="suggested_videos">Рекомендовані відео</string>
     <string name="autoframerate_not_supported">Ваш пристрій не підтримує Автофреймрейт</string>
+    <string name="enable_autoframerate">Автофреймрейт</string>
 </resources>
