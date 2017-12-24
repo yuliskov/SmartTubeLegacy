@@ -24,4 +24,5 @@
     <string name="published">Veröffentlicht</string>
     <string name="view_count">ansichten</string>
     <string name="suggested_videos">Vorgeschlagene videos</string>
+    <string name="autoframerate_not_supported">Ihr Gerät unterstützt Autoframerate nicht</string>
 </resources>

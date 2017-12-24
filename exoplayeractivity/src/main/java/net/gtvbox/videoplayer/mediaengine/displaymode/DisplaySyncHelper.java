@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
+import com.liskovsoft.exoplayeractivity.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,6 +134,10 @@ public class DisplaySyncHelper implements UhdHelperListener {
                     }
                     break;
             }
+        }
+
+        if (!supportedDevice) {
+            Toast.makeText(mContext, R.string.autoframerate_not_supported, Toast.LENGTH_LONG).show();
         }
 
         return supportedDevice;

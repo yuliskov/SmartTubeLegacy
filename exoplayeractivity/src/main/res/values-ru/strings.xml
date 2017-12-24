@@ -24,4 +24,5 @@
     <string name="published">Опубликовано</string>
     <string name="view_count">просмотров</string>
     <string name="suggested_videos">Рекомендованные видео</string>
+    <string name="autoframerate_not_supported">Ваше устройство не поддерживает Автофреймрейт</string>
 </resources>
