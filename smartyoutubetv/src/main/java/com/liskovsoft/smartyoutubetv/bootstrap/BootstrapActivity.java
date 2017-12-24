@@ -114,13 +114,12 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void startActivity(Context ctx, String clazz) {
-        Intent intent = new Intent();
+        Intent intent = getIntent(); // modify original intent
         // value used in StateUpdater class
         intent.putExtra(FROM_BOOTSTRAP, true);
         // NOTE: make activity transparent (non-reachable from launcher or resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClassName(ctx, clazz);
-        transferOriginData(intent);
 
         try {
             startActivity(intent);
@@ -130,18 +129,11 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void startActivity(Context ctx, Class clazz) {
-        Intent intent = new Intent();
-        // NOTE: make activity transparent (non-reachable from launcher or resents)
+        Intent intent = getIntent(); // modify original intent
+        // NOTE: make activity transparent (non-reachable from launcher or from resents)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
-        transferOriginData(intent);
         
         startActivity(intent);
-    }
-
-    private void transferOriginData(Intent intent) {
-        Intent origin = getIntent();
-        intent.setData(origin.getData());
-        intent.setAction(origin.getAction());
     }
 }

@@ -27,9 +27,10 @@ import java.util.regex.Pattern;
 public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Controller mController;
     private String mServiceUrl; // youtube url here
-    private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
+    private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
+    private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -177,8 +178,14 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Intent transformIntent(Intent intent) {
         if (intent == null)
             return null;
-        Uri data = intent.getData();
-        intent.setData(transformUri(data));
+
+        String dialParam = intent.getStringExtra(DIAL_EXTRA);
+        if (dialParam != null) {
+            intent.setData(Uri.parse("https://www.youtube.com/tv?" + dialParam));
+        } else {
+            intent.setData(transformUri(intent.getData()));
+        }
+
         return intent;
     }
 
