@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import cat.ereza.logcatreporter.LogcatReporter;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
@@ -61,7 +62,9 @@ public class BootstrapActivity extends ActivityBase {
                 mLangSelector.run();
                 break;
             case R.id.btn_send_crash_report:
-                throw new SendCrashReportException();
+                Toast.makeText(this, R.string.sending_crash_report, Toast.LENGTH_LONG).show();
+                LogcatReporter.reportExceptionWithLogcat(new SendCrashReportException());
+                break;
         }
     }
 
@@ -92,7 +95,7 @@ public class BootstrapActivity extends ActivityBase {
 
     private void setupCrashLogs() {
         Fabric.with(this, new Crashlytics());
-        LogcatReporter.install(); // crashlytics logcat addon
+        LogcatReporter.install(3000); // crashlytics logcat addon
     }
 
     private void setupLang() {

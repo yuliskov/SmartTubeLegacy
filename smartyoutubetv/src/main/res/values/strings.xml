@@ -34,4 +34,5 @@
     <string name="german_lang">Deutsche</string>
     <string name="returning_to_the_video">Returning to the opened video</string>
     <string name="send_crash_report">Crash Report</string>
+    <string name="sending_crash_report">Sending Crash Report...</string>
 </resources>
