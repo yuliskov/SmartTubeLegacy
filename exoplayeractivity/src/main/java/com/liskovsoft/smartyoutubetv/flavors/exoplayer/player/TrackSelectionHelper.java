@@ -91,6 +91,7 @@ import java.util.Arrays;
     public void showSelectionDialog(Activity activity, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
         this.trackInfo = trackInfo;
         this.rendererIndex = rendererIndex;
+        context = activity;
 
         trackGroups = trackInfo.getTrackGroups(rendererIndex);
         trackGroupsAdaptive = new boolean[trackGroups.length];
@@ -108,8 +109,6 @@ import java.util.Arrays;
     
     @SuppressLint("InflateParams")
     private View buildView(Context context) {
-        this.context = context;
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
         ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
@@ -119,13 +118,16 @@ import java.util.Arrays;
         attributeArray.recycle();
 
         // View for Autoframerate checkbox.
-        autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
-        autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
-        autoframerateView.setText(R.string.enable_autoframerate);
-        autoframerateView.setFocusable(true);
-        autoframerateView.setOnClickListener(this);
-        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
-        root.addView(autoframerateView);
+        if (rendererIndex == 0) { // is video track
+            autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+            autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
+            autoframerateView.setText(R.string.enable_autoframerate);
+            autoframerateView.setFocusable(true);
+            autoframerateView.setOnClickListener(this);
+            autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+            root.addView(autoframerateView);
+            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        }
 
         // View for disabling the renderer.
         disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
@@ -134,7 +136,6 @@ import java.util.Arrays;
         disableView.setFocusable(true);
         disableView.setOnClickListener(this);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.

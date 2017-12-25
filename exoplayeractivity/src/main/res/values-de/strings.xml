@@ -17,7 +17,7 @@
     <string name="audio">Audio</string>
     <string name="text">Text</string>
     <string name="retry">Wiederholen</string>
-    <string name="selection_disabled">Video deaktivieren</string>
+    <string name="selection_disabled">Track deaktivieren</string>
     <string name="selection_default">Standardqualität</string>
     <string name="captions">Bildunterschriften</string>
     <string name="not_implemented_msg">Noch nicht implementiert</string>

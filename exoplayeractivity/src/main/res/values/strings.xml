@@ -54,7 +54,7 @@
 
     <string name="storage_permission_denied">Permission to access storage was denied</string>
 
-    <string name="selection_disabled">Disable Video</string>
+    <string name="selection_disabled">Disable Track</string>
     <string name="selection_default">Default Quality</string>
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
     <string name="exo_like_desc">Like</string>

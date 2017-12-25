@@ -17,7 +17,7 @@
     <string name="audio">Аудио</string>
     <string name="text">Текст</string>
     <string name="retry">Повтор</string>
-    <string name="selection_disabled">Откл. видео</string>
+    <string name="selection_disabled">Откл. дорожку</string>
     <string name="selection_default">Авто. качество</string>
     <string name="captions">Субтитры</string>
     <string name="not_implemented_msg">Функционал пока не реализован</string>
