@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_save_selection"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
-                android:visibility="gone"
                 app:titleText="@string/autoframerate"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
