@@ -27,11 +27,11 @@ public class AutoFrameRateManager {
     }
 
     public boolean getEnabled() {
-        return mSyncHelper.getEnabled();
+        return mSyncHelper.getNeedDisplaySync();
     }
 
     public void setEnabled(boolean enabled) {
-        mSyncHelper.setEnabled(enabled);
+        mSyncHelper.setNeedDisplaySync(enabled);
         apply();
     }
 }

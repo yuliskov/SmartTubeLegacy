@@ -182,7 +182,12 @@ public class DisplaySyncHelper implements UhdHelperListener {
         }
     }
 
-    private boolean getNeedDisplaySync() {
+    public void setNeedDisplaySync(boolean enabled) {
+        ExoPreferences prefs = ExoPreferences.instance(mContext);
+        prefs.setAutoframerateChecked(enabled);
+    }
+
+    public boolean getNeedDisplaySync() {
         ExoPreferences prefs = ExoPreferences.instance(mContext);
         return prefs.getAutoframerateChecked();
     }
