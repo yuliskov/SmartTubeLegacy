@@ -25,4 +25,13 @@ public class AutoFrameRateManager {
         int width = videoFormat.width;
         mSyncHelper.syncDisplayMode(mCtx.getWindow(), width, frameRate);
     }
+
+    public boolean getEnabled() {
+        return mSyncHelper.getEnabled();
+    }
+
+    public void setEnabled(boolean enabled) {
+        mSyncHelper.setEnabled(enabled);
+        apply();
+    }
 }

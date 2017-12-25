@@ -770,9 +770,13 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         }
         if (playbackState == Player.STATE_READY) {
             // comment out until the behaviour will be fixed
-            mAutoFrameRateManager.apply();
+            getAutoFrameRateManager().apply();
         }
         updateButtonVisibilities();
+    }
+
+    public AutoFrameRateManager getAutoFrameRateManager() {
+        return mAutoFrameRateManager;
     }
 
     @Override

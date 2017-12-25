@@ -350,6 +350,93 @@ class MyXWalkLibraryLoader {
     }
 
     private static class DownloadManagerTask extends AsyncTask<Void, Integer, Integer> {
+        private DownloadListener mListener;
+        private Context mContext;
+        private String mDownloadUrl;
+        private MyDownloadManager mDownloadManager;
+        private long mDownloadId;
+        private boolean isDone;
+
+        DownloadManagerTask(DownloadListener listener, Context context, String url) {
+            super();
+            mListener = listener;
+            mContext = context;
+            mDownloadUrl = url;
+            mDownloadManager = new MyDownloadManager();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "DownloadManagerTask started, " + mDownloadUrl);
+            sActiveTask = this;
+            mListener.onDownloadStarted();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            if (mDownloadUrl == null) return DownloadManager.STATUS_FAILED;
+
+
+            String savedFile = DEFAULT_DOWNLOAD_FILE_NAME;
+
+            // NOTE: Android 6.0 fix
+            File downloadDir = mContext.getExternalCacheDir();
+
+            File downloadFile = new File(downloadDir, savedFile);
+            if (downloadFile.isFile()) downloadFile.delete();
+
+            MyDownloadManager.MyRequest request = new MyDownloadManager.MyRequest(Uri.parse(mDownloadUrl));
+            request.setDestinationUri(Uri.fromFile(downloadFile));
+            request.setProgressListener(new MyDownloadManager.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    publishProgress((int)bytesRead, (int)contentLength);
+                    isDone = done;
+                }
+            });
+
+            mDownloadId = mDownloadManager.enqueue(request);
+
+            return isDone ? DownloadManager.STATUS_SUCCESSFUL : DownloadManager.STATUS_FAILED;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            Log.d(TAG, "DownloadManagerTask updated: " + progress[0] + "/" + progress[1]);
+            int percentage = 0;
+            if (progress[1] > 0) {
+                percentage = (int) (progress[0] * 100.0 / progress[1]);
+                mListener.onDownloadUpdated(percentage);
+            }
+        }
+
+        @Override
+        protected void onCancelled(Integer result) {
+            mDownloadManager.remove(mDownloadId);
+
+            Log.d(TAG, "DownloadManagerTask cancelled");
+            sActiveTask = null;
+            mListener.onDownloadCancelled();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            Log.d(TAG, "DownloadManagerTask finished, " + result);
+            sActiveTask = null;
+
+            if (result == DownloadManager.STATUS_SUCCESSFUL) {
+                Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
+                Log.d(TAG, "Uri for downloaded file:" + uri.toString());
+
+                mListener.onDownloadCompleted(uri);
+            } else {
+                int error = DownloadManager.ERROR_UNKNOWN;
+                mListener.onDownloadFailed(result, error);
+            }
+        }
+    }
+
+    private static class DownloadManagerTaskNew extends AsyncTask<Void, Integer, Integer> {
         private static final int QUERY_INTERVAL_MS = 100;
         private static final int MAX_PAUSED_COUNT = 6000; // 10 minutes
 
@@ -358,7 +445,7 @@ class MyXWalkLibraryLoader {
         private String mDownloadUrl;
         private String mApkPath;
 
-        DownloadManagerTask(DownloadListener listener, Context context, String url) {
+        DownloadManagerTaskNew(DownloadListener listener, Context context, String url) {
             super();
             mListener = listener;
             mContext = context;

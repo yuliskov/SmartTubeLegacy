@@ -28,10 +28,6 @@
 
     <string name="retry">Retry</string>
 
-    <string name="selection_disabled">Disabled</string>
-
-    <string name="selection_default">Default</string>
-
     <string name="selection_default_none">Default (none)</string>
 
     <string name="unexpected_intent_action">Unexpected intent action: <xliff:g id="action">%1$s</xliff:g></string>
@@ -58,6 +54,8 @@
 
     <string name="storage_permission_denied">Permission to access storage was denied</string>
 
+    <string name="selection_disabled">Disable Video</string>
+    <string name="selection_default">Default Quality</string>
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
     <string name="exo_like_desc">Like</string>
     <string name="captions">Captions</string>

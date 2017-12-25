@@ -38,6 +38,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.ExoPreferences;
 
 import java.util.Arrays;
@@ -256,8 +257,8 @@ import java.util.Arrays;
     }
 
     private void updateViews() {
-        boolean autoframerateChecked = ExoPreferences.instance(context).getAutoframerateChecked();
-        autoframerateView.setChecked(autoframerateChecked);
+        AutoFrameRateManager autoFrameRateManager = ((PlayerActivity) context).getAutoFrameRateManager();
+        autoframerateView.setChecked(autoFrameRateManager.getEnabled());
 
         disableView.setChecked(isDisabled);
         defaultView.setChecked(!isDisabled && override == null);
@@ -288,7 +289,6 @@ import java.util.Arrays;
         }
     }
 
-    // TODO: modified
     // View.OnClickListener
     @Override
     public void onClick(View view) {
@@ -301,9 +301,9 @@ import java.util.Arrays;
         } else if (view == enableRandomAdaptationView) {
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
         } else if (view == autoframerateView) {
-            ExoPreferences prefs = ExoPreferences.instance(context);
             boolean checked = autoframerateView.isChecked();
-            prefs.setAutoframerateChecked(!checked);
+            AutoFrameRateManager autoFrameRateManager = ((PlayerActivity) context).getAutoFrameRateManager();
+            autoFrameRateManager.setEnabled(!checked);
         } else { // change quality
             isDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
