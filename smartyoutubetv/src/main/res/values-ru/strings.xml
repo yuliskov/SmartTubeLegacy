@@ -15,4 +15,5 @@
     <string name="language">Язык</string>
     <string name="autoframerate">Автофреймрейт</string>
     <string name="returning_to_the_video">Возвращаемся к открытому видео</string>
+    <string name="send_crash_report">Отчет о сбое</string>
 </resources>

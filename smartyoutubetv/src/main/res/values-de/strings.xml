@@ -14,4 +14,5 @@
     <string name="system_lang">Standard</string>
     <string name="language">Sprache</string>
     <string name="returning_to_the_video">Zurück zum geöffneten video</string>
+    <string name="send_crash_report">Unfallbericht</string>
 </resources>

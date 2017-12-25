@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import cat.ereza.logcatreporter.LogcatReporter;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
@@ -54,8 +55,13 @@ public class BootstrapActivity extends ActivityBase {
         if (mLangSelector == null) {
             mLangSelector = new LanguageSelector(this);
         }
-        if (button.getId() == R.id.btn_select_lang) {
-            mLangSelector.run();
+
+        switch (button.getId()) {
+            case R.id.btn_select_lang:
+                mLangSelector.run();
+                break;
+            case R.id.btn_send_crash_report:
+                throw new SendCrashReportException();
         }
     }
 
@@ -86,6 +92,7 @@ public class BootstrapActivity extends ActivityBase {
 
     private void setupCrashLogs() {
         Fabric.with(this, new Crashlytics());
+        LogcatReporter.install(); // crashlytics logcat addon
     }
 
     private void setupLang() {

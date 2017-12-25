@@ -103,6 +103,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') { // see top part of this file
         transitive = true
     }
+    compile 'cat.ereza:logcatreporter:1.2.0' // crashlytics logcat addon
     compile project.properties.projectAppCompatVersion
     compile 'com.noveogroup.android:android-logger:1.3.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
