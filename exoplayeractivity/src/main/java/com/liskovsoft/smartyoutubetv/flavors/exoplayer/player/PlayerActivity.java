@@ -73,7 +73,6 @@ import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -576,7 +575,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             }
 
             boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false);
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((DemoApplication) getApplication()).useExtensionRenderers()
+            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getApplication()).useExtensionRenderers()
                     ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER : DefaultRenderersFactory
                     .EXTENSION_RENDERER_MODE_ON) : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager, extensionRendererMode);
@@ -741,7 +740,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
      * @return A new DataSource factory.
      */
     private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
-        return ((DemoApplication) getApplication()).buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+        return ((ExoApplication) getApplication()).buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 
     /**
@@ -752,7 +751,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
      * @return A new HttpDataSource factory.
      */
     private HttpDataSource.Factory buildHttpDataSourceFactory(boolean useBandwidthMeter) {
-        return ((DemoApplication) getApplication()).buildHttpDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+        return ((ExoApplication) getApplication()).buildHttpDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 
     // ExoPlayer.EventListener implementation

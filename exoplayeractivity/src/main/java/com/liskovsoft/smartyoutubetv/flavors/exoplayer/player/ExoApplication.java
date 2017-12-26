@@ -27,14 +27,14 @@ import com.liskovsoft.browser.Browser;
 /**
  * Placeholder application to facilitate overriding Application methods for debugging and testing.
  */
-public class DemoApplication extends Browser {
-
+public class ExoApplication extends Browser {
     protected String userAgent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        userAgent = Util.getUserAgent(this, "ExoPlayerDemo");
+        String appName = "ExoPlayer";
+        userAgent = Util.getUserAgent(this, appName);
     }
 
     public DataSource.Factory buildDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
@@ -47,7 +47,7 @@ public class DemoApplication extends Browser {
 
     // TODO: modified: may not work properly
     public boolean useExtensionRenderers() {
-        return BuildConfig.FLAVOR.equals("withExtensions");
+        //boolean withExtensions = BuildConfig.FLAVOR.equals("withExtensions");
+        return true;
     }
-
 }
