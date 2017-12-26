@@ -65,4 +65,6 @@
     <string name="suggested_videos">Suggested videos</string>
     <string name="enable_autoframerate">Autoframerate</string>
     <string name="autoframerate_not_supported">Your device doesn\'t support Autoframerate</string>
+    <string name="share_video">Share Video</string>
+    <string name="send_to">Send to</string>
 </resources>

@@ -109,6 +109,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public static final String VIDEO_TITLE = "video_title";
     public static final String VIDEO_AUTHOR = "video_author";
     public static final String VIDEO_VIEWS = "video_views";
+    public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
 
     static {

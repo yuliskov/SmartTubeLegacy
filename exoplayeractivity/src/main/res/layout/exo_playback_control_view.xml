@@ -142,6 +142,10 @@
                 style="@style/ExoMediaButton2.User"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                android:id="@+id/exo_share"
+                style="@style/ExoMediaButton2.Share"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
                 android:id="@+id/exo_captions"
                 style="@style/ExoMediaButton2.Captions"/>
 

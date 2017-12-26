@@ -40,6 +40,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
     private final GenericStringResultReceiver mReceiver;
     private Intent mCachedIntent;
+    private String mCurrentUrl;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -77,7 +78,8 @@ public class ExoInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        makeResponseStream(url);
+        mCurrentUrl = url;
+        prepareResponseStream(url);
         parseAndOpenExoPlayer();
         return null;
     }
@@ -88,7 +90,7 @@ public class ExoInterceptor extends RequestInterceptor {
     // manifest pointed by get_video_info's dashmpd).
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
-    private void makeResponseStream(String url) {
+    private void prepareResponseStream(String url) {
         Response response30Fps = Helpers.doOkHttpRequest(unlockRegularFormats(url));
         Response response60Fps = Helpers.doOkHttpRequest(unlock60FpsFormats(url));
         mResponseStream30Fps = response30Fps.body().byteStream();
@@ -124,8 +126,14 @@ public class ExoInterceptor extends RequestInterceptor {
         playerIntent.putExtra(PlayerActivity.VIDEO_TITLE, info.getTitle());
         playerIntent.putExtra(PlayerActivity.VIDEO_AUTHOR, info.getAuthor());
         playerIntent.putExtra(PlayerActivity.VIDEO_VIEWS, info.getViewCount());
+        playerIntent.putExtra(PlayerActivity.VIDEO_ID, extractVideoId());
         mCachedIntent = playerIntent;
         return playerIntent;
+    }
+
+    private String extractVideoId() {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(mCurrentUrl);
+        return query.get("video_id");
     }
 
     private void openExoPlayer(final Intent playerIntent) {
@@ -180,10 +188,11 @@ public class ExoInterceptor extends RequestInterceptor {
      * @param url
      * @return
      */
-    protected String unlock30FpsFormats(String url) {
+    protected String unlock60FpsFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
         query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps formats
 
         return query.toString();
     }
@@ -194,11 +203,10 @@ public class ExoInterceptor extends RequestInterceptor {
      * @param url
      * @return
      */
-    protected String unlock60FpsFormats(String url) {
+    protected String unlock30FpsFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
         query.set("el", "info"); // unlock dashmpd url
-        query.set("ps", "default"); // unlock 60fps formats
 
         return query.toString();
     }

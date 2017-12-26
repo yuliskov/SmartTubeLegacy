@@ -402,30 +402,15 @@ function KeyUpDownWatcher(host) {
             var code = e.keyCode;
             if (code === up && $this.host) {
                 $this.host.needToCloseSuggestions();
-                container.removeEventListener(type, myListener);
-                // $this.stopUserActivity();
+                $this.host = null; // run once per host
             }
             console.log("SuggestionsFakeButton: on keydown: " + code);
         };
 
+        container.addEventListener(type, myListener);
+
         this.setHost = function(host) {
             this.host = host;
-            container.addEventListener(type, myListener);
-            // this.startUserActivity();
-        };
-
-        var playBtn = YouButton.fromSelector(this.playButtonSelector);
-        var doSimpleClick = function() {
-            playBtn.setChecked(!playBtn.getChecked());
-        };
-
-        this.startUserActivity = function() {
-            // disable auto hide
-            this.timeout = window.setInterval(doSimpleClick, 1000);
-        };
-
-        this.stopUserActivity = function() {
-            window.clearInterval(this.timeout);
         };
     }
 
@@ -442,25 +427,9 @@ KeyUpDownWatcher.prototype = new GoogleButton();
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
-
-    this.isMainControlsHidden = function() {
-        return helpers.isHidden(this.mainControlsSelector);
-    };
-
-    this.hideUnneededControls = function() {
-        var controls = helpers.$(this.mainControlsSelector);
-        if (controls)
-            controls.style.display = 'none';
-
-        var title = helpers.$(this.mainTitleSelector);
-        if (title)
-            title.style.display = 'none';
-    };
     
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
-
-        // this.hideUnneededControls();
 
         var downCode = 40;
         // we assume that no interface currently shown

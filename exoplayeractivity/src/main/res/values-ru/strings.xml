@@ -26,4 +26,6 @@
     <string name="suggested_videos">Рекомендованные видео</string>
     <string name="autoframerate_not_supported">Ваше устройство не поддерживает Автофреймрейт</string>
     <string name="enable_autoframerate">Автофреймрейт</string>
+    <string name="share_video">Отправ</string>
+    <string name="send_to">Отправить в</string>
 </resources>

@@ -84,6 +84,13 @@
         <item name="imageOn">@mipmap/btn_captions_on</item>
     </style>
 
+    <style name="ExoMediaButton2.Share">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/share_video</item>
+        <item name="imageOff">@mipmap/btn_share_off</item>
+        <item name="imageOn">@mipmap/btn_share_off</item>
+    </style>
+
     <style name="ExoMediaButton2.User">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/user_page</item>

@@ -51,6 +51,7 @@ import java.util.Arrays;
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
     private static final int TEXT_SIZE_DP = 15;
+    private static final int VIDEO_GROUP_INDEX = 0; // is video
 
     private final MappingTrackSelector selector;
     private final TrackSelection.Factory adaptiveTrackSelectionFactory;
@@ -118,13 +119,13 @@ import java.util.Arrays;
         attributeArray.recycle();
 
         // View for Autoframerate checkbox.
-        if (rendererIndex == 0) { // is video track
-            autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
-            autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
-            autoframerateView.setText(R.string.enable_autoframerate);
-            autoframerateView.setFocusable(true);
-            autoframerateView.setOnClickListener(this);
-            autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+        autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
+        autoframerateView.setText(R.string.enable_autoframerate);
+        autoframerateView.setFocusable(true);
+        autoframerateView.setOnClickListener(this);
+        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        if (rendererIndex == VIDEO_GROUP_INDEX) { // is video
             root.addView(autoframerateView);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
         }
