@@ -765,11 +765,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == Player.STATE_ENDED) {
             doGracefulExit(PlayerActivity.TRACK_ENDED);
-            
-            showControls();
         }
         if (playbackState == Player.STATE_READY) {
-            // comment out until the behaviour will be fixed
             getAutoFrameRateManager().apply();
         }
         updateButtonVisibilities();
@@ -839,8 +836,6 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         }
     }
 
-    private boolean mTrackChangedOnce;
-
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
@@ -905,8 +900,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     }
 
     private void showControls() {
-        //debugRootView.setVisibility(View.VISIBLE);
-        //debugTextView.setVisibility(View.VISIBLE);
+        // user must choose another track
     }
 
     private void showToast(int messageId) {

@@ -234,7 +234,7 @@ public class UhdHelper {
             Object currentMode = getModeMethod.invoke(currentDisplay);
             return convertReturnedModeToInternalMode(currentMode);
         } catch (Exception e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            Log.e(TAG, e.getMessage());
         }
         Log.e(TAG, "Current Mode is not present in supported Modes");
         return null;
