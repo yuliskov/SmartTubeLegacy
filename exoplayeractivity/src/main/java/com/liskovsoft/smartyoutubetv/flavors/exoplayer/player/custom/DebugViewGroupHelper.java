@@ -19,7 +19,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -166,14 +165,52 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         column1.removeAllViews();
         column2.removeAllViews();
 
-        appendPlayerState();
-        appendPlayerWindowIndexing();
-        appendPreferredDisplayModeId();
         appendVideoInfo();
         appendOtherInfo();
+        appendPlayerState();
+        appendPlayerWindowIndex();
+        appendPreferredDisplayModeId();
 
         viewGroup.removeCallbacks(this);
         viewGroup.postDelayed(this, REFRESH_INTERVAL_MS);
+    }
+
+    private void appendVideoInfo() {
+        Format video = player.getVideoFormat();
+        Format audio = player.getAudioFormat();
+        if (video == null || audio == null) {
+            return;
+        }
+
+        appendRow("Current Res", video.width + "x" + video.height + "@" + ((int)video.frameRate));
+        appendRow("Codecs", String.format(
+                "%s(%s)/%s(%s)",
+                video.sampleMimeType.replace("video/", ""),
+                video.id,
+                audio.sampleMimeType.replace("audio/", ""),
+                audio.id
+        ));
+        appendRow("Bitrate", String.format(
+                "%s/%s",
+                toHumanReadable(video.bitrate),
+                toHumanReadable(audio.bitrate)
+        ));
+        String par = video.pixelWidthHeightRatio == Format.NO_VALUE ||
+                video.pixelWidthHeightRatio == 1f ?
+                "n/a" : String.format(Locale.US, "%.02f", video.pixelWidthHeightRatio);
+        appendRow("Aspect Ratio", par);
+    }
+
+    private void appendOtherInfo() {
+        DecoderCounters counters = player.getVideoDecoderCounters();
+        if (counters == null)
+            return;
+
+        counters.ensureUpdated();
+        appendRow("Dropped Frames", counters.droppedOutputBufferCount);
+        appendRow("Peak Dropped Frames", counters.maxConsecutiveDroppedOutputBufferCount);
+        appendRow("Skipped Frames", counters.skippedOutputBufferCount);
+        appendRow("Rendered Frames", counters.renderedOutputBufferCount);
     }
 
     private void appendPlayerState() {
@@ -200,8 +237,8 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         appendRow("PlaybackState", text);
     }
 
-    private void appendPlayerWindowIndexing() {
-        appendRow("Window", player.getCurrentWindowIndex());
+    private void appendPlayerWindowIndex() {
+        appendRow("Window Index", player.getCurrentWindowIndex());
     }
 
     private void appendPreferredDisplayModeId() {
@@ -214,29 +251,6 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         }
         WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
         appendRow("DisplayModeId", windowLayoutParams.preferredDisplayModeId);
-    }
-
-    private void appendVideoInfo() {
-        Format video = player.getVideoFormat();
-        Format audio = player.getAudioFormat();
-        if (video == null || audio == null) {
-            return;
-        }
-
-        appendRow("Current Res", video.width + "x" + video.height + "@" + video.frameRate + "fps");
-        appendRow("Codecs", String.format(
-                "%s(%s)/%s(%s)",
-                video.sampleMimeType.replace("video/", ""),
-                video.id,
-                audio.sampleMimeType.replace("audio/", ""),
-                audio.id
-        ));
-    }
-
-    private void appendOtherInfo() {
-        DecoderCounters counters = player.getVideoDecoderCounters();
-        if (counters != null)
-            appendRow("Dropped Frames", counters.skippedOutputBufferCount);
     }
 
     private void appendRow(String name, boolean val) {
@@ -275,79 +289,8 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         return textView;
     }
 
-    private String getPlayerStateString() {
-        String text = "playWhenReady:" + player.getPlayWhenReady() + " playbackState:";
-        switch (player.getPlaybackState()) {
-            case Player.STATE_BUFFERING:
-                text += "buffering";
-                break;
-            case Player.STATE_ENDED:
-                text += "ended";
-                break;
-            case Player.STATE_IDLE:
-                text += "idle";
-                break;
-            case Player.STATE_READY:
-                text += "ready";
-                break;
-            default:
-                text += "unknown";
-                break;
-        }
-        return text;
-    }
-
-    private String getPlayerWindowIndexString() {
-        return " window:" + player.getCurrentWindowIndex();
-    }
-
-    private String getPreferredDisplayModeId() {
-        if (Util.SDK_INT < 23) {
-            return "";
-        }
-        Activity ctx = this.context;
-        if (ctx == null) {
-            ctx = (PlayerActivity) viewGroup.getContext();
-        }
-        WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
-        return " preferredDisplayModeId:" + windowLayoutParams.preferredDisplayModeId;
-    }
-
-    private String getVideoString() {
-        Format format = player.getVideoFormat();
-        if (format == null) {
-            return "";
-        }
-        // NOTE: add fps and bitrate to stats
-        return "\n" + format.sampleMimeType + "@" + format.frameRate + "fps*" + toHumanReadable(format.bitrate) + "(id:" + format.id + " r:" +
-                format.width + "x" + format.height + getPixelAspectRatioString(format.pixelWidthHeightRatio) + getDecoderCountersBufferCountString
-                (player.getVideoDecoderCounters()) + ")";
-    }
-
     private String toHumanReadable(int bitrate) {
         float mbit = ((float) bitrate) / 1_000_000;
         return String.format(Locale.ENGLISH, "%.2fMbit", mbit);
     }
-
-    private String getAudioString() {
-        Format format = player.getAudioFormat();
-        if (format == null) {
-            return "";
-        }
-        return "\n" + format.sampleMimeType + "(id:" + format.id + " hz:" + format.sampleRate + " ch:" + format.channelCount +
-                getDecoderCountersBufferCountString(player.getAudioDecoderCounters()) + ")";
-    }
-
-    private static String getDecoderCountersBufferCountString(DecoderCounters counters) {
-        if (counters == null) {
-            return "";
-        }
-        counters.ensureUpdated();
-        return " rb:" + counters.renderedOutputBufferCount + " sb:" + counters.skippedOutputBufferCount + " db:" + counters.droppedOutputBufferCount + " mcdb:" + counters.maxConsecutiveDroppedOutputBufferCount;
-    }
-
-    private static String getPixelAspectRatioString(float pixelAspectRatio) {
-        return pixelAspectRatio == Format.NO_VALUE || pixelAspectRatio == 1f ? "" : (" par:" + String.format(Locale.US, "%.02f", pixelAspectRatio));
-    }
-
 }

@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayer.EventListener;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -56,7 +55,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.AutoFrameRateManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.DebugTextViewHelper;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -122,7 +120,6 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private EventLogger eventLogger;
     private SimpleExoPlayerView simpleExoPlayerView;
     private LinearLayout debugRootView;
-    private TextView debugTextView;
     private FrameLayout debugViewGroup;
     private TextToggleButton retryButton;
 
@@ -130,8 +127,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private SimpleExoPlayer player;
     private DefaultTrackSelector trackSelector;
     private TrackSelectionHelper trackSelectionHelper;
-    private DebugTextViewHelper debugViewHelper;
-    private DebugViewGroupHelper debugViewHelper2;
+    private DebugViewGroupHelper debugViewHelper;
     private boolean needRetrySource;
     private TrackGroupArray lastSeenTrackGroupArray;
 
@@ -168,7 +164,6 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         View rootView = findViewById(R.id.root);
         rootView.setOnClickListener(this);
         debugRootView = (LinearLayout) findViewById(R.id.controls_root);
-        debugTextView = (TextView) findViewById(R.id.debug_text_view);
         debugViewGroup = (FrameLayout) findViewById(R.id.debug_view_group);
         mPlayerTopBar = (LinearLayout) findViewById(R.id.player_top_bar);
         retryButton = (TextToggleButton) findViewById(R.id.retry_button);
@@ -259,10 +254,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
                 if (isChecked)
                 {
-                    debugTextView.setVisibility(View.VISIBLE);
                     debugViewGroup.setVisibility(View.VISIBLE);
                 } else {
-                    debugTextView.setVisibility(View.GONE);
                     debugViewGroup.setVisibility(View.GONE);
                 }
 
@@ -596,10 +589,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
-            debugViewHelper = new DebugTextViewHelper(player, debugTextView, PlayerActivity.this);
+            debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
             debugViewHelper.start();
-            debugViewHelper2 = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
-            debugViewHelper2.start();
 
             mAutoFrameRateManager = new AutoFrameRateManager(this, player);
         }
@@ -722,8 +713,6 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         if (player != null) {
             debugViewHelper.stop();
             debugViewHelper = null;
-            debugViewHelper2.stop();
-            debugViewHelper2 = null;
             shouldAutoPlay = player.getPlayWhenReady();
             updateResumePosition();
             player.release();
