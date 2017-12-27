@@ -234,7 +234,7 @@ public class UhdHelper {
             Object currentMode = getModeMethod.invoke(currentDisplay);
             return convertReturnedModeToInternalMode(currentMode);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "error getting mode", e);
         }
         Log.e(TAG, "Current Mode is not present in supported Modes");
         return null;
@@ -281,7 +281,7 @@ public class UhdHelper {
                 returnedSupportedModes[i++] = convertReturnedModeToInternalMode(mode);
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "error getting modes", e);
         }
         return returnedSupportedModes;
     }
@@ -427,7 +427,7 @@ public class UhdHelper {
         try {
             attributeFlags = cLayoutParams.getDeclaredField(sPreferredDisplayModeIdFieldName);
         } catch (Exception e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            Log.e(TAG, "error getting field", e);
             //send and cleanup receivers/callback listeners
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT,1,1, null));
             return;
@@ -457,7 +457,7 @@ public class UhdHelper {
             mTargetWindow.setAttributes(mWindowAttributes);
 
         } catch (Exception e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            Log.e(TAG, "error getting field", e);
             //send and cleanup receivers/callback listeners
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT,1,1, null));
             return;

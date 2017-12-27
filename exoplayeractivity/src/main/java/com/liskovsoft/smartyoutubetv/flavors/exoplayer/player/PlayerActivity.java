@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.DebugViewGroupHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.PlayerPresenter;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.PlayerStateManager;
@@ -78,7 +80,7 @@ import java.util.UUID;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class PlayerActivity extends Activity implements OnClickListener, ExoPlayer.EventListener, PlaybackControlView.VisibilityListener {
+public class PlayerActivity extends Activity implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
 
     public static final String DRM_SCHEME_UUID_EXTRA = "drm_scheme_uuid";
     public static final String DRM_LICENSE_URL = "drm_license_url";
@@ -121,6 +123,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private SimpleExoPlayerView simpleExoPlayerView;
     private LinearLayout debugRootView;
     private TextView debugTextView;
+    private FrameLayout debugViewGroup;
     private TextToggleButton retryButton;
 
     private DataSource.Factory mediaDataSourceFactory;
@@ -128,6 +131,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     private DefaultTrackSelector trackSelector;
     private TrackSelectionHelper trackSelectionHelper;
     private DebugTextViewHelper debugViewHelper;
+    private DebugViewGroupHelper debugViewHelper2;
     private boolean needRetrySource;
     private TrackGroupArray lastSeenTrackGroupArray;
 
@@ -165,6 +169,7 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         rootView.setOnClickListener(this);
         debugRootView = (LinearLayout) findViewById(R.id.controls_root);
         debugTextView = (TextView) findViewById(R.id.debug_text_view);
+        debugViewGroup = (FrameLayout) findViewById(R.id.debug_view_group);
         mPlayerTopBar = (LinearLayout) findViewById(R.id.player_top_bar);
         retryButton = (TextToggleButton) findViewById(R.id.retry_button);
         retryButton.setOnClickListener(this);
@@ -255,8 +260,10 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
                 if (isChecked)
                 {
                     debugTextView.setVisibility(View.VISIBLE);
+                    debugViewGroup.setVisibility(View.VISIBLE);
                 } else {
                     debugTextView.setVisibility(View.GONE);
+                    debugViewGroup.setVisibility(View.GONE);
                 }
 
             }
@@ -591,6 +598,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugTextViewHelper(player, debugTextView, PlayerActivity.this);
             debugViewHelper.start();
+            debugViewHelper2 = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
+            debugViewHelper2.start();
 
             mAutoFrameRateManager = new AutoFrameRateManager(this, player);
         }
@@ -666,11 +675,12 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
 
     private DashManifest getManifest(Uri uri, String mpdContent) {
         DashManifestParser parser = new DashManifestParser();
-        DashManifest result = null;
+        DashManifest result;
         try {
             result = parser.parse(uri, Helpers.toStream(mpdContent));
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         return result;
     }
@@ -712,6 +722,8 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
         if (player != null) {
             debugViewHelper.stop();
             debugViewHelper = null;
+            debugViewHelper2.stop();
+            debugViewHelper2 = null;
             shouldAutoPlay = player.getPlayWhenReady();
             updateResumePosition();
             player.release();

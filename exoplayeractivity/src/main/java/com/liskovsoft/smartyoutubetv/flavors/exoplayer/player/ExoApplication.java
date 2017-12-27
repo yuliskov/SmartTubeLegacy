@@ -47,7 +47,6 @@ public class ExoApplication extends Browser {
 
     // TODO: modified: may not work properly
     public boolean useExtensionRenderers() {
-        //boolean withExtensions = BuildConfig.FLAVOR.equals("withExtensions");
-        return true;
+        return BuildConfig.FLAVOR.equals("withExtensions");
     }
 }

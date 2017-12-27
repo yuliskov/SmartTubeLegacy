@@ -48,6 +48,7 @@ public class Helpers {
             is = ctx.getAssets().open(fileName);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         return is;
     }
@@ -57,7 +58,7 @@ public class Helpers {
             // make behaviour of java uri-encode the same as javascript's one
             return URLEncoder.encode(new String(data, "UTF-8"), "UTF-8").replace("+", "%20");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -103,6 +104,7 @@ public class Helpers {
             okHttpResponse = mClient.newCall(okHttpRequest).execute();
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IllegalStateException(e);
         }
 
         return okHttpResponse;
