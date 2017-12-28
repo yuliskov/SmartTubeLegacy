@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="webview_desc">MiBox, FireTV usw</string>
-    <string name="xwalk_desc">MiTV usw</string>
-    <string name="exo_desc">4K: MiTV usw</string>
+    <string name="webview_desc">MiBox, FireTV usw.</string>
+    <string name="xwalk_desc">MiTV usw.</string>
+    <string name="exo_desc">4K: MiTV usw.</string>
     <string name="exo_desc2">4K: alt</string>
-    <string name="bootstrap_main_title">Bitte wählen sie die version von YouTube</string>
-    <string name="starting_popup">Ausgehend vom Haupt-Launcher</string>
+    <string name="bootstrap_main_title">Bitte wählen Sie eine Version aus:</string>
+    <string name="starting_popup">Von Haupt-Version starten</string>
     <string name="save_selection">Merken</string>
-    <string name="bootstrap_bottom_title">Wenn Sie sich nicht sicher sind, versuchen Sie die Trägerraketen nacheinander</string>
-    <string name="starting_popup_fmt">Den %s Launcher starten...</string>
-    <string name="loading_bottom_msg">Drücken Sie die Zurück-Taste, um zum Launcher-Dialog zurückzukehren</string>
+    <string name="bootstrap_bottom_title">Wenn Sie unsicher sind, testen Sie eine Version nach der anderen.</string>
+    <string name="starting_popup_fmt">Die %s Version starten...</string>
+    <string name="loading_bottom_msg">Drücken Sie die Zurück-Taste, um zum Versions-Dialog zurückzukehren</string>
     <string name="language_dialog_title">Sprache auswählen</string>
     <string name="system_lang">Standard</string>
     <string name="language">Sprache</string>
-    <string name="returning_to_the_video">Zurück zum geöffneten video</string>
-    <string name="send_crash_report">Unfallbericht</string>
+    <string name="returning_to_the_video">Zurück zum geöffneten Video</string>
+    <string name="send_crash_report">Absturzbericht</string>
     <string name="sending_crash_report">Absturzbericht senden...</string>
 </resources>
