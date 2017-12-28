@@ -2,7 +2,7 @@
 <whisperplay>
     <dial>
         <application>
-            <dialid>KidsYouTubeTV</dialid>
+            <dialid>YouTube</dialid>
             <startAction>android.intent.action.MAIN</startAction>
         </application>
     </dial>

@@ -232,11 +232,14 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         return runMultiMatcher(url, patterns);
     }
 
-    private Uri transformUri(Uri uri) {
+    private Uri transformUri(final Uri uri) {
         if (uri == null)
             return null;
         String url = uri.toString();
         String videoId = extractVideoParamsFromUrl(url);
+        if (videoId == null) {
+            return uri;
+        }
         String videoUrlTemplate = "https://www.youtube.com/tv#/watch/video/control?%s";
         String format = String.format(videoUrlTemplate, videoId);
         return Uri.parse(format);
