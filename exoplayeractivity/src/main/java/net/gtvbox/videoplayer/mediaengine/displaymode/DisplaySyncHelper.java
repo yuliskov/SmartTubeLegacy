@@ -135,29 +135,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return supportedDevice;
     }
 
-    private boolean supportsDisplayModeChange2() {
-        boolean result = true;
-        if (VERSION.SDK_INT < 21) {
-            result = false;
-        } else {
-            switch (VERSION.SDK_INT) {
-                case 21:
-                case 22:
-                    String model = Build.MODEL;
-                    String manufacturer = Build.MANUFACTURER;
-                    // amazon devices only (Android L)
-                    if (!model.startsWith("AFT") || !"Amazon".equalsIgnoreCase(manufacturer)) {
-                        return false;
-                    }
-                    break;
-                default:
-                    return true;
-            }
-        }
-
-        return result;
-    }
-
     public boolean displayModeSyncInProgress() {
         return mDisplaySyncInProgress;
     }

@@ -16,8 +16,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.display.DisplayManager;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -73,6 +79,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         this.player = player;
         this.viewGroup = viewGroup;
         this.context = ctx;
+        // displayManager = (DisplayManager) this.context.getSystemService(Context.DISPLAY_SERVICE);
         inflate();
     }
 
@@ -168,7 +175,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         appendVideoInfo();
         appendOtherInfo();
         appendPlayerState();
-        appendPlayerWindowIndex();
+        // appendPlayerWindowIndex();
         appendPreferredDisplayModeId();
 
         viewGroup.removeCallbacks(this);
@@ -182,7 +189,8 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
         }
 
-        appendRow("Current Res", video.width + "x" + video.height + "@" + ((int)video.frameRate));
+        appendRow("Current/Optimal Res",
+                    video.width + "x" + video.height + "@" + ((int)video.frameRate));
         appendRow("Codecs", String.format(
                 "%s(%s)/%s(%s)",
                 video.sampleMimeType.replace("video/", ""),
@@ -207,14 +215,15 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
 
         counters.ensureUpdated();
-        appendRow("Dropped Frames", counters.droppedOutputBufferCount);
-        appendRow("Peak Dropped Frames", counters.maxConsecutiveDroppedOutputBufferCount);
-        appendRow("Skipped Frames", counters.skippedOutputBufferCount);
-        appendRow("Rendered Frames", counters.renderedOutputBufferCount);
+        appendRow("Dropped Frames", counters.droppedOutputBufferCount + "/" + counters.renderedOutputBufferCount);
+        //appendRow("Dropped Frames", counters.droppedOutputBufferCount);
+        //appendRow("Peak Dropped Frames", counters.maxConsecutiveDroppedOutputBufferCount);
+        //appendRow("Skipped Frames", counters.skippedOutputBufferCount);
+        //appendRow("Rendered Frames", counters.renderedOutputBufferCount);
     }
 
     private void appendPlayerState() {
-        appendRow("PlayWhenReady", player.getPlayWhenReady());
+        appendRow("Paused", !player.getPlayWhenReady());
 
         String text;
         switch (player.getPlaybackState()) {
@@ -254,18 +263,27 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
     }
 
     private void appendRow(String name, boolean val) {
-        column1.addView(createTextView(name));
-        column2.addView(createTextView(val));
+        appendNameColumn(createTextView(name));
+        appendValueColumn(createTextView(val));
     }
 
     private void appendRow(String name, String val) {
-        column1.addView(createTextView(name));
-        column2.addView(createTextView(val));
+        appendNameColumn(createTextView(name));
+        appendValueColumn(createTextView(val));
     }
 
     private void appendRow(String name, int val) {
-        column1.addView(createTextView(name));
-        column2.addView(createTextView(val));
+        appendNameColumn(createTextView(name));
+        appendValueColumn(createTextView(val));
+    }
+
+    private void appendNameColumn(TextView content) {
+        content.setGravity(Gravity.END);
+        column1.addView(content);
+    }
+
+    private void appendValueColumn(TextView content) {
+        column2.addView(content);
     }
 
     private TextView createTextView(String name) {
@@ -293,4 +311,16 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         float mbit = ((float) bitrate) / 1_000_000;
         return String.format(Locale.ENGLISH, "%.2fMbit", mbit);
     }
+
+    //@TargetApi(17)
+    //private android.view.Display getCurrentDisplay() {
+    //    if (context == null || displayManager == null)
+    //        return null;
+    //    android.view.Display[] displays = displayManager.getDisplays();
+    //    if (displays == null || displays.length == 0) {
+    //        return null;
+    //    }
+    //    //assuming the 1st display is the actual display.
+    //    return displays[0];
+    //}
 }
