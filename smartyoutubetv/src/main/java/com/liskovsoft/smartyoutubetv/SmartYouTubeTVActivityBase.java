@@ -179,14 +179,29 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         if (intent == null)
             return null;
 
-        String dialParam = intent.getStringExtra(DIAL_EXTRA);
-        if (dialParam != null) {
-            intent.setData(Uri.parse("https://www.youtube.com/tv?" + dialParam));
-        } else {
-            intent.setData(transformUri(intent.getData()));
-        }
+        transformRegularIntent(intent);
+        transformAmazonIntent(intent);
 
         return intent;
+    }
+
+    private void transformRegularIntent(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) {
+            return;
+        }
+
+        intent.setData(transformUri(data));
+    }
+
+    // see Amazon's youtube apk: "org.chromium.youtube_apk.YouTubeActivity.loadStartPage(dialParam)"
+    private void transformAmazonIntent(Intent intent) {
+        String dialParam = intent.getStringExtra(DIAL_EXTRA);
+        if (dialParam == null) {
+            return;
+        }
+
+        intent.setData(Uri.parse("https://www.youtube.com/tv?gl=us&hl=en-us&" + dialParam));
     }
 
     private String runMultiMatcher(String input, String[] patterns) {
