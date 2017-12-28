@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="low_memory_notify">Warnung: Speicher zu niedrig. Sichere Stand...</string>
+</resources>

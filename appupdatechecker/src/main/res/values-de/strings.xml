@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppUpdateChecker -->
+    <!-- 											version_number ↓        ↓ app_name -->
+    <string name="app_update_new_version">Eine neue Version (%1$s) von %2$s ist verfügbar!</string>
+    <string name="upgrade">Aktualisieren</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="pref_check_updates_title">Auf Updates prüfen</string>
+    <string name="pref_min_interval_title">Minimale Update Frequenz</string>
+    <string name="pref_min_interval_summary">Nur alle Minuten nach Updates suchen</string>
+    <string name="no_external_storage_error">Update nicht möglich. Externer Speicher ist nicht vorhanden.</string>
+</resources>
