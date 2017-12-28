@@ -24,14 +24,13 @@ public class BrowserWebViewFactory implements WebViewFactory {
         boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
         if (isXWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
+            // real display size (virtual pixel == real pixel)
+            // 100 - normal resolution, 50 - 2160p resolution
+            w.setInitialScale(100);
         } else {
             // BUGFIX: rare memory leak in WebView
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
-
-        // real display size (virtual pixel == real pixel)
-        // 100 - normal resolution, 50 - 2160p resolution
-        //w.setInitialScale(100);
 
         return w;
     }
