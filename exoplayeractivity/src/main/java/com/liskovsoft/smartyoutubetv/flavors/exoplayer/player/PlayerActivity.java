@@ -53,6 +53,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector.InvalidationListener;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.AutoFrameRateManager;
@@ -518,7 +519,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                 @Override
                 protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays,
                                                         int[][][] rendererFormatSupports) throws ExoPlaybackException {
-                    
+
 
                     if (mStateManager == null) { // run once
                         mStateManager = new PlayerStateManager(PlayerActivity.this, player, trackSelector);
@@ -600,9 +601,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             Uri[] uris;
             String[] extensions;
             if (ACTION_VIEW.equals(action)) {
-                //TODO: modified
                 uris = new Uri[]{intent.getData()};
-                //uris = new Uri[]{intent.getData(), Uri.parse("http://fakeurl.com")};
 
                 //TODO: modified
                 extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA)};
@@ -627,23 +626,20 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             }
             MediaSource[] mediaSources = new MediaSource[uris.length];
             for (int i = 0; i < uris.length; i++) {
-                // TODO: modified
+                // NOTE: supply audio and video tracks in one field
                 String[] split = uris[i].toString().split(DELIMITER);
                 if (split.length == 2) {
                     mediaSources[i] = new MergingMediaSource(buildMediaSource(Uri.parse(split[0]), null), buildMediaSource(Uri.parse(split[1]),
                             null));
                     continue;
                 }
-                // TODO: modified
+                // NOTE: supply audio and video tracks in one field
                 if (intent.getStringExtra(MPD_CONTENT_EXTRA) != null) {
                     mediaSources[i] = buildMPDMediaSource(uris[i], intent.getStringExtra(MPD_CONTENT_EXTRA));
                     continue;
                 }
                 mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
             }
-            // TODO: modified
-            //MediaSource mediaSource = mediaSources.length == 1 ? new LoopingMediaSource(mediaSources[0]) :
-            //        new LoopingMediaSource(new ConcatenatingMediaSource(mediaSources));
 
             MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
 
@@ -657,8 +653,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             updateButtonVisibilities();
         }
     }
-
-    // TODO: modified
+    
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
@@ -924,5 +919,11 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             cause = cause.getCause();
         }
         return false;
+    }
+
+    void retryIfNeeded() {
+        if (needRetrySource) {
+            initializePlayer();
+        }
     }
 }

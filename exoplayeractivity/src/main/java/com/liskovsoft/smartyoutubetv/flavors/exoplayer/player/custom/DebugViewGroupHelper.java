@@ -62,7 +62,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
     private boolean started;
     private LinearLayout column1;
     private LinearLayout column2;
-    private String NOT_AVAILABLE = "none";
+    private String NOT_AVAILABLE = "n/a";
 
     /**
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.

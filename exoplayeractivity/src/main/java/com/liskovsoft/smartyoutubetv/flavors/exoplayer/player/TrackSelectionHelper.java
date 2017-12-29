@@ -289,6 +289,7 @@ import java.util.Arrays;
         } else {
             selector.clearSelectionOverrides(rendererIndex);
         }
+        ((PlayerActivity) context).retryIfNeeded();
     }
 
     // View.OnClickListener
