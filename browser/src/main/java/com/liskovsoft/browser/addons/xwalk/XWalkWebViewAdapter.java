@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom.xwalk;
+package com.liskovsoft.browser.addons.xwalk;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -6,8 +6,8 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.webkit.*;
-import com.liskovsoft.browser.custom.HeadersBrowserWebView;
-import com.liskovsoft.browser.custom.HeadersWebSettingsDecorator;
+import com.liskovsoft.browser.addons.HeadersBrowserWebView;
+import com.liskovsoft.browser.addons.HeadersWebSettingsDecorator;
 import org.xwalk.core.XWalkView;
 
 import java.util.HashMap;

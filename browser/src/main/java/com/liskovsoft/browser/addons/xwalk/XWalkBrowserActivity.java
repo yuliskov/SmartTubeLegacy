@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom.xwalk;
+package com.liskovsoft.browser.addons.xwalk;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
@@ -9,7 +9,6 @@ import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.BrowserActivity;
 import org.xwalk.core.MyXWalkUpdater;
 import org.xwalk.core.XWalkInitializer;
-import org.xwalk.core.XWalkUpdater;
 
 public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;

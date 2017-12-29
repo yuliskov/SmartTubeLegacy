@@ -22,7 +22,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Message;
 import android.provider.Browser;
-import com.liskovsoft.browser.custom.BrowserContract;
+import com.liskovsoft.browser.helpers.BrowserContract;
 
 public class BookmarkUtils {
     private final static String LOGTAG = "BookmarkUtils";

@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom.xwalk;
+package com.liskovsoft.browser.addons.xwalk;
 
 import android.animation.LayoutTransition;
 import android.animation.StateListAnimator;
@@ -28,7 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
-import com.liskovsoft.browser.custom.HeadersBrowserWebView;
+import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import org.xwalk.core.XWalkView;
 
 import java.util.ArrayList;

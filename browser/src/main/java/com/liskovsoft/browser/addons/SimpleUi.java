@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.addons;
 
 import android.app.Activity;
 import com.liskovsoft.browser.BaseUi;

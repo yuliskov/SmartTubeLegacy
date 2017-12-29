@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom.xwalk;
+package com.liskovsoft.browser.addons.xwalk;
 
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;

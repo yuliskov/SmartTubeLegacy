@@ -11,8 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.custom.MainBrowserActivity;
-import com.liskovsoft.browser.custom.SimpleUIController;
+import com.liskovsoft.browser.addons.MainBrowserActivity;
+import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
@@ -71,8 +71,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     private void createController(Bundle icicle) {
         mHeaders = new HashMap<>();
-        //TODO: remove
-        //mPageLoadHandler = new MyPageLoadHandler(this);
         mHeaders.put("user-agent", mLGSmartTVUserAgent);
 
         mController = new SimpleUIController(this);

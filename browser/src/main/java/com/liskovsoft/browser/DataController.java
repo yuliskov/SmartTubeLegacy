@@ -26,9 +26,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import com.liskovsoft.browser.custom.BrowserContract;
-import com.liskovsoft.browser.custom.BrowserContract.History;
-import android.util.Log;
+import com.liskovsoft.browser.helpers.BrowserContract;
+import com.liskovsoft.browser.helpers.BrowserContract.History;
 
 import com.liskovsoft.browser.provider.BrowserProvider2.Thumbnails;
 import org.slf4j.Logger;

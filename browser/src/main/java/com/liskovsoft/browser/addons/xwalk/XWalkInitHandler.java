@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom.xwalk;
+package com.liskovsoft.browser.addons.xwalk;
 
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;

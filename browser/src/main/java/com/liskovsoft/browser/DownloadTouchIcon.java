@@ -22,7 +22,6 @@ import java.net.URL;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,8 +29,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.webkit.WebView;
-import com.liskovsoft.browser.custom.BrowserContract;
-import com.liskovsoft.browser.custom.BrowserContract.Images;
+import com.liskovsoft.browser.helpers.BrowserContract;
+import com.liskovsoft.browser.helpers.BrowserContract.Images;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

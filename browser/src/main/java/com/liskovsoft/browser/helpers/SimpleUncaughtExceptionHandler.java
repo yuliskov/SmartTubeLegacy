@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.helpers;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

@@ -30,9 +30,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebIconDatabase;
 import android.widget.Toast;
-import com.liskovsoft.browser.custom.BrowserContract;
-import com.liskovsoft.browser.custom.BrowserContract.Combined;
-import com.liskovsoft.browser.custom.BrowserContract.Images;
+import com.liskovsoft.browser.helpers.BrowserContract;
+import com.liskovsoft.browser.helpers.BrowserContract.Combined;
+import com.liskovsoft.browser.helpers.BrowserContract.Images;
 
 import java.io.ByteArrayOutputStream;
 

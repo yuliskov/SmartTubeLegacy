@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.helpers;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;

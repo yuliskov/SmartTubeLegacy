@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.helpers;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;

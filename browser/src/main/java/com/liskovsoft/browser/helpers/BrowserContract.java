@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.helpers;
 
 /**
  * TODO: file was found somewhere in internet (API 19 ???)

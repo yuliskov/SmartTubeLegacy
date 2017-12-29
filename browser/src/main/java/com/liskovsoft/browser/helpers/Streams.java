@@ -1,8 +1,10 @@
-package com.liskovsoft.browser.custom;
+package com.liskovsoft.browser.helpers;
 
 /**
  * TODO: copied from web
  */
+
+import com.liskovsoft.browser.helpers.Libcore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;

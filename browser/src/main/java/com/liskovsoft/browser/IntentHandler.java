@@ -15,8 +15,9 @@ import android.util.Log;
 import android.util.Patterns;
 
 import com.liskovsoft.browser.UI.ComboViews;
+import com.liskovsoft.browser.helpers.DeviceUtils;
 import com.liskovsoft.browser.search.SearchEngine;
-import com.liskovsoft.browser.custom.Search;
+import com.liskovsoft.browser.helpers.Search;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -56,6 +57,8 @@ public class IntentHandler {
     }
 
     void onNewIntent(Intent intent) {
+        DeviceUtils.wakeUpDevice(mController.getContext());
+
         Uri uri = intent.getData();
         if (uri != null && isForbiddenUri(uri)) {
             Log.e(TAG, "Aborting intent with forbidden uri, \"" + uri + "\"");
