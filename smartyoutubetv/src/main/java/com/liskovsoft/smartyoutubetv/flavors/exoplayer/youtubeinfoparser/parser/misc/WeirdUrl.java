@@ -46,4 +46,8 @@ public class WeirdUrl {
     public String toString() {
         return mUrl;
     }
+
+    public boolean isEmpty() {
+        return toString() == null;
+    }
 }

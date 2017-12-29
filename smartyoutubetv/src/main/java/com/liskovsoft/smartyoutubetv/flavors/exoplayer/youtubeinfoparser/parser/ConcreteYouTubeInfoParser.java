@@ -172,6 +172,10 @@ public class ConcreteYouTubeInfoParser {
     }
 
     private void applySignatureToDashMPDUrl(String signature) {
+        if (mDashMPDUrl.isEmpty()) {
+            return;
+        }
+
         mDashMPDUrl.removeParam(YouTubeMediaItem.S);
         mDashMPDUrl.setParam(YouTubeMediaItem.SIGNATURE, signature);
 

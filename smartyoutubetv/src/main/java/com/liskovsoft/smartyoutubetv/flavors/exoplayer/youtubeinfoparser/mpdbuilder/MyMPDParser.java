@@ -28,7 +28,7 @@ public class MyMPDParser implements MPDParser {
         try {
             initParser(mpdContent);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -49,7 +49,7 @@ public class MyMPDParser implements MPDParser {
         try {
             result = readDashMPD();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
         return result;
     }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,7 +80,7 @@ import java.util.UUID;
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
 public class PlayerActivity extends Activity implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
-
+    private static final String TAG = PlayerActivity.class.getName();
     public static final String DRM_SCHEME_UUID_EXTRA = "drm_scheme_uuid";
     public static final String DRM_LICENSE_URL = "drm_license_url";
     public static final String DRM_KEY_REQUEST_PROPERTIES = "drm_key_request_properties";
@@ -670,7 +671,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         try {
             result = parser.parse(uri, Helpers.toStream(mpdContent));
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Malformed mpd file:\n" + mpdContent);
             throw new IllegalStateException(e);
         }
         return result;

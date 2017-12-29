@@ -141,25 +141,23 @@ public class MyMPDBuilder implements MPDBuilder {
         try {
             return mXmlSerializer.attribute(namespace, name, value);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return mXmlSerializer;
     }
 
     private XmlSerializer startTag(String namespace, String name) {
         try {
             return mXmlSerializer.startTag(namespace, name);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return null;
     }
 
     private void setOutput(XmlSerializer xmlSerializer, StringWriter writer) {
         try {
             xmlSerializer.setOutput(writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -167,7 +165,7 @@ public class MyMPDBuilder implements MPDBuilder {
         try {
             xmlSerializer.startDocument("UTF-8", true);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -175,7 +173,7 @@ public class MyMPDBuilder implements MPDBuilder {
         try {
             mXmlSerializer.endDocument();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -183,7 +181,7 @@ public class MyMPDBuilder implements MPDBuilder {
         try {
             mXmlSerializer.endTag(namespace, name);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -309,9 +307,8 @@ public class MyMPDBuilder implements MPDBuilder {
         try {
             return mXmlSerializer.text(url);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return null;
     }
 
     private String getHeight(YouTubeMediaItem item) {
