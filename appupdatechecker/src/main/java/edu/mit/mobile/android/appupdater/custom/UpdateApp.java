@@ -40,11 +40,9 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     private String downloadPackage(String uri) {
         // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
-        if (cacheDir == null) {
-            noExternalStorageError();
-            return null;
+        if (cacheDir == null) { // try to use SDCard
+            cacheDir = Environment.getExternalStorageDirectory();
         }
-        cacheDir.mkdirs();
         File outputFile = new File(cacheDir, "update.apk");
         try {
             URL url = new URL(uri);

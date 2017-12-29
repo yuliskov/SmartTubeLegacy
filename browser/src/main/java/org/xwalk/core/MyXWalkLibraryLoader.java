@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -381,6 +382,9 @@ class MyXWalkLibraryLoader {
 
             // NOTE: Android 6.0 fix
             File downloadDir = mContext.getExternalCacheDir();
+            if (downloadDir == null) { // try to use SDCard
+                downloadDir = Environment.getExternalStorageDirectory();
+            }
 
             File downloadFile = new File(downloadDir, savedFile);
             if (downloadFile.isFile()) downloadFile.delete();
