@@ -671,8 +671,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         try {
             result = parser.parse(uri, Helpers.toStream(mpdContent));
         } catch (IOException e) {
-            Log.e(TAG, "Malformed mpd file:\n" + mpdContent);
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Malformed mpd file:\n" + mpdContent, e);
         }
         return result;
     }

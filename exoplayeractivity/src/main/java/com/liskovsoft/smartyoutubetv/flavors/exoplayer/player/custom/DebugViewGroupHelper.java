@@ -20,9 +20,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Display.Mode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -62,6 +62,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
     private boolean started;
     private LinearLayout column1;
     private LinearLayout column2;
+    private String NOT_AVAILABLE = "none";
 
     /**
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
@@ -79,7 +80,6 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         this.player = player;
         this.viewGroup = viewGroup;
         this.context = ctx;
-        // displayManager = (DisplayManager) this.context.getSystemService(Context.DISPLAY_SERVICE);
         inflate();
     }
 
@@ -189,23 +189,27 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
         }
 
-        appendRow("Current/Optimal Res",
-                    video.width + "x" + video.height + "@" + ((int)video.frameRate));
-        appendRow("Codecs", String.format(
+        String currentRes = getCurrentResString();
+
+        appendRow("Current/Optimal Resolution",
+                    video.width + "x" + video.height + "@" + ((int)video.frameRate)
+                        + "/" +
+                        currentRes);
+        appendRow("Video/Audio Codecs", String.format(
                 "%s(%s)/%s(%s)",
                 video.sampleMimeType.replace("video/", ""),
                 video.id,
                 audio.sampleMimeType.replace("audio/", ""),
                 audio.id
         ));
-        appendRow("Bitrate", String.format(
+        appendRow("Video/Audio Bitrate", String.format(
                 "%s/%s",
                 toHumanReadable(video.bitrate),
                 toHumanReadable(audio.bitrate)
         ));
         String par = video.pixelWidthHeightRatio == Format.NO_VALUE ||
                 video.pixelWidthHeightRatio == 1f ?
-                "n/a" : String.format(Locale.US, "%.02f", video.pixelWidthHeightRatio);
+                NOT_AVAILABLE : String.format(Locale.US, "%.02f", video.pixelWidthHeightRatio);
         appendRow("Aspect Ratio", par);
     }
 
@@ -215,15 +219,16 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
 
         counters.ensureUpdated();
-        appendRow("Dropped Frames", counters.droppedOutputBufferCount + "/" + counters.renderedOutputBufferCount);
-        //appendRow("Dropped Frames", counters.droppedOutputBufferCount);
-        //appendRow("Peak Dropped Frames", counters.maxConsecutiveDroppedOutputBufferCount);
-        //appendRow("Skipped Frames", counters.skippedOutputBufferCount);
-        //appendRow("Rendered Frames", counters.renderedOutputBufferCount);
+        appendRow("Dropped/Skipped/Rendered Frames",
+                counters.droppedOutputBufferCount
+                    + "/" +
+                    counters.skippedOutputBufferCount
+                    + "/" +
+                    counters.renderedOutputBufferCount);
     }
 
     private void appendPlayerState() {
-        appendRow("Paused", !player.getPlayWhenReady());
+        appendRow("Player Paused", !player.getPlayWhenReady());
 
         String text;
         switch (player.getPlaybackState()) {
@@ -243,23 +248,26 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
                 text = "unknown";
                 break;
         }
-        appendRow("PlaybackState", text);
+        appendRow("Playback State", text);
+    }
+
+    private void appendPreferredDisplayModeId() {
+        String title = "Display Mode ID";
+        if (Util.SDK_INT < 23) {
+            appendRow(title, NOT_AVAILABLE);
+        } else {
+            Activity ctx = this.context;
+            if (ctx == null) {
+                ctx = (PlayerActivity) viewGroup.getContext();
+            }
+            WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
+            int displayModeId = windowLayoutParams.preferredDisplayModeId;
+            appendRow(title, displayModeId);
+        }
     }
 
     private void appendPlayerWindowIndex() {
         appendRow("Window Index", player.getCurrentWindowIndex());
-    }
-
-    private void appendPreferredDisplayModeId() {
-        if (Util.SDK_INT < 23) {
-            return;
-        }
-        Activity ctx = this.context;
-        if (ctx == null) {
-            ctx = (PlayerActivity) viewGroup.getContext();
-        }
-        WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
-        appendRow("DisplayModeId", windowLayoutParams.preferredDisplayModeId);
     }
 
     private void appendRow(String name, boolean val) {
@@ -312,15 +320,34 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
         return String.format(Locale.ENGLISH, "%.2fMbit", mbit);
     }
 
-    //@TargetApi(17)
-    //private android.view.Display getCurrentDisplay() {
-    //    if (context == null || displayManager == null)
-    //        return null;
-    //    android.view.Display[] displays = displayManager.getDisplays();
-    //    if (displays == null || displays.length == 0) {
-    //        return null;
-    //    }
-    //    //assuming the 1st display is the actual display.
-    //    return displays[0];
-    //}
+    private String getCurrentResString() {
+        if (Util.SDK_INT < 23) {
+            return NOT_AVAILABLE;
+        }
+
+        Display display = getCurrentDisplay();
+        if (display == null) {
+            return NOT_AVAILABLE;
+        }
+
+        Mode mode = display.getMode();
+        int physicalWidth = mode.getPhysicalWidth();
+        int physicalHeight = mode.getPhysicalHeight();
+        float refreshRate = mode.getRefreshRate();
+
+        return physicalWidth + "x" + physicalHeight + "@" + ((int)refreshRate);
+    }
+
+    @TargetApi(17)
+    private android.view.Display getCurrentDisplay() {
+        DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        if (displayManager == null)
+            return null;
+        android.view.Display[] displays = displayManager.getDisplays();
+        if (displays == null || displays.length == 0) {
+            return null;
+        }
+        //assuming the 1st display is the actual display.
+        return displays[0];
+    }
 }
