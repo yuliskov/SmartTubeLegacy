@@ -76,9 +76,14 @@ public class IntentHandler {
         }
         final String action = intent.getAction();
         final int flags = intent.getFlags();
-        if (Intent.ACTION_MAIN.equals(action) ||
+        if ((Intent.ACTION_MAIN.equals(action) && uri == null)  ||
                 (flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
             // just resume the browser
+            return;
+        }
+        if (Intent.ACTION_MAIN.equals(action) && uri != null)
+        {
+            current.loadUrl(uri.toString(), null);
             return;
         }
         if (BrowserActivity.ACTION_SHOW_BOOKMARKS.equals(action)) {
