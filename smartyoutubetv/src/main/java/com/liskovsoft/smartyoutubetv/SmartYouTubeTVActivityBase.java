@@ -31,7 +31,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private KeysTranslator mTranslator;
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
     private final static String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
-    private final static String TEMPLATE_URL = "https://www.youtube.com/tv?%s";
+    private final static String TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
 
     @Override
     protected void onCreate(Bundle icicle) {
