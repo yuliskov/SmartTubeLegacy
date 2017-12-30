@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserActivity;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -21,8 +22,6 @@ import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Controller mController;
@@ -221,8 +220,12 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
      * @return video params
      */
     private String extractVideoParamsFromUrl(String url) {
-        String[] patterns = {"(list=\\w*)", "(v=\\w*)", "(youtu.be/\\w*)$"};
+        String[] patterns = {"list=\\w*", "v=\\w*", "youtu.be/\\w*"};
         String res = Helpers.runMultiMatcher(url, patterns);
+        if (res == null) {
+            Toast.makeText(this, "Url not supported: " + url, Toast.LENGTH_LONG).show();
+            return null;
+        }
         return res.replace("youtu.be/", "v=");
     }
 

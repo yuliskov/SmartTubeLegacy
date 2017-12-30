@@ -127,8 +127,6 @@ public class Tab implements PictureListener {
             mId = TabControl.getNextId();
         }
 
-        sLogger.info("Creating tab with id " + mId);
-
         // NOTE: state restored here!!!
         setWebView(w);
     }

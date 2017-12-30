@@ -257,8 +257,10 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                 if (isChecked)
                 {
                     debugViewGroup.setVisibility(View.VISIBLE);
+                    debugViewHelper.start();
                 } else {
                     debugViewGroup.setVisibility(View.GONE);
+                    debugViewHelper.stop();
                 }
 
             }
@@ -592,8 +594,6 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
-            debugViewHelper.start();
-
             mAutoFrameRateManager = new AutoFrameRateManager(this, player);
         }
         if (needNewPlayer || needRetrySource) {

@@ -144,8 +144,7 @@ public class Helpers {
             matcher = regex.matcher(input);
 
             if (matcher.find()) {
-                result = matcher.group(1);
-                result = result == null ? matcher.group(0) : result;
+                result = matcher.group(matcher.groupCount()); // get last group
                 break;
             }
         }

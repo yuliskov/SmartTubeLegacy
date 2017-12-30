@@ -2,7 +2,6 @@ package com.liskovsoft.browser;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TabControl {
-    private static final Logger logger = LoggerFactory.getLogger(TabControl.class);
+    private static final Logger sLogger = LoggerFactory.getLogger(TabControl.class);
     // next Tab ID, starting at 1
     private static long sNextId = 1;
     private final Controller mController;
@@ -19,6 +18,7 @@ public class TabControl {
     private final ArrayList<Tab> mTabQueue;
     private ArrayList<Tab> mTabs;
     private int mCurrentTab;
+    private int mTabCount;
 
     private static final String POSITIONS = "positions";
     private static final String CURRENT = "current";
@@ -165,6 +165,7 @@ public class TabControl {
         WebView w = createNewWebView();
         Tab t = new Tab(mController, w, state);
         mTabs.add(t);
+        sLogger.info("Creating tab # {} with id {}. Total tabs: {}", ++mTabCount, t.getId(), mTabs.size());
         return t;
     }
 
@@ -429,7 +430,7 @@ public class TabControl {
                 if (outState.containsKey(key)) {
                     // Dump the tab state for debugging purposes
                     for (Tab dt : mTabs) {
-                        logger.error(dt.toString());
+                        sLogger.error(dt.toString());
                     }
                     throw new IllegalStateException(
                             String.format("Error saving state, duplicate tab ids: %s!", key));

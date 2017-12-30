@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -384,6 +385,7 @@ class MyXWalkLibraryLoader {
             File downloadDir = mContext.getExternalCacheDir();
             if (downloadDir == null) { // try to use SDCard
                 downloadDir = Environment.getExternalStorageDirectory();
+                Toast.makeText(mContext, "Please, make sure that SDCard is mounted", Toast.LENGTH_LONG).show();
             }
 
             File downloadFile = new File(downloadDir, savedFile);
