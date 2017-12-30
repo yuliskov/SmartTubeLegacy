@@ -204,34 +204,26 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         intent.setData(Uri.parse(uriString));
     }
 
-    private String runMultiMatcher(String input, String[] patterns) {
-        Pattern regex;
-        Matcher matcher;
-        String result = null;
-        for (String pattern : patterns) {
-            regex = Pattern.compile(pattern);
-            matcher = regex.matcher(input);
-
-            if (matcher.find()) {
-                result = matcher.group(1);
-                break;
-            }
-        }
-
-        return result;
-    }
-
+    /**
+     * Extracts video params e.g. <code>v=xtx33RuFCik</code> from url
+     * <br/>
+     * Examples of the input/output url:
+     * <pre>
+     * origin video: https://www.youtube.com/watch?v=xtx33RuFCik
+     * needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
+     * needed video: https://www.youtube.com/tv?gl=us&hl=en-us&v=xtx33RuFCik
+     * needed video: https://www.youtube.com/tv?v=xtx33RuFCik
+     *
+     * origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
+     * needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
+     * </pre>
+     * @param url desktop url (see manifest file for the patterns)
+     * @return video params
+     */
     private String extractVideoParamsFromUrl(String url) {
-        // origin video: https://www.youtube.com/watch?v=xtx33RuFCik
-        // needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
-        // needed video: https://www.youtube.com/tv?gl=us&hl=en-us&v=xtx33RuFCik
-        // needed video: https://www.youtube.com/tv?v=xtx33RuFCik
-
-        // origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
-        // needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
-
-        String[] patterns = {"(list=\\w*)", "(v=\\w*)", "/(\\w*)$"};
-        return runMultiMatcher(url, patterns);
+        String[] patterns = {"(list=\\w*)", "(v=\\w*)", "(youtu.be/\\w*)$"};
+        String res = Helpers.runMultiMatcher(url, patterns);
+        return res.replace("youtu.be/", "v=");
     }
 
     private Uri transformUri(final Uri uri) {

@@ -62,7 +62,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
     private boolean started;
     private LinearLayout column1;
     private LinearLayout column2;
-    private String NOT_AVAILABLE = "n/a";
+    private String NOT_AVAILABLE = "none";
 
     /**
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
@@ -219,10 +219,8 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
 
         counters.ensureUpdated();
-        appendRow("Dropped/Skipped/Rendered Frames",
-                counters.droppedOutputBufferCount
-                    + "/" +
-                    counters.skippedOutputBufferCount
+        appendRow("Dropped/Rendered Frames",
+                counters.droppedOutputBufferCount + counters.skippedOutputBufferCount
                     + "/" +
                     counters.renderedOutputBufferCount);
     }
