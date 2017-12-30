@@ -30,7 +30,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
-    private final String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
+    private final static String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
+    private final static String TEMPLATE_URL = "https://www.youtube.com/tv?%s";
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -199,7 +200,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
             return;
         }
 
-        intent.setData(Uri.parse("https://www.youtube.com/tv?gl=us&hl=en-us&" + dialParam));
+        String uriString = String.format(TEMPLATE_URL, dialParam);
+        intent.setData(Uri.parse(uriString));
     }
 
     private String runMultiMatcher(String input, String[] patterns) {
@@ -222,6 +224,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private String extractVideoParamsFromUrl(String url) {
         // origin video: https://www.youtube.com/watch?v=xtx33RuFCik
         // needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
+        // needed video: https://www.youtube.com/tv?gl=us&hl=en-us&v=xtx33RuFCik
+        // needed video: https://www.youtube.com/tv?v=xtx33RuFCik
 
         // origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
         // needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
@@ -234,12 +238,11 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         if (uri == null)
             return null;
         String url = uri.toString();
-        String videoId = extractVideoParamsFromUrl(url);
-        if (videoId == null) {
+        String videoParam = extractVideoParamsFromUrl(url);
+        if (videoParam == null) {
             return uri;
         }
-        String videoUrlTemplate = "https://www.youtube.com/tv#/watch/video/control?%s";
-        String format = String.format(videoUrlTemplate, videoId);
+        String format = String.format(TEMPLATE_URL, videoParam);
         return Uri.parse(format);
     }
 

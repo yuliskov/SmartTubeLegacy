@@ -83,6 +83,7 @@ public class MyMPDBuilder implements MPDBuilder {
 
     private void writePrologue() {
         String duration = null;
+        // MPD file is not valid without duration (attributes: mediaPresentationDuration, duration)
         if (mInfo != null && mInfo.getLengthSeconds() != null) {
             duration = String.format("PT%sS", mInfo.getLengthSeconds());
         }
