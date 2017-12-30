@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder;
 
+import android.media.browse.MediaBrowser.MediaItem;
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
@@ -10,9 +11,7 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -82,10 +81,17 @@ public class MyMPDBuilder implements MPDBuilder {
     }
 
     private void writePrologue() {
+        String durationParam = null;
         String duration = null;
-        // MPD file is not valid without duration (attributes: mediaPresentationDuration, duration)
+        // MPD file is not valid without duration
         if (mInfo != null && mInfo.getLengthSeconds() != null) {
-            duration = String.format("PT%sS", mInfo.getLengthSeconds());
+            duration = mInfo.getLengthSeconds();
+        } else { // try to use some work around
+            duration = extractDurationFromTrack();
+        }
+
+        if (duration != null) {
+            durationParam = String.format("PT%sS", duration);
         }
 
         startTag("", "MPD");
@@ -96,10 +102,23 @@ public class MyMPDBuilder implements MPDBuilder {
         attribute("", "minBufferTime", "PT1.500S");
         attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
         attribute("", "type", "static");
-        attribute("", "mediaPresentationDuration", duration);
+        attribute("", "mediaPresentationDuration", durationParam);
 
         startTag("", "Period");
-        attribute("", "duration", duration);
+        attribute("", "duration", durationParam);
+    }
+
+    private String extractDurationFromTrack() {
+        String url = null;
+        for (YouTubeMediaItem item : mMP4Videos) {
+            url = item.getUrl();
+            break; // get first item
+        }
+        String res = Helpers.runMultiMatcher(url, "dur=(\\w*)");
+        if (res == null) {
+            throw new IllegalStateException("Video doesn't have a duration. Size of the video list: " + mMP4Videos.size());
+        }
+        return res;
     }
 
     private void writeEpilogue() {
