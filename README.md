@@ -66,6 +66,17 @@ MyActivity extends MainBrowserActivity {
 - Crashlytics - multipurpose crash analytics
 - Butter Knife - simplify layout handling
 
+## Crashlytics
+Version name, code and package will be loaded from gradle build script. 
+[Crashlytics credentials](https://docs.fabric.io/android/fabric/settings/working-in-teams.html#android-projects) can be controlled from `fabric.properties` file.
+
+_app/fabric.properties_
+```ini
+apiSecret=7c9df6d057e7bb62b17ab364e8115a75fcf7430873b6274bb094d1a8adb
+apiKey=cc238b2a4866ceb061b008839cdb49a8b77
+```
+You can get `apiSecret` and `apiKey` from the fabric dashboard [fabric.io/settings/organizations](https://fabric.io/settings/organizations) where they were created after successful first-time signup with Crashlytics plugin GUI for Android Studio.
+
 ## TODO
 - exo: fix play from phone (because main app not running: mobizen_20170929_111409.mp4)
 - exo: add 'share' button

@@ -18,3 +18,4 @@ tmp/
 /build
 /captures
 .externalNativeBuild
+fabric.properties

@@ -48,9 +48,6 @@
         <meta-data
             android:name="whisperplay"
             android:resource="@xml/whisperplay"/>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="2d068551b7d8e7635eb2fd339601762059ca0530"/>
 
         <!-- Root (bootstrap) Activity -->
         <!-- NOTE: avoid setting launchMode or you will get new activity every time from launcher -->
