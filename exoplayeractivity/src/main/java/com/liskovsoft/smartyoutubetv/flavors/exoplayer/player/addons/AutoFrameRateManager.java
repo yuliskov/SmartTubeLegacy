@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
 import android.app.Activity;
 import com.google.android.exoplayer2.Format;

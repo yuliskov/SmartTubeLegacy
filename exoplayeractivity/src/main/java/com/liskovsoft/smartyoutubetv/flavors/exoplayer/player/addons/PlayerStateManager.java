@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
@@ -14,7 +14,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final String AVC_PART = "avc";
-    private final PlayerActivity mContext;
+    private final PlayerActivity mPlayerActivity;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
@@ -23,11 +23,11 @@ public class PlayerStateManager {
     private long MAX_START_DURATION_MILLIS = 1 * 60 * 1000; // don't save if video just starts playing < 1 min
     private String mDefaultTrackId;
 
-    public PlayerStateManager(PlayerActivity context, SimpleExoPlayer player, DefaultTrackSelector selector) {
-        mContext = context;
+    public PlayerStateManager(PlayerActivity playerActivity, SimpleExoPlayer player, DefaultTrackSelector selector) {
+        mPlayerActivity = playerActivity;
         mPlayer = player;
         mSelector = selector;
-        mPrefs = new ExoPreferences(context);
+        mPrefs = new ExoPreferences(playerActivity);
     }
 
     public void restoreState(TrackGroupArray[] rendererTrackGroupArrays) {
@@ -36,7 +36,7 @@ public class PlayerStateManager {
     }
 
     private void restoreTrackPosition(TrackGroupArray[] groupArrays) {
-        String title = mContext.getMainTitle();
+        String title = mPlayerActivity.getMainTitle();
         long pos = mPrefs.getPosition(title);
         if (pos != C.TIME_UNSET)
             mPlayer.seekTo(pos);
@@ -156,7 +156,7 @@ public class PlayerStateManager {
             return;
         }
         long position = mPlayer.getCurrentPosition();
-        String title = mContext.getMainTitle();
+        String title = mPlayerActivity.getMainTitle();
         boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
         boolean isVideoJustStarts = position < MAX_START_DURATION_MILLIS;
         if (almostAllVideoSeen || isVideoJustStarts) {

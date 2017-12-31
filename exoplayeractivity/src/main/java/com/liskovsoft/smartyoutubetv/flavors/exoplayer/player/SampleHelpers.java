@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.Helpers;
 
 import java.io.InputStream;
 import java.util.List;

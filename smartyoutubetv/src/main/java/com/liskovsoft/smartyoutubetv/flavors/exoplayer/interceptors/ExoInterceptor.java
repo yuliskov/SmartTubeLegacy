@@ -125,7 +125,7 @@ public class ExoInterceptor extends RequestInterceptor {
         final Intent playerIntent = sample.buildIntent(mContext);
         playerIntent.putExtra(PlayerActivity.VIDEO_TITLE, info.getTitle());
         playerIntent.putExtra(PlayerActivity.VIDEO_AUTHOR, info.getAuthor());
-        playerIntent.putExtra(PlayerActivity.VIDEO_VIEWS, info.getViewCount());
+        playerIntent.putExtra(PlayerActivity.VIDEO_VIEW_COUNT, info.getViewCount());
         playerIntent.putExtra(PlayerActivity.VIDEO_ID, extractVideoId());
         mCachedIntent = playerIntent;
         return playerIntent;

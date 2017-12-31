@@ -423,6 +423,9 @@ function KeyUpDownWatcher(host) {
 }
 
 KeyUpDownWatcher.prototype = new GoogleButton();
+KeyUpDownWatcher.disable = function() {
+    new KeyUpDownWatcher(null);
+};
 
 function SuggestionsFakeButton(selector) {
     this.selector = selector;

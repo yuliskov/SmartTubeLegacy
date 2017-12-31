@@ -10,15 +10,16 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    // WARNING: don't use 'project.ext' because IDE 'Cannot infer argument type'
     // https://stackoverflow.com/questions/20404476/how-to-define-common-android-properties-for-all-modules-using-gradle
-    // repo: https://maven.google.com
+    // Gradle constants example: https://github.com/google/ExoPlayer
     ext {
-        projectAppCompatVersion = 'com.android.support:appcompat-v7:26.1.0'
-        projectSupportVersion = 'com.android.support:support-v4:26.1.0'
-        projectCompileSdkVersion = 26
-        projectBuildToolsVersion = "26.0.2"
-        projectMinSdkVersion = 14
-        projectTargetSdkVersion = 26
+        appCompatVersion = 'com.android.support:appcompat-v7:26.1.0'
+        supportVersion = 'com.android.support:support-v4:26.1.0'
+        compileSdkVersion = 26
+        buildToolsVersion = "26.0.2"
+        minSdkVersion = 14
+        targetSdkVersion = 26
     }
 }
 

@@ -2,12 +2,11 @@ package net.gtvbox.videoplayer.mediaengine.displaymode;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.custom.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.ExoPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;

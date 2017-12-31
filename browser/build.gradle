@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion project.properties.projectCompileSdkVersion
-    buildToolsVersion project.properties.projectBuildToolsVersion
+    compileSdkVersion project.properties.compileSdkVersion
+    buildToolsVersion project.properties.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion project.properties.projectMinSdkVersion
-        targetSdkVersion project.properties.projectTargetSdkVersion
+        minSdkVersion project.properties.minSdkVersion
+        targetSdkVersion project.properties.targetSdkVersion
         versionCode 7
         versionName "6.4.7"
 
@@ -43,7 +43,7 @@ dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project.properties.projectAppCompatVersion
+    compile project.properties.appCompatVersion
     compile 'com.noveogroup.android:android-logger:1.3.5'
 
     compile 'com.squareup:otto:1.3.8'
