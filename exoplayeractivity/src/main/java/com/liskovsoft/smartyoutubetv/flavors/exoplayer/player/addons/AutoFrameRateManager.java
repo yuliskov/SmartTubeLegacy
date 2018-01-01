@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import net.gtvbox.videoplayer.mediaengine.displaymode.DisplaySyncHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.DisplaySyncHelper;
 
 public class AutoFrameRateManager {
     private final Activity mCtx;

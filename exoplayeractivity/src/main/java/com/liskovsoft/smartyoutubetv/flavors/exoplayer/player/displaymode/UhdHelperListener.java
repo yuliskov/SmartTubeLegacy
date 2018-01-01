@@ -1,4 +1,4 @@
-package net.gtvbox.videoplayer.mediaengine.displaymode;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 
 import android.view.Window;
 
