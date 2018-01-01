@@ -56,7 +56,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DebugViewGroupHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerPresenter;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
@@ -129,7 +129,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private long resumePosition;
     private LinearLayout playerTopBar;
     private int interfaceVisibilityState;
-    private PlayerPresenter playerPresenter;
+    private PlayerButtonsManager buttonsManager;
     private PlayerStateManager stateManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
@@ -163,8 +163,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
 
-        playerPresenter = new PlayerPresenter(this);
-        playerPresenter.syncButtonStates(); // onCheckedChanged depends on this
+        buttonsManager = new PlayerButtonsManager(this);
+        buttonsManager.syncButtonStates(); // onCheckedChanged depends on this
         playerInitializer = new PlayerInitializer(this);
     }
 
@@ -183,17 +183,17 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     }
 
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
-        if (playerPresenter != null)
-            playerPresenter.onCheckedChanged(compoundButton, b);
+        if (buttonsManager != null)
+            buttonsManager.onCheckedChanged(compoundButton, b);
     }
 
     public void doGracefulExit() {
-        Intent intent = playerPresenter.createResultIntent();
+        Intent intent = buttonsManager.createResultIntent();
         doGracefulExit(intent);
     }
 
     public void doGracefulExit(String action) {
-        Intent intent = playerPresenter.createResultIntent();
+        Intent intent = buttonsManager.createResultIntent();
         intent.putExtra(action, true);
         doGracefulExit(intent);
     }

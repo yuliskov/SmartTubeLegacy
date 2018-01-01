@@ -3,7 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
@@ -11,16 +16,20 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerPresenter {
+public class PlayerButtonsManager {
     private final PlayerActivity mPlayerActivity;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
+    private final SimpleExoPlayerView mExoPlayerView;
 
-    public PlayerPresenter(PlayerActivity playerActivity) {
+    public PlayerButtonsManager(PlayerActivity playerActivity) {
         mPlayerActivity = playerActivity;
+        mExoPlayerView = (SimpleExoPlayerView) mPlayerActivity.findViewById(R.id.player_view);
         mButtonStates = new HashMap<>();
         mIdTagMapping = new HashMap<>();
         initIdTagMapping();
+        initNextButton(); // force enable next button
+        initStatsButton();
     }
 
     public void syncButtonStates() {
@@ -102,5 +111,49 @@ public class PlayerPresenter {
             resultIntent.putExtra(realKey, entry.getValue());
         }
         return resultIntent;
+    }
+
+    private void initStatsButton() {
+        ToggleButtonBase statsButton = (ToggleButtonBase) mPlayerActivity.findViewById(R.id.exo_stats);
+        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
+                mPlayerActivity.showDebugView(isChecked);
+            }
+        });
+    }
+
+    // NOTE: example of visibility change listener
+    private void initNextButton() {
+        final View nextButton = mExoPlayerView.findViewById(R.id.exo_next);
+        nextButton.getViewTreeObserver().addOnGlobalLayoutListener(obtainSetButtonEnabledListener(nextButton));
+    }
+
+    private OnGlobalLayoutListener obtainSetButtonEnabledListener(final View nextButton) {
+        return new OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                setButtonEnabled(true, nextButton);
+            }
+        };
+    }
+
+    private void setButtonEnabled(boolean enabled, View view) {
+        if (view == null) {
+            return;
+        }
+        view.setEnabled(enabled);
+        if (Util.SDK_INT >= 11) {
+            setViewAlphaV11(view, enabled ? 1f : 0.3f);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    @TargetApi(11)
+    private void setViewAlphaV11(View view, float alpha) {
+        view.setAlpha(alpha);
     }
 }
