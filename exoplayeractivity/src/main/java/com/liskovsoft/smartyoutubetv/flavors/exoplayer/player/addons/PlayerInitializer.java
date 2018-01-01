@@ -3,9 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
@@ -82,5 +85,17 @@ public class PlayerInitializer {
         // Playback control view.
         mExoPlayerView.setRewindIncrementMs(timeIncrementMS);
         mExoPlayerView.setFastForwardIncrementMs(timeIncrementMS);
+    }
+
+    public void onPlayerInit(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
+        SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
+        SurfaceManager manager = new SurfaceManager(player, trackSelector);
+        videoSurfaceView.getHolder().addCallback(manager);
+    }
+
+    public void onPlayerInit(SimpleExoPlayer player) {
+        SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
+        SurfaceManager2 manager = new SurfaceManager2(mPlayer, player);
+        videoSurfaceView.getHolder().addCallback(manager);
     }
 }

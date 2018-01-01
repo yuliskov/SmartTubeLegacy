@@ -439,6 +439,9 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
             autoFrameRateManager = new AutoFrameRateManager(this, player);
+
+            //playerInitializer.onPlayerInit(player, trackSelector);
+            playerInitializer.onPlayerInit(player);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
