@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class ButtonStatesProcessor implements Runnable {
+public class ActionsReceiver implements Runnable {
     private GenericStringResultReceiver mReceiver;
     private final Context mContext;
     private final Intent mIntent;
@@ -29,7 +29,7 @@ public class ButtonStatesProcessor implements Runnable {
     private final int mStatesId = new Random().nextInt();
     private final int mDateId = new Random().nextInt();
 
-    public ButtonStatesProcessor(Context context, Intent intent, Runnable onDone) {
+    public ActionsReceiver(Context context, Intent intent, Runnable onDone) {
         mContext = context;
         mIntent = intent;
         mOnDone = onDone;
@@ -47,12 +47,12 @@ public class ButtonStatesProcessor implements Runnable {
             String result = event.getResult();
 
             if (event.getId() == mStatesId) {
-                ButtonStatesProcessor.this.processJSON(result);
+                ActionsReceiver.this.processJSON(result);
                 mRunCount++;
             }
 
             if (event.getId() == mDateId) {
-                ButtonStatesProcessor.this.processDate(result);
+                ActionsReceiver.this.processDate(result);
                 mRunCount++;
             }
 

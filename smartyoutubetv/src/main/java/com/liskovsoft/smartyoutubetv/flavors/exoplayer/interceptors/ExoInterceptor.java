@@ -33,7 +33,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
     private final DelayedCommandCallInterceptor mInterceptor;
-    private final ActionBinder mActionBinder;
+    private final ActionsSender mActionSender;
     private InputStream mResponseStream30Fps;
     private InputStream mResponseStream60Fps;
 
@@ -67,7 +67,7 @@ public class ExoInterceptor extends RequestInterceptor {
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
-        mActionBinder = new ActionBinder(context, this);
+        mActionSender = new ActionsSender(context, this);
         mReceiver = new GenericStringResultReceiver();
     }
 
@@ -149,7 +149,7 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void fetchButtonStates(Intent intent, Runnable onDone) {
-        Runnable processor = new ButtonStatesProcessor(mContext, intent, onDone);
+        Runnable processor = new ActionsReceiver(mContext, intent, onDone);
         processor.run();
     }
 
@@ -157,7 +157,7 @@ public class ExoInterceptor extends RequestInterceptor {
         activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                mActionBinder.bindActions(data);
+                mActionSender.bindActions(data);
             }
         });
     }

@@ -1,29 +1,33 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 
 import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.DisplaySyncHelper;
 
 public class AutoFrameRateManager {
-    private final Activity mCtx;
+    private final Activity mContext;
     private final SimpleExoPlayer mPlayer;
     private final DisplaySyncHelper mSyncHelper;
 
-    public AutoFrameRateManager(Activity ctx, SimpleExoPlayer player) {
-        mCtx = ctx;
+    public AutoFrameRateManager(Activity context, SimpleExoPlayer player) {
+        mContext = context;
         mPlayer = player;
-        mSyncHelper = new DisplaySyncHelper(mCtx);
+        mSyncHelper = new DisplaySyncHelper(mContext);
     }
 
     public void apply() {
+        if (!getEnabled()) {
+            return;
+        }
+
         if (mPlayer == null || mPlayer.getVideoFormat() == null) {
             return;
         }
+
         Format videoFormat = mPlayer.getVideoFormat();
         float frameRate = videoFormat.frameRate;
         int width = videoFormat.width;
-        mSyncHelper.syncDisplayMode(mCtx.getWindow(), width, frameRate);
+        mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
     }
 
     public boolean getEnabled() {

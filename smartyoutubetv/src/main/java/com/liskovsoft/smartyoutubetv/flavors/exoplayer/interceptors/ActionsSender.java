@@ -15,7 +15,7 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionBinder {
+public class ActionsSender {
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
     private final String[] mPlayerButtons = {
@@ -30,12 +30,16 @@ public class ActionBinder {
             PlayerActivity.TRACK_ENDED
     };
 
-    public ActionBinder(Context context, ExoInterceptor interceptor) {
+    public ActionsSender(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
     }
 
     public void bindActions(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
         Map<String, Boolean> buttonStates = extractButtonStates(intent);
         SyncButtonsCommand myCommand = new SyncButtonsCommand(buttonStates);
         mInterceptor.updateLastCommand(myCommand);
