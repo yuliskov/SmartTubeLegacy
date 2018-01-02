@@ -396,13 +396,16 @@ function KeyUpDownWatcher(host) {
         var container = helpers.$(this.keysContainerSelector);
         var type = 'keydown';
         var up = 38;
+        var enter = 13;
         var $this = this;
 
         var myListener = function(e) {
             var code = e.keyCode;
-            if (code === up && $this.host) {
+            if (code === up && $this.host) { // up is fired only for the top row
                 $this.host.needToCloseSuggestions();
                 $this.host = null; // run once per host
+            } else if (code === enter) { // user wanted to open an new video
+                $this.host = null;
             }
             console.log("SuggestionsFakeButton: on keydown: " + code);
         };
