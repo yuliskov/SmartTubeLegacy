@@ -87,13 +87,13 @@ public class PlayerInitializer {
         mExoPlayerView.setFastForwardIncrementMs(timeIncrementMS);
     }
 
-    public void onPlayerInit(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
+    public void applySyncFix(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager manager = new SurfaceManager(player, trackSelector);
         videoSurfaceView.getHolder().addCallback(manager);
     }
 
-    public void onPlayerInit(SimpleExoPlayer player) {
+    public void applySyncFix(SimpleExoPlayer player) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager2 manager = new SurfaceManager2(mPlayer, player);
         videoSurfaceView.getHolder().addCallback(manager);

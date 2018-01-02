@@ -88,7 +88,7 @@ public final class SmartPreferences {
     }
 
     public boolean getBootstrapUpdateCheck() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_UPDATE_CHECKED, false);
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_UPDATE_CHECKED, true);
         return isChecked;
     }
 
