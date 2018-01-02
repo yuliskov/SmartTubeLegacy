@@ -12,8 +12,10 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
+import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -45,6 +47,7 @@ public class BootstrapActivity extends ActivityBase {
     private void initButtons() {
         initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
         initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
+        initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
     }
 
     private void initCheckbox(int id, boolean isChecked) {
@@ -75,6 +78,9 @@ public class BootstrapActivity extends ActivityBase {
                 break;
             case R.id.chk_autoframerate:
                 mPrefs.setBootstrapAutoframerate(b);
+                break;
+            case R.id.chk_update_check:
+                mPrefs.setBootstrapUpdateCheck(b);
                 break;
         }
     }

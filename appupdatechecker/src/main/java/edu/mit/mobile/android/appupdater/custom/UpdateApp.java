@@ -37,12 +37,21 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         return null;
     }
 
+    private void showMessage(final String msg) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private String downloadPackage(String uri) {
         // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
         if (cacheDir == null) { // try to use SDCard
             cacheDir = Environment.getExternalStorageDirectory();
-            Toast.makeText(mContext, "Please, make sure that SDCard is mounted", Toast.LENGTH_LONG).show();
+            showMessage("Please, make sure that SDCard is mounted");
         }
         File outputFile = new File(cacheDir, "update.apk");
         try {

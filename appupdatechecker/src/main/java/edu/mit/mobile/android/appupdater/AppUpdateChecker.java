@@ -143,9 +143,18 @@ public class AppUpdateChecker {
 	 * Checks for updates if updates haven't been checked for recently and if checking is enabled.
 	 */
 	public void checkForUpdates(){
-    	if (mPrefs.getBoolean(PREF_ENABLED, true) && isStale()){
+    	if (getEnabled() && isStale()){
     		forceCheckForUpdates();
     	}
+	}
+
+	/**
+	 * Like {@link #forceCheckForUpdates} but only if updates is enabled
+	 */
+	public void forceCheckForUpdatesIfEnabled() {
+		if (getEnabled()) {
+			forceCheckForUpdates();
+		}
 	}
 
     /**

@@ -16,6 +16,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
@@ -374,6 +376,15 @@ class MyXWalkLibraryLoader {
             mListener.onDownloadStarted();
         }
 
+        private void showMessage(final String msg) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
         @Override
         protected Integer doInBackground(Void... params) {
             if (mDownloadUrl == null) return DownloadManager.STATUS_FAILED;
@@ -385,7 +396,7 @@ class MyXWalkLibraryLoader {
             File downloadDir = mContext.getExternalCacheDir();
             if (downloadDir == null) { // try to use SDCard
                 downloadDir = Environment.getExternalStorageDirectory();
-                Toast.makeText(mContext, "Please, make sure that SDCard is mounted", Toast.LENGTH_LONG).show();
+                showMessage("Please, make sure that SDCard is mounted");
             }
 
             File downloadFile = new File(downloadDir, savedFile);

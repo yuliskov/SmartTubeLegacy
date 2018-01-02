@@ -17,4 +17,5 @@
     <string name="returning_to_the_video">Возвращаемся к открытому видео</string>
     <string name="send_crash_report">Отчет о сбое</string>
     <string name="sending_crash_report">Отсылается отчет о сбое...</string>
+    <string name="update_check">Update Check</string>
 </resources>

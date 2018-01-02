@@ -19,6 +19,7 @@ import com.liskovsoft.smartyoutubetv.injectors.MyJsCssTweaksInjector;
 import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector;
@@ -31,7 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ControllerEventListener implements Controller.EventListener {
-    private Context mContext;
+    private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
+    private final Context mContext;
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
     private final WebViewJavaScriptInterface mJSInterface;
@@ -39,14 +41,15 @@ public class ControllerEventListener implements Controller.EventListener {
     private final VideoFormatInjector mFormatInjector;
     private final DecipherSimpleRoutineInjector mDecipherRoutineInjector;
     private final GenericEventResourceInjector mEventResourceInjector;
-    private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private final StateUpdater mStateUpdater;
+    private final MainApkUpdater mApkUpdater;
 
     public ControllerEventListener(Context context, KeysTranslator translator) {
         mContext = context;
         mTranslator = translator;
         mStateUpdater = new StateUpdater(null, context);
         mLoadingManager = new LoadingManager(context);
+        mApkUpdater = new MainApkUpdater(context);
 
         mTweakInjector = new MyJsCssTweaksInjector(mContext);
         mFormatInjector = new VideoFormatInjector(mContext);
@@ -86,7 +89,7 @@ public class ControllerEventListener implements Controller.EventListener {
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
         mLoadingManager.hide(tab);
-        checkForUpdatesAfterDelay();
+        mApkUpdater.start();
     }
 
     @Override
@@ -126,21 +129,6 @@ public class ControllerEventListener implements Controller.EventListener {
         mTweakInjector.inject();
     }
 
-    private void checkForUpdatesAfterDelay() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkForUpdates();
-            }
-        }, 3000);
-    }
-
-    private void checkForUpdates() {
-        final String sUpdateUrl = mContext.getString(R.string.update_url);
-        OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, sUpdateUrl, dialog);
-        updateChecker.forceCheckForUpdates();
-    }
     private class LoadingManager {
         private final View mLoadingWidget;
 
