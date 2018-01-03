@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;

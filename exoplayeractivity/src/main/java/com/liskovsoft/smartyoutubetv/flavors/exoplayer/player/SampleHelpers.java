@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 
 import java.io.InputStream;
 import java.util.List;
@@ -92,7 +92,7 @@ public final class SampleHelpers {
                          String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            this.mpdContent = Helpers.toString(mpdStream);
+            this.mpdContent = Utils.toString(mpdStream);
             this.extension = extension;
             this.uri = uri;
         }

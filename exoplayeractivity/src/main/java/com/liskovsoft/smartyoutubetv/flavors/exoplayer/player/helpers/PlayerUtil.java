@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Utility methods for demo application.
  */
-/*package*/ final class DemoUtil {
+/*package*/ public final class PlayerUtil {
 
   /**
    * Builds a track name for display.
@@ -87,5 +87,5 @@ import java.util.Locale;
     return format.sampleMimeType == null ? "" : format.sampleMimeType;
   }
 
-  private DemoUtil() {}
+  private PlayerUtil() {}
 }

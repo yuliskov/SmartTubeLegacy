@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
 import android.content.Context;
 import android.os.Build;
@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public class Helpers {
+public class Utils {
     private static OkHttpClient mClient;
 
     /**
@@ -72,7 +72,7 @@ public class Helpers {
     }
 
     public static boolean deviceMatch(String[] devicesToProcess) {
-        String thisDeviceName = Helpers.getDeviceName();
+        String thisDeviceName = Utils.getDeviceName();
         for (String deviceName : devicesToProcess) {
             boolean match = matchSubstrNoCase(thisDeviceName, deviceName);
             if (match) {

@@ -54,7 +54,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DebugViewGroupHelper;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
@@ -511,7 +511,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         DashManifestParser parser = new DashManifestParser();
         DashManifest result;
         try {
-            result = parser.parse(uri, Helpers.toStream(mpdContent));
+            result = parser.parse(uri, Utils.toStream(mpdContent));
         } catch (IOException e) {
             throw new IllegalStateException("Malformed mpd file:\n" + mpdContent, e);
         }
@@ -676,7 +676,16 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             updateResumePosition();
             updateButtonVisibilities();
             showControls();
+            doOneTimeRetry();
         }
+    }
+
+    // TODO: move to another object
+    private boolean oneTimeRetryDone;
+    private void doOneTimeRetry() {
+        if (!oneTimeRetryDone)
+            initializePlayer();
+        oneTimeRetryDone = true;
     }
 
     @Override

@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.Arrays;
 
@@ -199,7 +200,7 @@ import java.util.Arrays;
                     int index = newTrackIndex - startOffset;
                     if (index < 0)
                         break;
-                    trackView.setText(DemoUtil.buildTrackName(group.getFormat(index)));
+                    trackView.setText(PlayerUtil.buildTrackName(group.getFormat(index)));
 
                     trackView.setFocusable(true);
                     trackView.setTag(Pair.create(groupIndex, index));

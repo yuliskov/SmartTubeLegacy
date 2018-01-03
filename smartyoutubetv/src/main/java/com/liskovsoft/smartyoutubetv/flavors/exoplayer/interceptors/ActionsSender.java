@@ -37,7 +37,7 @@ public class ActionsSender {
 
     public void bindActions(Intent intent) {
         if (intent == null) {
-            return;
+            throw new IllegalStateException("Activity result cannot be null");
         }
 
         Map<String, Boolean> buttonStates = extractButtonStates(intent);
