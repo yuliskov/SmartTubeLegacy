@@ -676,16 +676,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             updateResumePosition();
             updateButtonVisibilities();
             showControls();
-            doOneTimeRetry();
         }
-    }
-
-    // TODO: move to another object
-    private boolean oneTimeRetryDone;
-    private void doOneTimeRetry() {
-        if (!oneTimeRetryDone)
-            initializePlayer();
-        oneTimeRetryDone = true;
     }
 
     @Override
