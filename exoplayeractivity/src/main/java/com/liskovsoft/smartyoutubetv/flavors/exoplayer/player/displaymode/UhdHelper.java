@@ -344,6 +344,10 @@ public class UhdHelper {
      */
     @TargetApi(17)
     public void setPreferredDisplayModeId(Window targetWindow, int modeId, boolean allowOverlayDisplay) {
+        if (modeId == 0) { // mode is not set
+            return;
+        }
+
         /*
          * The Android M preview adds a preferredDisplayModeId to
          * WindowManager.LayoutParams.preferredDisplayModeId API. A PreferredDisplayModeId can be
@@ -468,17 +472,21 @@ public class UhdHelper {
                 Class<?> cLayoutParams = mWindowAttributes.getClass();
                 attributeFlagField = cLayoutParams.getDeclaredField(sPreferredDisplayModeIdFieldName);
             }
-            //attempt mode switch
-            attributeFlagField.setInt(mWindowAttributes, modeId);
-            mTargetWindow.setAttributes(mWindowAttributes);
 
+            // ensure mode is not set
+            int currentModeId = attributeFlagField.getInt(mWindowAttributes);
+            if (currentModeId != modeId) {
+                // attempt mode switch
+                attributeFlagField.setInt(mWindowAttributes, modeId);
+                mTargetWindow.setAttributes(mWindowAttributes);
+            }
         } catch (Exception e) {
             Log.e(TAG, "error getting field", e);
-            //send and cleanup receivers/callback listeners
+            // send and cleanup receivers/callback listeners
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, 1, 1, null));
             return;
         }
-        //We assume that the mode change is not instantaneous and will send the onDisplayChanged callback.
+        // We assume that the mode change is not instantaneous and will send the onDisplayChanged callback.
         // Start the clock on the mode change timeout
         mWorkHandler.sendMessageDelayed(mWorkHandler.obtainMessage(MODE_CHANGE_TIMEOUT_MSG), SET_MODE_TIMEOUT_DELAY_MS);
     }

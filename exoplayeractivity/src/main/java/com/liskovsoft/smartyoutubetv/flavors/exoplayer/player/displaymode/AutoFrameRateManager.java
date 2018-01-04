@@ -38,4 +38,8 @@ public class AutoFrameRateManager {
         mSyncHelper.setNeedDisplaySync(enabled);
         apply();
     }
+
+    public int getCurrentModeId() {
+        return mSyncHelper.getCurrentModeId();
+    }
 }

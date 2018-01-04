@@ -224,4 +224,8 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
         return false;
     }
+
+    public int getCurrentModeId() {
+        return mNewMode;
+    }
 }

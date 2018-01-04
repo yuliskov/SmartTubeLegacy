@@ -103,6 +103,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     public static final String VIDEO_VIEW_COUNT = "video_views";
     public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
+    public static final String DISPLAY_MODE_ID = "display_mode_id";
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -199,6 +200,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     }
 
     private void doGracefulExit(Intent intent) {
+        intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
         setResult(Activity.RESULT_OK, intent);
 
         finish();
