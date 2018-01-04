@@ -163,7 +163,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (mController == null) {
+        if (mController == null || intent == null) {
             return;
         }
         if (shouldIgnoreIntents()) return;

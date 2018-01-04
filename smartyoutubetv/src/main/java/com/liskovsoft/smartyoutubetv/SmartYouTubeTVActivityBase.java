@@ -77,7 +77,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         mController.setEventListener(new ControllerEventListener(this, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);
-        Intent intent = (icicle == null) ? transformIntent(getIntent()) : null;
+        Intent intent = (icicle == null) ? transformIntentData(getIntent()) : null;
         // TODO: remove
         //mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
         mController.start(intent);
@@ -149,7 +149,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent(transformIntent(intent));
+        super.onNewIntent(transformIntentData(intent));
     }
 
     @Override
@@ -173,17 +173,17 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     ///////////////////////// Begin Youtube filter /////////////////////
 
 
-    private Intent transformIntent(Intent intent) {
+    private Intent transformIntentData(Intent intent) {
         if (intent == null)
             return null;
 
-        transformRegularIntent(intent);
-        transformAmazonIntent(intent);
+        transformRegularIntentData(intent);
+        transformAmazonIntentData(intent);
 
-        return intent;
+        return intent.getData() == null ? null : intent;
     }
 
-    private void transformRegularIntent(Intent intent) {
+    private void transformRegularIntentData(Intent intent) {
         Uri data = intent.getData();
         if (data == null) {
             return;
@@ -193,7 +193,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     // see Amazon's youtube apk: "org.chromium.youtube_apk.YouTubeActivity.loadStartPage(dialParam)"
-    private void transformAmazonIntent(Intent intent) {
+    private void transformAmazonIntentData(Intent intent) {
         String dialParam = intent.getStringExtra(DIAL_EXTRA);
         if (dialParam == null) {
             return;
@@ -235,7 +235,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         String url = uri.toString();
         String videoParam = extractVideoParamsFromUrl(url);
         if (videoParam == null) {
-            return uri;
+            return null;
         }
         String format = String.format(TEMPLATE_URL, videoParam);
         return Uri.parse(format);
