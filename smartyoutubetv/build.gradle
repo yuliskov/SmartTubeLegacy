@@ -29,8 +29,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 193
-        versionName "6.12.33"
+        versionCode 194
+        versionName "6.12.34"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -103,7 +103,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') { // see top part of this file
         transitive = true
     }
-    compile 'cat.ereza:logcatreporter:1.2.0' // crashlytics logcat addon
     compile project.properties.appCompatVersion
     compile 'com.noveogroup.android:android-logger:1.3.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'

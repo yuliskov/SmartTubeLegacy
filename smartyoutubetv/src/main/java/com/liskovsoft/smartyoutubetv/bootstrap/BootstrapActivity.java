@@ -5,17 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
-import cat.ereza.logcatreporter.LogcatReporter;
 import com.crashlytics.android.Crashlytics;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
-import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -34,8 +33,16 @@ public class BootstrapActivity extends ActivityBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootstrap);
         initButtons();
+        initVersion();
 
         setupCrashLogs();
+    }
+
+    private void initVersion() {
+        TextView title = findViewById(R.id.bootstrap_title_message);
+        CharSequence oldTitle = title.getText();
+        String finalTitle = String.format("%s (%s)", oldTitle, BuildConfig.VERSION_NAME);
+        title.setText(finalTitle);
     }
 
     private void initPrefs() {
@@ -65,8 +72,7 @@ public class BootstrapActivity extends ActivityBase {
                 mLangSelector.run();
                 break;
             case R.id.btn_send_crash_report:
-                Toast.makeText(this, R.string.sending_crash_report, Toast.LENGTH_LONG).show();
-                LogcatReporter.reportExceptionWithLogcat(new SendCrashReportException());
+                Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -101,7 +107,6 @@ public class BootstrapActivity extends ActivityBase {
 
     private void setupCrashLogs() {
         Fabric.with(this, new Crashlytics());
-        LogcatReporter.install(3000); // crashlytics logcat addon
     }
 
     private void setupLang() {

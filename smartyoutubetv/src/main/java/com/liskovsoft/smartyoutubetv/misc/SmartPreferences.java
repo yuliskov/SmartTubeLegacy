@@ -55,7 +55,7 @@ public final class SmartPreferences {
     }
 
     public boolean getBootstrapSaveSelection() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_CHECKBOX_CHECKED, false);
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_CHECKBOX_CHECKED, true);
         return isChecked;
     }
 

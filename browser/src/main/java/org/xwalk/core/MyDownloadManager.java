@@ -30,6 +30,7 @@ import okio.Source;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.Random;
 
 /**
@@ -51,7 +52,7 @@ public final class MyDownloadManager {
     private MyRequest mRequest;
     private long mRequestId;
 
-    public void run() {
+    private void run() {
         Request request = new Request.Builder()
                 .url(mRequest.mDownloadUri.toString())
                 .build();

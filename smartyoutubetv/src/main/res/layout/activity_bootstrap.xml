@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/default_bg">
 
-    <TextView android:layout_marginTop="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
+    <TextView android:id="@+id/bootstrap_title_message" android:layout_marginTop="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_centerVertical="true" android:layout_centerHorizontal="true">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
