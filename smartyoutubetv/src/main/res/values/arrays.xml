@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="supported_languages">
-        <item>English(US)|en_US</item>
+        <item>English|en_US</item>
         <!-- <item>Chinese Simplified|zh</item> -->
         <item>Chinese Simplified|zh_CN</item>
         <item>Chinese Traditional|zh_TW</item>

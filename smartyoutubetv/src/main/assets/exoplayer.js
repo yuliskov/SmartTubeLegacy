@@ -49,6 +49,11 @@ function Helpers() {
     }
 
     this.triggerEvent = function(element, type, keyCode) {
+        if (this.pauseEvents) {
+            console.log("Helpers: Pausing events");
+            return;
+        }
+
         var el = element;
         if (isSelector(element)) {
             el = this.$(element);
@@ -151,6 +156,7 @@ function Helpers() {
     // supply selector list
     this.getButtonStates = function() {
         this.muteVideo();
+        new KeyUpDownWatcher(null); // init watcher
 
         YouButton.resetCache(); // activity just started
 
@@ -175,6 +181,7 @@ function Helpers() {
 
     this.syncButtons = function(states) {
         this.muteVideo();
+        new KeyUpDownWatcher(null); // init watcher
 
         YouButton.resetCache(); // activity just started
         console.log("Helpers.syncButtons: " + JSON.stringify(states));
@@ -397,6 +404,7 @@ function KeyUpDownWatcher(host) {
         var type = 'keydown';
         var up = 38;
         var enter = 13;
+        var esc = 27;
         var $this = this;
 
         var myListener = function(e) {
@@ -406,8 +414,14 @@ function KeyUpDownWatcher(host) {
                 $this.host = null; // run once per host
             } else if (code === enter) { // user wanted to open an new video
                 $this.host = null;
+            } else if (code === esc) {
+                console.log("Watcher: Pausing events for 10 seconds");
+                helpers.pauseEvents = true;
+                window.setTimeout(function() {
+                    helpers.pauseEvents = false;
+                }, 10000);
             }
-            console.log("SuggestionsFakeButton: on keydown: " + code);
+            console.log("Watcher: SuggestionsFakeButton: on keydown: " + code);
         };
 
         container.addEventListener(type, myListener);

@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Gets real button states from the WebView
+ */
 public class ActionsReceiver implements Runnable {
     private GenericStringResultReceiver mReceiver;
     private final Context mContext;
@@ -58,7 +61,8 @@ public class ActionsReceiver implements Runnable {
 
             if (mRunCount == 2) {
                 Browser.getBus().unregister(this);
-                mOnDone.run();
+                if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE))
+                    mOnDone.run();
             }
         }
     }
@@ -67,6 +71,10 @@ public class ActionsReceiver implements Runnable {
         mIntent.putExtra(PlayerActivity.VIDEO_DATE, result);
     }
 
+    /**
+     * Button states in JSON format
+     * @param result
+     */
     private void processJSON(String result) {
         Map<String, Boolean> states = convertToObj(result);
         syncWithIntent(states);
