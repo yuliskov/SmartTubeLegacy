@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.liskovsoft.browser.Browser;
@@ -61,10 +62,18 @@ public class ActionsReceiver implements Runnable {
 
             if (mRunCount == 2) {
                 Browser.getBus().unregister(this);
-                if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE))
+                if (checkIntent())
                     mOnDone.run();
             }
         }
+    }
+
+    private boolean checkIntent() {
+        if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE))
+            return true;
+
+        Toast.makeText(mContext, "Action is cancelled. Do nothing...", Toast.LENGTH_LONG).show();
+        return false;
     }
 
     private void processDate(String result) {

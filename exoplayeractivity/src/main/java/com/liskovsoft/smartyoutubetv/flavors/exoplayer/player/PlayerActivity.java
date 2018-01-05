@@ -433,10 +433,10 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager, extensionRendererMode);
 
             DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
-                    DefaultLoadControl.DEFAULT_MIN_BUFFER_MS / 10,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 10,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 5,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 5);
+                    DefaultLoadControl.DEFAULT_MIN_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
             player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
             player.addListener(this);
             player.addListener(eventLogger);

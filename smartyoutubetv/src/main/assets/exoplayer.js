@@ -49,11 +49,6 @@ function Helpers() {
     }
 
     this.triggerEvent = function(element, type, keyCode) {
-        if (this.pauseEvents) {
-            console.log("Helpers: Pausing events");
-            return;
-        }
-
         var el = element;
         if (isSelector(element)) {
             el = this.$(element);
@@ -415,11 +410,7 @@ function KeyUpDownWatcher(host) {
             } else if (code === enter) { // user wanted to open an new video
                 $this.host = null;
             } else if (code === esc) {
-                console.log("Watcher: Pausing events for 10 seconds");
-                helpers.pauseEvents = true;
-                window.setTimeout(function() {
-                    helpers.pauseEvents = false;
-                }, 10000);
+                return true; // swallow back event (don't give a chance to the user to broke the pending actions)
             }
             console.log("Watcher: SuggestionsFakeButton: on keydown: " + code);
         };
