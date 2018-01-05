@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
+    private static final String TAG = SmartYouTubeTVActivityBase.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here
     private Map<String, String> mHeaders;
@@ -223,7 +225,9 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         String[] patterns = {"list=\\w*", "v=\\w*", "youtu.be/\\w*"};
         String res = Helpers.runMultiMatcher(url, patterns);
         if (res == null) {
-            Toast.makeText(this, "Url not supported: " + url, Toast.LENGTH_LONG).show();
+            Log.w(TAG, "Url not supported: " + url);
+            // Uncomment next section to debug
+            // Toast.makeText(this, "Url not supported: " + url, Toast.LENGTH_LONG).show();
             return null;
         }
         return res.replace("youtu.be/", "v=");

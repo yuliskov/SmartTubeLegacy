@@ -1,18 +1,18 @@
 <resources>
-    <string name="webview_desc">MiBox�AFireTV��</string>
-    <string name="xwalk_desc">MiTV �Ψ�L�]��</string>
-    <string name="exo_desc">4K�GMiTV��</string>
-    <string name="bootstrap_main_title">�п�ܩһݪ�YouTube����</string>
-    <string name="exo_desc2">4K�G���N����</string>
-    <string name="bootstrap_bottom_title">�p�G�z���T�w�A�Ф@�Ӥ@�ӹ���</string>
-    <string name="loading_bottom_msg">����^���s�^��Ұʾ���ܮ�</string>
-    <string name="language_dialog_title">��ܻy��</string>
-    <string name="save_selection">�O��</string>
-    <string name="system_lang">�w�]</string>
-    <string name="language">�y��</string>
-    <string name="autoframerate">�۰ʴV�t�v</string>
-    <string name="returning_to_the_video">�^�쥴�}���v��</string>
-    <string name="send_crash_report">���~���i</string>
-    <string name="sending_crash_report">�^�ǿ��~���i...</string>
-    <string name="update_check">�ˬd��s</string>
+    <string name="webview_desc">MiBox，FireTV等</string>
+    <string name="xwalk_desc">MiTV 及其他設備</string>
+    <string name="exo_desc">4K：MiTV等</string>
+    <string name="bootstrap_main_title">請選擇所需的YouTube版本</string>
+    <string name="exo_desc2">4K：替代版本</string>
+    <string name="bootstrap_bottom_title">如果您不確定，請一個一個嘗試</string>
+    <string name="loading_bottom_msg">按返回按鈕回到啟動器對話框</string>
+    <string name="language_dialog_title">選擇語言</string>
+    <string name="save_selection">記住</string>
+    <string name="system_lang">Default</string>
+    <string name="language">Language</string>
+    <string name="autoframerate">自動幀速率</string>
+    <string name="returning_to_the_video">回到打開的影片</string>
+    <string name="send_crash_report">錯誤報告</string>
+    <string name="sending_crash_report">回傳錯誤報告&#8230;</string>
+    <string name="update_check">檢查更新</string>
 </resources>

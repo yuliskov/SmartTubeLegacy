@@ -17,7 +17,7 @@
     <string name="starting_popup">Starting from the main launcher</string>
     <string name="save_selection">Remember</string>
     <string name="bootstrap_bottom_title">If you unsure, try the launchers one by one</string>
-    <string name="starting_popup_fmt">Starting the %s launcher...</string>
+    <string name="starting_popup_fmt">Starting the %s launcher&#8230;</string>
     <string name="app_name_720">720</string>
     <string name="app_name_1080">1080</string>
     <string name="app_name_4k">4K</string>
@@ -34,6 +34,6 @@
     <string name="german_lang">Deutsch</string>
     <string name="returning_to_the_video">Returning to the opened video</string>
     <string name="send_crash_report">Crash Report</string>
-    <string name="sending_crash_report">Sending Crash Report...</string>
+    <string name="sending_crash_report">Sending Crash Report&#8230;</string>
     <string name="update_check">Update Check</string>
 </resources>

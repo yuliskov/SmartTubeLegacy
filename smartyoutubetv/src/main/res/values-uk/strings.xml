@@ -8,7 +8,7 @@
     <string name="starting_popup">Запуск із головного лаунчеру</string>
     <string name="save_selection">Запам`ятати</string>
     <string name="bootstrap_bottom_title">Якщо не впевнені, то пробуйте кожну з версій</string>
-    <string name="starting_popup_fmt">Запускається %s лаунчер...</string>
+    <string name="starting_popup_fmt">Запускається %s лаунчер&#8230;</string>
     <string name="loading_bottom_msg">Натисніть \"Назад\", щоби повернутися до вибору версій</string>
     <string name="language_dialog_title">Оберіть мову</string>
     <string name="system_lang">За-замовчуванням</string>
@@ -16,6 +16,6 @@
     <string name="autoframerate">Автофреймрейт</string>
     <string name="returning_to_the_video">Повертаємося до відкритого відео-ролику</string>
     <string name="send_crash_report">Звіт про сбій</string>
-    <string name="sending_crash_report">Відсилається звіт про сбій...</string>
+    <string name="sending_crash_report">Відсилається звіт про сбій&#8230;</string>
     <string name="update_check">Перев. оновл.</string>
 </resources>

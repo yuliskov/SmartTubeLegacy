@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +22,7 @@ import java.util.Random;
  * Gets real button states from the WebView
  */
 public class ActionsReceiver implements Runnable {
+    private static final String TAG = ActionsReceiver.class.getSimpleName();
     private GenericStringResultReceiver mReceiver;
     private final Context mContext;
     private final Intent mIntent;
@@ -68,11 +70,17 @@ public class ActionsReceiver implements Runnable {
         }
     }
 
+    /**
+     * Check that user didn't tapped back key before actual playback
+     * @return true if user didn't tapped back key
+     */
     private boolean checkIntent() {
         if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE))
             return true;
 
-        Toast.makeText(mContext, "Action is cancelled. Do nothing...", Toast.LENGTH_LONG).show();
+        Log.w(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity...");
+        // Uncomment next section to debug
+        // Toast.makeText(mContext, "Action is cancelled. Do nothing...", Toast.LENGTH_LONG).show();
         return false;
     }
 

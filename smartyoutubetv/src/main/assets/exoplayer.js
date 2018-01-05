@@ -36,7 +36,8 @@ function GoogleButton() {
     this.playButtonSelector = ".icon-player-play.toggle-button";
     this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
     this.mainTitleSelector = '.title-card.watch-title-tray';
-    this.keysContainerSelector = '#watch';
+    this.keysContainerSelector = '#watch'; // div that receives keys events
+    this.playerUrlTemplate = '/watch/'; // url part of the opened player
 }
 
 ////////// End GoogleButton //////////////////
@@ -311,7 +312,14 @@ function YouButton(selector) {
         return btn;
     };
 
+    this.playerIsClosed = function() {
+        return document.location.href.indexOf(this.playerUrlTemplate) === -1;
+    };
+
     this.getChecked = function() {
+        if (this.playerIsClosed())
+            return false;
+
         if (this.isChecked === undefined) {
             var toggle = this.findToggle();
             var isChecked = helpers.hasClass(toggle, this.selectedClass);
@@ -323,6 +331,9 @@ function YouButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
+        if (this.playerIsClosed())
+            return;
+
         var isChecked = this.getChecked();
         if (isChecked === null) {
             console.log("YouButton: button is disabled: exiting: " + this.selector);
@@ -407,11 +418,10 @@ function KeyUpDownWatcher(host) {
             if (code === up && $this.host) { // up is fired only for the top row
                 $this.host.needToCloseSuggestions();
                 $this.host = null; // run once per host
-            } else if (code === enter) { // user wanted to open an new video
+            } else if (code === enter) { // user wants to open an new video
                 $this.host = null;
-            } else if (code === esc) {
-                return true; // swallow back event (don't give a chance to the user to broke the pending actions)
             }
+
             console.log("Watcher: SuggestionsFakeButton: on keydown: " + code);
         };
 
@@ -420,6 +430,8 @@ function KeyUpDownWatcher(host) {
         this.setHost = function(host) {
             this.host = host;
         };
+
+        console.log("Watcher: do init...");
     }
 
     KeyUpDownWatcherService.prototype = new GoogleButton();

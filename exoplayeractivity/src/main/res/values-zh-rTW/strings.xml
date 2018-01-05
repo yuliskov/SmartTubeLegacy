@@ -15,7 +15,7 @@
     <string name="play">播放</string>
     <string name="dislike">我不喜歡</string>
     <string name="like">我喜歡</string>
-    <string name="stats">統計</string>
+    <string name="stats">資訊</string>
     <string name="subscribe">訂閱</string>
 
     <string name="quality">品質</string>
@@ -24,7 +24,7 @@
 
     <string name="audio">聲音</string>
 
-    <string name="text">字幕</string>
+    <string name="text">文字</string>
 
     <string name="retry">重試</string>
 
@@ -58,7 +58,7 @@
     <string name="selection_default">預設品質</string>
     <string name="sample_list_load_error">一個或多個樣本列表未能載入</string>
     <string name="exo_like_desc">喜歡</string>
-    <string name="captions">標題</string>
+    <string name="captions">字幕</string>
     <string name="not_implemented_msg">尚未實作</string>
     <string name="published">發佈日期</string>
     <string name="view_count">觀看次數</string>
