@@ -180,7 +180,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         transformRegularIntentData(intent);
         transformAmazonIntentData(intent);
 
-        return intent.getData() == null ? null : intent;
+        return intent;
     }
 
     private void transformRegularIntentData(Intent intent) {
