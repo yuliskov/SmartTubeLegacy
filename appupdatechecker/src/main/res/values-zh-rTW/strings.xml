@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppUpdateChecker -->
+    <!-- 											            ↓ app_name    version_number ↓  -->
+    <string name="app_update_new_version">有一個 %2$s 的新版本 (%1$s) 可以取得!</string>
+    <string name="upgrade">升級</string>
+    <string name="cancel">取消</string>
+    <string name="pref_check_updates_title">檢查更新</string>
+    <string name="pref_min_interval_title">最小更新頻率</string>
+    <string name="pref_min_interval_summary">最多這幾分鐘檢查更新</string>
+		<string name="no_external_storage_error">無法安裝更新, 外接存儲裝置不存在。</string>
+</resources>

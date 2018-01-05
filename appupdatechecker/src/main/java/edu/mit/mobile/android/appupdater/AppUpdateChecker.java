@@ -17,6 +17,7 @@ package edu.mit.mobile.android.appupdater;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,223 +51,221 @@ import edu.mit.mobile.android.utils.StreamUtils;
  *
  * The JSON format looks like this:
  * <pre>
-  {
-    "package": {
-        "downloadUrl": "http://locast.mit.edu/connects/lcc.apk"
-    },
-
-    "1.4.3": {
-    "versionCode": 6,
-    "changelog": ["New automatic update checker", "Improved template interactions"]
-    },
-    "1.4.2": {
-    "versionCode": 5,
-    "changelog": ["fixed crash when saving cast"]
-    }
-}
+ * {
+ * "package": {
+ * "downloadUrl": "http://locast.mit.edu/connects/lcc.apk"
+ * },
+ *
+ * "1.4.3": {
+ * "versionCode": 6,
+ * "changelog": ["New automatic update checker", "Improved template interactions"]
+ * },
+ * "1.4.2": {
+ * "versionCode": 5,
+ * "changelog": ["fixed crash when saving cast"]
+ * }
+ * }
  * </pre>
  *
  * @author <a href="mailto:spomeroy@mit.edu">Steve Pomeroy</a>
- *
  */
 public class AppUpdateChecker {
-	private final static String TAG = AppUpdateChecker.class.getSimpleName();
+    private final static String TAG = AppUpdateChecker.class.getSimpleName();
 
-	public static final String SHARED_PREFERENCES_NAME = "edu.mit.mobile.android.appupdater.preferences";
-	public static final String
-		PREF_ENABLED = "enabled",
-		PREF_MIN_INTERVAL = "min_interval",
-		PREF_LAST_UPDATED = "last_checked";
+    public static final String SHARED_PREFERENCES_NAME = "edu.mit.mobile.android.appupdater.preferences";
+    public static final String PREF_ENABLED = "enabled", PREF_MIN_INTERVAL = "min_interval", PREF_LAST_UPDATED = "last_checked";
 
-	private final String mVersionListUrl;
-	private int currentAppVersion;
+    private final String mVersionListUrl;
+    private int currentAppVersion;
 
-	private JSONObject pkgInfo;
-	private final Context mContext;
+    private JSONObject pkgInfo;
+    private final Context mContext;
 
-	private final OnAppUpdateListener mUpdateListener;
-	private SharedPreferences mPrefs;
+    private final OnAppUpdateListener mUpdateListener;
+    private SharedPreferences mPrefs;
 
-	private static final int MILLISECONDS_IN_MINUTE = 60000;
+    private static final int MILLISECONDS_IN_MINUTE = 60000;
 
-	/**
-	 * @param context
-	 * @param versionListUrl URL pointing to a JSON file with the update list.
-	 * @param updateListener
-	 */
-	public AppUpdateChecker(Context context, String versionListUrl, OnAppUpdateListener updateListener) {
-		mContext = context;
-		mVersionListUrl = versionListUrl;
-		mUpdateListener = updateListener;
+    /**
+     * @param context
+     * @param versionListUrl URL pointing to a JSON file with the update list.
+     * @param updateListener
+     */
+    public AppUpdateChecker(Context context, String versionListUrl, OnAppUpdateListener updateListener) {
+        mContext = context;
+        mVersionListUrl = versionListUrl;
+        mUpdateListener = updateListener;
 
-    	try {
-			currentAppVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-		} catch (final NameNotFoundException e) {
-			Log.e(TAG, "Cannot get version for self! Who am I?! What's going on!? I'm so confused :-(");
-			return;
-		}
+        try {
+            currentAppVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (final NameNotFoundException e) {
+            Log.e(TAG, "Cannot get version for self! Who am I?! What's going on!? I'm so confused :-(");
+            return;
+        }
 
-		mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-		// defaults are kept in the preference file for ease of tweaking
-		// TODO put this on a thread somehow
-		PreferenceManager.setDefaultValues(mContext, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, false);
+        mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        // defaults are kept in the preference file for ease of tweaking
+        // TODO put this on a thread somehow
+        PreferenceManager.setDefaultValues(mContext, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, false);
     }
 
-	// min interval is stored as a string so a preference editor could potentially edit it using a text edit widget
+    // min interval is stored as a string so a preference editor could potentially edit it using a text edit widget
 
-	public int getMinInterval(){
-		return Integer.valueOf(mPrefs.getString(PREF_MIN_INTERVAL, "60"));
-	}
+    public int getMinInterval() {
+        return Integer.valueOf(mPrefs.getString(PREF_MIN_INTERVAL, "60"));
+    }
 
-	public void setMinInterval(int minutes){
-		mPrefs.edit().putString(PREF_MIN_INTERVAL, String.valueOf(minutes)).commit();
-	}
+    public void setMinInterval(int minutes) {
+        mPrefs.edit().putString(PREF_MIN_INTERVAL, String.valueOf(minutes)).commit();
+    }
 
-	public boolean getEnabled(){
-		return mPrefs.getBoolean(PREF_ENABLED, true);
-	}
+    public boolean getEnabled() {
+        return mPrefs.getBoolean(PREF_ENABLED, true);
+    }
 
-	public void setEnabled(boolean enabled){
-		mPrefs.edit().putBoolean(PREF_ENABLED, enabled).commit();
-	}
+    public void setEnabled(boolean enabled) {
+        mPrefs.edit().putBoolean(PREF_ENABLED, enabled).commit();
+    }
 
-	/**
-	 * You normally shouldn't need to call this, as {@link #checkForUpdates()} checks it before doing any updates.
-	 *
-	 * @return true if the updater should check for updates
-	 */
-	public boolean isStale(){
-		return System.currentTimeMillis() - mPrefs.getLong(PREF_LAST_UPDATED, 0) > getMinInterval() * MILLISECONDS_IN_MINUTE;
-	}
+    /**
+     * You normally shouldn't need to call this, as {@link #checkForUpdates()} checks it before doing any updates.
+     *
+     * @return true if the updater should check for updates
+     */
+    public boolean isStale() {
+        return System.currentTimeMillis() - mPrefs.getLong(PREF_LAST_UPDATED, 0) > getMinInterval() * MILLISECONDS_IN_MINUTE;
+    }
 
-	/**
-	 * Checks for updates if updates haven't been checked for recently and if checking is enabled.
-	 */
-	public void checkForUpdates(){
-    	if (getEnabled() && isStale()){
-    		forceCheckForUpdates();
-    	}
-	}
+    /**
+     * Checks for updates if updates haven't been checked for recently and if checking is enabled.
+     */
+    public void checkForUpdates() {
+        if (getEnabled() && isStale()) {
+            forceCheckForUpdates();
+        }
+    }
 
-	/**
-	 * Like {@link #forceCheckForUpdates} but only if updates is enabled
-	 */
-	public void forceCheckForUpdatesIfEnabled() {
-		if (getEnabled()) {
-			forceCheckForUpdates();
-		}
-	}
+    /**
+     * Like {@link #forceCheckForUpdates} but only if updates is enabled
+     */
+    public void forceCheckForUpdatesIfEnabled() {
+        if (getEnabled()) {
+            forceCheckForUpdates();
+        }
+    }
 
     /**
      * Checks for updates regardless of when the last check happened or if checking for updates is enabled.
      */
-    public void forceCheckForUpdates(){
-    	Log.d(TAG, "checking for updates...");
-    	if (versionTask == null){
-    		versionTask = new GetVersionJsonTask();
-    		versionTask.execute(mVersionListUrl);
-    	}else{
-    		Log.w(TAG, "checkForUpdates() called while already checking for updates. Ignoring...");
-    	}
+    public void forceCheckForUpdates() {
+        Log.d(TAG, "checking for updates...");
+        if (versionTask == null) {
+            versionTask = new GetVersionJsonTask();
+            versionTask.execute(mVersionListUrl);
+        } else {
+            Log.w(TAG, "checkForUpdates() called while already checking for updates. Ignoring...");
+        }
     }
 
     // why oh why is the JSON API so poorly integrated into java?
     @SuppressWarnings("unchecked")
-	private void triggerFromJson(JSONObject jo) throws JSONException {
+    private void triggerFromJson(JSONObject jo) throws JSONException {
 
-    	final ArrayList<String> changelog = new ArrayList<String>();
+        final ArrayList<String> changelog = new ArrayList<String>();
 
-    	// keep a sorted map of versionCode to the version information objects.
-    	// Most recent is at the top.
-    	final TreeMap<Integer, JSONObject> versionMap =
-    		new TreeMap<Integer, JSONObject>(new Comparator<Integer>() {
-    		public int compare(Integer object1, Integer object2) {
-    			return object2.compareTo(object1);
-    		};
-		});
+        // keep a sorted map of versionCode to the version information objects.
+        // Most recent is at the top.
+        final TreeMap<Integer, JSONObject> versionMap = new TreeMap<Integer, JSONObject>(new Comparator<Integer>() {
+            public int compare(Integer object1, Integer object2) {
+                return object2.compareTo(object1);
+            }
 
-    	for (final Iterator<String> i = jo.keys(); i.hasNext(); ){
-    		final String versionName = i.next();
-    		if (versionName.equals("package")){
-    			pkgInfo = jo.getJSONObject(versionName);
-    			continue;
-    		}
-    		final JSONObject versionInfo = jo.getJSONObject(versionName);
-    		versionInfo.put("versionName", versionName);
+            ;
+        });
 
-    		final int versionCode = versionInfo.getInt("versionCode");
-    		versionMap.put(versionCode, versionInfo);
-    	}
-    	final int latestVersionNumber = versionMap.firstKey();
-    	final String latestVersionName = versionMap.get(latestVersionNumber).getString("versionName");
-    	final Uri downloadUri = Uri.parse(pkgInfo.getString("downloadUrl"));
+        for (final Iterator<String> i = jo.keys(); i.hasNext(); ) {
+            final String versionName = i.next();
+            if (versionName.equals("package")) {
+                pkgInfo = jo.getJSONObject(versionName);
+                continue;
+            }
+            final JSONObject versionInfo = jo.getJSONObject(versionName);
+            versionInfo.put("versionName", versionName);
 
-    	if (currentAppVersion > latestVersionNumber){
-    		Log.d(TAG, "We're newer than the latest published version ("+latestVersionName+"). Living in the future...");
-    		mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
-    		return;
-    	}
+            final int versionCode = versionInfo.getInt("versionCode");
+            versionMap.put(versionCode, versionInfo);
+        }
+        final int latestVersionNumber = versionMap.firstKey();
+        final String latestVersionName = versionMap.get(latestVersionNumber).getString("versionName");
+        final Uri downloadUri = Uri.parse(pkgInfo.getString("downloadUrl"));
 
-    	if (currentAppVersion == latestVersionNumber){
-    		Log.d(TAG, "We're at the latest version ("+currentAppVersion+")");
-    		mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
-    		return;
-    	}
+        if (currentAppVersion > latestVersionNumber) {
+            Log.d(TAG, "We're newer than the latest published version (" + latestVersionName + "). Living in the future...");
+            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
+            return;
+        }
 
-    	// construct the changelog. Newest entries are at the top.
-    	for (final Entry<Integer, JSONObject> version: versionMap.headMap(currentAppVersion).entrySet()){
-    		final JSONObject versionInfo = version.getValue();
-    		final JSONArray versionChangelog = versionInfo.optJSONArray("changelog");
-    		if (versionChangelog != null){
-    			final int len = versionChangelog.length();
-    			for (int i = 0; i < len; i++){
-    				changelog.add(versionChangelog.getString(i));
-    			}
-    		}
-    	}
+        if (currentAppVersion == latestVersionNumber) {
+            Log.d(TAG, "We're at the latest version (" + currentAppVersion + ")");
+            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
+            return;
+        }
 
-    	mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUri);
+        // construct the changelog. Newest entries are at the top.
+        for (final Entry<Integer, JSONObject> version : versionMap.headMap(currentAppVersion).entrySet()) {
+            final JSONObject versionInfo = version.getValue();
+            final JSONArray versionChangelog = versionInfo.optJSONArray("changelog");
+            if (versionChangelog != null) {
+                final int len = versionChangelog.length();
+                for (int i = 0; i < len; i++) {
+                    changelog.add(versionChangelog.getString(i));
+                }
+            }
+        }
+
+        mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUri);
     }
 
     private class VersionCheckException extends Exception {
-    	/**
-		 *
-		 */
-		private static final long serialVersionUID = 397593559982487816L;
+        /**
+         *
+         */
+        private static final long serialVersionUID = 397593559982487816L;
 
-		public VersionCheckException(String msg) {
-    		super(msg);
-		}
+        public VersionCheckException(String msg) {
+            super(msg);
+        }
     }
 
     /**
      * Send off an intent to start the download of the app.
      */
-    public void startUpgrade(){
-		try {
-			final Uri downloadUri = Uri.parse(pkgInfo.getString("downloadUrl"));
-			mContext.startActivity(new Intent(Intent.ACTION_VIEW, downloadUri));
-		} catch (final JSONException e) {
-			e.printStackTrace();
-		}
+    public void startUpgrade() {
+        try {
+            final Uri downloadUri = Uri.parse(pkgInfo.getString("downloadUrl"));
+            mContext.startActivity(new Intent(Intent.ACTION_VIEW, downloadUri));
+        } catch (final JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private GetVersionJsonTask versionTask;
-    private class GetVersionJsonTask extends AsyncTask<String, Integer, JSONObject>{
-    	private String errorMsg = null;
 
-    	@Override
-    	protected void onProgressUpdate(Integer... values) {
-    		Log.d(TAG, "update check progress: " + values[0]);
-    		super.onProgressUpdate(values);
-    	}
+    private class GetVersionJsonTask extends AsyncTask<String, Integer, JSONObject> {
+        private String errorMsg = null;
 
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			publishProgress(0);
-			final String urlStr = params[0];
-			JSONObject jo = null;
-			try {
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            Log.d(TAG, "update check progress: " + values[0]);
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            publishProgress(0);
+            final String urlStr = params[0];
+            JSONObject jo = null;
+            try {
                 publishProgress(50);
 
                 URL url = new URL(urlStr);
@@ -274,45 +273,46 @@ public class AppUpdateChecker {
                 c.setRequestMethod("GET");
                 c.setDoOutput(false);
                 c.connect();
-                
+
                 final int statusCode = c.getResponseCode();
-				if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-					throw new VersionCheckException(url + " " + c.getResponseMessage());
-				}
-				if (statusCode != HttpURLConnection.HTTP_OK){
-					if (c.getContentType().equals("text/html") || c.getContentLength() > 40){
-						// long response body. Serving HTML...
-						throw new VersionCheckException("Got a HTML instead of expected JSON.");
-					}
-					throw new VersionCheckException("HTTP " + c.getResponseCode() + " "+ c.getResponseMessage());
-				}
+                if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                    throw new VersionCheckException(url + " " + c.getResponseMessage());
+                }
+                if (statusCode != HttpURLConnection.HTTP_OK) {
+                    if (c.getContentType().equals("text/html") || c.getContentLength() > 40) {
+                        // long response body. Serving HTML...
+                        throw new VersionCheckException("Got a HTML instead of expected JSON.");
+                    }
+                    throw new VersionCheckException("HTTP " + c.getResponseCode() + " " + c.getResponseMessage());
+                }
 
-				jo = new JSONObject(StreamUtils.inputStreamToString(c.getInputStream()));
+                jo = new JSONObject(StreamUtils.inputStreamToString(c.getInputStream()));
 
-				mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
-			} catch (final Exception e) {
-				//e.printStackTrace();
+                mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
+            } catch (final Exception e) {
+                throw new IllegalStateException(e);
+            } finally {
+                publishProgress(100);
+            } return jo;
+        }
 
-				errorMsg = e.getClass().getSimpleName() + ": " + e.getLocalizedMessage();
-			}finally {
-				publishProgress(100);
-			}
-			return jo;
-		}
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            if (result == null) {
+                Log.e(TAG, errorMsg);
+            } else {
+                try {
+                    triggerFromJson(result);
 
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			if (result == null){
-				Log.e(TAG, errorMsg);
-			}else{
-				try {
-					triggerFromJson(result);
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Error in JSON version file.", e);
+                }
+            }
+            versionTask = null; // forget about us, we're done.
+        }
 
-				} catch (final JSONException e) {
-					Log.e(TAG, "Error in JSON version file.", e);
-				}
-			}
-			versionTask = null; // forget about us, we're done.
-		};
-    };
+        ;
+    }
+
+    ;
 }

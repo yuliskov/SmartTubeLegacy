@@ -21,7 +21,7 @@ public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
-    private LanguageSelector mLangSelector;
+    private LanguageSelectorDialog mLangSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class BootstrapActivity extends ActivityBase {
 
     public void onClick(View button) {
         if (mLangSelector == null) {
-            mLangSelector = new LanguageSelector(this);
+            mLangSelector = new LanguageSelectorDialog(this);
         }
 
         switch (button.getId()) {

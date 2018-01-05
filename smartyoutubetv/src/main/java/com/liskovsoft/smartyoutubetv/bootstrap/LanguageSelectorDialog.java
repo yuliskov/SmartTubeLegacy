@@ -15,37 +15,24 @@ import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class LanguageSelector implements OnClickListener {
+public class LanguageSelectorDialog implements OnClickListener {
     private final BootstrapActivity mActivity;
     private AlertDialog alertDialog;
-    private HashMap<String, String> mLangMap;
     private ArrayList<CheckedTextView> mLangViews;
-    private static final int TEXT_SIZE_DP = 15;
-    private String mCurrentLang = "ru";
+    private String mCurrentLang;
     private LangUpdater mLangUpdater;
 
-    public LanguageSelector(BootstrapActivity activity) {
+    public LanguageSelectorDialog(BootstrapActivity activity) {
         mActivity = activity;
-        initLangMap();
-        initCurrentLang();
+        initLangUpdater();
     }
 
-    private void initCurrentLang() {
+    private void initLangUpdater() {
         mLangUpdater = new LangUpdater(mActivity);
         mCurrentLang = mLangUpdater.getPreferredLocale();
-    }
-
-    private void initLangMap() {
-        mLangMap = new LinkedHashMap<>();
-        mLangMap.put(mActivity.getString(R.string.system_lang), "");
-        mLangMap.put(mActivity.getString(R.string.english_lang), "en");
-        mLangMap.put(mActivity.getString(R.string.chinese_lang), "zh");
-        mLangMap.put(mActivity.getString(R.string.ukrainian_lang), "uk");
-        mLangMap.put(mActivity.getString(R.string.russian_lang), "ru");
-        mLangMap.put(mActivity.getString(R.string.german_lang), "de");
     }
 
     public void run() {
@@ -62,7 +49,7 @@ public class LanguageSelector implements OnClickListener {
     private View buildView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.lang_selection_dialog, null);
-        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
+        ViewGroup root = view.findViewById(R.id.root);
 
         TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
         int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
@@ -70,14 +57,14 @@ public class LanguageSelector implements OnClickListener {
 
         mLangViews = new ArrayList<>();
 
-        for (Map.Entry<String, String> entry : mLangMap.entrySet()) {
+        for (Map.Entry<String, String> entry : mLangUpdater.getSupportedLocales().entrySet()) {
             CheckedTextView langView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
             langView.setBackgroundResource(selectableItemBackgroundResourceId);
             langView.setText(entry.getKey());
 
             langView.setFocusable(true);
             langView.setTag(entry.getValue());
-            langView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+            langView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActivity.getResources().getDimension(R.dimen.text_size_dp));
             langView.setOnClickListener(this);
             mLangViews.add(langView);
             root.addView(langView);

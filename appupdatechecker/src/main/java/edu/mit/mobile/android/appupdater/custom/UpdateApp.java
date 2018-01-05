@@ -77,7 +77,6 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             is.close();
 
         } catch (IOException e) {
-            Log.e("UpdateAPP", e.toString());
             throw new IllegalStateException(e);
         }
         return outputFile.getAbsolutePath();

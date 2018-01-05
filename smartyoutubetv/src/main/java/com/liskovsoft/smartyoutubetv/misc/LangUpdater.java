@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import com.liskovsoft.smartyoutubetv.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class LangUpdater {
+    private static final String LOCALE_EN_US = "en_US";
+    private static final String LOCALE_RU = "ru_RU";
     private Context mContext;
     private String[] rusPackages = {"dkc.androidtv.tree", "dkc.video.fsbox", "dkc.video.hdbox", "dkc.video.uatv"};
 
@@ -24,7 +30,7 @@ public class LangUpdater {
     }
 
     private void tryToRestoreLanguage() {
-        String langCode = SmartPreferences.instance(mContext).getPreferredLanguage();
+        String langCode = getPreferredLocale();
         if (langCode != null) {
             forceLocale(langCode);
         }
@@ -34,14 +40,14 @@ public class LangUpdater {
         String deviceName = Helpers.getDeviceName();
         switch (deviceName) {
             case "ChangHong Android TV (full_mst638)":
-                forceLocale("en");
+                forceLocale(LOCALE_EN_US);
         }
     }
 
     private void tryToBypassChinese() {
         String script = LocaleUtility.getScript(Locale.getDefault());
         if (isChineseScript(script)) {
-            forceLocale("en");
+            forceLocale(LOCALE_EN_US);
         }
     }
 
@@ -59,7 +65,7 @@ public class LangUpdater {
         List<String> installedPackages = getListInstalledPackages();
         for (String pkgName : installedPackages) {
             if (isRussianPackage(pkgName)) {
-                forceLocale("ru");
+                forceLocale(LOCALE_RU);
             }
         }
     }
@@ -70,7 +76,7 @@ public class LangUpdater {
             return;
         }
 
-        Locale locale = new Locale(langCode);
+        Locale locale = parseLangCode(langCode);
         Locale.setDefault(locale);
         Configuration config = mContext.getResources().getConfiguration();
         config.locale = locale;
@@ -103,11 +109,39 @@ public class LangUpdater {
         return config.locale.getLanguage();
     }
 
+    /**
+     * Get locale as lang code (e.g. zh, ru_RU etc)
+     * @return lang code
+     */
     public String getPreferredLocale() {
         return SmartPreferences.instance(mContext).getPreferredLanguage();
     }
 
     public void setPreferredLocale(String langCode) {
         SmartPreferences.instance(mContext).setPreferredLanguage(langCode);
+    }
+
+    /**
+     * Gets map of Human readable locale names and their respective lang codes
+     * @return locale name/code map
+     */
+    public HashMap<String, String> getSupportedLocales() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        String[] langs = mContext.getResources().getStringArray(R.array.supported_languages);
+        map.put(mContext.getResources().getString(R.string.system_lang), "");
+        for (String lang : langs) {
+            StringTokenizer tokenizer = new StringTokenizer(lang, "|");
+            String humanReadableName = tokenizer.nextToken();
+            String langCode = tokenizer.nextToken();
+            map.put(humanReadableName, langCode);
+        }
+        return map;
+    }
+
+    private Locale parseLangCode(String langCode) {
+        StringTokenizer tokenizer = new StringTokenizer(langCode, "_");
+        String lang = tokenizer.nextToken();
+        String country = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
+        return new Locale(lang, country);
     }
 }

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="low_memory_notify">警告：記憶體不足, 儲存狀態...</string>
+</resources>

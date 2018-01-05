@@ -27,11 +27,13 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Progress listener example:
@@ -53,9 +55,7 @@ public final class MyDownloadManager {
     private long mRequestId;
 
     private void run() {
-        Request request = new Request.Builder()
-                .url(mRequest.mDownloadUri.toString())
-                .build();
+        Request request = new Request.Builder().url(mRequest.mDownloadUri.toString()).build();
 
         OkHttpClient client = new OkHttpClient.Builder().addNetworkInterceptor(new Interceptor() {
             @Override
@@ -63,7 +63,10 @@ public final class MyDownloadManager {
                 Response originalResponse = chain.proceed(chain.request());
                 return originalResponse.newBuilder().body(new ProgressResponseBody(originalResponse.body(), mRequest.mProgressListener)).build();
             }
-        }).build();
+        }).connectTimeout(10, TimeUnit.SECONDS)
+          .readTimeout(10, TimeUnit.SECONDS)
+          .writeTimeout(10, TimeUnit.SECONDS)
+          .build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -99,7 +102,7 @@ public final class MyDownloadManager {
     }
 
     public void remove(long downloadId) {
-        
+
     }
 
     public Uri getUriForDownloadedFile(long downloadId) {
