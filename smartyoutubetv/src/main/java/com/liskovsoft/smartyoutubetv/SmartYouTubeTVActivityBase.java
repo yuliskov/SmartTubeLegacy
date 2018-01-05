@@ -235,7 +235,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         String url = uri.toString();
         String videoParam = extractVideoParamsFromUrl(url);
         if (videoParam == null) {
-            return null;
+            return Uri.parse(mServiceUrl);
         }
         String format = String.format(TEMPLATE_URL, videoParam);
         return Uri.parse(format);
