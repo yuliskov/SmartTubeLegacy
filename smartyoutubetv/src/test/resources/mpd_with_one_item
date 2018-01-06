@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:mpeg:DASH:schema:MPD:2011" xmlns:yt="http://youtube.com/yt/2012/10/10" xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 DASH-MPD.xsd" minBufferTime="PT1.500S" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" mediaPresentationDuration="PT309S">
-  <Period duration="PT309S">
+<MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:mpeg:DASH:schema:MPD:2011" xmlns:yt="http://youtube.com/yt/2012/10/10" xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 DASH-MPD.xsd" minBufferTime="PT1.500S" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" mediaPresentationDuration="PT1234S">
+  <Period duration="PT1234S">
     <AdaptationSet id="0" mimeType="video/mp4" subsegmentAlignment="true">
       <Role schemeIdUri="urn:mpeg:DASH:role:2011" value="main" />
       <Representation id="133" codecs="avc1.640033" startWithSAP="1" audioSamplingRate="44100">
-        <BaseURL>http://empty.url</BaseURL>
+        <BaseURL>http://empty.url?dur=1234</BaseURL>
         <SegmentBase>
           <Initialization range="0-759" />
         </SegmentBase>
