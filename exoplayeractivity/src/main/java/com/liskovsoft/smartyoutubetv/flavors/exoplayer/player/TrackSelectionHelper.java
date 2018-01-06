@@ -50,7 +50,6 @@ import java.util.Arrays;
 
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
-    private static final int TEXT_SIZE_DP = 15;
     private static final int VIDEO_GROUP_INDEX = 0; // is video
 
     private final MappingTrackSelector selector;
@@ -124,7 +123,7 @@ import java.util.Arrays;
         autoframerateView.setText(R.string.enable_autoframerate);
         autoframerateView.setFocusable(true);
         autoframerateView.setOnClickListener(this);
-        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
         if (rendererIndex == VIDEO_GROUP_INDEX) { // is video
             root.addView(autoframerateView);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
@@ -136,7 +135,7 @@ import java.util.Arrays;
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
         disableView.setOnClickListener(this);
-        disableView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        disableView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
@@ -145,7 +144,7 @@ import java.util.Arrays;
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
         defaultView.setOnClickListener(this);
-        defaultView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+        defaultView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
         root.addView(defaultView); // Auto check box
 
@@ -204,7 +203,7 @@ import java.util.Arrays;
 
                     trackView.setFocusable(true);
                     trackView.setTag(Pair.create(groupIndex, index));
-                    trackView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DP);
+                    trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
                     trackView.setOnClickListener(this);
                     trackViews[groupIndex][index] = trackView;
                     root.addView(trackView);
@@ -220,14 +219,21 @@ import java.util.Arrays;
         if (!haveSupportedTracks) {
             // Indicate that the default selection will be nothing.
             defaultView.setText(R.string.selection_default_none);
-        } else if (haveAdaptiveTracks) {
+        } else if (haveAdaptiveTracks) { // NOTE: adaptation is performed between selected tracks (you must select more than one)
             // View for using random adaptation.
             enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
             enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setOnClickListener(this);
-            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+            enableRandomAdaptationView.setFocusable(true);
+            enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+            View divider = inflater.inflate(R.layout.list_divider, root, false);
+            root.addView(divider);
             root.addView(enableRandomAdaptationView);
+
+            // it's useless: user can't select more than one track at one time
+            divider.setVisibility(View.GONE);
+            enableRandomAdaptationView.setVisibility(View.GONE);
         }
 
         updateViews();

@@ -6,4 +6,5 @@
     <dimen name="exo_media_button_padding">4dp</dimen>
     <dimen name="player_main_padding">50dp</dimen>
     <dimen name="player_second_padding">25dp</dimen>
+    <dimen name="dialog_text_size">15dp</dimen>
 </resources>

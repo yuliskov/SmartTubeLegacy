@@ -318,7 +318,7 @@ function YouButton(selector) {
 
     this.getChecked = function() {
         if (this.playerIsClosed())
-            return false;
+            return null; // element not exists (see ActionReceiver.java for details)
 
         if (this.isChecked === undefined) {
             var toggle = this.findToggle();
