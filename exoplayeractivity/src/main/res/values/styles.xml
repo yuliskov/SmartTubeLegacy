@@ -139,9 +139,15 @@
         <item name="textOff">@string/retry</item>
         <item name="textOn">@string/retry</item>
     </style>
+
     <style name="ExoMediaButton2.Suggestions">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="textOff">@string/suggested_videos</item>
         <item name="textOn">@string/suggested_videos</item>
+    </style>
+
+    <style name="ExoMediaButton2_UpCatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>

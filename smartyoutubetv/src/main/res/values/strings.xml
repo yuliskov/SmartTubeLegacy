@@ -10,13 +10,13 @@
     <string name="webview_desc">MiBox, FireTV, etc</string>
     <string name="xwalk_desc">MiTV and other devices</string>
     <string name="exo_desc">4K: MiTV and others</string>
-    <string name="bootstrap_main_title">Please, select desired version of YouTube</string>
+    <string name="bootstrap_main_title">Please, select version of YouTube</string>
     <string name="exo_desc2">4K: alt version</string>
     <string name="view_count">views</string>
     <string name="published">Published</string>
     <string name="starting_popup">Starting from the main launcher</string>
     <string name="save_selection">Remember</string>
-    <string name="bootstrap_bottom_title">If you unsure, try the launchers one by one</string>
+    <string name="bootstrap_bottom_title">Switch to 4K version in case of troubles</string>
     <string name="starting_popup_fmt">Starting the %s launcher&#8230;</string>
     <string name="app_name_720">720</string>
     <string name="app_name_1080">1080</string>

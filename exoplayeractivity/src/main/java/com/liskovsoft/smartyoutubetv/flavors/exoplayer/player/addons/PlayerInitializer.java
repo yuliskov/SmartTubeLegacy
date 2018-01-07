@@ -3,8 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -13,6 +17,8 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+
+import java.util.Locale;
 
 public class PlayerInitializer {
     private final PlayerActivity mPlayer;
@@ -71,7 +77,7 @@ public class PlayerInitializer {
         }
 
         long no = Long.parseLong(num);
-        String str = String.format("%,d", no);
+        String str = String.format(Locale.getDefault(), "%,d", no);
         return str;
     }
 

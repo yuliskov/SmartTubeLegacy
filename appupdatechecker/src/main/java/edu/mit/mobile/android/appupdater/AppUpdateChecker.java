@@ -271,6 +271,7 @@ public class AppUpdateChecker {
                 URL url = new URL(urlStr);
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");
+                c.setConnectTimeout(5000);
                 c.setDoOutput(false);
                 c.connect();
 

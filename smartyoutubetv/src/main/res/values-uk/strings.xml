@@ -7,7 +7,7 @@
     <string name="bootstrap_main_title">Будьласка, оберіть версію YouTube</string>
     <string name="starting_popup">Запуск із головного лаунчеру</string>
     <string name="save_selection">Запам`ятати</string>
-    <string name="bootstrap_bottom_title">Якщо не впевнені, то пробуйте кожну з версій</string>
+    <string name="bootstrap_bottom_title">У випадку проблем, перейдіть на 4К версію</string>
     <string name="starting_popup_fmt">Запускається %s лаунчер&#8230;</string>
     <string name="loading_bottom_msg">Натисніть \"Назад\", щоби повернутися до вибору версій</string>
     <string name="language_dialog_title">Оберіть мову</string>

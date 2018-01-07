@@ -284,7 +284,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         if (isVolumeEvent(event))
             return false;
         
-        if (isBackKey(event)) {
+        if (isBackKey(event) || isUpKey(event)) {
             return handleBack(event);
         }
 
@@ -297,6 +297,15 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
     private boolean isBackKey(KeyEvent event) {
         return event.getKeyCode() == KeyEvent.KEYCODE_BACK;
+    }
+
+    private boolean isUpKey(KeyEvent event) {
+        boolean isUp = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP;
+        if (isUp) {
+            View upBtn = findViewById(R.id.up_catch_button);
+            return upBtn.isFocused();
+        }
+        return false;
     }
 
     private boolean handleBack(KeyEvent event) {
@@ -358,7 +367,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
     // Internal methods
 
-    private void initializePlayer() {
+    public void initializePlayer() {
         Intent intent = getIntent();
         boolean needNewPlayer = player == null;
         if (needNewPlayer) {
@@ -618,10 +627,21 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         if (playbackState == Player.STATE_ENDED) {
             doGracefulExit(PlayerActivity.TRACK_ENDED);
         }
+
         if (playbackState == Player.STATE_READY) {
             getAutoFrameRateManager().apply();
         }
+
+        if (errorWhileClickedOnPlayButton()) {
+            initializePlayer();
+        }
+
         updateButtonVisibilities();
+    }
+
+    private boolean errorWhileClickedOnPlayButton() {
+        View pauseBtn = findViewById(R.id.exo_pause);
+        return needRetrySource && pauseBtn.isFocused();
     }
 
     public AutoFrameRateManager getAutoFrameRateManager() {

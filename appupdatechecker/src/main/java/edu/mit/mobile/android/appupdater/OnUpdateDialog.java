@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import edu.mit.mobile.android.appupdater.custom.UpdateApp;
+import edu.mit.mobile.android.appupdater.addons.UpdateApp;
 
 import java.util.List;
 

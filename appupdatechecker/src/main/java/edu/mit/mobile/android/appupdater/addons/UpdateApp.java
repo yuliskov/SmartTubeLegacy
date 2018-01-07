@@ -1,11 +1,10 @@
-package edu.mit.mobile.android.appupdater.custom;
+package edu.mit.mobile.android.appupdater.addons;
 
 import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.os.Build.VERSION;
 import android.support.v4.content.FileProvider;
-import android.util.*;
 import android.webkit.*;
 import android.widget.Toast;
 import edu.mit.mobile.android.appupdater.R;
@@ -58,6 +57,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             URL url = new URL(uri);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             c.setRequestMethod("GET");
+            c.setConnectTimeout(5000);
             c.setDoOutput(false);
             c.connect();
 

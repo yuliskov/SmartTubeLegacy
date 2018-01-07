@@ -1,4 +1,4 @@
-package edu.mit.mobile.android.appupdater.custom;
+package edu.mit.mobile.android.appupdater.addons;
 
 import android.support.v4.content.FileProvider;
 
