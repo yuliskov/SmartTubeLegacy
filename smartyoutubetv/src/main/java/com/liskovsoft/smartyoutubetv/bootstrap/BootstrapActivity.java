@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
@@ -105,8 +106,13 @@ public class BootstrapActivity extends ActivityBase {
         }
     }
 
+    /**
+     * Detect {@link Crashlytics} from the property file. See <em>build.gradle</em>. <a href="https://docs.fabric.io/android/crashlytics/build-tools.html">More info</a>
+     */
     private void setupCrashLogs() {
-        Fabric.with(this, new Crashlytics());
+        if (BuildConfig.CRASHLYTICS_ENABLED) {
+            Fabric.with(this, new Crashlytics());
+        }
     }
 
     private void setupLang() {
