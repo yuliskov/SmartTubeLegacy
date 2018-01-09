@@ -18,6 +18,7 @@ package edu.mit.mobile.android.appupdater;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
+import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -268,26 +271,11 @@ public class AppUpdateChecker {
             try {
                 publishProgress(50);
 
-                URL url = new URL(urlStr);
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                c.setRequestMethod("GET");
-                c.setConnectTimeout(5000);
-                c.setDoOutput(false);
-                c.connect();
+                MyDownloadManager manager = new MyDownloadManager(mContext);
+                MyRequest request = new MyRequest(Uri.parse(urlStr));
+                long reqId = manager.enqueue(request);
 
-                final int statusCode = c.getResponseCode();
-                if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                    throw new VersionCheckException(url + " " + c.getResponseMessage());
-                }
-                if (statusCode != HttpURLConnection.HTTP_OK) {
-                    if (c.getContentType().equals("text/html") || c.getContentLength() > 40) {
-                        // long response body. Serving HTML...
-                        throw new VersionCheckException("Got a HTML instead of expected JSON.");
-                    }
-                    throw new VersionCheckException("HTTP " + c.getResponseCode() + " " + c.getResponseMessage());
-                }
-
-                jo = new JSONObject(StreamUtils.inputStreamToString(c.getInputStream()));
+                jo = new JSONObject(StreamUtils.inputStreamToString(manager.getStreamForDownloadedFile(reqId)));
 
                 mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
             } catch (final Exception e) {

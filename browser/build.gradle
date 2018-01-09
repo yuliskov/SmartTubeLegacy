@@ -36,20 +36,25 @@ android {
 }
 
 dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
+    testCompile project.properties.junitVersion
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile project.properties.appCompatVersion
-    compile 'com.noveogroup.android:android-logger:1.3.5'
+    compile project.properties.androidLoggerVersion
 
-    compile 'com.squareup:otto:1.3.8'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    compile project.properties.ottoVersion
+    compile project.properties.okhttpVersion
+    compile project.properties.dnsjavaVersion
 
     // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
-    liteCompile 'org.xwalk:xwalk_shared_library:23.53.589.4'
-    fullCompile 'org.xwalk:xwalk_core_library:23.53.589.4'
+    liteCompile project.properties.xwalkSharedLibraryVersion
+    fullCompile project.properties.xwalkCoreLibraryVersion
+
+    // AppUpdateChecker component
+    debugCompile project(path: ':appupdatechecker', configuration: "debug")
+    releaseCompile project(path: ':appupdatechecker', configuration: "release")
 }

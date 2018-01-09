@@ -1,4 +1,4 @@
-package org.xwalk.core;
+package edu.mit.mobile.android.appupdater.addons;
 
 import android.app.DownloadManager;
 import android.content.Context;

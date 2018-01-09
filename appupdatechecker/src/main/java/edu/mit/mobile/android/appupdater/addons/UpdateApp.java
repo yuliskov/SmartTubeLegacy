@@ -8,6 +8,7 @@ import android.support.v4.content.FileProvider;
 import android.webkit.*;
 import android.widget.Toast;
 import edu.mit.mobile.android.appupdater.R;
+import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
 
 import java.io.*;
 import java.net.*;
@@ -53,37 +54,12 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             showMessage("Please, make sure that SDCard is mounted");
         }
         File outputFile = new File(cacheDir, "update.apk");
-        try {
-            URL url = new URL(uri);
-            HttpURLConnection c = (HttpURLConnection) url.openConnection();
-            c.setRequestMethod("GET");
-            c.setConnectTimeout(5000);
-            c.setDoOutput(false);
-            c.connect();
 
-            if (outputFile.exists()) {
-                outputFile.delete();
-            }
-            FileOutputStream fos = new FileOutputStream(outputFile);
-
-            InputStream is = c.getInputStream();
-
-            byte[] buffer = new byte[1024];
-            int len1 = 0;
-            while ((len1 = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len1);
-            }
-            fos.close();
-            is.close();
-
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-        return outputFile.getAbsolutePath();
-    }
-
-    private void noExternalStorageError() {
-        Toast.makeText(mContext, R.string.no_external_storage_error, Toast.LENGTH_LONG).show();
+        MyDownloadManager manager = new MyDownloadManager(mContext);
+        MyRequest request = new MyRequest(Uri.parse(uri));
+        request.setDestinationUri(Uri.fromFile(outputFile));
+        long id = manager.enqueue(request);
+        return manager.getUriForDownloadedFile(id).getPath();
     }
 
     // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails

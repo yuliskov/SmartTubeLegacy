@@ -82,7 +82,7 @@ public class PlayerInitializer {
     }
 
     private void initTimeBar() {
-        final int timeIncrementMS = 15000;
+        final int timeIncrementMS = 30000;
 
         // time bar: rewind and fast forward to 15 secs
         TimeBar timeBar = (TimeBar) mExoPlayerView.findViewById(R.id.exo_progress);

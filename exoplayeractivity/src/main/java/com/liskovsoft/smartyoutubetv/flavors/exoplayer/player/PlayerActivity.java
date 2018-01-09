@@ -446,7 +446,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                     DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
             player.addListener(this);
             player.addListener(eventLogger);
             player.setAudioDebugListener(eventLogger);

@@ -21,6 +21,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
+import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -366,7 +367,7 @@ class MyXWalkLibraryLoader {
             mListener = listener;
             mContext = context;
             mDownloadUrl = url;
-            mDownloadManager = new MyDownloadManager();
+            mDownloadManager = new MyDownloadManager(mContext);
         }
 
         @Override
