@@ -42,6 +42,10 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFr
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Helper class for displaying track selection dialogs.
@@ -69,6 +73,19 @@ import java.util.Arrays;
     private CheckedTextView[][] trackViews;
     private AlertDialog alertDialog;
     private Context context;
+
+    private class TrackViewComparator implements Comparator<CheckedTextView> {
+        @Override
+        public int compare(CheckedTextView view1, CheckedTextView view2) {
+            Format format1 = (Format) view1.getTag(R.string.track_view_format);
+            Format format2 = (Format) view2.getTag(R.string.track_view_format);
+
+            int leftVal = format2.width + (int) format2.frameRate + (format2.codecs.contains("avc") ? 31 : 0);
+            int rightVal = format1.width + (int) format1.frameRate + (format1.codecs.contains("avc") ? 31 : 0);
+
+            return leftVal - rightVal;
+        }
+    }
 
     /**
      * @param selector                      The track selector.
@@ -157,61 +174,32 @@ import java.util.Arrays;
         boolean haveSupportedTracks = false;
         boolean haveAdaptiveTracks = false;
         trackViews = new CheckedTextView[trackGroups.length][];
-        int maxTracks = 0;
+        Set<CheckedTextView> sortedViewList = new TreeSet<>(new TrackViewComparator());
         for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
             TrackGroup group = trackGroups.get(groupIndex);
-            int maxTracksInGroup = group.length;
-            if (maxTracksInGroup > maxTracks) {
-                maxTracks = maxTracksInGroup;
-            }
-
             trackViews[groupIndex] = new CheckedTextView[group.length];
-        }
 
-        // NOTE: group track by resolution
-        int[] trackOffsets = new int[trackGroups.length];
-        for (int trackIndex = (maxTracks - 1); trackIndex >= 0; trackIndex--) {
-            for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
-                int newTrackIndex = trackIndex - trackOffsets[groupIndex];
-                if (newTrackIndex < 0) {
-                    continue;
-                }
-
-                TrackGroup group = trackGroups.get(groupIndex);
-
-                if (group.length <= newTrackIndex) { // one of the group have different number of tracks
-                    trackOffsets[groupIndex] = maxTracks - group.length;
-                    newTrackIndex = trackIndex - trackOffsets[groupIndex];;
-                }
-
+            for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
                 boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
                 haveAdaptiveTracks |= groupIsAdaptive;
                 haveSupportedTracks = true;
+                Format format = group.getFormat(trackIndex);
 
-                int trackViewLayoutId = groupIsAdaptive ? android.R.layout.simple_list_item_single_choice : android.R.layout
-                        .simple_list_item_single_choice;
-
-                int offset = getRelatedTrackOffsets(group, newTrackIndex);
-
-                for (int startOffset = 0; startOffset <= offset; startOffset++) {
-                    CheckedTextView trackView = (CheckedTextView) inflater.inflate(trackViewLayoutId, root, false);
-                    trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                    int index = newTrackIndex - startOffset;
-                    if (index < 0)
-                        break;
-                    trackView.setText(PlayerUtil.buildTrackName(group.getFormat(index)));
-
-                    trackView.setFocusable(true);
-                    trackView.setTag(Pair.create(groupIndex, index));
-                    trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-                    trackView.setOnClickListener(this);
-                    trackViews[groupIndex][index] = trackView;
-                    root.addView(trackView);
-                }
-
-                trackOffsets[groupIndex] += offset;
-
+                CheckedTextView trackView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
+                trackView.setText(PlayerUtil.buildTrackName(format));
+                trackView.setFocusable(true);
+                trackView.setTag(Pair.create(groupIndex, trackIndex));
+                trackView.setTag(R.string.track_view_format, format);
+                trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+                trackView.setOnClickListener(this);
+                trackViews[groupIndex][trackIndex] = trackView;
+                sortedViewList.add(trackView);
             }
+        }
+
+        for (CheckedTextView trackView : sortedViewList) {
+            root.addView(trackView);
         }
 
         //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////

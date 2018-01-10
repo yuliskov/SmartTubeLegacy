@@ -88,8 +88,9 @@ public final class MyDownloadManager {
                 for (Record record : records) {
                     hostIPs.add(((ARecord) record).getAddress());
                 }
-            } catch (UnknownHostException | TextParseException e) {
-                throw new IllegalStateException(e);
+            } catch (UnknownHostException | TextParseException ex) {
+                showMessage(ex.getMessage());
+                throw new IllegalStateException(ex);
             }
             return hostIPs;
         }
@@ -133,6 +134,7 @@ public final class MyDownloadManager {
             // NOTE: actual downloading is going here (while reading a stream)
             mResponseStream = new ByteArrayInputStream(response.body().bytes());
         } catch (IOException ex) {
+            showMessage(ex.getMessage());
             throw new IllegalStateException(ex);
         }
     }
@@ -149,6 +151,7 @@ public final class MyDownloadManager {
             fos.close();
             is.close();
         } catch (IOException ex) {
+            showMessage(ex.getMessage());
             throw new IllegalStateException(ex);
         }
 

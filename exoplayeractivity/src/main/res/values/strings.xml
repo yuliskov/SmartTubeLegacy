@@ -67,4 +67,5 @@
     <string name="autoframerate_not_supported">Your device doesn\'t support Autoframerate</string>
     <string name="share_video">Share Video</string>
     <string name="send_to">Send to</string>
+    <string name="track_view_format">TrackViewFormat</string>
 </resources>

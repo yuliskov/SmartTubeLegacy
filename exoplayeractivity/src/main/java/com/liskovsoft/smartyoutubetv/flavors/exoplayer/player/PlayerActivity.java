@@ -416,6 +416,11 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                 }
             };
 
+            // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
+            // Enable tunneling if supported by the current media and device configuration.
+            if (Util.SDK_INT >= 21)
+                trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
+
             trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
             lastSeenTrackGroupArray = null;
             eventLogger = new EventLogger(trackSelector);
