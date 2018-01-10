@@ -29,20 +29,22 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 195
-        versionName "6.12.35"
+        versionCode 200
+        versionName "6.12.40"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         // NOTE: to enable Crashlytics add fabric.properties file with your api keys
-        File testFile = new File('./fabric.properties')
-        Boolean crashEnabled = testFile.exists()
+        Boolean crashEnabled = file('fabric.properties').exists()
 
         debug {
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", crashEnabled.toString()
             ext.enableCrashlytics = crashEnabled
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", crashEnabled.toString()

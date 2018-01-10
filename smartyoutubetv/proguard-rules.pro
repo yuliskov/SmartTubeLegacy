@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Fix for 'dnsjava' warnings: Ignoring InnerClasses attribute for an anonymous inner class
+# Details: https://stackoverflow.com/questions/35796144/progaurd-issue-warningignoring-innerclasses-attribute-for-an-anonymous-inner-c
+-dontwarn InnerClasses
