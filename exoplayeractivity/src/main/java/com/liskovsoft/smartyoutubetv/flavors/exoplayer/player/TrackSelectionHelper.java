@@ -83,6 +83,11 @@ import java.util.TreeSet;
             int leftVal = format2.width + (int) format2.frameRate + (format2.codecs.contains("avc") ? 31 : 0);
             int rightVal = format1.width + (int) format1.frameRate + (format1.codecs.contains("avc") ? 31 : 0);
 
+            int delta = leftVal - rightVal;
+            if (delta == 0) {
+                return format2.bitrate - format1.bitrate;
+            }
+
             return leftVal - rightVal;
         }
     }

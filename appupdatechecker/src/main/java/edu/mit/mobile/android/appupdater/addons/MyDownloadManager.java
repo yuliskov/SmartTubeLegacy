@@ -82,6 +82,7 @@ public final class MyDownloadManager {
             List<InetAddress> hostIPs = new ArrayList<>();
             try {
                 Resolver resolver = new SimpleResolver(GOOGLE_DNS);
+                resolver.setTimeout(10);
                 Lookup lookup = new Lookup(host, Type.A);
                 lookup.setResolver(resolver);
                 Record[] records = lookup.run();
