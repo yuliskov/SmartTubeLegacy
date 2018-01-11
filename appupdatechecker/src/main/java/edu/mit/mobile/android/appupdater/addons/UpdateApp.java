@@ -1,5 +1,6 @@
 package edu.mit.mobile.android.appupdater.addons;
 
+import android.app.Activity;
 import android.content.*;
 import android.net.*;
 import android.os.*;
@@ -7,11 +8,9 @@ import android.os.Build.VERSION;
 import android.support.v4.content.FileProvider;
 import android.webkit.*;
 import android.widget.Toast;
-import edu.mit.mobile.android.appupdater.R;
 import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
 
 import java.io.*;
-import java.net.*;
 
 /**
  * Usage:
@@ -21,7 +20,7 @@ import java.net.*;
  * </pre>
  */
 public class UpdateApp extends AsyncTask<String,Void,Void> {
-    private Context mContext;
+    private final Context mContext;
 
     public UpdateApp(Context context) {
         mContext = context;
@@ -49,7 +48,12 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     private String downloadPackage(String uri) {
         // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
-        if (cacheDir == null) { // try to use SDCard
+        if (!PermissionManager.checkStoragePermissions((Activity) mContext)) {
+           showMessage("Storage permission not granted!");
+           return null;
+        }
+
+        if (cacheDir == null) { // no storage, try to use SDCard
             cacheDir = Environment.getExternalStorageDirectory();
             showMessage("Please, make sure that SDCard is mounted");
         }

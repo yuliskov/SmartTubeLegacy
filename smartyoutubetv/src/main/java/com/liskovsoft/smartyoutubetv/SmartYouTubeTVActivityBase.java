@@ -2,9 +2,11 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -20,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import edu.mit.mobile.android.appupdater.addons.PermissionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +43,8 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         super.onCreate(icicle);
 
         initRemoteUrl();
-        mTranslator = new KeysTranslator();
+        initKeys();
+        initPermissions();
 
         // clearCache();
 
@@ -48,6 +52,14 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private void initPermissions() {
+        PermissionManager.verifyStoragePermissions(this);
+    }
+
+    private void initKeys() {
+        mTranslator = new KeysTranslator();
     }
 
     private void initRemoteUrl() {
@@ -170,6 +182,21 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         intent.setClass(this, BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionManager.REQUEST_EXTERNAL_STORAGE) {
+            // Check if the only required permission has been granted
+            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Camera permission has been granted, preview can be displayed
+                Toast.makeText(this, "REQUEST_EXTERNAL_STORAGE permission has been granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Unable to grant REQUEST_EXTERNAL_STORAGE permission", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     ///////////////////////// Begin Youtube filter /////////////////////

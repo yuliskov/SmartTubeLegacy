@@ -16,6 +16,8 @@
 package edu.mit.mobile.android.appupdater.addons;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -103,6 +105,10 @@ public final class MyDownloadManager {
     }
 
     private void run() {
+        if (!isNetworkAvailable()) {
+            showMessage("Internet connection not available");
+        }
+
         String url = mRequest.mDownloadUri.toString();
 
         Request request = new Request.Builder()
@@ -200,6 +206,13 @@ public final class MyDownloadManager {
 
     public InputStream getStreamForDownloadedFile(long requestId) {
         return mResponseStream;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private static class ProgressResponseBody extends ResponseBody {
