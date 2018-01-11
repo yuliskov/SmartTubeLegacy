@@ -18,6 +18,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
+
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -25,67 +27,72 @@ import java.util.Locale;
  */
 /*package*/ public final class PlayerUtil {
 
-  /**
-   * Builds a track name for display.
-   *
-   * @param format {@link Format} of the track.
-   * @return a generated name specific to the track.
-   */
-  public static String buildTrackName(Format format) {
-    String trackName;
-    if (MimeTypes.isVideo(format.sampleMimeType)) {
-      trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(
-          joinWithSeparator(buildResolutionString(format), buildFPSString(format)), buildBitrateString(format)), buildTrackIdString(format)),
-          buildSampleMimeTypeString(format));
-    } else if (MimeTypes.isAudio(format.sampleMimeType)) {
-      trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(
-          buildLanguageString(format), buildAudioPropertyString(format)),
-          buildBitrateString(format)), buildTrackIdString(format)),
-          buildSampleMimeTypeString(format));
-    } else {
-      trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
-          buildBitrateString(format)), buildTrackIdString(format)),
-          buildSampleMimeTypeString(format));
+    /**
+     * Builds a track name for display.
+     *
+     * @param format {@link Format} of the track.
+     * @return a generated name specific to the track.
+     */
+    public static String buildTrackName(Format format) {
+        String trackName;
+        if (MimeTypes.isVideo(format.sampleMimeType)) {
+            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildResolutionString(format),
+                    buildFPSString(format)), buildBitrateString(format)), buildTrackIdString(format)), buildCodecTypeString(format)), buildHDRString(format));
+        } else if (MimeTypes.isAudio(format.sampleMimeType)) {
+            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
+                    buildAudioPropertyString(format)), buildBitrateString(format)), buildTrackIdString(format)), buildCodecTypeString(format));
+        } else {
+            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)),
+                    buildTrackIdString(format)), buildSampleMimeTypeString(format));
+        }
+        return trackName.length() == 0 ? "unknown" : trackName;
     }
-    return trackName.length() == 0 ? "unknown" : trackName;
-  }
 
-  private static String buildFPSString(Format format) {
-    return format.frameRate == Format.NO_VALUE
-        ? "" : format.frameRate + "fps";
-  }
+    private static String buildCodecTypeString(Format format) {
+        if (format.sampleMimeType == null ||
+            format.codecs == null)
+            return "";
+        String prefix = format.sampleMimeType.split("/")[0];
+        return String.format("%s/%s", prefix, format.codecs);
+    }
 
-  private static String buildResolutionString(Format format) {
-    return format.width == Format.NO_VALUE || format.height == Format.NO_VALUE
-        ? "" : format.width + "x" + format.height;
-  }
+    private static String buildHDRString(Format format) {
+        return format.codecs.equals("vp9.2") ? "HDR" : "";
+    }
 
-  private static String buildAudioPropertyString(Format format) {
-    return format.channelCount == Format.NO_VALUE || format.sampleRate == Format.NO_VALUE
-        ? "" : format.channelCount + "ch, " + format.sampleRate + "Hz";
-  }
+    private static String buildFPSString(Format format) {
+        return format.frameRate == Format.NO_VALUE ? "" : format.frameRate + "fps";
+    }
 
-  private static String buildLanguageString(Format format) {
-    return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? ""
-        : format.language;
-  }
+    private static String buildResolutionString(Format format) {
+        return format.width == Format.NO_VALUE || format.height == Format.NO_VALUE ? "" : format.width + "x" + format.height;
+    }
 
-  private static String buildBitrateString(Format format) {
-    return format.bitrate == Format.NO_VALUE ? ""
-        : String.format(Locale.US, "%.2fMbit", format.bitrate / 1000000f);
-  }
+    private static String buildAudioPropertyString(Format format) {
+        return format.channelCount == Format.NO_VALUE || format.sampleRate == Format.NO_VALUE ? "" : format.channelCount + "ch, " + format
+                .sampleRate + "Hz";
+    }
 
-  private static String joinWithSeparator(String first, String second) {
-    return first.length() == 0 ? second : (second.length() == 0 ? first : first + ", " + second);
-  }
+    private static String buildLanguageString(Format format) {
+        return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? "" : format.language;
+    }
 
-  private static String buildTrackIdString(Format format) {
-    return format.id == null ? "" : ("id:" + format.id);
-  }
+    private static String buildBitrateString(Format format) {
+        return format.bitrate == Format.NO_VALUE ? "" : String.format(Locale.US, "%.2fMbit", format.bitrate / 1000000f);
+    }
 
-  private static String buildSampleMimeTypeString(Format format) {
-    return format.sampleMimeType == null ? "" : format.sampleMimeType;
-  }
+    private static String joinWithSeparator(String first, String second) {
+        return first.length() == 0 ? second : (second.length() == 0 ? first : first + ", " + second);
+    }
 
-  private PlayerUtil() {}
+    private static String buildTrackIdString(Format format) {
+        return format.id == null ? "" : ("id:" + format.id);
+    }
+
+    private static String buildSampleMimeTypeString(Format format) {
+        return format.sampleMimeType == null ? "" : format.sampleMimeType;
+    }
+
+    private PlayerUtil() {
+    }
 }

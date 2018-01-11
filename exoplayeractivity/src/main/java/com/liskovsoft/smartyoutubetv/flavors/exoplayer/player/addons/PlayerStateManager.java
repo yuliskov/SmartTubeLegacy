@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
+import android.util.Pair;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -11,6 +12,11 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
@@ -61,17 +67,31 @@ public class PlayerStateManager {
         if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
             return;
         }
-        int[] trackGroupAndIndex = findTrackGroupAndIndex(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
+        Pair<Integer, Integer> trackGroupAndIndex = findProperTrack(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
         TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex[0], trackGroupAndIndex[1]);
+        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
         mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
     }
 
-    private int[] findTrackGroupAndIndex(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId, int selectedTrackHeight) {
-        mDefaultTrackId = null;
+    /**
+     * Searches for the track by id and height.
+     * @param allTracks where to search
+     * @param trackId needed track's id
+     * @param trackHeight needed track's height
+     * @return pair consisted from track group index and track number
+     */
+    private Pair<Integer, Integer> findProperTrack(TrackGroupArray[] allTracks, String trackId, int trackHeight) {
+        Set<MyFormat> fmts = findCandidates(allTracks, trackId, trackHeight);
+        MyFormat fmt = findClosestTrack(fmts);
+        mDefaultTrackId = fmt.id;
+        return fmt.pair;
+    }
 
-        int rendererIndex = 0; // video
-        TrackGroupArray groupArray = rendererTrackGroupArrays[rendererIndex];
+    private Set<MyFormat> findCandidates(TrackGroupArray[] allTracks, String trackId, int trackHeight) {
+        Set<MyFormat> result = new HashSet<>();
+
+        final int VIDEO_RENDERER_INDEX = 0; // video
+        TrackGroupArray groupArray = allTracks[VIDEO_RENDERER_INDEX];
         TrackGroup defaultTrackGroup = groupArray.get(0);
 
         // search the same tracks
@@ -79,42 +99,46 @@ public class PlayerStateManager {
             TrackGroup trackGroup = groupArray.get(j);
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
-                if (tracksEquals(format.id, selectedTrackId)) {
-                    mDefaultTrackId = format.id;
-                    return new int[]{j, i};
+
+                if (tracksEquals(format.id, trackId)) {
+                    result.clear();
+                    result.add(new MyFormat(format, new Pair<>(j, i)));
+                    return result;
+                }
+
+                if (format.height == trackHeight) {
+                    result.add(new MyFormat(format, new Pair<>(j, i)));
                 }
             }
         }
 
-        // search the related tracks
-        for (int j = 0; j < groupArray.length; j++) {
-            TrackGroup trackGroup = groupArray.get(j);
-            for (int i = 0; i < trackGroup.length; i++) {
-                Format format = trackGroup.getFormat(i);
-                if (tracksRelated(format.id, selectedTrackId)) {
-                    mDefaultTrackId = format.id;
-                    return new int[]{j, i};
-                }
-            }
+        // if candidates not found, return topmost track
+        if (result.isEmpty()) {
+            int lastIdx = defaultTrackGroup.length - 1;
+            result.add(new MyFormat(defaultTrackGroup.getFormat(lastIdx), new Pair<>(0, lastIdx)));
         }
 
-        // search the same resolution tracks (LIVE translation)
-        for (int j = 0; j < groupArray.length; j++) {
-            TrackGroup trackGroup = groupArray.get(j);
-            for (int i = 0; i < trackGroup.length; i++) {
-                Format format = trackGroup.getFormat(i);
-                if (format.height == selectedTrackHeight &&
-                    format.codecs.contains(AVC_PART)) {
-                    mDefaultTrackId = format.id;
-                    return new int[]{j, i};
-                }
+        return result;
+    }
+
+    private MyFormat findClosestTrack(Set<MyFormat> fmts) {
+        MyFormat result = null;
+        for (MyFormat fmt : fmts) {
+            if (result == null) {
+                result = fmt;
+                continue;
+            }
+
+            if (fmt.codecs.equals("vp9.2")) { // HDR codec
+                result = fmt;
+                break;
+            }
+
+            if (fmt.bitrate > result.bitrate) {
+                result = fmt;
             }
         }
-
-        // if track not found, return topmost
-        int lastIdx = defaultTrackGroup.length - 1;
-        mDefaultTrackId = defaultTrackGroup.getFormat(lastIdx).id;
-        return new int[]{0, lastIdx};
+        return result;
     }
 
     private boolean tracksEquals(String leftTrackId, String rightTrackId) {
@@ -201,5 +225,24 @@ public class PlayerStateManager {
             return 0;
         }
         return videoFormat.height;
+    }
+
+    /**
+     * Simple wrapper around {@link com.google.android.exoplayer2.Format}
+     */
+    private class MyFormat {
+        public final String id;
+        public final int bitrate;
+        public final float frameRate;
+        public final String codecs;
+        public final Pair<Integer, Integer> pair;
+
+        public MyFormat(Format format, Pair<Integer, Integer> pair) {
+            id = format.id;
+            bitrate = format.bitrate;
+            frameRate = format.frameRate;
+            codecs = format.codecs;
+            this.pair = pair;
+        }
     }
 }
