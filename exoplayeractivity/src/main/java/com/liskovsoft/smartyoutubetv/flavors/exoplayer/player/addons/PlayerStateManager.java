@@ -112,7 +112,7 @@ public class PlayerStateManager {
                     return result;
                 }
 
-                if (format.height == trackHeight) {
+                if (heightEquals(format.height, trackHeight)) {
                     result.add(new MyFormat(format, new Pair<>(j, i)));
                 }
             }
@@ -159,23 +159,16 @@ public class PlayerStateManager {
         return result;
     }
 
+    private boolean heightEquals(int leftHeight, int rightHeight) {
+        return Math.abs(leftHeight - rightHeight) <= 10; // ten-pixel precision
+    }
+
     private boolean tracksEquals(String leftTrackId, String rightTrackId) {
         if (leftTrackId == null || rightTrackId == null) {
             return false;
         }
 
         return leftTrackId.equals(rightTrackId);
-    }
-
-    private boolean tracksRelated(String leftTrackId, String rightTrackId) {
-        if (leftTrackId == null || rightTrackId == null) {
-            return false;
-        }
-
-        int i = Integer.parseInt(leftTrackId);
-        int j = Integer.parseInt(rightTrackId);
-        // presume that 30fps and 60fps is the same format
-        return Math.abs(i - j) == 162;
     }
 
     private boolean trackGroupIsEmpty(TrackGroupArray[] rendererTrackGroupArrays) {
