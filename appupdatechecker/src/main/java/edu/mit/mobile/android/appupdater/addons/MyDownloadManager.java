@@ -88,6 +88,9 @@ public final class MyDownloadManager {
                 Lookup lookup = new Lookup(host, Type.A);
                 lookup.setResolver(resolver);
                 Record[] records = lookup.run();
+                if (records == null) {
+                    return hostIPs;
+                }
                 for (Record record : records) {
                     hostIPs.add(((ARecord) record).getAddress());
                 }
@@ -126,7 +129,8 @@ public final class MyDownloadManager {
             .dns(new Dns() {
                 @Override
                 public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-                    return mResolver.resolve(hostname);
+                    List<InetAddress> hosts = mResolver.resolve(hostname);
+                    return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as fallback
                 }
             })
             .connectTimeout(10, TimeUnit.SECONDS)

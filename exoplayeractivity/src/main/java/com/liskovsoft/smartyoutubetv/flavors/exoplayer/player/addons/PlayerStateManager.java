@@ -13,14 +13,13 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final String AVC_PART = "avc";
+    private static final int VIDEO_RENDERER_INDEX = 0;
     private final PlayerActivity mPlayerActivity;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -49,48 +48,55 @@ public class PlayerStateManager {
             mPlayer.seekTo(pos);
     }
 
-    private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
-        String selectedTrackId = mPrefs.getSelectedTrackId();
-        int selectedTrackHeight = mPrefs.getSelectedTrackHeight();
-
-        loadTrack(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
-    }
-
     /**
-     * Switch track
-     * @param rendererTrackGroupArrays source of tracks
-     * @param selectedTrackId dash format id
-     * @param selectedTrackHeight
+     * Restore track from prefs
+     * @param rendererTrackGroupArrays source
      */
-    private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId, int selectedTrackHeight) {
-        int rendererIndex = 0; // video
+    private void restoreTrackIndex(TrackGroupArray[] rendererTrackGroupArrays) {
         if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
             return;
         }
-        Pair<Integer, Integer> trackGroupAndIndex = findProperTrack(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
-        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
+        Pair<Integer, Integer> trackGroupAndIndex = findProperTrack(rendererTrackGroupArrays);
+        TrackGroupArray trackGroupArray = rendererTrackGroupArrays[VIDEO_RENDERER_INDEX];
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
-        mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+        mSelector.setSelectionOverride(VIDEO_RENDERER_INDEX, trackGroupArray, override);
     }
+
+    ///**
+    // * Switch track
+    // * @param rendererTrackGroupArrays source of tracks
+    // * @param selectedTrackId dash format id
+    // * @param selectedTrackHeight
+    // */
+    //private void loadTrack(TrackGroupArray[] rendererTrackGroupArrays, String selectedTrackId, int selectedTrackHeight) {
+    //    int rendererIndex = 0; // video
+    //    if (trackGroupIsEmpty(rendererTrackGroupArrays)) {
+    //        return;
+    //    }
+    //    Pair<Integer, Integer> trackGroupAndIndex = findProperTrack(rendererTrackGroupArrays, selectedTrackId, selectedTrackHeight);
+    //    TrackGroupArray trackGroupArray = rendererTrackGroupArrays[rendererIndex];
+    //    SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
+    //    mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+    //}
 
     /**
      * Searches for the track by id and height.
-     * @param allTracks where to search
-     * @param trackId needed track's id
-     * @param trackHeight needed track's height
+     * @param allTracks source
      * @return pair consisted from track group index and track number
      */
-    private Pair<Integer, Integer> findProperTrack(TrackGroupArray[] allTracks, String trackId, int trackHeight) {
-        Set<MyFormat> fmts = findCandidates(allTracks, trackId, trackHeight);
+    private Pair<Integer, Integer> findProperTrack(TrackGroupArray[] allTracks) {
+        Set<MyFormat> fmts = findCandidates(allTracks);
         MyFormat fmt = findClosestTrack(fmts);
         mDefaultTrackId = fmt.id;
         return fmt.pair;
     }
 
-    private Set<MyFormat> findCandidates(TrackGroupArray[] allTracks, String trackId, int trackHeight) {
+    private Set<MyFormat> findCandidates(TrackGroupArray[] allTracks) {
+        String trackId = mPrefs.getSelectedTrackId();
+        int trackHeight = mPrefs.getSelectedTrackHeight();
+
         Set<MyFormat> result = new HashSet<>();
 
-        final int VIDEO_RENDERER_INDEX = 0; // video
         TrackGroupArray groupArray = allTracks[VIDEO_RENDERER_INDEX];
         TrackGroup defaultTrackGroup = groupArray.get(0);
 
@@ -121,22 +127,34 @@ public class PlayerStateManager {
         return result;
     }
 
+    /**
+     * Select format with same codec and highest bitrate. All track already have the same height.
+     * @param fmts source (cannot be null)
+     * @return best format (cannot be null)
+     */
     private MyFormat findClosestTrack(Set<MyFormat> fmts) {
+        String trackCodec = mPrefs.getSelectedTrackCodecs() == null ? "" : mPrefs.getSelectedTrackCodecs();
+        trackCodec = trackCodec.contains("avc") ? "avc" : trackCodec; // simplify codec name use avc instead of avc.111333
+        trackCodec = trackCodec.contains("vp9") ? "vp9" : trackCodec; // simplify codec name use avc instead of avc.111333
+        final String HDR_CODEC = "vp9.2";
+
         MyFormat result = null;
+        // select format with same codec and highest bitrate
         for (MyFormat fmt : fmts) {
             if (result == null) {
                 result = fmt;
                 continue;
             }
 
-            if (fmt.codecs.equals("vp9.2")) { // HDR codec
-                result = fmt;
-                break;
+            if (!fmt.codecs.contains(trackCodec)) { // filter by codec
+                continue;
             }
 
-            if (fmt.bitrate > result.bitrate) {
-                result = fmt;
+            if (result.codecs.contains(trackCodec) && result.bitrate > fmt.bitrate) { // filter by bitrate
+                continue;
             }
+
+            result = fmt;
         }
         return result;
     }
@@ -171,7 +189,7 @@ public class PlayerStateManager {
             return;
         }
 
-        persistTrackIndex();
+        persistTrackParams();
         persistTrackPosition();
     }
 
@@ -191,7 +209,7 @@ public class PlayerStateManager {
         }
     }
 
-    private void persistTrackIndex() {
+    private void persistTrackParams() {
         String trackId = extractCurrentTrackId();
         int height = extractCurrentTrackHeight();
         String codecs = extractCurrentTrackCodecs(); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
@@ -200,6 +218,7 @@ public class PlayerStateManager {
         if (isTrackChanged) {
             mPrefs.setSelectedTrackId(trackId);
             mPrefs.setSelectedTrackHeight(height);
+            mPrefs.setSelectedTrackCodecs(codecs);
         }
     }
 
