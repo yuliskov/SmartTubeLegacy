@@ -27,14 +27,16 @@ buildscript {
         butterKnifeVersion = 'com.jakewharton:butterknife:8.4.0'
         butterKnifeCompilerVersion = 'com.jakewharton:butterknife-compiler:8.4.0'
         gsonVersion = 'com.google.code.gson:gson:2.8.2'
+        jsonPathVersion = 'com.jayway.jsonpath:json-path:2.4.0'
         androidLoggerVersion = 'com.noveogroup.android:android-logger:1.3.5'
         xwalkSharedLibraryVersion = 'org.xwalk:xwalk_shared_library:23.53.589.4'
         xwalkCoreLibraryVersion = 'org.xwalk:xwalk_core_library:23.53.589.4'
-        crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.8.0@aar'
         commonsIOVersion = 'commons-io:commons-io:2.5'
         junitVersion = 'junit:junit:4.12'
         robolectricVersion = 'org.robolectric:robolectric:3.5.1'
         espressoCoreVersion = 'com.android.support.test.espresso:espresso-core:2.2.2'
+        crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.8.0@aar'
+        asmVersion = 'org.ow2.asm:asm:5.0.4'
     }
 }
 

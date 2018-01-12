@@ -4,6 +4,7 @@ import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.SimpleYouTubeInfoParser;
@@ -123,6 +124,19 @@ public class SimpleYouTubeInfoParserTest {
         MyMPDBuilder fakeBuilder = new MyMPDBuilder(null);
         fakeBuilder.append(fakeItem);
         assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
+    }
+
+    @Test
+    public void playerResponseParserTest() {
+        String content = TestHelpers.readResource("get_video_info_subs");
+        Uri videoInfo = Uri.parse("http://empty.url?" + content);
+        String playerResponse = videoInfo.getQueryParameter("player_response");
+        PlayerResponseParser parser = new PlayerResponseParser(playerResponse);
+        Uri uri = parser.getSubsUri();
+        Uri expected = Uri.parse("https://www.youtube.com/api/timedtext?caps=&key=yttt1&expire=1515741851&v=WS7f5xpGYn8&hl=en_US&signature" +
+                "=1774F7B2CF8A652145BBED85C33EB92DD8186388.27F90A8C8C2B38844AC89AF3E62F96DDDF3471A4&xorp=True&sparams=caps%2Cv%2Cxorp%2Cexpire&lang" +
+                "=en&name=en");
+        assertEquals(expected, uri);
     }
 
 }
