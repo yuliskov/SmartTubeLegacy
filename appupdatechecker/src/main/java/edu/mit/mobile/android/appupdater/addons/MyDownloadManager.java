@@ -119,25 +119,7 @@ public final class MyDownloadManager {
                 .url(url)
                 .build();
 
-        OkHttpClient client = new OkHttpClient.Builder()
-            .addNetworkInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Response originalResponse = chain.proceed(chain.request());
-                    return originalResponse.newBuilder().body(new ProgressResponseBody(originalResponse.body(), mRequest.mProgressListener)).build();
-                }
-            })
-            .dns(new Dns() {
-                @Override
-                public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-                    List<InetAddress> hosts = mResolver.resolve(hostname);
-                    return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
-                }
-            })
-            .connectTimeout(10, TimeUnit.SECONDS)
-              .readTimeout(10, TimeUnit.SECONDS)
-              .writeTimeout(10, TimeUnit.SECONDS)
-              .build();
+        OkHttpClient client = createOkHttpClient();
 
         for (int tries = 3; tries > 0; tries--) {
             try {
@@ -146,6 +128,7 @@ public final class MyDownloadManager {
 
                 // NOTE: actual downloading is going here (while reading a stream)
                 mResponseStream = new ByteArrayInputStream(response.body().bytes());
+                break; // no exception is thrown - job is done
             } catch (SocketTimeoutException ex) {
                 if (tries == 1) // swallow 3 times
                     throw new IllegalStateException(ex);
@@ -155,6 +138,28 @@ public final class MyDownloadManager {
             }
         }
 
+    }
+
+    private OkHttpClient createOkHttpClient() {
+        return new OkHttpClient.Builder()
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse.newBuilder().body(new ProgressResponseBody(originalResponse.body(), mRequest.mProgressListener)).build();
+                    }
+                })
+                .dns(new Dns() {
+                    @Override
+                    public List<InetAddress> lookup(String hostname) throws UnknownHostException {
+                        List<InetAddress> hosts = mResolver.resolve(hostname);
+                        return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
+                    }
+                })
+                .connectTimeout(10, TimeUnit.SECONDS)
+                  .readTimeout(10, TimeUnit.SECONDS)
+                  .writeTimeout(10, TimeUnit.SECONDS)
+                  .build();
     }
 
     private Uri streamToFile(InputStream is, Uri destination) {
