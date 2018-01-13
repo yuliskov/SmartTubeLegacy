@@ -19,18 +19,24 @@ public class BrowserWebViewFactory implements WebViewFactory {
         mContext = browser;
     }
 
+    /**
+     * Creates {@link WebView} instance. Scale setting moved to {@link BrowserSettings#getInitialScale()}
+     * @param attrs view attrs
+     * @param defStyle view style
+     * @param privateBrowsing don't remember anything
+     * @return new WebView instance
+     */
     protected WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         WebView w;
         boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
         if (isXWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
-            // real display size (virtual pixel == real pixel)
-            // 100 - normal resolution, 50 - 2160p resolution
-            w.setInitialScale(100);
         } else {
             // BUGFIX: rare memory leak in WebView
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
+
+        // NOTE: scale moved to: com.liskovsoft.browser.BrowserSettings.getInitialScale()
 
         return w;
     }

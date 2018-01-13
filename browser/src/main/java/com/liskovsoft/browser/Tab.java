@@ -195,6 +195,8 @@ public class Tab implements PictureListener {
         mMainView = w;
         // attach the WebViewClient, WebChromeClient and DownloadListener
         if (mMainView != null) {
+            restoreInitialScale();
+
             onSetWebViewClient();
             onSetWebChromeClient();
 
@@ -773,6 +775,16 @@ public class Tab implements PictureListener {
                 != mSettings.hasDesktopUseragent(mMainView)) {
             mSettings.toggleDesktopUseragent(mMainView);
         }
+    }
+
+    private void restoreInitialScale() {
+        if (mMainView == null) {
+            return;
+        }
+
+        // real display size (virtual pixel == real pixel)
+        // 100 - normal resolution, 50 - 2160p resolution
+        mMainView.setInitialScale(mSettings.getInitialScale());
     }
 
     public enum SecurityState {

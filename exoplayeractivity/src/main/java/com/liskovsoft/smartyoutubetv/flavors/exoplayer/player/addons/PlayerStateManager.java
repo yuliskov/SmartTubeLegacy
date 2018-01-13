@@ -18,7 +18,9 @@ import java.util.Set;
 
 public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
-    private static final String AVC_PART = "avc";
+    private static final String AVC_CODEC = "avc";
+    private static final String VP9_CODEC = "vp9";
+    private static final String VP9_HDR_CODEC = "vp9.2";
     private static final int VIDEO_RENDERER_INDEX = 0;
     private final PlayerActivity mPlayerActivity;
     private final SimpleExoPlayer mPlayer;
@@ -133,10 +135,14 @@ public class PlayerStateManager {
      * @return best format (cannot be null)
      */
     private MyFormat findClosestTrack(Set<MyFormat> fmts) {
-        String trackCodec = mPrefs.getSelectedTrackCodecs() == null ? "" : mPrefs.getSelectedTrackCodecs();
-        trackCodec = trackCodec.contains("avc") ? "avc" : trackCodec; // simplify codec name use avc instead of avc.111333
-        trackCodec = trackCodec.contains("vp9") ? "vp9" : trackCodec; // simplify codec name use avc instead of avc.111333
-        final String HDR_CODEC = "vp9.2";
+        String codecName = mPrefs.getSelectedTrackCodecs() == null ? "" : mPrefs.getSelectedTrackCodecs();
+
+        // simplify codec name: use avc instead of avc.111333
+        if (codecName.contains(AVC_CODEC)) {
+            codecName = AVC_CODEC;
+        } else if (codecName.contains(VP9_CODEC)) {
+            codecName = VP9_CODEC;
+        }
 
         MyFormat result = null;
         // select format with same codec and highest bitrate
@@ -146,15 +152,22 @@ public class PlayerStateManager {
                 continue;
             }
 
-            if (!fmt.codecs.contains(trackCodec)) { // filter by codec
+            // there is two levels of preference
+            // 1) by codec (e.g. avc)
+            // 2) by bitrate
+
+            if (!result.codecs.contains(codecName) && fmt.codecs.contains(codecName)) {
+                result = fmt;
                 continue;
             }
 
-            if (result.codecs.contains(trackCodec) && result.bitrate > fmt.bitrate) { // filter by bitrate
+            if (result.codecs.contains(codecName) && !fmt.codecs.contains(codecName)) {
                 continue;
             }
 
-            result = fmt;
+            if (result.bitrate < fmt.bitrate) {
+                result = fmt;
+            }
         }
         return result;
     }

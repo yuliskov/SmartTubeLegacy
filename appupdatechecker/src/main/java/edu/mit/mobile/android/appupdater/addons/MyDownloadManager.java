@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public final class MyDownloadManager {
             List<InetAddress> hostIPs = new ArrayList<>();
             try {
                 Resolver resolver = new SimpleResolver(GOOGLE_DNS);
-                resolver.setTimeout(10);
+                resolver.setTimeout(5);
                 Lookup lookup = new Lookup(host, Type.A);
                 lookup.setResolver(resolver);
                 Record[] records = lookup.run();
@@ -130,7 +131,7 @@ public final class MyDownloadManager {
                 @Override
                 public List<InetAddress> lookup(String hostname) throws UnknownHostException {
                     List<InetAddress> hosts = mResolver.resolve(hostname);
-                    return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as fallback
+                    return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
                 }
             })
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -138,16 +139,22 @@ public final class MyDownloadManager {
               .writeTimeout(10, TimeUnit.SECONDS)
               .build();
 
-        try {
-            Response response = client.newCall(request).execute();
-            if (!response.isSuccessful()) throw new IllegalStateException("Unexpected code " + response);
+        for (int tries = 3; tries > 0; tries--) {
+            try {
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful()) throw new IllegalStateException("Unexpected code " + response);
 
-            // NOTE: actual downloading is going here (while reading a stream)
-            mResponseStream = new ByteArrayInputStream(response.body().bytes());
-        } catch (IOException ex) {
-            showMessage(ex.getMessage());
-            throw new IllegalStateException(ex);
+                // NOTE: actual downloading is going here (while reading a stream)
+                mResponseStream = new ByteArrayInputStream(response.body().bytes());
+            } catch (SocketTimeoutException ex) {
+                if (tries == 1) // swallow 3 times
+                    throw new IllegalStateException(ex);
+            } catch (IOException ex) {
+                showMessage(ex.getMessage());
+                throw new IllegalStateException(ex);
+            }
         }
+
     }
 
     private Uri streamToFile(InputStream is, Uri destination) {

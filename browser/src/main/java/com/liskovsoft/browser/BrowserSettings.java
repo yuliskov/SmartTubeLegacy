@@ -34,7 +34,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     private String mAppCachePath;
     private boolean mNeedsSharedSync;
 
-    // TODO: Do something with this UserAgent stuff
+    // TODO: Update UserAgent stuff to more actual versions
     private static final String DESKTOP_USERAGENT = "Mozilla/5.0 (X11; " +
             "Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) " +
             "Chrome/11.0.696.34 Safari/534.24";
@@ -191,6 +191,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     public boolean isWideViewport() {
         // youtube: fit layout into the screen (set to false)
         return mPrefs.getBoolean(PREF_WIDE_VIEWPORT, false);
+    }
+
+    public int getInitialScale() {
+        // real display size (virtual pixel == real pixel)
+        // 100 - normal resolution, 50 - 2160p resolution
+        return mPrefs.getInt(PREF_INITIAL_SCALE, 100);
     }
 
     public boolean rememberPasswords() {
@@ -392,7 +398,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         // TODO: not implemented
-
     }
 
     public void startManagingSettings(WebSettings settings) {
@@ -409,6 +414,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     }
 
     private void syncSharedSettings() {
+        // TODO: not implemented
     }
 
     public void stopManagingSettings(WebSettings settings) {

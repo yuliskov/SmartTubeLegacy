@@ -31,6 +31,7 @@ public interface PreferenceKeys {
     static final String PREF_SEARCH_ENGINE = "search_engine";
     static final String PREF_WEBSITE_SETTINGS = "website_settings";
     static final String PREF_ALLOW_APP_TABS = "allow_apptabs";
+    static final String PREF_INITIAL_SCALE = "initial_scale";
 
     // ----------------------
     // Keys for debug_preferences.xml
