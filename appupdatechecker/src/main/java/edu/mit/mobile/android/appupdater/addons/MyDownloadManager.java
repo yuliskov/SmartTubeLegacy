@@ -196,6 +196,10 @@ public final class MyDownloadManager {
         return Uri.fromFile(outputFile);
     }
 
+    private void showMessage(final Throwable ex) {
+        showMessage(String.format("%s: %s", ex.getClass().getCanonicalName(), ex.getMessage()));
+    }
+
     private void showMessage(final String msg) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override

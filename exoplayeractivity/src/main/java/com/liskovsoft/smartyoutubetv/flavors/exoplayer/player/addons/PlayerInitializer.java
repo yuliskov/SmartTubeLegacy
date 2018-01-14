@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -29,8 +30,7 @@ public class PlayerInitializer {
     public PlayerInitializer(PlayerActivity player) {
         mPlayer = player;
         mExoPlayerView = (SimpleExoPlayerView) mPlayer.findViewById(R.id.player_view);
-
-        initTimeBar();
+        
         initVideoTitle();
         makeActivityFullscreen();
         makeActivityHorizontal();
@@ -81,24 +81,47 @@ public class PlayerInitializer {
         return str;
     }
 
-    private void initTimeBar() {
-        final int timeIncrementMS = 30000;
+    /**
+     * Set different seek time depending on the video length.
+     * @param player source of the video params
+     */
+    public void initTimeBar(@NonNull final SimpleExoPlayer player) {
+        int incrementMS;
+        final long durationMS = player.getDuration();
+
+        if (durationMS < 10*60*1000) { // 0 - 10 min
+            incrementMS = 5000;
+        } else if (durationMS < 60*60*1000) { // 10 - 60 min
+            incrementMS = 10000;
+        } else { // 60 - ... min
+            incrementMS = 30000;
+        }
+
 
         // time bar: rewind and fast forward to 15 secs
-        TimeBar timeBar = (TimeBar) mExoPlayerView.findViewById(R.id.exo_progress);
-        timeBar.setKeyTimeIncrement(timeIncrementMS);
+        final TimeBar timeBar = (TimeBar) mExoPlayerView.findViewById(R.id.exo_progress);
+        timeBar.setKeyTimeIncrement(incrementMS);
 
         // Playback control view.
-        mExoPlayerView.setRewindIncrementMs(timeIncrementMS);
-        mExoPlayerView.setFastForwardIncrementMs(timeIncrementMS);
+        mExoPlayerView.setRewindIncrementMs(incrementMS);
+        mExoPlayerView.setFastForwardIncrementMs(incrementMS);
     }
 
+    /**
+     * Nasty hacks to fix the sync problems on the Android 4
+     * @param player video player
+     * @param trackSelector track selector
+     */
     public void applySyncFix(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager manager = new SurfaceManager(player, trackSelector);
         videoSurfaceView.getHolder().addCallback(manager);
     }
 
+    /**
+     * Nasty hacks to fix the sync problems on the Android 4
+     * @param player video player
+     */
     public void applySyncFix(SimpleExoPlayer player) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager2 manager = new SurfaceManager2(mPlayer, player);

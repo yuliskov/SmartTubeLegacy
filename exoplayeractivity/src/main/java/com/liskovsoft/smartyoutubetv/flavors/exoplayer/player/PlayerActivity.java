@@ -419,8 +419,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             // Commented out because of bugs
             // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
             // Enable tunneling if supported by the current media and device configuration.
-            //if (Util.SDK_INT >= 21)
-            //    trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
+            if (Util.SDK_INT >= 21)
+                trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
 
             trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
             lastSeenTrackGroupArray = null;
@@ -462,10 +462,6 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
-            autoFrameRateManager = new AutoFrameRateManager(this, player);
-
-            //playerInitializer.applySyncFix(player, trackSelector);
-            //playerInitializer.applySyncFix(player);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
@@ -635,7 +631,16 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         }
 
         if (playbackState == Player.STATE_READY) {
-            getAutoFrameRateManager().apply();
+            if (autoFrameRateManager == null) {
+                autoFrameRateManager = new AutoFrameRateManager(this, player);
+            }
+
+            autoFrameRateManager.apply();
+
+            playerInitializer.initTimeBar(player); // set proper time increments
+
+            //playerInitializer.applySyncFix(player, trackSelector);
+            //playerInitializer.applySyncFix(player);
         }
 
         if (errorWhileClickedOnPlayButton()) {
