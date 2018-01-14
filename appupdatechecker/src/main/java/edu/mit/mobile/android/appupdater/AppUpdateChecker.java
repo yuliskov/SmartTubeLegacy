@@ -31,6 +31,7 @@ import java.util.TreeMap;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
+import edu.mit.mobile.android.appupdater.addons.Helpers;
 import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
 import org.json.JSONArray;
@@ -284,46 +285,32 @@ public class AppUpdateChecker {
 
                 mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
             } catch (final IllegalStateException ex) {
-                errorMsg = toString(ex.getCause());
+                errorMsg = Helpers.toString(ex.getCause());
             } catch (final Exception e) {
                 throw new IllegalStateException(e);
             } finally {
                 publishProgress(100);
-            } return jo;
+            }
+
+            return jo;
         }
 
         @Override
         protected void onPostExecute(JSONObject result) {
             if (result == null) {
-                Log.e(TAG, errorMsg);
-                showMessage(String.format("%s: %s", TAG, errorMsg));
+                String msg = String.format("%s: %s", TAG, errorMsg);
+                Log.e(TAG, msg);
+                Helpers.showMessage(mContext, msg);
             } else {
                 try {
                     triggerFromJson(result);
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Error in JSON version file.", e);
-                    showMessage(e);
+                    Helpers.showMessage(mContext, e);
                 }
             }
             versionTask = null; // forget about us, we're done.
-        }
-
-        private void showMessage(final Throwable ex) {
-            showMessage(toString(ex));
-        }
-
-        private String toString(Throwable ex) {
-            return String.format("%s: %s", ex.getClass().getCanonicalName(), ex.getMessage());
-        }
-
-        private void showMessage(final String msg) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-                }
-            });
         }
     }
 }

@@ -44,6 +44,7 @@ import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,7 +73,9 @@ import java.util.concurrent.TimeUnit;
  * }</pre>
  */
 public final class MyDownloadManager {
+    private static final String TAG = MyDownloadManager.class.getSimpleName();
     private final Context mContext;
+    private final OkHttpClient mClient;
     private MyRequest mRequest;
     private long mRequestId;
     private GoogleResolver mResolver;
@@ -109,7 +112,7 @@ public final class MyDownloadManager {
                     hostIPs.add(((ARecord) record).getAddress());
                 }
             } catch (UnknownHostException | TextParseException ex) {
-                showMessage(ex.getMessage());
+                Helpers.showMessage(mContext, ex, TAG);
                 throw new IllegalStateException(ex);
             }
             return hostIPs;
@@ -119,11 +122,12 @@ public final class MyDownloadManager {
     public MyDownloadManager(Context context) {
         mContext = context;
         mResolver = new GoogleResolver();
+        mClient = createOkHttpClient();
     }
 
     private void run() {
         if (!isNetworkAvailable()) {
-            showMessage("Internet connection not available");
+            Helpers.showMessage(mContext, "Internet connection not available");
         }
 
         String url = mRequest.mDownloadUri.toString();
@@ -132,11 +136,9 @@ public final class MyDownloadManager {
                 .url(url)
                 .build();
 
-        OkHttpClient client = createOkHttpClient();
-
         for (int tries = 3; tries > 0; tries--) {
             try {
-                Response response = client.newCall(request).execute();
+                Response response = mClient.newCall(request).execute();
                 if (!response.isSuccessful()) throw new IllegalStateException("Unexpected code " + response);
 
                 // NOTE: actual downloading is going here (while reading a stream)
@@ -146,7 +148,7 @@ public final class MyDownloadManager {
                 if (tries == 1) // swallow 3 times
                     throw new IllegalStateException(ex);
             } catch (IOException ex) {
-                showMessage(ex.getMessage());
+                Helpers.showMessage(mContext, ex, TAG);
                 throw new IllegalStateException(ex);
             }
         }
@@ -176,19 +178,22 @@ public final class MyDownloadManager {
     }
 
     private Uri streamToFile(InputStream is, Uri destination) {
+        FileOutputStream fos = null;
+
         try {
-            FileOutputStream fos = new FileOutputStream(destination.getPath());
+            fos = new FileOutputStream(destination.getPath());
 
             byte[] buffer = new byte[1024];
             int len1;
             while ((len1 = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len1);
             }
-            fos.close();
-            is.close();
         } catch (IOException ex) {
-            showMessage(ex.getMessage());
+            Helpers.showMessage(mContext, ex, TAG);
             throw new IllegalStateException(ex);
+        } finally {
+            Helpers.closeStream(fos);
+            Helpers.closeStream(is);
         }
 
         return destination;
@@ -203,23 +208,10 @@ public final class MyDownloadManager {
         File cacheDir = mContext.getExternalCacheDir();
         if (cacheDir == null) { // try to use SDCard
             cacheDir = Environment.getExternalStorageDirectory();
-            showMessage("Please, make sure that SDCard is mounted");
+            Helpers.showMessage(mContext,"Please, make sure that SDCard is mounted");
         }
         File outputFile = new File(cacheDir, "tmp_file");
         return Uri.fromFile(outputFile);
-    }
-
-    private void showMessage(final Throwable ex) {
-        showMessage(String.format("%s: %s", ex.getClass().getCanonicalName(), ex.getMessage()));
-    }
-
-    private void showMessage(final String msg) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     public long enqueue(MyRequest request) {
@@ -230,7 +222,7 @@ public final class MyDownloadManager {
     }
 
     public void remove(long downloadId) {
-        throw new IllegalStateException("Method not implemented!");
+        mClient.dispatcher().cancelAll();
     }
 
     public Uri getUriForDownloadedFile(long requestId) {

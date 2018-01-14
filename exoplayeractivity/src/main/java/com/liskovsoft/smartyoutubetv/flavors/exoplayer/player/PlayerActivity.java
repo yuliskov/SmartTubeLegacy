@@ -462,6 +462,13 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
             debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
+
+            // Do not move this code to another place!!! This statement must come after player initialization
+            autoFrameRateManager = new AutoFrameRateManager(this, player);
+
+            // applied one time at player's initialization
+            //playerInitializer.applySurfaceFix(player, trackSelector);
+            //playerInitializer.applySurfaceFix(player);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
@@ -470,9 +477,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             if (ACTION_VIEW.equals(action)) {
                 uris = new Uri[]{intent.getData()};
 
-                //TODO: modified
                 extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA)};
-                //extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA), "m3u8"};
             } else if (ACTION_VIEW_LIST.equals(action)) {
                 String[] uriStrings = intent.getStringArrayExtra(URI_LIST_EXTRA);
                 uris = new Uri[uriStrings.length];
@@ -520,7 +525,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             updateButtonVisibilities();
         }
     }
-    
+
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
@@ -631,16 +636,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         }
 
         if (playbackState == Player.STATE_READY) {
-            if (autoFrameRateManager == null) {
-                autoFrameRateManager = new AutoFrameRateManager(this, player);
-            }
-
             autoFrameRateManager.apply();
-
             playerInitializer.initTimeBar(player); // set proper time increments
-
-            //playerInitializer.applySyncFix(player, trackSelector);
-            //playerInitializer.applySyncFix(player);
         }
 
         if (errorWhileClickedOnPlayButton()) {

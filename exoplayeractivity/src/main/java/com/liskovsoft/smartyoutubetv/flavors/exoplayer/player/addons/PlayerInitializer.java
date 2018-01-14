@@ -112,7 +112,7 @@ public class PlayerInitializer {
      * @param player video player
      * @param trackSelector track selector
      */
-    public void applySyncFix(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
+    public void applySurfaceFix(SimpleExoPlayer player, DefaultTrackSelector trackSelector) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager manager = new SurfaceManager(player, trackSelector);
         videoSurfaceView.getHolder().addCallback(manager);
@@ -122,7 +122,7 @@ public class PlayerInitializer {
      * Nasty hacks to fix the sync problems on the Android 4
      * @param player video player
      */
-    public void applySyncFix(SimpleExoPlayer player) {
+    public void applySurfaceFix(SimpleExoPlayer player) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager2 manager = new SurfaceManager2(mPlayer, player);
         videoSurfaceView.getHolder().addCallback(manager);
