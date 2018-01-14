@@ -148,7 +148,6 @@ public final class MyDownloadManager {
                 if (tries == 1) // swallow 3 times
                     throw new IllegalStateException(ex);
             } catch (IOException ex) {
-                Helpers.showMessage(mContext, ex, TAG);
                 throw new IllegalStateException(ex);
             }
         }
@@ -189,7 +188,6 @@ public final class MyDownloadManager {
                 fos.write(buffer, 0, len1);
             }
         } catch (IOException ex) {
-            Helpers.showMessage(mContext, ex, TAG);
             throw new IllegalStateException(ex);
         } finally {
             Helpers.closeStream(fos);

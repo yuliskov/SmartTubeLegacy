@@ -21,6 +21,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
+import edu.mit.mobile.android.appupdater.addons.Helpers;
 import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
 
 import java.io.File;
@@ -413,7 +414,12 @@ class MyXWalkLibraryLoader {
                 }
             });
 
-            mDownloadId = mDownloadManager.enqueue(request);
+            try {
+                mDownloadId = mDownloadManager.enqueue(request);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                Helpers.showMessage(mContext, e.getCause(), TAG);
+            }
 
             return isDone ? DownloadManager.STATUS_SUCCESSFUL : DownloadManager.STATUS_FAILED;
         }

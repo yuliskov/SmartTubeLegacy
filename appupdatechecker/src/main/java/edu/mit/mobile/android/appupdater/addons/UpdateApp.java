@@ -20,6 +20,7 @@ import java.io.*;
  * </pre>
  */
 public class UpdateApp extends AsyncTask<String,Void,Void> {
+    private static final String TAG = UpdateApp.class.getSimpleName();
     private final Context mContext;
 
     public UpdateApp(Context context) {
@@ -59,11 +60,18 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         }
         File outputFile = new File(cacheDir, "update.apk");
 
-        MyDownloadManager manager = new MyDownloadManager(mContext);
-        MyRequest request = new MyRequest(Uri.parse(uri));
-        request.setDestinationUri(Uri.fromFile(outputFile));
-        long id = manager.enqueue(request);
-        return manager.getUriForDownloadedFile(id).getPath();
+        String path = null;
+        try {
+            MyDownloadManager manager = new MyDownloadManager(mContext);
+            MyRequest request = new MyRequest(Uri.parse(uri));
+            request.setDestinationUri(Uri.fromFile(outputFile));
+            long id = manager.enqueue(request);
+            path = manager.getUriForDownloadedFile(id).getPath();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            Helpers.showMessage(mContext, e.getCause(), TAG);
+        }
+        return path;
     }
 
     // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails

@@ -285,6 +285,7 @@ public class AppUpdateChecker {
 
                 mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
             } catch (final IllegalStateException ex) {
+                ex.printStackTrace();
                 errorMsg = Helpers.toString(ex.getCause());
             } catch (final Exception e) {
                 throw new IllegalStateException(e);
