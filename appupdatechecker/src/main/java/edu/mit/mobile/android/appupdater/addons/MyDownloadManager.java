@@ -78,6 +78,19 @@ public final class MyDownloadManager {
     private GoogleResolver mResolver;
     private InputStream mResponseStream;
 
+    /**
+     * Try to resolve address with Google's dns below
+     * <pre>
+     * IPv4:
+     * 8.8.8.8
+     * 8.8.4.4
+     * </pre>
+     * <pre>
+     * IPv6:
+     * 2001:4860:4860::8888
+     * 2001:4860:4860::8844
+     * </pre>
+     */
     private class GoogleResolver {
         private static final String GOOGLE_DNS = "8.8.8.8";
 

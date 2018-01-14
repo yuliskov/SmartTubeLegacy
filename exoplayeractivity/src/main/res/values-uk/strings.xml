@@ -28,4 +28,5 @@
     <string name="enable_autoframerate">Автофреймрейт</string>
     <string name="share_video">Надісл</string>
     <string name="send_to">Надіслати у</string>
+    <string name="hide_playback_errors">Приховувати помилки відтворення</string>
 </resources>

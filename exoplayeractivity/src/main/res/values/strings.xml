@@ -1,14 +1,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name_exo">Smart YouTube TV 4K</string>
-
     <string name="player_options_btn">Options</string>
     <string name="player_options_off">Options Off</string>
     <string name="player_options_on">Options On</string>
-
     <string name="options">Options</string>
     <string name="home">Home</string>
     <string name="user_page">User page</string>
-
     <string name="prev_video">Prev video</string>
     <string name="next_video">Next video</string>
     <string name="pause">Pause</string>
@@ -17,43 +14,24 @@
     <string name="like">Like</string>
     <string name="stats">Stats</string>
     <string name="subscribe">Subscribed</string>
-
     <string name="quality">Quality</string>
-
     <string name="video">Video</string>
-
     <string name="audio">Audio</string>
-
     <string name="text">Text</string>
-
     <string name="retry">Retry</string>
-
     <string name="selection_default_none">Default (none)</string>
-
     <string name="unexpected_intent_action">Unexpected intent action: <xliff:g id="action">%1$s</xliff:g></string>
-
     <string name="enable_random_adaptation">Enable random adaptation</string>
-
     <string name="error_drm_not_supported">Protected content not supported on API levels below 18</string>
-
     <string name="error_drm_unsupported_scheme">This device does not support the required DRM scheme</string>
-
     <string name="error_drm_unknown">An unknown DRM error occurred</string>
-
     <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
-
     <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
-
     <string name="error_querying_decoders">Unable to query device decoders</string>
-
     <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>
-
     <string name="error_unsupported_video">Media includes video tracks, but none are playable by this device</string>
-
     <string name="error_unsupported_audio">Media includes audio tracks, but none are playable by this device</string>
-
     <string name="storage_permission_denied">Permission to access storage was denied</string>
-
     <string name="selection_disabled">Disable Track</string>
     <string name="selection_default">Default Quality</string>
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
@@ -64,8 +42,9 @@
     <string name="view_count">views</string>
     <string name="suggested_videos">Suggested videos</string>
     <string name="enable_autoframerate">Autoframerate</string>
-    <string name="autoframerate_not_supported">Your device doesn\'t support Autoframerate</string>
+    <string name="autoframerate_not_supported">Your device does not support Autoframerate</string>
     <string name="share_video">Share Video</string>
     <string name="send_to">Send to</string>
     <string name="track_view_format">TrackViewFormat</string>
+    <string name="hide_playback_errors">Hide playback errors</string>
 </resources>

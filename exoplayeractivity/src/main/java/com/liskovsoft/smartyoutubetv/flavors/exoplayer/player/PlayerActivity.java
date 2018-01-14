@@ -416,11 +416,11 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                 }
             };
 
-            // Commented out because of bugs
+            // Commented out because of bug: can't instantiate OMX decoder...
             // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
             // Enable tunneling if supported by the current media and device configuration.
-            if (Util.SDK_INT >= 21)
-                trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
+            //if (Util.SDK_INT >= 21)
+            //    trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
 
             trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
             lastSeenTrackGroupArray = null;
@@ -705,7 +705,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                 }
             }
         }
-        if (errorString != null) {
+        if (errorString != null && !getHidePlaybackErrors()) {
             showToast(errorString);
         }
         needRetrySource = true;
@@ -812,5 +812,15 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         if (needRetrySource) {
             initializePlayer();
         }
+    }
+
+    public void setHidePlaybackErrors(boolean hideErrors) {
+        ExoPreferences prefs = ExoPreferences.instance(this);
+        prefs.setHidePlaybackErrors(hideErrors);
+    }
+
+    public boolean getHidePlaybackErrors() {
+        ExoPreferences prefs = ExoPreferences.instance(this);
+        return prefs.getHidePlaybackErrors();
     }
 }
