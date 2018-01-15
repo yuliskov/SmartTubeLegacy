@@ -26,6 +26,10 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+/**
+ * Fixing unable to find manifest errors.
+ * You have to set working directory to <code>$MODULE_DIR$</code>. <a href="http://robolectric.org/getting-started/">More info</a>
+ */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class SimpleYouTubeInfoParserTest {
@@ -124,9 +128,9 @@ public class SimpleYouTubeInfoParserTest {
         String content = TestHelpers.readResource("get_video_info_subs");
         PlayerResponseParser parser = new PlayerResponseParser(content);
         List<Subtitle> allSubs = parser.getAllSubs();
-        Uri expected = Uri.parse("https://www.youtube.com/api/timedtext?caps=&key=yttt1&expire=1515741851&v=WS7f5xpGYn8&hl=en_US&signature" +
+        String expected = "https://www.youtube.com/api/timedtext?caps=&key=yttt1&expire=1515741851&v=WS7f5xpGYn8&hl=en_US&signature" +
                 "=1774F7B2CF8A652145BBED85C33EB92DD8186388.27F90A8C8C2B38844AC89AF3E62F96DDDF3471A4&xorp=True&sparams=caps%2Cv%2Cxorp%2Cexpire&lang" +
-                "=en&name=en");
+                "=en&name=en";
         assertEquals(expected, allSubs.get(0).getBaseUrl());
     }
 
