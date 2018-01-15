@@ -8,6 +8,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.CombinedYouTubeInfoParser;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class PlayerResponseParser {
     /**
      * Extracts subtitle, images and other objects from the <em>get_video_info</em> file
      * <br/>
-     * For video object parsing use {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser}
+     * For video object parsing use {@link CombinedYouTubeInfoParser}
      * @param content get_video_info file content
      */
     public PlayerResponseParser(String content) {

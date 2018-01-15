@@ -2,17 +2,20 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.ConcreteYouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 
 import java.util.List;
 
-public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
+public class RootYouTubeInfoParser implements YouTubeInfoVisitable {
     private final ConcreteYouTubeInfoParser mParser;
+    private final PlayerResponseParser mSubParser;
     private YouTubeInfoVisitor mVisitor;
 
-    public SimpleYouTubeInfoVisitable(String content) {
+    public RootYouTubeInfoParser(String content) {
         mParser = new ConcreteYouTubeInfoParser(content);
+        mSubParser = new PlayerResponseParser(content);
     }
 
     @Override

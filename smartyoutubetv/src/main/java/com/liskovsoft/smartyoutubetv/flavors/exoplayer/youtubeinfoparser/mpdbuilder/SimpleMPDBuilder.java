@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 /**
  * Demos: https://github.com/Dash-Industry-Forum/dash-live-source-simulator/wiki/Test-URLs
  */
-public class MyMPDBuilder implements MPDBuilder {
+public class SimpleMPDBuilder implements MPDBuilder {
     private static final String MIME_WEBM_AUDIO = "audio/webm";
     private static final String MIME_WEBM_VIDEO = "video/webm";
     private static final String MIME_MP4_AUDIO = "audio/mp4";
@@ -37,7 +37,7 @@ public class MyMPDBuilder implements MPDBuilder {
     private Set<YouTubeMediaItem> mWEBMVideos;
     private List<Subtitle> mSubs;
 
-    private class MyComparator implements Comparator<YouTubeMediaItem> {
+    private class SimpleComparator implements Comparator<YouTubeMediaItem> {
         @Override
         public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
             if (leftItem.getSize() == null || rightItem.getSize() == null) {
@@ -61,13 +61,13 @@ public class MyMPDBuilder implements MPDBuilder {
         }
     }
 
-    public MyMPDBuilder() {
+    public SimpleMPDBuilder() {
         this(null);
     }
 
-    public MyMPDBuilder(YouTubeGenericInfo info) {
+    public SimpleMPDBuilder(YouTubeGenericInfo info) {
         mInfo = info;
-        MyComparator comp = new MyComparator();
+        SimpleComparator comp = new SimpleComparator();
         mMP4Audios = new TreeSet<>(comp);
         mMP4Videos = new TreeSet<>(comp);
         mWEBMAudios = new TreeSet<>(comp);

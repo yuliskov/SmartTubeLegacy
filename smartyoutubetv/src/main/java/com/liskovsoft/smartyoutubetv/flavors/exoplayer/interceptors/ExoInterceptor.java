@@ -18,7 +18,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.CombinedYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
@@ -98,8 +98,8 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
-        dataParser.setOnMediaFoundCallback(new OnMediaFoundCallback() {
+        final YouTubeInfoParser dataParser = new CombinedYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
+        dataParser.parse(new OnMediaFoundCallback() {
             private YouTubeGenericInfo mInfo;
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {

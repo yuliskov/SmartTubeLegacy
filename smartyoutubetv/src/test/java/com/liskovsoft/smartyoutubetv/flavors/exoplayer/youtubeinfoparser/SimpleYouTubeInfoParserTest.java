@@ -4,7 +4,7 @@ import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MPDBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.SimpleMPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
@@ -115,7 +115,7 @@ public class SimpleYouTubeInfoParserTest {
     public void mpdBuilderTest2() {
         InputStream oneItem = TestHelpers.openResource("mpd_with_one_item");
         SimpleYouTubeMediaItem fakeItem = prepareFakeVideoItem();
-        MyMPDBuilder fakeBuilder = new MyMPDBuilder(null);
+        SimpleMPDBuilder fakeBuilder = new SimpleMPDBuilder(null);
         fakeBuilder.append(fakeItem);
         assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
     }
@@ -145,7 +145,7 @@ public class SimpleYouTubeInfoParserTest {
         String content = TestHelpers.readResource("get_video_info_subs");
         PlayerResponseParser parser = new PlayerResponseParser(content);
         List<Subtitle> allSubs = parser.getAllSubs();
-        MPDBuilder builder = new MyMPDBuilder();
+        MPDBuilder builder = new SimpleMPDBuilder();
         builder.append(allSubs);
         builder.append(prepareFakeVideoItem());
         assertEquals(TestHelpers.readResource("mpd_with_one_sub"), TestHelpers.readStream(builder.build()));

@@ -1,20 +1,20 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.SimpleMPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 
 import java.io.InputStream;
 
-public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
+public class CombinedYouTubeInfoParser implements YouTubeInfoParser {
     private final String[] mContent;
 
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final String mType;
         private final OnMediaFoundCallback mMediaFoundCallback;
-        private MyMPDBuilder mMPDBuilder;
+        private SimpleMPDBuilder mMPDBuilder;
         private int mCounter = 1;
         private YouTubeGenericInfo mInfo;
         private Uri mHlsUrl;
@@ -31,7 +31,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         @Override
         public void onGenericInfo(YouTubeGenericInfo info) {
             if (mMPDBuilder == null)
-                mMPDBuilder = new MyMPDBuilder(info);
+                mMPDBuilder = new SimpleMPDBuilder(info);
 
             mInfo = info;
         }
@@ -66,7 +66,11 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
     }
 
-    public SimpleYouTubeInfoParser(InputStream ...content) {
+    /**
+     * You can supply multiple <em>get_video_info</em> files as input.
+     * @param content get_video_info file as stream
+     */
+    public CombinedYouTubeInfoParser(InputStream ...content) {
         mContent = new String[content.length];
         readContent(content);
     }
@@ -78,11 +82,11 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     }
 
     @Override
-    public void setOnMediaFoundCallback(OnMediaFoundCallback mpdFoundCallback) {
+    public void parse(OnMediaFoundCallback mpdFoundCallback) {
         YouTubeInfoVisitor visitor = new MergeMediaVisitor(mpdFoundCallback);
 
         for (String content : mContent) {
-            YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(content);
+            YouTubeInfoVisitable visitable = new RootYouTubeInfoParser(content);
             visitable.accept(visitor);
         }
 
