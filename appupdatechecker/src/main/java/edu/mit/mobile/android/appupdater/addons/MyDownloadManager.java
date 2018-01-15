@@ -20,9 +20,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
 import okhttp3.Dns;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -35,16 +32,8 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
-import org.xbill.DNS.ARecord;
-import org.xbill.DNS.Lookup;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
-import org.xbill.DNS.TextParseException;
-import org.xbill.DNS.Type;
 
 import java.io.ByteArrayInputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,7 +41,6 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -81,47 +69,9 @@ public final class MyDownloadManager {
     private GoogleResolver mResolver;
     private InputStream mResponseStream;
 
-    /**
-     * Try to resolve address with Google's dns below
-     * <pre>
-     * IPv4:
-     * 8.8.8.8
-     * 8.8.4.4
-     * </pre>
-     * <pre>
-     * IPv6:
-     * 2001:4860:4860::8888
-     * 2001:4860:4860::8844
-     * </pre>
-     */
-    private class GoogleResolver {
-        private static final String GOOGLE_DNS = "8.8.8.8";
-
-        public List<InetAddress> resolve(String host) {
-            List<InetAddress> hostIPs = new ArrayList<>();
-            try {
-                Resolver resolver = new SimpleResolver(GOOGLE_DNS);
-                resolver.setTimeout(5);
-                Lookup lookup = new Lookup(host, Type.A);
-                lookup.setResolver(resolver);
-                Record[] records = lookup.run();
-                if (records == null) {
-                    return hostIPs;
-                }
-                for (Record record : records) {
-                    hostIPs.add(((ARecord) record).getAddress());
-                }
-            } catch (UnknownHostException | TextParseException ex) {
-                Helpers.showMessage(mContext, ex, TAG);
-                throw new IllegalStateException(ex);
-            }
-            return hostIPs;
-        }
-    }
-
     public MyDownloadManager(Context context) {
         mContext = context;
-        mResolver = new GoogleResolver();
+        mResolver = new GoogleResolver(context);
         mClient = createOkHttpClient();
     }
 

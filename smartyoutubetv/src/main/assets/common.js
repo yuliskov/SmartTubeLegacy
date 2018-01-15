@@ -270,7 +270,7 @@ function commonLogs() {
 
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
 // applyFakeResolution();
-// fixWrongPixelRatio();
+fixWrongPixelRatio();
 commonLogs();
 
 console.log('injecting common.js into ' + document.location.href);
