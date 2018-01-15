@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Generated with https://github.com/google/shaka-packager version 84764e8-debug-->
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" xmlns:cenc="urn:mpeg:cenc:2013" minBufferTime="PT2S" type="static" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" mediaPresentationDuration="PT888.0533447265625S">
+  <Period id="0">
+    <!-- wvtt AdaptationSets and their contents generated with GPAC and merged into this MPD manually. -->
+    <AdaptationSet id="0" lang="dut" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="0" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="133">
+      <BaseURL>s-dut.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="1" lang="eng" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="1" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="133">
+      <BaseURL>s-eng.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="2" lang="fre" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="2" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="135">
+      <BaseURL>s-fre.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="3" lang="ger" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="3" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="136">
+      <BaseURL>s-ger.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="4" lang="ita" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="4" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="134">
+      <BaseURL>s-ita.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="5" lang="pol" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="5" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="134">
+      <BaseURL>s-pol.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="6" lang="por" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="6" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="134">
+      <BaseURL>s-por.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="7" lang="rus" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="7" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="143">
+      <BaseURL>s-rus.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="8" lang="spa" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="8" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="134">
+      <BaseURL>s-spa.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="9" lang="vie" contentType="text">
+     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="subtitle"/>
+     <Representation id="9" mimeType="application/mp4" codecs="wvtt" startWithSAP="1" bandwidth="139">
+      <BaseURL>s-vie.mp4</BaseURL>
+      <SegmentBase indexRangeExact="true" indexRange="687-1474">
+        <Initialization range="0-686"/>
+      </SegmentBase>
+     </Representation>
+    </AdaptationSet>
+    <!-- end wvtt AdaptationSets -->
+    <AdaptationSet id="10" contentType="video" maxWidth="3840" maxHeight="1636" frameRate="12288/512" subsegmentAlignment="true" par="40:17">
+      <Representation id="10" bandwidth="100803" codecs="avc1.42c01e" mimeType="video/mp4" sar="110:109" width="256" height="110">
+        <BaseURL>v-0144p-0100k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="826-3521" timescale="12288">
+          <Initialization range="0-825"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="11" bandwidth="417974" codecs="avc1.4d401f" mimeType="video/mp4" sar="2654:2645" width="426" height="182">
+        <BaseURL>v-0240p-0400k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="827-3522" timescale="12288">
+          <Initialization range="0-826"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="13" bandwidth="773047" codecs="avc1.4d401f" mimeType="video/mp4" sar="544:545" width="640" height="272">
+        <BaseURL>v-0360p-0750k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="826-3521" timescale="12288">
+          <Initialization range="0-825"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="22" bandwidth="1043674" codecs="avc1.4d401f" mimeType="video/mp4" sar="3803:3799" width="854" height="364">
+        <BaseURL>v-0480p-1000k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="826-3521" timescale="12288">
+          <Initialization range="0-825"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="24" bandwidth="1455494" codecs="avc1.4d401f" mimeType="video/mp4" sar="1:1" width="1024" height="436">
+        <BaseURL>v-0576p-1400k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="806-3501" timescale="12288">
+          <Initialization range="0-805"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="26" bandwidth="2622785" codecs="avc1.4d401f" mimeType="video/mp4" sar="546:545" width="1280" height="546">
+        <BaseURL>v-0720p-2500k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="828-3523" timescale="12288">
+          <Initialization range="0-827"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="27" bandwidth="4716317" codecs="avc1.640028" mimeType="video/mp4" sar="1636:1635" width="1920" height="818">
+        <BaseURL>v-1080p-4500k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="830-3525" timescale="12288">
+          <Initialization range="0-829"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="28" bandwidth="9260354" codecs="avc1.640028" mimeType="video/mp4" sar="1:1" width="2560" height="1090">
+        <BaseURL>v-1440p-9000k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="810-3505" timescale="12288">
+          <Initialization range="0-809"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="29" bandwidth="17626198" codecs="avc1.640033" mimeType="video/mp4" sar="1636:1635" width="3840" height="1636">
+        <BaseURL>v-2160p-17000k-libx264.mp4</BaseURL>
+        <SegmentBase indexRange="830-3525" timescale="12288">
+          <Initialization range="0-829"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="11" contentType="audio" lang="en" subsegmentAlignment="true">
+      <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+      <Representation id="12" bandwidth="132447" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="48000">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>a-eng-0128k-aac.mp4</BaseURL>
+        <SegmentBase indexRange="743-3438" timescale="48000">
+          <Initialization range="0-742"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>

@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder;
 
-import android.media.browse.MediaBrowser.MediaItem;
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
@@ -11,7 +11,9 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -33,7 +35,7 @@ public class MyMPDBuilder implements MPDBuilder {
     private Set<YouTubeMediaItem> mMP4Videos;
     private Set<YouTubeMediaItem> mWEBMAudios;
     private Set<YouTubeMediaItem> mWEBMVideos;
-    private int mCounter;
+    private List<Subtitle> mSubs;
 
     private class MyComparator implements Comparator<YouTubeMediaItem> {
         @Override
@@ -59,6 +61,10 @@ public class MyMPDBuilder implements MPDBuilder {
         }
     }
 
+    public MyMPDBuilder() {
+        this(null);
+    }
+
     public MyMPDBuilder(YouTubeGenericInfo info) {
         mInfo = info;
         MyComparator comp = new MyComparator();
@@ -66,6 +72,7 @@ public class MyMPDBuilder implements MPDBuilder {
         mMP4Videos = new TreeSet<>(comp);
         mWEBMAudios = new TreeSet<>(comp);
         mWEBMVideos = new TreeSet<>(comp);
+        mSubs = new ArrayList<>();
 
         initXmlSerializer();
     }
@@ -132,6 +139,21 @@ public class MyMPDBuilder implements MPDBuilder {
         writeMediaTagsForGroup(mMP4Videos);
         writeMediaTagsForGroup(mWEBMAudios);
         writeMediaTagsForGroup(mWEBMVideos);
+        writeMediaTagsForGroup(mSubs);
+    }
+
+    private void writeMediaTagsForGroup(List<Subtitle> subs) {
+        if (subs.size() == 0) {
+            return;
+        }
+
+        for (Subtitle sub : subs) {
+            writeMediaListPrologue(String.valueOf(mId++), "application/mp4", sub.getLanguageCode());
+
+            writeMediaItemTag(sub);
+
+            writeMediaListEpilogue();
+        }
     }
 
     private void writeMediaTagsForGroup(Set<YouTubeMediaItem> items) {
@@ -151,7 +173,7 @@ public class MyMPDBuilder implements MPDBuilder {
             writeMediaItemTag(item);
         }
 
-        endTag("", "AdaptationSet");
+        writeMediaListEpilogue();
     }
 
     private XmlSerializer attribute(String namespace, String name, String value) {
@@ -217,6 +239,23 @@ public class MyMPDBuilder implements MPDBuilder {
         endTag("", "Role");
     }
 
+    private void writeMediaListPrologue(String id, String mimeType, String lang) {
+        startTag("", "AdaptationSet");
+        attribute("", "id", id);
+        attribute("", "mimeType", mimeType);
+        attribute("", "subsegmentAlignment", "true");
+        attribute("", "lang", lang);
+
+        startTag("", "Role");
+        attribute("", "schemeIdUri", "urn:mpeg:DASH:role:2011");
+        attribute("", "value", "main");
+        endTag("", "Role");
+    }
+
+    private void writeMediaListEpilogue() {
+        endTag("", "AdaptationSet");
+    }
+
     @Override
     public void append(YouTubeMediaItem mediaItem) {
         if (notDASH(mediaItem)) {
@@ -241,11 +280,15 @@ public class MyMPDBuilder implements MPDBuilder {
                     break;
             }
         }
+
         if (placeholder != null) {
             placeholder.add(mediaItem); // NOTE: reverse order
         }
+    }
 
-        mCounter++;
+    @Override
+    public void append(List<Subtitle> subs) {
+        mSubs.addAll(subs);
     }
 
     private boolean notDASH(YouTubeMediaItem mediaItem) {
@@ -319,6 +362,20 @@ public class MyMPDBuilder implements MPDBuilder {
         endTag("", "Representation");
     }
 
+    private void writeMediaItemTag(Subtitle sub) {
+        startTag("", "Representation");
+
+        attribute("", "codecs", "wvtt");
+
+        startTag("", "BaseURL");
+
+        text(sub.getBaseUrl());
+
+        endTag("", "BaseURL");
+
+        endTag("", "Representation");
+    }
+
     private boolean isVideo(YouTubeMediaItem item) {
         return item.getSize() != null;
     }
@@ -368,7 +425,8 @@ public class MyMPDBuilder implements MPDBuilder {
 
     @Override
     public boolean isEmpty() {
-        return mCounter == 0;
+        return mMP4Videos.size() == 0 && mWEBMVideos.size() == 0
+                && mMP4Audios.size() == 0 && mWEBMAudios.size() == 0;
     }
 
 }

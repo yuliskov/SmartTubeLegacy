@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.TestHelpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser.Subtitle;
@@ -113,14 +114,19 @@ public class SimpleYouTubeInfoParserTest {
     @Test
     public void mpdBuilderTest2() {
         InputStream oneItem = TestHelpers.openResource("mpd_with_one_item");
+        SimpleYouTubeMediaItem fakeItem = prepareFakeVideoItem();
+        MyMPDBuilder fakeBuilder = new MyMPDBuilder(null);
+        fakeBuilder.append(fakeItem);
+        assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
+    }
+
+    private SimpleYouTubeMediaItem prepareFakeVideoItem() {
         SimpleYouTubeMediaItem fakeItem = new SimpleYouTubeMediaItem();
         fakeItem.setUrl("http://empty.url?dur=1234"); // we must setup a duration
         fakeItem.setType("video/mp4;+codecs=\"avc1.640033\"");
         fakeItem.setInit("0-759");
         fakeItem.setITag("133");
-        MyMPDBuilder fakeBuilder = new MyMPDBuilder(null);
-        fakeBuilder.append(fakeItem);
-        assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
+        return fakeItem;
     }
 
     @Test
@@ -132,6 +138,17 @@ public class SimpleYouTubeInfoParserTest {
                 "=1774F7B2CF8A652145BBED85C33EB92DD8186388.27F90A8C8C2B38844AC89AF3E62F96DDDF3471A4&xorp=True&sparams=caps%2Cv%2Cxorp%2Cexpire&lang" +
                 "=en&name=en";
         assertEquals(expected, allSubs.get(0).getBaseUrl());
+    }
+
+    @Test
+    public void addSubsToMpdTest() {
+        String content = TestHelpers.readResource("get_video_info_subs");
+        PlayerResponseParser parser = new PlayerResponseParser(content);
+        List<Subtitle> allSubs = parser.getAllSubs();
+        MPDBuilder builder = new MyMPDBuilder();
+        builder.append(allSubs);
+        builder.append(prepareFakeVideoItem());
+        assertEquals(TestHelpers.readResource("mpd_with_one_sub"), TestHelpers.readStream(builder.build()));
     }
 
 }

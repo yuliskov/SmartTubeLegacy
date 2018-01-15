@@ -53,4 +53,11 @@ public class TestHelpers {
 
         return result;
     }
+
+    public static String readStream(InputStream stream) {
+        Scanner s = new Scanner(stream).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+
+        return result;
+    }
 }

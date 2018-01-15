@@ -55,14 +55,29 @@ public class PlayerResponseParser {
     }
 
     public class Subtitle {
+        /**
+         * Example: "https://www.youtube.com/api/timedtext?caps=&key=yt…&sparams=caps%2Cv%2Cxorp%2Cexpire&lang=en&name=en"
+         */
         @SerializedName("baseUrl")
         private String mBaseUrl;
+        /**
+         * Example: true
+         */
         @SerializedName("isTranslatable")
         private boolean mIsTranslatable;
+        /**
+         * Example: "en"
+         */
         @SerializedName("languageCode")
         private String mLanguageCode;
+        /**
+         * Example: ".en.nP7-2PuUl7o"
+         */
         @SerializedName("vssId")
         private String mVssId;
+        /**
+         * Example: see {@link Name} class
+         */
         @SerializedName("name")
         private Name mName;
 
@@ -81,7 +96,7 @@ public class PlayerResponseParser {
         public void setTranslatable(boolean translatable) {
             mIsTranslatable = translatable;
         }
-
+        
         public String getLanguageCode() {
             return mLanguageCode;
         }
@@ -107,6 +122,9 @@ public class PlayerResponseParser {
         }
 
         private class Name {
+            /**
+             * Example: "English+-+en"
+             */
             @SerializedName("simpleText")
             private String mSimpleText;
 
