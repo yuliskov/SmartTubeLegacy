@@ -1,8 +1,10 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc;
 
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.GenericInfo;
+
 import java.util.Random;
 
-public class SimpleYouTubeGenericInfo implements YouTubeGenericInfo {
+public class SimpleYouTubeGenericInfo implements GenericInfo {
     private final Random mRandrom;
     private String mLengthSeconds;
     private String mTitle;

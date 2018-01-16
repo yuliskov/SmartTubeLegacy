@@ -339,8 +339,12 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         } else if (view.getParent() == debugRootView) {
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
-                trackSelectionHelper.showSelectionDialog(this, ((TextToggleButton) view).getText(), trackSelector.getCurrentMappedTrackInfo(), (int) view
-                        .getTag());
+                trackSelectionHelper.showSelectionDialog(
+                        this,
+                        ((TextToggleButton) view).getText(),
+                        trackSelector.getCurrentMappedTrackInfo(),
+                        (int) view.getTag()
+                );
             }
         }
     }

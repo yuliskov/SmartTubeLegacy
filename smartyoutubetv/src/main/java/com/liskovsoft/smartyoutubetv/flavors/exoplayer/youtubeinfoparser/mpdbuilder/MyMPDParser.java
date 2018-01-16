@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbui
 
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -41,11 +41,11 @@ public class MyMPDParser implements MPDParser {
     }
 
     @Override
-    public List<YouTubeMediaItem> parse() {
+    public List<MediaItem> parse() {
         if (mMpdContent == null) {
             return new ArrayList<>();
         }
-        List<YouTubeMediaItem> result = null;
+        List<MediaItem> result = null;
         try {
             result = readDashMPD();
         } catch (Exception e) {
@@ -54,8 +54,8 @@ public class MyMPDParser implements MPDParser {
         return result;
     }
 
-    private List<YouTubeMediaItem> readDashMPD() throws IOException, XmlPullParserException {
-        List<YouTubeMediaItem> mediaItems = new ArrayList<>();
+    private List<MediaItem> readDashMPD() throws IOException, XmlPullParserException {
+        List<MediaItem> mediaItems = new ArrayList<>();
 
         mParser.require(XmlPullParser.START_TAG, ns, TAG_MPD);
         while (mParser.next() != XmlPullParser.END_TAG) {
@@ -88,9 +88,9 @@ public class MyMPDParser implements MPDParser {
         }
     }
 
-    private List<YouTubeMediaItem> readMediaGroup(XmlPullParser parser) throws IOException, XmlPullParserException {
+    private List<MediaItem> readMediaGroup(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_GROUP);
-        List<YouTubeMediaItem> mediaItems = new ArrayList<>();
+        List<MediaItem> mediaItems = new ArrayList<>();
         String mimeType = parser.getAttributeValue(ns, "mimeType");
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -106,9 +106,9 @@ public class MyMPDParser implements MPDParser {
         return mediaItems;
     }
 
-    private YouTubeMediaItem readMediaItem(XmlPullParser parser, String mimeType) throws IOException, XmlPullParserException {
+    private MediaItem readMediaItem(XmlPullParser parser, String mimeType) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_ITEM);
-        YouTubeMediaItem item = new SimpleYouTubeMediaItem();
+        MediaItem item = new SimpleYouTubeMediaItem();
 
         // common tags
         item.setITag(parser.getAttributeValue(ns, "id"));
@@ -144,7 +144,7 @@ public class MyMPDParser implements MPDParser {
         return item;
     }
 
-    private void readSegmentList(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+    private void readSegmentList(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_LIST);
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -159,7 +159,7 @@ public class MyMPDParser implements MPDParser {
         }
     }
 
-    private void readSegmentBase(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+    private void readSegmentBase(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_BASE);
         item.setIndex(parser.getAttributeValue(ns, "indexRange"));
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -175,7 +175,7 @@ public class MyMPDParser implements MPDParser {
         }
     }
 
-    private void readInitialization(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+    private void readInitialization(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_INITIALIZATION);
         String range = parser.getAttributeValue(ns, "range");
         if (range == null) { // 4k@60fps
@@ -190,7 +190,7 @@ public class MyMPDParser implements MPDParser {
         parser.require(XmlPullParser.END_TAG, ns, TAG_INITIALIZATION);
     }
 
-    private void readUrl(XmlPullParser parser, YouTubeMediaItem item) throws IOException, XmlPullParserException {
+    private void readUrl(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_BASE_URL);
         item.setClen(parser.getAttributeValue(ns, "yt:contentLength"));
         String url = readText(parser);

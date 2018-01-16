@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 
 import java.io.InputStream;
 import java.util.List;
@@ -12,15 +12,15 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String mContent;
 
     private class FindUriVisitor implements YouTubeInfoVisitor {
-        private final YouTubeMediaItem mOriginItem;
-        private YouTubeMediaItem mLastItem;
+        private final MediaItem mOriginItem;
+        private MediaItem mLastItem;
 
         FindUriVisitor(String iTag) {
             mOriginItem = new SimpleYouTubeMediaItem(iTag);
         }
 
         @Override
-        public void visitMediaItem(YouTubeMediaItem mediaItem) {
+        public void visitMediaItem(MediaItem mediaItem) {
             if (mediaItem.compareTo(mOriginItem) <= 0 && mediaItem.compareTo(mLastItem) > 0) {
                 mLastItem = mediaItem;
             }

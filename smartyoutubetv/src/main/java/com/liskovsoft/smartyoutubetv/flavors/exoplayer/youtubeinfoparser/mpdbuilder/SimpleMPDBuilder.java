@@ -2,9 +2,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbui
 
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.PlayerResponseParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeSubParser.Subtitle;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -27,19 +27,19 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String MIME_WEBM_VIDEO = "video/webm";
     private static final String MIME_MP4_AUDIO = "audio/mp4";
     private static final String MIME_MP4_VIDEO = "video/mp4";
-    private final YouTubeGenericInfo mInfo;
+    private final GenericInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
-    private Set<YouTubeMediaItem> mMP4Audios;
-    private Set<YouTubeMediaItem> mMP4Videos;
-    private Set<YouTubeMediaItem> mWEBMAudios;
-    private Set<YouTubeMediaItem> mWEBMVideos;
+    private Set<MediaItem> mMP4Audios;
+    private Set<MediaItem> mMP4Videos;
+    private Set<MediaItem> mWEBMAudios;
+    private Set<MediaItem> mWEBMVideos;
     private List<Subtitle> mSubs;
 
-    private class SimpleComparator implements Comparator<YouTubeMediaItem> {
+    private class SimpleComparator implements Comparator<MediaItem> {
         @Override
-        public int compare(YouTubeMediaItem leftItem, YouTubeMediaItem rightItem) {
+        public int compare(MediaItem leftItem, MediaItem rightItem) {
             if (leftItem.getSize() == null || rightItem.getSize() == null) {
                 return 0;
             }
@@ -65,7 +65,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         this(null);
     }
 
-    public SimpleMPDBuilder(YouTubeGenericInfo info) {
+    public SimpleMPDBuilder(GenericInfo info) {
         mInfo = info;
         SimpleComparator comp = new SimpleComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -117,7 +117,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     private String extractDurationFromTrack() {
         String url = null;
-        for (YouTubeMediaItem item : mMP4Videos) {
+        for (MediaItem item : mMP4Videos) {
             url = item.getUrl();
             break; // get first item
         }
@@ -156,20 +156,20 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
     }
 
-    private void writeMediaTagsForGroup(Set<YouTubeMediaItem> items) {
+    private void writeMediaTagsForGroup(Set<MediaItem> items) {
         if (items.size() == 0) {
             return;
         }
 
-        YouTubeMediaItem firstItem = null;
-        for (YouTubeMediaItem item : items) {
+        MediaItem firstItem = null;
+        for (MediaItem item : items) {
             firstItem = item;
             break;
         }
         writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
 
         // Representation
-        for (YouTubeMediaItem item : items) {
+        for (MediaItem item : items) {
             writeMediaItemTag(item);
         }
 
@@ -257,12 +257,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     @Override
-    public void append(YouTubeMediaItem mediaItem) {
+    public void append(MediaItem mediaItem) {
         if (notDASH(mediaItem)) {
             return;
         }
 
-        Set<YouTubeMediaItem> placeholder = null;
+        Set<MediaItem> placeholder = null;
         String mimeType = extractMimeType(mediaItem);
         if (mimeType != null) {
             switch (mimeType) {
@@ -291,11 +291,16 @@ public class SimpleMPDBuilder implements MPDBuilder {
         mSubs.addAll(subs);
     }
 
-    private boolean notDASH(YouTubeMediaItem mediaItem) {
+    @Override
+    public void append(Subtitle sub) {
+        mSubs.add(sub);
+    }
+
+    private boolean notDASH(MediaItem mediaItem) {
         return mediaItem.getInit() == null;
     }
 
-    private String extractMimeType(YouTubeMediaItem item) {
+    private String extractMimeType(MediaItem item) {
         String codecs = extractCodecs(item);
 
         if (codecs.startsWith("vorbis") ||
@@ -318,7 +323,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return null;
     }
 
-    private void writeMediaItemTag(YouTubeMediaItem item) {
+    private void writeMediaItemTag(MediaItem item) {
         startTag("", "Representation");
 
         attribute("", "id", item.getITag());
@@ -376,7 +381,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "Representation");
     }
 
-    private boolean isVideo(YouTubeMediaItem item) {
+    private boolean isVideo(MediaItem item) {
         return item.getSize() != null;
     }
 
@@ -388,7 +393,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
     }
 
-    private String getHeight(YouTubeMediaItem item) {
+    private String getHeight(MediaItem item) {
         String size = item.getSize();
         if (size == null) {
             return "";
@@ -396,7 +401,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return size.split("x")[1];
     }
 
-    private String getWidth(YouTubeMediaItem item) {
+    private String getWidth(MediaItem item) {
         String size = item.getSize();
         if (size == null) {
             return "";
@@ -404,7 +409,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return size.split("x")[0];
     }
 
-    private String extractCodecs(YouTubeMediaItem item) {
+    private String extractCodecs(MediaItem item) {
         // input example: video/mp4;+codecs="avc1.640033"
         Pattern pattern = Pattern.compile(".*codecs=\\\"(.*)\\\"");
         Matcher matcher = pattern.matcher(item.getType());

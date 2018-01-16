@@ -1,17 +1,17 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events;
 
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 
 import java.util.List;
 
 public class DecipherSignaturesDoneEvent {
-    private List<YouTubeMediaItem> mMediaItems;
+    private List<MediaItem> mMediaItems;
 
-    public DecipherSignaturesDoneEvent(List<YouTubeMediaItem> mediaItems) {
+    public DecipherSignaturesDoneEvent(List<MediaItem> mediaItems) {
         mMediaItems = mediaItems;
     }
 
-    public List<YouTubeMediaItem> getMediaItems() {
+    public List<MediaItem> getMediaItems() {
         return mMediaItems;
     }
 }

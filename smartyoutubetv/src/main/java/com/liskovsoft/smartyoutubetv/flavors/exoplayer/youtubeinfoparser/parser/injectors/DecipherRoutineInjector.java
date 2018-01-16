@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherSignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeDoneEvent;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DecipherRoutineInjector extends ResourceInjectorBase {
-    private List<YouTubeMediaItem> mMediaItems;
+    private List<MediaItem> mMediaItems;
     private String mCombinedSignatures;
     private ArrayList<String> mSignatures;
     private String mDecipherRoutine;
@@ -58,7 +58,7 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
 
     private void applyNewSignatures(String[] signatures) {
         for (int i = 0; i < signatures.length; i++) {
-            YouTubeMediaItem item = mMediaItems.get(i);
+            MediaItem item = mMediaItems.get(i);
             String url = item.getUrl();
             item.setUrl(String.format("%s&signature=%s", url, signatures[i]));
             item.setS(null);
@@ -73,7 +73,7 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
 
     private void extractSignatures() {
         mSignatures = new ArrayList<>();
-        for (YouTubeMediaItem item : mMediaItems) {
+        for (MediaItem item : mMediaItems) {
             mSignatures.add(String.format("\"%s\"", item.getS()));
         }
     }

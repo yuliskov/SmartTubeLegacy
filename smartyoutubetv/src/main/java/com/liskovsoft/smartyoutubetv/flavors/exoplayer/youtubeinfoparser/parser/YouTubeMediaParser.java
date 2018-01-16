@@ -8,8 +8,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.WeirdUrl;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeGenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
@@ -18,12 +16,13 @@ import okhttp3.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class ConcreteYouTubeInfoParser {
+/**
+ * Parses input (get_video_info) to {@link MediaItem}
+ */
+public class YouTubeMediaParser {
     private static final String DASH_MPD_URL = "dashmpd";
     private static final String HLS_URL = "hlsvp";
     private static final String DASH_FORMATS = "adaptive_fmts";
@@ -32,23 +31,26 @@ public class ConcreteYouTubeInfoParser {
     private final String mContent;
     private final int mId;
     private ParserListener mListener;
-    private List<YouTubeMediaItem> mMediaItems;
+    private List<MediaItem> mMediaItems;
+    /**
+     * Path to *.mpd playlist
+     */
     private WeirdUrl mDashMPDUrl;
-    private List<YouTubeMediaItem> mNewMediaItems;
+    private List<MediaItem> mNewMediaItems;
 
-    public ConcreteYouTubeInfoParser(String content) {
+    public YouTubeMediaParser(String content) {
         mContent = content;
         mId = new Random().nextInt();
     }
 
-    public YouTubeGenericInfo extractGenericInfo() {
-        YouTubeGenericInfo info = new SimpleYouTubeGenericInfo();
+    public GenericInfo extractGenericInfo() {
+        GenericInfo info = new SimpleYouTubeGenericInfo();
         Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-        info.setLengthSeconds(videoInfo.getQueryParameter(YouTubeGenericInfo.LENGTH_SECONDS));
-        info.setTitle(videoInfo.getQueryParameter(YouTubeGenericInfo.TITLE));
-        info.setAuthor(videoInfo.getQueryParameter(YouTubeGenericInfo.AUTHOR));
-        info.setViewCount(videoInfo.getQueryParameter(YouTubeGenericInfo.VIEW_COUNT));
-        info.setTimestamp(videoInfo.getQueryParameter(YouTubeGenericInfo.TIMESTAMP));
+        info.setLengthSeconds(videoInfo.getQueryParameter(GenericInfo.LENGTH_SECONDS));
+        info.setTitle(videoInfo.getQueryParameter(GenericInfo.TITLE));
+        info.setAuthor(videoInfo.getQueryParameter(GenericInfo.AUTHOR));
+        info.setViewCount(videoInfo.getQueryParameter(GenericInfo.VIEW_COUNT));
+        info.setTimestamp(videoInfo.getQueryParameter(GenericInfo.TIMESTAMP));
         return info;
     }
 
@@ -76,7 +78,7 @@ public class ConcreteYouTubeInfoParser {
         if (mMediaItems != null) {
             return;
         }
-        List<YouTubeMediaItem> list = new ArrayList<>();
+        List<MediaItem> list = new ArrayList<>();
         List<String> items = splitContent(mContent);
         for (String item : items) {
             list.add(createMediaItem(item));
@@ -84,19 +86,19 @@ public class ConcreteYouTubeInfoParser {
         mMediaItems = list;
     }
 
-    private YouTubeMediaItem createMediaItem(String content) {
+    private MediaItem createMediaItem(String content) {
         Uri mediaUrl = Uri.parse("http://example.com?" + content);
         SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
-        mediaItem.setBitrate(mediaUrl.getQueryParameter(YouTubeMediaItem.BITRATE));
-        mediaItem.setUrl(mediaUrl.getQueryParameter(YouTubeMediaItem.URL));
-        mediaItem.setITag(mediaUrl.getQueryParameter(YouTubeMediaItem.ITAG));
-        mediaItem.setType(mediaUrl.getQueryParameter(YouTubeMediaItem.TYPE));
-        mediaItem.setS(mediaUrl.getQueryParameter(YouTubeMediaItem.S));
-        mediaItem.setClen(mediaUrl.getQueryParameter(YouTubeMediaItem.CLEN));
-        mediaItem.setFps(mediaUrl.getQueryParameter(YouTubeMediaItem.FPS));
-        mediaItem.setIndex(mediaUrl.getQueryParameter(YouTubeMediaItem.INDEX));
-        mediaItem.setInit(mediaUrl.getQueryParameter(YouTubeMediaItem.INIT));
-        mediaItem.setSize(mediaUrl.getQueryParameter(YouTubeMediaItem.SIZE));
+        mediaItem.setBitrate(mediaUrl.getQueryParameter(MediaItem.BITRATE));
+        mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
+        mediaItem.setITag(mediaUrl.getQueryParameter(MediaItem.ITAG));
+        mediaItem.setType(mediaUrl.getQueryParameter(MediaItem.TYPE));
+        mediaItem.setS(mediaUrl.getQueryParameter(MediaItem.S));
+        mediaItem.setClen(mediaUrl.getQueryParameter(MediaItem.CLEN));
+        mediaItem.setFps(mediaUrl.getQueryParameter(MediaItem.FPS));
+        mediaItem.setIndex(mediaUrl.getQueryParameter(MediaItem.INDEX));
+        mediaItem.setInit(mediaUrl.getQueryParameter(MediaItem.INIT));
+        mediaItem.setSize(mediaUrl.getQueryParameter(MediaItem.SIZE));
         return mediaItem;
     }
 
@@ -138,10 +140,10 @@ public class ConcreteYouTubeInfoParser {
 
     private List<String> extractSignatures() {
         List<String> result = new ArrayList<>();
-        for (YouTubeMediaItem item : mMediaItems) {
+        for (MediaItem item : mMediaItems) {
             result.add(item.getS());
         }
-        String rawSignature = mDashMPDUrl.getParam(YouTubeMediaItem.S);
+        String rawSignature = mDashMPDUrl.getParam(MediaItem.S);
         result.add(rawSignature);
         return result;
     }
@@ -176,8 +178,8 @@ public class ConcreteYouTubeInfoParser {
             return;
         }
 
-        mDashMPDUrl.removeParam(YouTubeMediaItem.S);
-        mDashMPDUrl.setParam(YouTubeMediaItem.SIGNATURE, signature);
+        mDashMPDUrl.removeParam(MediaItem.S);
+        mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
 
         InputStream inputStream = extractDashMPDContent();
         MyMPDParser parser = new MyMPDParser(inputStream);
@@ -194,7 +196,7 @@ public class ConcreteYouTubeInfoParser {
             if (signature == null) {
                 continue;
             }
-            YouTubeMediaItem item = mMediaItems.get(i);
+            MediaItem item = mMediaItems.get(i);
             String url = item.getUrl();
             item.setUrl(String.format("%s&signature=%s", url, signature));
             item.setSignature(signature);
@@ -224,6 +226,92 @@ public class ConcreteYouTubeInfoParser {
     }
 
     public interface ParserListener {
-        void onExtractMediaItemsAndDecipher(List<YouTubeMediaItem> items);
+        void onExtractMediaItemsAndDecipher(List<MediaItem> items);
+    }
+
+    public interface MediaItem extends Comparable<MediaItem> {
+        // Common params
+        String URL = "url";
+        String TYPE = "type";
+        String ITAG = "itag";
+        String S = "s";
+        String SIGNATURE = "signature";
+        // End Common params
+
+        // DASH params
+        String CLEN = "clen";
+        String BITRATE = "bitrate";
+        String PROJECTION_TYPE = "projection_type";
+        String XTAGS = "xtags";
+        String SIZE = "size";
+        String INDEX = "index";
+        String FPS = "fps";
+        String LMT = "lmt";
+        String QUALITY_LABEL = "quality_label";
+        String INIT = "init";
+        // End DASH params
+
+        // Regular video params
+        String QUALITY = "quality";
+        // End Regular params
+
+        // Common
+        String getUrl();
+        void setUrl(String url);
+        String getS();
+        void setS(String s);
+        String getType();
+        void setType(String type);
+        String getITag();
+        void setITag(String itag);
+
+        // DASH
+        String getClen();
+        void setClen(String clen);
+        String getBitrate();
+        void setBitrate(String bitrate);
+        String getProjectionType();
+        void setProjectionType(String projectionType);
+        String getXtags();
+        void setXtags(String xtags);
+        String getSize();
+        void setSize(String size);
+        String getIndex();
+        void setIndex(String index);
+        String getInit();
+        void setInit(String init);
+        String getFps();
+        void setFps(String fps);
+        String getLmt();
+        void setLmt(String lmt);
+        String getQualityLabel();
+        void setQualityLabel(String qualityLabel);
+
+        // Other/Regular
+        String getQuality();
+        void setQuality(String quality);
+        boolean belongsToType(String type);
+        void setSignature(String signature);
+        String getSignature();
+        void setAudioSamplingRate(String audioSamplingRate);
+        String getAudioSamplingRate();
+    }
+
+    public interface GenericInfo {
+        String LENGTH_SECONDS = "length_seconds";
+        String TITLE = "title";
+        String AUTHOR = "author";
+        String VIEW_COUNT = "view_count";
+        String TIMESTAMP = "timestamp";
+        String getLengthSeconds();
+        void setLengthSeconds(String lengthSeconds);
+        String getTitle();
+        void setTitle(String title);
+        String getAuthor();
+        void setAuthor(String author);
+        String getViewCount();
+        void setViewCount(String viewCount);
+        String getTimestamp();
+        void setTimestamp(String timestamp);
     }
 }

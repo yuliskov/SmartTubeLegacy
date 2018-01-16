@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.YouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,15 +22,15 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
     public void accept(YouTubeInfoVisitor visitor) {
         mVisitor = visitor;
 
-        List<YouTubeMediaItem> items = parseToMediaItems();
+        List<MediaItem> items = parseToMediaItems();
         assert items != null;
-        for (YouTubeMediaItem item : items) {
+        for (MediaItem item : items) {
             mVisitor.visitMediaItem(item);
         }
     }
 
-    private List<YouTubeMediaItem> parseToMediaItems() {
-        List<YouTubeMediaItem> list = new ArrayList<>();
+    private List<MediaItem> parseToMediaItems() {
+        List<MediaItem> list = new ArrayList<>();
         List<String> items = splitContent(mContent);
         for (String item : items) {
             list.add(createMediaItem(item));
@@ -38,14 +38,14 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
         return list;
     }
 
-    private YouTubeMediaItem createMediaItem(String content) {
+    private MediaItem createMediaItem(String content) {
         Uri mediaUrl = Uri.parse("http://example.com?" + content);
         SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
-        mediaItem.setBitrate(mediaUrl.getQueryParameter(YouTubeMediaItem.BITRATE));
-        mediaItem.setUrl(mediaUrl.getQueryParameter(YouTubeMediaItem.URL));
-        mediaItem.setITag(mediaUrl.getQueryParameter(YouTubeMediaItem.ITAG));
-        mediaItem.setType(mediaUrl.getQueryParameter(YouTubeMediaItem.TYPE));
-        mediaItem.setS(mediaUrl.getQueryParameter(YouTubeMediaItem.S));
+        mediaItem.setBitrate(mediaUrl.getQueryParameter(MediaItem.BITRATE));
+        mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
+        mediaItem.setITag(mediaUrl.getQueryParameter(MediaItem.ITAG));
+        mediaItem.setType(mediaUrl.getQueryParameter(MediaItem.TYPE));
+        mediaItem.setS(mediaUrl.getQueryParameter(MediaItem.S));
         decipherSignature(mediaItem);
         return mediaItem;
     }
