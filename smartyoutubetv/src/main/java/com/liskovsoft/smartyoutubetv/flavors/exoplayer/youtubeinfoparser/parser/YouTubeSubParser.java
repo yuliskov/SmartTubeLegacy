@@ -12,9 +12,7 @@ import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Parses input (get_video_info) to {@link Subtitle}
@@ -24,6 +22,9 @@ public class YouTubeSubParser {
     private static final String PLAYER_RESPONSE_KEY = "player_response";
     private static final String ALL_SUBS_PATH = "$.captions.playerCaptionsTracklistRenderer.captionTracks";
     private static final String SINGLE_SUB_URL_PATH = "$.captions.playerCaptionsTracklistRenderer.captionTracks[0].baseUrl";
+    private static final String VTT_MIME_TYPE = "text/vtt";
+    private static final String VTT_PARAM = "vtt";
+    private static final String VTT_CODECS = "wvtt";
     private DocumentContext mParser;
 
     /**
@@ -61,12 +62,30 @@ public class YouTubeSubParser {
 
         TypeRef<List<Subtitle>> typeRef = new TypeRef<List<Subtitle>>() {};
         try {
-            return mParser.read(ALL_SUBS_PATH, typeRef);
+            List<Subtitle> subs = mParser.read(ALL_SUBS_PATH, typeRef);
+            addMimeTypes(subs);
+            return subs;
         } catch (PathNotFoundException e) {
             String msg = "It is ok. Video does not have a subtitles";
             Log.i(TAG, msg);
         }
         return null;
+    }
+
+    /**
+     * To show subtitles in <code>vtt</code> format just add <code>fmt=vtt</code> at the end of url
+     * <br/>
+     * Example: <code>https://www.youtube.com/api/timedtext?lang=en&v=MhQKe-aERsU&fmt=vtt</code>
+     * @param subs list to process
+     */
+    private void addMimeTypes(List<Subtitle> subs) {
+        if (subs == null)
+            return;
+        for (Subtitle sub : subs) {
+            sub.setBaseUrl(String.format("%s&fmt=%s", sub.getBaseUrl(), VTT_PARAM));
+            sub.setMimeType(VTT_MIME_TYPE);
+            sub.setCodecs(VTT_CODECS);
+        }
     }
 
     public class Subtitle {
@@ -95,6 +114,8 @@ public class YouTubeSubParser {
          */
         @SerializedName("name")
         private Name mName;
+        private String mMimeType;
+        private String mCodecs;
 
         public String getBaseUrl() {
             return mBaseUrl;
@@ -136,7 +157,23 @@ public class YouTubeSubParser {
             mName = name;
         }
 
-        private class Name {
+        public String getMimeType() {
+            return mMimeType;
+        }
+
+        public void setMimeType(String mimeType) {
+            mMimeType = mimeType;
+        }
+
+        public String getCodecs() {
+            return mCodecs;
+        }
+
+        public void setCodecs(String codecs) {
+            mCodecs = codecs;
+        }
+
+        public class Name {
             /**
              * Example: "English+-+en"
              */

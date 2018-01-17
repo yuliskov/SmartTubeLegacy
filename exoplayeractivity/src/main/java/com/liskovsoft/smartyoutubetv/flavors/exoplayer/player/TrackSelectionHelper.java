@@ -80,6 +80,11 @@ import java.util.TreeSet;
             Format format1 = (Format) view1.getTag(R.string.track_view_format);
             Format format2 = (Format) view2.getTag(R.string.track_view_format);
 
+            // sort subtitles by language code
+            if (format1.language != null) {
+                return format1.language.compareTo(format2.language);
+            }
+
             int leftVal = format2.width + (int) format2.frameRate + (format2.codecs.contains("avc") ? 31 : 0);
             int rightVal = format1.width + (int) format1.frameRate + (format1.codecs.contains("avc") ? 31 : 0);
 

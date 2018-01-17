@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:mpeg:DASH:schema:MPD:2011" xmlns:yt="http://youtube.com/yt/2012/10/10" xsi:schemaLocation="urn:mpeg:DASH:schema:MPD:2011 DASH-MPD.xsd" minBufferTime="PT1.500S" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" mediaPresentationDuration="PT1234S">
+  <Period duration="PT1234S">
+    <AdaptationSet id="0" mimeType="video/mp4" subsegmentAlignment="true">
+      <Role schemeIdUri="urn:mpeg:DASH:role:2011" value="main" />
+      <Representation id="133" codecs="avc1.640033" startWithSAP="1" audioSamplingRate="44100">
+        <BaseURL>http://empty.url?dur=1234</BaseURL>
+        <SegmentBase>
+          <Initialization range="0-759" />
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="1" mimeType="text/vtt" lang="en">
+      <Role schemeIdUri="urn:mpeg:DASH:role:2011" value="subtitle" />
+      <Representation id="2" bandwidth="268" codecs="wvtt">
+        <BaseURL>https://www.youtube.com/api/timedtext?caps=&amp;key=yttt1&amp;expire=1515741851&amp;v=WS7f5xpGYn8&amp;hl=en_US&amp;signature=1774F7B2CF8A652145BBED85C33EB92DD8186388.27F90A8C8C2B38844AC89AF3E62F96DDDF3471A4&amp;xorp=True&amp;sparams=caps%2Cv%2Cxorp%2Cexpire&amp;lang=en&amp;name=en&amp;fmt=vtt</BaseURL>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>

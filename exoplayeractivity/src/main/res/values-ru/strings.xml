@@ -15,7 +15,7 @@
     <string name="quality">Качество</string>
     <string name="video">Видео</string>
     <string name="audio">Аудио</string>
-    <string name="text">Текст</string>
+    <string name="text">Субтитры</string>
     <string name="retry">Повтор</string>
     <string name="selection_disabled">Откл. дорожку</string>
     <string name="selection_default">Авто. качество</string>
@@ -29,4 +29,5 @@
     <string name="share_video">Отправ</string>
     <string name="send_to">Отправить в</string>
     <string name="hide_playback_errors">Скрывать ошибки воспроизведения</string>
+    <string name="no_subtitle_msg">Видео не содержит субтитров</string>
 </resources>

@@ -81,7 +81,7 @@
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/captions</item>
         <item name="imageOff">@mipmap/btn_captions_off</item>
-        <item name="imageOn">@mipmap/btn_captions_on</item>
+        <item name="imageOn">@mipmap/btn_captions_off</item>
     </style>
 
     <style name="ExoMediaButton2.Share">
@@ -133,6 +133,11 @@
     <style name="ExoMediaButton2.Audio">
         <item name="textOff">@string/audio</item>
         <item name="textOn">@string/audio</item>
+    </style>
+
+    <style name="ExoMediaButton2.Subtitles">
+        <item name="textOff">@string/text</item>
+        <item name="textOn">@string/text</item>
     </style>
 
     <style name="ExoMediaButton2.Retry">

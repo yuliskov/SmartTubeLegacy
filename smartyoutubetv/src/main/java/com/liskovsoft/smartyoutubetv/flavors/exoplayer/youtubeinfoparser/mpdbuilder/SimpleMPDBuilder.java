@@ -148,7 +148,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
 
         for (Subtitle sub : subs) {
-            writeMediaListPrologue(String.valueOf(mId++), "application/mp4", sub.getLanguageCode());
+            writeMediaListPrologue(sub);
 
             writeMediaItemTag(sub);
 
@@ -238,17 +238,18 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "value", "main");
         endTag("", "Role");
     }
+    
+    private void writeMediaListPrologue(Subtitle sub) {
+        String id = String.valueOf(mId++);
 
-    private void writeMediaListPrologue(String id, String mimeType, String lang) {
         startTag("", "AdaptationSet");
         attribute("", "id", id);
-        attribute("", "mimeType", mimeType);
-        attribute("", "subsegmentAlignment", "true");
-        attribute("", "lang", lang);
+        attribute("", "mimeType", sub.getMimeType());
+        attribute("", "lang", sub.getLanguageCode());
 
         startTag("", "Role");
         attribute("", "schemeIdUri", "urn:mpeg:DASH:role:2011");
-        attribute("", "value", "main");
+        attribute("", "value", "subtitle");
         endTag("", "Role");
     }
 
@@ -368,9 +369,15 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private void writeMediaItemTag(Subtitle sub) {
+        String bandwidth = "268";
+
         startTag("", "Representation");
 
-        attribute("", "codecs", "wvtt");
+        attribute("", "id", String.valueOf(mId));
+
+        attribute("", "bandwidth", bandwidth);
+
+        attribute("", "codecs", sub.getCodecs());
 
         startTag("", "BaseURL");
 

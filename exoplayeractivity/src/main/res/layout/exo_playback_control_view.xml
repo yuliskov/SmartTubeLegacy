@@ -186,6 +186,7 @@
 
         </LinearLayout>
 
+        <!-- quality settings: Video, Audio, Text, Retry -->
         <LinearLayout
             android:id="@+id/controls_root"
             android:layout_width="match_parent"
@@ -194,13 +195,19 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
-                <!--android:id="@+id/exo_video"-->
-                <!--style="@style/ExoMediaButton2.Video"/>-->
+            <!-- NOTE: all contents will be added dynamically. See PlayerActivity#updateButtonVisibilities() code -->
 
-            <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton-->
-                <!--android:id="@+id/exo_audio"-->
-                <!--style="@style/ExoMediaButton2.Audio"/>-->
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_video"
+                style="@style/ExoMediaButton2.Video"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_audio"
+                style="@style/ExoMediaButton2.Audio"/>
+
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+                android:id="@+id/exo_captions2"
+                style="@style/ExoMediaButton2.Subtitles"/>
 
             <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
                 android:id="@+id/retry_button"

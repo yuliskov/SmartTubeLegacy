@@ -65,14 +65,20 @@ public class PlayerButtonsManager {
         mButtonStates.put(id, isChecked);
 
         boolean isUserPageButton = button.getId() == R.id.exo_user && isChecked;
-        boolean isSubtitleButton = button.getId() == R.id.exo_captions && isChecked;
+        boolean isSubtitleButton = button.getId() == R.id.exo_captions;
         boolean isNextButton = button.getId() == R.id.exo_next && isChecked;
         boolean isPrevButton = button.getId() == R.id.exo_prev && isChecked;
         boolean isSuggestions = button.getId() == R.id.exo_suggestions && isChecked;
         boolean isShareButton = button.getId() == R.id.exo_share;
 
-        if (isSubtitleButton)
-            Toast.makeText(mPlayerActivity, R.string.not_implemented_msg, Toast.LENGTH_LONG).show();
+        if (isSubtitleButton) {
+            View subBtn = mPlayerActivity.findViewById(R.id.exo_captions2); // we have two sub buttons with different ids
+            if (subBtn == null) {
+                Toast.makeText(mPlayerActivity, R.string.no_subtitle_msg, Toast.LENGTH_LONG).show();
+            } else {
+                mPlayerActivity.onClick(subBtn);
+            }
+        }
 
         if (isShareButton)
             displayShareDialog();

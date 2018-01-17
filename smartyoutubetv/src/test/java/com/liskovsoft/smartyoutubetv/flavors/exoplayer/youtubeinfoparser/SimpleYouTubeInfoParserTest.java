@@ -134,9 +134,10 @@ public class SimpleYouTubeInfoParserTest {
         String content = TestHelpers.readResource("get_video_info_subs");
         YouTubeSubParser parser = new YouTubeSubParser(content);
         List<Subtitle> allSubs = parser.getAllSubs();
+        String formatKey = "fmt=vtt";
         String expected = "https://www.youtube.com/api/timedtext?caps=&key=yttt1&expire=1515741851&v=WS7f5xpGYn8&hl=en_US&signature" +
                 "=1774F7B2CF8A652145BBED85C33EB92DD8186388.27F90A8C8C2B38844AC89AF3E62F96DDDF3471A4&xorp=True&sparams=caps%2Cv%2Cxorp%2Cexpire&lang" +
-                "=en&name=en";
+                "=en&name=en" + "&" + formatKey;
         assertEquals(expected, allSubs.get(0).getBaseUrl());
     }
 
@@ -148,7 +149,7 @@ public class SimpleYouTubeInfoParserTest {
         MPDBuilder builder = new SimpleMPDBuilder();
         builder.append(allSubs);
         builder.append(prepareFakeVideoItem());
-        assertEquals(TestHelpers.readResource("mpd_with_one_sub"), TestHelpers.readStream(builder.build()));
+        assertEquals(TestHelpers.readResource("mpd_with_one_sub2"), TestHelpers.readStream(builder.build()));
     }
 
 }

@@ -15,7 +15,7 @@
     <string name="quality">Qualität</string>
     <string name="video">Video</string>
     <string name="audio">Audio</string>
-    <string name="text">Text</string>
+    <string name="text">Untertitel</string>
     <string name="retry">Wiederholen</string>
     <string name="selection_disabled">Track deaktivieren</string>
     <string name="selection_default">Standardqualität</string>
@@ -27,4 +27,5 @@
     <string name="autoframerate_not_supported">Ihr Gerät unterstützt Autoframerate nicht</string>
     <string name="share_video">Teilen</string>
     <string name="send_to">Senden an</string>
+    <string name="no_subtitle_msg">Das Video enthält keine Untertitel</string>
 </resources>

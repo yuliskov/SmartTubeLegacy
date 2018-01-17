@@ -761,20 +761,24 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
             if (trackGroups.length != 0) {
                 TextToggleButton button = new TextToggleButton(this);
-                int label;
+                int label, id;
                 switch (player.getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
+                        id = R.id.exo_audio;
                         label = R.string.audio;
                         break;
                     case C.TRACK_TYPE_VIDEO:
+                        id = R.id.exo_video;
                         label = R.string.video;
                         break;
                     case C.TRACK_TYPE_TEXT:
+                        id = R.id.exo_captions2;
                         label = R.string.text;
                         break;
                     default:
                         continue;
                 }
+                button.setId(id);
                 button.setText(label);
                 button.setTag(i);
                 button.setOnClickListener(this);
