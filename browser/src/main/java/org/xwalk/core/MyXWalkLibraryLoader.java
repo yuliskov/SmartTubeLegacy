@@ -416,9 +416,9 @@ class MyXWalkLibraryLoader {
 
             try {
                 mDownloadId = mDownloadManager.enqueue(request);
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                Helpers.showMessage(mContext, e.getCause(), TAG);
+            } catch (IllegalStateException ex) {
+                Log.e(TAG, ex.getMessage(), ex);
+                Helpers.showMessage(mContext, ex.getCause(), TAG);
             }
 
             return isDone ? DownloadManager.STATUS_SUCCESSFUL : DownloadManager.STATUS_FAILED;
@@ -449,10 +449,16 @@ class MyXWalkLibraryLoader {
             sActiveTask = null;
 
             if (result == DownloadManager.STATUS_SUCCESSFUL) {
-                Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
-                Log.d(TAG, "Uri for downloaded file:" + uri.toString());
+                try {
+                    Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
+                    Log.d(TAG, "Uri for downloaded file:" + uri.toString());
 
-                mListener.onDownloadCompleted(uri);
+                    mListener.onDownloadCompleted(uri);
+                } catch (IllegalStateException ex) {
+                    Log.e(TAG, ex.getMessage(), ex);
+                    Helpers.showMessage(mContext, ex.getCause(), TAG);
+                    mListener.onDownloadFailed(result, DownloadManager.ERROR_UNKNOWN);
+                }
             } else {
                 int error = DownloadManager.ERROR_UNKNOWN;
                 mListener.onDownloadFailed(result, error);

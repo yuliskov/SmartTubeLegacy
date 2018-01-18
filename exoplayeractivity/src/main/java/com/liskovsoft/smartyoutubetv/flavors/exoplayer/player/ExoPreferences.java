@@ -13,6 +13,7 @@ public final class ExoPreferences {
     private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
     private static final String SELECTED_TRACK_CODEC = "selectedTrackCodec";
     private static final String HIDE_PLAYBACK_ERRORS = "hidePlaybackErrors";
+    private static final String SUBTITLE_LANG = "subtitleLang";
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
 
@@ -104,5 +105,15 @@ public final class ExoPreferences {
 
     public boolean getHidePlaybackErrors() {
         return mPrefs.getBoolean(HIDE_PLAYBACK_ERRORS, false);
+    }
+
+    public void setSubtitleLang(String lang) {
+        mPrefs.edit()
+                .putString(SUBTITLE_LANG, lang)
+                .apply();
+    }
+
+    public String getSubtitleLang() {
+        return mPrefs.getString(SUBTITLE_LANG, null);
     }
 }
