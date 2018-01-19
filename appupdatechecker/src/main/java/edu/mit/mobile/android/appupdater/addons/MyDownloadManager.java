@@ -77,7 +77,7 @@ public final class MyDownloadManager {
 
     private void run() {
         if (!isNetworkAvailable()) {
-            Helpers.showMessage(mContext, "Internet connection not available");
+            Helpers.showMessage(mContext, "Internet connection not available!");
         }
 
         String url = mRequest.mDownloadUri.toString();

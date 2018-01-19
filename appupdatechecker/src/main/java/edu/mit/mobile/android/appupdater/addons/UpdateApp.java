@@ -6,6 +6,7 @@ import android.net.*;
 import android.os.*;
 import android.os.Build.VERSION;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.webkit.*;
 import android.widget.Toast;
 import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
@@ -67,9 +68,9 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             request.setDestinationUri(Uri.fromFile(outputFile));
             long id = manager.enqueue(request);
             path = manager.getUriForDownloadedFile(id).getPath();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            Helpers.showMessage(mContext, e.getCause(), TAG);
+        } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
+            Log.e(TAG, ex.getMessage(), ex);
+            Helpers.showMessage(mContext, TAG, ex);
         }
         return path;
     }

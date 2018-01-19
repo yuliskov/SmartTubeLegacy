@@ -82,10 +82,14 @@ public class PlayerInitializer {
     }
 
     /**
-     * Set different seek time depending on the video length.
+     * Set different seek time depending on the video length
      * @param player source of the video params
      */
-    public void initTimeBar(@NonNull final SimpleExoPlayer player) {
+    public void initTimeBar(final SimpleExoPlayer player) {
+        if (player == null) {
+            return;
+        }
+
         int incrementMS;
         final long durationMS = player.getDuration();
 

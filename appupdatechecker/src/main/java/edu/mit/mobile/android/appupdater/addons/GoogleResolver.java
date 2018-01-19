@@ -1,6 +1,7 @@
 package edu.mit.mobile.android.appupdater.addons;
 
 import android.content.Context;
+import android.util.Log;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Record;
@@ -58,7 +59,7 @@ class GoogleResolver {
                 hostIPs.add(((ARecord) record).getAddress());
             }
         } catch (UnknownHostException | TextParseException ex) {
-            Helpers.showMessage(mContext, ex, TAG);
+            Log.e(TAG, ex.getMessage(), ex);
             throw new IllegalStateException(ex);
         }
         return hostIPs;

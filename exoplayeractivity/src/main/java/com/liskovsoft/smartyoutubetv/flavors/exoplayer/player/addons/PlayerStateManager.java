@@ -248,7 +248,11 @@ public class PlayerStateManager {
     }
 
     private void persistSubtitleTrack() {
-        TrackGroupArray groups = mSelector.getCurrentMappedTrackInfo().getTrackGroups(SUBTITLE_RENDERER_INDEX);
+        MappedTrackInfo trackInfo = mSelector.getCurrentMappedTrackInfo();
+        if (trackInfo == null) {
+            return;
+        }
+        TrackGroupArray groups = trackInfo.getTrackGroups(SUBTITLE_RENDERER_INDEX);
         SelectionOverride override = mSelector.getSelectionOverride(SUBTITLE_RENDERER_INDEX, groups);
         if (override == null && mDefaultSubtitleLang != null) { // user switched the track to auto mode
             mPrefs.setSubtitleLang(null);

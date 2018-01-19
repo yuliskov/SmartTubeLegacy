@@ -284,11 +284,11 @@ public class AppUpdateChecker {
                 jo = new JSONObject(StreamUtils.inputStreamToString(content));
 
                 mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
-            } catch (final IllegalStateException ex) {
-                ex.printStackTrace();
-                errorMsg = Helpers.toString(ex.getCause());
-            } catch (final Exception e) {
-                throw new IllegalStateException(e);
+            } catch (final IllegalStateException | JSONException ex) {
+                Log.e(TAG, ex.getMessage(), ex);
+                errorMsg = Helpers.toString(ex);
+            } catch (final Exception ex) {
+                throw new IllegalStateException(ex);
             } finally {
                 publishProgress(100);
             }
@@ -299,16 +299,15 @@ public class AppUpdateChecker {
         @Override
         protected void onPostExecute(JSONObject result) {
             if (result == null) {
-                String msg = String.format("%s: %s", TAG, errorMsg);
-                Log.e(TAG, msg);
-                Helpers.showMessage(mContext, msg);
+                Log.e(TAG, errorMsg);
+                Helpers.showMessage(mContext, TAG, errorMsg);
             } else {
                 try {
                     triggerFromJson(result);
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Error in JSON version file.", e);
-                    Helpers.showMessage(mContext, e);
+                    Helpers.showMessage(mContext, TAG, e);
                 }
             }
             versionTask = null; // forget about us, we're done.

@@ -1,14 +1,12 @@
-﻿<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+﻿<!-- Traditional Chinese translation -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name_exo">Smart YouTube TV 4K</string>
-
     <string name="player_options_btn">選項</string>
     <string name="player_options_off">選項關閉</string>
     <string name="player_options_on">選項開啟</string>
-
     <string name="options">選項</string>
     <string name="home">Home</string>
     <string name="user_page">使用者頁面</string>
-
     <string name="prev_video">上一個影片</string>
     <string name="next_video">下一個影片</string>
     <string name="pause">暫停</string>
@@ -17,45 +15,26 @@
     <string name="like">我喜歡</string>
     <string name="stats">資訊</string>
     <string name="subscribe">訂閱</string>
-
     <string name="quality">品質</string>
-
-    <string name="video">影片</string>
-
+    <string name="video">影像</string>
     <string name="audio">聲音</string>
-
-    <string name="text">文字</string>
-
+    <string name="text">字幕</string>
     <string name="retry">重試</string>
-
     <string name="selection_default_none">預設 (無)</string>
-
     <string name="unexpected_intent_action">意外的 intent 動作: <xliff:g id="action">%1$s</xliff:g></string>
-
     <string name="enable_random_adaptation">啟用隨機匹配</string>
-
     <string name="error_drm_not_supported">API級別低於18的受保護的內容不支援</string>
-
     <string name="error_drm_unsupported_scheme">這個裝置不支援所需的DRM方案</string>
-
     <string name="error_drm_unknown">發生未知的DRM錯誤</string>
-
     <string name="error_no_decoder">這個裝置不提供解碼器給 <xliff:g id="mime_type">%1$s</xliff:g></string>
-
     <string name="error_no_secure_decoder">這個裝置不提供安全的解碼器給 <xliff:g id="mime_type">%1$s</xliff:g></string>
-
     <string name="error_querying_decoders">無法查詢裝置的解碼器</string>
-
     <string name="error_instantiating_decoder">無法實例化解碼器 <xliff:g id="decoder_name">%1$s</xliff:g></string>
-
     <string name="error_unsupported_video">媒體包括影像軌道，但是無法在這個裝置上撥放</string>
-
     <string name="error_unsupported_audio">媒體包括聲音軌道，但是無法在這個裝置上撥放</string>
-
     <string name="storage_permission_denied">存取的權限被拒絕</string>
-
-    <string name="selection_disabled">關閉軌道</string>
-    <string name="selection_default">預設品質</string>
+    <string name="selection_disabled">停用此軌道</string>
+    <string name="selection_default">預設</string>
     <string name="sample_list_load_error">一個或多個樣本列表未能載入</string>
     <string name="exo_like_desc">喜歡</string>
     <string name="captions">字幕</string>
@@ -67,4 +46,7 @@
     <string name="autoframerate_not_supported">您的裝置不支援自動幀速率</string>
     <string name="share_video">分享影片</string>
     <string name="send_to">傳送至</string>
+    <string name="track_view_format">TrackViewFormat</string>
+    <string name="hide_playback_errors">隱藏播放錯誤訊息</string>
+    <string name="no_subtitle_msg">影片不包含字幕</string>
 </resources>

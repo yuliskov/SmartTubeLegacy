@@ -18,16 +18,20 @@ public class Helpers {
         }
     }
 
-    public static String toString(final Throwable ex) {
+    public static String toString(Throwable ex) {
+        if (ex instanceof IllegalStateException &&
+                ex.getCause() != null) {
+            ex = ex.getCause();
+        }
         return String.format("%s: %s", ex.getClass().getCanonicalName(), ex.getMessage());
     }
 
-    public static void showMessage(final Context ctx, final Throwable ex) {
-        showMessage(ctx, toString(ex));
+    public static void showMessage(final Context ctx, final String TAG, final Throwable ex) {
+        showMessage(ctx, TAG, toString(ex));
     }
 
-    public static void showMessage(final Context ctx, final Throwable ex, final String TAG) {
-        showMessage(ctx, String.format("%s: %s", TAG, toString(ex)));
+    public static void showMessage(final Context ctx, final String TAG, final String msg) {
+        showMessage(ctx, String.format("%s: %s", TAG, msg));
     }
 
     public static void showMessage(final Context ctx, final String msg) {

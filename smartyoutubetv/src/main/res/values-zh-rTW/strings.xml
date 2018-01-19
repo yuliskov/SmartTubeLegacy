@@ -1,17 +1,18 @@
+<!-- Traditional Chinese translation -->
 <resources>
     <string name="webview_desc">MiBox，FireTV等</string>
     <string name="xwalk_desc">MiTV 及其他設備</string>
     <string name="exo_desc">4K：MiTV等</string>
-    <string name="bootstrap_main_title">請選擇所需的YouTube版本</string>
+    <string name="bootstrap_main_title">請選擇 YouTube 版本</string>
     <string name="exo_desc2">4K：替代版本</string>
     <string name="bootstrap_bottom_title">如果您不確定，請一個一個嘗試</string>
-    <string name="loading_bottom_msg">按返回按鈕回到啟動器對話框</string>
+    <string name="loading_bottom_msg">按返回到初始設定畫面</string>
     <string name="language_dialog_title">選擇語言</string>
     <string name="save_selection">記住</string>
     <string name="system_lang">Default</string>
     <string name="language">Language</string>
     <string name="autoframerate">自動幀速率</string>
-    <string name="returning_to_the_video">回到打開的影片</string>
+    <string name="returning_to_the_video">返回到已開啟的影片</string>
     <string name="send_crash_report">錯誤報告</string>
     <string name="sending_crash_report">回傳錯誤報告&#8230;</string>
     <string name="update_check">檢查更新</string>
