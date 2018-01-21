@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    
     buildTypes {
         release {
             minifyEnabled false
@@ -24,8 +25,9 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
         disable 'MissingTranslation'
+        disable 'NewApi'
     }
 }
 

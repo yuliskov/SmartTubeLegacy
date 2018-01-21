@@ -121,13 +121,9 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onResume();
-        if (mController == null) {
-            return;
-        }
-        logger.info("BrowserActivity.onDestroy: this=" + this);
+        super.onDestroy();
         // BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
-        mController.onResume();
+        onResume();
     }
 
     public static boolean isTablet(Activity activity) {

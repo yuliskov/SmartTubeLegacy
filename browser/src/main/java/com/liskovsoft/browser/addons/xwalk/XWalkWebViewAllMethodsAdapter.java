@@ -30,6 +30,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import org.xwalk.core.XWalkView;
+import android.annotation.SuppressLint;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -627,6 +628,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.getLayoutAnimationListener();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void jumpDrawablesToCurrentState() {
         mXWalkView.jumpDrawablesToCurrentState();
@@ -902,11 +904,13 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.dispatchPopulateAccessibilityEvent(event);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onPopulateAccessibilityEvent(AccessibilityEvent event) {
         mXWalkView.onPopulateAccessibilityEvent(event);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         mXWalkView.onInitializeAccessibilityEvent(event);
@@ -917,6 +921,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.createAccessibilityNodeInfo();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         mXWalkView.onInitializeAccessibilityNodeInfo(info);
@@ -1356,6 +1361,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.performAccessibilityAction(action, arguments);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void dispatchStartTemporaryDetach() {
         mXWalkView.dispatchStartTemporaryDetach();
@@ -1366,6 +1372,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         mXWalkView.onStartTemporaryDetach();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void dispatchFinishTemporaryDetach() {
         mXWalkView.dispatchFinishTemporaryDetach();
@@ -1401,6 +1408,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.hasWindowFocus();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onVisibilityAggregated(boolean isVisible) {
         mXWalkView.onVisibilityAggregated(isVisible);
@@ -2140,6 +2148,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.getClipBounds(outRect);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void draw(Canvas canvas) {
         mXWalkView.draw(canvas);
@@ -2181,6 +2190,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         mXWalkView.unscheduleDrawable(who);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void drawableHotspotChanged(float x, float y) {
         mXWalkView.drawableHotspotChanged(x, y);
@@ -2406,6 +2416,7 @@ public class XWalkWebViewAllMethodsAdapter extends HeadersBrowserWebView {
         return mXWalkView.isInLayout();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void requestLayout() {
         mXWalkView.requestLayout();

@@ -13,11 +13,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import com.liskovsoft.browser.SuggestionsAdapter.CompletionListener;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 
 /**
  * TODO: not implemented
  */
-public class UrlInputView extends AutoCompleteTextView implements OnEditorActionListener, CompletionListener, OnItemClickListener, TextWatcher {
+public class UrlInputView extends AppCompatAutoCompleteTextView implements OnEditorActionListener, CompletionListener, OnItemClickListener, TextWatcher {
 
     private UrlInputListener mListener;
     private InputMethodManager mInputManager;

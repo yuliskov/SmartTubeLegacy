@@ -41,7 +41,7 @@ public class ResponseUtils {
      * lower case.
      */
     private static Map<String, String> parseContentTypeParameters(String contentTypeHeader) {
-        Map<String, String> parameters = Collections.EMPTY_MAP;
+        Map<String, String> parameters = Collections.emptyMap();
         String[] fields = contentTypeHeader.split(";");
         if (fields.length > 1) {
             parameters = new HashMap<>();

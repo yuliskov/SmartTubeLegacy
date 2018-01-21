@@ -189,7 +189,7 @@ import java.util.Vector;
      * This class extends ListView to implement the View that will actually display the set of
      * errors encountered on the current page.
      */
-    private static class ErrorConsoleListView extends ListView {
+    public static class ErrorConsoleListView extends ListView {
         // An adapter for this View that contains a list of error messages.
         private ErrorConsoleMessageList mConsoleMessages;
 

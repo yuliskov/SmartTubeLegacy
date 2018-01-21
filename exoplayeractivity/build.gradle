@@ -24,8 +24,9 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
         disable 'MissingTranslation'
+        disable 'NewApi'
     }
 }
 

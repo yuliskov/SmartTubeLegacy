@@ -50,6 +50,11 @@ allprojects {
         // com.android.support libs
         maven { url 'https://maven.google.com' }
     }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked"
+        }
+    }
 }
 
 task clean(type: Delete) {

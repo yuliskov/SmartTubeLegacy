@@ -124,7 +124,7 @@ public class AppUpdateChecker {
     }
 
     public void setMinInterval(int minutes) {
-        mPrefs.edit().putString(PREF_MIN_INTERVAL, String.valueOf(minutes)).commit();
+        mPrefs.edit().putString(PREF_MIN_INTERVAL, String.valueOf(minutes)).apply();
     }
 
     public boolean getEnabled() {
@@ -132,7 +132,7 @@ public class AppUpdateChecker {
     }
 
     public void setEnabled(boolean enabled) {
-        mPrefs.edit().putBoolean(PREF_ENABLED, enabled).commit();
+        mPrefs.edit().putBoolean(PREF_ENABLED, enabled).apply();
     }
 
     /**

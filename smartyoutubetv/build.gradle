@@ -35,6 +35,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         // NOTE: to enable Crashlytics add fabric.properties file with your api keys
         Boolean crashEnabled = file('fabric.properties').exists()
@@ -79,6 +80,7 @@ android {
     }
 
     lintOptions {
+        abortOnError true
         disable 'MissingTranslation'
         disable 'NewApi'
     }
@@ -123,7 +125,7 @@ dependencies {
     compile project.properties.gsonVersion
     compile project.properties.jsonPathVersion
 
-    // view dependencies: gradlew -q app:dependencies
+    // view dependencies: gradlew -q smartyoutubetv:dependencies
     // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
     configurations.all {
         resolutionStrategy {

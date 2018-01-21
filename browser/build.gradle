@@ -13,15 +13,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    lintOptions {
-        abortOnError false
     }
 
     // In the library module's build.gradle, you need a couple extra lines to tell it to
@@ -32,6 +29,12 @@ android {
     productFlavors {
         lite {}
         full {}
+    }
+
+    lintOptions {
+        abortOnError true
+        disable 'MissingTranslation'
+        disable 'NewApi'
     }
 }
 
@@ -52,7 +55,9 @@ dependencies {
 
     // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
     liteCompile project.properties.xwalkSharedLibraryVersion
-    fullCompile project.properties.xwalkCoreLibraryVersion
+    fullCompile(project.properties.xwalkCoreLibraryVersion, {
+        exclude group: 'com.android.support', module: 'support-v4'
+    })
 
     // AppUpdateChecker component
     debugCompile project(path: ':appupdatechecker', configuration: "debug")
