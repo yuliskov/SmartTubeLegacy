@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -74,7 +75,7 @@ public class UhdHelper {
      *
      * @param context Activity context.
      */
-    @TargetApi(17)
+    @SuppressLint("NewApi")
     public UhdHelper(Context context) {
         mContext = context;
         mInternalDisplay = new Display();
@@ -263,7 +264,7 @@ public class UhdHelper {
      * Utility function to parse android.view.Display,Mode to
      * {@link Display.Mode mode}
      *
-     * @param systemMode
+     * @param systemMode mode
      * @return {@link Display.Mode Mode} object
      * or NULL if an error occurred.
      */

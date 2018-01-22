@@ -71,7 +71,8 @@ public class ActionsSender {
 
     private void applyAutoframerate(Intent intent) {
         boolean autoframerateChecked = ExoPreferences.instance(mContext).getAutoframerateChecked();
-        if (autoframerateChecked) {
+        if (autoframerateChecked &&
+            new DisplaySyncHelper(mContext).supportsDisplayModeChange()) {
             int displayModId = intent.getIntExtra(PlayerActivity.DISPLAY_MODE_ID, 0);
             new UhdHelper(mContext).setPreferredDisplayModeId(((Activity) mContext).getWindow(), displayModId, true);
         }

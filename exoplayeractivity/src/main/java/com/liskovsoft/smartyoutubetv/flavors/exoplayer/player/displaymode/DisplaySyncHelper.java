@@ -9,6 +9,8 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -25,12 +27,20 @@ public class DisplaySyncHelper implements UhdHelperListener {
         mContext = context;
     }
 
-    private ArrayList<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
+    private List<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
+        if (currentMode == null) {
+            return Collections.emptyList();
+        }
+
         ArrayList<Display.Mode> newModes = new ArrayList<>();
         int oldModesLen = oldModes.length;
 
         for (int i = 0; i < oldModesLen; ++i) {
             Display.Mode mode = oldModes[i];
+            if (mode == null) {
+                continue;
+            }
+
             if (mode.getPhysicalHeight() == currentMode.getPhysicalHeight() && mode.getPhysicalWidth() == currentMode.getPhysicalWidth()) {
                 newModes.add(mode);
             }
@@ -59,7 +69,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private Display.Mode findCloserMode(ArrayList<Display.Mode> modes, float rate) {
+    private Display.Mode findCloserMode(List<Display.Mode> modes, float rate) {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
         relatedRates.put(1500, new int[]{6000, 3000});
         relatedRates.put(2397, new int[]{2397, 2400, 6000, 3000});
@@ -110,7 +120,11 @@ public class DisplaySyncHelper implements UhdHelperListener {
                 && "Amazon".equalsIgnoreCase(manufacturerName));
     }
 
-    private boolean supportsDisplayModeChange() {
+    /**
+     * Check whether device supports mode change. Also shows toast if no
+     * @return mode change supported
+     */
+    public boolean supportsDisplayModeChange() {
         boolean supportedDevice = true;
 
         //We fail for following conditions
@@ -173,6 +187,13 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return getNeedDisplaySync();
     }
 
+    /**
+     * Tries to find best suited display params for the video
+     * @param window window object
+     * @param videoWidth width of the video material
+     * @param videoFramerate framerate of the video
+     * @return
+     */
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
         if (!getNeedDisplaySync() && !getSwitchToUHD()) { // none of the vars is set to true
             return false;
@@ -185,7 +206,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
             Display.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
-            ArrayList<Display.Mode> resultModes = new ArrayList<>();
+            List<Display.Mode> resultModes = new ArrayList<>();
             if (getSwitchToUHD()) {
                 if (videoWidth > 1920) {
                     resultModes = filterUHDModes(modes);
