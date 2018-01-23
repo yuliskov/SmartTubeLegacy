@@ -181,7 +181,12 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         Intent intent = new Intent();
         intent.setClass(this, BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
-        startActivity(intent);
+
+        boolean activityExists = intent.resolveActivityInfo(getPackageManager(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) != null;
+
+        if (activityExists) {
+            startActivity(intent);
+        }
     }
 
     @Override

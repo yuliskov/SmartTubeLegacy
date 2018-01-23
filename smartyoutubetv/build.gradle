@@ -56,6 +56,9 @@ android {
     productFlavors {
         orig {
         }
+        V720 {
+            versionCode 999 // don't auto-update
+        }
         V1080 {
             versionCode 999 // don't auto-update
         }

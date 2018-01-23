@@ -1,6 +1,9 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -150,5 +154,11 @@ public class Helpers {
         }
 
         return result;
+    }
+
+    public static boolean isCallable(Context ctx, Intent intent) {
+        List<ResolveInfo> list = ctx.getPackageManager().queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 }
