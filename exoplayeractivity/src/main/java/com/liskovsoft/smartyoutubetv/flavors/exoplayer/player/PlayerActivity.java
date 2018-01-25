@@ -473,6 +473,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             // applied one time at player's initialization
             //playerInitializer.applySurfaceFix(player, trackSelector);
             //playerInitializer.applySurfaceFix(player);
+
+            playerInitializer.initVideoTitle();
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();

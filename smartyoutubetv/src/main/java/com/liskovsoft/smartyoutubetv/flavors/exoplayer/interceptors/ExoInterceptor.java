@@ -139,13 +139,16 @@ public class ExoInterceptor extends RequestInterceptor {
     private void openExoPlayer(final Intent playerIntent) {
         sLogger.info("About to start ExoPlayer activity for Regular item");
         final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
-        fetchButtonStates(playerIntent, new Runnable(){
+
+        Runnable onDone = new Runnable() {
             @Override
             public void run() {
                 activity.startActivityForResult(playerIntent, 1);
                 setupResultListener(activity);
             }
-        });
+        };
+
+        fetchButtonStates(playerIntent, onDone);
     }
 
     private void fetchButtonStates(Intent intent, Runnable onDone) {

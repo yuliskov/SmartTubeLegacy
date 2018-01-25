@@ -3,13 +3,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
-import android.support.annotation.NonNull;
-import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnKeyListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -31,7 +26,6 @@ public class PlayerInitializer {
         mPlayer = player;
         mExoPlayerView = (SimpleExoPlayerView) mPlayer.findViewById(R.id.player_view);
         
-        initVideoTitle();
         makeActivityFullscreen();
         makeActivityHorizontal();
     }
@@ -50,7 +44,7 @@ public class PlayerInitializer {
         mPlayer.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-    private void initVideoTitle() {
+    public void initVideoTitle() {
         videoTitle = (TextView) mPlayer.findViewById(R.id.video_title);
         videoTitle.setText(getMainTitle());
         videoTitle2 = (TextView) mPlayer.findViewById(R.id.video_title2);
@@ -62,15 +56,41 @@ public class PlayerInitializer {
     }
 
     public String getSecondTitle() {
-        Intent intent = mPlayer.getIntent();
-
-        String secondTitle = String.format("%s      %s      %s %s", intent.getStringExtra(PlayerActivity.VIDEO_AUTHOR), intent.getStringExtra
-                (PlayerActivity.VIDEO_DATE), formatNumber(intent.getStringExtra(PlayerActivity.VIDEO_VIEW_COUNT)), mPlayer.getString(R.string
-                .view_count));
+        String secondTitle = String.format("%s      %s      %s %s",
+                getAuthor(),
+                getPublishDate(),
+                getViewCount(),
+                mPlayer.getString(R.string.view_count));
 
         return secondTitle;
     }
 
+    private String getAuthor() {
+        Intent intent = mPlayer.getIntent();
+        return intent.getStringExtra(PlayerActivity.VIDEO_AUTHOR);
+    }
+
+    /**
+     * The date may be null if screen mirroring is active (WebView isn't accessible)
+     * @return publish date
+     */
+    private String getPublishDate() {
+        Intent intent = mPlayer.getIntent();
+        String published = intent.getStringExtra(PlayerActivity.VIDEO_DATE);
+        return published == null ? "" : published;
+    }
+
+    private String getViewCount() {
+        Intent intent = mPlayer.getIntent();
+        String viewCount = intent.getStringExtra(PlayerActivity.VIDEO_VIEW_COUNT);
+        return formatNumber(viewCount);
+    }
+
+    /**
+     * Format number in country depended manner
+     * @param num number as string
+     * @return formatted number as string
+     */
     private String formatNumber(String num) {
         if (num == null) {
             return null;

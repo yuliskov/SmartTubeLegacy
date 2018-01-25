@@ -27,6 +27,7 @@ public class PlayerStateManager {
     private static final String VP9_HDR_CODEC = "vp9.2";
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final int SUBTITLE_RENDERER_INDEX = 2;
+    private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
     private final PlayerActivity mPlayerActivity;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -211,7 +212,7 @@ public class PlayerStateManager {
     }
 
     private boolean heightEquals(int leftHeight, int rightHeight) {
-        return Math.abs(leftHeight - rightHeight) <= 10; // ten-pixel precision
+        return Math.abs(leftHeight - rightHeight) <= HEIGHT_PRECISION_PX;
     }
 
     private boolean tracksEquals(String leftTrackId, String rightTrackId) {

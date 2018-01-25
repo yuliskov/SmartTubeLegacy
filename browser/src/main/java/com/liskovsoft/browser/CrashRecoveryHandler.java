@@ -134,15 +134,28 @@ public class CrashRecoveryHandler {
     }
 
     private boolean shouldRestore() {
-        BrowserSettings browserSettings = BrowserSettings.getInstance();
+        BrowserSettings browserSettings = getSettings();
         long lastRecovered = browserSettings.getLastRecovered();
         long timeSinceLastRecover = System.currentTimeMillis() - lastRecovered;
         return (timeSinceLastRecover > PROMPT_INTERVAL)
                 || browserSettings.wasLastRunPaused();
     }
 
+    /**
+     * Initialize if that is not done already. Normal initialization happens in the {@link Browser Browser} class
+     * @return settings initialized
+     */
+    private BrowserSettings getSettings() {
+        BrowserSettings settings = BrowserSettings.getInstance();
+        if (settings == null) {
+            BrowserSettings.initialize(mContext.getApplicationContext());
+            settings = BrowserSettings.getInstance();
+        }
+        return settings;
+    }
+
     private void updateLastRecovered(long time) {
-        BrowserSettings browserSettings = BrowserSettings.getInstance();
+        BrowserSettings browserSettings = getSettings();
         browserSettings.setLastRecovered(time);
     }
 
@@ -150,7 +163,7 @@ public class CrashRecoveryHandler {
         if (!shouldRestore()) {
             return null;
         }
-        BrowserSettings browserSettings = BrowserSettings.getInstance();
+        BrowserSettings browserSettings = getSettings();
         browserSettings.setLastRunPaused(false);
         Bundle state = null;
         Parcel parcel = Parcel.obtain();
