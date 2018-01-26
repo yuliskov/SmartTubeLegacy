@@ -31,7 +31,7 @@ __Standard installation via ADB__
  * Enjoy :)
 
 __How to change system language with only the MiTV3__
- * https://github.com/yuliskov/SmartYouTubeTV/wiki/How-to-enable-English-on-Android-5.1
+ * [How-to-enable-English-on-Android-5.1](https://github.com/yuliskov/SmartYouTubeTV/wiki/How-to-enable-English-on-Android-5.1)
  
 ### Reviews / Articles:
  * Just google for "Smart YouTube TV"
