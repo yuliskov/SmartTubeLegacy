@@ -5,8 +5,8 @@
 
 __SmartYouTubeTV: An YouTube client for set-top boxes and Android-based TVs:__
 
-Visit discussion on official page: 
- * <a href="https://smartyoutubetv.github.io" target="_blank">[APP] SmartYouTubeTV</a>
+Visit discussion on the official page: 
+ * <a href="https://smartyoutubetv.github.io/#comment-3432484129" target="_blank">[APP] SmartYouTubeTV</a>
 
 ### Features:
 
@@ -47,8 +47,8 @@ __How to change system language with only the MiTV3__
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
 
 ### Why using it:
- * SmartYouTubeTV provides a nice possiblity to consume YouTube content.
- * SmartYouTubeTV provides internal logging mechanism which allows you to keep content up to date in a very convinient way.
+ * SmartYouTubeTV provides a nice possibility to consume YouTube content.
+ * SmartYouTubeTV provides internal login mechanism which allows you to keep content up to date in a very convenient way.
  
 ### Donation:
 If you want to support my developments you are welcome to buy me a cup of coffee :)
