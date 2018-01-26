@@ -6,23 +6,23 @@
 __SmartYouTubeTV: An YouTube client for set-top boxes and Android-based TVs:__
 
 Visit discussion on official page: 
- * <a href="https://smartyoutubetv.github.io/" target="_blank">[APP] SmartYouTubeTV</a>
+ * <a href="https://smartyoutubetv.github.io" target="_blank">[APP] SmartYouTubeTV</a>
 
 ### Features:
 
  * __4K support__
- * Runs without Google Services
- * Designed for TV screens
- * Stock controller support
- * Multilingual search keyboard
- * Fully localized
+ * Designed for TV screens.
+ * Stock controller support.
+ * Doesn't depend on Google Services.
+ * Fully localized.
+ * Multilingual search keyboard.
  * Automatic update mechanism.
  * __No root required!__
 
 ### Install SmartYouTubeTV:
 
-__Easy installation in less than 5 minutes with only the MiTV3__
- * https://github.com/sphinx02/AppStarter/wiki/Install-AppStarter-and-Kodi-(only-FireTV-needed)
+__Easy installation in less than 5 minutes with only the FireTV__
+ * https://github.com/yuliskov/SmartYouTubeTV/wiki/Install-AppStarter-and-Kodi-(only-FireTV-needed)
 
 __Standard installation via ADB__
  * If you don't know how to sideload/install apps via ADB, read a tutorial (e.g. <a href="http://kodi.wiki/view/HOW-TO:Install_Kodi_on_Fire_TV" target="_blank">this one</a>)
