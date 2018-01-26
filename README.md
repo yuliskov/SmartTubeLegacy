@@ -10,9 +10,9 @@ Visit discussion on official page:
 
 ### Features:
 
- * __4K support__
+ * __4K support.__
  * Designed for TV screens.
- * Stock controller support.
+ * Any remote controller support.
  * Doesn't depend on Google Services.
  * Fully localized.
  * Multilingual search keyboard.
@@ -22,7 +22,7 @@ Visit discussion on official page:
 ### Install SmartYouTubeTV:
 
 __Easy installation in less than 5 minutes with only the FireTV__
- * [Install-AppStarter-and-Kodi-(only-FireTV-needed)](https://github.com/yuliskov/SmartYouTubeTV/wiki/Install-AppStarter-and-Kodi-(only-FireTV-needed))
+ * <a href="https://github.com/yuliskov/SmartYouTubeTV/wiki/Install-SmartYouTubeTV-(only-FireTV-needed)">Install SmartYouTubeTV (only FireTV needed)</a>
 
 __Standard installation via ADB__
  * If you don't know how to sideload/install apps via ADB, read a tutorial (e.g. <a href="http://kodi.wiki/view/HOW-TO:Install_Kodi_on_Fire_TV" target="_blank">this one</a>)
