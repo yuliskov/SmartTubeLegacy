@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.webkit.*;
@@ -874,6 +875,7 @@ public class Tab implements PictureListener {
     private WebViewClient mWebViewClient = new WebViewClient() {
         boolean mFirstStarted;
         boolean mLoadSuccess = true;
+        final String TAG = Tab.class.getSimpleName() + "." + WebViewClient.class.getSimpleName();
 
         private void onReceiveError(int errorCode) {
             // fix for Android 7.0
@@ -974,6 +976,18 @@ public class Tab implements PictureListener {
             } else {
                 return false;
             }
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            Log.i(TAG, "should intercept1? " + url);
+            return super.shouldInterceptRequest(view, url);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            Log.i(TAG, "should intercept2? " + request);
+            return super.shouldInterceptRequest(view, request);
         }
     };
 

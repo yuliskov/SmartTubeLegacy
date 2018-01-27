@@ -86,6 +86,10 @@ public class Helpers {
     }
 
     public static String toString(InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
+
         Scanner s = new Scanner(inputStream).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
         return result;

@@ -62,6 +62,10 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
     private WebResourceResponse cleanupDashInfo(String url) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) // network error
+            return null;
+
         InputStream videoInfo = response.body().byteStream();
         Scanner s = new Scanner(videoInfo).useDelimiter("\\A");
         String queryUrl = s.hasNext() ? s.next() : "";

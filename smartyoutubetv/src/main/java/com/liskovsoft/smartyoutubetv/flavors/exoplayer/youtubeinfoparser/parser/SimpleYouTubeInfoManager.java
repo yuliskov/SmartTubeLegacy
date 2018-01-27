@@ -9,12 +9,12 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 
 import java.util.List;
 
-public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
+public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
     private final YouTubeMediaParser mMediaParser;
     private final YouTubeSubParser mSubParser;
     private YouTubeInfoVisitor mVisitor;
 
-    public SimpleYouTubeInfoVisitable(String content) {
+    public SimpleYouTubeInfoManager(String content) {
         mMediaParser = new YouTubeMediaParser(content);
         mSubParser = new YouTubeSubParser(content);
     }

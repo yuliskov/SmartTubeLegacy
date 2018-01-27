@@ -1,5 +1,6 @@
 package edu.mit.mobile.android.appupdater.helpers;
 
+import android.util.Log;
 import edu.mit.mobile.android.appupdater.downloadmanager.GoogleResolver;
 import okhttp3.Dns;
 import okhttp3.OkHttpClient;
@@ -8,7 +9,6 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class OkHttpHelpers {
     private static final int NUM_TRIES = 3;
     private static final long CONNECT_TIMEOUT_S = 10;
+    private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static OkHttpClient mClient;
 
     public static Response doOkHttpRequest(String url) {
@@ -33,11 +34,8 @@ public class OkHttpHelpers {
                 if (!okHttpResponse.isSuccessful()) throw new IllegalStateException("Unexpected code " + okHttpResponse);
 
                 break; // no exception is thrown - job is done
-            } catch (SocketTimeoutException | UnknownHostException ex) {
-                if (tries == 1) // swallow 3 times
-                    throw new IllegalStateException(ex);
             } catch (IOException ex) {
-                throw new IllegalStateException(ex);
+                Log.e(TAG, ex.getMessage(), ex); // network error, just return null
             }
         }
 

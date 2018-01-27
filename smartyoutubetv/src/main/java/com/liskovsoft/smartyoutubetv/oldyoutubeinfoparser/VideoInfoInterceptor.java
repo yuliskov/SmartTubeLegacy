@@ -55,6 +55,10 @@ public class VideoInfoInterceptor extends RequestInterceptor {
         }
 
         Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) // network error
+            return null;
+
         VideoInfoBuilder videoInfoBuilder = new YouTubeVideoInfoBuilder(response.body().byteStream());
 
         Set<VideoFormat> supportedFormats = videoInfoBuilder.getSupportedFormats();

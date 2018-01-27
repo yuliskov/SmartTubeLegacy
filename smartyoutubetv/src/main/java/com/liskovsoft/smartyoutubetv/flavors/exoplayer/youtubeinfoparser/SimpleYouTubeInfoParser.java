@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.SimpleMPDBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.SimpleYouTubeInfoVisitable;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.SimpleYouTubeInfoManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeSubParser.Subtitle;
@@ -85,7 +85,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         YouTubeInfoVisitor visitor = new MergeMediaVisitor(mpdFoundCallback);
 
         for (String content : mContent) {
-            YouTubeInfoVisitable visitable = new SimpleYouTubeInfoVisitable(content);
+            if (content == null)
+                continue;
+
+            YouTubeInfoVisitable visitable = new SimpleYouTubeInfoManager(content);
             visitable.accept(visitor);
         }
     }

@@ -94,8 +94,8 @@ public class ExoInterceptor extends RequestInterceptor {
     private void prepareResponseStream(String url) {
         Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
         Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
-        mResponseStream30Fps = response30Fps.body().byteStream();
-        mResponseStream60Fps = response60Fps.body().byteStream();
+        mResponseStream30Fps = response30Fps == null ? null : response30Fps.body().byteStream();
+        mResponseStream60Fps = response60Fps == null ? null : response60Fps.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {

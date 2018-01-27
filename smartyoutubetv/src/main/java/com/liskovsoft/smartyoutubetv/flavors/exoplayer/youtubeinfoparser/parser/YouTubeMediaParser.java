@@ -9,7 +9,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.WeirdUrl;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
-import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
 import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
@@ -125,7 +124,7 @@ public class YouTubeMediaParser {
         String dashmpdUrl = mDashMPDUrl.toString();
         if (dashmpdUrl != null) {
             Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
-            return response.body().byteStream();
+            return response == null ? null : response.body().byteStream();
         }
         return null;
     }
@@ -162,7 +161,7 @@ public class YouTubeMediaParser {
 
         List<String> signatures = doneEvent.getSignatures();
         String lastSignature = signatures.get(signatures.size() - 1);
-        applySignatureToDashMPDUrl(lastSignature);
+        applySignatureAndParseDashMPDUrl(lastSignature);
         applySignaturesToMediaItems(signatures);
         mergeMediaItems();
         mListener.onExtractMediaItemsAndDecipher(mMediaItems);
@@ -174,7 +173,7 @@ public class YouTubeMediaParser {
         }
     }
 
-    private void applySignatureToDashMPDUrl(String signature) {
+    private void applySignatureAndParseDashMPDUrl(String signature) {
         if (mDashMPDUrl.isEmpty()) {
             return;
         }
