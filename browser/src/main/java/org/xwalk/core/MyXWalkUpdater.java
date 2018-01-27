@@ -239,6 +239,13 @@ import org.xwalk.core.MyXWalkLibraryLoader.DownloadListener;
  *
  */
 
+/**
+ * This is the fork of the {@link XWalkUpdater XWalkUpdater}
+ * <br/>
+ * Customizations: download apk through the {@link edu.mit.mobile.android.appupdater.addons.MyDownloadManager MyDownloadManager}
+ * <br/>
+ * Source taken from the <a href="https://github.com/crosswalk-project/crosswalk/tree/e3259b966dcedd18dc456b8cc97cd1a52aad58ea/runtime/android/core/src/org/xwalk/core">github</a>
+ */
 public class MyXWalkUpdater {
     /**
      * Interface used to update the Crosswalk runtime

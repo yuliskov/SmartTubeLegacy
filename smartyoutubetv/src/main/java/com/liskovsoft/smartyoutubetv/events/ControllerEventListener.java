@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
+import com.liskovsoft.browser.Controller.EventListener;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.DecipherSimpleRoutineInjector;
@@ -43,6 +44,7 @@ public class ControllerEventListener implements Controller.EventListener {
     private final GenericEventResourceInjector mEventResourceInjector;
     private final StateUpdater mStateUpdater;
     private final MainApkUpdater mApkUpdater;
+    private final Controller.EventListener mHangListener;
 
     public ControllerEventListener(Context context, KeysTranslator translator) {
         mContext = context;
@@ -56,6 +58,8 @@ public class ControllerEventListener implements Controller.EventListener {
         mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
+
+        mHangListener = new WebViewHangWatcher(mContext, 3);
     }
 
     @Override

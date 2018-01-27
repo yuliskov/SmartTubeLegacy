@@ -104,7 +104,7 @@ public final class ExoPreferences {
     }
 
     public boolean getHidePlaybackErrors() {
-        return mPrefs.getBoolean(HIDE_PLAYBACK_ERRORS, false);
+        return mPrefs.getBoolean(HIDE_PLAYBACK_ERRORS, true);
     }
 
     public void setSubtitleLang(String lang) {

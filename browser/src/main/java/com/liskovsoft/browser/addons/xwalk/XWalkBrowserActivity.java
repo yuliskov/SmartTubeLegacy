@@ -1,8 +1,5 @@
 package com.liskovsoft.browser.addons.xwalk;
 
-import android.app.Activity;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
@@ -69,53 +66,6 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
         finish();
     }
 
-    private boolean isGooglePlayInstalled() {
-        Activity context = this;
-        PackageManager pm = context.getPackageManager();
-        boolean app_installed = false;
-        try
-        {
-            PackageInfo info = pm.getPackageInfo("com.android.vending", PackageManager.GET_ACTIVITIES);
-            String label = (String) info.applicationInfo.loadLabel(pm);
-            app_installed = (label != null && !label.equals("Market"));
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
-            app_installed = false;
-        }
-        return app_installed;
-    }
-
-    private void fixUnsupportedArch() {
-        String arch = System.getProperty("os.arch").toLowerCase();
-        switch (arch) {
-            case "armv8l":
-                System.setProperty("os.arch", "armv8");
-                break;
-        }
-    }
-
-    private boolean isUnsupportedArch() {
-        String arch = System.getProperty("os.arch").toLowerCase();
-        switch (arch) {
-            case "armv8l":
-                return true;
-        }
-        return false;
-    }
-
-    private void setUpdateApkUrl() {
-        if (isUnsupportedArch()) {
-            setupXWalkApkUrl();
-            return;
-        }
-
-        if (!isGooglePlayInstalled()) {
-            setupXWalkApkUrl();
-            return;
-        }
-    }
-
     private void setupXWalkApkUrl() {
         String abi = XWalkEnvironment.getRuntimeAbi();
         String xwalkUrl = Browser.getProperty("xwalk.url." + abi);
@@ -127,11 +77,10 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
 
     @Override
     public void onXWalkInitFailed() {
-        // source taken from: https://github.com/crosswalk-project/crosswalk/tree/e3259b966dcedd18dc456b8cc97cd1a52aad58ea/runtime/android/core/src/org/xwalk/core
         if (mXWalkUpdater == null) {
             mXWalkUpdater = new MyXWalkUpdater(this, this);
         }
-        // setUpdateApkUrl();
+
         setupXWalkApkUrl();
         mXWalkUpdater.updateXWalkRuntime();
     }
