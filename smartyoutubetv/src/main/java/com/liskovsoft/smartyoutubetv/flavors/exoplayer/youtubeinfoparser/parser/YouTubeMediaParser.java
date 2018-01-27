@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
+import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
@@ -123,7 +124,7 @@ public class YouTubeMediaParser {
     private InputStream extractDashMPDContent() {
         String dashmpdUrl = mDashMPDUrl.toString();
         if (dashmpdUrl != null) {
-            Response response = Helpers.doOkHttpRequest(dashmpdUrl);
+            Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
             return response.body().byteStream();
         }
         return null;

@@ -1,6 +1,5 @@
-package edu.mit.mobile.android.appupdater.addons;
+package edu.mit.mobile.android.appupdater.downloadmanager;
 
-import android.content.Context;
 import android.util.Log;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.Lookup;
@@ -33,22 +32,31 @@ import java.util.List;
  * 2001:4860:4860::8844
  * </pre>
  */
-class GoogleResolver {
+public class GoogleResolver {
     private static final String TAG = GoogleResolver.class.getSimpleName();
     private static final String GOOGLE_DNS_IPV4 = "8.8.8.8";
     private static final String GOOGLE_DNS_IPV6 = "2001:4860:4860::8888";
-    private final Context mContext;
+    private static final int RESOLVE_TIMEOUT_S = 5;
+    private final Resolver resolver;
 
-    public GoogleResolver(Context context) {
-        mContext = context;
+    public GoogleResolver() {
+        String dns = findProperServer();
+        resolver = createResolver(dns);
+        resolver.setTimeout(RESOLVE_TIMEOUT_S);
+    }
+
+    private Resolver createResolver(String dns) {
+        try {
+            return new SimpleResolver(dns);
+        } catch (UnknownHostException ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+            throw new IllegalStateException(ex);
+        }
     }
 
     public List<InetAddress> resolve(String host) {
         List<InetAddress> hostIPs = new ArrayList<>();
         try {
-            String dns = findProperServer();
-            Resolver resolver = new SimpleResolver(dns);
-            resolver.setTimeout(5);
             Lookup lookup = new Lookup(host, Type.A);
             lookup.setResolver(resolver);
             Record[] records = lookup.run();
@@ -58,7 +66,7 @@ class GoogleResolver {
             for (Record record : records) {
                 hostIPs.add(((ARecord) record).getAddress());
             }
-        } catch (UnknownHostException | TextParseException ex) {
+        } catch (TextParseException ex) {
             Log.e(TAG, ex.getMessage(), ex);
             throw new IllegalStateException(ex);
         }

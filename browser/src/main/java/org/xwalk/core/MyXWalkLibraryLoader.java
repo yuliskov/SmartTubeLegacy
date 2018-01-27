@@ -5,14 +5,8 @@
 package org.xwalk.core;
 
 import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
-import android.app.DownloadManager.Query;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -21,19 +15,17 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import edu.mit.mobile.android.appupdater.addons.Helpers;
-import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
+import edu.mit.mobile.android.appupdater.helpers.Helpers;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.Thread;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 
 /**
  * MyXWalkLibraryLoader is a low level inteface to schedule decompressing, downloading, activating

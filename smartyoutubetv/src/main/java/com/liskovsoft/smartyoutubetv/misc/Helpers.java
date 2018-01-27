@@ -7,9 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,8 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Helpers {
-    private static OkHttpClient mClient;
-
     /**
      * Simple wildcard matching routine. Implemented without regex. So you may expect huge performance boost.
      * @param host
@@ -99,25 +94,6 @@ public class Helpers {
     public static InputStream toStream(String content) {
         return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
     }
-
-    public static Response doOkHttpRequest(String url) {
-        if (mClient == null)
-            mClient = new OkHttpClient();
-
-        Request okHttpRequest = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response okHttpResponse = null;
-        try {
-            okHttpResponse = mClient.newCall(okHttpRequest).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return okHttpResponse;
-    }
-
 
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);

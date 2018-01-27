@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoInfoParser;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.YouTubeVideoInfoParser;
+import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;
@@ -60,7 +61,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     }
 
     private WebResourceResponse cleanupDashInfo(String url) {
-        Response response = Helpers.doOkHttpRequest(url);
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
         InputStream videoInfo = response.body().byteStream();
         Scanner s = new Scanner(videoInfo).useDelimiter("\\A");
         String queryUrl = s.hasNext() ? s.next() : "";

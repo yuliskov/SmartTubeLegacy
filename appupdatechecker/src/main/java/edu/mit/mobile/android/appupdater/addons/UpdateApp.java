@@ -9,7 +9,9 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.*;
 import android.widget.Toast;
-import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
+import edu.mit.mobile.android.appupdater.helpers.Helpers;
 
 import java.io.*;
 

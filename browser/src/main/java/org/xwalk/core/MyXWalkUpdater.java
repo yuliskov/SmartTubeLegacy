@@ -20,6 +20,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.List;
 
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import org.xwalk.core.MyXWalkLibraryLoader.DownloadListener;
 
 /**
@@ -242,7 +243,7 @@ import org.xwalk.core.MyXWalkLibraryLoader.DownloadListener;
 /**
  * This is the fork of the {@link XWalkUpdater XWalkUpdater}
  * <br/>
- * Customizations: download apk through the {@link edu.mit.mobile.android.appupdater.addons.MyDownloadManager MyDownloadManager}
+ * Customizations: download apk through the {@link MyDownloadManager MyDownloadManager}
  * <br/>
  * Source taken from the <a href="https://github.com/crosswalk-project/crosswalk/tree/e3259b966dcedd18dc456b8cc97cd1a52aad58ea/runtime/android/core/src/org/xwalk/core">github</a>
  */

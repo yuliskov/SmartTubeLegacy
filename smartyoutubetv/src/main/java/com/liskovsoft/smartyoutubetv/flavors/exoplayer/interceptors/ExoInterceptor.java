@@ -23,6 +23,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTube
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
+import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +92,8 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        Response response30Fps = Helpers.doOkHttpRequest(unlockRegularFormats(url));
-        Response response60Fps = Helpers.doOkHttpRequest(unlock60FpsFormats(url));
+        Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
+        Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
         mResponseStream30Fps = response30Fps.body().byteStream();
         mResponseStream60Fps = response60Fps.body().byteStream();
     }

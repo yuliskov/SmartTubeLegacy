@@ -74,12 +74,14 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
+        mHangListener.onPageFinished(tab);
         WebView w = tab.getWebView();
         injectWebFiles(w);
     }
 
     @Override
     public void onPageStarted(Tab tab) {
+        mHangListener.onPageStarted(tab);
         // js must be added before page fully loaded
         addJSInterface(tab);
     }
@@ -91,6 +93,7 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onLoadSuccess(Tab tab) {
+        mHangListener.onLoadSuccess(tab);
         mTranslator.enable();
         mLoadingManager.hide(tab);
         mApkUpdater.start();

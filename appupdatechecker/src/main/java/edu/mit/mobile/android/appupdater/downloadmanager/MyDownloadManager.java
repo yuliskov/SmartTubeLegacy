@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.mit.mobile.android.appupdater.addons;
+package edu.mit.mobile.android.appupdater.downloadmanager;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import edu.mit.mobile.android.appupdater.helpers.Helpers;
 import okhttp3.Dns;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -62,6 +63,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class MyDownloadManager {
     private static final String TAG = MyDownloadManager.class.getSimpleName();
+    private static final int NUM_TRIES = 3;
+    private static final long CONNECT_TIMEOUT_S = 10;
     private final Context mContext;
     private final OkHttpClient mClient;
     private MyRequest mRequest;
@@ -71,7 +74,7 @@ public final class MyDownloadManager {
 
     public MyDownloadManager(Context context) {
         mContext = context;
-        mResolver = new GoogleResolver(context);
+        mResolver = new GoogleResolver();
         mClient = createOkHttpClient();
     }
 
@@ -86,7 +89,7 @@ public final class MyDownloadManager {
                 .url(url)
                 .build();
 
-        for (int tries = 3; tries > 0; tries--) {
+        for (int tries = NUM_TRIES; tries > 0; tries--) {
             try {
                 Response response = mClient.newCall(request).execute();
                 if (!response.isSuccessful()) throw new IllegalStateException("Unexpected code " + response);
@@ -94,7 +97,7 @@ public final class MyDownloadManager {
                 // NOTE: actual downloading is going here (while reading a stream)
                 mResponseStream = new ByteArrayInputStream(response.body().bytes());
                 break; // no exception is thrown - job is done
-            } catch (SocketTimeoutException ex) {
+            } catch (SocketTimeoutException | UnknownHostException ex) {
                 if (tries == 1) // swallow 3 times
                     throw new IllegalStateException(ex);
             } catch (IOException ex) {
@@ -120,9 +123,9 @@ public final class MyDownloadManager {
                         return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
                     }
                 })
-                .connectTimeout(10, TimeUnit.SECONDS)
-                  .readTimeout(10, TimeUnit.SECONDS)
-                  .writeTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
+                  .readTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
+                  .writeTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
                   .build();
     }
 

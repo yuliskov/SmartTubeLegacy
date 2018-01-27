@@ -1,4 +1,4 @@
-package edu.mit.mobile.android.appupdater.addons;
+package edu.mit.mobile.android.appupdater.downloadmanager;
 
 import android.app.DownloadManager;
 import android.content.Context;

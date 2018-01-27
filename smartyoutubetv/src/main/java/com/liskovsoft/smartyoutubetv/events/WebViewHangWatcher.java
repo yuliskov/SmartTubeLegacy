@@ -2,12 +2,14 @@ package com.liskovsoft.smartyoutubetv.events;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 
 public class WebViewHangWatcher implements Controller.EventListener {
+    private static final String TAG = WebViewHangWatcher.class.getSimpleName();
     private final Context mContext;
     private final int mRetryTimes;
 
@@ -18,12 +20,12 @@ public class WebViewHangWatcher implements Controller.EventListener {
 
     @Override
     public void onReceiveError(Tab tab) {
-        
+        Log.i(TAG, "page error: " + tab.getWebView().getUrl());
     }
 
     @Override
     public void onLoadSuccess(Tab tab) {
-
+        Log.i(TAG, "load success: " + tab.getWebView().getUrl());
     }
 
     @Override
@@ -38,12 +40,12 @@ public class WebViewHangWatcher implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
-
+        Log.i(TAG, "page finished: " + tab.getWebView().getUrl());
     }
 
     @Override
     public void onPageStarted(Tab tab) {
-
+        Log.i(TAG, "page started: " + tab.getWebView().getUrl());
     }
 
     @Override

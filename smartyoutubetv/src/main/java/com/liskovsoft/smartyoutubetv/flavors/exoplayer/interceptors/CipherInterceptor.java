@@ -9,6 +9,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.GetDecipherCodeEvent;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.squareup.otto.Subscribe;
+import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
@@ -47,7 +48,7 @@ public class CipherInterceptor extends RequestInterceptor {
     }
 
     private void cacheResponse(String url) {
-        Response response = Helpers.doOkHttpRequest(url);
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
         if (response == null) {
             return;
         }

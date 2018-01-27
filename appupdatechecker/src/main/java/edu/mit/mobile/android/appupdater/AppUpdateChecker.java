@@ -18,22 +18,16 @@ package edu.mit.mobile.android.appupdater;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
-import edu.mit.mobile.android.appupdater.addons.Helpers;
-import edu.mit.mobile.android.appupdater.addons.MyDownloadManager;
-import edu.mit.mobile.android.appupdater.addons.MyDownloadManager.MyRequest;
+import edu.mit.mobile.android.appupdater.helpers.Helpers;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
