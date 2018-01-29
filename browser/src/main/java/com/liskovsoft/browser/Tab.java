@@ -878,8 +878,9 @@ public class Tab implements PictureListener {
         final String TAG = Tab.class.getSimpleName() + "." + WebViewClient.class.getSimpleName();
 
         private void onReceiveError(int errorCode) {
-            // fix for Android 7.0
-            if (errorCode == WebViewClient.ERROR_UNKNOWN)
+            Log.w(TAG, "network error");
+
+            if (errorCode == WebViewClient.ERROR_UNKNOWN) // ignore fake errors on Android 7.0
                 return;
 
             mWebViewController.onReceiveError(Tab.this);

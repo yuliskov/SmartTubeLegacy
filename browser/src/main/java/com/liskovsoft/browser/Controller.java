@@ -82,6 +82,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private List<EventListener> mEventListeners = new ArrayList<>();
     private Uri mDefaultUrl;
     private Map<String, String> mDefaultHeaders;
+    private Intent mIntent;
 
     public interface EventListener {
         void onReceiveError(Tab tab);
@@ -131,6 +132,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
         // mCrashRecoverHandler has any previously saved state.
         mCrashRecoveryHandler.startRecovery(intent);
+        mIntent = intent; // store intent for the future call of 'restart'
     }
 
     public void start(final Intent intent, final Uri url) {

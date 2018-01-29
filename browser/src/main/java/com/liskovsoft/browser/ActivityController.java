@@ -14,7 +14,6 @@ import android.view.View;
 
 
 public interface ActivityController {
-
     void start(Intent intent);
 
     void onSaveInstanceState(Bundle outState);

@@ -46,8 +46,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         initKeys();
         initPermissions();
 
-        // clearCache();
-
         createController(icicle);
 
         makeActivityFullscreen();
@@ -70,14 +68,6 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         new LangUpdater(this).update();
     }
 
-    /**
-     * WebView likes to cache js. So this is prevents my changes from applying.
-     */
-    private void clearCache() {
-        deleteDatabase("webview.db");
-        deleteDatabase("webviewCache.db");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -88,12 +78,10 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         mHeaders.put("user-agent", mLGSmartTVUserAgent);
 
         mController = new SimpleUIController(this);
-        mController.setEventListener(new ControllerEventListener(this, mTranslator));
+        mController.setEventListener(new ControllerEventListener(this, mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);
         Intent intent = (icicle == null) ? transformIntentData(getIntent()) : null;
-        // TODO: remove
-        //mPageDefaults = new PageDefaults(mYouTubeTVUrl, mHeaders, mPageLoadHandler, new MyControllerEventHandler(mController));
         mController.start(intent);
         setController(mController);
     }

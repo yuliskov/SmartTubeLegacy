@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.events;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.Controller.EventListener;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.DecipherSimpleRoutineInjector;
@@ -24,13 +23,8 @@ import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector;
-import edu.mit.mobile.android.appupdater.AppUpdateChecker;
-import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ControllerEventListener implements Controller.EventListener {
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
@@ -44,10 +38,11 @@ public class ControllerEventListener implements Controller.EventListener {
     private final GenericEventResourceInjector mEventResourceInjector;
     private final StateUpdater mStateUpdater;
     private final MainApkUpdater mApkUpdater;
-    private final Controller.EventListener mHangListener;
+    private final Controller mController;
 
-    public ControllerEventListener(Context context, KeysTranslator translator) {
+    public ControllerEventListener(Context context, Controller controller, KeysTranslator translator) {
         mContext = context;
+        mController = controller;
         mTranslator = translator;
         mStateUpdater = new StateUpdater(null, context);
         mLoadingManager = new LoadingManager(context);
@@ -58,8 +53,6 @@ public class ControllerEventListener implements Controller.EventListener {
         mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
-
-        mHangListener = new WebViewHangWatcher(mContext, 3);
     }
 
     @Override
@@ -74,14 +67,12 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
-        mHangListener.onPageFinished(tab);
         WebView w = tab.getWebView();
         injectWebFiles(w);
     }
 
     @Override
     public void onPageStarted(Tab tab) {
-        mHangListener.onPageStarted(tab);
         // js must be added before page fully loaded
         addJSInterface(tab);
     }
@@ -89,11 +80,11 @@ public class ControllerEventListener implements Controller.EventListener {
     @Override
     public void onReceiveError(Tab tab) {
         logger.info("onReceiveError called");
+        tab.reload();
     }
 
     @Override
     public void onLoadSuccess(Tab tab) {
-        mHangListener.onLoadSuccess(tab);
         mTranslator.enable();
         mLoadingManager.hide(tab);
         mApkUpdater.start();
@@ -119,7 +110,7 @@ public class ControllerEventListener implements Controller.EventListener {
         mStateUpdater.updateState(state);
     }
 
-    @TargetApi(17)
+    @SuppressLint("NewApi")
     private void addJSInterface(Tab tab) {
         mJSInterface.add(tab);
 
