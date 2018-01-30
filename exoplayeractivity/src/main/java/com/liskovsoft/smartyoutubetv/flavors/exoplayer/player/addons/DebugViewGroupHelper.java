@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.util.TypedValue;
 import android.view.Display;
@@ -41,6 +42,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 
 import java.util.Locale;
 
@@ -189,18 +191,16 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
             return;
         }
 
-        String currentRes = getCurrentResString();
+        String videoRes = getVideoResolution(video);
+        String displayRes = getDisplayResolution();
 
-        appendRow("Current/Optimal Resolution",
-                    video.width + "x" + video.height + "@" + ((int)video.frameRate)
-                        + "/" +
-                        currentRes);
+        appendRow("Video/Display Resolution", videoRes + "/" + displayRes);
         appendRow("Video/Audio Codecs", String.format(
-                "%s(%s)/%s(%s)",
+                "%s%s/%s%s",
                 video.sampleMimeType.replace("video/", ""),
-                video.id,
+                getFormatId(video),
                 audio.sampleMimeType.replace("audio/", ""),
-                audio.id
+                getFormatId(audio)
         ));
         appendRow("Video/Audio Bitrate", String.format(
                 "%s/%s",
@@ -314,26 +314,51 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
     }
 
     private String toHumanReadable(int bitrate) {
+        if (bitrate < 0) {
+            return NOT_AVAILABLE;
+        }
+
         float mbit = ((float) bitrate) / 1_000_000;
         return String.format(Locale.ENGLISH, "%.2fMbit", mbit);
     }
 
-    private String getCurrentResString() {
+    private String getFormatId(Format video) {
+        String id = video.id;
+        if (Utils.isNumeric(id)) {
+            return String.format("(%s)", id);
+        }
+        return "";
+    }
+
+    private String getVideoResolution(Format video) {
+        String result = video.width + "x" + video.height;
+        if (video.frameRate > 0) {
+            result += "@" + ((int) video.frameRate);
+        }
+        return result;
+    }
+
+    private String getDisplayResolution() {
         if (Util.SDK_INT < 23) {
-            return NOT_AVAILABLE;
+            WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+
+            return size.x + "x" + size.y + "@" + Math.round(display.getRefreshRate());
+        } else {
+            Display display = getCurrentDisplay();
+            if (display == null) {
+                return NOT_AVAILABLE;
+            }
+
+            Mode mode = display.getMode();
+            int physicalWidth = mode.getPhysicalWidth();
+            int physicalHeight = mode.getPhysicalHeight();
+            float refreshRate = mode.getRefreshRate();
+
+            return physicalWidth + "x" + physicalHeight + "@" + Math.round(refreshRate);
         }
-
-        Display display = getCurrentDisplay();
-        if (display == null) {
-            return NOT_AVAILABLE;
-        }
-
-        Mode mode = display.getMode();
-        int physicalWidth = mode.getPhysicalWidth();
-        int physicalHeight = mode.getPhysicalHeight();
-        float refreshRate = mode.getRefreshRate();
-
-        return physicalWidth + "x" + physicalHeight + "@" + ((int)refreshRate);
     }
 
     @TargetApi(17)

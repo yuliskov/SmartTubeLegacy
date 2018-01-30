@@ -88,18 +88,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private void writePrologue() {
-        String durationParam = null;
-        String duration = null;
-        // MPD file is not valid without duration
-        if (mInfo != null && mInfo.getLengthSeconds() != null) {
-            duration = mInfo.getLengthSeconds();
-        } else { // try to use some work around
-            duration = extractDurationFromTrack();
-        }
-
-        if (duration != null) {
-            durationParam = String.format("PT%sS", duration);
-        }
+        String duration = mInfo.getLengthSeconds();
+        String durationParam = String.format("PT%sS", duration);
 
         startTag("", "MPD");
         attribute("", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -113,19 +103,6 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         startTag("", "Period");
         attribute("", "duration", durationParam);
-    }
-
-    private String extractDurationFromTrack() {
-        String url = null;
-        for (MediaItem item : mMP4Videos) {
-            url = item.getUrl();
-            break; // get first item
-        }
-        String res = Helpers.runMultiMatcher(url, "dur=(\\w*)");
-        if (res == null) {
-            throw new IllegalStateException("Video doesn't have a duration. Size of the video list: " + mMP4Videos.size());
-        }
-        return res;
     }
 
     private void writeEpilogue() {
@@ -424,8 +401,62 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return matcher.group(1);
     }
 
+    /**
+     * Extracts time from video url (if present).
+     * Url examples:
+     * <br/>
+     * "http://example.com?dur=544.99&key=val&key2=val2"
+     * <br/>
+     * "http://example.com/dur/544.99/key/val/key2/val2"
+     * @return duration as string
+     */
+    private String extractDurationFromTrack() {
+        String url = null;
+        for (MediaItem item : mMP4Videos) {
+            url = item.getUrl();
+            break; // get first item
+        }
+        String res = Helpers.runMultiMatcher(url, "dur=([^&]*)", "/dur/([^/]*)");
+        return res;
+    }
+
+    /**
+     * Ensures that required fields are set. If no, initialize them or throw an exception.
+     * <br/>
+     * Required fields are:
+     * <br/>
+     * {@link GenericInfo#getLengthSeconds() GenericInfo#getLengthSeconds()}
+     */
+    private void ensureRequiredFieldsAreSet() {
+        ensureLengthIsSet();
+    }
+
+    /**
+     * MPD file is not valid without duration
+     */
+    private void ensureLengthIsSet() {
+        if (mInfo == null) {
+            throw new IllegalStateException("GenericInfo not initialized");
+        }
+
+        if (mInfo.getLengthSeconds() != null) {
+            return;
+        }
+
+        // try to get duration from video url
+        String len = extractDurationFromTrack();
+
+        if (len == null) {
+            throw new IllegalStateException("Video doesn't have a duration. Size of the video list: " + mMP4Videos.size());
+        }
+
+        mInfo.setLengthSeconds(len);
+    }
+
     @Override
     public InputStream build() {
+        ensureRequiredFieldsAreSet();
+
         writePrologue();
 
         writeMediaTags();

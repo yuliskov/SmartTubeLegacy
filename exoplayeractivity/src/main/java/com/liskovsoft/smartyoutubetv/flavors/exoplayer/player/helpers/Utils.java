@@ -114,4 +114,8 @@ public class Utils {
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
     }
+
+    public static boolean isNumeric(String s) {
+        return s != null && s.matches("[-+]?\\d*\\.?\\d+");
+    }
 }

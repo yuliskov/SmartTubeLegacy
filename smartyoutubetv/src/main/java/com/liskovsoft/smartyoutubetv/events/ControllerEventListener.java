@@ -77,6 +77,16 @@ public class ControllerEventListener implements Controller.EventListener {
         addJSInterface(tab);
     }
 
+    /**
+     * CAUTION: do all your error stuff here. Why, see below.
+     * <br/>
+     * In other places {@link WebView#getUrl WebView.getUrl} may return <code>null</code> because page not done loading.
+     * <br/>
+     * I've got a mistake. I tried to wait {@link #onPageFinished(Tab) onPageFinished} event. DO NOT DO THIS.
+     * <br/>
+     * <a href="https://stackoverflow.com/questions/13773037/webview-geturl-returns-null-because-page-not-done-loading">More info</a>
+     * @param tab tab
+     */
     @Override
     public void onReceiveError(Tab tab) {
         logger.info("onReceiveError called");

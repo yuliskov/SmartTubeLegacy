@@ -597,6 +597,10 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     }
 
     private void updateResumePosition() {
+        if (player == null) {
+            return;
+        }
+
         resumeWindow = player.getCurrentWindowIndex();
         resumePosition = player.isCurrentWindowSeekable() ? Math.max(0, player.getCurrentPosition()) : C.TIME_UNSET;
     }

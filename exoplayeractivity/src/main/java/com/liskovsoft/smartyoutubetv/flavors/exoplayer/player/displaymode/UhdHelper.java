@@ -291,7 +291,7 @@ public class UhdHelper {
      * or NULL if an error occurred.
      */
     public Display.Mode[] getSupportedModes() {
-        Display.Mode[] returnedSupportedModes = null;
+        Display.Mode[] returnedSupportedModes = {};
         try {
             Class<?> classToInvestigate = Class.forName(sDisplayClassName);
             Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName);
