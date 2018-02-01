@@ -17,4 +17,5 @@
     <string name="send_crash_report">Absturzbericht</string>
     <string name="sending_crash_report">Absturzbericht senden...</string>
     <string name="update_check">Update Überp</string>
+    <string name="select_preferred_codec">Wählen Sie den Codec</string>
 </resources>

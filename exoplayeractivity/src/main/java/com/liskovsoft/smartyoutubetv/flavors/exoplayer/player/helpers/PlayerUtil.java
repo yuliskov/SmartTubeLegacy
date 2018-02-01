@@ -15,9 +15,11 @@
  */
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
+import android.content.Context;
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -26,6 +28,9 @@ import java.util.Locale;
  * Utility methods for demo application.
  */
 /*package*/ public final class PlayerUtil {
+
+    private PlayerUtil() {
+    }
 
     /**
      * Builds a track name for display.
@@ -93,6 +98,26 @@ import java.util.Locale;
         return format.sampleMimeType == null ? "" : format.sampleMimeType;
     }
 
-    private PlayerUtil() {
+    /**
+     * Test format against user preferred one (selected in bootstrap)
+     * @param format format
+     * @return is test passed
+     */
+    public static boolean isPreferredFormat(Context ctx, Format format) {
+        ExoPreferences prefs = ExoPreferences.instance(ctx);
+        String codecAndHeight = prefs.getPreferredCodec();
+        if (codecAndHeight.isEmpty()) { // all formats are preferred
+            return true;
+        }
+
+        String[] split = codecAndHeight.split("\\|");
+        String codec = split[0];
+        String height = split[1];
+        if (format.codecs.contains(codec) &&
+                format.height <= Integer.parseInt(height)) {
+            return true;
+        }
+
+        return false;
     }
 }

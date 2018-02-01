@@ -216,7 +216,9 @@ import java.util.TreeSet;
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
                 trackView.setOnClickListener(this);
                 trackViews[groupIndex][trackIndex] = trackView;
-                sortedViewList.add(trackView);
+                if (PlayerUtil.isPreferredFormat(context, format)) {
+                    sortedViewList.add(trackView);
+                }
             }
         }
 

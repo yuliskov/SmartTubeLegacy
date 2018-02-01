@@ -40,7 +40,7 @@ import java.util.Locale;
  * A helper class for periodically updating a {@link TextView} with debug information obtained from
  * a {@link SimpleExoPlayer}.
  */
-public final class DebugTextViewHelper implements Runnable, Player.EventListener {
+public final class OldDebugViewHelper implements Runnable, Player.EventListener {
 
     private static final int REFRESH_INTERVAL_MS = 1000;
 
@@ -54,7 +54,7 @@ public final class DebugTextViewHelper implements Runnable, Player.EventListener
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param textView The {@link TextView} that should be updated to display the information.
      */
-    public DebugTextViewHelper(SimpleExoPlayer player, TextView textView) {
+    public OldDebugViewHelper(SimpleExoPlayer player, TextView textView) {
         this(player, textView, null);
     }
 
@@ -62,7 +62,7 @@ public final class DebugTextViewHelper implements Runnable, Player.EventListener
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param textView The {@link TextView} that should be updated to display the information.
      */
-    public DebugTextViewHelper(SimpleExoPlayer player, TextView textView, Activity ctx) {
+    public OldDebugViewHelper(SimpleExoPlayer player, TextView textView, Activity ctx) {
         this.player = player;
         this.textView = textView;
         this.context = ctx;

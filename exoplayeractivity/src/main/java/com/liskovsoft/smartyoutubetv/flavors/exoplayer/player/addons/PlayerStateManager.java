@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -139,7 +140,7 @@ public class PlayerStateManager {
         Set<MyFormat> result = new HashSet<>();
 
         TrackGroupArray groupArray = allTracks[VIDEO_RENDERER_INDEX];
-        TrackGroup defaultTrackGroup = groupArray.get(0);
+        Set<MyFormat> backedList = new HashSet<>();
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -147,25 +148,24 @@ public class PlayerStateManager {
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
 
-                if (tracksEquals(format.id, trackId)) {
-                    result.clear();
-                    result.add(new MyFormat(format, new Pair<>(j, i)));
-                    return result;
-                }
+                if (PlayerUtil.isPreferredFormat(mPlayerActivity, format)) {
+                    MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
+                    if (tracksEquals(format.id, trackId)) {
+                        result.clear();
+                        result.add(myFormat);
+                        break;
+                    }
 
-                if (heightEquals(format.height, trackHeight)) {
-                    result.add(new MyFormat(format, new Pair<>(j, i)));
+                    if (heightEquals(format.height, trackHeight)) {
+                        result.add(myFormat);
+                    }
+
+                    backedList.add(myFormat);
                 }
             }
         }
 
-        // if candidates not found, return topmost track
-        if (result.isEmpty()) {
-            int lastIdx = defaultTrackGroup.length - 1;
-            result.add(new MyFormat(defaultTrackGroup.getFormat(lastIdx), new Pair<>(0, lastIdx)));
-        }
-
-        return result;
+        return result.isEmpty() ? backedList : result;
     }
 
     /**

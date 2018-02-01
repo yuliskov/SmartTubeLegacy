@@ -55,7 +55,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DebugViewGroupHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
@@ -123,7 +123,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private SimpleExoPlayer player;
     private DefaultTrackSelector trackSelector;
     private TrackSelectionHelper trackSelectionHelper;
-    private DebugViewGroupHelper debugViewHelper;
+    private DetailDebugViewHelper debugViewHelper;
     private boolean needRetrySource;
     private TrackGroupArray lastSeenTrackGroupArray;
 
@@ -465,7 +465,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
             simpleExoPlayerView.setPlayer(player);
             player.setPlayWhenReady(shouldAutoPlay);
-            debugViewHelper = new DebugViewGroupHelper(player, debugViewGroup, PlayerActivity.this);
+            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerActivity.this);
 
             // Do not move this code to another place!!! This statement must come after player initialization
             autoFrameRateManager = new AutoFrameRateManager(this, player);

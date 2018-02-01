@@ -19,4 +19,5 @@
     <string name="sending_crash_report">Відсилається звіт про сбій&#8230;</string>
     <string name="update_check">Перев. оновл.</string>
     <string name="preferred_codec">Декодер</string>
+    <string name="select_preferred_codec">Оберіть декодер</string>
 </resources>

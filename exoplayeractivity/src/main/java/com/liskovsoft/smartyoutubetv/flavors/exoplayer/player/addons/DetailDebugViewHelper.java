@@ -53,7 +53,7 @@ import java.util.Locale;
  * A helper class for periodically updating a {@link TextView} with debug information obtained from
  * a {@link SimpleExoPlayer}.
  */
-public final class DebugViewGroupHelper implements Runnable, Player.EventListener {
+public final class DetailDebugViewHelper implements Runnable, Player.EventListener {
     private static final int REFRESH_INTERVAL_MS = 1000;
     private static final float TEXT_SIZE_SP = 10;
 
@@ -70,7 +70,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param viewGroup The {@link TextView} that should be updated to display the information.
      */
-    public DebugViewGroupHelper(SimpleExoPlayer player, ViewGroup viewGroup) {
+    public DetailDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup) {
         this(player, viewGroup, null);
     }
 
@@ -78,7 +78,7 @@ public final class DebugViewGroupHelper implements Runnable, Player.EventListene
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param viewGroup The {@link TextView} that should be updated to display the information.
      */
-    public DebugViewGroupHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
+    public DetailDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
         this.player = player;
         this.viewGroup = viewGroup;
         this.context = ctx;

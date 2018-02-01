@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
 import android.content.Context;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapSelectorDialog.DataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
@@ -9,8 +10,10 @@ import java.util.Map;
 
 public class CodecDataSource implements DataSource {
     private final ExoPreferences mPrefs;
+    private final Context mContext;
 
     public CodecDataSource(Context ctx) {
+        mContext = ctx;
         mPrefs = ExoPreferences.instance(ctx);
     }
 
@@ -18,8 +21,14 @@ public class CodecDataSource implements DataSource {
     public Map<String, String> getDialogItems() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Default", "");
-        map.put("AVC", "avc");
-        map.put("VP9", "vp9");
+        map.put("AVC, 2160p", "avc|2160");
+        map.put("AVC, 1440p", "avc|1440");
+        map.put("AVC, 1080p", "avc|1080");
+        map.put("AVC, 720p", "avc|720");
+        map.put("VP9, 2160p", "vp9|2160");
+        map.put("VP9, 1440p", "vp9|1440");
+        map.put("VP9, 1080p", "vp9|1080");
+        map.put("VP9, 720p", "vp9|720");
         return map;
     }
 
@@ -40,6 +49,6 @@ public class CodecDataSource implements DataSource {
 
     @Override
     public String getTitle() {
-        return "Select Codec";
+        return mContext.getString(R.string.select_preferred_codec);
     }
 }

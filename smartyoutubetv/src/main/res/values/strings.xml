@@ -37,4 +37,5 @@
     <string name="sending_crash_report">Sending Crash Report&#8230;</string>
     <string name="update_check">Update Check</string>
     <string name="preferred_codec">Codec</string>
+    <string name="select_preferred_codec">Select preferred codec</string>
 </resources>

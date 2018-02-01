@@ -92,25 +92,6 @@ public class Utils {
         return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
     }
 
-    public static Response doOkHttpRequest(String url) {
-        mClient = new OkHttpClient();
-
-        Request okHttpRequest = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response okHttpResponse = null;
-        try {
-            okHttpResponse = mClient.newCall(okHttpRequest).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        }
-
-        return okHttpResponse;
-    }
-
-
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
     }

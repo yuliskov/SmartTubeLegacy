@@ -124,6 +124,12 @@ public final class ExoPreferences {
                 .apply();
     }
 
+    /**
+     * Get codec and maximum height, delimited by vertical line e.g. <code>avc|1080</code>
+     * <br/>
+     * NOTE: vertical line must be escaped <code>\\|</code>
+     * @return codec and maximum height
+     */
     public String getPreferredCodec() {
         return mPrefs.getString(PREFERRED_CODEC, "");
     }
