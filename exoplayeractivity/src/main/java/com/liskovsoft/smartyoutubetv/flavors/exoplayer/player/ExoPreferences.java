@@ -16,6 +16,7 @@ public final class ExoPreferences {
     private static final String SUBTITLE_LANG = "subtitleLang";
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
+    private static final String PREFERRED_CODEC = "preferredCodec";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -115,5 +116,15 @@ public final class ExoPreferences {
 
     public String getSubtitleLang() {
         return mPrefs.getString(SUBTITLE_LANG, null);
+    }
+
+    public void setPreferredCodec(String codec) {
+        mPrefs.edit()
+                .putString(PREFERRED_CODEC, codec)
+                .apply();
+    }
+
+    public String getPreferredCodec() {
+        return mPrefs.getString(PREFERRED_CODEC, "");
     }
 }

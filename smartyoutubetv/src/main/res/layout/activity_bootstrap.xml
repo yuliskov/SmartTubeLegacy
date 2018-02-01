@@ -47,6 +47,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_update_check"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+                app:titleText="@string/preferred_codec"
+                android:onClick="onClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_preferred_codec"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
                 android:visibility="gone"
                 app:titleText="@string/send_crash_report"
                 android:layout_width="wrap_content"

@@ -18,4 +18,5 @@
     <string name="send_crash_report">Отчет о сбое</string>
     <string name="sending_crash_report">Отсылается отчет о сбое&#8230;</string>
     <string name="update_check">Пров. обновл.</string>
+    <string name="preferred_codec">Декодер</string>
 </resources>
