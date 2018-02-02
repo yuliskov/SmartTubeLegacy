@@ -20,7 +20,7 @@ public class CodecDataSource implements DataSource {
     @Override
     public Map<String, String> getDialogItems() {
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("Default", "");
+        map.put(mContext.getString(R.string.no_restrictions), "");
         map.put("AVC, 2160p", "avc|2160");
         map.put("AVC, 1440p", "avc|1440");
         map.put("AVC, 1080p", "avc|1080");
@@ -29,6 +29,10 @@ public class CodecDataSource implements DataSource {
         map.put("VP9, 1440p", "vp9|1440");
         map.put("VP9, 1080p", "vp9|1080");
         map.put("VP9, 720p", "vp9|720");
+        map.put("AVC, VP9, 2160p", "|2160");
+        map.put("AVC, VP9, 1440p", "|1440");
+        map.put("AVC, VP9, 1080p", "|1080");
+        map.put("AVC, VP9, 720p", "|720");
         return map;
     }
 

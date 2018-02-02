@@ -175,6 +175,7 @@ import java.util.TreeSet;
         disableView.setFocusable(true);
         disableView.setOnClickListener(this);
         disableView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        disableView.setVisibility(View.GONE);
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.

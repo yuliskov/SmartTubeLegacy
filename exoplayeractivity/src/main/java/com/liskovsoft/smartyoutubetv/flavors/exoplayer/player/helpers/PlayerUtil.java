@@ -21,7 +21,6 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -104,6 +103,10 @@ import java.util.Locale;
      * @return is test passed
      */
     public static boolean isPreferredFormat(Context ctx, Format format) {
+        if (notAVideo(format)) {
+            return true;
+        }
+
         ExoPreferences prefs = ExoPreferences.instance(ctx);
         String codecAndHeight = prefs.getPreferredCodec();
         if (codecAndHeight.isEmpty()) { // all formats are preferred
@@ -119,5 +122,9 @@ import java.util.Locale;
         }
 
         return false;
+    }
+
+    private static boolean notAVideo(Format format) {
+        return format.height == -1;
     }
 }

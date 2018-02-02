@@ -125,7 +125,7 @@ public final class ExoPreferences {
     }
 
     /**
-     * Get codec and maximum height, delimited by vertical line e.g. <code>avc|1080</code>
+     * Get codec and maximum resolution (height), delimited by vertical line e.g. <code>avc|1080</code>
      * <br/>
      * NOTE: vertical line must be escaped <code>\\|</code>
      * @return codec and maximum height
