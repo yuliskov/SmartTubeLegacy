@@ -7,39 +7,66 @@ function firstRun() {
 
 ////////////////////////////////////////////
 
+// detection is based on url hash change (http://mysite.com/path#another-path)
 function delayTillElementBeInitialized(callback, testFn) {
+    var res = testFn();
+    if (res) {
+        callback();
+        return;
+    }
+
+    var delayFn = function(event) {
+        var res = testFn();
+        if (!res)
+            return;
+
+        console.log('delayTillElementBeInitialized: prepare to fire callback');
+
+        // cleanup
+        document.removeEventListener('hashchange', delayFn, false);
+        // actual call
+        callback();
+    };
+
+    document.addEventListener('hashchange', delayFn, false); // useCapture: true    
+}
+
+// detection is based on key events
+function delayTillElementBeInitialized2(callback, testFn) {
 	var res = testFn();
 	if (res) {
 		callback();
 		return;
 	}
 
-	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
-	    var up = 38;
-	    var down = 40;
+    var delayFn = function(event) {
+        var up = 38;
+        var down = 40;
         var left = 37;
         var right = 39;
-	    var esc = 27;
-	    var enter = 13;
-	    var keyCode = event.keyCode;
+        var esc = 27;
+        var enter = 13;
+        var keyCode = event.keyCode;
 
-	    if (keyCode != up && keyCode != down && keyCode != left && keyCode != right && keyCode != esc && keyCode != enter) {
-	        return;
-	    }
+        if (keyCode != up && keyCode != down && keyCode != left && keyCode != right && keyCode != esc && keyCode != enter) {
+            return;
+        }
 
-    	setTimeout(function() {
-    		var res = testFn();
-	    	if (!res)
-	    		return;
+        setTimeout(function() {
+            var res = testFn();
+            if (!res)
+                return;
 
-	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
+            console.log('delayTillElementBeInitialized: prepare to fire callback');
 
-	    	// cleanup
-		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
-		    // actual call
-		    callback();
-    	}, 500);
-    }, true);	
+            // cleanup
+            document.removeEventListener('keydown', delayFn, true);
+            // actual call
+            callback();
+        }, 500);
+    };
+
+	document.addEventListener('keydown', delayFn, true); // useCapture: true	
 }
 
 function getVideoPlayerPlayButton() {

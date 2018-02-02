@@ -4,3 +4,8 @@
 .title-card.watch-title-tray {
     display: none !important;
 }
+
+/* hide bg on the early stage */
+video {
+	-webkit-filter: brightness(0);
+}

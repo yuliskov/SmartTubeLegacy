@@ -121,6 +121,11 @@ function Helpers() {
         return document.querySelectorAll(selector)[0];
     };
 
+    // events order:
+    // loadstart
+    // loadedmetadata
+    // loadeddata (first frame of the video has been loaded)
+    // playing
     this.muteVideo = function() {
         var player = document.getElementsByTagName('video')[0];
         if (!player)
@@ -128,25 +133,30 @@ function Helpers() {
 
         // we can't pause video because history will not work
         function muteVideo() {
-            var player = document.getElementsByTagName('video')[0];
             console.log('Helpers.muteVideo called');
+            // this style already in exoplayer.css
+            // player.style['-webkit-filter'] = 'brightness(0)';
             // msg 4 future me
             // 'paused' video won't invoke history update
             player.muted = true;
-            player.setAttribute('style', '-webkit-filter:brightness(0)');
+            // don't call pause!!! or video remains paused event after play
             player.play();
         }
 
-        function onLoadData() {
-            console.log('Helpers.onLoadData called');
+        function onStart() {
+            console.log('Helpers.onStart called');
             muteVideo();
-            player.removeEventListener('loadeddata', onLoadData);
         }
 
         muteVideo();
 
-        // load events: loadedmetadata, loadeddata
-        player.addEventListener('loadeddata', onLoadData, false);
+        if (this.alreadySet)
+        	return;
+
+        // once player is created it will be reused by other videos
+        player.addEventListener('loadstart', onStart, false);
+
+        this.alreadySet = true;
     };
 
     // supply selector list
