@@ -31,8 +31,8 @@ public class ActionsReceiver implements Runnable {
     /**
      * for details see {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector}
      */
-    private final String mStatesCommand = "JSON.stringify(helpers.getButtonStates())";
-    private final String mDateCommand = "document.querySelector('.uploaded-date').innerHTML";
+    private final String GET_STATE_COMMAND = "JSON.stringify(exoutils.getButtonStates())";
+    private final String GET_DATE_COMMAND = "document.querySelector('.uploaded-date').innerHTML";
     private final int mStatesId = new Random().nextInt();
     private final int mDateId = new Random().nextInt();
     private boolean mRunOnce;
@@ -125,8 +125,8 @@ public class ActionsReceiver implements Runnable {
     @Override
     public void run() {
         mReceiver = new GenericStringResultReceiver();
-        passToBrowser(mStatesCommand, mStatesId);
-        passToBrowser(mDateCommand, mDateId);
+        passToBrowser(GET_STATE_COMMAND, mStatesId);
+        passToBrowser(GET_DATE_COMMAND, mDateId);
 
         startResponseCheck();
     }

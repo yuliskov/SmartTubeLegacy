@@ -77,7 +77,7 @@ public class PlayerInitializer {
     private String getPublishDate() {
         Intent intent = mPlayer.getIntent();
         String published = intent.getStringExtra(PlayerActivity.VIDEO_DATE);
-        return published == null ? "" : published;
+        return published == null ? "" : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {

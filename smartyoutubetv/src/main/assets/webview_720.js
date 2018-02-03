@@ -22,6 +22,7 @@ function hideShowPlayerBackground() {
     }
 
     hidePlayer();
+    startPlayer();
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
     player.addEventListener('loadeddata', showPlayer, false); // finished loading

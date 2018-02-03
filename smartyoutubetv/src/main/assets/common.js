@@ -8,7 +8,7 @@ function firstRun() {
 ////////////////////////////////////////////
 
 // detection is based on url hash change (http://mysite.com/path#another-path)
-function delayTillElementBeInitialized(callback, testFn) {
+function delayTillElementBeInitializedNew(callback, testFn) {
     var res = testFn();
     if (res) {
         callback();
@@ -32,7 +32,7 @@ function delayTillElementBeInitialized(callback, testFn) {
 }
 
 // detection is based on key events
-function delayTillElementBeInitialized2(callback, testFn) {
+function delayTillElementBeInitialized(callback, testFn) {
 	var res = testFn();
 	if (res) {
 		callback();
@@ -210,7 +210,63 @@ var observeDOM = (function(){
     }
 })();
 
-//////////////////////////////////////////////
+
+//////////// Helpers ////////////
+
+function Helpers() {
+    function isSelector(el) {
+        return typeof el === 'string' || el instanceof String;
+    }
+
+    this.triggerEvent = function(element, type, keyCode) {
+        var el = element;
+        if (isSelector(element)) {
+            el = this.$(element);
+        }
+
+        console.log("Helpers.triggerEvent: " + element + " " + type + " " + keyCode);
+
+        if (!el) {
+            console.warn("Helpers.triggerEvent: unable to find " + element);
+            return;
+        }
+
+        if ('createEvent' in document) {
+            // modern browsers, IE9+
+            var e = document.createEvent('HTMLEvents');
+            e.keyCode = keyCode;
+            e.initEvent(type, false, true);
+            el.dispatchEvent(e);
+        } else {
+            // IE 8
+            var e = document.createEventObject();
+            e.keyCode = keyCode;
+            e.eventType = type;
+            el.fireEvent('on'+e.eventType, e);
+        }
+    };
+
+    this.$ = function(selector) {
+        if (!isSelector(selector))
+            return selector;
+        return document.querySelectorAll(selector)[0];
+    };
+
+    this.triggerButton = function(keyCode) {
+        var container = this.$(this.keysContainerSelector);
+        var type = 'keydown';
+        this.triggerEvent(container, type, keyCode);
+    };
+
+    this.triggerEnter = function(selector) {
+        // simulate mouse/enter key press
+        this.triggerEvent(selector, 'keyup', 13);
+    };
+}
+
+window.helpers = new Helpers();
+
+///////////  End Helpers //////////
 
 function replaceOverlappedTextInRussian(paramButton) {
     var stringToFind = "Дополнительные параметры";
@@ -293,11 +349,31 @@ function commonLogs() {
 }
 
 
+function enableExternalKeyboard() {
+    var searchSelector = '#search-input';
+
+    var testFn = function() {
+        console.log('testFn');
+        var searchInput = helpers.$(searchSelector);
+        return searchInput;
+    }
+
+    var callback = function() {
+        console.log('callback');
+        var upKey = 38;
+        var searchInput = helpers.$(searchSelector);
+        helpers.triggerEvent(searchInput, 'keyup', upKey);
+    }
+    
+    delayTillElementBeInitialized(callback, testFn);
+}
+
 ////////////////////////////////////////////
 
 delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
 // applyFakeResolution();
 fixWrongPixelRatio();
 commonLogs();
+enableExternalKeyboard();
 
 console.log('injecting common.js into ' + document.location.href);

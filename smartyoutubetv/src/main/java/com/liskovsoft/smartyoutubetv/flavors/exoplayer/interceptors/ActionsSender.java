@@ -65,7 +65,7 @@ public class ActionsSender {
         }
 
         // fixes for old android
-        applyFixesForOldWebView(result);
+        // applyFixesForOldWebView(result);
         return result;
     }
 

@@ -211,6 +211,7 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
                 video.pixelWidthHeightRatio == 1f ?
                 NOT_AVAILABLE : String.format(Locale.US, "%.02f", video.pixelWidthHeightRatio);
         appendRow("Aspect Ratio", par);
+        appendRow("Hardware Accelerated", true);
     }
 
     private void appendOtherInfo() {

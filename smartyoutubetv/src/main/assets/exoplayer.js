@@ -44,7 +44,7 @@ function GoogleButton() {
 
 /////////// Helpers ////////////////
 
-function Helpers() {
+function ExoUtils() {
     function isSelector(el) {
         return typeof el === 'string' || el instanceof String;
     }
@@ -55,10 +55,10 @@ function Helpers() {
             el = this.$(element);
         }
 
-        console.log("Helpers.triggerEvent: " + element + " " + type + " " + keyCode);
+        console.log("ExoUtils.triggerEvent: " + element + " " + type + " " + keyCode);
 
         if (!el) {
-            console.warn("Helpers.triggerEvent: unable to find " + element);
+            console.warn("ExoUtils.triggerEvent: unable to find " + element);
             return;
         }
 
@@ -101,7 +101,7 @@ function Helpers() {
             el = this.$(element);
         }
         var hasClass = this.hasClass(el, this.disabledClass);
-        console.log("Helpers.isDisabled: " + element + " " + hasClass);
+        console.log("ExoUtils.isDisabled: " + element + " " + hasClass);
         return hasClass;
     };
 
@@ -111,7 +111,7 @@ function Helpers() {
             el = this.$(element);
         }
         var hasClass = this.hasClass(el, this.hiddenClass);
-        console.log("Helpers.isHidden: " + element + " " + hasClass);
+        console.log("ExoUtils.isHidden: " + element + " " + hasClass);
         return hasClass;
     };
 
@@ -128,12 +128,12 @@ function Helpers() {
     // playing
     this.muteVideo = function() {
         var player = document.getElementsByTagName('video')[0];
-        if (!player)
+        if (!player || this.alreadySet)
             return;
 
         // we can't pause video because history will not work
         function muteVideo() {
-            console.log('Helpers.muteVideo called');
+            console.log('ExoUtils.muteVideo called');
             // this style already in exoplayer.css
             // player.style['-webkit-filter'] = 'brightness(0)';
             // msg 4 future me
@@ -144,17 +144,15 @@ function Helpers() {
         }
 
         function onStart() {
-            console.log('Helpers.onStart called');
+            console.log('ExoUtils.onStart called');
             muteVideo();
         }
 
         muteVideo();
 
-        if (this.alreadySet)
-        	return;
-
         // once player is created it will be reused by other videos
-        player.addEventListener('loadstart', onStart, false);
+        // 'loadeddata' is first event when video can be muted
+        player.addEventListener('loadeddata', onStart, false);
 
         this.alreadySet = true;
     };
@@ -190,7 +188,7 @@ function Helpers() {
         new KeyUpDownWatcher(null); // init watcher
 
         YouButton.resetCache(); // activity just started
-        console.log("Helpers.syncButtons: " + JSON.stringify(states));
+        console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
             var isChecked = states[btnId];
@@ -207,20 +205,21 @@ function Helpers() {
         if (app && app.onGenericStringResult) {
             app.onGenericStringResult(action);
         } else {
-            console.log('Helpers: app not found');
+            console.log('ExoUtils: app not found');
         }
     };
 }
 
-Helpers.prototype = new GoogleButton();
+ExoUtils.prototype = new GoogleButton();
 
-window.helpers = new Helpers();
-
-// Usage: PressCommandBase.java
-// helpers.triggerEvent(helpers.$('%s'), 'keyup', 13);
+// if you intend to remove this var don't forget to do the same inside ActionsReceiver and SyncButtonsCommand class
+window.exoutils = new ExoUtils();
 
 // Usage: PressCommandBase.java
-// helpers.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);
+// exoutils.triggerEvent(exoutils.$('%s'), 'keyup', 13);
+
+// Usage: PressCommandBase.java
+// exoutils.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);
 
 /////////// End Helpers ////////////////
 
@@ -231,7 +230,7 @@ function YouButtonInitializer(btn) {
     this.callbackStack = YouButtonInitializer.callbackStack;
 
     this.doPressOnOptionsBtn = function() {
-        helpers.triggerEnter(this.optionsBtnSelector);
+        exoutils.triggerEnter(this.optionsBtnSelector);
     };
 
     this.doCallbackIfReady = function(callback) {
@@ -245,7 +244,7 @@ function YouButtonInitializer(btn) {
         }, timeout);
     };
     this.setCheckedWrapper = function(callback) {
-        var obj = helpers.$(this.btn.selector);
+        var obj = exoutils.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             this.doPressOnOptionsBtn();
             console.log('YouButtonInitializer.initBtn: btn not initialized: ' + this.btn.selector);
@@ -259,7 +258,7 @@ function YouButtonInitializer(btn) {
     };
 
     this.getCheckedWrapper = function(callback) {
-        var obj = helpers.$(this.btn.selector);
+        var obj = exoutils.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             console.log('YouButtonInitializer.initBtn2: btn not initialized: ' + this.btn.selector);
             this.doPressOnOptionsBtn();
@@ -311,11 +310,11 @@ function YouButton(selector) {
     this.initializer = new YouButtonInitializer(this);
 
     this.doPressOnOptionsBtn = function() {
-        helpers.triggerEnter(this.optionsBtnSelector);
+        exoutils.triggerEnter(this.optionsBtnSelector);
     };
 
     this.findToggle = function() {
-        var btn = helpers.$(selector);
+        var btn = exoutils.$(selector);
 
         btn || console.warn("YouButton.findToggle: unable to find " + selector);
 
@@ -332,8 +331,8 @@ function YouButton(selector) {
 
         if (this.isChecked === undefined) {
             var toggle = this.findToggle();
-            var isChecked = helpers.hasClass(toggle, this.selectedClass);
-            var isDisabled = helpers.hasClass(toggle, this.disabledClass);
+            var isChecked = exoutils.hasClass(toggle, this.selectedClass);
+            var isDisabled = exoutils.hasClass(toggle, this.disabledClass);
             this.isChecked = isDisabled ? null : isChecked;
         }
         console.log("YouButton.getChecked: " + selector + " " + this.isChecked);
@@ -354,7 +353,7 @@ function YouButton(selector) {
         }
 
         console.log("YouButton.setChecked: " + selector + " " + doChecked);
-        helpers.triggerEnter(this.findToggle());
+        exoutils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
 
@@ -396,7 +395,7 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
 
     this.playerJumpToEnd = function() {
-        var player = helpers.$('video');
+        var player = exoutils.$('video');
         if (player) {
             console.log("TrackEndFakeButton: before jump to the end: " + player.currentTime + " " + player.duration);
             player.currentTime = player.duration;
@@ -416,7 +415,7 @@ function TrackEndFakeButton(selector) {
 
 function KeyUpDownWatcher(host) {
     function KeyUpDownWatcherService() {
-        var container = helpers.$(this.keysContainerSelector);
+        var container = exoutils.$(this.keysContainerSelector);
         var type = 'keydown';
         var up = 38;
         var enter = 13;
@@ -467,15 +466,15 @@ function SuggestionsFakeButton(selector) {
         var downCode = 40;
         // we assume that no interface currently shown
         // press twice
-        helpers.triggerButton(downCode);
-        helpers.triggerButton(downCode);
+        exoutils.triggerButton(downCode);
+        exoutils.triggerButton(downCode);
 
         // start point
         this.watcher = new KeyUpDownWatcher(this);
     };
 
     this.needToCloseSuggestions = function() {
-        helpers.sendAction(this.CLOSE_SUGGESTIONS);
+        exoutils.sendAction(this.CLOSE_SUGGESTIONS);
         console.log("SuggestionsFakeButton: needToCloseSuggestions");
     };
 
