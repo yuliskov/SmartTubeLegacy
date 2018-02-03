@@ -63,9 +63,8 @@ public class ActionsSender {
             boolean isChecked = intent.getBooleanExtra(buttonId, false);
             result.put(buttonId, isChecked);
         }
-
-        // fixes for old android
-        // applyFixesForOldWebView(result);
+        
+        applyFixesForOldWebView(result);
         return result;
     }
 
@@ -78,6 +77,10 @@ public class ActionsSender {
         }
     }
 
+    /**
+     * Actually, on old devices not possible to stop the video. So skip to the next one.
+     * @param buttons button states
+     */
     private void applyFixesForOldWebView(Map<String, Boolean> buttons) {
         if (VERSION.SDK_INT >= 21) {
             return;

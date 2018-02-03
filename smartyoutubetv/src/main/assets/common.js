@@ -353,13 +353,11 @@ function enableExternalKeyboard() {
     var searchSelector = '#search-input';
 
     var testFn = function() {
-        console.log('testFn');
         var searchInput = helpers.$(searchSelector);
         return searchInput;
     }
 
     var callback = function() {
-        console.log('callback');
         var upKey = 38;
         var searchInput = helpers.$(searchSelector);
         helpers.triggerEvent(searchInput, 'keyup', upKey);

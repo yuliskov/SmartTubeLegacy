@@ -1,11 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.webkit.WebResourceResponse;
-import android.widget.Toast;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.MuteVideoCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
 public class MainRequestInterceptor extends RequestInterceptor {
@@ -13,7 +9,6 @@ public class MainRequestInterceptor extends RequestInterceptor {
     private final ExoInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
     private final DelayedCommandCallInterceptor mDoOnPlayEndInterceptor;
-    private final CommandCallInterceptor mMuteVideoInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public MainRequestInterceptor(Context context) {
@@ -21,7 +16,6 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor();
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
         mCipherInterceptor = new CipherInterceptor(context);
-        mMuteVideoInterceptor = new CommandCallInterceptor(new MuteVideoCommand());
     }
 
     @Override
@@ -36,10 +30,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
             return true;
         }
 
-        if (url.contains("videoplayback")) {
-            mCurrentInterceptor = mMuteVideoInterceptor;
-            return true;
-        }
+        // "videoplayback": MuteVideoInterceptor
 
         // useful places: ptracking, log_event, log_interaction
         // at this moment video should be added to history

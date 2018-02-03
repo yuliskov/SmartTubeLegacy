@@ -38,6 +38,7 @@ function GoogleButton() {
     this.mainTitleSelector = '.title-card.watch-title-tray';
     this.keysContainerSelector = '#watch'; // div that receives keys events
     this.playerUrlTemplate = '/watch/'; // url part of the opened player
+    this.videoSelector = 'video';
 }
 
 ////////// End GoogleButton //////////////////
@@ -45,6 +46,8 @@ function GoogleButton() {
 /////////// Helpers ////////////////
 
 function ExoUtils() {
+    var TAG = 'ExoUtils';
+
     function isSelector(el) {
         return typeof el === 'string' || el instanceof String;
     }
@@ -132,8 +135,8 @@ function ExoUtils() {
             return;
 
         // we can't pause video because history will not work
-        function muteVideo() {
-            console.log('ExoUtils.muteVideo called');
+        function onStart() {
+            console.log('ExoUtils.onStart called');
             // this style already in exoplayer.css
             // player.style['-webkit-filter'] = 'brightness(0)';
             // msg 4 future me
@@ -143,12 +146,7 @@ function ExoUtils() {
             player.play();
         }
 
-        function onStart() {
-            console.log('ExoUtils.onStart called');
-            muteVideo();
-        }
-
-        muteVideo();
+        onStart();
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
@@ -179,6 +177,8 @@ function ExoUtils() {
                 continue;
             states[newName] = isChecked;
         }
+
+        console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
 
         return states;
     };
@@ -212,7 +212,7 @@ function ExoUtils() {
 
 ExoUtils.prototype = new GoogleButton();
 
-// if you intend to remove this var don't forget to do the same inside ActionsReceiver and SyncButtonsCommand class
+// if you intend to remove this var don't forget to do the same inside GetButtonStatesCommand and SyncButtonsCommand classes
 window.exoutils = new ExoUtils();
 
 // Usage: PressCommandBase.java
@@ -395,9 +395,10 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
 
     this.playerJumpToEnd = function() {
-        var player = exoutils.$('video');
+        console.log("TrackEndFakeButton: before jump to the end");
+        var player = exoutils.$(this.videoSelector);
         if (player) {
-            console.log("TrackEndFakeButton: before jump to the end: " + player.currentTime + " " + player.duration);
+            console.log("TrackEndFakeButton: jumping to the end: " + player.currentTime + " " + player.duration);
             player.currentTime = player.duration;
         }
     };
@@ -412,6 +413,8 @@ function TrackEndFakeButton(selector) {
             this.playerJumpToEnd();
     };
 }
+
+TrackEndFakeButton.prototype = new GoogleButton();
 
 function KeyUpDownWatcher(host) {
     function KeyUpDownWatcherService() {
