@@ -15,10 +15,12 @@ function hideShowPlayerBackground() {
 
     function showPlayer() {
         player.style['-webkit-filter'] = 'brightness(1)';
+        console.log("webview.js: showPlayer()");
     }
 
     function hidePlayer() {
         player.style['-webkit-filter'] = 'brightness(0)';
+        console.log("webview.js: hidePlayer()");
     }
 
     hidePlayer();
@@ -31,4 +33,4 @@ function hideShowPlayerBackground() {
     window.playerCallbackSet = true;
 }
 
-delayUntilPlayerBeInitialized && delayUntilPlayerBeInitialized(hideShowPlayerBackground);
+// delayUntilPlayerBeInitialized && delayUntilPlayerBeInitialized(hideShowPlayerBackground);
