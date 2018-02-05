@@ -8,35 +8,38 @@ function firstRun() {
 ////////////////////////////////////////////
 
 // detection is based on url hash change (http://mysite.com/path#another-path)
-function delayTillElementBeInitializedNew(callback, testFn) {
+function delayTillElementBeInitialized(callback, testFn, runOnce) {
     var res = testFn();
     if (res) {
         callback();
-        return;
+        if (runOnce)
+            return;
     }
 
-    var delayFn = function(event) {
+    function delayFn(event) {
         var res = testFn();
         if (!res)
             return;
 
-        console.log('delayTillElementBeInitialized: prepare to fire callback');
+        console.log('delayTillElementBeInitialized: prepare to fire callback: ' + callback.toString());
 
         // cleanup
-        // window.removeEventListener('hashchange', delayFn, false);
+        if (runOnce) {
+            console.log('delayTillElementBeInitialized: removing callback: ' + callback);
+            window.removeEventListener('hashchange', delayFn, false);
+        }
         // actual call
         callback();
-    };
+    }
 
     window.addEventListener('hashchange', delayFn, false); // useCapture: true
 }
 
 // detection is based on key events
-function delayTillElementBeInitialized(callback, testFn) {
+function delayTillElementBeInitialized2(callback, testFn) {
 	var res = testFn();
 	if (res) {
 		callback();
-		return;
 	}
 
     var delayFn = function(event) {
@@ -57,7 +60,7 @@ function delayTillElementBeInitialized(callback, testFn) {
             if (!res)
                 return;
 
-            console.log('delayTillElementBeInitialized: prepare to fire callback');
+            console.log('delayTillElementBeInitialized2: prepare to fire callback: ' + callback.toString());
 
             // cleanup
             // document.removeEventListener('keydown', delayFn, true);
@@ -66,15 +69,16 @@ function delayTillElementBeInitialized(callback, testFn) {
         }, 500);
     };
 
-	document.addEventListener('keydown', delayFn, true); // useCapture: true	
+    console.log('delayTillElementBeInitialized: add callback: ' + callback.toString());
+	document.addEventListener('keydown', delayFn, true); // useCapture: true
 }
 
 function getVideoPlayerPlayButton() {
 	return document.querySelector('.icon-player-play');
 }
 
-function delayUntilPlayerBeInitialized(fn) {
-    delayTillElementBeInitialized(fn, getVideoPlayerPlayButton);
+function delayUntilPlayerBeInitialized(fn, runOnce) {
+    delayTillElementBeInitialized(fn, getVideoPlayerPlayButton, runOnce);
 }
 
 function getExitDialogOKButton() {
@@ -94,7 +98,7 @@ function addExitEvent() {
 
     delayUntilExitDialogBeInitialized(function() {
 	    var element = getExitDialogOKButton();
-	    
+
 	    element.addEventListener('keydown', function (e) {
 	        if (e.which == 13) { // click
 	            e.preventDefault();
@@ -152,7 +156,7 @@ function disableCodec(codec) {
 
     window.MediaSource.isTypeSupported = function(native) {
         return function(str) {
-            if (strCmp(str, codec)) 
+            if (strCmp(str, codec))
                 return false;
             return native.call(window.MediaSource, str);
         }
@@ -262,7 +266,7 @@ function doObserveOverlappedTextInRussian(paramButton) {
     observeDOM(paramButton, function(el) {
         console.log('dom changed, ' + el);
         replaceOverlappedTextInRussian(el);
-	});	
+	});
 }
 
 function fixOverlappedTextInRussian() {
@@ -285,11 +289,11 @@ function overrideProp(propStr, value) {
 function applyFakeResolution() {
     if (!app)
         return;
-    
+
     // android resolution (can differ from physical resolution)
     var arr = app.getDeviceResolution().split('x');
     var w = arr[0], h = arr[1];
-    
+
     // fake resolution (does't have influence on video resolution)
     // var w = 2560, h = 1440;
 
@@ -310,7 +314,7 @@ function applyFakeResolution() {
 
 function fixWrongPixelRatio() {
     // WONT WORK PROPERLY
-    
+
     // fix ugly Dimensions value like "950x640*2"
     window.devicePixelRatio = 1.0;
 }
@@ -340,16 +344,44 @@ function enableExternalKeyboard() {
         var searchInput = helpers.$(searchSelector);
         helpers.triggerEvent(searchInput, 'keyup', upKey);
     };
-    
+
     delayTillElementBeInitialized(callback, testFn);
 }
 
 ////////////////////////////////////////////
 
-delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
-// applyFakeResolution();
-fixWrongPixelRatio();
-commonLogs();
-enableExternalKeyboard();
+function init() {
+    delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
+    // applyFakeResolution();
+    fixWrongPixelRatio();
+    commonLogs();
+    enableExternalKeyboard();
+    console.log('injecting common.js into ' + document.location.href);
+}
 
-console.log('injecting common.js into ' + document.location.href);
+function waitTillInit(modName, callback, depName) {
+    if (window[modName] === 'ok') {
+        console.log(modName + ': module already initialized');
+        return;
+    }
+
+    window[modName] = 'ok';
+
+    if (window[depName] || !depName) {
+        console.log(modName + ': all deps initialized. perform callback');
+        callback();
+        return;
+    }
+
+    var interval = setInterval(function() {
+        console.log(modName + ': check that all deps are initialized');
+        if (window[depName]) {
+            console.log(modName + ': all deps initialized. perform callback');
+            callback();
+            clearInterval(interval);
+        }
+    }, 100);
+}
+
+waitTillInit('common.js', init);
+

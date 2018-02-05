@@ -116,55 +116,55 @@ function setEnabled(obj, isEnabled) {
 
 /////////////////////////////////////////////////
 
-function delayTillElementBeInitialized(callback, testFn) {
-	var res = testFn();
-	if (res) {
-        console.log('delayTillElementBeInitialized: prepare to fire callback');
-		callback();
-		return;
-	}
+// function delayTillElementBeInitialized(callback, testFn) {
+// 	var res = testFn();
+// 	if (res) {
+//         console.log('delayTillElementBeInitialized: prepare to fire callback');
+// 		callback();
+// 		return;
+// 	}
 
-	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
-	    var up = 38;
-	    var down = 40;
-	    var esc = 27;
-	    var enter = 13;
-	    var keyCode = event.keyCode;
+// 	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
+// 	    var up = 38;
+// 	    var down = 40;
+// 	    var esc = 27;
+// 	    var enter = 13;
+// 	    var keyCode = event.keyCode;
 
-	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
-	        return;
-	    }
+// 	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
+// 	        return;
+// 	    }
 
-    	setTimeout(function() {
-    		var res = testFn();
-	    	if (!res)
-	    		return;
+//     	setTimeout(function() {
+//     		var res = testFn();
+// 	    	if (!res)
+// 	    		return;
 
-	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
+// 	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
 
-	    	// cleanup
-		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
-		    // actual call
-		    callback();
-    	}, 500);
-    });	
-}
+// 	    	// cleanup
+// 		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
+// 		    // actual call
+// 		    callback();
+//     	}, 500);
+//     });	
+// }
 
 function getVideoPlayerPlayButton() {
 	return document.querySelector('.icon-player-play');
 }
 
-function delayUntilPlayerBeInitialized(fn) {
-    delayTillElementBeInitialized(fn, getVideoPlayerPlayButton);
-}
+// function delayUntilPlayerBeInitialized(fn) {
+//     delayTillElementBeInitialized(fn, getVideoPlayerPlayButton, true);
+// }
 
 function getExitDialogOKButton() {
 	return document.getElementById('dialog-ok-button');
 }
 
-function delayUnitlExitDialogBeInitialized(fn) {
-	delayTillElementBeInitialized(fn, getExitDialogOKButton);
-}
+// function delayUnitlExitDialogBeInitialized(fn) {
+// 	delayTillElementBeInitialized(fn, getExitDialogOKButton, true);
+// }
 
 ///////////////////////////////////////////////
 
@@ -693,7 +693,35 @@ function addQualityControls() {
 
 ///////////////////////////////////////////////////
 
-// add quality settings to video
-delayUntilPlayerBeInitialized(addQualityControls);
+function init() {
+    // add quality settings to video
+    delayUntilPlayerBeInitialized(addQualityControls, true);
 
-console.log('injecting quality-controls.js into ' + document.location.href);
+    console.log('injecting quality-controls.js into ' + document.location.href);
+}
+
+function waitTillInit(modName, callback, depName) {
+    if (window[modName] === 'ok') {
+        console.log(modName + ': module already initialized');
+        return;
+    }
+
+    window[modName] = 'ok';
+
+    if (window[depName] || !depName) {
+        console.log(modName + ': all deps initialized. perform callback');
+        callback();
+        return;
+    }
+
+    var interval = setInterval(function() {
+        console.log(modName + ': check that all deps are initialized');
+        if (window[depName]) {
+            console.log(modName + ': all deps initialized. perform callback');
+            callback();
+            clearInterval(interval);
+        }
+    }, 100);
+}
+
+waitTillInit('quality-controls.js', init, 'common.js');

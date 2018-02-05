@@ -21,6 +21,9 @@ public class KeysTranslator {
             mDownFired = false;
             return false;
         }
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) { // fixes fo usb remote controller
+            return false;
+        }
 
         return true;
     }
@@ -34,7 +37,7 @@ public class KeysTranslator {
             return EMPTY_EVENT;
         }
 
-        event = fixNonPairedEscape(event);
+        // event = fixNonPairedEscape(event);
         event = translateBackToEscape(event);
         event = translateMenuToGuide(event);
         event = translateNumpadEnterToEnter(event);
