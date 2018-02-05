@@ -23,12 +23,12 @@ function delayTillElementBeInitializedNew(callback, testFn) {
         console.log('delayTillElementBeInitialized: prepare to fire callback');
 
         // cleanup
-        document.removeEventListener('hashchange', delayFn, false);
+        // window.removeEventListener('hashchange', delayFn, false);
         // actual call
         callback();
     };
 
-    document.addEventListener('hashchange', delayFn, false); // useCapture: true    
+    window.addEventListener('hashchange', delayFn, false); // useCapture: true
 }
 
 // detection is based on key events
@@ -60,7 +60,7 @@ function delayTillElementBeInitialized(callback, testFn) {
             console.log('delayTillElementBeInitialized: prepare to fire callback');
 
             // cleanup
-            document.removeEventListener('keydown', delayFn, true);
+            // document.removeEventListener('keydown', delayFn, true);
             // actual call
             callback();
         }, 500);
@@ -81,7 +81,7 @@ function getExitDialogOKButton() {
 	return document.getElementById('dialog-ok-button');
 }
 
-function delayUnitlExitDialogBeInitialized(fn) {
+function delayUntilExitDialogBeInitialized(fn) {
 	delayTillElementBeInitialized(fn, getExitDialogOKButton);
 }
 
@@ -92,7 +92,7 @@ function addExitEvent() {
 	if (window.eventAdded)
         return;
 
-    delayUnitlExitDialogBeInitialized(function() {
+    delayUntilExitDialogBeInitialized(function() {
 	    var element = getExitDialogOKButton();
 	    
 	    element.addEventListener('keydown', function (e) {
@@ -164,27 +164,6 @@ function strCmp(str1, str2) {
     str1 = str1.toLowerCase();
     str2 = str2.toLowerCase();
     return str1.indexOf(str2) >= 0;
-}
-
-/////////////////////////////////////////////////
-
-function overrideProp(obj, propName, propValue) {
-    Object.defineProperty(obj, propName, {
-        get: function() { return propValue; },
-        set: function(newValue) { ; },
-        enumerable: true,
-        configurable: true
-    });
-}
-
-function setNewDimensions(width, height) {
-    var newWidth = width;
-    var newHeight = height;
-    
-    overrideProp(window.screen, 'availHeight', newHeight);
-    overrideProp(window.screen, 'availWidth', newWidth);
-    overrideProp(window.screen, 'height', newHeight);
-    overrideProp(window.screen, 'width', newWidth);
 }
 
 /////////////////////////////////////////////////
@@ -353,15 +332,14 @@ function enableExternalKeyboard() {
     var searchSelector = '#search-input';
 
     var testFn = function() {
-        var searchInput = helpers.$(searchSelector);
-        return searchInput;
-    }
+        return helpers.$(searchSelector);
+    };
 
     var callback = function() {
         var upKey = 38;
         var searchInput = helpers.$(searchSelector);
         helpers.triggerEvent(searchInput, 'keyup', upKey);
-    }
+    };
     
     delayTillElementBeInitialized(callback, testFn);
 }

@@ -130,8 +130,9 @@ function ExoUtils() {
     // loadeddata (first frame of the video has been loaded)
     // playing
     this.muteVideo = function() {
+        var callbackSet = 'data-callbackSet';
         var player = document.getElementsByTagName('video')[0];
-        if (!player || this.alreadySet)
+        if (!player || player.getAttribute(callbackSet))
             return;
 
         // we can't pause video because history will not work
@@ -152,7 +153,7 @@ function ExoUtils() {
         // 'loadeddata' is first event when video can be muted
         player.addEventListener('loadeddata', onStart, false);
 
-        this.alreadySet = true;
+        player.setAttribute(callbackSet, true);
     };
 
     // supply selector list

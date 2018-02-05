@@ -3,9 +3,15 @@ package com.liskovsoft.smartyoutubetv.misc;
 import android.view.KeyEvent;
 
 public class KeysTranslator {
+    private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
     private boolean mDownFired;
     private boolean mDisable = true;
 
+    /**
+     * Ignore non-paired key up events
+     * @param event event
+     * @return is ignored
+     */
     private boolean isEventIgnored(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             mDownFired = true;
@@ -25,14 +31,32 @@ public class KeysTranslator {
         }
 
         if (isEventIgnored(event)) {
-            return new KeyEvent(0, 0);
+            return EMPTY_EVENT;
         }
 
+        event = fixNonPairedEscape(event);
         event = translateBackToEscape(event);
         event = translateMenuToGuide(event);
         event = translateNumpadEnterToEnter(event);
         event = translateButtonAToEnter(event);
         return event;
+    }
+
+    /**
+     * On some device escape don't have paired up event. Fix that.
+     * @param event event
+     * @return new event
+     */
+    private KeyEvent fixNonPairedEscape(KeyEvent event) {
+        if (event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
+            return event;
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            return EMPTY_EVENT;
+        }
+
+        return new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ESCAPE);
     }
 
     private KeyEvent translateButtonAToEnter(KeyEvent event) {
