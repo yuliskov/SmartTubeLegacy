@@ -5,7 +5,8 @@ function hideShowPlayerBackground() {
 
     var player = document.getElementsByTagName('video')[0];
     if (!player) {
-        console.log("webview_720.js: player not exist... do nothing...");
+        console.log("webview_720.js: player not exist... waiting for the player...");
+        setTimeout(hideShowPlayerBackground, 500);
         return;
     }
 

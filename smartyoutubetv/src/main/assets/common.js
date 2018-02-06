@@ -8,7 +8,7 @@ function firstRun() {
 ////////////////////////////////////////////
 
 // detection is based on url hash change (http://mysite.com/path#another-path)
-function delayTillElementBeInitialized(callback, testFn, runOnce) {
+function delayTillElementBeInitializedNew(callback, testFn, runOnce) {
     var res = testFn();
     if (res) {
         callback();
@@ -17,29 +17,34 @@ function delayTillElementBeInitialized(callback, testFn, runOnce) {
     }
 
     function delayFn(event) {
-        var res = testFn();
-        if (!res)
-            return;
+        setTimeout(function() { // wait till some elms be initialized like exit btn, etc
+            var res = testFn();
+            if (!res)
+                return;
 
-        console.log('delayTillElementBeInitialized: prepare to fire callback: ' + callback.toString());
+            console.log('delayTillElementBeInitialized: prepare to fire callback: ' + callback.toString().slice(0, 50));
 
-        // cleanup
-        if (runOnce) {
-            console.log('delayTillElementBeInitialized: removing callback: ' + callback);
-            window.removeEventListener('hashchange', delayFn, false);
-        }
-        // actual call
-        callback();
+            // cleanup
+            if (runOnce) {
+                console.log('delayTillElementBeInitialized: removing callback: ' + callback.toString().slice(0, 50));
+                window.removeEventListener('hashchange', delayFn, false); // useCapture: false
+            }
+            // actual call
+            callback();
+
+        }, 500);
     }
 
-    window.addEventListener('hashchange', delayFn, false); // useCapture: true
+    window.addEventListener('hashchange', delayFn, false); // useCapture: false
 }
 
 // detection is based on key events
-function delayTillElementBeInitialized2(callback, testFn) {
+function delayTillElementBeInitialized(callback, testFn, runOnce) {
 	var res = testFn();
 	if (res) {
 		callback();
+        if (runOnce)
+            return;
 	}
 
     var delayFn = function(event) {
@@ -55,21 +60,23 @@ function delayTillElementBeInitialized2(callback, testFn) {
             return;
         }
 
-        setTimeout(function() {
+        setTimeout(function() { // wait till some elms be initialized like exit btn, etc
             var res = testFn();
             if (!res)
                 return;
 
-            console.log('delayTillElementBeInitialized2: prepare to fire callback: ' + callback.toString());
+            console.log('delayTillElementBeInitialized2: prepare to fire callback: ' + callback.toString().slice(0, 50));
 
             // cleanup
-            // document.removeEventListener('keydown', delayFn, true);
+            if (runOnce) {
+                console.log('delayTillElementBeInitialized: removing callback: ' + callback.toString().slice(0, 50));
+                document.removeEventListener('keydown', delayFn, true);
+            }
             // actual call
             callback();
         }, 500);
     };
 
-    console.log('delayTillElementBeInitialized: add callback: ' + callback.toString());
 	document.addEventListener('keydown', delayFn, true); // useCapture: true
 }
 
@@ -77,16 +84,16 @@ function getVideoPlayerPlayButton() {
 	return document.querySelector('.icon-player-play');
 }
 
+function getExitDialogOKButton() {
+    return document.getElementById('dialog-ok-button');
+}
+
 function delayUntilPlayerBeInitialized(fn, runOnce) {
     delayTillElementBeInitialized(fn, getVideoPlayerPlayButton, runOnce);
 }
 
-function getExitDialogOKButton() {
-	return document.getElementById('dialog-ok-button');
-}
-
 function delayUntilExitDialogBeInitialized(fn) {
-	delayTillElementBeInitialized(fn, getExitDialogOKButton);
+	delayTillElementBeInitialized(fn, getExitDialogOKButton, true);
 }
 
 ///////////////////////////////////////////////
