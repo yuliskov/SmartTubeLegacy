@@ -32,8 +32,25 @@ function hideShowPlayerBackground() {
         console.log("webview_720.js: hidePlayer()");
     }
 
-    hidePlayer();
-    startPlayer();
+    function startPlayer2() {
+        // not helpful, at this point player already visible
+        // hide (!) player in *.css files instead
+        player.play();
+        console.log("webview_720.js: startPlayer2()");
+    }
+
+    function showPlayer2() {
+        player.style['-webkit-filter'] = 'brightness(1)';
+        console.log("webview_720.js: showPlayer2()");
+    }
+
+    function hidePlayer2() {
+        player.style['-webkit-filter'] = 'brightness(0)';
+        console.log("webview_720.js: hidePlayer2()");
+    }
+
+    hidePlayer2();
+    startPlayer2();
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
     player.addEventListener('loadeddata', showPlayer, false); // finished loading

@@ -17,11 +17,9 @@ public class KeysTranslator {
             mDownFired = true;
             return false;
         }
+
         if (event.getAction() == KeyEvent.ACTION_UP && mDownFired) {
             mDownFired = false;
-            return false;
-        }
-        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) { // fixes fo usb remote controller
             return false;
         }
 
@@ -37,29 +35,11 @@ public class KeysTranslator {
             return EMPTY_EVENT;
         }
 
-        // event = fixNonPairedEscape(event);
         event = translateBackToEscape(event);
         event = translateMenuToGuide(event);
         event = translateNumpadEnterToEnter(event);
         event = translateButtonAToEnter(event);
         return event;
-    }
-
-    /**
-     * On some device escape don't have paired up event. Fix that.
-     * @param event event
-     * @return new event
-     */
-    private KeyEvent fixNonPairedEscape(KeyEvent event) {
-        if (event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
-            return event;
-        }
-
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            return EMPTY_EVENT;
-        }
-
-        return new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ESCAPE);
     }
 
     private KeyEvent translateButtonAToEnter(KeyEvent event) {

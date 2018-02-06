@@ -281,6 +281,8 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        event = translateEscapeToBack(event);
+
         if (isVolumeEvent(event))
             return false;
         
@@ -293,6 +295,19 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return super.dispatchKeyEvent(event) || simpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    /**
+     * Fix for the unknown usb remote controller (see <a href="https://smartyoutubetv.github.io/#comment-3742343397">disqus</a> for details).
+     * @param event event
+     * @return new event
+     */
+    private KeyEvent translateEscapeToBack(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
+            // pay attention, you must pass action_up instead of action_down
+            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_BACK);
+        }
+        return event;
     }
 
     private boolean isBackKey(KeyEvent event) {
