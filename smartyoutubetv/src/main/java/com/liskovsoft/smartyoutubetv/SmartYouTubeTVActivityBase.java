@@ -102,7 +102,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = mTranslator.doTranslateKeys(event);
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) { // remember real back remapped in translator
             onBackPressed();
         }
         return super.dispatchKeyEvent(event);

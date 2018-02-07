@@ -125,6 +125,7 @@ function ExoUtils() {
     };
 
     // events order:
+    // emptied
     // loadstart
     // loadedmetadata
     // loadeddata (first frame of the video has been loaded)

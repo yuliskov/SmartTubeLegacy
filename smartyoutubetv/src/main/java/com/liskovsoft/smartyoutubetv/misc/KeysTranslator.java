@@ -28,6 +28,7 @@ public class KeysTranslator {
 
     public KeyEvent doTranslateKeys(KeyEvent event) {
         if (mDisable) {
+            event = translateEscapeToBack(event); // exit from loading by pressing escape or back keys
             return event;
         }
 
@@ -62,6 +63,14 @@ public class KeysTranslator {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             // pay attention, you must pass action_up instead of action_down
             event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ESCAPE);
+        }
+        return event;
+    }
+
+    private KeyEvent translateEscapeToBack(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
+            // pay attention, you must pass action_up instead of action_down
+            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_BACK);
         }
         return event;
     }
