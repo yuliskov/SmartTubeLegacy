@@ -67,28 +67,44 @@ function init() {
     delayUntilPlayerBeInitialized(hideShowPlayerBackground);
 }
 
-function waitTillInit(modName, callback, depName) {
-    if (window[modName] === 'ok') {
-        console.log(modName + ': module already initialized');
+function waitTillInit(depName, callback) {
+    function hashCode(str) {
+        var hash = 0, i, chr;
+        if (str.length === 0) return hash;
+        var maxLen = 30; // we don't need a full content
+        var len = str.length < maxLen ? str.length : maxLen;
+        for (i = 0; i < len; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    }
+
+    var modHash = hashCode(callback.toString());
+    var modNamePart = callback.toString().slice(0, 50);
+
+    if (window[modHash] === 'ok') {
+        console.log('Module already initialized: ' + modNamePart);
         return;
     }
 
-    window[modName] = 'ok';
+    window[modHash] = 'ok';
 
     if (window[depName] || !depName) {
-        console.log(modName + ': all deps initialized. perform callback');
+        console.log('All deps initialized. perform callback: ' + modNamePart);
         callback();
         return;
     }
 
     var interval = setInterval(function() {
-        console.log(modName + ': check that all deps are initialized');
+        console.log('Check that all deps are initialized: ' + modNamePart);
         if (window[depName]) {
-            console.log(modName + ': all deps initialized. perform callback');
+            console.log('All deps initialized. perform callback: ' + modNamePart);
             callback();
             clearInterval(interval);
         }
     }, 100);
 }
 
-waitTillInit('webview_720.js', init, 'common.js');
+waitTillInit('common.js', init);
