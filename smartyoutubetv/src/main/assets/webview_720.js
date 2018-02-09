@@ -1,4 +1,6 @@
-// hide ugly bg that appears on few seconds before the video
+// Description:
+// On the WebView version there is an ugly bg that appears on few seconds before playing the video.
+// Also, it tries to fix stalled playback off the first video.
 
 function hideShowPlayerBackground() {
     console.log("webview_720.js: hideShowPlayerBackground()");
@@ -37,19 +39,27 @@ function hideShowPlayerBackground() {
         console.log("webview_720.js: hidePlayer() " + howStarted);
     }
 
-    function urlChangeFn(event) {
-        if (!player.duration) {
+    // fix when clicked on the next button
+    function hideShowPlayer() {
+        if (window.location.hash.indexOf('watch') === -1) { // not a video
+            return;
+        }
+
+        if (!player.currentTime) { // player not initialized
             hidePlayer();
+            setTimeout(hideShowPlayer, 3000); // fire tv fix (gray screen)
+        } else {
+            showPlayer();
         }
     }
 
-    hidePlayer();
+    hideShowPlayer();
     startPlayer();
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
-    player.addEventListener('loadeddata', showPlayer, false); // finished loading
+    // player.addEventListener('loadeddata', showPlayer, false); // finished loading
     player.addEventListener('abort', hidePlayer, false); // video closed
-    window.addEventListener('hashchange', urlChangeFn, false);
+    window.addEventListener('hashchange', hideShowPlayer, false);
     player.callbackSet = true;
 }
 
