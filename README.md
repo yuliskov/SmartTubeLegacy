@@ -50,11 +50,11 @@ __How to change system language with only the MiTV3__
  * SmartYouTubeTV provides a nice possibility to consume YouTube content.
  * SmartYouTubeTV provides internal login mechanism which allows you to keep content up to date in a very convenient way.
 
+### Donation:
+If you want to support my developments you are welcome to buy me a cup of coffee :)
+ * coming soon
+
 ### Contributors:
  * __[javierpz](https://github.com/javierpz)__
  * __[TheRMaverick](https://github.com/TheRMaverick)__
  * __[Maikell84](https://github.com/Maikell84)__
- 
-### Donation:
-If you want to support my developments you are welcome to buy me a cup of coffee :)
- * coming soon
