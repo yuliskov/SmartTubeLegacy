@@ -29,8 +29,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 230
-        versionName "6.12.70"
+        versionCode 231
+        versionName "6.12.71"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -64,6 +64,9 @@ android {
         }
         Vkids {
             applicationIdSuffix ".kids"
+        }
+        Vlive {
+            applicationIdSuffix ".live"
         }
     }
 

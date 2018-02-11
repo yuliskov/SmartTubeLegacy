@@ -34,7 +34,7 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
             injectCSSAssetOnce("exoplayer.css");
         }
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity) {
-            // injectJSAssetOnce("webview_720.js");
+            injectJSAssetOnce("webview_720.js");
         }
     }
 

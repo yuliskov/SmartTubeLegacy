@@ -29,13 +29,13 @@ function hideShowPlayerBackground() {
     }
 
     function showPlayer() {
-        player.style['-webkit-filter'] = 'brightness(1)';
+        player.style['-webkit-filter'] = 'brightness(100%)'; // fire tv fix: percentage
         console.log("webview_720.js: showPlayer()");
     }
 
     function hidePlayer(event) {
         var howStarted = event == null ? " normally" : " from event";
-        player.style['-webkit-filter'] = 'brightness(0)';
+        player.style['-webkit-filter'] = 'brightness(0%)'; // fire tv fix: percentage
         console.log("webview_720.js: hidePlayer() " + howStarted);
     }
 
@@ -47,7 +47,6 @@ function hideShowPlayerBackground() {
 
         if (!player.currentTime) { // player not initialized
             hidePlayer();
-            setTimeout(hideShowPlayer, 3000); // fire tv fix (gray screen)
         } else {
             showPlayer();
         }
@@ -57,7 +56,7 @@ function hideShowPlayerBackground() {
     startPlayer();
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
-    // player.addEventListener('loadeddata', showPlayer, false); // finished loading
+    player.addEventListener('loadeddata', showPlayer, false); // finished loading
     player.addEventListener('abort', hidePlayer, false); // video closed
     window.addEventListener('hashchange', hideShowPlayer, false);
     player.callbackSet = true;
@@ -67,44 +66,28 @@ function init() {
     delayUntilPlayerBeInitialized(hideShowPlayerBackground);
 }
 
-function waitTillInit(depName, callback) {
-    function hashCode(str) {
-        var hash = 0, i, chr;
-        if (str.length === 0) return hash;
-        var maxLen = 30; // we don't need a full content
-        var len = str.length < maxLen ? str.length : maxLen;
-        for (i = 0; i < len; i++) {
-            chr   = str.charCodeAt(i);
-            hash  = ((hash << 5) - hash) + chr;
-            hash |= 0; // Convert to 32bit integer
-        }
-        return hash;
-    }
-
-    var modHash = hashCode(callback.toString());
-    var modNamePart = callback.toString().slice(0, 50);
-
-    if (window[modHash] === 'ok') {
-        console.log('Module already initialized: ' + modNamePart);
+function waitTillInit(modName, callback, depName) {
+    if (window[modName] === 'ok') {
+        console.log(modName + ': module already initialized');
         return;
     }
 
-    window[modHash] = 'ok';
+    window[modName] = 'ok';
 
     if (window[depName] || !depName) {
-        console.log('All deps initialized. perform callback: ' + modNamePart);
+        console.log(modName + ': all deps initialized. perform callback');
         callback();
         return;
     }
 
     var interval = setInterval(function() {
-        console.log('Check that all deps are initialized: ' + modNamePart);
+        console.log(modName + ': check that all deps are initialized');
         if (window[depName]) {
-            console.log('All deps initialized. perform callback: ' + modNamePart);
+            console.log(modName + ': all deps initialized. perform callback');
             callback();
             clearInterval(interval);
         }
     }, 100);
 }
 
-waitTillInit('common.js', init);
+waitTillInit('webview_720.js', init, 'common.js');
