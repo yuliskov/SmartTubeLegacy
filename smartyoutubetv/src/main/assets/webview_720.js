@@ -35,7 +35,7 @@ function hideShowPlayerBackground() {
 
     function hidePlayer(event) {
         var howStarted = event == null ? " normally" : " from event";
-        player.style['-webkit-filter'] = 'brightness(0%)'; // fire tv fix: percentage
+        player.style['-webkit-filter'] = 'brightness(0%)';
         console.log("webview_720.js: hidePlayer() " + howStarted);
     }
 
