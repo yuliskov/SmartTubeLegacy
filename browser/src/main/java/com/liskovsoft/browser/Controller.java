@@ -155,7 +155,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * @param intent
      */
     public void doStart(Bundle icicle, Intent intent) {
-        onRestoreControllerState(icicle);
+        // NOTE: restore callback is broken
+        // onRestoreControllerState(icicle);
 
         long currentTabId = mTabControl.canRestoreState(icicle, false);
         if (currentTabId == -1) { // no saved state

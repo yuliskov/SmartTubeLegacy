@@ -36,10 +36,12 @@ public class StateUpdater {
     }
 
     public void updateState(Bundle state) {
-        if (isThisPlaylistBundle(state))
+        // at this point state is dropped
+        //if (isThisPlaylistBundle(state))
+        //    state.clear();
+        if (isThisActivityStartedFormBootstrap(state)) {
             state.clear();
-        if (isThisActivityStartedFormBootstrap(state))
-            state.clear();
+        }
     }
 
     private boolean isThisActivityStartedFormBootstrap(Bundle state) {

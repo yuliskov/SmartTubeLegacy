@@ -160,9 +160,10 @@ public class CrashRecoveryHandler {
     }
 
     synchronized private Bundle loadCrashState() {
-        if (!shouldRestore()) {
-            return null;
-        }
+        // TODO: seems unneeded, but someone placed it here. Why?
+        //if (!shouldRestore()) {
+        //    return null;
+        //}
         BrowserSettings browserSettings = getSettings();
         browserSettings.setLastRunPaused(false);
         Bundle state = null;
