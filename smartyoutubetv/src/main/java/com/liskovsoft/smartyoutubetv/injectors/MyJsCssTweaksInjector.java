@@ -21,20 +21,21 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     }
 
     public void inject() {
-        injectCSSAssetOnce("common.css");
-        injectJSAssetOnce("common.js");
-        injectJSAssetOnce("quality-controls.js");
+        injectCSSAssetOnce("common/common.css");
+        injectJSAssetOnce("common/common.js");
+        injectJSAssetOnce("common/quality-controls.js");
         if (Browser.getEngineType() == EngineType.XWalk) {
-            injectJSAssetOnce("xwalk.js");
+            injectJSAssetOnce("xwalk/xwalk.js");
         } else {
-            injectJSAssetOnce("webview.js");
+            injectJSAssetOnce("webview/webview.js");
         }
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            injectJSAssetOnce("exoplayer.js");
-            injectCSSAssetOnce("exoplayer.css");
+            injectJSAssetOnce("exoplayer/exoplayer.js");
+            injectCSSAssetOnce("exoplayer/exoplayer.css");
         }
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity) {
-            // injectJSAssetOnce("webview_720.js");
+            injectCSSAssetOnce("common/loading-placeholder.css");
+            injectJSAssetOnce("common/webview_720.js");
         }
     }
 

@@ -17,33 +17,39 @@ function hideShowPlayerBackground() {
         return;
     }
 
+    var container = helpers.$('#leanback-player-container');
+    var loaderHtml = '<div class="loader-container"></div>';
+    var loader = helpers.appendHtml(container, loaderHtml);
+
     function startPlayer(event) {
         var howStarted = event == null ? "normally" : "from event";
         // not helpful, at this point player already visible
         // hide (!) player in *.css files instead
         player.play();
-        setTimeout(function() {
-            if (player.paused) window.location.reload();
-        }, 500);
+        if (player.paused)
+            window.location.reload();
+        // setTimeout(function() {
+        //     if (player.paused) window.location.reload();
+        // }, 500);
         console.log("webview_720.js: startPlayer() " + howStarted);
     }
 
     function showPlayer() {
-        player.style['-webkit-filter'] = 'brightness(100%)'; // fire tv fix: percentage
+        loader.style['display'] = 'none';
         console.log("webview_720.js: showPlayer()");
     }
 
     function hidePlayer(event) {
+        loader.style['display'] = 'block';
         var howStarted = event == null ? " normally" : " from event";
-        player.style['-webkit-filter'] = 'brightness(0%)';
         console.log("webview_720.js: hidePlayer() " + howStarted);
     }
 
     // fix when clicked on the next button
     function hideShowPlayer() {
-        if (window.location.hash.indexOf('watch') === -1) { // not a video
-            return;
-        }
+        // if (window.location.hash.indexOf('watch') === -1) { // not a video
+        //     return;
+        // }
 
         if (!player.currentTime) { // player not initialized
             hidePlayer();

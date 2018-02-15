@@ -252,6 +252,17 @@ function Helpers() {
         // simulate mouse/enter key press
         this.triggerEvent(selector, 'keyup', 13);
     };
+
+    this.appendHtml = function(el, str) {
+        var div = document.createElement('div');
+        div.innerHTML = str;
+
+        var child;
+        while (div.children.length > 0) {
+            child = el.appendChild(div.children[0]);
+        }
+        return child;
+    };
 }
 
 window.helpers = new Helpers();
