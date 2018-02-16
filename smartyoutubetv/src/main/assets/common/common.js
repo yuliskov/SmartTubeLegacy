@@ -8,7 +8,8 @@ function firstRun() {
 ////////////////////////////////////////////
 
 // detection is based on url hash change (http://mysite.com/path#another-path)
-function delayTillElementBeInitializedNew(callback, testFn, runOnce) {
+// NOTE: fired too lately and doesn't work in all cases (like exit btn)
+function delayTillElementBeInitializedOnHash(callback, testFn, runOnce) {
     var res = testFn();
     if (res) {
         callback();
@@ -39,6 +40,7 @@ function delayTillElementBeInitializedNew(callback, testFn, runOnce) {
 }
 
 // detection is based on key events
+// combined detection: first by interval then by key in sake of performance
 function delayTillElementBeInitialized(callback, testFn, runOnce) {
 	var res = testFn();
 	if (res) {
@@ -47,7 +49,9 @@ function delayTillElementBeInitialized(callback, testFn, runOnce) {
             return;
 	}
 
-    var delayFn = function(event) {
+    var delayFnKey = function(event) {
+        clearInterval(interval); // remove concurrent event
+
         var up = 38;
         var down = 40;
         var left = 37;
@@ -65,19 +69,40 @@ function delayTillElementBeInitialized(callback, testFn, runOnce) {
             if (!res)
                 return;
 
-            console.log('delayTillElementBeInitialized2: prepare to fire callback: ' + callback.toString().slice(0, 50));
+            console.log('delayTillElementBeInitialized2: onkeydown: prepare to fire callback: ' + callback.toString().slice(0, 50));
 
             // cleanup
             if (runOnce) {
-                console.log('delayTillElementBeInitialized: removing callback: ' + callback.toString().slice(0, 50));
-                document.removeEventListener('keydown', delayFn, true);
+                console.log('delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
+                document.removeEventListener('keydown', delayFnKey, true);
             }
             // actual call
             callback();
         }, 500);
     };
 
-	document.addEventListener('keydown', delayFn, true); // useCapture: true
+    var delayFnInt = function() {
+        setTimeout(function() { // wait till some elms be initialized like exit btn, etc
+            var res = testFn();
+            if (!res)
+                return;
+
+            console.log('common.js: delayTillElementBeInitialized: interval: prepare to fire callback: ' + callback.toString().slice(0, 50));
+
+            // cleanup
+            if (runOnce) {
+                console.log('delayTillElementBeInitialized: interval: removing callback: ' + callback.toString().slice(0, 50));
+                clearInterval(interval);
+            }
+
+            // actual call
+            callback();
+        }, 500);
+    };
+
+    // concurrent triggers (only one left in the end)
+	document.addEventListener('keydown', delayFnKey, true); // useCapture: true
+    var interval = setInterval(delayFnInt, 500);
 }
 
 function getVideoPlayerPlayButton() {

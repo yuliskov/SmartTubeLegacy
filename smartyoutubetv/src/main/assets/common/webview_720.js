@@ -28,9 +28,6 @@ function hideShowPlayerBackground() {
         player.play();
         if (player.paused)
             window.location.reload();
-        // setTimeout(function() {
-        //     if (player.paused) window.location.reload();
-        // }, 500);
         console.log("webview_720.js: startPlayer() " + howStarted);
     }
 
@@ -47,19 +44,16 @@ function hideShowPlayerBackground() {
 
     // fix when clicked on the next button
     function hideShowPlayer() {
-        // if (window.location.hash.indexOf('watch') === -1) { // not a video
-        //     return;
-        // }
-
         if (!player.currentTime) { // player not initialized
             hidePlayer();
         } else {
             showPlayer();
         }
+        console.log("webview_720.js: hideShowPlayer()");
     }
 
     hideShowPlayer();
-    startPlayer();
+    startPlayer(); // its very important (fix constant reload)
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
     player.addEventListener('loadeddata', showPlayer, false); // finished loading
