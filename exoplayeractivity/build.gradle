@@ -45,5 +45,5 @@ dependencies {
     compile 'com.noveogroup.android:android-logger:1.3.5'
     compile 'com.google.android.exoplayer:exoplayer:r2.5.3' // https://bintray.com/google/exoplayer/exoplayer
 
-    debugCompile project.properties.stethoVersion
+    compile project.properties.stethoVersion
 }
