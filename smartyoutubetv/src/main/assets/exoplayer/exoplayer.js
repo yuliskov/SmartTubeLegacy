@@ -9,7 +9,8 @@ var PlayerActivity = {
     BUTTON_NEXT: "button_next",
     BUTTON_BACK: "button_back",
     BUTTON_SUGGESTIONS: "button_suggestions",
-    TRACK_ENDED: "track_ended"
+    TRACK_ENDED: "track_ended",
+    PLAYER_RUN_ONCE: "player_run_once" // indicates that webview instance not restored after player close
 };
 
 var GoogleConstants = {
@@ -21,7 +22,8 @@ var GoogleConstants = {
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: ".back.no-model.legend-item",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
-    TRACK_ENDED: "track_ended" // fake button (use internal logic)
+    TRACK_ENDED: "track_ended", // fake button (use internal logic)
+    PLAYER_RUN_ONCE: "player_run_once" // fake button (use internal logic)
 };
 
 function GoogleButton() {
@@ -365,13 +367,16 @@ function YouButton(selector) {
 YouButton.prototype = new GoogleButton();
 YouButton.fromSelector = function(selector) {
     function createButton(selector) {
-        if (selector === GoogleConstants.TRACK_ENDED) {
-            return new TrackEndFakeButton(selector);
+        switch (selector) {
+            case GoogleConstants.TRACK_ENDED:
+                return new TrackEndFakeButton(selector);
+            case GoogleConstants.BUTTON_SUGGESTIONS:
+                return new SuggestionsFakeButton(selector);
+            case GoogleConstants.PLAYER_RUN_ONCE:
+                return new PlayerRunOnceFakeButton(selector);
+            default:
+                return new YouButton(selector);
         }
-        if (selector === GoogleConstants.BUTTON_SUGGESTIONS) {
-            return new SuggestionsFakeButton(selector);
-        }
-        return new YouButton(selector);
     }
 
     if (!this.btnMap)
@@ -421,11 +426,13 @@ TrackEndFakeButton.prototype = new GoogleButton();
 function KeyUpDownWatcher(host) {
     function KeyUpDownWatcherService() {
         var container = exoutils.$(this.keysContainerSelector);
+        var mainContainer = document;
         var type = 'keydown';
         var up = 38;
         var enter = 13;
         var esc = 27;
         var $this = this;
+        this.runOnce = false;
 
         var myListener = function(e) {
             var code = e.keyCode;
@@ -439,7 +446,13 @@ function KeyUpDownWatcher(host) {
             console.log("Watcher: SuggestionsFakeButton: on keydown: " + code);
         };
 
+        var myMainListener = function(e) {
+            $this.runOnce = true;
+            mainContainer.removeEventListener(type, myMainListener); // signature must match
+        };
+
         container.addEventListener(type, myListener);
+        mainContainer.addEventListener(type, myMainListener);
 
         this.setHost = function(host) {
             this.host = host;
@@ -454,6 +467,10 @@ function KeyUpDownWatcher(host) {
         window.keyUpDownWatcherService = new KeyUpDownWatcherService();
     }
     window.keyUpDownWatcherService.setHost(host);
+
+    this.getRunOnce = function() {
+        return window.keyUpDownWatcherService.runOnce;
+    };
 }
 
 KeyUpDownWatcher.prototype = new GoogleButton();
@@ -496,6 +513,23 @@ function SuggestionsFakeButton(selector) {
 
 SuggestionsFakeButton.prototype = new GoogleButton();
 
+function PlayerRunOnceFakeButton(selector) {
+    this.selector = selector;
+
+    this.getChecked = function() {
+        var watcher = new KeyUpDownWatcher();
+        console.log("exoplayer.js: PlayerRunOnceFakeButton: user did activity: " + watcher.getRunOnce());
+        return watcher.getRunOnce();
+    };
+
+    this.setChecked = function(doChecked) {
+        // do nothing
+    };
+}
+
 /////////// End YouButton Wrapper //////////////////
+
+// watch for the key presses from the start of our app (see PlayerRunOnceFakeButton)
+new KeyUpDownWatcher();
 
 console.log('injecting exoplayer.js into ' + document.location.href);

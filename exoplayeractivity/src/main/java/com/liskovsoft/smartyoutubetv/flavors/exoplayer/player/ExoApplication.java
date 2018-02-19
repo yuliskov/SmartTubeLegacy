@@ -15,6 +15,7 @@
  */
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
+import com.facebook.stetho.Stetho;
 import com.google.android.exoplayer2.BuildConfig;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -35,6 +36,10 @@ public class ExoApplication extends Browser {
         super.onCreate();
         String appName = "ExoPlayer";
         userAgent = Util.getUserAgent(this, appName);
+
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
     }
 
     public DataSource.Factory buildDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {

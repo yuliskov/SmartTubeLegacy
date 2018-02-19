@@ -26,8 +26,8 @@ function hideShowPlayerBackground() {
         // not helpful, at this point player already visible
         // hide (!) player in *.css files instead
         player.play();
-        if (player.paused)
-            window.location.reload();
+        // if (player.paused)
+        //     window.location.reload();
         console.log("webview_720.js: startPlayer() " + howStarted);
     }
 

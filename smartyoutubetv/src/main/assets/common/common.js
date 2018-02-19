@@ -250,7 +250,7 @@ function Helpers() {
             // modern browsers, IE9+
             var e = document.createEvent('HTMLEvents');
             e.keyCode = keyCode;
-            e.initEvent(type, false, true);
+            e.initEvent(type, true, false);
             el.dispatchEvent(e);
         } else {
             // IE 8
