@@ -162,7 +162,7 @@ function ExoUtils() {
     // supply selector list
     this.getButtonStates = function() {
         this.muteVideo();
-        new KeyUpDownWatcher(null); // init watcher
+        new SuggestionsWatcher(null); // init watcher
 
         YouButton.resetCache(); // activity just started
 
@@ -189,7 +189,7 @@ function ExoUtils() {
 
     this.syncButtons = function(states) {
         this.muteVideo();
-        new KeyUpDownWatcher(null); // init watcher
+        new SuggestionsWatcher(null); // init watcher
 
         YouButton.resetCache(); // activity just started
         console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
@@ -423,16 +423,54 @@ function TrackEndFakeButton(selector) {
 
 TrackEndFakeButton.prototype = new GoogleButton();
 
-function KeyUpDownWatcher(host) {
+/////// KeyActivityWatcher
+
+function KeyActivityWatcher() {
+    function KeyActivityWatcherService() {
+        var mainContainer = document;
+        var type = 'keydown';
+        var $this = this;
+        this.runOnce = false;
+
+        var runOnceListener = function(e) {
+            $this.runOnce = true;
+            mainContainer.removeEventListener(type, runOnceListener); // signature must match
+            console.log("exoplayer.js: KeyActivityWatcher: runOnceListener");
+        };
+
+        mainContainer.addEventListener(type, runOnceListener);
+        console.log("exoplayer.js: KeyActivityWatcher: do init...");
+    }
+
+    KeyActivityWatcherService.prototype = new GoogleButton();
+
+    if (!window.keyActivityWatcherService) {
+        window.keyActivityWatcherService = new KeyActivityWatcherService();
+    }
+
+    this.getRunOnce = function() {
+        return window.keyActivityWatcherService.runOnce;
+    };
+}
+
+KeyActivityWatcher.prototype = new GoogleButton();
+KeyActivityWatcher.disable = function() {
+    new KeyActivityWatcher(null);
+};
+
+/////// End KeyActivityWatcher
+
+
+/////// SuggestionsWatcher
+
+function SuggestionsWatcher(host) {
     function KeyUpDownWatcherService() {
         var container = exoutils.$(this.keysContainerSelector);
-        var mainContainer = document;
         var type = 'keydown';
         var up = 38;
         var enter = 13;
         var esc = 27;
         var $this = this;
-        this.runOnce = false;
 
         var keyListener = function(e) {
             var code = e.keyCode;
@@ -446,13 +484,7 @@ function KeyUpDownWatcher(host) {
             }
         };
 
-        var runOnceListener = function(e) {
-            $this.runOnce = true;
-            mainContainer.removeEventListener(type, runOnceListener); // signature must match
-        };
-
         container.addEventListener(type, keyListener);
-        mainContainer.addEventListener(type, runOnceListener);
 
         this.setHost = function(host) {
             this.host = host;
@@ -467,19 +499,15 @@ function KeyUpDownWatcher(host) {
         window.keyUpDownWatcherService = new KeyUpDownWatcherService();
     }
 
-    if (host) {
-        window.keyUpDownWatcherService.setHost(host);
-    }
-
-    this.getRunOnce = function() {
-        return window.keyUpDownWatcherService.runOnce;
-    };
+    window.keyUpDownWatcherService.setHost(host);
 }
 
-KeyUpDownWatcher.prototype = new GoogleButton();
-KeyUpDownWatcher.disable = function() {
-    new KeyUpDownWatcher(null);
+SuggestionsWatcher.prototype = new GoogleButton();
+SuggestionsWatcher.disable = function() {
+    new SuggestionsWatcher(null);
 };
+
+////////// End SuggestionsWatcher
 
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
@@ -495,7 +523,7 @@ function SuggestionsFakeButton(selector) {
         exoutils.triggerButton(downCode);
 
         // start point
-        this.watcher = new KeyUpDownWatcher(this);
+        this.watcher = new SuggestionsWatcher(this);
     };
 
     this.needToCloseSuggestions = function() {
@@ -520,7 +548,7 @@ function PlayerRunOnceFakeButton(selector) {
     this.selector = selector;
 
     this.getChecked = function() {
-        var watcher = new KeyUpDownWatcher();
+        var watcher = new KeyActivityWatcher();
         console.log("exoplayer.js: PlayerRunOnceFakeButton: user did activity: " + watcher.getRunOnce());
         return watcher.getRunOnce();
     };
@@ -533,6 +561,6 @@ function PlayerRunOnceFakeButton(selector) {
 /////////// End YouButton Wrapper //////////////////
 
 // watch for the key presses from the start of our app (see PlayerRunOnceFakeButton)
-new KeyUpDownWatcher();
+new KeyActivityWatcher();
 
 console.log('injecting exoplayer.js into ' + document.location.href);
