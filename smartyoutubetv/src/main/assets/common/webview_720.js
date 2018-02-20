@@ -56,7 +56,7 @@ function hideShowPlayerBackground() {
     startPlayer(); // its very important (fix constant reload)
 
     player.addEventListener('loadstart', startPlayer, false); // start loading
-    player.addEventListener('loadeddata', showPlayer, false); // finished loading
+    player.addEventListener('playing', showPlayer, false); // finished loading
     player.addEventListener('abort', hidePlayer, false); // video closed
     window.addEventListener('hashchange', hideShowPlayer, false);
     player.callbackSet = true;

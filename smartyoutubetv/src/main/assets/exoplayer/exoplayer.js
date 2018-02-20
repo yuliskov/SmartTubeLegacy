@@ -434,25 +434,25 @@ function KeyUpDownWatcher(host) {
         var $this = this;
         this.runOnce = false;
 
-        var myListener = function(e) {
+        var keyListener = function(e) {
             var code = e.keyCode;
+            console.log("Watcher: SuggestionsFakeButton: on keydown: " + code + ", host: " + $this.host);
+
             if (code === up && $this.host) { // up is fired only for the top row
                 $this.host.needToCloseSuggestions();
                 $this.host = null; // run once per host
             } else if (code === enter) { // user wants to open an new video
                 $this.host = null;
             }
-
-            console.log("Watcher: SuggestionsFakeButton: on keydown: " + code);
         };
 
-        var myMainListener = function(e) {
+        var runOnceListener = function(e) {
             $this.runOnce = true;
-            mainContainer.removeEventListener(type, myMainListener); // signature must match
+            mainContainer.removeEventListener(type, runOnceListener); // signature must match
         };
 
-        container.addEventListener(type, myListener);
-        mainContainer.addEventListener(type, myMainListener);
+        container.addEventListener(type, keyListener);
+        mainContainer.addEventListener(type, runOnceListener);
 
         this.setHost = function(host) {
             this.host = host;
@@ -466,7 +466,10 @@ function KeyUpDownWatcher(host) {
     if (!window.keyUpDownWatcherService) {
         window.keyUpDownWatcherService = new KeyUpDownWatcherService();
     }
-    window.keyUpDownWatcherService.setHost(host);
+
+    if (host) {
+        window.keyUpDownWatcherService.setHost(host);
+    }
 
     this.getRunOnce = function() {
         return window.keyUpDownWatcherService.runOnce;
