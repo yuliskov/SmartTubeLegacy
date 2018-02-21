@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -46,7 +47,7 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
 
     private void postDelayed() {
         int delayMillis = 3000;
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 throttledCommandCall();

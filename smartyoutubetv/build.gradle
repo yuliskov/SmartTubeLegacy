@@ -138,4 +138,6 @@ dependencies {
             force project.properties.asmVersion // resolve 'jsonPath' conflicts
         }
     }
+
+    compile project.properties.nanoHttpdVersion
 }

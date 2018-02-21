@@ -2,11 +2,11 @@
 <resources>
     <string-array name="supported_languages">
         <item>English|en_US</item>
-        <!-- <item>Chinese Simplified|zh</item> -->
         <item>Chinese Simplified|zh_CN</item>
         <item>Chinese Traditional|zh_TW</item>
         <item>Українська|uk_UA</item>
         <item>Русский|ru_RU</item>
         <item>Deutsch|de_DE</item>
+        <item>Arabic|ar</item>
     </string-array>
 </resources>

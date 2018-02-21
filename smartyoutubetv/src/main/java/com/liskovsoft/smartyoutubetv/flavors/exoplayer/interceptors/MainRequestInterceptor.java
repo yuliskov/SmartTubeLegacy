@@ -2,11 +2,12 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.kodi.KodiInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
 public class MainRequestInterceptor extends RequestInterceptor {
     private final Context mContext;
-    private final ExoInterceptor mExoInterceptor;
+    private final RequestInterceptor mExoInterceptor;
     private final CipherInterceptor mCipherInterceptor;
     private final DelayedCommandCallInterceptor mDoOnPlayEndInterceptor;
     private RequestInterceptor mCurrentInterceptor;
@@ -15,6 +16,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mContext = context;
         mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor();
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
+        //mExoInterceptor = new KodiInterceptor(context, mDoOnPlayEndInterceptor);
         mCipherInterceptor = new CipherInterceptor(context);
     }
 

@@ -38,6 +38,7 @@ buildscript {
         crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.8.0@aar'
         asmVersion = 'org.ow2.asm:asm:5.0.4'
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
+        nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
     }
 }
 
