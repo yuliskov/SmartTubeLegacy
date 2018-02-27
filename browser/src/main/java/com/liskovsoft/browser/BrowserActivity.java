@@ -94,9 +94,9 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     public void onLowMemory() {
-        // msg 4 future me
-        // don't place here save state calls - it won't help
+        // msg 4 future me: this method is not called when app is hidden
         super.onLowMemory();
+        saveBrowserState(null); // app near got killed
     }
 
     @Override
