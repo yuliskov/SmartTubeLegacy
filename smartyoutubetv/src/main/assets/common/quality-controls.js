@@ -116,40 +116,6 @@ function setEnabled(obj, isEnabled) {
 
 /////////////////////////////////////////////////
 
-// function delayTillElementBeInitialized(callback, testFn) {
-// 	var res = testFn();
-// 	if (res) {
-//         console.log('delayTillElementBeInitialized: prepare to fire callback');
-// 		callback();
-// 		return;
-// 	}
-
-// 	document.addEventListener('keydown', function delayTillElementBeInitializedListener(event){
-// 	    var up = 38;
-// 	    var down = 40;
-// 	    var esc = 27;
-// 	    var enter = 13;
-// 	    var keyCode = event.keyCode;
-
-// 	    if (keyCode != up && keyCode != down && keyCode != esc && keyCode != enter) {
-// 	        return;
-// 	    }
-
-//     	setTimeout(function() {
-//     		var res = testFn();
-// 	    	if (!res)
-// 	    		return;
-
-// 	    	console.log('delayTillElementBeInitialized: prepare to fire callback');
-
-// 	    	// cleanup
-// 		    document.removeEventListener('keydown', delayTillElementBeInitializedListener);
-// 		    // actual call
-// 		    callback();
-//     	}, 500);
-//     });	
-// }
-
 function getVideoPlayerPlayButton() {
 	return document.querySelector('.icon-player-play');
 }
@@ -319,7 +285,7 @@ function createQualityToggleButton() {
 }
 
 
-function createQualityButtonsRow2(videoFormats) {
+function createQualityButtonsRow(videoFormats) {
     // NOTE: styling buttons-list: fixing obvious layout mess
     var container = createElement('<div id="buttons-list" class=" list" data-enable-sounds="false" tabindex="-1" style="position: relative; overflow: hidden; height: 100%;"></div>');
     var container2 = createElement('<div class="new-list-container horizontal" style="margin-left: 0em;"></div>');
@@ -351,6 +317,7 @@ function sortButtons(nodes) {
     }
 
     // move transport-more-button to the left
+    // NOTE: has unproper sort among Options buttons
     function compareById(a, b) {
         var leftId = a.getAttribute('id');
         var rightId = b.getAttribute('id');
@@ -366,7 +333,7 @@ function sortButtons(nodes) {
 
     var objArr = Array.prototype.slice.call(nodes);
 
-    return objArr.sort(compareById);
+    return objArr.sort(compareByOffset);
 }
 
 function addArrowKeysHandling(container) {
@@ -384,13 +351,21 @@ function addArrowKeysHandling(container) {
     if (!buttons)
         console.log('Houston we have problems: cant find buttons');
 
-    var listener1 = function (event) {arrowKeysListener(event, buttons)};  
-    var listener2 = function (event) {moveOutListener(event, buttons)};
+    var listener1 = function (event) {
+        var buttons = container.querySelectorAll('.button, .toggle-button');
+        buttons = sortButtons(buttons); // convert to array and sort
+        arrowKeysListener(event, buttons)
+    };  
+    var listener2 = function (event) {
+        var buttons = container.querySelectorAll('.button, .toggle-button');
+        buttons = sortButtons(buttons); // convert to array and sort
+        moveOutListener(event, buttons)
+    };
     // var listener3 = function (event) {resetButtonsState(null, buttons)};  
     addEventListenerAll(container, 'keydown', [listener1, listener2]);
     
     var onDomChanged = function(el) {
-    	console.log('onDomChanged');
+        console.log('onDomChanged');
         // refill buttons
         buttons = container.querySelectorAll('.button, .toggle-button');
         buttons = sortButtons(buttons); // convert to array and sort
@@ -650,7 +625,7 @@ function setupQualityButtons(videoFormats) {
     var qualityToggleButton = createQualityToggleButton();
     var parentContainer = querySelector('.controls-row');
     append(parentContainer, qualityToggleButton);
-    var qualityButtonsRow = createQualityButtonsRow2(videoFormats);
+    var qualityButtonsRow = createQualityButtonsRow(videoFormats);
     // save
     put('quality-toggle-buton', qualityToggleButton);
 
