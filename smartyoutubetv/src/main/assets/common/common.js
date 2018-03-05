@@ -396,7 +396,7 @@ function enableExternalKeyboard() {
 function init() {
     delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
     // applyFakeResolution();
-    fixWrongPixelRatio();
+    // fixWrongPixelRatio();
     commonLogs();
     enableExternalKeyboard();
     console.log('injecting common.js into ' + document.location.href);
