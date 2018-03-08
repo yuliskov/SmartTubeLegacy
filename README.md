@@ -52,7 +52,8 @@ __How to change system language with only the MiTV3__
 
 ### Donation:
 If you want to support my developments you are welcome to buy me a cup of coffee :)
- * coming soon
+ * WMZ: Z375157140784
+ * WMU: U449339012933
 
 ### Contributors:
  * __[javierpz](https://github.com/javierpz)__
