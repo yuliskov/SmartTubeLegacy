@@ -46,10 +46,21 @@ __How to change system language with only the MiTV3__
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV")
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
 
+### Starting screen:
+The device/resolution options at start launches different playing methos (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
+* 720 - original / core player
+* 1080 - XWalk
+* 4K - Exoplayer
+* 4K Alt - Exoplayer with fixes
+
+Also important, it's possible to select max resolution and codec (ie 1080/AVC1) via the start screen that will be applied on video loading (**Codec** option).
+
+The **Remember** tick box acts as a configuration saving for next app launches.
+
 ### Why using it:
  * SmartYouTubeTV provides a nice possibility to consume YouTube content.
  * SmartYouTubeTV provides internal login mechanism which allows you to keep content up to date in a very convenient way.
-
+ 
 ### Donation:
 If you want to support my developments you are welcome to buy me a cup of coffee :)
  * WMZ: Z375157140784
