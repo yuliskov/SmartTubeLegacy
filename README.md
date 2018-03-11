@@ -47,7 +47,7 @@ __How to change system language with only the MiTV3__
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
 
 ### Starting screen:
-The device/resolution options at start launches different playing methos (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
+The device/resolution options at start launches different playing methods (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
 * 720 - original / core player
 * 1080 - XWalk
 * 4K - Exoplayer
@@ -67,6 +67,7 @@ If you want to support my developments you are welcome to buy me a cup of coffee
  * WMU: U449339012933
 
 ### Contributors:
- * __[javierpz](https://github.com/javierpz)__
- * __[TheRMaverick](https://github.com/TheRMaverick)__
- * __[Maikell84](https://github.com/Maikell84)__
+ * __[WolfganP](https://github.com/WolfganP)__ (README)
+ * __[javierpz](https://github.com/javierpz)__ (cast fix)
+ * __[TheRMaverick](https://github.com/TheRMaverick)__ (German language)
+ * __[Maikell84](https://github.com/Maikell84)__ (misc fixes)
