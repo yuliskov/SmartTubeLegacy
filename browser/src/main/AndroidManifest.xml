@@ -16,7 +16,7 @@
 
     <application android:name=".Browser" android:theme="@style/AppTheme">
         <!-- allow to use repacked XWalk's apk -->
-        <meta-data android:name="xwalk_verify" android:value="disable"/>
+        <meta-data android:name="xwalk_verify" android:value="disable" />
     </application>
 
 </manifest>

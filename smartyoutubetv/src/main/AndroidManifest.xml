@@ -44,6 +44,9 @@
         tools:node="merge"
         tools:replace="android:name">
 
+        <!-- allow to use repacked XWalk's apk -->
+        <meta-data android:name="xwalk_verify" android:value="disable" />
+
         <!-- NOTE: DIAL integration for Amazon TV -->
         <meta-data
             android:name="whisperplay"
