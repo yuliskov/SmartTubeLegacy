@@ -1,3 +1,5 @@
+// NOTE: this file can be tested independently for other *.js
+
 /////////// GoogleButton ////////////////
 
 var PlayerActivity = {
@@ -406,7 +408,7 @@ function TrackEndFakeButton(selector) {
         var player = exoutils.$(this.videoSelector);
         if (player) {
             console.log("TrackEndFakeButton: jumping to the end: " + player.currentTime + " " + player.duration);
-            player.currentTime = player.duration;
+            player.currentTime = 9999999;
         }
     };
 
@@ -425,6 +427,7 @@ TrackEndFakeButton.prototype = new GoogleButton();
 
 /////// KeyActivityWatcher
 
+// indicates that any key is pressed at least one time
 function KeyActivityWatcher() {
     function KeyActivityWatcherService() {
         var mainContainer = document;

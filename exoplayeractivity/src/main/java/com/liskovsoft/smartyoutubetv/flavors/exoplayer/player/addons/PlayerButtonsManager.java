@@ -45,9 +45,29 @@ public class PlayerButtonsManager {
             }
             boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
             Integer btnId = entry.getKey();
+            if (excludeButton(btnId)) {
+                continue;
+            }
+
             ToggleButtonBase btn = (ToggleButtonBase) mPlayerActivity.findViewById(btnId);
             btn.setChecked(isChecked);
         }
+    }
+
+    /**
+     * Exclude buttons that don't have states
+     * @param btnId button id
+     * @return exclude button from processing
+     */
+    private boolean excludeButton(Integer btnId) {
+        String btnName = mIdTagMapping.get(btnId);
+        switch (btnName) {
+            case PlayerActivity.BUTTON_NEXT:
+            case PlayerActivity.BUTTON_PREV:
+                return true;
+        }
+
+        return false;
     }
 
     private void initIdTagMapping() {

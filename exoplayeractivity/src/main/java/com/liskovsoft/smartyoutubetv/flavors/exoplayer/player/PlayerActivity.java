@@ -202,7 +202,9 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     }
 
     private void doGracefulExit(Intent intent) {
-        intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
+        if (autoFrameRateManager != null) {
+            intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
+        }
         setResult(Activity.RESULT_OK, intent);
 
         finish();
@@ -657,7 +659,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == Player.STATE_ENDED) {
-            doGracefulExit(PlayerActivity.TRACK_ENDED);
+            doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
         }
 
         if (playbackState == Player.STATE_READY) {

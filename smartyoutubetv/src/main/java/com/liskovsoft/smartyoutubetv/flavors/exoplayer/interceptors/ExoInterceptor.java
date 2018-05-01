@@ -42,6 +42,12 @@ public class ExoInterceptor extends RequestInterceptor {
     private final GenericStringResultReceiver mReceiver;
     private Intent mCachedIntent;
     private String mCurrentUrl;
+    /**
+     * fix playlist advance bug<br/>
+     * create time window (1sec) where get_video_info isn't allowed<br/>
+     * see {@link #intercept(String)} method
+     */
+    private long mExitTime;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -79,7 +85,12 @@ public class ExoInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
+        if (System.currentTimeMillis() - mExitTime < 1_000) {
+            return null;
+        }
+
         mCurrentUrl = url;
+
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
         return null;
@@ -145,7 +156,7 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void run() {
                 // setup code in case app has restored (low memory): press back key
-                if (!playerIntent.getBooleanExtra("player_run_once", false)) {
+                if (!playerIntent.getBooleanExtra("player_run_once", false)) { // see exoplayer.js for details
                     playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
                     mActionSender.bindActions(playerIntent);
                     return;
@@ -168,6 +179,7 @@ public class ExoInterceptor extends RequestInterceptor {
         activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                mExitTime = System.currentTimeMillis();
                 mActionSender.bindActions(data);
             }
         });
