@@ -12,6 +12,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
+    private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -95,6 +96,17 @@ public final class SmartPreferences {
     public void setBootstrapUpdateCheck(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_UPDATE_CHECKED, isChecked)
+                .apply();
+    }
+
+    public boolean getBootstrapOldUI() {
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setBootstrapOldUI(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_OLD_UI_CHECKED, isChecked)
                 .apply();
     }
 }

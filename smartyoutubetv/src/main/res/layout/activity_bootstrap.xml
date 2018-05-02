@@ -35,11 +35,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_save_selection"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
+                android:visibility="gone"
                 app:titleText="@string/autoframerate"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_autoframerate"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
+                app:titleText="@string/old_ui"
+                app:onCheckedChanged="onCheckedChanged"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chk_old_ui"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
                 app:titleText="@string/update_check"
                 app:onCheckedChanged="onCheckedChanged"

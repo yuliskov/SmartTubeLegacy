@@ -55,6 +55,7 @@ public class BootstrapActivity extends ActivityBase {
     private void initButtons() {
         initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
         initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
+        initCheckbox(R.id.chk_old_ui, mPrefs.getBootstrapOldUI());
         initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
     }
 
@@ -91,6 +92,9 @@ public class BootstrapActivity extends ActivityBase {
                 break;
             case R.id.chk_update_check:
                 mPrefs.setBootstrapUpdateCheck(b);
+                break;
+            case R.id.chk_old_ui:
+                mPrefs.setBootstrapOldUI(b);
                 break;
         }
     }

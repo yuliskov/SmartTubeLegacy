@@ -31,6 +31,7 @@ public class AdAwayClient {
             "googleads.g.doubleclick.net",
             "googleads2.g.doubleclick.net",
             "googleads4.g.doubleclick.net",
+            "static.doubleclick.net",
             "pagead-googlehosted.l.google.com",
             "pagead.l.doubleclick.net",
             "pagead.l.google.com",

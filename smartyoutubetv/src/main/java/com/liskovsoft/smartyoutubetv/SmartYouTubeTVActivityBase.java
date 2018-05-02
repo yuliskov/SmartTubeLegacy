@@ -22,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.UAManager;
 import edu.mit.mobile.android.appupdater.addons.PermissionManager;
 
 import java.util.HashMap;
@@ -34,12 +35,13 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
-    private final static String mLGSmartTVUserAgent = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
     private final static String TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
+    private UAManager mUAManager;
 
     @Override
     protected void onCreate(Bundle icicle) {
         setupLang();
+        setupUA();
         super.onCreate(icicle);
 
         initRemoteUrl();
@@ -50,6 +52,10 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private void setupUA() {
+        mUAManager = new UAManager(this);
     }
 
     private void initPermissions() {
@@ -75,7 +81,7 @@ public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     private void createController(Bundle icicle) {
         mHeaders = new HashMap<>();
-        mHeaders.put("user-agent", mLGSmartTVUserAgent);
+        mHeaders.put("user-agent", mUAManager.getUA());
 
         mController = new SimpleUIController(this);
         mController.setEventListener(new ControllerEventListener(this, mController, mTranslator));

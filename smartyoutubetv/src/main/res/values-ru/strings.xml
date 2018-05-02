@@ -21,4 +21,5 @@
     <string name="preferred_codec">Декодер</string>
     <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
     <string name="no_restrictions">Без ограничений</string>
+    <string name="old_ui">Old UI</string>
 </resources>

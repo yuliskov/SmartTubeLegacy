@@ -39,4 +39,5 @@
     <string name="preferred_codec">Codec</string>
     <string name="select_preferred_codec">Restrict codec and resolution</string>
     <string name="no_restrictions">No restrictions</string>
+    <string name="old_ui">Old UI</string>
 </resources>
