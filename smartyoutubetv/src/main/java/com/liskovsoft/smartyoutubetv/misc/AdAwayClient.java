@@ -1,7 +1,20 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 public class AdAwayClient {
+    /**
+     * Couple of ads have been taken from <a href="https://www.reddit.com/r/dropgoogle/comments/5tnjxl/block_youtube_ads_2017_hosts_file/">this post</a>
+     */
     private static final String[] mAdAwayList = {
+            "pixel.moatads.com",
+            "rtd.tubemogul.com",
+            "innovid.com",
+            "s.innovid.com",
+            "2mdn.net",
+            "s0.2mdn.net",
+            "files.adform.net",
+            "fwmrm.net",
+            "2975c.v.fwmrm.net",
+            "secure-ds.serving-sys.com",
             "video-stats.video.google.com",
             "www.adwords.google.lloymlincs.com",
             "ads.adadapted.com",
@@ -22,8 +35,10 @@ public class AdAwayClient {
             "s2.youtube.com",
             "s.youtube.com",
             "youtube.112.2o7.net",
+            "ad.youtube.com",
             "ads.youtube.com",
             "youtube.com/api/stats/ads",
+            "doubleclick.net",
             "ad.doubleclick.net",
             "partnerad.l.doubleclick.net",
             "pubads.g.doubleclick.net",
@@ -32,6 +47,8 @@ public class AdAwayClient {
             "googleads2.g.doubleclick.net",
             "googleads4.g.doubleclick.net",
             "static.doubleclick.net",
+            "ad-g.doubleclick.net",
+            "ad.mo.doubleclick.net",
             "pagead-googlehosted.l.google.com",
             "pagead.l.doubleclick.net",
             "pagead.l.google.com",
