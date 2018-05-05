@@ -48,9 +48,9 @@
         <meta-data android:name="xwalk_verify" android:value="disable" />
 
         <!-- NOTE: DIAL integration for Amazon TV (cause hangs on Fire TV devices???) -->
-        <!--<meta-data-->
-            <!--android:name="whisperplay"-->
-            <!--android:resource="@xml/whisperplay"/>-->
+        <meta-data
+            android:name="whisperplay"
+            android:resource="@xml/whisperplay"/>
 
         <!-- Root (bootstrap) Activity -->
         <!-- NOTE: avoid setting launchMode or you will get new activity every time from launcher -->
