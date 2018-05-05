@@ -13,11 +13,17 @@ Visit discussion on the official page:
  * __4K support.__
  * Designed for TV screens.
  * Any remote controller support.
+ * Login support.
  * Doesn't depend on Google Services.
  * Fully localized.
  * Multilingual search keyboard.
  * Automatic update mechanism.
  * __No root required!__
+
+__NOTE: SmartYouTubeTV provides internal login mechanism which allows you to keep content up to date in a very convenient way.__
+
+### Screenshots:
+ * [Open screenshots](#screens)
 
 ### Install SmartYouTubeTV:
 
@@ -32,21 +38,9 @@ __Standard installation via ADB__
 
 __How to change system language with only the MiTV3__
  * [How-to-enable-English-on-Android-5.1](https://github.com/yuliskov/SmartYouTubeTV/wiki/How-to-enable-English-on-Android-5.1)
- 
-### Reviews / Articles:
- * Just google for "Smart YouTube TV"
- 
-### Changelog:
- * [Check releases page for changelog ..](https://github.com/yuliskov/SmartYouTubeTV/releases)
-
-### Screenshots:
-
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_02.jpg "Screenshot of SmartYouTubeTV")
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV")
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
 
 ### Starting screen:
+
 The device/resolution options at start launches different playing methods (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
 * 720 - original / core player
 * 1080 - XWalk
@@ -56,19 +50,27 @@ The device/resolution options at start launches different playing methods (as pe
 Also important, it's possible to select max resolution and codec (ie 1080/AVC1) via the start screen that will be applied on video loading (**Codec** option).
 
 The **Remember** tick box acts as a configuration saving for next app launches.
-
-### Why using it:
- * SmartYouTubeTV provides a nice possibility to consume YouTube content.
- * SmartYouTubeTV provides internal login mechanism which allows you to keep content up to date in a very convenient way.
  
-### Donation:
-If you want to support my developments you are welcome to buy me a cup of coffee :)
- * BTC: 1JAT5VVWarVBkpVbNDn8UA8HXNdrukuBSx
- * WMZ: Z375157140784
- * WMU: U449339012933
+### Reviews / Articles:
+ * Just google for "Smart YouTube TV"
+ 
+### Changelog:
+ * [Check releases page for changelog ..](https://github.com/yuliskov/SmartYouTubeTV/releases)
 
 ### Contributors:
  * __[WolfganP](https://github.com/WolfganP)__ (README)
  * __[javierpz](https://github.com/javierpz)__ (cast fix)
  * __[TheRMaverick](https://github.com/TheRMaverick)__ (German language)
  * __[Maikell84](https://github.com/Maikell84)__ (misc fixes)
+
+### Donation:
+If you want to support my developments you are welcome to buy me a cup of coffee :)
+ * BTC: 1JAT5VVWarVBkpVbNDn8UA8HXNdrukuBSx
+ * WMZ: Z375157140784
+ * WMU: U449339012933
+
+### Screens:
+![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
+![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_02.jpg "Screenshot of SmartYouTubeTV")
+![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV")
+![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
