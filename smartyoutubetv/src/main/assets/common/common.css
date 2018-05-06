@@ -1,8 +1,9 @@
-/* hide icons in the bottom-right corner */
+/* hide icons in the bottom-right corner (like back and search) */
 div#legend {
-    display: none;
+    display: none !important;
 }
 
+/* enable external keyboard (???) */
 input {
     pointer-events: none;
     tab-index: -1;

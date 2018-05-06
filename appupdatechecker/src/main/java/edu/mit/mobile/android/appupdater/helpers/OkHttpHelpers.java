@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpHelpers {
-    private static final int NUM_TRIES = 999;
+    private static final int NUM_TRIES = 5;
     private static final long CONNECT_TIMEOUT_S = 20;
     private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static OkHttpClient mClient;
