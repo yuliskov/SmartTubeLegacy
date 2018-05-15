@@ -1,5 +1,6 @@
 function getWebViewOverride() {
     return {
+        'IPTV-1000': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/119
         '(vbox86p)': 'mp4', // Genymotion virtual device
         'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9
         'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)

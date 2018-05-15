@@ -63,18 +63,18 @@ import java.util.concurrent.TimeUnit;
  */
 public final class MyDownloadManager {
     private static final String TAG = MyDownloadManager.class.getSimpleName();
-    private static final int NUM_TRIES = 3;
-    private static final long CONNECT_TIMEOUT_S = 10;
+    private static final int NUM_TRIES = 10;
+    private static final long CONNECT_TIMEOUT_S = 20;
     private final Context mContext;
     private final OkHttpClient mClient;
     private MyRequest mRequest;
     private long mRequestId;
-    private GoogleResolver mResolver;
+    // private GoogleResolver mResolver;
     private InputStream mResponseStream;
 
     public MyDownloadManager(Context context) {
         mContext = context;
-        mResolver = new GoogleResolver();
+        // mResolver = new GoogleResolver();
         mClient = createOkHttpClient();
     }
 
@@ -116,13 +116,13 @@ public final class MyDownloadManager {
                         return originalResponse.newBuilder().body(new ProgressResponseBody(originalResponse.body(), mRequest.mProgressListener)).build();
                     }
                 })
-                .dns(new Dns() {
-                    @Override
-                    public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-                        List<InetAddress> hosts = mResolver.resolve(hostname);
-                        return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
-                    }
-                })
+                //.dns(new Dns() {
+                //    @Override
+                //    public List<InetAddress> lookup(String hostname) throws UnknownHostException {
+                //        List<InetAddress> hosts = mResolver.resolve(hostname);
+                //        return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
+                //    }
+                //})
                 .connectTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
                   .readTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
                   .writeTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
