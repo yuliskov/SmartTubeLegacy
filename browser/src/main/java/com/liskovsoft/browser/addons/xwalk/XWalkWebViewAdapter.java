@@ -112,6 +112,10 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
     @Override
     public WebSettings getSettings() {
+        if (mXWalkView == null) {
+            return null;
+        }
+
         return new HeadersWebSettingsDecorator(mHeaders, new XWalkWebSettingsAdapter(mXWalkView.getSettings()));
     }
 

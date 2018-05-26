@@ -100,7 +100,7 @@ public final class MyDownloadManager {
             } catch (SocketTimeoutException | UnknownHostException ex) {
                 if (tries == 1) // swallow 3 times
                     throw new IllegalStateException(ex);
-            } catch (IOException ex) {
+            } catch (IOException | RuntimeException ex) {
                 throw new IllegalStateException(ex);
             }
         }

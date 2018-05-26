@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
@@ -23,6 +24,7 @@ import java.util.Map;
  * Pull actions from {@link PlayerActivity} and sends them back to the WebView
  */
 public class ActionsSender {
+    private static final String TAG = ActionsSender.class.getSimpleName();
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
     private final String[] mPlayerButtons = {
@@ -48,7 +50,8 @@ public class ActionsSender {
      */
     public void bindActions(Intent intent) {
         if (intent == null) {
-            throw new IllegalStateException("Activity result cannot be null");
+            Log.w(TAG, "ActionsSender: activity result cannot be null");
+            return;
         }
 
         applyAutoframerate(intent);
