@@ -28,7 +28,7 @@ public class BrowserContract {
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
     /**
      * An optional insert, update or delete URI parameter that allows the caller
-     * to specify that it is a saveCookie adapter. The default value is false. If true
+     * to specify that it is a sync adapter. The default value is false. If true
      * the dirty flag is not automatically set and the "syncToNetwork" parameter
      * is set to false when calling
      * {@link ContentResolver#notifyChange(android.net.Uri, android.database.ContentObserver, boolean)}.
@@ -42,26 +42,26 @@ public class BrowserContract {
      */
     public static final String PARAM_LIMIT = "limit";
     /**
-     * Generic columns for use by saveCookie adapters. The specific functions of
-     * these columns are private to the saveCookie adapter. Other clients of the API
+     * Generic columns for use by sync adapters. The specific functions of
+     * these columns are private to the sync adapter. Other clients of the API
      * should not attempt to either read or write these columns.
      *
      * @hide
      */
     interface BaseSyncColumns {
-        /** Generic column for use by saveCookie adapters. */
+        /** Generic column for use by sync adapters. */
         public static final String SYNC1 = "sync1";
-        /** Generic column for use by saveCookie adapters. */
+        /** Generic column for use by sync adapters. */
         public static final String SYNC2 = "sync2";
-        /** Generic column for use by saveCookie adapters. */
+        /** Generic column for use by sync adapters. */
         public static final String SYNC3 = "sync3";
-        /** Generic column for use by saveCookie adapters. */
+        /** Generic column for use by sync adapters. */
         public static final String SYNC4 = "sync4";
-        /** Generic column for use by saveCookie adapters. */
+        /** Generic column for use by sync adapters. */
         public static final String SYNC5 = "sync5";
     }
     /**
-     * Convenience definitions for use in implementing chrome bookmarks saveCookie in the Bookmarks table.
+     * Convenience definitions for use in implementing chrome bookmarks sync in the Bookmarks table.
      * @hide
      */
     public static final class ChromeSyncColumns {
@@ -77,7 +77,7 @@ public class BrowserContract {
     }
     /**
      * Columns that appear when each row of a table belongs to a specific
-     * account, including saveCookie information that an account may need.
+     * account, including sync information that an account may need.
      * @hide
      */
     interface SyncColumns extends BaseSyncColumns {
@@ -414,7 +414,7 @@ public class BrowserContract {
         public static final String DATE = "date";
     }
     ///**
-    // * A table provided for saveCookie adapters to use for storing private saveCookie state data.
+    // * A table provided for sync adapters to use for storing private sync state data.
     // *
     // * @see SyncStateContract
     // * @hide
@@ -597,11 +597,11 @@ public class BrowserContract {
          */
         public static final String VALUE = "value";
         /**
-         * If set to non-0 the user has opted into bookmark saveCookie.
+         * If set to non-0 the user has opted into bookmark sync.
          */
         public static final String KEY_SYNC_ENABLED = "sync_enabled";
         /**
-         * Returns true if bookmark saveCookie is enabled
+         * Returns true if bookmark sync is enabled
          */
         static public boolean isSyncEnabled(Context context) {
             Cursor cursor = null;
@@ -617,7 +617,7 @@ public class BrowserContract {
             }
         }
         /**
-         * Sets the bookmark saveCookie enabled setting.
+         * Sets the bookmark sync enabled setting.
          */
         static public void setSyncEnabled(Context context, boolean enabled) {
             ContentValues values = new ContentValues();

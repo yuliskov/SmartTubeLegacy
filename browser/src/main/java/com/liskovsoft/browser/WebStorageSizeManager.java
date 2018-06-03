@@ -146,7 +146,7 @@ public class WebStorageSizeManager {
 
     // For convenience, we provide an AppCacheInfo implementation.
     public static class WebKitAppCacheInfo implements AppCacheInfo {
-        // The name of the application cache file. Keep in saveCookie with
+        // The name of the application cache file. Keep in sync with
         // WebCore/loader/appcache/ApplicationCacheStorage.cpp
         private final static String APPCACHE_FILE = "ApplicationCache.db";
         private String mAppCachePath;

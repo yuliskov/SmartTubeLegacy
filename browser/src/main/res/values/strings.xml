@@ -302,7 +302,7 @@
     <!-- Settings screen & section title for "General settings". These include things like
      configuring bookmark syncing to Google servers and form auto fill settings. [CHAR-LIMIT=32] -->
     <string name="pref_general_title">General</string>
-    <!-- Settings category for saveCookie under general settings. This includes bookmark saveCookie with Chrome [CHAR-LIMIT=50] -->
+    <!-- Settings category for sync under general settings. This includes bookmark sync with Chrome [CHAR-LIMIT=50] -->
     <string name="pref_general_sync_title">Sync</string>
     <!-- Settings category for autofill under general. [CHAR-LIMIT=50] -->
     <string name="pref_general_autofill_title">Auto-fill</string>
