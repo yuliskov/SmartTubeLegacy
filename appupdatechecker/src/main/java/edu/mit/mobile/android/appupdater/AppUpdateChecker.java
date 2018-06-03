@@ -294,14 +294,14 @@ public class AppUpdateChecker {
         protected void onPostExecute(JSONObject result) {
             if (result == null) {
                 Log.e(TAG, errorMsg);
-                Helpers.showMessage(mContext, TAG, errorMsg);
+                // Helpers.showMessage(mContext, TAG, errorMsg);
             } else {
                 try {
                     triggerFromJson(result);
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Error in JSON version file.", e);
-                    Helpers.showMessage(mContext, TAG, e);
+                    // Helpers.showMessage(mContext, TAG, e);
                 }
             }
             versionTask = null; // forget about us, we're done.

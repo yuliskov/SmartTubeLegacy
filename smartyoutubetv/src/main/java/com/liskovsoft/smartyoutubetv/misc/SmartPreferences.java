@@ -37,7 +37,7 @@ public final class SmartPreferences {
     }
 
     public VideoFormat getSelectedFormat() {
-        String name = mPrefs.getString(VIDEO_FORMAT_NAME, "720p");
+        String name = mPrefs.getString(VIDEO_FORMAT_NAME, "Auto");
         return VideoFormat.fromName(name);
     }
 
@@ -101,7 +101,7 @@ public final class SmartPreferences {
     }
 
     public boolean getBootstrapOldUI() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, false);
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, true);
         return isChecked;
     }
 
