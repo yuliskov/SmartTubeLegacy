@@ -123,6 +123,7 @@ public class YouTubeMediaParser {
     private InputStream extractDashMPDContent() {
         String dashmpdUrl = mDashMPDUrl.toString();
         if (dashmpdUrl != null) {
+            // TODO: handle 403 (Auth error)
             Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
             return response == null ? null : response.body().byteStream();
         }

@@ -86,6 +86,12 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     public interface EventListener {
         void onReceiveError(Tab tab);
+        /**
+         * Fired one time per session.<br/>
+         * Usually this means that network connection is good.<br/>
+         * Also it is a good place to hide any loading placeholder.
+         * @param tab tab object
+         */
         void onLoadSuccess(Tab tab);
         WebViewClient onSetWebViewClient(Tab tab, WebViewClient client);
         WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client);

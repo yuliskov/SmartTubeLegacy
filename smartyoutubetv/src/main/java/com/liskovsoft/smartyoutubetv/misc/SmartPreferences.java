@@ -13,6 +13,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
+    private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -108,5 +109,16 @@ public final class SmartPreferences {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_OLD_UI_CHECKED, isChecked)
                 .apply();
+    }
+
+    public void setCookie(String cookie) {
+        mPrefs.edit()
+                .putString(COOKIE_MANAGER_COOKIE, cookie)
+                .apply();
+    }
+
+    public String getCookie() {
+        String cookie = mPrefs.getString(COOKIE_MANAGER_COOKIE, "");
+        return cookie;
     }
 }

@@ -2,7 +2,10 @@ package edu.mit.mobile.android.appupdater.helpers;
 
 import android.util.Log;
 import edu.mit.mobile.android.appupdater.downloadmanager.GoogleResolver;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Dns;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -43,15 +46,18 @@ public class OkHttpHelpers {
     }
 
     private static OkHttpClient createOkHttpClient() {
-        // final GoogleResolver resolver = new GoogleResolver();
         return new OkHttpClient.Builder()
-                //.dns(new Dns() {
-                //    @Override
-                //    public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-                //        List<InetAddress> hosts = resolver.resolve(hostname);
-                //        return hosts.isEmpty() ? Dns.SYSTEM.lookup(hostname) : hosts; // use system dns as a fallback
-                //    }
-                //})
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        return MyCookieManager.loadCookie(url);
+                    }
+                })
                 .connectTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
                 .readTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
                 .writeTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)

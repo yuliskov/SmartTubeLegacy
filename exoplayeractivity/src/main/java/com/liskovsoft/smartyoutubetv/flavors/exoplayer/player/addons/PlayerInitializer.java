@@ -132,7 +132,7 @@ public class PlayerInitializer {
     }
 
     /**
-     * Nasty hacks to fix the sync problems on the Android 4
+     * Nasty hacks to fix the saveCookie problems on the Android 4
      * @param player video player
      * @param trackSelector track selector
      */
@@ -143,7 +143,7 @@ public class PlayerInitializer {
     }
 
     /**
-     * Nasty hacks to fix the sync problems on the Android 4
+     * Nasty hacks to fix the saveCookie problems on the Android 4
      * @param player video player
      */
     public void applySurfaceFix(SimpleExoPlayer player) {
