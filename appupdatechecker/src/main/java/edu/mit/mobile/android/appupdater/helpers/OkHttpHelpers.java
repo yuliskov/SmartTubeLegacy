@@ -1,5 +1,6 @@
 package edu.mit.mobile.android.appupdater.helpers;
 
+import android.content.Context;
 import android.util.Log;
 import edu.mit.mobile.android.appupdater.downloadmanager.GoogleResolver;
 import okhttp3.Cookie;
@@ -21,6 +22,11 @@ public class OkHttpHelpers {
     private static final long CONNECT_TIMEOUT_S = 20;
     private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static OkHttpClient mClient;
+    private static Context sContext;
+
+    public static void setContext(Context ctx) {
+        sContext = ctx;
+    }
 
     public static Response doOkHttpRequest(String url) {
         if (mClient == null)
@@ -31,15 +37,24 @@ public class OkHttpHelpers {
                 .build();
 
         Response okHttpResponse = null;
+        Exception lastEx = null;
         for (int tries = NUM_TRIES; tries > 0; tries--) {
             try {
                 okHttpResponse = mClient.newCall(okHttpRequest).execute();
-                if (!okHttpResponse.isSuccessful()) throw new IllegalStateException("Unexpected code " + okHttpResponse);
+                if (!okHttpResponse.isSuccessful()) {
+                    throw new IllegalStateException("Unexpected code " + okHttpResponse);
+                }
 
                 break; // no exception is thrown - job is done
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 Log.e(TAG, ex.getMessage(), ex); // network error, just return null
+                okHttpResponse = null;
+                lastEx = ex;
             }
+        }
+
+        if (lastEx != null) {
+            Helpers.showLongMessage(sContext, TAG, lastEx.getMessage());
         }
 
         return okHttpResponse;

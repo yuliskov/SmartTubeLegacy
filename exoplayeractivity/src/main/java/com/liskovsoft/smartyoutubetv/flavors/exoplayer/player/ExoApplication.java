@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.browser.Browser;
+import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 
 /**
  * Placeholder application to facilitate overriding Application methods for debugging and testing.
@@ -40,6 +41,9 @@ public class ExoApplication extends Browser {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }
+
+        // needed for toast messages
+        OkHttpHelpers.setContext(this);
     }
 
     public DataSource.Factory buildDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
@@ -50,7 +54,7 @@ public class ExoApplication extends Browser {
         return new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter);
     }
 
-    // TODO: modified: may not work properly
+    // NOTE: may not work properly
     public boolean useExtensionRenderers() {
         return BuildConfig.FLAVOR.equals("withExtensions");
     }

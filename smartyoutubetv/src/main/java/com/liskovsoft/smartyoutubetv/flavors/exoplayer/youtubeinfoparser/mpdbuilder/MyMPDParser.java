@@ -33,6 +33,10 @@ public class MyMPDParser implements MPDParser {
     }
 
     private void initParser(InputStream mpdContent) throws XmlPullParserException, IOException {
+        if (mpdContent == null) {
+            return;
+        }
+
         mMpdContent = mpdContent;
         mParser = Xml.newPullParser();
         mParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
