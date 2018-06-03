@@ -37,6 +37,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final ActionsSender mActionSender;
     private InputStream mResponseStream30Fps;
     private InputStream mResponseStream60Fps;
+    private InputStream mResponseStreamSimple;
 
     private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
     private final GenericStringResultReceiver mReceiver;
@@ -105,12 +106,14 @@ public class ExoInterceptor extends RequestInterceptor {
     private void prepareResponseStream(String url) {
         Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
         Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
+        Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
         mResponseStream30Fps = response30Fps == null ? null : response30Fps.body().byteStream();
         mResponseStream60Fps = response60Fps == null ? null : response60Fps.body().byteStream();
+        mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple, mResponseStream60Fps, mResponseStream30Fps);
         dataParser.parse(new OnMediaFoundCallback() {
             private GenericInfo mInfo;
             @Override
