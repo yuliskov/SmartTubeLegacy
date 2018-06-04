@@ -20,9 +20,10 @@ import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
+import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
-import edu.mit.mobile.android.appupdater.helpers.MyCookieManager;
+import edu.mit.mobile.android.appupdater.helpers.MyCookieLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,6 @@ public class ControllerEventListener implements Controller.EventListener {
     private final StateUpdater mStateUpdater;
     private final MainApkUpdater mApkUpdater;
     private final Controller mController;
-    private final MyCookieManager mCookieManager;
 
     public ControllerEventListener(Context context, Controller controller, KeysTranslator translator) {
         mContext = context;
@@ -54,8 +54,6 @@ public class ControllerEventListener implements Controller.EventListener {
         mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
-
-        mCookieManager = new MyCookieManager(mContext);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class ControllerEventListener implements Controller.EventListener {
     }
 
     private void syncCookies(Tab tab) {
-        mCookieManager.saveCookie(tab.getWebView());
+        MyCookieSaver.saveCookie(tab.getWebView());
     }
 
     @Override

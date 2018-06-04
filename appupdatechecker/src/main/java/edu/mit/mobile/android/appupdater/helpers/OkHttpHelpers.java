@@ -2,18 +2,13 @@ package edu.mit.mobile.android.appupdater.helpers;
 
 import android.content.Context;
 import android.util.Log;
-import edu.mit.mobile.android.appupdater.downloadmanager.GoogleResolver;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
-import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +65,7 @@ public class OkHttpHelpers {
 
                     @Override
                     public List<Cookie> loadForRequest(HttpUrl url) {
-                        return MyCookieManager.loadCookie(url);
+                        return MyCookieLoader.loadCookie(url);
                     }
                 })
                 .connectTimeout(CONNECT_TIMEOUT_S, TimeUnit.SECONDS)
