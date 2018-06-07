@@ -63,6 +63,12 @@ public class ActionsSender {
     private Map<String, Boolean> extractButtonStates(Intent intent) {
         Map<String, Boolean> result = new HashMap<>();
         for (String buttonId : mPlayerButtons) {
+            // bypass buttons that not changed at all
+            // details: http://4pda.ru/forum/index.php?act=qms&mid=1536707&t=4948881
+            if (!intent.hasExtra(buttonId)) {
+                continue;
+            }
+
             boolean isChecked = intent.getBooleanExtra(buttonId, false);
             result.put(buttonId, isChecked);
         }

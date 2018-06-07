@@ -150,6 +150,7 @@ function ExoUtils() {
             player.muted = true;
             // don't call pause!!! or video remains paused event after play
             player.play();
+            player.muted = true;
         }
 
         onStart();
