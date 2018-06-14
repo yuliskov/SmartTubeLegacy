@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeSubParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -62,7 +63,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     public SimpleMPDBuilder() {
-        this(null);
+        this(new SimpleYouTubeGenericInfo());
     }
 
     public SimpleMPDBuilder(GenericInfo info) {

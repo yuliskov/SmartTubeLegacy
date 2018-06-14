@@ -115,7 +115,7 @@ public class SimpleYouTubeInfoParserTest {
     public void mpdBuilderTest2() {
         InputStream oneItem = TestHelpers.openResource("mpd_with_one_item");
         SimpleYouTubeMediaItem fakeItem = prepareFakeVideoItem();
-        SimpleMPDBuilder fakeBuilder = new SimpleMPDBuilder(null);
+        SimpleMPDBuilder fakeBuilder = new SimpleMPDBuilder();
         fakeBuilder.append(fakeItem);
         assertEquals(Helpers.toString(oneItem), Helpers.toString(fakeBuilder.build()));
     }
