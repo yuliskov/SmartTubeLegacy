@@ -22,6 +22,7 @@
                                                                         app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
         </LinearLayout>
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">
+            <!-- WARN: TO HIDE ITEM DON'T COMMENT CODE. INSTEAD SET VISIBILITY ATTRIBUTE. -->
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
                 app:titleText="@string/language"
                 android:layout_width="wrap_content"
@@ -42,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_autoframerate"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox
+                android:visibility="gone"
                 app:titleText="@string/old_ui"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"

@@ -24,7 +24,7 @@ public class ActionsReceiver implements Runnable {
     private final Context mContext;
     private final Intent mIntent;
     private final Runnable mOnDone;
-    private boolean mRunOnce;
+    private boolean mRunOnce = false;
     private int mRunCount;
     private GenericCommand mStateCommand;
     private GenericCommand mDateCommand;
@@ -126,6 +126,10 @@ public class ActionsReceiver implements Runnable {
         }, RESPONSE_CHECK_DELAY_MS);
     }
 
+    /**
+     * Cast from phone fix (unable to interrupt video).
+     * Force do callback if there are no response from the WebView.
+     */
     private boolean runOnce() {
         boolean result = mRunOnce;
         mRunOnce = true;

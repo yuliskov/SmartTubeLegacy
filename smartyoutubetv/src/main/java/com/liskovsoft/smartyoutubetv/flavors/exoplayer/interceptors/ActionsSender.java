@@ -98,7 +98,9 @@ public class ActionsSender {
             return;
         }
         // replace track_ended with button_next
-        if (buttons.get(PlayerActivity.TRACK_ENDED)) {
+        Boolean isEnded = buttons.get(PlayerActivity.TRACK_ENDED);
+        isEnded = isEnded == null ? false : isEnded; // fix NPE
+        if (isEnded) {
             buttons.put(PlayerActivity.TRACK_ENDED, false);
             buttons.put(PlayerActivity.BUTTON_NEXT, true);
         }

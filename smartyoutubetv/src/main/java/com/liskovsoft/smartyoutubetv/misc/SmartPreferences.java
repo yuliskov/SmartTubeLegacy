@@ -101,7 +101,7 @@ public final class SmartPreferences {
     }
 
     public boolean getBootstrapOldUI() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, true);
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, false);
         return isChecked;
     }
 
