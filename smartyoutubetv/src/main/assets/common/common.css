@@ -1,4 +1,6 @@
+/* hide 'end cards' on the video */
 /* hide icons in the bottom-right corner (like back and search) */
+/*#creator-endscreen,*/
 div#legend {
     display: none !important;
 }

@@ -22,10 +22,10 @@ import java.util.Scanner;
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final String[] mDevicesToProcess = {
+            //"mibox_mini (forrestgump)",
+            //"MiTV4 (pulpfiction)",
             "mbx reference board (g18ref) (g18ref)",
             "mitv3s-43 (hancock)"
-            //"MiTV4 (pulpfiction)"
-            //"mibox_mini (forrestgump)"
     };
     private Boolean mCachedDeviceMatchResult = null;
 
