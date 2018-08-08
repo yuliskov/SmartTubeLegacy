@@ -16,6 +16,9 @@ if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
 
+@rem My tweak. Cleanup cache (fix build errors)
+rd /s /q "%DIRNAME%\.gradle"
+
 @rem Find java.exe
 if defined JAVA_HOME goto findJavaFromJavaHome
 
