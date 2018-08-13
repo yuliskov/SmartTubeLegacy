@@ -21,6 +21,7 @@ public class MyMPDParser implements MPDParser {
     private static final String TAG_SEGMENT_BASE = "SegmentBase";
     private static final String TAG_INITIALIZATION = "Initialization";
     private static final String TAG_SEGMENT_LIST = "SegmentList";
+    private static final String TAG_SEGMENT_URL = "SegmentURL";
     private InputStream mMpdContent;
     private XmlPullParser mParser;
 
@@ -157,6 +158,8 @@ public class MyMPDParser implements MPDParser {
             String name = parser.getName();
             if (name.equals(TAG_INITIALIZATION)) {
                 readInitialization(parser, item);
+            } else if (name.equals(TAG_SEGMENT_URL)) {
+                readSegmentURL(parser, item);
             } else {
                 skip(parser);
             }
@@ -179,17 +182,36 @@ public class MyMPDParser implements MPDParser {
         }
     }
 
+    private void readSegmentURL(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, TAG_SEGMENT_URL);
+
+        String media = parser.getAttributeValue(ns, "media");
+
+        List<String> urls = item.getSegmentUrlList();
+        if (urls == null) {
+            urls = new ArrayList<>();
+            item.setSegmentUrlList(urls);
+        }
+
+        if (media != null)
+            urls.add(media);
+
+        parser.next();
+        parser.require(XmlPullParser.END_TAG, ns, TAG_SEGMENT_URL);
+    }
+
     private void readInitialization(XmlPullParser parser, MediaItem item) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, TAG_INITIALIZATION);
         String range = parser.getAttributeValue(ns, "range");
+        String sourceURL = parser.getAttributeValue(ns, "sourceURL");
         if (range == null) { // 4k@60fps
             // sourceURL="range/0-712"
             // extremal situation: sourceURL="sq/0" (don't parse at all)
-            String sourceURL = parser.getAttributeValue(ns, "sourceURL");
             range = sourceURL.replaceAll("range\\/", "");
             range = sourceURL.equals(range) ? null : range;
         }
         item.setInit(range);
+        item.setSourceURL(sourceURL);
         parser.next();
         parser.require(XmlPullParser.END_TAG, ns, TAG_INITIALIZATION);
     }

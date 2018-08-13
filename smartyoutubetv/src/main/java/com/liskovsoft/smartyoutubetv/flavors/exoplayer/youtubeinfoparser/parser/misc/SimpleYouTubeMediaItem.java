@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.YouTubeMediaParser.MediaItem;
 
+import java.util.List;
+
 public class SimpleYouTubeMediaItem implements MediaItem {
     private String mITag;
     private String mUrl;
@@ -21,6 +23,8 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     private String mQuality;
     private String mRealSignature;
     private String mAudioSamplingRate;
+    private String mSourceURL;
+    private List<String> mSegementUrlList;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -216,6 +220,26 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @Override
     public String getAudioSamplingRate() {
         return mAudioSamplingRate;
+    }
+
+    @Override
+    public String getSourceURL() {
+        return mSourceURL;
+    }
+
+    @Override
+    public void setSourceURL(String sourceURL) {
+        mSourceURL = sourceURL;
+    }
+
+    @Override
+    public List<String> getSegmentUrlList() {
+        return mSegementUrlList;
+    }
+
+    @Override
+    public void setSegmentUrlList(List<String> urls) {
+        mSegementUrlList = urls;
     }
 
     @Override

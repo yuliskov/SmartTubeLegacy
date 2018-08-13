@@ -330,20 +330,42 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         endTag("", "BaseURL");
 
-        startTag("", "SegmentBase");
+        // SegmentList tag
+        if (item.getSegmentUrlList() != null) {
+            startTag("", "SegmentList");
 
-        if (item.getIndex() != null) {
-            attribute("", "indexRange", item.getIndex());
-            attribute("", "indexRangeExact", "true");
+            // Initialization tag
+            if (item.getSourceURL() != null) {
+                startTag("", "Initialization");
+                attribute("", "sourceURL", item.getSourceURL());
+                endTag("", "Initialization");
+            }
+
+            // SegmentURL tag
+            for (String url : item.getSegmentUrlList()) {
+                startTag("", "SegmentURL");
+                attribute("", "media", url);
+                endTag("", "SegmentURL");
+            }
+
+            endTag("", "SegmentList");
+        } else {
+            // SegmentBase
+            startTag("", "SegmentBase");
+
+            if (item.getIndex() != null) {
+                attribute("", "indexRange", item.getIndex());
+                attribute("", "indexRangeExact", "true");
+            }
+
+            startTag("", "Initialization");
+
+            attribute("", "range", item.getInit());
+
+            endTag("", "Initialization");
+
+            endTag("", "SegmentBase");
         }
-
-        startTag("", "Initialization");
-
-        attribute("", "range", item.getInit());
-
-        endTag("", "Initialization");
-
-        endTag("", "SegmentBase");
 
         endTag("", "Representation");
     }

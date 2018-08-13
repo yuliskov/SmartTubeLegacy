@@ -297,6 +297,10 @@ public class YouTubeMediaParser {
         String getSignature();
         void setAudioSamplingRate(String audioSamplingRate);
         String getAudioSamplingRate();
+        void setSourceURL(String sourceURL);
+        String getSourceURL();
+        List<String> getSegmentUrlList();
+        void setSegmentUrlList(List<String> urls);
     }
 
     public interface GenericInfo {

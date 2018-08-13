@@ -49,6 +49,7 @@ public class ExoInterceptor extends RequestInterceptor {
      * see {@link #intercept(String)} method
      */
     private long mExitTime;
+    private long mLastCall;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -90,6 +91,12 @@ public class ExoInterceptor extends RequestInterceptor {
             return null;
         }
 
+        if (System.currentTimeMillis() - mLastCall < 1_000) {
+            return null;
+        }
+
+        mLastCall = System.currentTimeMillis();
+
         mCurrentUrl = url;
 
         prepareResponseStream(url);
@@ -104,16 +111,17 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
-        Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
+        //Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
+        //Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
         Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
-        mResponseStream30Fps = response30Fps == null ? null : response30Fps.body().byteStream();
-        mResponseStream60Fps = response60Fps == null ? null : response60Fps.body().byteStream();
+        //mResponseStream30Fps = response30Fps == null ? null : response30Fps.body().byteStream();
+        //mResponseStream60Fps = response60Fps == null ? null : response60Fps.body().byteStream();
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple, mResponseStream60Fps, mResponseStream30Fps);
+        //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple, mResponseStream60Fps, mResponseStream30Fps);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
         dataParser.parse(new OnMediaFoundCallback() {
             private GenericInfo mInfo;
             @Override
