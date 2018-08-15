@@ -56,6 +56,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
@@ -65,6 +66,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButto
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -471,12 +473,14 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
             // increase player's buffer size
             // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
-            DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
-                    DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 2,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+            //DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
+            //        DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 2,
+            //        DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+            //        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+            //        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
+            //player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+            
+            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
             player.addListener(this);
             player.addListener(eventLogger);
             player.setAudioDebugListener(eventLogger);
@@ -532,8 +536,13 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
                     continue;
                 }
                 // NOTE: supply audio and video tracks in one field
-                if (intent.getStringExtra(MPD_CONTENT_EXTRA) != null) {
-                    mediaSources[i] = buildMPDMediaSource(uris[i], intent.getStringExtra(MPD_CONTENT_EXTRA));
+                String smallExtra = intent.getStringExtra(MPD_CONTENT_EXTRA);
+                String bigExtra = (String) ExtendedDataHolder.getInstance().getExtra(MPD_CONTENT_EXTRA);
+                if (smallExtra != null) {
+                    mediaSources[i] = buildMPDMediaSource(uris[i], smallExtra);
+                    continue;
+                } else if (bigExtra != null) { // stored externally?
+                    mediaSources[i] = buildMPDMediaSource(uris[i], bigExtra);
                     continue;
                 }
                 mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
@@ -552,10 +561,27 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         }
     }
 
+    private MediaSource buildMPDMediaSource(Uri uri, InputStream mpdContent) {
+        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
+        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
+                mainHandler, eventLogger);
+    }
+
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                 mainHandler, eventLogger);
+    }
+
+    private DashManifest getManifest(Uri uri, InputStream mpdContent) {
+        DashManifestParser parser = new DashManifestParser();
+        DashManifest result;
+        try {
+            result = parser.parse(uri, mpdContent);
+        } catch (IOException e) {
+            throw new IllegalStateException("Malformed mpd file:\n" + mpdContent, e);
+        }
+        return result;
     }
 
     private DashManifest getManifest(Uri uri, String mpdContent) {
