@@ -138,6 +138,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private PlayerStateManager stateManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
+    private boolean durationSet;
 
     // Activity lifecycle
 
@@ -471,16 +472,16 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager, extensionRendererMode);
 
 
-            // increase player's buffer size
+            // increase player's buffer size to 60 secs
             // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
-            //DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
-            //        DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 2,
-            //        DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-            //        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-            //        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-            //player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
-            
-            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
+            DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
+                    DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
+            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+            //player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
+
             player.addListener(this);
             player.addListener(eventLogger);
             player.setAudioDebugListener(eventLogger);
@@ -687,6 +688,12 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (playbackState == Player.STATE_READY && !durationSet) {
+            durationSet = true; // run once per video
+            if (stateManager != null)
+                stateManager.restoreTrackPosition(); // stateManage already should be initialized
+        }
+
         if (playbackState == Player.STATE_ENDED) {
             doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
         }

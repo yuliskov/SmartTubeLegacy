@@ -52,7 +52,7 @@ public class PlayerStateManager {
      */
     public void restoreState(TrackGroupArray[] rendererTrackGroupArrays) {
         restoreTrackIndex(rendererTrackGroupArrays);
-        restoreTrackPosition();
+        //restoreTrackPosition();
         restoreSubtitleTrack(rendererTrackGroupArrays);
     }
 
@@ -95,8 +95,8 @@ public class PlayerStateManager {
         return null;
     }
 
-    private void restoreTrackPosition() {
-        String title = mPlayerActivity.getMainTitle(); // create something like hash
+    public void restoreTrackPosition() {
+        String title = mPlayerActivity.getMainTitle() + mPlayer.getDuration(); // create something like hash
         long pos = mPrefs.getPosition(title);
         if (pos != C.TIME_UNSET)
             mPlayer.seekTo(pos);
@@ -281,7 +281,7 @@ public class PlayerStateManager {
             return;
         }
         long position = mPlayer.getCurrentPosition();
-        String title = mPlayerActivity.getMainTitle(); // create something like hash
+        String title = mPlayerActivity.getMainTitle() + duration; // create something like hash
         boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
         boolean isVideoJustStarts = position < MAX_START_DURATION_MILLIS;
         if (almostAllVideoSeen || isVideoJustStarts) {

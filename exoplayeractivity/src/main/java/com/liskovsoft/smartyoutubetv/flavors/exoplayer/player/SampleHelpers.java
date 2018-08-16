@@ -62,6 +62,9 @@ public final class SampleHelpers {
             this.drmLicenseUrl = drmLicenseUrl;
             this.drmKeyRequestProperties = drmKeyRequestProperties;
             this.preferExtensionDecoders = preferExtensionDecoders;
+
+            // need to be cleared, see PlayerActivity for details
+            ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, null);
         }
 
         public Intent buildIntent(Context context) {
@@ -94,7 +97,8 @@ public final class SampleHelpers {
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
             //this.mpdContent = Utils.toString(mpdStream);
-            this.mpdContent = null; // fix TransactionTooLargeException
+            this.mpdContent = null;
+            // fix TransactionTooLargeException
             ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, Utils.toString(mpdStream));
 
             this.extension = extension;
