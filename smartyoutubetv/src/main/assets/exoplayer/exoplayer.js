@@ -137,7 +137,7 @@ function ExoUtils() {
     this.muteVideo = function() {
         var callbackSet = 'data-callbackSet';
         var player = document.getElementsByTagName('video')[0];
-        if (!player || player.getAttribute(callbackSet))
+        if (!player)
             return;
 
         // we can't pause video because history will not work
@@ -154,6 +154,9 @@ function ExoUtils() {
         }
 
         onStart();
+
+        if (player.getAttribute(callbackSet)) // callback already set
+            return;
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
@@ -468,7 +471,7 @@ KeyActivityWatcher.disable = function() {
 /////// SuggestionsWatcher
 
 function SuggestionsWatcher(host) {
-    function KeyUpDownWatcherService() {
+    function SuggestionsWatcherService() {
         var container = exoutils.$(this.keysContainerSelector);
         var type = 'keydown';
         var up = 38;
@@ -480,7 +483,9 @@ function SuggestionsWatcher(host) {
             var code = e.keyCode;
             console.log("Watcher: SuggestionsFakeButton: on keydown: " + code + ", host: " + $this.host);
 
-            if (code === up && $this.host) { // up is fired only for the top row
+            var doUp = code === up;
+
+            if (doUp && $this.host) { // up is fired only for the top row
                 $this.host.needToCloseSuggestions();
                 $this.host = null; // run once per host
             } else if (code === enter) { // user wants to open an new video
@@ -497,13 +502,13 @@ function SuggestionsWatcher(host) {
         console.log("Watcher: do init...");
     }
 
-    KeyUpDownWatcherService.prototype = new GoogleButton();
+    SuggestionsWatcherService.prototype = new GoogleButton();
 
-    if (!window.keyUpDownWatcherService) {
-        window.keyUpDownWatcherService = new KeyUpDownWatcherService();
+    if (!window.suggestionsWatcherService) {
+        window.suggestionsWatcherService = new SuggestionsWatcherService();
     }
 
-    window.keyUpDownWatcherService.setHost(host);
+    window.suggestionsWatcherService.setHost(host);
 }
 
 SuggestionsWatcher.prototype = new GoogleButton();
@@ -539,10 +544,23 @@ function SuggestionsFakeButton(selector) {
         return false; // not exists
     };
 
+    this.showSuggestions = function() {
+        exoutils.$('#bottom-half').style.visibility = '';
+    };
+
+    this.hideSuggestions = function() {
+        exoutils.$('#bottom-half').style.visibility = 'hidden';
+    };
+
     this.setChecked = function(doChecked) {
         console.log("FakeButton: clicking on the fake item");
-        if (doChecked) // fake btn can only be checked
+        if (doChecked) { // fake btn can only be checked
             this.openSuggestions();
+            //this.showSuggestions();
+        } else {
+            //this.hideSuggestions();
+        }
+
     };
 }
 
