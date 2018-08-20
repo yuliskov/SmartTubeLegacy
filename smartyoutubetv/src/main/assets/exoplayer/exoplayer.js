@@ -525,6 +525,10 @@ function SuggestionsFakeButton(selector) {
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
+        // pause keeps suggestions opened
+        var player = document.getElementsByTagName('video')[0];
+        player && player.pause();
+
         var downCode = 40;
         // we assume that no interface currently shown
         // press twice
@@ -538,6 +542,16 @@ function SuggestionsFakeButton(selector) {
     this.needToCloseSuggestions = function() {
         exoutils.sendAction(this.CLOSE_SUGGESTIONS);
         console.log("SuggestionsFakeButton: needToCloseSuggestions");
+
+        var upCode = 38;
+        // we assume that no interface currently shown
+        // press twice
+        exoutils.triggerButton(upCode);
+        exoutils.triggerButton(upCode);
+
+        // resume from previous state
+        var player = document.getElementsByTagName('video')[0];
+        player && player.play();
     };
 
     this.getChecked = function() {
