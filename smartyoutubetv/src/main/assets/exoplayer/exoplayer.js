@@ -540,8 +540,9 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.needToCloseSuggestions = function() {
-        exoutils.sendAction(this.CLOSE_SUGGESTIONS);
         console.log("SuggestionsFakeButton: needToCloseSuggestions");
+
+        exoutils.sendAction(this.CLOSE_SUGGESTIONS);
     };
 
     this.getChecked = function() {

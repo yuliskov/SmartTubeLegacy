@@ -14,6 +14,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
+    private static final String BOOTSTRAP_ENDCARDS = "bootstrapEndCards";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -120,5 +121,15 @@ public final class SmartPreferences {
     public String getCookie() {
         String cookie = mPrefs.getString(COOKIE_MANAGER_COOKIE, "");
         return cookie;
+    }
+
+    public void setEndCards(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_ENDCARDS, isChecked)
+                .apply();
+    }
+
+    public boolean getEndCards() {
+        return mPrefs.getBoolean(BOOTSTRAP_ENDCARDS, false);
     }
 }

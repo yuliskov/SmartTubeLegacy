@@ -278,7 +278,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private boolean notDASH(MediaItem mediaItem) {
         //return mediaItem.getInit() == null;
         int maxNoDashITag = 50;
-        return Integer.parseInt(mediaItem.getITag()) < maxNoDashITag;
+        return mediaItem.getITag() == null || Integer.parseInt(mediaItem.getITag()) < maxNoDashITag;
     }
 
     private String extractMimeType(MediaItem item) {

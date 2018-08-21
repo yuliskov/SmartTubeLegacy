@@ -52,13 +52,6 @@ public class BootstrapActivity extends ActivityBase {
         }
     }
 
-    private void initButtons() {
-        initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
-        initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
-        initCheckbox(R.id.chk_old_ui, mPrefs.getBootstrapOldUI());
-        initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
-    }
-
     private void initCheckbox(int id, boolean isChecked) {
         BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(id);
         chkbox.setChecked(isChecked);
@@ -82,6 +75,14 @@ public class BootstrapActivity extends ActivityBase {
         }
     }
 
+    private void initButtons() {
+        initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
+        initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
+        initCheckbox(R.id.chk_old_ui, mPrefs.getBootstrapOldUI());
+        initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
+        initCheckbox(R.id.chk_endcards, mPrefs.getEndCards());
+    }
+
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
         switch (checkBox.getId()) {
             case R.id.chk_save_selection:
@@ -95,6 +96,9 @@ public class BootstrapActivity extends ActivityBase {
                 break;
             case R.id.chk_old_ui:
                 mPrefs.setBootstrapOldUI(b);
+                break;
+            case R.id.chk_endcards:
+                mPrefs.setEndCards(b);
                 break;
         }
     }

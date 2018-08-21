@@ -29,7 +29,7 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SmartYouTubeTVActivityBase extends MainBrowserActivity {
+public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private static final String TAG = SmartYouTubeTVActivityBase.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here

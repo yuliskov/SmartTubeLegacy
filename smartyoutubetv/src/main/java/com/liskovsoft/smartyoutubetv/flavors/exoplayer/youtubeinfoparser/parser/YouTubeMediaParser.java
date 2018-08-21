@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser
 
 import android.net.Uri;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.MyMPDParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpdbuilder.SimpleMPDParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherOnlySignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.misc.SimpleYouTubeGenericInfo;
@@ -184,7 +184,7 @@ public class YouTubeMediaParser {
         mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
 
         InputStream inputStream = extractDashMPDContent();
-        MyMPDParser parser = new MyMPDParser(inputStream);
+        SimpleMPDParser parser = new SimpleMPDParser(inputStream);
         mNewMediaItems = parser.parse();
     }
 
