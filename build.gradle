@@ -39,6 +39,8 @@ buildscript {
         asmVersion = 'org.ow2.asm:asm:5.0.4'
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
+        amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:3ed246771f3ab5a67be105650b4630162d66f0c1' // NOTE: 'exoplayer' is a needed module
+        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:r2.5.3' // https://bintray.com/google/exoplayer/exoplayer
     }
 }
 
@@ -51,6 +53,8 @@ allprojects {
         }
         // com.android.support libs
         maven { url 'https://maven.google.com' }
+        // github support
+        maven { url 'https://jitpack.io' }
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
