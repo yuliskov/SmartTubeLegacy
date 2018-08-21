@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
@@ -80,7 +79,7 @@ public class BootstrapActivity extends ActivityBase {
         initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
         initCheckbox(R.id.chk_old_ui, mPrefs.getBootstrapOldUI());
         initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
-        initCheckbox(R.id.chk_endcards, mPrefs.getEndCards());
+        initCheckbox(R.id.chk_endcards, mPrefs.getEnableEndCards());
     }
 
     public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {

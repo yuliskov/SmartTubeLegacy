@@ -129,7 +129,7 @@ public final class SmartPreferences {
                 .apply();
     }
 
-    public boolean getEndCards() {
-        return mPrefs.getBoolean(BOOTSTRAP_ENDCARDS, false);
+    public boolean getEnableEndCards() {
+        return mPrefs.getBoolean(BOOTSTRAP_ENDCARDS, true);
     }
 }
