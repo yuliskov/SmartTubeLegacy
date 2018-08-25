@@ -50,6 +50,13 @@
         <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
     </style>
 
+    <style name="ExoMediaButton2.Repeat">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/repeat_video</item>
+        <item name="imageOff">@mipmap/btn_repeat_off</item>
+        <item name="imageOn">@mipmap/btn_repeat_on</item>
+        <item name="android:contentDescription">@string/repeat_video</item>
+    </style>
     <style name="ExoMediaButton2.Next">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/next_video</item>

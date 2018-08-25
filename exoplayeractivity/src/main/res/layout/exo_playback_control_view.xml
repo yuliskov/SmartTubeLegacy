@@ -115,35 +115,55 @@
                 style="@style/ExoMediaButton2.Quality"/>
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-                android:id="@id/exo_prev"
-                style="@style/ExoMediaButton2.Previous"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <!-- NOTE: must be ImageButton (not visible) -->
-            <ImageButton
-                android:id="@id/exo_repeat_toggle"
-                style="@style/ExoMediaButton2"/>
+                <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                    android:id="@id/exo_prev"
+                    style="@style/ExoMediaButton2.Previous"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-                android:id="@id/exo_play"
-                style="@style/ExoMediaButton2.Play"/>
+                <!-- NOTE: must be ImageButton (not visible) -->
+                <ImageButton
+                    android:id="@id/exo_repeat_toggle"
+                    style="@style/ExoMediaButton2"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-                android:id="@id/exo_pause"
-                style="@style/ExoMediaButton2.Pause"/>
+                <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                    android:id="@id/exo_play"
+                    style="@style/ExoMediaButton2.Play"/>
 
-            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-                android:id="@id/exo_next"
-                style="@style/ExoMediaButton2.Next"/>
+                <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                    android:id="@id/exo_pause"
+                    style="@style/ExoMediaButton2.Pause"/>
 
-        </LinearLayout>
+                <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                    android:id="@id/exo_next"
+                    style="@style/ExoMediaButton2.Next"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
+                    android:id="@+id/exo_repeat"
+                    style="@style/ExoMediaButton2.Repeat"/>
+            </LinearLayout>
+
+        </FrameLayout>
+
+
 
         <LinearLayout
             android:id="@+id/player_options_row"

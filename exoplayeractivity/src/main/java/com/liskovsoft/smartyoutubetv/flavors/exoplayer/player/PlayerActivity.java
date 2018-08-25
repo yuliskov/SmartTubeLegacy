@@ -122,7 +122,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private TextToggleButton retryButton;
 
     private DataSource.Factory mediaDataSourceFactory;
-    private SimpleExoPlayer player;
+    public SimpleExoPlayer player;
     private DefaultTrackSelector trackSelector;
     private TrackSelectionHelper trackSelectionHelper;
     private DetailDebugViewHelper debugViewHelper;

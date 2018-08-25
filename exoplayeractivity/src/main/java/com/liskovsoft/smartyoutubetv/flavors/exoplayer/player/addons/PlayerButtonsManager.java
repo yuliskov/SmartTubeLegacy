@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
@@ -81,15 +82,18 @@ public class PlayerButtonsManager {
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
-        int id = button.getId();
+        final int id = button.getId();
+        boolean playerInitialized = mPlayerActivity.player != null;
+
         mButtonStates.put(id, isChecked);
 
-        boolean isUserPageButton = button.getId() == R.id.exo_user && isChecked;
-        boolean isSubtitleButton = button.getId() == R.id.exo_captions;
-        boolean isNextButton = button.getId() == R.id.exo_next && isChecked;
-        boolean isPrevButton = button.getId() == R.id.exo_prev && isChecked;
-        boolean isSuggestions = button.getId() == R.id.exo_suggestions && isChecked;
-        boolean isShareButton = button.getId() == R.id.exo_share;
+        boolean isUserPageButton = id == R.id.exo_user && isChecked;
+        boolean isSubtitleButton = id == R.id.exo_captions;
+        boolean isNextButton = id == R.id.exo_next && isChecked;
+        boolean isPrevButton = id == R.id.exo_prev && isChecked;
+        boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
+        boolean isShareButton = id == R.id.exo_share;
+        boolean isRepeatButton = id == R.id.exo_repeat;
 
         if (isSubtitleButton) {
             View subBtn = mPlayerActivity.findViewById(R.id.exo_captions2); // we have two sub buttons with different ids
@@ -97,6 +101,14 @@ public class PlayerButtonsManager {
                 Toast.makeText(mPlayerActivity, R.string.no_subtitle_msg, Toast.LENGTH_LONG).show();
             } else {
                 mPlayerActivity.onClick(subBtn);
+            }
+        }
+
+        if (isRepeatButton && playerInitialized) {
+            if (isChecked) {
+                mPlayerActivity.player.setRepeatMode(Player.REPEAT_MODE_ONE);
+            } else {
+                mPlayerActivity.player.setRepeatMode(Player.REPEAT_MODE_OFF);
             }
         }
 
