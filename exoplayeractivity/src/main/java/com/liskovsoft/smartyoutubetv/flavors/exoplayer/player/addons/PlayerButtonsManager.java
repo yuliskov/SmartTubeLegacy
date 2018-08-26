@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
@@ -22,18 +23,25 @@ public class PlayerButtonsManager {
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
     private final SimpleExoPlayerView mExoPlayerView;
+    private final ExoPreferences mPrefs;
 
     public PlayerButtonsManager(PlayerActivity playerActivity) {
         mPlayerActivity = playerActivity;
         mExoPlayerView = (SimpleExoPlayerView) mPlayerActivity.findViewById(R.id.player_view);
         mButtonStates = new HashMap<>();
         mIdTagMapping = new HashMap<>();
+        mPrefs = ExoPreferences.instance(playerActivity);
         initIdTagMapping();
-        initNextButton(); // force enable next button
-        initStatsButton();
     }
 
     public void syncButtonStates() {
+        initWebButtons();
+        initNextButton(); // force enable next button
+        initStatsButton();
+        initRepeatButton();
+    }
+
+    private void initWebButtons() {
         Intent intent = mPlayerActivity.getIntent();
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !intent.getExtras().containsKey(entry.getValue());
@@ -83,7 +91,6 @@ public class PlayerButtonsManager {
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         final int id = button.getId();
-        boolean playerInitialized = mPlayerActivity.player != null;
 
         mButtonStates.put(id, isChecked);
 
@@ -104,12 +111,9 @@ public class PlayerButtonsManager {
             }
         }
 
-        if (isRepeatButton && playerInitialized) {
-            if (isChecked) {
-                mPlayerActivity.player.setRepeatMode(Player.REPEAT_MODE_ONE);
-            } else {
-                mPlayerActivity.player.setRepeatMode(Player.REPEAT_MODE_OFF);
-            }
+        if (isRepeatButton) {
+            mPlayerActivity.setRepeatEnabled(isChecked);
+            mPrefs.setCheckedState(id, isChecked);
         }
 
         if (isShareButton)
@@ -158,8 +162,16 @@ public class PlayerButtonsManager {
             @Override
             public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
                 mPlayerActivity.showDebugView(isChecked);
+                mPrefs.setCheckedState(button.getId(), isChecked);
             }
         });
+        statsButton.setChecked(mPrefs.getCheckedState(statsButton.getId()));
+    }
+
+
+    private void initRepeatButton() {
+        ToggleButtonBase btn = (ToggleButtonBase) mPlayerActivity.findViewById(R.id.exo_repeat);
+        btn.setChecked(mPrefs.getCheckedState(btn.getId()));
     }
 
     // NOTE: example of visibility change listener

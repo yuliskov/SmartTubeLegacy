@@ -122,7 +122,7 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     private TextToggleButton retryButton;
 
     private DataSource.Factory mediaDataSourceFactory;
-    public SimpleExoPlayer player;
+    private SimpleExoPlayer player;
     private DefaultTrackSelector trackSelector;
     private TrackSelectionHelper trackSelectionHelper;
     private DetailDebugViewHelper debugViewHelper;
@@ -174,7 +174,17 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
         playerInitializer = new PlayerInitializer(this);
     }
 
-    public void showDebugView(boolean show) {
+    public void showDebugView(final boolean show) {
+        if (debugViewHelper == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PlayerActivity.this.showDebugView(show);
+                }
+            }, 1000);
+            return;
+        }
+
         if (show) {
             debugViewGroup.setVisibility(View.VISIBLE);
             debugViewHelper.start();
@@ -886,5 +896,20 @@ public class PlayerActivity extends Activity implements OnClickListener, Player.
     public boolean getHidePlaybackErrors() {
         ExoPreferences prefs = ExoPreferences.instance(this);
         return prefs.getHidePlaybackErrors();
+    }
+
+    public void setRepeatEnabled(final boolean enabled) {
+        if (player == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    PlayerActivity.this.setRepeatEnabled(enabled);
+                }
+            }, 1000);
+            return;
+        }
+
+        int repeatMode = enabled ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF;
+        player.setRepeatMode(repeatMode);
     }
 }

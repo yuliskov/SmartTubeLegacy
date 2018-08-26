@@ -133,4 +133,14 @@ public final class ExoPreferences {
     public String getPreferredCodec() {
         return mPrefs.getString(PREFERRED_CODEC, "");
     }
+
+    public void setCheckedState(int id, boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(String.valueOf(id), isChecked)
+                .apply();
+    }
+
+    public boolean getCheckedState(int id) {
+        return mPrefs.getBoolean(String.valueOf(id), false);
+    }
 }
