@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.bootstrap;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
-import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.exoplayeractivity.R;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -33,7 +33,6 @@ public class GenericSelectorDialog implements OnClickListener {
          */
         String getSelected();
         void setSelected(String tag);
-        void apply();
         String getTitle();
     }
 
@@ -60,7 +59,7 @@ public class GenericSelectorDialog implements OnClickListener {
     @SuppressLint("InflateParams")
     private View buildView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.lang_selection_dialog, null);
+        View view = inflater.inflate(R.layout.generic_selection_dialog, null);
         ViewGroup root = view.findViewById(R.id.root);
 
         TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
@@ -76,7 +75,7 @@ public class GenericSelectorDialog implements OnClickListener {
 
             dialogItem.setFocusable(true);
             dialogItem.setTag(entry.getValue());
-            dialogItem.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActivity.getResources().getDimension(R.dimen.text_size_dp));
+            dialogItem.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActivity.getResources().getDimension(R.dimen.dialog_text_size));
             dialogItem.setOnClickListener(this);
             mDialogItems.add(dialogItem);
             root.addView(dialogItem);
@@ -105,8 +104,6 @@ public class GenericSelectorDialog implements OnClickListener {
             // close dialog
             alertDialog.dismiss();
             alertDialog = null;
-
-            mDataSource.apply();
         }
     }
 }

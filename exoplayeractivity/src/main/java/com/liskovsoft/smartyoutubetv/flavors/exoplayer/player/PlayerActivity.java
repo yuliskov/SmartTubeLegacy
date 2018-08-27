@@ -27,6 +27,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebug
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
@@ -472,5 +474,9 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
         int repeatMode = enabled ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF;
         player.setRepeatMode(repeatMode);
+    }
+
+    public void onSpeedClicked() {
+        GenericSelectorDialog.create(this, new SpeedDataSource(this, player));
     }
 }

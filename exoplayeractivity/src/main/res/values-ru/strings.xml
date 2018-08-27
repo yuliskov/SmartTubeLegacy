@@ -32,4 +32,6 @@
     <string name="no_subtitle_msg">Видео не содержит субтитров</string>
     <string name="video_speed">Скор</string>
     <string name="repeat_video">Повт</string>
+    <string name="select_video_speed">Скорость видео</string>
+    <string name="normal">Нормальная</string>
 </resources>

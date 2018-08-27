@@ -13,6 +13,8 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
 import java.util.HashMap;
@@ -101,6 +103,11 @@ public class PlayerButtonsManager {
         boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
         boolean isShareButton = id == R.id.exo_share;
         boolean isRepeatButton = id == R.id.exo_repeat;
+        boolean isSpeedButton = id == R.id.exo_speed;
+
+        if (isSpeedButton) {
+            mPlayerActivity.onSpeedClicked();
+        }
 
         if (isSubtitleButton) {
             View subBtn = mPlayerActivity.findViewById(R.id.exo_captions2); // we have two sub buttons with different ids
