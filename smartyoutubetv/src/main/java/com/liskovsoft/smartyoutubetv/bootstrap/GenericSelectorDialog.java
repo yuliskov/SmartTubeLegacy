@@ -15,26 +15,30 @@ import com.liskovsoft.smartyoutubetv.R;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class BootstrapSelectorDialog implements OnClickListener {
+public class GenericSelectorDialog implements OnClickListener {
     private final Context mActivity;
     private AlertDialog alertDialog;
     private ArrayList<CheckedTextView> mDialogItems;
     private final DataSource mDataSource;
 
     public interface DataSource {
+        /**
+         * Your data
+         * @return pairs that consist of text/tag
+         */
         Map<String, String> getDialogItems();
         String getSelected();
-        void setSelected(String codec);
+        void setSelected(String tag);
         void apply();
         String getTitle();
     }
 
     public static void create(Context ctx, DataSource dataSource) {
-        BootstrapSelectorDialog dialog = new BootstrapSelectorDialog(ctx, dataSource);
+        GenericSelectorDialog dialog = new GenericSelectorDialog(ctx, dataSource);
         dialog.run();
     }
 
-    public BootstrapSelectorDialog(Context activity, DataSource dataSource) {
+    public GenericSelectorDialog(Context activity, DataSource dataSource) {
         mActivity = activity;
         mDataSource = dataSource;
     }

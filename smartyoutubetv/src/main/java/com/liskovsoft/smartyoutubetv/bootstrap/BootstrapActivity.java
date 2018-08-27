@@ -69,7 +69,7 @@ public class BootstrapActivity extends ActivityBase {
                 Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_preferred_codec:
-                BootstrapSelectorDialog.create(this, new CodecDataSource(this));
+                GenericSelectorDialog.create(this, new CodecDataSource(this));
                 break;
         }
     }

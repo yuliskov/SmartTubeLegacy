@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/buttons_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/player_second_padding"
+    android:paddingRight="@dimen/player_second_padding">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
+            android:id="@+id/player_options_btn"
+            style="@style/ExoMediaButton2.Options"/>
+
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton
+            android:id="@+id/player_quality_btn"
+            style="@style/ExoMediaButton2.Quality"/>
+    </LinearLayout>
+
+    <!-- play, pause, speed etc -->
+    <include layout="@layout/player_playback"/>
+
+    <!-- like, dislike, subscribe etc -->
+    <include layout="@layout/player_options"/>
+
+    <!-- quality settings: Video, Audio, Text, Retry -->
+    <include layout="@layout/player_quality"/>
+
+</FrameLayout>

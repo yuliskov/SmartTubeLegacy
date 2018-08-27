@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dummy row (used for key catching) -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dummy_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/player_second_padding"
+    android:paddingRight="@dimen/player_second_padding">
+
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TransparentButton
+        android:id="@+id/up_catch_button"
+        style="@style/ExoMediaButton2_UpCatch"/>
+
+</LinearLayout>

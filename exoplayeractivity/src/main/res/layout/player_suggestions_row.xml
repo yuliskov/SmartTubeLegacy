@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/player_second_padding"
+    android:paddingRight="@dimen/player_second_padding">
+
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+        android:id="@+id/exo_suggestions"
+        style="@style/ExoMediaButton2.Suggestions"/>
+</LinearLayout>

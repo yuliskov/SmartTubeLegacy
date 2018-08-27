@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapSelectorDialog.DataSource;
+import com.liskovsoft.smartyoutubetv.bootstrap.GenericSelectorDialog.DataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.LinkedHashMap;
