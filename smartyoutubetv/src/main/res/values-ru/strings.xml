@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="webview_desc">MiBox, FireTV и др.</string>
-    <string name="xwalk_desc">MiTV и устаревш.</string>
-    <string name="exo_desc">4K: MiTV и устаревш.</string>
-    <string name="exo_desc2">4K: доп. версия</string>
-    <string name="bootstrap_main_title">Выберите версию YouTube</string>
+    <string name="webview_desc">1080 Основной</string>
+    <string name="xwalk_desc">1080 Дополнит.</string>
+    <string name="exo_desc">4K Основной</string>
+    <string name="exo_desc2">4K Дополнит.</string>
+    <string name="bootstrap_main_title">Выберите лаунчер YouTube</string>
     <string name="starting_popup">Запуск из главного лаунчера</string>
     <string name="save_selection">Запомнить</string>
-    <string name="bootstrap_bottom_title">В случае проблем, перейдите на 4К версию</string>
+    <string name="bootstrap_bottom_title">Лаунчеры отличаются стабильностью работы на конкр. девайсе</string>
+    <string name="loading_bottom_msg">Нажмите \"Назад\", чтобы вернуться к выбору лаунчеров</string>
+    <string name="app_name_720">1080 Основной</string>
+    <string name="app_name_1080">1080 Дополнит.</string>
+    <string name="app_name_4k">4K Основной</string>
+    <string name="app_name_4k_alt">4K Дополнит.</string>
     <string name="starting_popup_fmt">Запускается %s лаунчер&#8230;</string>
-    <string name="loading_bottom_msg">Нажмите \"Назад\", чтобы вернуться к выбору версий</string>
     <string name="language_dialog_title">Выберите язык</string>
     <string name="system_lang">По-умолчанию</string>
     <string name="language">Язык</string>
@@ -18,7 +22,7 @@
     <string name="send_crash_report">Отчет о сбое</string>
     <string name="sending_crash_report">Отсылается отчет о сбое&#8230;</string>
     <string name="update_check">Пров. обновл.</string>
-    <string name="preferred_codec">Декодер</string>
+    <string name="preferred_codec">Огранич.</string>
     <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
     <string name="no_restrictions">Без ограничений</string>
     <string name="old_ui">Old UI</string>

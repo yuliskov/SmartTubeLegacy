@@ -10,7 +10,7 @@
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_webview" app:titleText="@string/webview_desc"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/webview_desc"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapBadgeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
                                                                         app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc"/>

@@ -525,9 +525,9 @@ function SuggestionsFakeButton(selector) {
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
-        // // pause keeps suggestions opened
-        // var player = document.getElementsByTagName('video')[0];
-        // player && player.pause();
+        // pause keeps sound off
+        var player = document.getElementsByTagName('video')[0];
+        player && player.pause();
 
         var downCode = 40;
         // we assume that no interface currently shown
