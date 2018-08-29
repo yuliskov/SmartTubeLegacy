@@ -165,6 +165,14 @@
         <item name="textOn">@string/suggested_videos</item>
     </style>
 
+    <style name="ExoMediaButton2.Back">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="imageOff">@mipmap/btn_back</item>
+        <item name="imageOn">@mipmap/btn_back</item>
+        <item name="textOff">@string/go_back</item>
+        <item name="textOn">@string/go_back</item>
+    </style>
+
     <style name="ExoMediaButton2_UpCatch">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

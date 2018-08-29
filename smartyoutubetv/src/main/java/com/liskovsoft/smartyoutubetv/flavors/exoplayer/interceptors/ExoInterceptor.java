@@ -167,11 +167,11 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void run() {
                 // setup code in case app has restored (low memory): press back key
-                if (!playerIntent.getBooleanExtra("player_run_once", false)) { // see exoplayer.js for details
-                    playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
-                    mActionSender.bindActions(playerIntent);
-                    return;
-                }
+                //if (!playerIntent.getBooleanExtra("player_run_once", false)) { // see exoplayer.js for details
+                //    playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
+                //    mActionSender.bindActions(playerIntent);
+                //    return;
+                //}
 
                 activity.startActivityForResult(playerIntent, 1);
                 setupResultListener(activity);

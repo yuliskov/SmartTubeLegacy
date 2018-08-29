@@ -104,6 +104,7 @@ public class PlayerButtonsManager {
         boolean isShareButton = id == R.id.exo_share;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
+        boolean isBackButton = id == R.id.exo_back;
 
         if (isSpeedButton) {
             mPlayerActivity.onSpeedClicked();
@@ -131,6 +132,10 @@ public class PlayerButtonsManager {
             isPrevButton        ||
             isSuggestions) {
             mPlayerActivity.doGracefulExit();
+        }
+
+        if (isBackButton) {
+            mPlayerActivity.doGracefulExit(PlayerActivity.BUTTON_BACK);
         }
     }
 
