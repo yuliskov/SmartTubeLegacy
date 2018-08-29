@@ -42,7 +42,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
-        setupLang();
+        // setupLang();
         setupUA();
         super.onCreate(icicle);
 
@@ -54,6 +54,18 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private String getLocalizedTitle() {
+        String label = null;
+        try {
+            label = getResources().getString(
+                    getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return label;
     }
 
     @Override
