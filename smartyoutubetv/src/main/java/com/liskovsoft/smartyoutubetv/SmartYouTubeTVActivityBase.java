@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserActivity;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -53,6 +54,15 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            Browser.acitivityRestored = true;
+        }
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void setupUA() {

@@ -22,6 +22,7 @@ public class Browser extends Application {
     // TODO: do something constant values might be wrong
     final static String EXTRA_SHARE_FAVICON = "share_favicon";
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
+    public static boolean acitivityRestored;
 
     private static Bus sBus;
     private static Properties sProperties;
