@@ -50,7 +50,7 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     private long mExitTime;
     private long mLastCall;
-    private boolean mAlreadyLoaded;
+    private final long mStartTime = System.currentTimeMillis();
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -167,8 +167,8 @@ public class ExoInterceptor extends RequestInterceptor {
         Runnable onDone = new Runnable() {
             @Override
             public void run() {
-                if (Browser.acitivityRestored && !mAlreadyLoaded) {
-                    mAlreadyLoaded = true;
+                boolean iamNotLate = System.currentTimeMillis() - mStartTime <= 10_000;
+                if (Browser.acitivityRestored && iamNotLate) {
                     playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
                     mActionSender.bindActions(playerIntent);
                     return;
