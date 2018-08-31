@@ -18,7 +18,6 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.util.Util;
@@ -27,6 +26,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebug
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.CodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
@@ -38,6 +38,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
 public class PlayerActivity extends PlayerCoreActivity implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+    public static final int REQUEST_CODE = 123;
     private static final String TAG = PlayerActivity.class.getName();
 
     public static final String BUTTON_USER_PAGE = "button_user_page";
@@ -55,8 +56,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
     public static final String DISPLAY_MODE_ID = "display_mode_id";
-    
-    private TrackSelectionHelper trackSelectionHelper;
+
     private DetailDebugViewHelper debugViewHelper;
     
     private int interfaceVisibilityState;
@@ -340,19 +340,23 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (view == retryButton) {
-            initializePlayer();
-        } else if (view.getParent() == debugRootView) {
-            MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
-            if (mappedTrackInfo != null) {
-                trackSelectionHelper.showSelectionDialog(
-                        this,
-                        ((TextToggleButton) view).getText(),
-                        trackSelector.getCurrentMappedTrackInfo(),
-                        (int) view.getTag()
-                );
-            }
+        super.onClick(view);
+        if (view.getId() == R.id.restrict_codec_btn) {
+            GenericSelectorDialog.create(this, new CodecDataSource(this));
         }
+    }
+
+    @Override
+    void addCustomButtonToQualitySection() {
+        addRestrictCodecButton();
+    }
+
+    private void addRestrictCodecButton() {
+        TextToggleButton button = new TextToggleButton(this);
+        button.setId(R.id.restrict_codec_btn);
+        button.setText(R.string.restrict);
+        button.setOnClickListener(this);
+        debugRootView.addView(button, debugRootView.getChildCount() - 1);
     }
 
     // PlaybackControlView.VisibilityListener implementation

@@ -20,7 +20,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
-import com.liskovsoft.smartyoutubetv.misc.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
@@ -50,7 +49,7 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     private long mExitTime;
     private long mLastCall;
-    private final long mStartTime = System.currentTimeMillis();
+    private boolean mAlreadyLoaded;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -167,14 +166,15 @@ public class ExoInterceptor extends RequestInterceptor {
         Runnable onDone = new Runnable() {
             @Override
             public void run() {
-                boolean iamNotLate = System.currentTimeMillis() - mStartTime <= 10_000;
-                if (Browser.acitivityRestored && iamNotLate) {
+                // setup code in case app has restored (low memory): press back key
+                if (Browser.activityRestoredAfterCall && !mAlreadyLoaded) {
+                    mAlreadyLoaded = true;
                     playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
                     mActionSender.bindActions(playerIntent);
                     return;
                 }
 
-                activity.startActivityForResult(playerIntent, 1);
+                activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
                 setupResultListener(activity);
             }
         };

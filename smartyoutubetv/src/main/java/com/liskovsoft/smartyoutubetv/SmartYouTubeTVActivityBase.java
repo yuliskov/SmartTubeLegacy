@@ -71,7 +71,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Browser.acitivityRestored = true;
+            Browser.activityRestored = true;
         }
 
         super.onRestoreInstanceState(savedInstanceState);

@@ -28,4 +28,5 @@
     <string name="share_video">Teilen</string>
     <string name="send_to">Senden an</string>
     <string name="no_subtitle_msg">Das Video enthält keine Untertitel</string>
+    <string name="select_preferred_codec">Wählen Sie den Codec</string>
 </resources>

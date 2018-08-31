@@ -62,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_update_check"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+                android:visibility="gone"
                 app:titleText="@string/preferred_codec"
                 android:onClick="onClick"
                 android:layout_width="wrap_content"
