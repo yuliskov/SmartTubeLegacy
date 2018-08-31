@@ -14,7 +14,6 @@
      limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
              android:id="@+id/root"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
@@ -24,53 +23,7 @@
                                                           android:layout_width="match_parent"
                                                           android:layout_height="match_parent"/>
 
-    <LinearLayout
-        android:id="@+id/player_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/exo_background_top"
-        android:padding="@dimen/player_main_padding">
+    <include layout="@layout/player_top_bar"/>
 
-        <TextView android:id="@+id/video_title"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:paddingLeft="4dp"
-                  android:paddingRight="4dp"
-                  android:textSize="20sp"
-                  tools:ignore="SmallSp"
-                  android:textColor="@color/white"
-                  android:maxLines="1"/>
-        <TextView android:id="@+id/video_title2"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:paddingLeft="4dp"
-                  android:paddingRight="4dp"
-                  android:textSize="14sp"
-                  android:textColor="@color/white_70"
-                  tools:ignore="SmallSp"
-                  android:maxLines="1"/>
-
-    </LinearLayout>
-
-    <TextView android:id="@+id/debug_text_view"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingLeft="4dp"
-              android:paddingRight="4dp"
-              android:textSize="10sp"
-              tools:ignore="SmallSp"
-              android:visibility="gone"
-              android:layout_gravity="center"
-              android:background="#80000000"/>
-
-    <FrameLayout android:id="@+id/debug_view_group"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:paddingLeft="4dp"
-                 android:paddingRight="4dp"
-                 android:visibility="gone"
-                 android:layout_gravity="center"
-                 android:background="#80000000"/>
-
+    <include layout="@layout/player_debug_view"/>
 </FrameLayout>

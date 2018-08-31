@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -368,13 +370,24 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         playerTopBar.setVisibility(visibility);
 
         // NOTE: don't set to GONE or you will get fathom events
-        if (visibility == View.VISIBLE)
+        if (visibility == View.VISIBLE) {
             resetStateOfLayoutToggleButtons();
+            updateClockView();
+        }
+    }
+
+    private void updateClockView() {
+        TextView clock = findViewById(R.id.clock);
+        Time time = new Time();
+        time.setToNow();
+        // details about format: http://php.net/manual/en/function.strftime.php
+        String currentTime = getString(R.string.time_title, time.format("%a %d %h %X"));
+        clock.setText(currentTime);
     }
 
     private void resetStateOfLayoutToggleButtons() {
-        LayoutToggleButton toggleButton1 = (LayoutToggleButton) findViewById(R.id.player_options_btn);
-        LayoutToggleButton toggleButton2 = (LayoutToggleButton) findViewById(R.id.player_quality_btn);
+        LayoutToggleButton toggleButton1 = findViewById(R.id.player_options_btn);
+        LayoutToggleButton toggleButton2 = findViewById(R.id.player_quality_btn);
         toggleButton1.resetState();
         toggleButton2.resetState();
     }

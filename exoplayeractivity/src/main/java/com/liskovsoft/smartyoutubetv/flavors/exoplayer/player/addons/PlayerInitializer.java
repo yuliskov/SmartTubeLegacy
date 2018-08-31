@@ -45,9 +45,9 @@ public class PlayerInitializer {
     }
 
     public void initVideoTitle() {
-        videoTitle = (TextView) mPlayer.findViewById(R.id.video_title);
+        videoTitle = mPlayer.findViewById(R.id.video_title);
         videoTitle.setText(getMainTitle());
-        videoTitle2 = (TextView) mPlayer.findViewById(R.id.video_title2);
+        videoTitle2 = mPlayer.findViewById(R.id.video_title2);
         videoTitle2.setText(getSecondTitle());
     }
 

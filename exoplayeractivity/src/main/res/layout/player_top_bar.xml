@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_top_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/exo_background_top"
+    android:padding="@dimen/player_main_padding">
+
+    <TextView android:id="@+id/video_title"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:textSize="20sp"
+              tools:ignore="SmallSp"
+              android:textColor="@color/white"
+              android:maxLines="1"/>
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+        <TextView android:id="@+id/video_title2"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="4dp"
+                  android:paddingRight="4dp"
+                  android:textSize="14sp"
+                  android:textColor="@color/white_70"
+                  tools:ignore="SmallSp"
+                  android:maxLines="1"/>
+        <TextView android:id="@+id/clock"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="4dp"
+                  android:paddingRight="4dp"
+                  android:textSize="14sp"
+                  android:textColor="@color/white_70"
+                  tools:ignore="SmallSp"
+                  android:maxLines="1"
+                  android:gravity="end"/>
+    </FrameLayout>
+</LinearLayout>
