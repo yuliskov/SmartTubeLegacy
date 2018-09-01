@@ -23,7 +23,6 @@ public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
-    private LanguageSelectorDialog mLangSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +53,14 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void initCheckbox(int id, boolean isChecked) {
-        BootstrapCheckBox chkbox = (BootstrapCheckBox) findViewById(id);
+        BootstrapCheckBox chkbox = findViewById(id);
         chkbox.setChecked(isChecked);
     }
 
     public void onClick(View button) {
-        if (mLangSelector == null) {
-            mLangSelector = new LanguageSelectorDialog(this);
-        }
-
         switch (button.getId()) {
             case R.id.btn_select_lang:
-                mLangSelector.run();
+                GenericSelectorDialog.create(this, new LanguageDataSource(this));
                 break;
             case R.id.btn_send_crash_report:
                 Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();

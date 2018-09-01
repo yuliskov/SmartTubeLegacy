@@ -18,6 +18,7 @@ public class LangUpdater {
     private static final String LOCALE_RU = "ru_RU";
     private Context mContext;
     private String[] rusPackages = {"dkc.androidtv.tree", "dkc.video.fsbox", "dkc.video.hdbox", "dkc.video.uatv"};
+    private String mLocale;
 
     public LangUpdater(Context ctx) {
         mContext = ctx;
@@ -27,12 +28,14 @@ public class LangUpdater {
         tryToEnableRussian();
         tryToForceEnglishOnDevices();
         tryToRestoreLanguage();
+
+        forceLocale(mLocale);
     }
 
     private void tryToRestoreLanguage() {
         String langCode = getPreferredLocale();
         if (langCode != null) {
-            forceLocale(langCode);
+            mLocale = langCode;
         }
     }
 
@@ -40,7 +43,7 @@ public class LangUpdater {
         String deviceName = Helpers.getDeviceName();
         switch (deviceName) {
             case "ChangHong Android TV (full_mst638)":
-                forceLocale(LOCALE_EN_US);
+                mLocale = LOCALE_EN_US;
         }
     }
 
@@ -65,7 +68,7 @@ public class LangUpdater {
         List<String> installedPackages = getListInstalledPackages();
         for (String pkgName : installedPackages) {
             if (isRussianPackage(pkgName)) {
-                forceLocale(LOCALE_RU);
+                mLocale = LOCALE_RU;
             }
         }
     }
@@ -77,6 +80,11 @@ public class LangUpdater {
         }
 
         Locale locale = parseLangCode(langCode);
+        Locale oldLocale = Locale.getDefault();
+        if (oldLocale.equals(locale)) {
+            return;
+        }
+
         Locale.setDefault(locale);
         Configuration config = mContext.getResources().getConfiguration();
         config.locale = locale;

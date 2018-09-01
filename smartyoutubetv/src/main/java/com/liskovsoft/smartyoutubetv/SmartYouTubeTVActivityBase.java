@@ -42,7 +42,8 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
-        // setupLang();
+        // fix lang in case activity has been destroyed and then restored
+        setupLang();
         setupUA();
         super.onCreate(icicle);
 

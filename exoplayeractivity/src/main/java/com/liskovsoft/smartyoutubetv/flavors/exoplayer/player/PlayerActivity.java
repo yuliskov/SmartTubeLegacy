@@ -381,7 +381,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         Time time = new Time();
         time.setToNow();
         // details about format: http://php.net/manual/en/function.strftime.php
-        String currentTime = getString(R.string.time_title, time.format("%a %d %h %X"));
+        String currentTime = getString(R.string.time_title, time.format("%a %e %h %R"));
         clock.setText(currentTime);
     }
 
