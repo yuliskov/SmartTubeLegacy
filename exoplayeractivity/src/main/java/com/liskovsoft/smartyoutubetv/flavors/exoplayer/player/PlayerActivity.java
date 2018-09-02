@@ -70,6 +70,8 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // fix lang in case activity has been destroyed and then restored
+        setupLang();
         super.onCreate(savedInstanceState);
         // NOTE: completely disable open/close animation for activity
         overridePendingTransition(0, 0);
@@ -77,6 +79,10 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         buttonsManager = new PlayerButtonsManager(this);
         buttonsManager.syncButtonStates(); // onCheckedChanged depends on this
         playerInitializer = new PlayerInitializer(this);
+    }
+
+    private void setupLang() {
+        // new LangUpdater(this).update();
     }
 
     @Override
