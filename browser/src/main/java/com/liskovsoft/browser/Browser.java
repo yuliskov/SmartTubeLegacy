@@ -23,7 +23,6 @@ public class Browser extends Application {
     final static String EXTRA_SHARE_FAVICON = "share_favicon";
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
     public static boolean activityRestored;
-    public static boolean activityRestoredAfterCall;
 
     private static Bus sBus;
     private static Properties sProperties;

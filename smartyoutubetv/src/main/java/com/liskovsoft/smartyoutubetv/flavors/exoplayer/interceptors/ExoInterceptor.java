@@ -49,7 +49,6 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     private long mExitTime;
     private long mLastCall;
-    private boolean mAlreadyLoaded;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -166,16 +165,11 @@ public class ExoInterceptor extends RequestInterceptor {
         Runnable onDone = new Runnable() {
             @Override
             public void run() {
-                // setup code in case app has restored (low memory): press back key
-                if (Browser.activityRestoredAfterCall && !mAlreadyLoaded) {
-                    mAlreadyLoaded = true;
-                    playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
-                    mActionSender.bindActions(playerIntent);
-                    return;
+                // isOK == false means that app has been unloaded from memory while doing playback
+                boolean isOK = setupResultListener(activity);
+                if (isOK) {
+                    activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
                 }
-
-                activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
-                setupResultListener(activity);
             }
         };
 
@@ -187,8 +181,8 @@ public class ExoInterceptor extends RequestInterceptor {
         processor.run();
     }
 
-    private void setupResultListener(SmartYouTubeTVExoBase activity) {
-        activity.setOnActivityResultListener(new OnActivityResultListener() {
+    private boolean setupResultListener(SmartYouTubeTVExoBase activity) {
+        return activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 mExitTime = System.currentTimeMillis();
