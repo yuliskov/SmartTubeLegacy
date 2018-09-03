@@ -48,10 +48,11 @@ dependencies {
 
     compile project.properties.appCompatVersion
     compile project.properties.androidLoggerVersion
-
-    compile project.properties.ottoVersion
+    
     compile project.properties.okhttpVersion
     compile project.properties.dnsjavaVersion
+
+    compile project(path: ':common')
 
     // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
     liteCompile project.properties.xwalkSharedLibraryVersion

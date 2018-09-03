@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.kodi;
 
 import android.net.Uri;
 import android.util.Log;
-import com.liskovsoft.smartyoutubetv.misc.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;

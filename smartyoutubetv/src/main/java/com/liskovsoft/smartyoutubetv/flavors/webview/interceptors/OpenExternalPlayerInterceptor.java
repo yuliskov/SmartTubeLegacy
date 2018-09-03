@@ -6,11 +6,9 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.misc.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoInfoParser;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.YouTubeVideoInfoParser;
 import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
 import okhttp3.Response;
 

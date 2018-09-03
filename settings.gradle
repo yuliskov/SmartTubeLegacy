@@ -1,1 +1,1 @@
-include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker'
+include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common'

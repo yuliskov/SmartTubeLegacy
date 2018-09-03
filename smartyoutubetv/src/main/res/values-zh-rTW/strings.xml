@@ -9,7 +9,6 @@
     <string name="loading_bottom_msg">按返回到初始設定畫面</string>
     <string name="language_dialog_title">選擇語言</string>
     <string name="save_selection">記住</string>
-    <string name="system_lang">Default</string>
     <string name="language">Language</string>
     <string name="autoframerate">自動幀速率</string>
     <string name="returning_to_the_video">返回到已開啟的影片</string>

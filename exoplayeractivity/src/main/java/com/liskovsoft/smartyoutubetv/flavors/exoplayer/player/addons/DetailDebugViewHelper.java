@@ -41,8 +41,8 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 
 import java.util.Locale;
 
@@ -325,7 +325,7 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
 
     private String getFormatId(Format video) {
         String id = video.id;
-        if (Utils.isNumeric(id)) {
+        if (Helpers.isNumeric(id)) {
             return String.format("(%s)", id);
         }
         return "";

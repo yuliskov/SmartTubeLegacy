@@ -11,7 +11,6 @@
     <string name="starting_popup_fmt">Die %s Version starten...</string>
     <string name="loading_bottom_msg">Drücken Sie die Zurück-Taste, um zum Versions-Dialog zurückzukehren</string>
     <string name="language_dialog_title">Sprache auswählen</string>
-    <string name="system_lang">Standard</string>
     <string name="language">Sprache</string>
     <string name="returning_to_the_video">Zurück zum geöffneten Video</string>
     <string name="send_crash_report">Absturzbericht</string>

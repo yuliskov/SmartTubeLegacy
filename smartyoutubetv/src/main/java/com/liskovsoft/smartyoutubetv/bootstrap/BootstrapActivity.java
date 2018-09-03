@@ -14,8 +14,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.CodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
-import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
+import com.liskovsoft.smartyoutubetv.common.helpers.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
 import io.fabric.sdk.android.Fabric;
 

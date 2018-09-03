@@ -36,6 +36,8 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 
+    compile project(path: ':common')
+
     // Browser component (specially for BrowserApp)
     debugCompile project(path: ':browser', configuration: "liteDebug")
     releaseCompile project(path: ':browser', configuration: "liteRelease")

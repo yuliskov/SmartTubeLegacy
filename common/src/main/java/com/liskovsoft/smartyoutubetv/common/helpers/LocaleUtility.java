@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
 import android.os.Build;

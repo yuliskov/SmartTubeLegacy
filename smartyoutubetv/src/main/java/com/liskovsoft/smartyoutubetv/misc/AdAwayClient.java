@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+
 public class AdAwayClient {
     /**
      * Couple of ads have been taken from <a href="https://www.reddit.com/r/dropgoogle/comments/5tnjxl/block_youtube_ads_2017_hosts_file/">this post</a>

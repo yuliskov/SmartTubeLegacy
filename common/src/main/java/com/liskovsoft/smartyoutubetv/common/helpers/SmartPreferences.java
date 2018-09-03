@@ -1,9 +1,8 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormat;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
@@ -30,16 +29,15 @@ public final class SmartPreferences {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
-    public void setSelectedFormat(VideoFormat fmt) {
-        String name = fmt.toString();
+    public void setSelectedFormat(String fmt) {
         mPrefs.edit()
-                .putString(VIDEO_FORMAT_NAME, name)
+                .putString(VIDEO_FORMAT_NAME, fmt)
                 .apply();
     }
 
-    public VideoFormat getSelectedFormat() {
+    public String getSelectedFormat() {
         String name = mPrefs.getString(VIDEO_FORMAT_NAME, "Auto");
-        return VideoFormat.fromName(name);
+        return name;
     }
 
     public void setBootstrapActivityName(String name) {

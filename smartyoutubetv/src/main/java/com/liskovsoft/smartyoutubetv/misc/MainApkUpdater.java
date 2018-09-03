@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc;
 import android.content.Context;
 import android.os.Handler;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.SmartPreferences;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 

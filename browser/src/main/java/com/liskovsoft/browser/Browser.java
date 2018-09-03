@@ -2,7 +2,6 @@ package com.liskovsoft.browser;
 
 import android.app.Application;
 import android.content.res.AssetManager;
-import android.os.StrictMode;
 import android.webkit.CookieSyncManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;

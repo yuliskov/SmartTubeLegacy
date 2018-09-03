@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.webaddonsmanager;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.misc.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.common.helpers.SmartPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;

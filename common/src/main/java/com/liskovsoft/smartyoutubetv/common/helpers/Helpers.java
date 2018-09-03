@@ -1,12 +1,12 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
+package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,11 +14,15 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Utils {
-    private static OkHttpClient mClient;
-
+public class Helpers {
     /**
      * Simple wildcard matching routine. Implemented without regex. So you may expect huge performance boost.
      * @param host
@@ -48,7 +52,6 @@ public class Utils {
             is = ctx.getAssets().open(fileName);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalStateException(e);
         }
         return is;
     }
@@ -72,7 +75,7 @@ public class Utils {
     }
 
     public static boolean deviceMatch(String[] devicesToProcess) {
-        String thisDeviceName = Utils.getDeviceName();
+        String thisDeviceName = Helpers.getDeviceName();
         for (String deviceName : devicesToProcess) {
             boolean match = matchSubstrNoCase(thisDeviceName, deviceName);
             if (match) {
@@ -83,17 +86,64 @@ public class Utils {
     }
 
     public static String toString(InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
+
         Scanner s = new Scanner(inputStream).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
         return result;
     }
 
     public static InputStream toStream(String content) {
+        if (content == null) {
+            return null;
+        }
+
         return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
     }
 
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
+    }
+
+    public static String unixToLocalDate(Context ctx, String timestamp) {
+        Locale current = ctx.getResources().getConfiguration().locale;
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, current);
+        Date date;
+        if (timestamp == null) {
+            date = new Date();
+        } else {
+            date = new Date((long) Integer.parseInt(timestamp) * 1000);
+        }
+        return dateFormat.format(date);
+    }
+
+    public static String runMultiMatcher(String input, String... patterns) {
+        if (input == null) {
+            return null;
+        }
+
+        Pattern regex;
+        Matcher matcher;
+        String result = null;
+        for (String pattern : patterns) {
+            regex = Pattern.compile(pattern);
+            matcher = regex.matcher(input);
+
+            if (matcher.find()) {
+                result = matcher.group(matcher.groupCount()); // get last group
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean isCallable(Context ctx, Intent intent) {
+        List<ResolveInfo> list = ctx.getPackageManager().queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 
     public static boolean isNumeric(String s) {

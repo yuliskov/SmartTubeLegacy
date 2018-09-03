@@ -15,7 +15,6 @@
     <string name="app_name_4k_alt">4K Дополнит.</string>
     <string name="starting_popup_fmt">Запускается %s лаунчер&#8230;</string>
     <string name="language_dialog_title">Выберите язык</string>
-    <string name="system_lang">По-умолчанию</string>
     <string name="language">Язык</string>
     <string name="autoframerate">Автофреймрейт</string>
     <string name="returning_to_the_video">Возвращаемся к открытому видео</string>

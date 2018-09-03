@@ -51,8 +51,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.Utils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
 import java.io.IOException;
@@ -330,7 +330,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
         DashManifestParser parser = new DashManifestParser();
         DashManifest result;
         try {
-            result = parser.parse(uri, Utils.toStream(mpdContent));
+            result = parser.parse(uri, Helpers.toStream(mpdContent));
         } catch (IOException e) {
             throw new IllegalStateException("Malformed mpd file:\n" + mpdContent, e);
         }

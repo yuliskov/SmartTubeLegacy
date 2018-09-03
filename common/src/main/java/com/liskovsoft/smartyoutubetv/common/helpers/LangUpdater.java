@@ -1,10 +1,10 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
