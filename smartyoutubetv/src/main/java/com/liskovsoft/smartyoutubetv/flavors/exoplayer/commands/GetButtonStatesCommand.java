@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands;
 
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEventWithId;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEventWithId;
 import com.squareup.otto.Subscribe;
 
 import java.util.Random;
@@ -11,7 +11,7 @@ public class GetButtonStatesCommand extends GenericCommand {
     private final Callback mCallback;
     private final int mStatesId = new Random().nextInt();
     /**
-     * for details see {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector}
+     * for details see {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector}
      */
     private final String GET_STATE_COMMAND = "JSON.stringify(exoutils.getButtonStates())";
     private GenericStringResultReceiver mReceiver;

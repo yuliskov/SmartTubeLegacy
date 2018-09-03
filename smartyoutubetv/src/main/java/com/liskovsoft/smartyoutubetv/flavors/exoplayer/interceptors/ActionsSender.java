@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
-import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.DisplaySyncHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.UhdHelper;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
-import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
 import java.util.Map;
