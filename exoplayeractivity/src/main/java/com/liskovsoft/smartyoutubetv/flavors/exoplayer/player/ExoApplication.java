@@ -38,6 +38,7 @@ public class ExoApplication extends Browser {
         String appName = "ExoPlayer";
         userAgent = Util.getUserAgent(this, appName);
 
+        // A debug bridge for Android applications
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }
