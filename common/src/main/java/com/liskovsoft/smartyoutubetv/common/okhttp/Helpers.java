@@ -1,4 +1,4 @@
-package edu.mit.mobile.android.appupdater.helpers;
+package com.liskovsoft.smartyoutubetv.common.okhttp;
 
 import android.content.Context;
 import android.os.Handler;

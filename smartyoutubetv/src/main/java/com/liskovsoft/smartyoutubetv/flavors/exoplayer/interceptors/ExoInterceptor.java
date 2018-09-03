@@ -22,7 +22,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.SimpleY
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.YouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
-import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

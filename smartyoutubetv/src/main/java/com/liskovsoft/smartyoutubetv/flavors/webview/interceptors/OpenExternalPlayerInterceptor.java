@@ -9,7 +9,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;

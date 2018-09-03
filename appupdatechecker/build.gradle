@@ -37,10 +37,11 @@ dependencies {
     })
     testCompile project.properties.junitVersion
 
+    compile project(path: ':common')
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project.properties.appCompatVersion
     compile project.properties.androidLoggerVersion
 
-    compile project.properties.okhttpVersion
     compile project.properties.dnsjavaVersion
 }

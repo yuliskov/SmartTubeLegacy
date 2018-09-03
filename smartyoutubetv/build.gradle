@@ -129,7 +129,6 @@ dependencies {
     compile project.properties.constraintLayoutVersion
     compile project.properties.butterKnifeVersion
     annotationProcessor project.properties.butterKnifeCompilerVersion
-    compile project.properties.ottoVersion
 
     compile project.properties.gsonVersion
     compile project.properties.jsonPathVersion

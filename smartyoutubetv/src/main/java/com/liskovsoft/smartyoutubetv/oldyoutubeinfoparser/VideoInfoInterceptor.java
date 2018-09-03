@@ -8,7 +8,7 @@ import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutio
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.squareup.otto.Subscribe;
-import edu.mit.mobile.android.appupdater.helpers.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;

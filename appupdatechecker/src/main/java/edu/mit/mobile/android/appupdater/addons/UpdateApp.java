@@ -11,7 +11,7 @@ import android.webkit.*;
 import android.widget.Toast;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
-import edu.mit.mobile.android.appupdater.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.Helpers;
 
 import java.io.*;
 

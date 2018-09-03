@@ -23,7 +23,6 @@ import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
-import edu.mit.mobile.android.appupdater.helpers.MyCookieLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package edu.mit.mobile.android.appupdater.helpers;
+package com.liskovsoft.smartyoutubetv.common.okhttp;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;

@@ -15,7 +15,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import edu.mit.mobile.android.appupdater.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.Helpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 
 import java.io.File;
