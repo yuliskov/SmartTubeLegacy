@@ -26,11 +26,11 @@
     <string name="no_restrictions">Без ограничений</string>
     <string name="old_ui">Old UI</string>
     <string name="save_selection_tip">Не показывать этот экран в следующий раз</string>
-    <string name="endcards_tip">Подсказки перед окончанием видео (только 1080)</string>
-    <string name="language_tip">Сменить язык</string>
+    <string name="endcards_tip">Подсказки перед окончанием видео, кроме 4К</string>
+    <string name="language_tip">Язык приложения</string>
     <string name="update_check_tip">Сообщать о выходе новых версий</string>
-    <string name="webview_tip">1080 Main tip</string>
-    <string name="xwalk_tip">1080 Alt tip</string>
-    <string name="exo_tip">4K Main tip</string>
-    <string name="exo_alt_tip">4K Alt tip</string>
+    <string name="webview_tip">До 1080р на большинстве устройств</string>
+    <string name="xwalk_tip">До 1080р и более стабильная работа</string>
+    <string name="exo_tip">До 4К на большинстве устройств</string>
+    <string name="exo_alt_tip">До 4К и более стабильная работа</string>
 </resources>

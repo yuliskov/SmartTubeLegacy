@@ -44,8 +44,8 @@
     <string name="endcards_tip">Enable tips before the end of the video (1080 only)</string>
     <string name="language_tip">Change language</string>
     <string name="update_check_tip">Check for the updates</string>
-    <string name="webview_tip">1080 Main tip</string>
-    <string name="xwalk_tip">1080 Alt tip</string>
-    <string name="exo_tip">4K Main tip</string>
-    <string name="exo_alt_tip">4K Alt tip</string>
+    <string name="webview_tip">Up to 1080p on most of the devices</string>
+    <string name="xwalk_tip">Up to 1080p and more stable work</string>
+    <string name="exo_tip">Up to 4K on most of the devices</string>
+    <string name="exo_alt_tip">Up to 4K and more stable work</string>
 </resources>
