@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BootstrapCheckBox extends LinearLayout {
+public class BootstrapCheckButton extends LinearLayout {
     private String mTitleText;
     private LinearLayout mWrapper;
     private LinearLayout mContent;
@@ -30,22 +30,22 @@ public class BootstrapCheckBox extends LinearLayout {
     private float mZoomedTextSize;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
 
-    public BootstrapCheckBox(Context context) {
+    public BootstrapCheckButton(Context context) {
         super(context);
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs) {
+    public BootstrapCheckButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.BootstrapCheckBox,
+                R.styleable.BootstrapCheckButton,
                 0, 0);
 
         try {
-            mTitleText = a.getString(R.styleable.BootstrapCheckBox_titleText);
-            String handlerName = a.getString(R.styleable.BootstrapCheckBox_onCheckedChanged);
+            mTitleText = a.getString(R.styleable.BootstrapCheckButton_titleText);
+            String handlerName = a.getString(R.styleable.BootstrapCheckButton_onCheckedChanged);
             if (handlerName != null) {
                 setOnCheckedChangeListener(new DeclaredOnCheckedChangeListener(this, handlerName));
             }
@@ -56,12 +56,12 @@ public class BootstrapCheckBox extends LinearLayout {
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BootstrapCheckButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public BootstrapCheckBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BootstrapCheckButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -128,7 +128,7 @@ public class BootstrapCheckBox extends LinearLayout {
     }
 
     private void inflate() {
-        inflate(getContext(), R.layout.bootstrap_checkbox, this);
+        inflate(getContext(), R.layout.bootstrap_check_button, this);
         mWrapper = (LinearLayout) findViewById(R.id.bootstrap_checkbox_wrapper);
         mContent = (LinearLayout) findViewById(R.id.bootstrap_checkbox_content);
         mChkbox = (CheckBox) findViewById(R.id.bootstrap_checkbox);
@@ -139,9 +139,9 @@ public class BootstrapCheckBox extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
-                    BootstrapCheckBox.this.callOnClick();
+                    BootstrapCheckButton.this.callOnClick();
                 } else {
-                    BootstrapCheckBox.this.performClick();
+                    BootstrapCheckButton.this.performClick();
                 }
                 mChkbox.setChecked(!mChkbox.isChecked());
                 callCheckedListener(mChkbox.isChecked());
@@ -170,7 +170,7 @@ public class BootstrapCheckBox extends LinearLayout {
     }
 
     public interface OnCheckedChangeListener {
-        void onCheckedChanged(BootstrapCheckBox button, boolean isChecked);
+        void onCheckedChanged(BootstrapCheckButton button, boolean isChecked);
     }
 
     /**
@@ -190,7 +190,7 @@ public class BootstrapCheckBox extends LinearLayout {
         }
 
         @Override
-        public void onCheckedChanged(@NonNull BootstrapCheckBox compoundButton, boolean b) {
+        public void onCheckedChanged(@NonNull BootstrapCheckButton compoundButton, boolean b) {
             if (mResolvedMethod == null) {
                 resolveMethod(mHostView.getContext(), mMethodName);
             }
@@ -211,7 +211,7 @@ public class BootstrapCheckBox extends LinearLayout {
             while (context != null) {
                 try {
                     if (!context.isRestricted()) {
-                        final Method method = context.getClass().getMethod(mMethodName, BootstrapCheckBox.class, boolean.class);
+                        final Method method = context.getClass().getMethod(mMethodName, BootstrapCheckButton.class, boolean.class);
                         if (method != null) {
                             mResolvedMethod = method;
                             mResolvedContext = context;

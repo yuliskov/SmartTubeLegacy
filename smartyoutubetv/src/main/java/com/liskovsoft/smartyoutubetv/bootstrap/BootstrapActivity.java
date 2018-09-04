@@ -16,7 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.CodecDataS
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.helpers.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckBox;
+import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton;
 import io.fabric.sdk.android.Fabric;
 
 public class BootstrapActivity extends ActivityBase {
@@ -53,7 +53,7 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     private void initCheckbox(int id, boolean isChecked) {
-        BootstrapCheckBox chkbox = findViewById(id);
+        BootstrapCheckButton chkbox = findViewById(id);
         chkbox.setChecked(isChecked);
     }
 
@@ -79,7 +79,7 @@ public class BootstrapActivity extends ActivityBase {
         initCheckbox(R.id.chk_endcards, mPrefs.getEnableEndCards());
     }
 
-    public void onCheckedChanged(BootstrapCheckBox checkBox, boolean b) {
+    public void onCheckedChanged(BootstrapCheckButton checkBox, boolean b) {
         switch (checkBox.getId()) {
             case R.id.chk_save_selection:
                 mPrefs.setBootstrapSaveSelection(b);

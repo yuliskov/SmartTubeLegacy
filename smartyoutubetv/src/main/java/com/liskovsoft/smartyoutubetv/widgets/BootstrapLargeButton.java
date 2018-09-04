@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
-public class BootstrapBadgeButton extends LinearLayout {
+public class BootstrapLargeButton extends LinearLayout {
     private Drawable mMainIcon;
     private String mTitleText;
     private LinearLayout wrapper;
@@ -25,22 +25,22 @@ public class BootstrapBadgeButton extends LinearLayout {
     private float mNormalTextSize;
     private float mZoomedTextSize;
 
-    public BootstrapBadgeButton(Context context) {
+    public BootstrapLargeButton(Context context) {
         super(context);
         init();
     }
 
-    public BootstrapBadgeButton(Context context, AttributeSet attrs) {
+    public BootstrapLargeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.BootstrapBadgeButton,
+                R.styleable.BootstrapLargeButton,
                 0, 0);
 
         try {
-            mMainIcon = a.getDrawable(R.styleable.BootstrapBadgeButton_mainIcon);
-            mTitleText = a.getString(R.styleable.BootstrapBadgeButton_titleText);
+            mMainIcon = a.getDrawable(R.styleable.BootstrapLargeButton_mainIcon);
+            mTitleText = a.getString(R.styleable.BootstrapLargeButton_titleText);
         } finally {
             a.recycle();
         }
@@ -48,12 +48,12 @@ public class BootstrapBadgeButton extends LinearLayout {
         init();
     }
 
-    public BootstrapBadgeButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BootstrapLargeButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public BootstrapBadgeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BootstrapLargeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -131,7 +131,7 @@ public class BootstrapBadgeButton extends LinearLayout {
     }
 
     private void inflate() {
-        inflate(getContext(), R.layout.bootstrap_badge_button, this);
+        inflate(getContext(), R.layout.bootstrap_large_button, this);
         wrapper = (LinearLayout) findViewById(R.id.bootstrap_button_wrapper);
         content = (LinearLayout) findViewById(R.id.bootstrap_button_content);
         image = (ImageView) findViewById(R.id.bootstrap_button_image);
@@ -143,9 +143,9 @@ public class BootstrapBadgeButton extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
-                    BootstrapBadgeButton.this.callOnClick();
+                    BootstrapLargeButton.this.callOnClick();
                 } else {
-                    BootstrapBadgeButton.this.performClick();
+                    BootstrapLargeButton.this.performClick();
                 }
             }
         });

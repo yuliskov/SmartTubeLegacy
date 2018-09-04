@@ -42,12 +42,12 @@ public class BootstrapTextButton extends LinearLayout {
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.BootstrapCheckBox,
+                R.styleable.BootstrapCheckButton,
                 0, 0);
 
         try {
-            mTitleText = a.getString(R.styleable.BootstrapCheckBox_titleText);
-            String handlerName = a.getString(R.styleable.BootstrapCheckBox_onCheckedChanged);
+            mTitleText = a.getString(R.styleable.BootstrapCheckButton_titleText);
+            String handlerName = a.getString(R.styleable.BootstrapCheckButton_onCheckedChanged);
             if (handlerName != null) {
                 setOnCheckedChangeListener(new DeclaredOnCheckedChangeListener(this, handlerName));
             }
@@ -132,7 +132,7 @@ public class BootstrapTextButton extends LinearLayout {
     }
 
     private void inflate() {
-        inflate(getContext(), R.layout.bootstrap_checkbox, this);
+        inflate(getContext(), R.layout.bootstrap_check_button, this);
         mWrapper = (LinearLayout) findViewById(R.id.bootstrap_checkbox_wrapper);
         mContent = (LinearLayout) findViewById(R.id.bootstrap_checkbox_content);
         mChkbox = (CheckBox) findViewById(R.id.bootstrap_checkbox);
