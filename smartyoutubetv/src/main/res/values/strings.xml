@@ -40,4 +40,12 @@
     <string name="no_restrictions">No restrictions</string>
     <string name="old_ui">Old UI</string>
     <string name="endcards">End Cards</string>
+    <string name="save_selection_tip">Don\'t show this screen next time</string>
+    <string name="endcards_tip">Enable tips before the end of the video (1080 only)</string>
+    <string name="language_tip">Change language</string>
+    <string name="update_check_tip">Check for the updates</string>
+    <string name="webview_tip">1080 Main tip</string>
+    <string name="xwalk_tip">1080 Alt tip</string>
+    <string name="exo_tip">4K Main tip</string>
+    <string name="exo_alt_tip">4K Alt tip</string>
 </resources>

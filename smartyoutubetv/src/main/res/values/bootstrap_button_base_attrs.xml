@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BootstrapButtonBase">
-        <attr name="tipText"/>
+        <attr name="tipText" format="string"/>
     </declare-styleable>
 </resources>

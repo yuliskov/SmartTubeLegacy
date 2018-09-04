@@ -10,34 +10,36 @@
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/webview_desc"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/webview_desc" app:tipText="@string/webview_tip"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc" app:tipText="@string/xwalk_tip"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc" app:tipText="@string/exo_tip"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2" app:tipText="@string/exo_alt_tip"/>
         </LinearLayout>
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">
             <!-- WARN: TO HIDE ITEM DON'T COMMENT CODE. INSTEAD SET VISIBILITY ATTRIBUTE. -->
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
                 app:titleText="@string/language"
+                app:tipText="@string/language_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
                 android:id="@+id/btn_select_lang"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
                 app:titleText="@string/save_selection"
-                app:tipText="@string/save_selection"
+                app:tipText="@string/save_selection_tip"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/chk_save_selection"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
                 app:titleText="@string/endcards"
+                app:tipText="@string/endcards_tip"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,6 +60,7 @@
                 android:id="@+id/chk_old_ui"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
                 app:titleText="@string/update_check"
+                app:tipText="@string/update_check_tip"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

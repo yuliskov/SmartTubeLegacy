@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BootstrapTextButton extends LinearLayout {
+public class BootstrapTextButton extends BootstrapButtonBase {
     private String mTitleText;
     private LinearLayout mWrapper;
     private LinearLayout mContent;
@@ -116,7 +116,8 @@ public class BootstrapTextButton extends LinearLayout {
         });
     }
 
-    private void makeUnfocused() {
+    protected void makeUnfocused() {
+        super.makeUnfocused();
         mChkbox.setTextColor(Color.DKGRAY);
         mChkbox.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
@@ -124,7 +125,8 @@ public class BootstrapTextButton extends LinearLayout {
         mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
     }
 
-    private void makeFocused() {
+    protected void makeFocused() {
+        super.makeFocused();
         mChkbox.setTextColor(Color.BLACK);
         mChkbox.setTextSize(mZoomedTextSize);
         mContent.setBackgroundColor(Color.WHITE);

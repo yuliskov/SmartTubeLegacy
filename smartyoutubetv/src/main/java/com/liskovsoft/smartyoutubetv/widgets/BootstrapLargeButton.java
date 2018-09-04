@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
-public class BootstrapLargeButton extends LinearLayout {
+public class BootstrapLargeButton extends BootstrapButtonBase {
     private Drawable mMainIcon;
     private String mTitleText;
     private LinearLayout wrapper;
@@ -100,7 +100,8 @@ public class BootstrapLargeButton extends LinearLayout {
         });
     }
 
-    private void makeUnfocused() {
+    protected void makeUnfocused() {
+        super.makeUnfocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
         text.setTextColor(Color.DKGRAY);
         text.setTextSize(mNormalTextSize);
@@ -110,7 +111,8 @@ public class BootstrapLargeButton extends LinearLayout {
         setImageColor();
     }
 
-    private void makeFocused() {
+    protected void makeFocused() {
+        super.makeFocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextFocused);
         text.setTextColor(Color.BLACK);
         text.setTextSize(mZoomedTextSize);
@@ -132,10 +134,10 @@ public class BootstrapLargeButton extends LinearLayout {
 
     private void inflate() {
         inflate(getContext(), R.layout.bootstrap_large_button, this);
-        wrapper = (LinearLayout) findViewById(R.id.bootstrap_button_wrapper);
-        content = (LinearLayout) findViewById(R.id.bootstrap_button_content);
-        image = (ImageView) findViewById(R.id.bootstrap_button_image);
-        text = (TextView) findViewById(R.id.bootstrap_button_text);
+        wrapper = findViewById(R.id.bootstrap_button_wrapper);
+        content = findViewById(R.id.bootstrap_button_content);
+        image = findViewById(R.id.bootstrap_button_image);
+        text = findViewById(R.id.bootstrap_button_text);
     }
 
     private void transferClicks() {
