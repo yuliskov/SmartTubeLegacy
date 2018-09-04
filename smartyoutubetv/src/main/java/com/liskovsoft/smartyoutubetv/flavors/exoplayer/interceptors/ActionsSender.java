@@ -68,7 +68,7 @@ public class ActionsSender {
             result.put(buttonId, isChecked);
         }
         
-        applyFixesForOldWebView(result);
+        // applyFixesForOldWebView(result);
         return result;
     }
 

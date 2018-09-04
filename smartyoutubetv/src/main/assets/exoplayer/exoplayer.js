@@ -2,6 +2,7 @@
 
 /////////// GoogleButton ////////////////
 
+// java constants
 var PlayerActivity = {
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
@@ -15,6 +16,7 @@ var PlayerActivity = {
     PLAYER_RUN_ONCE: "player_run_once" // indicates that webview instance not restored after player close
 };
 
+// java constants in js code
 var GoogleConstants = {
     BUTTON_LIKE: ".icon-like.toggle-button",
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
@@ -381,6 +383,7 @@ YouButton.fromSelector = function(selector) {
             case GoogleConstants.PLAYER_RUN_ONCE:
                 return new PlayerRunOnceFakeButton(selector);
             default:
+                // NOTE: all other buttons is processed here
                 return new YouButton(selector);
         }
     }
@@ -408,11 +411,21 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
 
     this.playerJumpToEnd = function() {
-        console.log("TrackEndFakeButton: before jump to the end");
+        console.log("TrackEndFakeButton: I'm about to start off!");
         var player = exoutils.$(this.videoSelector);
         if (player) {
-            console.log("TrackEndFakeButton: jumping to the end: " + player.currentTime + " " + player.duration);
-            player.currentTime = 9999999;
+            console.log("TrackEndFakeButton: before jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
+            player.currentTime = player.duration - 1; // seek to the end
+            player.play();
+            console.log("TrackEndFakeButton: after jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
+
+            // var notJumped = (player.duration - player.currentTime) > 1;
+            // if (notJumped) {
+            //     console.log("TrackEndFakeButton: hmm... not jumped... repeat again!");
+            //     setTimeout(function() {
+            //         player.currentTime = 100000; // any big time
+            //     }, 3000);
+            // }
         }
     };
 

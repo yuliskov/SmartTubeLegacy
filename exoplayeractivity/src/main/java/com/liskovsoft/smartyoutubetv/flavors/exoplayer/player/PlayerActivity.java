@@ -429,7 +429,8 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         }
 
         if (playbackState == Player.STATE_ENDED) {
-            doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
+            // doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
+            doGracefulExit(PlayerActivity.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {

@@ -29,8 +29,9 @@
             android:id="@id/exo_pause"
             style="@style/ExoMediaButton2.Pause"/>
 
+        <!-- non-default id, we perform custom button handling (default id: @id/exo_next) -->
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-            android:id="@id/exo_next"
+            android:id="@+id/exo_next2"
             style="@style/ExoMediaButton2.Next"/>
 
     </LinearLayout>
