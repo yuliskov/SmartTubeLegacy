@@ -3,6 +3,7 @@
     <declare-styleable name="BootstrapLargeButton">
         <attr name="mainIcon" format="reference"/>
         <attr name="titleText" format="string"/>
+        <attr name="tipText" format="string"/>
         <attr name="isSelected" format="boolean"/>
     </declare-styleable>
 </resources>

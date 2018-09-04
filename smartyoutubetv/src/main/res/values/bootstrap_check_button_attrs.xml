@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="BootstrapCheckButton">
         <attr name="titleText"/>
+        <attr name="tipText"/>
         <attr name="onCheckedChanged" format="string"/>
     </declare-styleable>
 </resources>

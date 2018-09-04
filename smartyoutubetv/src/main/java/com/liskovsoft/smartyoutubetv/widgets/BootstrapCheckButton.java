@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BootstrapCheckButton extends LinearLayout {
+public class BootstrapCheckButton extends BootstrapButtonBase {
     private String mTitleText;
     private LinearLayout mWrapper;
     private LinearLayout mContent;
@@ -75,6 +76,13 @@ public class BootstrapCheckButton extends LinearLayout {
         setDefaultState();
     }
 
+    private void inflate() {
+        inflate(getContext(), R.layout.bootstrap_check_button, this);
+        mWrapper = findViewById(R.id.bootstrap_checkbox_wrapper);
+        mContent = findViewById(R.id.bootstrap_checkbox_content);
+        mChkbox = findViewById(R.id.bootstrap_checkbox);
+    }
+
     private void calculateTextSize() {
         mNormalTextSize = Utils.convertPixelsToDp(mChkbox.getTextSize(), this.getContext());
         mZoomedTextSize = mNormalTextSize * 1.3f;
@@ -112,26 +120,21 @@ public class BootstrapCheckButton extends LinearLayout {
         });
     }
 
-    private void makeUnfocused() {
-        mChkbox.setTextColor(Color.DKGRAY);
-        mChkbox.setTextSize(mNormalTextSize);
-        int semitransparentBlack = Color.argb(70, 0, 0, 0);
-        mContent.setBackgroundColor(semitransparentBlack);
-        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
-    }
-
-    private void makeFocused() {
+    protected void makeFocused() {
+        super.makeFocused();
         mChkbox.setTextColor(Color.BLACK);
         mChkbox.setTextSize(mZoomedTextSize);
         mContent.setBackgroundColor(Color.WHITE);
         mWrapper.setPadding(0, 0, 0, 0);
     }
 
-    private void inflate() {
-        inflate(getContext(), R.layout.bootstrap_check_button, this);
-        mWrapper = (LinearLayout) findViewById(R.id.bootstrap_checkbox_wrapper);
-        mContent = (LinearLayout) findViewById(R.id.bootstrap_checkbox_content);
-        mChkbox = (CheckBox) findViewById(R.id.bootstrap_checkbox);
+    protected void makeUnfocused() {
+        super.makeUnfocused();
+        mChkbox.setTextColor(Color.DKGRAY);
+        mChkbox.setTextSize(mNormalTextSize);
+        int semitransparentBlack = Color.argb(70, 0, 0, 0);
+        mContent.setBackgroundColor(semitransparentBlack);
+        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
     }
 
     private void transferClicks() {

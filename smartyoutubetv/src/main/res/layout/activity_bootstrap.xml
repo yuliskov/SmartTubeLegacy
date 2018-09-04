@@ -31,6 +31,7 @@
                 android:id="@+id/btn_select_lang"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
                 app:titleText="@string/save_selection"
+                app:tipText="@string/save_selection"
                 app:onCheckedChanged="onCheckedChanged"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,5 +78,5 @@
                 android:id="@+id/btn_send_crash_report"/>
         </LinearLayout>
     </LinearLayout>
-    <TextView android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
+    <TextView android:id="@+id/tip_text" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
 </RelativeLayout>

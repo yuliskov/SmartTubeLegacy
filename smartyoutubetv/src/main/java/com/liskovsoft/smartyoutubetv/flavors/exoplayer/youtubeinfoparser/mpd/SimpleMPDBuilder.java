@@ -41,11 +41,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private class SimpleComparator implements Comparator<MediaItem> {
         @Override
         public int compare(MediaItem leftItem, MediaItem rightItem) {
-            if (leftItem.getGlobalSegmentList() != null) {
-                return -1;
-            }
-
-            if (rightItem.getGlobalSegmentList() != null) {
+            if (leftItem.getGlobalSegmentList() != null ||
+                rightItem.getGlobalSegmentList() != null) {
                 return 1;
             }
 
