@@ -29,8 +29,8 @@
     <string name="endcards_tip">Подсказки перед окончанием видео (только 1080)</string>
     <string name="language_tip">Язык приложения</string>
     <string name="update_check_tip">Сообщать о выходе новых версий</string>
-    <string name="webview_tip">До 1080р, подходит для большинства устройств</string>
-    <string name="xwalk_tip">До 1080р, может быть стабильнее на конкр. девайсе</string>
-    <string name="exo_tip">До 4К, подходит для большинства устройств</string>
-    <string name="exo_alt_tip">До 4К, может быть стабильнее на конкр. девайсе</string>
+    <string name="webview_tip">До 1080р, остановитесь на нем, если все работает</string>
+    <string name="xwalk_tip">До 1080р, выберите его в случае проблем</string>
+    <string name="exo_tip">До 4К, остановитесь на нем, если все работает</string>
+    <string name="exo_alt_tip">До 4К, выберите его в случае проблем</string>
 </resources>

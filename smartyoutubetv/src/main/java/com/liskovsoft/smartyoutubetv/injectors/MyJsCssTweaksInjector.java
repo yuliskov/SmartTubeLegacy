@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
@@ -11,6 +12,7 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 
 public class MyJsCssTweaksInjector extends ResourceInjectorBase {
+    private static final String TAG = MyJsCssTweaksInjector.class.getSimpleName();
     private final Context mContext;
     private final WebAddonsManager mManager;
 
@@ -26,6 +28,8 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     }
 
     public void inject() {
+        Log.d(TAG, "Injecting js/css tweaks...");
+
         injectCSSAssetOnce("common/common.css");
         injectJSAssetOnce("common/common.js");
         injectJSAssetOnce("common/quality-controls.js");

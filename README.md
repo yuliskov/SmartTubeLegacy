@@ -72,5 +72,6 @@ If you want to support my developments you are welcome to buy me a cup of coffee
 ### Screens:
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_02.jpg "Screenshot of SmartYouTubeTV")
+![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_03.jpg "Screenshot of SmartYouTubeTV")
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV")
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")

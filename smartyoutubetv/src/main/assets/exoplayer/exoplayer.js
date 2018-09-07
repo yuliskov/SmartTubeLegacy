@@ -4,6 +4,7 @@
 
 // java constants
 var PlayerActivity = {
+    VIDEO_DATE: "video_date",
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
     BUTTON_SUBSCRIBE: "button_subscribe",
@@ -189,6 +190,14 @@ function ExoUtils() {
                 continue;
             states[newName] = isChecked;
         }
+
+        states[PlayerActivity.VIDEO_DATE] = document.querySelector('.uploaded-date').innerHTML;
+
+        // don't let app to close video player (see ActionsReceiver.java)
+        if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {
+            states[PlayerActivity.BUTTON_NEXT] = null;
+        }
+        window.lastButtonName = null;
 
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
 
@@ -412,20 +421,21 @@ function TrackEndFakeButton(selector) {
 
     this.playerJumpToEnd = function() {
         console.log("TrackEndFakeButton: I'm about to start off!");
+        window.lastButtonName = PlayerActivity.TRACK_ENDED;
+
         var player = exoutils.$(this.videoSelector);
         if (player) {
             console.log("TrackEndFakeButton: before jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
-            player.currentTime = player.duration - 1; // seek to the end
-            player.play();
-            console.log("TrackEndFakeButton: after jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
 
-            // var notJumped = (player.duration - player.currentTime) > 1;
-            // if (notJumped) {
-            //     console.log("TrackEndFakeButton: hmm... not jumped... repeat again!");
-            //     setTimeout(function() {
-            //         player.currentTime = 100000; // any big time
-            //     }, 3000);
-            // }
+            if (isNaN(player.duration)) {
+                // something wrong, do workaround: play next track
+                var btn = YouButton.fromSelector(GoogleConstants.BUTTON_NEXT);
+                btn.setChecked(true);
+            } else {
+                player.currentTime = player.duration - 1; // seek to the end
+                player.play();
+                console.log("TrackEndFakeButton: after jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
+            }
         }
     };
 
@@ -434,7 +444,6 @@ function TrackEndFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        console.log("FakeButton: clicking on the fake item");
         if (doChecked)
             this.playerJumpToEnd();
     };

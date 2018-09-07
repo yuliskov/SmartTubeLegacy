@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
@@ -41,22 +42,31 @@ public class PlayerButtonsManager {
 
     private void initWebButtons() {
         Intent intent = mPlayerActivity.getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            return;
+        }
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
-            //boolean isButtonDisabled = !intent.getExtras().containsKey(entry.getValue());
-            //if (isButtonDisabled) {
-            //    Integer btnId = entry.getKey();
-            //    ToggleButtonBase btn = (ToggleButtonBase) mPlayerActivity.findViewById(btnId);
-            //    // NOTE: if no such state then mark button as disabled
-            //    btn.disable();
-            //    continue;
-            //}
+            // NOTE: fix phantom subscribe/unsubscribe
+            boolean isButtonDisabled = !extras.containsKey(entry.getValue());
+            // next/prev button often get disable (probably bug). fix it somehow...
+            boolean notPrevButton = !entry.getValue().equals(PlayerActivity.BUTTON_PREV);
+            boolean notNextButton = !entry.getValue().equals(PlayerActivity.BUTTON_NEXT);
+            if (isButtonDisabled && notPrevButton && notNextButton) {
+                Integer btnId = entry.getKey();
+                ToggleButtonBase btn = mPlayerActivity.findViewById(btnId);
+                // NOTE: if no such state then mark button as disabled
+                btn.disable();
+                continue;
+            }
+
             boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
             Integer btnId = entry.getKey();
             if (excludeButton(btnId)) {
                 continue;
             }
 
-            ToggleButtonBase btn = (ToggleButtonBase) mPlayerActivity.findViewById(btnId);
+            ToggleButtonBase btn = mPlayerActivity.findViewById(btnId);
             btn.setChecked(isChecked);
         }
     }

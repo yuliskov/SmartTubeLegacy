@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.webkit.WebResourceResponse;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
@@ -31,7 +32,8 @@ import java.io.InputStream;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
-    private static final Logger sLogger = LoggerFactory.getLogger(ExoInterceptor.class);
+    private static final String TAG = ExoInterceptor.class.getSimpleName();
+    private static final Logger sLogger = LoggerFactory.getLogger(TAG);
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionsSender mActionSender;
     private InputStream mResponseStream30Fps;
@@ -86,11 +88,16 @@ public class ExoInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        if (System.currentTimeMillis() - mExitTime < 1_000) {
-            return null;
-        }
+        Log.d(TAG, "Video intercepted");
 
+        //if (System.currentTimeMillis() - mExitTime < 1_000) {
+        //    Log.d(TAG, "System.currentTimeMillis() - mExitTime < 1_000");
+        //    return null;
+        //}
+
+        // throttle calls
         if (System.currentTimeMillis() - mLastCall < 1_000) {
+            Log.d(TAG, "System.currentTimeMillis() - mLastCall < 1_000");
             return null;
         }
 
@@ -121,10 +128,12 @@ public class ExoInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer() {
         //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple, mResponseStream60Fps, mResponseStream30Fps);
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
+        Log.d(TAG, "Video manifest received");
         dataParser.parse(new OnMediaFoundCallback() {
             private GenericInfo mInfo;
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
+                Log.d(TAG, "Video manifest parsed");
                 Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
                 Intent exoIntent = createExoIntent(sample, mInfo);
                 openExoPlayer(exoIntent);
@@ -159,7 +168,8 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void openExoPlayer(final Intent playerIntent) {
-        sLogger.info("About to start ExoPlayer activity for Regular item");
+        String msg = "About to start ExoPlayer activity for Regular item";
+        Log.d(TAG, msg);
         final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
 
         Runnable onDone = new Runnable() {
@@ -177,7 +187,7 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void fetchButtonStates(Intent intent, Runnable onDone) {
-        Runnable processor = new ActionsReceiver(mContext, intent, onDone);
+        final Runnable processor = new ActionsReceiver(mContext, intent, onDone);
         processor.run();
     }
 
