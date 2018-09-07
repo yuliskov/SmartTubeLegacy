@@ -65,9 +65,8 @@ The **Remember** tick box acts as a configuration saving for next app launches.
 
 ### Donation:
 If you want to support my developments you are welcome to buy me a cup of coffee :)
+ * [__PrivatBank (Ukraine)__](https://privatbank.ua/ru/sendmoney?payment=5fcdddf53e3d491d63fcb050e6e2e05f2f2678c2)
  * BTC: 1JAT5VVWarVBkpVbNDn8UA8HXNdrukuBSx
- * WMZ: Z375157140784
- * WMU: U449339012933
 
 ### Screens:
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
