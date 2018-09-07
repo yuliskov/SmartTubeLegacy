@@ -42,10 +42,10 @@ __How to change system language with only the MiTV3__
 ### Starting screen:
 
 The device/resolution options at start launches different playing methods (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
-* 720 - original / core player
-* 1080 - XWalk
-* 4K - Exoplayer
-* 4K Alt - Exoplayer with fixes
+* 1080 Main - WebView
+* 1080 Alt  - XWalk
+* 4K Main   - Exoplayer + WebView
+* 4K Alt    - Exoplayer + XWalk
 
 Also important, it's possible to select max resolution and codec (ie 1080/AVC1) via the start screen that will be applied on video loading (**Codec** option).
 
