@@ -11,6 +11,7 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
@@ -88,12 +89,15 @@ public class ExoInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        Log.d(TAG, "Video intercepted");
+        Log.d(TAG, "Video intercepted: " + url);
 
-        //if (System.currentTimeMillis() - mExitTime < 1_000) {
-        //    Log.d(TAG, "System.currentTimeMillis() - mExitTime < 1_000");
-        //    return null;
-        //}
+        // XWalk fix: same video intercepted twice (Why??)
+        boolean isXWalk = mContext instanceof SmartYouTubeTVExoXWalk;
+        boolean isSmallDelay = System.currentTimeMillis() - mExitTime < 1_000;
+        if (isXWalk && isSmallDelay) {
+            Log.d(TAG, "System.currentTimeMillis() - mExitTime < 1_000");
+            return null;
+        }
 
         // throttle calls
         if (System.currentTimeMillis() - mLastCall < 1_000) {
