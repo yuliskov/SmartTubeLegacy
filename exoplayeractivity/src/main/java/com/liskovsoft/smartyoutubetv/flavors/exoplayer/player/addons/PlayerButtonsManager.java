@@ -47,12 +47,10 @@ public class PlayerButtonsManager {
             return;
         }
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
-            // NOTE: fix phantom subscribe/unsubscribe
             boolean isButtonDisabled = !extras.containsKey(entry.getValue());
-            // next/prev button often get disable (probably bug). fix it somehow...
-            boolean notPrevButton = !entry.getValue().equals(PlayerActivity.BUTTON_PREV);
-            boolean notNextButton = !entry.getValue().equals(PlayerActivity.BUTTON_NEXT);
-            if (isButtonDisabled && notPrevButton && notNextButton) {
+            // NOTE: fix phantom subscribe/unsubscribe
+            boolean isSubscribeButton = entry.getValue().equals(PlayerActivity.BUTTON_SUBSCRIBE);
+            if (isButtonDisabled && isSubscribeButton) {
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = mPlayerActivity.findViewById(btnId);
                 // NOTE: if no such state then mark button as disabled

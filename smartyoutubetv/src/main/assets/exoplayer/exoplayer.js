@@ -139,7 +139,7 @@ function ExoUtils() {
     // playing
     this.muteVideo = function() {
         var callbackSet = 'data-callbackSet';
-        var player = document.getElementsByTagName('video')[0];
+        var player = document.querySelector('video');
         if (!player)
             return;
 
@@ -150,10 +150,11 @@ function ExoUtils() {
             // player.style['-webkit-filter'] = 'brightness(0)';
             // msg 4 future me
             // 'paused' video won't invoke history update
-            player.muted = true;
+            // player.muted = true;
+            // player.volume = 0;
             // don't call pause!!! or video remains paused event after play
             player.play();
-            player.muted = true;
+            player.volume = 0;
         }
 
         onStart();
@@ -197,7 +198,6 @@ function ExoUtils() {
         if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {
             states[PlayerActivity.BUTTON_NEXT] = null;
         }
-        window.lastButtonName = null;
 
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
 
@@ -207,6 +207,8 @@ function ExoUtils() {
     this.syncButtons = function(states) {
         this.muteVideo();
         new SuggestionsWatcher(null); // init watcher
+
+        window.lastButtonName = null;
 
         YouButton.resetCache(); // activity just started
         console.log("ExoUtils.syncButtons: " + JSON.stringify(states));

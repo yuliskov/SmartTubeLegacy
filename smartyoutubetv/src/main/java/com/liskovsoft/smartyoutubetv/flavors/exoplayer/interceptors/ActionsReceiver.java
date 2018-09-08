@@ -60,9 +60,9 @@ public class ActionsReceiver implements Runnable {
     private void syncWithIntent(Map<String, Object> states) {
         for (Map.Entry<String, Object> entry : states.entrySet()) {
             Object val = entry.getValue();
-            if (val instanceof Boolean)
+            if (val instanceof Boolean || val == null)
                 mIntent.putExtra(entry.getKey(), (Boolean) val);
-            if (val instanceof String)
+            if (val instanceof String  || val == null)
                 mIntent.putExtra(entry.getKey(), (String) val);
         }
     }
