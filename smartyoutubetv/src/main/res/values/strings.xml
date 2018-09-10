@@ -1,7 +1,7 @@
 <resources>
     <string name="service_url">https://youtube.com/tv</string>
     <string name="update_url">https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc</string>
-    <string name="app_name">Smart YouTube TV</string>
+    <string name="app_name" translatable="false">Smart YouTube TV</string>
     <string name="next_clicked">Next button clicked!</string>
     <string name="prev_clicked">Prev button clicked!</string>
     <string name="button_webview">Origin</string>

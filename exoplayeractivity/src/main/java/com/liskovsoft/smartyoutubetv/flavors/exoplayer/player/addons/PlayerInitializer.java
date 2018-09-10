@@ -21,10 +21,15 @@ public class PlayerInitializer {
     private final SimpleExoPlayerView mExoPlayerView;
     private TextView videoTitle;
     private TextView videoTitle2;
+    private static final int SEEK_INCREMENT_10MIN_MS = 5000;
+    private static final int SEEK_INCREMENT_60MIN_MS = 10000;
+    private static final int SEEK_INCREMENT_120MIN_MS = 15000;
+    private static final int SEEK_INCREMENT_180MIN_MS = 20000;
+    private static final int SEEK_INCREMENT_MORE_180MIN_MS = 30000;
 
     public PlayerInitializer(PlayerActivity player) {
         mPlayer = player;
-        mExoPlayerView = (SimpleExoPlayerView) mPlayer.findViewById(R.id.player_view);
+        mExoPlayerView = mPlayer.findViewById(R.id.player_view);
         
         makeActivityFullscreen();
         makeActivityHorizontal();
@@ -114,16 +119,19 @@ public class PlayerInitializer {
         final long durationMS = player.getDuration();
 
         if (durationMS < 10*60*1000) { // 0 - 10 min
-            incrementMS = 5000;
+            incrementMS = SEEK_INCREMENT_10MIN_MS;
         } else if (durationMS < 60*60*1000) { // 10 - 60 min
-            incrementMS = 10000;
-        } else { // 60 - ... min
-            incrementMS = 30000;
+            incrementMS = SEEK_INCREMENT_60MIN_MS;
+        } else if (durationMS < 120*60*1000) { // 60 - 120 min
+            incrementMS = SEEK_INCREMENT_120MIN_MS;
+        } else if (durationMS < 180*60*1000) { // 120 - 180 min
+            incrementMS = SEEK_INCREMENT_180MIN_MS;
+        } else { // 180 - ... min
+            incrementMS = SEEK_INCREMENT_MORE_180MIN_MS;
         }
 
-
         // time bar: rewind and fast forward to 15 secs
-        final TimeBar timeBar = (TimeBar) mExoPlayerView.findViewById(R.id.exo_progress);
+        final TimeBar timeBar = mExoPlayerView.findViewById(R.id.exo_progress);
         timeBar.setKeyTimeIncrement(incrementMS);
 
         // Playback control view.
