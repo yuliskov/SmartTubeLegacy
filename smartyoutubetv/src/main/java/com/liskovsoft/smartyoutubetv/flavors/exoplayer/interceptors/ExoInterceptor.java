@@ -92,15 +92,15 @@ public class ExoInterceptor extends RequestInterceptor {
         Log.d(TAG, "Video intercepted: " + url);
 
         // XWalk fix: same video intercepted twice (Why??)
-        boolean isXWalk = mContext instanceof SmartYouTubeTVExoXWalk;
-        boolean isSmallDelay = System.currentTimeMillis() - mExitTime < 1_000;
-        if (isXWalk && isSmallDelay) {
+        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < 1_000;
+        if (videoClosedRecently) {
             Log.d(TAG, "System.currentTimeMillis() - mExitTime < 1_000");
             return null;
         }
 
         // throttle calls
-        if (System.currentTimeMillis() - mLastCall < 1_000) {
+        boolean highCallRate = System.currentTimeMillis() - mLastCall < 1_000;
+        if (highCallRate) {
             Log.d(TAG, "System.currentTimeMillis() - mLastCall < 1_000");
             return null;
         }
