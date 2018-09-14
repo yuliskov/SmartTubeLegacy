@@ -9,6 +9,7 @@ public class KeysTranslator {
 
     /**
      * Ignore non-paired key up events
+     *
      * @param event event
      * @return is ignored
      */
@@ -41,6 +42,11 @@ public class KeysTranslator {
         event = translateNumpadEnterToEnter(event);
         event = translateButtonAToEnter(event);
         return event;
+    }
+
+    private KeyEvent createNewEvent(KeyEvent event, int keyCode) {
+        return new KeyEvent(event.getDownTime(), event.getEventTime(), event.getAction(), keyCode, event.getRepeatCount(), event.getMetaState(),
+                event.getDeviceId(), event.getScanCode(), event.getFlags(), event.getSource());
     }
 
     private KeyEvent translateButtonAToEnter(KeyEvent event) {

@@ -1,6 +1,5 @@
-package com.liskovsoft.smartyoutubetv.misc.webaddonsmanager;
+package com.liskovsoft.smartyoutubetv.webaddonsmanager;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface WebAddon {

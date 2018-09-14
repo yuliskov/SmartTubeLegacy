@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv;
+package com.liskovsoft.smartyoutubetv.core;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -18,6 +18,7 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserActivity;
 import com.liskovsoft.browser.addons.SimpleUIController;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;

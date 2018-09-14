@@ -13,7 +13,7 @@
     <string name="exo_desc">4K Main</string>
     <string name="exo_desc2">4K Alt</string>
     <string name="bootstrap_bottom_title">Launchers are differed by the stability of work on a concrete device</string>
-    <string name="loading_bottom_msg">Press Back button to return to the launchers dialog</string>
+    <string name="loading_bottom_msg">Press Back button to return to the main screen</string>
     <string name="app_name_720">1080 Main</string>
     <string name="app_name_1080">1080 Alt</string>
     <string name="app_name_4k">4K Main</string>
@@ -48,4 +48,5 @@
     <string name="xwalk_tip">Up to 1080p and more stable work</string>
     <string name="exo_tip">Up to 4K on most of the devices</string>
     <string name="exo_alt_tip">Up to 4K and more stable work</string>
+    <string name="exit_msg">Press double back to exit from the app</string>
 </resources>

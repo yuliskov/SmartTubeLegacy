@@ -5,8 +5,9 @@ import android.util.Log;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.smartyoutubetv.misc.webaddonsmanager.WebAddonsManager;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SupportedVideoFormatsEvent;
+import com.liskovsoft.smartyoutubetv.webaddonsmanager.MyWebAddonsManager;
+import com.liskovsoft.smartyoutubetv.webaddonsmanager.WebAddonsManager;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
         super(context, webView);
         Browser.getBus().register(this);
         mContext = context;
-        mManager = new WebAddonsManager(context);
+        mManager = new MyWebAddonsManager(context);
     }
 
     public void inject() {

@@ -15,6 +15,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +56,30 @@ public class Helpers {
             e.printStackTrace();
         }
         return is;
+    }
+
+    public static List<String> listAssetFiles(Context ctx, String path) {
+        String [] list;
+        List<String> result = new ArrayList<>();
+        try {
+            list = ctx.getAssets().list(path);
+            if (list.length > 0) {
+                // This is a folder
+                for (String file : list) {
+                    List<String> nestedList = listAssetFiles(ctx, path + "/" + file); // folder???
+                    if (!nestedList.isEmpty()) // folder???
+                        result.addAll(nestedList);
+                    else {
+                        // This is a file
+                        result.add(path + "/" + file);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
+
+        return result;
     }
 
     public static String encodeURI(byte[] data) {

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
@@ -148,5 +150,22 @@ public class WebViewJavaScriptInterface {
     public void onGenericStringResultWithId(String result, int id) {
         sLogger.info("Received generic string result from webview.");
         Browser.getBus().post(new GenericStringResultEventWithId(result, id));
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void showExitMsg() {
+        if (mContext instanceof Activity) {
+            Helpers.postOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, R.string.exit_msg, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }
