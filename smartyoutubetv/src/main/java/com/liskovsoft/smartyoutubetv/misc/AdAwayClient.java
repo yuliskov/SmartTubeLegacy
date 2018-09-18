@@ -7,6 +7,15 @@ public class AdAwayClient {
      * Couple of ads have been taken from <a href="https://www.reddit.com/r/dropgoogle/comments/5tnjxl/block_youtube_ads_2017_hosts_file/">this post</a>
      */
     private static final String[] mAdAwayList = {
+            "google.com/ads/user-lists", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/pagead/viewthroughconversion", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/api/stats/delayplay", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/csi_204", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/ptracking", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/api/stats/playback", // ???? (blocked in Chrome's uBlock)
+            "youtube-nocookie.com/device_204", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/api/stats/qoe", // ???? (blocked in Chrome's uBlock)
+            "youtube.com/get_midroll_info", // middle playback ads
             "youtube.com/get_video_info*AdSense-Viral", // note: wildcard usage
             "youtube.com/api/stats/ads",
             "doubleclick.net",
@@ -15,8 +24,9 @@ public class AdAwayClient {
             "googleadservices.com",
             "googlesyndication.com",
             "video-stats.video.google.com",
-            "adservice.google", // match multiple domains like ca, it, com etc
-            "adservices.google", // match multiple domains like ca, it, com etc
+            // match multiple domains like adservice.google.ca
+            "adservice.google", 
+            "adservices.google",
             "imasdk.googleapis.com",
             "s2.youtube.com",
             "s.youtube.com",
@@ -25,9 +35,7 @@ public class AdAwayClient {
             "pagead-googlehosted.l.google.com",
             "pagead.l.google.com",
             "partnerad.l.google.com",
-            "exoclick.com", // experimental
-            // "syndication.exoclick.com",
-            // "ads.exoclick.com",
+            "exoclick.com",
             "youtube.112.2o7.net",
             "www.adwords.google.lloymlincs.com",
             "ads.adadapted.com",
@@ -42,8 +50,7 @@ public class AdAwayClient {
             "files.adform.net",
             "fwmrm.net",
             "secure-ds.serving-sys.com",
-            "contentabc.com", // experimental
-            // "cdn11.contentabc.com",
+            "contentabc.com",
             "innovid.com"
     };
 
