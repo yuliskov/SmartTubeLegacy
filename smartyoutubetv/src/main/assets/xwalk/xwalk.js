@@ -2,6 +2,7 @@
 
 function getXWalkOverride() {
     return {
+        'UNI (m201_th12)': 'mp4', // gmail
         '(vbox86p)': 'mp4', // Genymotion virtual device
         'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9
         'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
