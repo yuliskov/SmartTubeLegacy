@@ -17,17 +17,13 @@ function hideShowPlayerBackground() {
         return;
     }
 
-    var container = helpers.$('#leanback-player-container');
+    var container = helpers.$('.html5-video-container'); // parent element of the 'video' tag
     var loaderHtml = '<div class="loader-container"></div>';
     var loader = helpers.appendHtml(container, loaderHtml);
 
     function startPlayer(event) {
         var howStarted = event == null ? "normally" : "from event";
-        // not helpful, at this point player already visible
-        // hide (!) player in *.css files instead
         player.play();
-        // if (player.paused)
-        //     window.location.reload();
         console.log("webview_720.js: startPlayer() " + howStarted);
     }
 
