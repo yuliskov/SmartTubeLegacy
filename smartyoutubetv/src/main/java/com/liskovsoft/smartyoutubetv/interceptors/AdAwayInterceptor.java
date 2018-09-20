@@ -2,8 +2,6 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity;
-import com.liskovsoft.smartyoutubetv.flavors.webview.interceptors.OpenExternalPlayerInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
 
 public class AdAwayInterceptor extends RequestInterceptor {

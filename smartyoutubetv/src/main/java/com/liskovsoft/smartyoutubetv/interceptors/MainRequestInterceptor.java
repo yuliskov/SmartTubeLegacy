@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoInfoInterceptor;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mContext = context;
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
-        mInterceptors.add(new OpenExternalPlayerInterceptorWithState(context));
+        mInterceptors.add(new OpenExternalPlayerInterceptor(context));
     }
 
     @Override

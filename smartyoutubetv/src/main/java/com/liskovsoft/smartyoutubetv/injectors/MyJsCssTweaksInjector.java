@@ -6,8 +6,8 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SupportedVideoFormatsEvent;
-import com.liskovsoft.smartyoutubetv.webaddonsmanager.MyWebAddonsManager;
-import com.liskovsoft.smartyoutubetv.webaddonsmanager.WebAddonsManager;
+import com.liskovsoft.smartyoutubetv.webaddonsmanager.RootAddon;
+import com.liskovsoft.smartyoutubetv.webaddonsmanager.WebAddon;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     private static final String TAG = MyJsCssTweaksInjector.class.getSimpleName();
     private final Context mContext;
-    private final WebAddonsManager mManager;
+    private final WebAddon mRootAddon;
 
     public MyJsCssTweaksInjector(Context context) {
         this(context, null);
@@ -25,7 +25,7 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
         super(context, webView);
         Browser.getBus().register(this);
         mContext = context;
-        mManager = new MyWebAddonsManager(context);
+        mRootAddon = new RootAddon(context);
     }
 
     public void inject() {
@@ -51,8 +51,8 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     }
 
     private void injectAddons() {
-        List<String> cssAddons = mManager.getCSSAddons();
-        List<String> jsAddons = mManager.getJSAddons();
+        List<String> cssAddons = mRootAddon.getCSSList();
+        List<String> jsAddons = mRootAddon.getJSList();
         for (String addon : cssAddons) {
             injectCSSAssetOnce(addon);
         }

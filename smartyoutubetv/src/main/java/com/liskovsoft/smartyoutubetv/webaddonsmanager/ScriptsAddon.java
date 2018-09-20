@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Auto import all addons from 'addons' folder
  */
-public class AddAllWebAddonsManager implements WebAddonsManager {
+public class ScriptsAddon implements WebAddon {
     private final Context mContext;
-    private final static String ADDON_FOLDER = "addons";
+    private final static String ADDON_FOLDER = "scripts";
     private final List<String> mList;
     private final List<String> mCssList;
     private final List<String> mJsList;
 
-    public AddAllWebAddonsManager(Context context) {
+    public ScriptsAddon(Context context) {
         mContext = context;
         mList = Helpers.listAssetFiles(mContext, ADDON_FOLDER);
         mCssList = extractCssList();
@@ -44,12 +44,12 @@ public class AddAllWebAddonsManager implements WebAddonsManager {
     }
 
     @Override
-    public List<String> getCSSAddons() {
+    public List<String> getCSSList() {
         return mCssList;
     }
 
     @Override
-    public List<String> getJSAddons() {
+    public List<String> getJSList() {
         return mJsList;
     }
 }

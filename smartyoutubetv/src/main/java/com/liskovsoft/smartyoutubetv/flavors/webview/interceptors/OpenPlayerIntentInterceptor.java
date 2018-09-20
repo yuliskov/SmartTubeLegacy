@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public class OpenExternalPlayerInterceptor extends RequestInterceptor {
+public class OpenPlayerIntentInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final String[] mDevicesToProcess = {
             //"mibox_mini (forrestgump)",
@@ -27,7 +27,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     };
     private Boolean mCachedDeviceMatchResult = null;
 
-    public OpenExternalPlayerInterceptor(Context context) {
+    public OpenPlayerIntentInterceptor(Context context) {
         mContext = context;
     }
 
