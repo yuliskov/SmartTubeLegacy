@@ -33,7 +33,6 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
 
         injectCSSAssetOnce("common/common.css");
         injectJSAssetOnce("common/common.js");
-        injectJSAssetOnce("common/quality-controls.js");
         if (Browser.getEngineType() == EngineType.XWalk) {
             injectJSAssetOnce("xwalk/xwalk.js");
         } else {

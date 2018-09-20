@@ -15,7 +15,6 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
         mInterceptors.add(new OpenExternalPlayerInterceptorWithState(context));
-        mInterceptors.add(new VideoInfoInterceptor(context));
     }
 
     @Override
