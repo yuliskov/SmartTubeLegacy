@@ -69,7 +69,7 @@ function delayTillElementBeInitialized(callback, testFn, runOnce) {
             if (!res)
                 return;
 
-            console.log('delayTillElementBeInitialized2: onkeydown: prepare to fire callback: ' + callback.toString().slice(0, 50));
+            // console.log('delayTillElementBeInitialized2: onkeydown: prepare to fire callback: ' + callback.toString().slice(0, 50));
 
             // cleanup
             if (runOnce) {

@@ -75,7 +75,7 @@ function Utils() {
 
     this.addListener = function(listener, root) {
         if (this.listeners[listener]) {
-        	console.log("This listener already added... do nothing");
+        	console.log("Utils::This listener already added... do nothing");
             return;
         }
 
@@ -136,4 +136,4 @@ function PlayerSeekAddon() {
     };
 }
 
-var addon = new PlayerSeekAddon().run();
+new PlayerSeekAddon().run();

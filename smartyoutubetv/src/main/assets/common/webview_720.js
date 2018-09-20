@@ -3,8 +3,6 @@
 // Also, it tries to fix stalled playback off the first video.
 
 function hideShowPlayerBackground() {
-    console.log("webview_720.js: hideShowPlayerBackground()");
-
     var player = document.getElementsByTagName('video')[0];
     if (!player) {
         console.log("webview_720.js: player not exist... waiting for the player...");
@@ -13,7 +11,6 @@ function hideShowPlayerBackground() {
     }
 
     if (player.callbackSet) {
-        console.log("webview_720.js: callback already set");
         return;
     }
 
