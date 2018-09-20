@@ -13,6 +13,7 @@ public class MyWebAddonsManager implements WebAddonsManager {
     public MyWebAddonsManager(Context ctx) {
         mAddons.add(new NoEndCardsAddon(ctx));
         mAddons.add(new DoubleBackExitAddon());
+        mAddons.add(new PlayerSeekFixAddon());
     }
 
     public List<String> getCSSAddons() {
