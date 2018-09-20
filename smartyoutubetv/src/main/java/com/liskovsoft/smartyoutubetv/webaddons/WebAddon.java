@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webaddonsmanager;
+package com.liskovsoft.smartyoutubetv.webaddons;
 
 import java.util.List;
 

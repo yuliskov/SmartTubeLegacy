@@ -6,8 +6,8 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SupportedVideoFormatsEvent;
-import com.liskovsoft.smartyoutubetv.webaddonsmanager.RootAddon;
-import com.liskovsoft.smartyoutubetv.webaddonsmanager.WebAddon;
+import com.liskovsoft.smartyoutubetv.webaddons.RootAddon;
+import com.liskovsoft.smartyoutubetv.webaddons.WebAddon;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
