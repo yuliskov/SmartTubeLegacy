@@ -11,7 +11,6 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
@@ -37,12 +36,10 @@ public class ExoInterceptor extends RequestInterceptor {
     private static final Logger sLogger = LoggerFactory.getLogger(TAG);
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionsSender mActionSender;
-    private InputStream mResponseStream30Fps;
-    private InputStream mResponseStream60Fps;
     private InputStream mResponseStreamSimple;
-
-    private final String CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private final GenericStringResultReceiver mReceiver;
+    private static final long NO_INTERACTION_TIMEOUT = 1_000;
+    private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
     /**
@@ -51,7 +48,7 @@ public class ExoInterceptor extends RequestInterceptor {
      * see {@link #intercept(String)} method
      */
     private long mExitTime;
-    private long mLastCall;
+    private long mPrevCallTime;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -92,20 +89,21 @@ public class ExoInterceptor extends RequestInterceptor {
         Log.d(TAG, "Video intercepted: " + url);
 
         // XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < 1_000;
+        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT;
         if (videoClosedRecently) {
-            Log.d(TAG, "System.currentTimeMillis() - mExitTime < 1_000");
+            Log.d(TAG, "System.currentTimeMillis() - mExitTime < " + NO_INTERACTION_TIMEOUT);
             return null;
         }
 
         // throttle calls
-        boolean highCallRate = System.currentTimeMillis() - mLastCall < 1_000;
+        boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT;
         if (highCallRate) {
-            Log.d(TAG, "System.currentTimeMillis() - mLastCall < 1_000");
+            Log.d(TAG, "System.currentTimeMillis() - mLastCall < " + NO_INTERACTION_TIMEOUT);
+            mPrevCallTime = System.currentTimeMillis();
             return null;
         }
 
-        mLastCall = System.currentTimeMillis();
+        mPrevCallTime = System.currentTimeMillis();
 
         mCurrentUrl = url;
 
@@ -219,7 +217,7 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     protected String unlockRegularFormats(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-        
+
         query.set("c", "HTML5");
 
         return query.toString();
