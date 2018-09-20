@@ -2,6 +2,17 @@
 Description: Imitate press on OK button after seek
 */
 
+/* BEGIN: Common routines */
+
+var Keys = {
+    UP: 38,
+    DOWN: 40,
+    LEFT: 37,
+    RIGHT: 39,
+    ENTER: 13,
+    ESC: 27,
+};
+
 function Utils() {
 	this.playerContainerSelector = '#watch'; // div that receives keys events for player (note: some events don't reach upper levels)
 	this.appContainerSelector = '#leanback'; // div that receives keys events for app
@@ -41,8 +52,7 @@ function Utils() {
 
     this.triggerEnter = function(selector) {
         // simulate mouse/enter key press
-        var enter = 13;
-        this.triggerEvent(selector, 'keyup', enter);
+        this.triggerEvent(selector, 'keyup', Keys.ENTER);
     };
 
     this.hasClass = function(elem, klass) {
@@ -72,7 +82,6 @@ function Utils() {
         this.listeners[listener] = true;
 
         var container = document.querySelector(root);
-        var $this = this;
         console.log('Utils::addListener:keyup... ');
         container.addEventListener('keyup', function(event) {
             listener.onKeyEvent(event);
@@ -90,8 +99,9 @@ function Utils() {
 
 var utils = new Utils();
 
+/* END: Common routines */
+
 function PlayerSeekAddon() {
-	this.activeWatchClass = "transport-showing";
 	this.progressBarSelector = "#transport-controls";
 	this.timeoutTimeMS = 1000;
 	this.myTimeout = null;
@@ -101,24 +111,17 @@ function PlayerSeekAddon() {
     };
 
     this.onKeyEvent = function(e) {
-	    var up = 38;
-	    var down = 40;
-	    var left = 37;
-	    var right = 39;
-	    var enter = 13;
-	    var esc = 27;
-
     	console.log("PlayerSeekAddon::onKeyEvent:" + e.keyCode);
 
-    	var notLeftOrRight = e.keyCode != left && e.keyCode != right;
+        if (this.myTimeout) {
+            console.log('PlayerSeekAddon::Clear unneeded timeout');
+            clearTimeout(this.myTimeout);
+        }
 
-    	if (notLeftOrRight) {
-    		return;
-    	}
+        var notLeftOrRight = e.keyCode !== Keys.LEFT && e.keyCode !== Keys.RIGHT;
 
-    	if (this.myTimeout) {
-    		console.log('PlayerSeekAddon::Clear unneeded timeout');
-    		clearTimeout(this.myTimeout);
+        if (notLeftOrRight) {
+            return;
     	}
 
     	var $this = this;
