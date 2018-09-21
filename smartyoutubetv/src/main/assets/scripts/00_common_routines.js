@@ -14,8 +14,10 @@ var Keys = {
 };
 
 function Utils() {
+    this.playerContainerClass = 'watch';
     this.playerContainerSelector = '#watch'; // div that receives keys events for player (note: some events don't reach upper levels)
     this.appContainerSelector = '#leanback'; // div that receives keys events for app
+    this.checkIntervalMS = 3000;
     this.listeners = {};
 
     function isSelector(el) {
@@ -89,20 +91,21 @@ function Utils() {
         });
     };
 
-    this.addListener2 = function(listener, root) {
-        console.log('Utils::addListener:keyup... ');
-        var type = 'keyup';
-        var listenerWrapper = function(event) {
-            listener.onKeyEvent(event);
-        };
-        var container = document.querySelector(root);
-        if (this.lastListener)
-            container.removeEventListener(type, this.lastListener);
-        container.addEventListener(type, listenerWrapper);
-        this.lastListener = listenerWrapper;
+    this.isPlayerInitialized = function() {
+        var elem = this.$(this.playerContainerSelector);
+        return this.hasClass(elem, this.playerContainerClass);
     };
 
     this.addPlayerListener = function(listener) {
+        if (!this.isPlayerInitialized()) {
+            // player not initialized yet
+            var $this = this;
+            setTimeout(function() {
+                $this.addPlayerListener(listener);
+            }, this.checkIntervalMS);
+            return;
+        }
+
         this.addListener(listener, this.playerContainerSelector);
     };
 
