@@ -87,6 +87,19 @@ function Utils() {
         });
     };
 
+    this.addListener2 = function(listener, root) {
+        console.log('Utils::addListener:keyup... ');
+        var type = 'keyup';
+        var listenerWrapper = function(event) {
+            listener.onKeyEvent(event);
+        };
+        var container = document.querySelector(root);
+        if (this.lastListener)
+            container.removeEventListener(type, this.lastListener);
+        container.addEventListener(type, listenerWrapper);
+        this.lastListener = listenerWrapper;
+    };
+
     this.addPlayerListener = function(listener) {
         this.addListener(listener, this.playerContainerSelector);
     };
