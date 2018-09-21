@@ -313,7 +313,7 @@ function doObserveOverlappedTextInRussian(paramButton) {
 }
 
 function fixOverlappedTextInRussian() {
-    console.log("fixOverlappedTextInRussian");
+    // console.log("fixOverlappedTextInRussian");
 	var paramButton = document.getElementById("transport-more-button").children[0];
     if (replaceOverlappedTextInRussian(paramButton))
     	doObserveOverlappedTextInRussian(paramButton);

@@ -2,6 +2,7 @@
 
 function getXWalkOverride() {
     return {
+        'AOSP on p383 (p383)': 'mp4', // diqus
         'UNI (m201_th12)': 'mp4', // gmail
         '(vbox86p)': 'mp4', // Genymotion virtual device
         'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9

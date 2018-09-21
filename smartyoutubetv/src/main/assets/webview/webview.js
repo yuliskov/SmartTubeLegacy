@@ -1,5 +1,6 @@
 function getWebViewOverride() {
     return {
+        'AOSP on p383 (p383)': 'mp4', // diqus
         'UNI (m201_th12)': 'mp4', // gmail
         // 'IPTV-1000': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/119
         'MiBOX3S (queenchristina)': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/124

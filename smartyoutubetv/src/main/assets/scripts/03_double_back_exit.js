@@ -1,61 +1,6 @@
-function Utils() {
-	function isSelector(el) {
-        return typeof el === 'string' || el instanceof String;
-    }
-
-	this.triggerEvent = function(element, type, keyCode) {
-        var el = element;
-        if (isSelector(element)) {
-            el = this.$(element);
-        }
-
-        console.log("ExoUtils.triggerEvent: " + element + " " + type + " " + keyCode);
-
-        if (!el) {
-            console.warn("ExoUtils.triggerEvent: unable to find " + element);
-            return;
-        }
-
-        if ('createEvent' in document) {
-            // modern browsers, IE9+
-            var e = document.createEvent('HTMLEvents');
-            e.keyCode = keyCode;
-            e.initEvent(type, false, true);
-            el.dispatchEvent(e);
-        } else {
-            // IE 8
-            var e = document.createEventObject();
-            e.keyCode = keyCode;
-            e.eventType = type;
-            el.fireEvent('on'+e.eventType, e);
-        }
-    };
-
-    this.triggerEnter = function(selector) {
-        // simulate mouse/enter key press
-        this.triggerEvent(selector, 'keyup', 13);
-    };
-
-    this.hasClass = function(elem, klass) {
-        if (!elem) {
-            return null;
-        }
-        return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
-    };
-
-    this.$ = function(selector) {
-        if (!isSelector(selector))
-            return selector;
-        return document.querySelectorAll(selector)[0];
-    };
-
-    this.getCurrentTimeMs = function() {
-    	var d = new Date();
-		return d.getTime();
-    };
-}
-
-var utils = new Utils();
+/*
+Description: On the last screen double back exits from the app
+*/
 
 function DoubleBackAddon() {
 	this.keysContainerSelector = '#leanback'; // div that receives keys events
@@ -138,4 +83,4 @@ function DoubleBackAddon() {
     };
 }
 
-var addon = new DoubleBackAddon().run();
+new DoubleBackAddon().run();
