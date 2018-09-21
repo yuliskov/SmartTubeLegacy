@@ -5,67 +5,36 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.webkit.WebView;
-import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.events.CSSFileInjectEvent;
-import com.liskovsoft.smartyoutubetv.events.JSFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.squareup.otto.Subscribe;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ResourceInjectorBase {
+public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Listener {
+    private static final String TAG = ResourceInjectorBase.class.getSimpleName();
     private final Context mContext;
     private final Set<WebView> mWebViews = new HashSet<>();
-    private static final String cssInjectTemplate = "javascript:(function() {" +
+    private static final String genericElementInjectTemplate = "javascript:(function() {" +
             "var parent = document.getElementsByTagName('head').item(0);" +
-            "var element = document.createElement('style');" +
-            "element.type = 'text/css';" +
-            // Tell the browser to BASE64-decode the string into your script !!!
-            "element.innerHTML = decodeURIComponent(window.atob('%s'));" +
-            "parent.appendChild(element)" +
-            "})()";
-    private static final String jsInjectTemplate = "javascript:(function() {" +
-            "var parent = document.getElementsByTagName(\'head\').item(0);" +
-            "var element = document.createElement(\'script\');" +
-            "element.type = \'text/javascript\';" +
+            "var element = document.createElement('%TAG_NAME%');" +
+            "element.type = '%MIME_TYPE%';" +
             // Tell the browser to BASE64-decode the string into your script !!!
             "element.innerHTML = decodeURIComponent(window.atob('%s'));" +
             "parent.appendChild(element)" +
             "})()";
 
-    private static final String testJSFnTemplate = "(function (fileName){if (window[fileName]) return; window[fileName] = true; app.onJSFileInject(fileName)})('%s');";
-    private static final String testCSSFnTemplate = "(function (fileName){if (window[fileName]) return; window[fileName] = true; app.onCSSFileInject(fileName)})('%s');";
+    private static final String testAssetTemplate = "javascript:(function (fileName) {" +
+            "if (window[fileName]) return; " +
+            "window[fileName] = true; " +
+            "app.onAssetFileInject(fileName, %LISTENER_HASH%)" +
+            "})('%s');";
 
-    private final EventHandler mHandler;
-
-    private class EventHandler {
-        private final ResourceInjectorBase mInjector;
-
-        public EventHandler(ResourceInjectorBase injector) {
-            Browser.getBus().register(this);
-            mInjector = injector;
-        }
-
-        @Subscribe
-        public void onJSFileInjectEvent(JSFileInjectEvent event) {
-            final String fileName = event.getFileName();
-            mInjector.injectJSAsset(fileName);
-        }
-
-        @Subscribe
-        public void onCSSFileInjectEvent(CSSFileInjectEvent event) {
-            final String fileName = event.getFileName();
-            Handler handler = new Handler(mContext.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mInjector.injectCSSAsset(fileName);
-                }
-            });
-        }
-    }
+    private String testAssetTemplateCache;
+    private String jsInjectTemplateCache;
+    private String cssInjectTemplateCache;
+    private AssetFileInjectWatcher mHandler;
 
     public ResourceInjectorBase(Context context) {
         this(context, null);
@@ -75,7 +44,9 @@ public abstract class ResourceInjectorBase {
         mContext = context;
         if (webView != null)
             mWebViews.add(webView);
-        mHandler = new EventHandler(this);
+
+        mHandler = AssetFileInjectWatcher.instance();
+        mHandler.addListener(this);
     }
 
     public void add(WebView webView) {
@@ -83,28 +54,71 @@ public abstract class ResourceInjectorBase {
             mWebViews.add(webView);
     }
 
-    /**
-     * Safe mean injected only one time per page.
-     * @param fileName
-     */
-    protected void injectJSAssetOnce(String fileName) {
-        injectContent(jsInjectTemplate, String.format(testJSFnTemplate, fileName).getBytes());
+    @Override
+    public void onAssetFileInjectEvent(String fileName) {
+        if (fileName.endsWith(".js")) {
+            injectJSAsset(fileName);
+        } else if (fileName.endsWith(".css")) {
+            injectCSSAsset(fileName);
+        }
     }
 
     /**
      * Safe mean injected only one time per page.
-     * @param fileName
+     * @param fileName asset name
+     */
+    protected void injectJSAssetOnce(String fileName) {
+        injectContent(obtainJSInjectTemplate(), String.format(obtainTestAssetTemplate(), fileName).getBytes());
+    }
+
+    /**
+     * Safe mean injected only one time per page.
+     * @param fileName asset name
      */
     protected void injectCSSAssetOnce(String fileName) {
-        injectContent(jsInjectTemplate, String.format(testCSSFnTemplate, fileName).getBytes());
+        // yes, injecting js instead of css, because there is a test js function
+        injectContent(obtainJSInjectTemplate(), String.format(obtainTestAssetTemplate(), fileName).getBytes());
     }
 
     protected void injectJSAsset(String fileName) {
-        injectResource(fileName, jsInjectTemplate);
+        String resTemplate = obtainJSInjectTemplate();
+        injectResource(fileName, resTemplate);
     }
 
     protected void injectCSSAsset(String fileName) {
-        injectResource(fileName, cssInjectTemplate);
+        String resTemplate = obtainCSSInjectTemplate();
+        injectResource(fileName, resTemplate);
+    }
+
+    private String obtainTestAssetTemplate() {
+        if (testAssetTemplateCache != null) {
+            return testAssetTemplateCache;
+        }
+
+        testAssetTemplateCache = testAssetTemplate.replace("%LISTENER_HASH%", String.valueOf(hashCode()));
+        return testAssetTemplateCache;
+    }
+
+    private String obtainJSInjectTemplate() {
+        if (jsInjectTemplateCache != null) {
+            return jsInjectTemplateCache;
+        }
+
+        jsInjectTemplateCache = genericElementInjectTemplate
+                .replace("%TAG_NAME%", "script")
+                .replace("%MIME_TYPE%", "text/javascript");
+        return jsInjectTemplateCache;
+    }
+
+    private String obtainCSSInjectTemplate() {
+        if (cssInjectTemplateCache != null) {
+            return cssInjectTemplateCache;
+        }
+
+        cssInjectTemplateCache = genericElementInjectTemplate
+                .replace("%TAG_NAME%", "style")
+                .replace("%MIME_TYPE%", "text/css");
+        return cssInjectTemplateCache;
     }
 
     /**
@@ -112,7 +126,7 @@ public abstract class ResourceInjectorBase {
      * @param content
      */
     protected void injectJSContent(final String content) {
-        loadUrlSafe(String.format(jsInjectTemplate, content));
+        loadUrlSafe(String.format(obtainJSInjectTemplate(), content));
     }
 
     /**
@@ -120,7 +134,7 @@ public abstract class ResourceInjectorBase {
      * @param content
      */
     protected void injectJSContentUnicode(final String content) {
-        injectContent(jsInjectTemplate, content.getBytes());
+        injectContent(obtainJSInjectTemplate(), content.getBytes());
     }
 
     private void injectResource(String fileName, String template) {

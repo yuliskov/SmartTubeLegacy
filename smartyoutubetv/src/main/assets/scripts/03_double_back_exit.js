@@ -2,6 +2,8 @@
 Description: On the last screen double back exits from the app
 */
 
+console.log("Scripts::Running script double_back_exit.js");
+
 function DoubleBackAddon() {
 	this.keysContainerSelector = '#leanback'; // div that receives keys events
 	this.cancelBtnSel = '#dialog-cancel-button';

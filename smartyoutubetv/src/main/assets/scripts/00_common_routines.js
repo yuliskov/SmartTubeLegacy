@@ -2,6 +2,8 @@
 Description: Common routines
 */
 
+console.log("Scripts::Running script common_routines.js");
+
 var Keys = {
     UP: 38,
     DOWN: 40,

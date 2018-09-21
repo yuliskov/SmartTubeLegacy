@@ -2,6 +2,8 @@
 Description: Imitate press on OK button after seek
 */
 
+console.log("Scripts::Running script player_seek_fix.js");
+
 function PlayerSeekAddon() {
 	this.progressBarSelector = "#transport-controls";
 	this.timeoutTimeMS = 1000;
