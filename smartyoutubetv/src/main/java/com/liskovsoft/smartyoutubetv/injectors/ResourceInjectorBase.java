@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+import android.util.Log;
 import android.webkit.WebView;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
@@ -17,19 +18,20 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
     private final Context mContext;
     private final Set<WebView> mWebViews = new HashSet<>();
     private static final String genericElementInjectTemplate = "javascript:(function() {" +
-            "var parent = document.getElementsByTagName('head').item(0);" +
-            "var element = document.createElement('%TAG_NAME%');" +
-            "element.type = '%MIME_TYPE%';" +
+            "console.log(\'genericElementInjectTemplate\');" +
+            "var parent = document.getElementsByTagName(\'head\').item(0);" +
+            "var element = document.createElement(\'%TAG_NAME%\');" +
+            "element.type = \'%MIME_TYPE%\';" +
             // Tell the browser to BASE64-decode the string into your script !!!
-            "element.innerHTML = decodeURIComponent(window.atob('%s'));" +
-            "parent.appendChild(element)" +
-            "})()";
+            "element.innerHTML = decodeURIComponent(window.atob(\'%s\'));" +
+            "parent.appendChild(element);" +
+            "})();";
 
     private static final String testAssetTemplate = "javascript:(function (fileName) {" +
-            "if (window[fileName]) return; " +
-            "window[fileName] = true; " +
-            "app.onAssetFileInject(fileName, %LISTENER_HASH%)" +
-            "})('%s');";
+            "if (window[fileName]) return;" +
+            "window[fileName] = true;" +
+            "app.onAssetFileInject(fileName, \'%LISTENER_HASH%\');" +
+            "})(\'%s\');";
 
     private String testAssetTemplateCache;
     private String jsInjectTemplateCache;
