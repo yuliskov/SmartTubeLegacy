@@ -1,6 +1,8 @@
 /* hide 'end cards' on the video */
 /* hide icons in the bottom-right corner (like search) */
-div#legend > div.search {
+div#legend > div.search,
+div#legend > div.space,
+div#legend > div.delete {
     display: none !important;
 }
 

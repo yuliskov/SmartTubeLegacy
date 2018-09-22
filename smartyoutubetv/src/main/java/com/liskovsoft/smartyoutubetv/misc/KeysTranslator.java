@@ -29,7 +29,8 @@ public class KeysTranslator {
 
     public KeyEvent doTranslateKeys(KeyEvent event) {
         if (mDisable) {
-            event = translateEscapeToBack(event); // exit from loading by pressing escape or back keys
+            // exit from loading by pressing escape or back keys
+            event = translate(event, KeyEvent.KEYCODE_ESCAPE, KeyEvent.KEYCODE_BACK);
             return event;
         }
 
@@ -37,10 +38,11 @@ public class KeysTranslator {
             return EMPTY_EVENT;
         }
 
-        event = translateBackToEscape(event);
-        event = translateMenuToGuide(event);
-        event = translateNumpadEnterToEnter(event);
-        event = translateButtonAToEnter(event);
+        event = translate(event, KeyEvent.KEYCODE_BUTTON_B, KeyEvent.KEYCODE_ESCAPE);
+        event = translate(event, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_ESCAPE);
+        event = translate(event, KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_G); // menu to guide
+        event = translate(event, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_ENTER);
+        event = translate(event, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_ENTER);
         return event;
     }
 
@@ -49,44 +51,12 @@ public class KeysTranslator {
                 event.getDeviceId(), event.getScanCode(), event.getFlags(), event.getSource());
     }
 
-    private KeyEvent translateButtonAToEnter(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_A) {
+    private static KeyEvent translate(KeyEvent origin, int fromKeyCode, int toKeyCode) {
+        if (origin.getKeyCode() == fromKeyCode) {
             // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
+            origin = new KeyEvent(origin.getAction(), toKeyCode);
         }
-        return event;
-    }
-
-    private KeyEvent translateNumpadEnterToEnter(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ENTER);
-        }
-        return event;
-    }
-
-    private KeyEvent translateBackToEscape(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_ESCAPE);
-        }
-        return event;
-    }
-
-    private KeyEvent translateEscapeToBack(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_BACK);
-        }
-        return event;
-    }
-
-    private KeyEvent translateMenuToGuide(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_G);
-        }
-        return event;
+        return origin;
     }
 
     public void disable() {

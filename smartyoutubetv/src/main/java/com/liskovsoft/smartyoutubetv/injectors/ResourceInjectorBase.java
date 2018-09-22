@@ -4,10 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
-import android.util.Log;
 import android.webkit.WebView;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -36,7 +34,7 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
     private String testAssetTemplateCache;
     private String jsInjectTemplateCache;
     private String cssInjectTemplateCache;
-    private AssetFileInjectWatcher mHandler;
+    private AssetFileInjectWatcher mWatcher;
 
     public ResourceInjectorBase(Context context) {
         this(context, null);
@@ -47,8 +45,8 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
         if (webView != null)
             mWebViews.add(webView);
 
-        mHandler = AssetFileInjectWatcher.instance();
-        mHandler.addListener(this);
+        mWatcher = AssetFileInjectWatcher.instance();
+        mWatcher.addListener(this);
     }
 
     public void add(WebView webView) {
