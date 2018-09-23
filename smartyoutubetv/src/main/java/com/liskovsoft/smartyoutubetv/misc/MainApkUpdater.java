@@ -27,13 +27,13 @@ public class MainApkUpdater {
             public void run() {
                 checkForUpdates();
             }
-        }, UPDATE_CHECK_DELAY_MS);
+        }, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
     }
 
     private void checkForUpdates() {
         String updateUrl = mContext.getString(R.string.update_url);
         OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
         AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrl, dialog);
-        updateChecker.forceCheckForUpdates();
+        updateChecker.forceCheckForUpdatesIfStalled(); // minimize server payload
     }
 }

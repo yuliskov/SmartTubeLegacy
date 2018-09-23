@@ -157,6 +157,15 @@ public class AppUpdateChecker {
     }
 
     /**
+     * Like {@link #forceCheckForUpdates} but only if prev update was long enough
+     */
+    public void forceCheckForUpdatesIfStalled() {
+        if (isStale()) {
+            forceCheckForUpdates();
+        }
+    }
+
+    /**
      * Checks for updates regardless of when the last check happened or if checking for updates is enabled.
      */
     public void forceCheckForUpdates() {
