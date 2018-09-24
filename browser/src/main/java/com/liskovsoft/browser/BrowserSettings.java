@@ -14,6 +14,7 @@ import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import com.liskovsoft.browser.search.SearchEngine;
 import com.liskovsoft.browser.search.SearchEngines;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -195,7 +196,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     public int getInitialScale() {
         // real display size (virtual pixel == real pixel)
         // 100 - native resolution, 50 - 2160p resolution, 0 - default
-        return mPrefs.getInt(PREF_INITIAL_SCALE, 100);
+        return Helpers.getScale();
     }
 
     public boolean rememberPasswords() {

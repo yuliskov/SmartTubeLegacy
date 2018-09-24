@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Display;
+import android.view.WindowManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -174,5 +177,21 @@ public class Helpers {
 
     public static boolean isNumeric(String s) {
         return s != null && s.matches("[-+]?\\d*\\.?\\d+");
+    }
+
+    /**
+     * Get scale for use in {@link android.webkit.WebView} instantiation
+     * @param ctx context
+     * @param picWidth constant that I knew beforehand
+     * @return calculated scale
+     */
+    public static int getScale(Context ctx, int picWidth) {
+        Point p = new Point();
+        Display display = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        display.getSize(p);
+        int width = p.x;
+        Double val = (double) width / (double) picWidth;
+        val = val * 100d;
+        return val.intValue();
     }
 }
