@@ -54,6 +54,9 @@ function DoubleBackAddon() {
         this.prevTime = utils.getCurrentTimeMs();
     };
 
+	// if we chosen to display the dialog
+    // then we should know: 'keyup' event is swallowed by dialog
+    // so to fix that we need to attach an listener to the 'cancel' button
     this.addCancelListener = function() {
         if (this.cancelListenerAdded) {
             return;
@@ -68,12 +71,22 @@ function DoubleBackAddon() {
         this.cancelListenerAdded = true;
     };
 
+    // don't show dialog completely
+    // no need to setup any addition listener
+    this.doClickOnCancel = function() {
+        var cancel = document.querySelector(this.cancelBtnSel);
+        if (utils.hasClass(cancel, this.dialogShownClass)) {
+            utils.triggerEnter(this.cancelBtnSel);
+        }
+    };
+
     this.isDialogShown = function() {
         var dialog = document.querySelector(this.dialogSel);
         var isShown = utils.hasClass(dialog, this.dialogShownClass);
         console.log('DoubleBackAddon::isDialogShown... ' + isShown);
         if (isShown) {
-            this.addCancelListener();
+            // this.addCancelListener();
+            this.doClickOnCancel();
             window.app && window.app.showExitMsg();
         }
         return isShown;

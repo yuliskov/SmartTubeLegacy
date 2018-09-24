@@ -321,47 +321,6 @@ function fixOverlappedTextInRussian() {
 
 ////////////////////////////////////////////
 
-function overrideProp(propStr, value) {
-    var arr = propStr.split(".");      // Split the string using dot as separator
-    var lastVal = arr.pop();       // Get last element
-    var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
-
-    Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
-}
-
-function applyFakeResolution() {
-    if (!app)
-        return;
-
-    // android resolution (can differ from physical resolution)
-    var arr = app.getDeviceResolution().split('x');
-    var w = arr[0], h = arr[1];
-
-    // fake resolution (does't have influence on video resolution)
-    // var w = 2560, h = 1440;
-
-    overrideProp("window.innerWidth", w);
-    overrideProp("window.innerHeight", h);
-
-    // NOTE: there is no need to override props below
-
-    // overrideProp("document.documentElement.clientWidth", w);
-    // overrideProp("document.documentElement.clientHeight", h);
-
-    // overrideProp("window.screen.availWidth", w);
-    // overrideProp("window.screen.availHeight", h);
-
-    // overrideProp("window.screen.width", w);
-    // overrideProp("window.screen.height", h);
-}
-
-function fixWrongPixelRatio() {
-    // WONT WORK PROPERLY
-
-    // fix ugly Dimensions value like "950x640*2"
-    window.devicePixelRatio = 1.0;
-}
-
 function commonLogs() {
     console.log("window.devicePixelRatio = " + window.devicePixelRatio);
     console.log("window.innerWidth = " + window.innerWidth);
@@ -395,8 +354,6 @@ function enableExternalKeyboard() {
 
 function init() {
     delayUntilPlayerBeInitialized(fixOverlappedTextInRussian);
-    // applyFakeResolution();
-    // fixWrongPixelRatio();
     commonLogs();
     enableExternalKeyboard();
     console.log('injecting common.js into ' + document.location.href);

@@ -5,11 +5,11 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RootAddon implements WebAddon {
+public class AddonManager implements WebAddon {
     private final List<WebAddon> mAddons = new ArrayList<>();
     private final ScriptsAddon mScripts;
 
-    public RootAddon(Context ctx) {
+    public AddonManager(Context ctx) {
         mAddons.add(new NoEndCardsAddon(ctx));
         mScripts = new ScriptsAddon(ctx);
     }

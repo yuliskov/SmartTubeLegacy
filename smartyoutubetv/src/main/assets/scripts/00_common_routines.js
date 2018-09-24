@@ -112,6 +112,14 @@ function Utils() {
     this.addAppListener = function(listener) {
         this.addListener(listener, this.appContainerSelector);
     };
+
+    this.overrideProp = function(propStr, value) {
+        var arr = propStr.split(".");      // Split the string using dot as separator
+        var lastVal = arr.pop();       // Get last element
+        var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
+
+        Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
+    };
 }
 
 var utils = new Utils();
