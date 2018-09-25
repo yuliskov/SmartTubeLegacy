@@ -33,7 +33,7 @@ function init() {
     // common.js must already connected
     addExitEvent();
     // some devices have buggy codec support, so disable them
-    applyCodecFixes(getWebViewOverride());
+    // applyCodecFixes(getWebViewOverride());
     console.log('injecting webview.js into ' + document.location.href);
 }
 

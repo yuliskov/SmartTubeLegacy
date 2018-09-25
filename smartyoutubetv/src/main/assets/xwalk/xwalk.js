@@ -29,7 +29,7 @@ function getXWalkOverride() {
 
 function init() {
     // some devices have buggy codec support, so disable them
-    applyCodecFixes(getXWalkOverride());
+    // applyCodecFixes(getXWalkOverride());
 
     console.log('injecting xwalk.js into ' + document.location.href);
 }

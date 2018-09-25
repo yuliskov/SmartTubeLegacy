@@ -44,14 +44,14 @@ function DoubleBackAddon() {
     // detect double press and exit
 	this.detectDoublePress = function() {
 		// double back within two seconds
-		var keyPressedTwoTimeInARow = (utils.getCurrentTimeMs() - this.prevTime) <= this.timeBetweenPress;
-        var dialogNearlyShown = (utils.getCurrentTimeMs() - this.prevShownTime) <= this.timeDialogIsSpotted;
+		var keyPressedTwoTimeInARow = (Utils.getCurrentTimeMs() - this.prevTime) <= this.timeBetweenPress;
+        var dialogNearlyShown = (Utils.getCurrentTimeMs() - this.prevShownTime) <= this.timeDialogIsSpotted;
         if (keyPressedTwoTimeInARow && dialogNearlyShown) {
 			this.doExit();
 		}
 
-        this.prevShownTime = this.isDialogShown() ? utils.getCurrentTimeMs() : this.prevShownTime;
-        this.prevTime = utils.getCurrentTimeMs();
+        this.prevShownTime = this.isDialogShown() ? Utils.getCurrentTimeMs() : this.prevShownTime;
+        this.prevTime = Utils.getCurrentTimeMs();
     };
 
 	// if we chosen to display the dialog
@@ -75,14 +75,14 @@ function DoubleBackAddon() {
     // no need to setup any addition listener
     this.doClickOnCancel = function() {
         var cancel = document.querySelector(this.cancelBtnSel);
-        if (utils.hasClass(cancel, this.dialogShownClass)) {
-            utils.triggerEnter(this.cancelBtnSel);
+        if (Utils.hasClass(cancel, this.dialogShownClass)) {
+            Utils.triggerEnter(this.cancelBtnSel);
         }
     };
 
     this.isDialogShown = function() {
         var dialog = document.querySelector(this.dialogSel);
-        var isShown = utils.hasClass(dialog, this.dialogShownClass);
+        var isShown = Utils.hasClass(dialog, this.dialogShownClass);
         console.log('DoubleBackAddon::isDialogShown... ' + isShown);
         if (isShown) {
             // this.addCancelListener();

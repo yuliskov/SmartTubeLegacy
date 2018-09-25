@@ -10,7 +10,7 @@ function PlayerSeekAddon() {
 	this.myTimeout = null;
 
     this.run = function() {
-    	utils.addPlayerListener(this);
+    	Utils.addPlayerListener(this);
     };
 
     this.onKeyEvent = function(e) {
@@ -35,7 +35,7 @@ function PlayerSeekAddon() {
 
     this.doPressOnOKButton = function() {
     	console.log('PlayerSeekAddon::Imitate press on OK button');
-    	utils.triggerEnter(this.progressBarSelector);
+    	Utils.triggerEnter(this.progressBarSelector);
     };
 }
 

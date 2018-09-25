@@ -143,7 +143,7 @@ function addExitEvent() {
     window.eventAdded = true;
 }
 
-////////////////////////////////////////////////
+//// CODEC FIX
 
 function applyCodecFixes(deviceMap) {
     for (var device in deviceMap) {
@@ -202,7 +202,7 @@ function strCmp(str1, str2) {
     return str1.indexOf(str2) >= 0;
 }
 
-/////////////////////////////////////////////////
+//// END CODEC FIX
 
 var observeDOM = (function(){
     var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
