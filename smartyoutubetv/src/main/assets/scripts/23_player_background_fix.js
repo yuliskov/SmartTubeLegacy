@@ -28,7 +28,7 @@ function PlayerBackgroundFixAddon() {
             return;
         }
 
-        var container = Utils.$('.html5-video-container'); // parent element of the 'video' tag
+        var container = Utils.$(Utils.playerWrapperSelector);
         var loaderHtml = '<div class="loader-container"></div>';
         var loader = Utils.appendHtml(container, loaderHtml);
 

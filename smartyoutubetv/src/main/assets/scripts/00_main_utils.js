@@ -30,6 +30,7 @@ var KeyEvents = {
 var Utils = {
     searchSelector: '#search-input',
     playerContainerSelector: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
+    playerWrapperSelector: '.html5-video-container', // parent element of the 'video' tag
     playerMoreButtonSelector: '#transport-more-button',
     playerPlayButtonSelector: '.icon-player-play',
     appContainerSelector: '#leanback', // div that receives keys events for app
