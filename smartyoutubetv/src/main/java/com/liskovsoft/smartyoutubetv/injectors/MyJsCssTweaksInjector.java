@@ -33,19 +33,19 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
 
         injectCSSAssetOnce("common/common.css");
         injectJSAssetOnce("common/common.js");
-        if (Browser.getEngineType() == EngineType.XWalk) {
-            injectJSAssetOnce("xwalk/xwalk.js");
-        } else {
-            injectJSAssetOnce("webview/webview.js");
-        }
+        //if (Browser.getEngineType() == EngineType.XWalk) {
+        //    injectJSAssetOnce("xwalk/xwalk.js");
+        //} else {
+        //    injectJSAssetOnce("webview/webview.js");
+        //}
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            injectJSAssetOnce("exoplayer/exoplayer.js");
-            injectCSSAssetOnce("exoplayer/exoplayer.css");
+            injectJSAssetOnce("common/exoplayer.js");
+            injectCSSAssetOnce("common/exoplayer.css");
         }
-        if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity) {
-            injectCSSAssetOnce("common/loading-placeholder.css");
-            injectJSAssetOnce("common/webview_720.js");
-        }
+        //if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity) {
+        //    injectCSSAssetOnce("common/loading-placeholder.css");
+        //    injectJSAssetOnce("common/webview_720.js");
+        //}
 
         injectAddons();
     }

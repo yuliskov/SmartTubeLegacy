@@ -7,8 +7,8 @@ console.log("Scripts::Running script device_utils.js");
 var DeviceUtils = {
     WEBM: 'webm',
     MP4: 'mp4',
-    WEBVIEW: '????',
-    XWALK: '?????',
+    WEBVIEW: 'WebView',
+    XWALK: 'XWalk',
 
     init: function() {
         // do init here
@@ -68,6 +68,18 @@ var DeviceUtils = {
 
     getDeviceName: function() {
         return this.getApp().getDeviceName();
+    },
+    
+    isWebView: function() {
+        var type = this.getEngineType();
+
+        return type == this.WEBVIEW;
+    },
+    
+    isXWalk: function() {
+        var type = this.getEngineType();
+
+        return type == this.XWALK;
     }
 };
 

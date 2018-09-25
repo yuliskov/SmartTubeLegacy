@@ -13,10 +13,26 @@ var Keys = {
     ESC: 27,
 };
 
+var KeyCodes = {
+    UP: 38,
+    DOWN: 40,
+    LEFT: 37,
+    RIGHT: 39,
+    ENTER: 13,
+    ESC: 27,
+};
+
+var KeyEvents = {
+    KEYUP: 'keyup',
+    KEYDOWN: 'keydown'
+};
+
 var Utils = {
-    playerContainerClass: 'watch',
+    searchSelector: '#search-input',
     playerContainerSelector: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
+    playerMoreButtonSelector: '#transport-more-button',
     appContainerSelector: '#leanback', // div that receives keys events for app
+    playerContainerClass: 'watch',
     checkIntervalMS: 3000,
     listeners: {},
 
@@ -72,6 +88,17 @@ var Utils = {
         if (!this.isSelector(selector))
             return selector;
         return document.querySelectorAll(selector)[0];
+    },
+
+    appendHtml: function(el, str) {
+        var div = document.createElement('div');
+        div.innerHTML = str;
+
+        var child;
+        while (div.children.length > 0) {
+            child = el.appendChild(div.children[0]);
+        }
+        return child;
     },
 
     getCurrentTimeMs: function() {
@@ -142,7 +169,28 @@ var Utils = {
             }
             return value;
         }, configurable: true, enumerable: true });
-    }
+    },
+
+    observeDOM: (function(){
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+            eventListenerSupported = window.addEventListener;
+
+        return function(obj, callback){
+            if( MutationObserver ){
+                // define a new observer
+                var obs = new MutationObserver(function(mutations, observer){
+                    if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
+                        callback(obj);
+                });
+                // have the observer observe foo for changes in children
+                obs.observe( obj, { childList:true, subtree:true });
+            }
+            else if( eventListenerSupported ){
+                obj.addEventListener('DOMNodeInserted', callback, false);
+                obj.addEventListener('DOMNodeRemoved', callback, false);
+            }
+        }
+    })(),
 };
 
 Utils.init();

@@ -1,6 +1,6 @@
-/*
-Description: Imitate press on OK button after seek
-*/
+/**
+ * Description: Imitate press on OK button after seek
+ */
 
 console.log("Scripts::Running script codec_fix.js");
 
@@ -14,25 +14,23 @@ function CodecFixAddon() {
      * Obtains device map for WebView or XWalk respectively
      */
     this.findProperConfig = function() {
-        var type = DeviceUtils.getEngineType();
-
-        if (type == DeviceUtils.WEBVIEW) {
+        if (DeviceUtils.isWebView()) {
             return WebViewConfig;
         }
 
-        if (type == DeviceUtils.XWALK) {
+        if (DeviceUtils.isXWalk()) {
             return XWalkConfig;
         }
 
-        console.log("CodecFixAddon::unknown engine type " + type);
+        console.log("CodecFixAddon::unknown engine type " + DeviceUtils.getEngineType());
         return {};
     };
 
-    /*
-    Consumes hash map, that consists of {'device name': 'disabled codec list'}
-    Device name could be obtained from the CPU-Z for example.
-    For details see: WebViewJavaScriptInterface.java
-    */
+    /**
+     * Consumes hash map, that consists of {'device name': 'disabled codec list'}
+     * Device name could be obtained from the CPU-Z for example.
+     * For details see: WebViewJavaScriptInterface.java
+     */
     this.applyCodecFixes = function(deviceMap) {
         for (var device in deviceMap) {
             if (this.isThisDevice(device)) {
