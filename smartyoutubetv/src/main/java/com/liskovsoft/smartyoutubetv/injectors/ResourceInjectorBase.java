@@ -16,7 +16,7 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
     private final Context mContext;
     private final Set<WebView> mWebViews = new HashSet<>();
     private static final String genericElementInjectTemplate = "javascript:(function() {" +
-            "console.log(\'genericElementInjectTemplate\');" +
+            "console.log(\'ResourceInjectorBase.java::genericElementInjectTemplate\');" +
             "var parent = document.getElementsByTagName(\'head\').item(0);" +
             "var element = document.createElement(\'%TAG_NAME%\');" +
             "element.type = \'%MIME_TYPE%\';" +

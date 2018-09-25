@@ -24,7 +24,7 @@ function EnableExternalKeyboardAddon() {
             Utils.triggerEvent(searchInput, KeyEvents.KEYUP, KeyCodes.UP);
         };
 
-        delayTillElementBeInitialized(callback, testFn);
+        Utils.delayTillElementBeInitialized(callback, testFn);
     };
 }
 

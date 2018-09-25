@@ -8,8 +8,12 @@ console.log("Scripts::Running script player_background_fix.js");
 
 function PlayerBackgroundFixAddon() {
     this.run = function() {
-        if (DeviceUtils.isWebView())
-            this.hideShowPlayerBackground();
+        if (DeviceUtils.isWebView()) {
+            var $this = this;
+            this.delayUntilPlayerBeInitialized(function() {
+                $this.hideShowPlayerBackground();
+            })
+        }
     };
 
     this.hideShowPlayerBackground = function() {
@@ -63,6 +67,13 @@ function PlayerBackgroundFixAddon() {
         player.addEventListener('abort', hidePlayer, false); // video closed
         window.addEventListener('hashchange', hideShowPlayer, false);
         player.callbackSet = true;
+    };
+
+    this.delayUntilPlayerBeInitialized = function(fn) {
+        var testFn = function() {
+            return Utils.$(Utils.playerPlayButtonSelector);
+        };
+        Utils.delayTillElementBeInitialized(fn, testFn);
     };
 }
 

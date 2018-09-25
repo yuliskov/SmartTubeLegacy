@@ -26,9 +26,10 @@ var DeviceUtils = {
 
         console.log('DeviceUtils::disableCodec: ' + codec + ' on ' + window.thisDevice + ' device');
 
+        var $this = this;
         window.MediaSource.isTypeSupported = function(native) {
             return function(str) {
-                if (this.specCmp(str, codec))
+                if ($this.specCmp(str, codec))
                     return false;
                 return native.call(window.MediaSource, str);
             }
@@ -72,13 +73,11 @@ var DeviceUtils = {
     
     isWebView: function() {
         var type = this.getEngineType();
-
         return type == this.WEBVIEW;
     },
     
     isXWalk: function() {
         var type = this.getEngineType();
-
         return type == this.XWALK;
     }
 };

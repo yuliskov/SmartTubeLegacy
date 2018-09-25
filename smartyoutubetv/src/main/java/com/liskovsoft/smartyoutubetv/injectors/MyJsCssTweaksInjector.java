@@ -31,8 +31,8 @@ public class MyJsCssTweaksInjector extends ResourceInjectorBase {
     public void inject() {
         Log.d(TAG, "Injecting js/css tweaks...");
 
-        injectCSSAssetOnce("common/common.css");
-        injectJSAssetOnce("common/common.js");
+        // injectCSSAssetOnce("common/common.css");
+        // injectJSAssetOnce("common/common.js");
         //if (Browser.getEngineType() == EngineType.XWalk) {
         //    injectJSAssetOnce("xwalk/xwalk.js");
         //} else {

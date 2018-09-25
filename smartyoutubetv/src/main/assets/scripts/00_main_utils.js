@@ -31,6 +31,7 @@ var Utils = {
     searchSelector: '#search-input',
     playerContainerSelector: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
     playerMoreButtonSelector: '#transport-more-button',
+    playerPlayButtonSelector: '.icon-player-play',
     appContainerSelector: '#leanback', // div that receives keys events for app
     playerContainerClass: 'watch',
     checkIntervalMS: 3000,
@@ -191,6 +192,70 @@ var Utils = {
             }
         }
     })(),
+
+    // detection is based on key events
+    // combined detection: first by interval then by key in sake of performance
+    delayTillElementBeInitialized: function(callback, testFn, runOnce) {
+        var delayIntervalMS = 500;
+        var res = testFn();
+        if (res) {
+            callback();
+            if (runOnce)
+                return;
+        }
+
+        var delayFnKey = function(event) {
+            clearInterval(interval); // remove concurrent event
+            
+            var keyCode = event.keyCode;
+
+            if (keyCode != KeyCodes.UP &&
+                keyCode != KeyCodes.DOWN &&
+                keyCode != KeyCodes.LEFT &&
+                keyCode != KeyCodes.RIGHT &&
+                keyCode != KeyCodes.ESC &&
+                keyCode != KeyCodes.ENTER) {
+                return;
+            }
+
+            setTimeout(function() { // wait till some elms be initialized like exit btn, etc
+                var res = testFn();
+                if (!res)
+                    return;
+
+                // cleanup
+                if (runOnce) {
+                    console.log('Utils::delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
+                    document.removeEventListener(KeyEvents.KEYDOWN, delayFnKey, true);
+                }
+                // actual call
+                callback();
+            }, delayIntervalMS);
+        };
+
+        var delayFnInt = function() {
+            setTimeout(function() { // wait till some elms be initialized like exit btn, etc
+                var res = testFn();
+                if (!res)
+                    return;
+
+                console.log('Utils::delayTillElementBeInitialized: interval: prepare to fire callback: ' + callback.toString().slice(0, 50));
+
+                // cleanup
+                if (runOnce) {
+                    console.log('Utils::delayTillElementBeInitialized: interval: removing callback: ' + callback.toString().slice(0, 50));
+                    clearInterval(interval);
+                }
+
+                // actual call
+                callback();
+            }, delayIntervalMS);
+        };
+
+        // concurrent triggers (only one left in the end)
+        document.addEventListener(KeyEvents.KEYDOWN, delayFnKey, true); // useCapture: true
+        var interval = setInterval(delayFnInt, delayIntervalMS);
+    },
 };
 
 Utils.init();

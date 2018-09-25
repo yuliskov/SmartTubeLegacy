@@ -166,4 +166,14 @@ public class WebViewJavaScriptInterface {
             });
         }
     }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public String getEngineType() {
+        return Browser.getEngineType().name();
+    }
 }

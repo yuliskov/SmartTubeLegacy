@@ -38,7 +38,7 @@ function CodecFixAddon() {
                 var codecs = deviceMap[device].split(',');
                 var codecsLen = codecs.length;
                 for (var i = 0; i < codecsLen; i++) {
-                    this.disableCodec(codecs[i].trim());
+                    DeviceUtils.disableCodec(codecs[i].trim());
                 }
                 break;
             }

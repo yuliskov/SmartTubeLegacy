@@ -1,22 +1,27 @@
 /**
  * Description:
- * Enable Soft Keyboard support.
- * In order to keyboard to appear you must go to the search page and them move selection to the input area.
+ * Update russian localization on some player's buttons.
  */
 
-console.log("Scripts::Running script enable_external_keyboard.js");
+console.log("Scripts::Running script russian_text_fix.js");
 
-function EnableExternalKeyboardAddon() {
+function RussianTextFixAddon() {
     this.stringToFind = "Дополнительные параметры";
     this.stringToFind2 = "Другие параметры";
     this.stringToReplace = "Параметры";
 
     this.run = function() {
-        this.fixOverlappedTextInRussian();
+        var $this = this;
+        Utils.delayTillElementBeInitialized(function() {
+           $this.fixOverlappedTextInRussian();
+        }, function() {
+            return Utils.$(Utils.playerMoreButtonSelector);
+        });
     };
 
     this.fixOverlappedTextInRussian = function() {
-        var paramButton = Utils.$(Utils.playerMoreButtonSelector).children[0];
+        var moreButton = Utils.$(Utils.playerMoreButtonSelector);
+        var paramButton = moreButton.children[0];
         if (this.replaceOverlappedTextInRussian(paramButton))
             this.doObserveOverlappedTextInRussian(paramButton);
     };
@@ -32,10 +37,10 @@ function EnableExternalKeyboardAddon() {
     this.doObserveOverlappedTextInRussian = function(paramButton) {
         var $this = this;
         Utils.observeDOM(paramButton, function(el) {
-            console.log('dom changed, ' + el);
+            console.log('RussianTextFixAddon::dom changed, ' + el);
             $this.replaceOverlappedTextInRussian(el);
         });
     };
 }
 
-new EnableExternalKeyboardAddon().run();
+new RussianTextFixAddon().run();
