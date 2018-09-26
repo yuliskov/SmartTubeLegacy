@@ -38,7 +38,9 @@ public class ExoInterceptor extends RequestInterceptor {
     private final ActionsSender mActionSender;
     private InputStream mResponseStreamSimple;
     private static final long NO_INTERACTION_TIMEOUT = 1_000;
+    private static final long PHANTOM_EVENTS_TIMEOUT = 5 * 60 * 1000;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private static final String VIDEO_ID_PARAM = "video_id";
     private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
@@ -49,6 +51,7 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     private long mExitTime;
     private long mPrevCallTime;
+    private String mPrevVideoId;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -92,6 +95,7 @@ public class ExoInterceptor extends RequestInterceptor {
         boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT;
         if (videoClosedRecently) {
             Log.d(TAG, "System.currentTimeMillis() - mExitTime < " + NO_INTERACTION_TIMEOUT);
+            mPrevCallTime = System.currentTimeMillis();
             return null;
         }
 
@@ -103,8 +107,18 @@ public class ExoInterceptor extends RequestInterceptor {
             return null;
         }
 
-        mPrevCallTime = System.currentTimeMillis();
+        // the same video could opened multiple times
+        String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
+        boolean sameVideo = videoId.equals(mPrevVideoId);
+        boolean withinFiveMinutes = System.currentTimeMillis() - mPrevCallTime < PHANTOM_EVENTS_TIMEOUT;
+        if (sameVideo && withinFiveMinutes) {
+            Log.d(TAG, "System.currentTimeMillis() - mPrevCallTime < " + PHANTOM_EVENTS_TIMEOUT);
+            mPrevCallTime = System.currentTimeMillis();
+            return null;
+        }
 
+        mPrevVideoId = videoId;
+        mPrevCallTime = System.currentTimeMillis();
         mCurrentUrl = url;
 
         prepareResponseStream(url);
