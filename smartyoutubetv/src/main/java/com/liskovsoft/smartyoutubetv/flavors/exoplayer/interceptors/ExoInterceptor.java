@@ -38,7 +38,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final ActionsSender mActionSender;
     private InputStream mResponseStreamSimple;
     private static final long NO_INTERACTION_TIMEOUT = 1_000;
-    private static final long PHANTOM_EVENTS_TIMEOUT = 5 * 60 * 1000;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String VIDEO_ID_PARAM = "video_id";
     private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
@@ -110,9 +109,8 @@ public class ExoInterceptor extends RequestInterceptor {
         // the same video could opened multiple times
         String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
         boolean sameVideo = videoId.equals(mPrevVideoId);
-        boolean withinFiveMinutes = System.currentTimeMillis() - mPrevCallTime < PHANTOM_EVENTS_TIMEOUT;
-        if (sameVideo && withinFiveMinutes) {
-            Log.d(TAG, "System.currentTimeMillis() - mPrevCallTime < " + PHANTOM_EVENTS_TIMEOUT);
+        if (sameVideo) {
+            Log.d(TAG, "The same video encountered");
             mPrevCallTime = System.currentTimeMillis();
             return null;
         }
@@ -133,16 +131,11 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        //Response response30Fps = OkHttpHelpers.doOkHttpRequest(unlockRegularFormats(url));
-        //Response response60Fps = OkHttpHelpers.doOkHttpRequest(unlock60FpsFormats(url));
         Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
-        //mResponseStream30Fps = response30Fps == null ? null : response30Fps.body().byteStream();
-        //mResponseStream60Fps = response60Fps == null ? null : response60Fps.body().byteStream();
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
     private void parseAndOpenExoPlayer() {
-        //final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple, mResponseStream60Fps, mResponseStream30Fps);
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
         Log.d(TAG, "Video manifest received");
         dataParser.parse(new OnMediaFoundCallback() {
@@ -212,6 +205,7 @@ public class ExoInterceptor extends RequestInterceptor {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 mExitTime = System.currentTimeMillis();
+                mPrevVideoId = null;
                 mActionSender.bindActions(data);
             }
         });
