@@ -29,6 +29,7 @@ public class PlayerStateManager {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final int SUBTITLE_RENDERER_INDEX = 2;
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
+    private static final int LEGACY_DEVICES_MAX_WIDTH = 1950;
     private final PlayerActivity mPlayerActivity;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -52,7 +53,7 @@ public class PlayerStateManager {
      */
     public void restoreState(TrackGroupArray[] rendererTrackGroupArrays) {
         restoreTrackIndex(rendererTrackGroupArrays);
-        //restoreTrackPosition();
+        // don't restore track position here: instead do it lately from the Player.onPlayerStateChanged event
         restoreSubtitleTrack(rendererTrackGroupArrays);
     }
 
@@ -160,7 +161,11 @@ public class PlayerStateManager {
                         result.add(myFormat);
                     }
 
-                    backedList.add(myFormat);
+
+                    // by default (first run or user never opened track dialog)
+                    // select no more than 1080p format for legacy devices support
+                    if (myFormat.width <= LEGACY_DEVICES_MAX_WIDTH)
+                        backedList.add(myFormat);
                 }
             }
         }
@@ -336,6 +341,8 @@ public class PlayerStateManager {
         public final int bitrate;
         public final float frameRate;
         public final String codecs;
+        public final int height;
+        public final int width;
         public final Pair<Integer, Integer> pair;
 
         public MyFormat(Format format, Pair<Integer, Integer> pair) {
@@ -343,6 +350,8 @@ public class PlayerStateManager {
             bitrate = format.bitrate;
             frameRate = format.frameRate;
             codecs = format.codecs;
+            width = format.width;
+            height = format.height;
             this.pair = pair;
         }
     }

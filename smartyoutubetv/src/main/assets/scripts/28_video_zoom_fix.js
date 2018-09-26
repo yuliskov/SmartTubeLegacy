@@ -17,6 +17,8 @@ function VideoZoomFixAddon() {
 
     this.fixZoomedVideo = function() {
         var myVideo = Utils.$('video');
+        if (!myVideo)
+            return;
         var isHeightBig = parseInt(myVideo.style.height) > window.innerHeight;
         var isWidthBig = parseInt(myVideo.style.width) > window.innerWidth;
         if (isHeightBig || isWidthBig) {
