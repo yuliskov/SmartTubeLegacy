@@ -10,7 +10,7 @@ function PlayerSeekAddon() {
 	this.myTimeout = null;
 
     this.run = function() {
-    	Utils.addPlayerListener(this);
+    	EventUtils.addPlayerKeyPressListener(this);
     };
 
     this.onKeyEvent = function(e) {
@@ -21,7 +21,7 @@ function PlayerSeekAddon() {
             clearTimeout(this.myTimeout);
         }
 
-        var notLeftOrRight = e.keyCode !== Keys.LEFT && e.keyCode !== Keys.RIGHT;
+        var notLeftOrRight = e.keyCode !== KeyCodes.LEFT && e.keyCode !== KeyCodes.RIGHT;
 
         if (notLeftOrRight) {
             return;
@@ -35,7 +35,7 @@ function PlayerSeekAddon() {
 
     this.doPressOnOKButton = function() {
     	console.log('PlayerSeekAddon::Imitate press on OK button');
-    	Utils.triggerEnter(this.progressBarSelector);
+    	EventUtils.triggerEnter(this.progressBarSelector);
     };
 }
 

@@ -16,15 +16,15 @@ function EnableExternalKeyboardAddon() {
      */
     this.enableExternalKeyboard = function() {
         var testFn = function() {
-            return Utils.$(Utils.searchSelector);
+            return Utils.$(YouTubeConstants.SEARCH_FIELD_SELECTOR);
         };
 
         var callback = function() {
-            var searchInput = Utils.$(Utils.searchSelector);
-            Utils.triggerEvent(searchInput, KeyEvents.KEYUP, KeyCodes.UP);
+            var searchInput = Utils.$(YouTubeConstants.SEARCH_FIELD_SELECTOR);
+            EventUtils.triggerEvent(searchInput, EventTypes.KEY_UP, KeyCodes.UP);
         };
 
-        Utils.delayTillElementBeInitialized(callback, testFn);
+        Utils.delayTillTestFnSuccess(callback, testFn);
     };
 }
 

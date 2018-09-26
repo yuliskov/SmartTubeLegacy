@@ -12,15 +12,15 @@ function RussianTextFixAddon() {
 
     this.run = function() {
         var $this = this;
-        Utils.delayTillElementBeInitialized(function() {
+        Utils.delayTillTestFnSuccess(function() {
            $this.fixOverlappedTextInRussian();
         }, function() {
-            return Utils.$(Utils.playerMoreButtonSelector);
+            return Utils.$(YouTubeConstants.PLAYER_MORE_BUTTON_SELECTOR);
         });
     };
 
     this.fixOverlappedTextInRussian = function() {
-        var moreButton = Utils.$(Utils.playerMoreButtonSelector);
+        var moreButton = Utils.$(YouTubeConstants.PLAYER_MORE_BUTTON_SELECTOR);
         var paramButton = moreButton.children[0];
         if (this.replaceOverlappedTextInRussian(paramButton))
             this.doObserveOverlappedTextInRussian(paramButton);

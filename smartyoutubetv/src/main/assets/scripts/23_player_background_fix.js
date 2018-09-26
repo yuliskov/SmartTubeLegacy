@@ -28,7 +28,7 @@ function PlayerBackgroundFixAddon() {
             return;
         }
 
-        var container = Utils.$(Utils.playerWrapperSelector);
+        var container = Utils.$(YouTubeConstants.PLAYER_WRAPPER_SELECTOR);
         var loaderHtml = '<div class="loader-container"></div>';
         var loader = Utils.appendHtml(container, loaderHtml);
 
@@ -71,9 +71,9 @@ function PlayerBackgroundFixAddon() {
 
     this.delayUntilPlayerBeInitialized = function(fn) {
         var testFn = function() {
-            return Utils.$(Utils.playerPlayButtonSelector);
+            return Utils.$(YouTubeConstants.PLAYER_PLAY_BUTTON_SELECTOR);
         };
-        Utils.delayTillElementBeInitialized(fn, testFn);
+        Utils.delayTillTestFnSuccess(fn, testFn);
     };
 }
 

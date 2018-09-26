@@ -76,7 +76,7 @@ function DoubleBackAddon() {
     this.doClickOnCancel = function() {
         var cancel = document.querySelector(this.cancelBtnSel);
         if (Utils.hasClass(cancel, this.dialogShownClass)) {
-            Utils.triggerEnter(this.cancelBtnSel);
+            EventUtils.triggerEnter(this.cancelBtnSel);
         }
     };
 

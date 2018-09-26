@@ -4,37 +4,33 @@ Description: Common routines
 
 console.log("Scripts::Running script main_utils.js");
 
-var Keys = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
-    ENTER: 13,
-    ESC: 27,
-};
-
 var KeyCodes = {
     UP: 38,
     DOWN: 40,
     LEFT: 37,
     RIGHT: 39,
     ENTER: 13,
-    ESC: 27,
+    ESC: 27
 };
 
-var KeyEvents = {
-    KEYUP: 'keyup',
-    KEYDOWN: 'keydown'
+var EventTypes = {
+    KEY_UP: 'keyup',
+    KEY_DOWN: 'keydown',
+    HASH_CHANGE: 'hashchange'
+};
+
+var YouTubeConstants = {
+    APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
+    SEARCH_FIELD_SELECTOR: '#search-input',
+    PLAYER_CONTAINER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
+    PLAYER_CONTAINER_CLASS_NAME: 'watch',
+    PLAYER_WRAPPER_SELECTOR: '.html5-video-container', // parent element of the 'video' tag
+    PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
+    PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',
+    PLAYER_URL_KEY: 'watch'
 };
 
 var Utils = {
-    searchSelector: '#search-input',
-    playerContainerSelector: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
-    playerWrapperSelector: '.html5-video-container', // parent element of the 'video' tag
-    playerMoreButtonSelector: '#transport-more-button',
-    playerPlayButtonSelector: '.icon-player-play',
-    appContainerSelector: '#leanback', // div that receives keys events for app
-    playerContainerClass: 'watch',
     checkIntervalMS: 3000,
     listeners: {},
 
@@ -44,39 +40,6 @@ var Utils = {
 
     isSelector: function(el) {
         return typeof el === 'string' || el instanceof String;
-    },
-
-    triggerEvent: function(element, type, keyCode) {
-        var el = element;
-        if (this.isSelector(element)) {
-            el = this.$(element);
-        }
-
-        console.log("ExoUtils.triggerEvent: " + element + " " + type + " " + keyCode);
-
-        if (!el) {
-            console.warn("ExoUtils.triggerEvent: unable to find " + element);
-            return;
-        }
-
-        if ('createEvent' in document) {
-            // modern browsers, IE9+
-            var e = document.createEvent('HTMLEvents');
-            e.keyCode = keyCode;
-            e.initEvent(type, false, true);
-            el.dispatchEvent(e);
-        } else {
-            // IE 8
-            var e = document.createEventObject();
-            e.keyCode = keyCode;
-            e.eventType = type;
-            el.fireEvent('on'+e.eventType, e);
-        }
-    },
-
-    triggerEnter: function(selector) {
-        // simulate mouse/enter key press
-        this.triggerEvent(selector, 'keyup', Keys.ENTER);
     },
 
     hasClass: function(elem, klass) {
@@ -106,44 +69,6 @@ var Utils = {
     getCurrentTimeMs: function() {
         var d = new Date();
         return d.getTime();
-    },
-
-    addListener: function(listener, root) {
-        if (this.listeners[listener]) {
-            console.log("Utils::This listener already added... do nothing");
-            return;
-        }
-
-        this.listeners[listener] = true;
-
-        var container = document.querySelector(root);
-        console.log('Utils::addListener:keyup... ');
-        var type = 'keyup';
-        container.addEventListener(type, function(event) {
-            listener.onKeyEvent(event);
-        });
-    },
-
-    isPlayerInitialized: function() {
-        var elem = this.$(this.playerContainerSelector);
-        return this.hasClass(elem, this.playerContainerClass);
-    },
-
-    addPlayerListener: function(listener) {
-        if (!this.isPlayerInitialized()) {
-            // player not initialized yet
-            var $this = this;
-            setTimeout(function() {
-                $this.addPlayerListener(listener);
-            }, this.checkIntervalMS);
-            return;
-        }
-
-        this.addListener(listener, this.playerContainerSelector);
-    },
-
-    addAppListener: function(listener) {
-        this.addListener(listener, this.appContainerSelector);
     },
 
     overrideProp: function(propStr, value) {
@@ -196,7 +121,7 @@ var Utils = {
 
     // detection is based on key events
     // combined detection: first by interval then by key in sake of performance
-    delayTillElementBeInitialized: function(callback, testFn, runOnce) {
+    delayTillTestFnSuccess: function(callback, testFn, runOnce) {
         var delayIntervalMS = 500;
         var res = testFn();
         if (res) {
@@ -227,7 +152,7 @@ var Utils = {
                 // cleanup
                 if (runOnce) {
                     console.log('Utils::delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
-                    document.removeEventListener(KeyEvents.KEYDOWN, delayFnKey, true);
+                    document.removeEventListener(EventTypes.KEY_DOWN, delayFnKey, true);
                 }
                 // actual call
                 callback();
@@ -254,9 +179,17 @@ var Utils = {
         };
 
         // concurrent triggers (only one left in the end)
-        document.addEventListener(KeyEvents.KEYDOWN, delayFnKey, true); // useCapture: true
+        document.addEventListener(EventTypes.KEY_DOWN, delayFnKey, true); // useCapture: true
         var interval = setInterval(delayFnInt, delayIntervalMS);
     },
+
+    setSmallDelay: function(fn, obj) {
+        if (fn) {
+            setTimeout(function() {
+                fn.call(obj);
+            }, 1000);
+        }
+    }
 };
 
 Utils.init();
