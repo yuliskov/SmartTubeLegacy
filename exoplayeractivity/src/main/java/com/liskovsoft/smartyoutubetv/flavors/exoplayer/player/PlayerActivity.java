@@ -88,18 +88,14 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     @Override
     public void initializePlayer() {
+        super.initializePlayer();
+
         boolean needNewPlayer = player == null;
         if (needNewPlayer) {
-            super.initializePlayer();
-
             debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerActivity.this);
 
             // Do not move this code to another place!!! This statement must come after player initialization
             autoFrameRateManager = new AutoFrameRateManager(this, player);
-
-            // applied one time at player's initialization
-            //playerInitializer.applySurfaceFix(player, trackSelector);
-            //playerInitializer.applySurfaceFix(player);
 
             playerInitializer.initVideoTitle();
         }
@@ -471,6 +467,8 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     }
 
     void retryIfNeeded() {
+        stateManager.persistState();
+
         if (needRetrySource) {
             initializePlayer();
         }
