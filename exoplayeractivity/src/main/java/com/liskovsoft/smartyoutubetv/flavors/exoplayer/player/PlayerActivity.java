@@ -88,9 +88,9 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     @Override
     public void initializePlayer() {
+        boolean needNewPlayer = player == null;
         super.initializePlayer();
 
-        boolean needNewPlayer = player == null;
         if (needNewPlayer) {
             debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerActivity.this);
 
@@ -260,6 +260,12 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         if (Util.SDK_INT > 23) {
             releasePlayer();
         }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        stateManager.persistState(); // player about to crash
     }
 
     @Override
