@@ -25,32 +25,20 @@ import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
     private static final String TAG = ExoInterceptor.class.getSimpleName();
-    private static final Logger sLogger = LoggerFactory.getLogger(TAG);
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionsSender mActionSender;
+    private final BackgroundActionManager mManager;
     private InputStream mResponseStreamSimple;
-    private static final long NO_INTERACTION_TIMEOUT = 1_000;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private static final String VIDEO_ID_PARAM = "video_id";
     private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
-    /**
-     * fix playlist advance bug<br/>
-     * create time window (1sec) where get_video_info isn't allowed<br/>
-     * see {@link #intercept(String)} method
-     */
-    private long mExitTime;
-    private long mPrevCallTime;
-    private String mPrevVideoId;
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -79,6 +67,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mInterceptor = interceptor;
         mActionSender = new ActionsSender(context, this);
         mReceiver = new GenericStringResultReceiver();
+        mManager = new BackgroundActionManager();
     }
 
     @Override
@@ -90,34 +79,11 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        // XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT;
-        if (videoClosedRecently) {
-            Log.d(TAG, "System.currentTimeMillis() - mExitTime < " + NO_INTERACTION_TIMEOUT);
-            mPrevCallTime = System.currentTimeMillis();
-            return null;
-        }
-
-        // throttle calls
-        boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT;
-        if (highCallRate) {
-            Log.d(TAG, "System.currentTimeMillis() - mLastCall < " + NO_INTERACTION_TIMEOUT);
-            mPrevCallTime = System.currentTimeMillis();
-            return null;
-        }
-
-        // the same video could opened multiple times
-        String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
-        boolean sameVideo = videoId.equals(mPrevVideoId);
-        if (sameVideo) {
-            Log.d(TAG, "The same video encountered");
-            mPrevCallTime = System.currentTimeMillis();
-            return null;
-        }
-
-        mPrevVideoId = videoId;
-        mPrevCallTime = System.currentTimeMillis();
         mCurrentUrl = url;
+
+        if (mManager.cancelAction(url)) {
+             return null;
+        }
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
@@ -181,22 +147,27 @@ public class ExoInterceptor extends RequestInterceptor {
         Log.d(TAG, msg);
         final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
 
-        Runnable onDone = new Runnable() {
+        ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
             @Override
-            public void run() {
+            public void onDone() {
                 // isOK == false means that app has been unloaded from memory while doing playback
                 boolean isOK = setupResultListener(activity);
                 if (isOK) {
                     activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
                 }
             }
+
+            @Override
+            public void onCancel() {
+                mManager.onCancel();
+            }
         };
 
-        fetchButtonStates(playerIntent, onDone);
+        fetchButtonStates(playerIntent, listener);
     }
 
-    private void fetchButtonStates(Intent intent, Runnable onDone) {
-        final Runnable processor = new ActionsReceiver(mContext, intent, onDone);
+    private void fetchButtonStates(Intent intent, ActionsReceiver.Listener listener) {
+        final Runnable processor = new ActionsReceiver(mContext, intent, listener);
         processor.run();
     }
 
@@ -204,8 +175,7 @@ public class ExoInterceptor extends RequestInterceptor {
         return activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                mExitTime = System.currentTimeMillis();
-                mPrevVideoId = null;
+                mManager.onClose();
                 mActionSender.bindActions(data);
             }
         });
@@ -215,48 +185,5 @@ public class ExoInterceptor extends RequestInterceptor {
         mInterceptor.setCommand(command);
         // force call command without adding to the history (in case WebView)
         mInterceptor.forceRun(false);
-    }
-
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    protected String unlockRegularFormats(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("c", "HTML5");
-
-        return query.toString();
-    }
-
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    protected String unlock60FpsFormats(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("el", "info"); // unlock dashmpd url
-        query.set("ps", "default"); // unlock 60fps formats
-
-        return query.toString();
-    }
-
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    protected String unlock30FpsFormats(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("el", "info"); // unlock dashmpd url
-
-        return query.toString();
     }
 }

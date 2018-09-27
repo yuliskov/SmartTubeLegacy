@@ -21,14 +21,19 @@ public class ActionsReceiver implements Runnable {
     private static final long RESPONSE_CHECK_DELAY_MS = 3000;
     private final Context mContext;
     private final Intent mIntent;
-    private final Runnable mOnDone;
+    private final Listener mListener;
     private boolean mRunOnce = false;
     private GenericCommand mStateCommand;
 
-    public ActionsReceiver(Context context, Intent intent, Runnable onDone) {
+    interface Listener {
+        void onDone();
+        void onCancel();
+    }
+
+    public ActionsReceiver(Context context, Intent intent, Listener listener) {
         mContext = context;
         mIntent = intent;
-        mOnDone = onDone;
+        mListener = listener;
     }
 
     /**
@@ -36,10 +41,6 @@ public class ActionsReceiver implements Runnable {
      * @return true if user didn't tapped back key
      */
     private boolean checkIntent() {
-        if (runOnce()) {
-            return false;
-        }
-
         if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE) ||
             mIntent.hasExtra(PlayerActivity.BUTTON_NEXT))
             return true;
@@ -96,8 +97,13 @@ public class ActionsReceiver implements Runnable {
      * Cancel callback if result contains wrong values (e.g. when player is closed)
      */
     private void doneResult() {
+        if (runOnce()) // don't run this method if startResponseCheck() already executed
+            return;
+
         if (checkIntent()) {
-            mOnDone.run();
+            mListener.onDone();
+        } else {
+            mListener.onCancel();
         }
     }
 
@@ -109,8 +115,10 @@ public class ActionsReceiver implements Runnable {
         new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!runOnce())
-                    mOnDone.run();
+                if (runOnce()) // don't run this method if doneResult() already executed
+                    return;
+
+                mListener.onDone();
             }
         }, RESPONSE_CHECK_DELAY_MS);
     }
