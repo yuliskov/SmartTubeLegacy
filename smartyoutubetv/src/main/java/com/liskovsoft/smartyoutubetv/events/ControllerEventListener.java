@@ -65,21 +65,21 @@ public class ControllerEventListener implements Controller.EventListener {
         return null;
     }
 
-    @Override
-    public void onPageFinished(Tab tab) {
-        WebView w = tab.getWebView();
-        injectWebFiles(w);
-        syncCookies(tab);
-    }
-
     private void syncCookies(Tab tab) {
         MyCookieSaver.saveCookie(tab.getWebView());
     }
 
     @Override
     public void onPageStarted(Tab tab) {
-        // js must be added before page fully loaded
+        // js must be added before page fully loaded???
         addJSInterface(tab);
+    }
+
+    @Override
+    public void onPageFinished(Tab tab) {
+        WebView w = tab.getWebView();
+        injectWebFiles(w);
+        syncCookies(tab);
     }
 
     /**

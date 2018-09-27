@@ -784,7 +784,8 @@ public class Tab implements PictureListener {
         }
 
         // real display size (virtual pixel == real pixel)
-        // 100 - normal resolution, 50 - 2160p resolution
+        // 100 - normal resolution, 50 - 2160p resolution, 30 - 4k resolution, 0 - default
+        // NOTE: you need to restart the browser in order this setting to work
         mMainView.setInitialScale(mSettings.getInitialScale());
     }
 

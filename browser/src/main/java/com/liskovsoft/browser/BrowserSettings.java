@@ -194,9 +194,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     }
 
     public int getInitialScale() {
-        // real display size (virtual pixel == real pixel)
-        // 100 - native resolution, 50 - 2160p resolution, 0 - default
-        return mPrefs.getInt(PREF_INITIAL_SCALE, 100);
+        // 100 - normal resolution (default), 50 - 2160p resolution, 30 - 4k resolution
+        // NOTE: you may need to restart the browser in order this setting to work
+        return mPrefs.getInt(PREF_INITIAL_SCALE, 30);
     }
 
     public boolean rememberPasswords() {

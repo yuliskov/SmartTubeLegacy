@@ -1,10 +1,15 @@
-/*
-Description: Contains codec configurations and more...
-*/
+/**
+ * Description: Contains codec configurations for different devices.
+ * Format: {'device name': 'codecs to exclude', ...}
+ * Device's name should be named accordingly to the CPU-Z.
+ * You can find name here: CPU-Z > Device tab > Model field
+ */
 
 console.log("Scripts::Running script device_configs.js");
 
-
+/**
+ * Configuration for the WebView browser's engine (1th and 3rd launchers)
+ */
 var WebViewConfig = {
     'AOSP on p383 (p383)': 'mp4', // diqus
     'UNI (m201_th12)': 'mp4', // gmail
@@ -31,9 +36,12 @@ var WebViewConfig = {
     'NEO-U1': 'webm', // (github)
     'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     'X92': 'webm', // (gmail)
-    '': 'webm' // all devices (entry must be last in the list)
+    //'': 'webm' // all devices (entry must be last in the list)
 };
 
+/**
+ * Configuration for the CrossWalk browser's engine (2nd and 4th launchers)
+ */
 var XWalkConfig = {
     'AOSP on p383 (p383)': 'mp4', // diqus
     'UNI (m201_th12)': 'mp4', // gmail
@@ -56,5 +64,5 @@ var XWalkConfig = {
     'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     'NEO-U1': 'webm', // (github)
     'X92': 'webm', // (gmail)
-    '': 'webm' // all devices (entry must be last in the list)
+    //'': 'webm' // all devices (entry must be last in the list)
 };
