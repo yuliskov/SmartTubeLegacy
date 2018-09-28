@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public class ControllerEventListener implements Controller.EventListener {
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
+    private static final String JS_INTERFACE_NAME = "app";
     private final Context mContext;
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
@@ -130,7 +131,7 @@ public class ControllerEventListener implements Controller.EventListener {
         mJSInterface.add(tab);
 
         WebView webView = tab.getWebView();
-        webView.addJavascriptInterface(mJSInterface, "app");
+        webView.addJavascriptInterface(mJSInterface, JS_INTERFACE_NAME);
     }
 
     private void injectWebFiles(WebView w) {

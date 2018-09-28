@@ -194,9 +194,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     }
 
     public int getInitialScale() {
-        // 100 - normal resolution (default), 50 - 2160p resolution, 30 - 4k resolution
+        // 100 - normal resolution (app default), 50 - 2160p resolution, 30 - 4k resolution, 0 - android default
         // NOTE: you may need to restart the browser in order this setting to work
-        return mPrefs.getInt(PREF_INITIAL_SCALE, 30);
+        return mPrefs.getInt(PREF_INITIAL_SCALE, 0);
     }
 
     public boolean rememberPasswords() {

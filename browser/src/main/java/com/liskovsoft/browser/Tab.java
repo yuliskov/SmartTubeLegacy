@@ -907,23 +907,6 @@ public class Tab implements PictureListener {
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
-            // usually finish called after start
-            // but sometimes there is fake finish
-            if (!mFirstStarted)
-                return;
-
-            mDisableOverrideUrlLoading = false;
-            if (!isPrivateBrowsingEnabled()) {
-                sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
-            }
-            syncCurrentState(view, url);
-            mWebViewController.onPageFinished(Tab.this);
-
-            onLoadSuccess();
-        }
-
-        @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             // usually finish called after start
             // but sometimes there is fake finish
@@ -965,6 +948,28 @@ public class Tab implements PictureListener {
             updateBookmarkedStatus();
         }
 
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            // usually finish called after start
+            // but sometimes there is fake finish
+            if (!mFirstStarted)
+                return;
+
+            mDisableOverrideUrlLoading = false;
+            if (!isPrivateBrowsingEnabled()) {
+                sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
+            }
+            syncCurrentState(view, url);
+            mWebViewController.onPageFinished(Tab.this);
+
+            onLoadSuccess();
+        }
+
+        @Override
+        public void onLoadResource(WebView view, String url) {
+            super.onLoadResource(view, url);
+        }
+
         // return true if want to hijack the url to let another app to handle it (FIRED ONCE)
         // don't rely on it: shouldOverrideUrlLoading called one time fore session, use shouldInterceptLoadRequest instead
         @Override
@@ -980,12 +985,18 @@ public class Tab implements PictureListener {
             }
         }
 
+        /**
+         * Don't afraid that method does noting. It logic will be decorated inside {@link Tab#onSetWebViewClient()}
+         */
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
             Log.i(TAG, "should intercept1? " + url);
             return super.shouldInterceptRequest(view, url);
         }
 
+        /**
+         * Don't afraid that method does noting. It logic will be decorated inside {@link Tab#onSetWebViewClient()}
+         */
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             Log.i(TAG, "should intercept2? " + request);
