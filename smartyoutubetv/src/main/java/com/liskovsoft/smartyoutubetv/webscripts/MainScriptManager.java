@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webaddons;
+package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
@@ -13,8 +13,9 @@ public class MainScriptManager implements ScriptManager {
 
     public MainScriptManager(Context context) {
         mContext = context;
-        mManagers.add(new ExoScriptManager(context));
         mManagers.add(new UserScriptManager(context));
+        mManagers.add(new ExoScriptManager(context));
+        mManagers.add(new EndCardsScriptManager(context));
     }
 
     @Override

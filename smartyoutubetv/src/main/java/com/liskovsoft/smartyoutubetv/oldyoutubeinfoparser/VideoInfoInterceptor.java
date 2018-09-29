@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.common.helpers.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;

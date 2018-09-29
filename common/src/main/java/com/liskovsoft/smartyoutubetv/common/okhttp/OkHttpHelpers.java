@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.common.okhttp;
 
 import android.content.Context;
 import android.util.Log;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -49,7 +50,7 @@ public class OkHttpHelpers {
         }
 
         if (lastEx != null) {
-            Helpers.showLongMessage(sContext, TAG, lastEx.getMessage());
+            MessageHelpers.showLongMessage(sContext, TAG, lastEx.getMessage());
         }
 
         return okHttpResponse;

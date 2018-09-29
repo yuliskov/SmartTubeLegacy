@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
@@ -52,7 +53,23 @@ public class Helpers {
         return matchSubstr(host.toLowerCase(), mask.toLowerCase());
     }
 
-    public static InputStream getSequenceResourceStream(Context ctx, List<String> paths) {
+    public static InputStream appendStream(InputStream first, InputStream second) {
+        if (first == null && second == null) {
+            return null;
+        }
+
+        if (first == null) {
+            return second;
+        }
+
+        if (second == null) {
+            return first;
+        }
+
+        return new SequenceInputStream(first, second);
+    }
+
+    public static InputStream getAsset(Context ctx, List<String> paths) {
         if (paths == null) {
             return null;
         }
@@ -70,22 +87,6 @@ public class Helpers {
         return is;
     }
 
-    public static InputStream appendStream(InputStream first, InputStream second) {
-        if (first == null && second == null) {
-            return null;
-        }
-
-        if (first == null) {
-            return second;
-        }
-
-        if (second == null) {
-            return first;
-        }
-
-        return new SequenceInputStream(first, second);
-    }
-
     public static InputStream getAsset(Context ctx, String fileName) {
         InputStream is = null;
         try {
@@ -96,25 +97,25 @@ public class Helpers {
         return is;
     }
 
-    public static List<String> listAssetFiles(Context ctx, String path) {
-        return listAssetFiles(ctx, path, null);
+    public static List<String> getAssetFiles(Context ctx, String dir) {
+        return getAssetFiles(ctx, dir, null);
     }
 
-    public static List<String> listAssetFiles(Context ctx, String path, String ext) {
+    public static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
         String [] list;
         List<String> result = new ArrayList<>();
         try {
-            list = ctx.getAssets().list(path);
+            list = ctx.getAssets().list(dir);
             if (list.length > 0) {
                 // This is a folder
                 for (String file : list) {
-                    List<String> nestedList = listAssetFiles(ctx, path + "/" + file, ext); // folder???
+                    List<String> nestedList = getAssetFiles(ctx, dir + "/" + file, endsWith); // folder???
                     if (!nestedList.isEmpty()) // folder???
                         result.addAll(nestedList);
                     else {
                         // This is a file
-                        if (ext == null || file.endsWith(ext))
-                            result.add(path + "/" + file);
+                        if (endsWith == null || file.endsWith(endsWith))
+                            result.add(dir + "/" + file);
                     }
                 }
             }
@@ -154,6 +155,14 @@ public class Helpers {
         return false;
     }
 
+    public static String toString(Throwable ex) {
+        if (ex instanceof IllegalStateException &&
+                ex.getCause() != null) {
+            ex = ex.getCause();
+        }
+        return String.format("%s: %s", ex.getClass().getCanonicalName(), ex.getMessage());
+    }
+
     public static String toString(InputStream inputStream) {
         if (inputStream == null) {
             return null;
@@ -170,6 +179,15 @@ public class Helpers {
         }
 
         return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
+    }
+
+    public static void closeStream(Closeable fos) {
+        try {
+            if (fos != null)
+                fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void postOnUiThread(Runnable runnable) {

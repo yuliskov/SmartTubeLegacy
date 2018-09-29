@@ -1,8 +1,7 @@
-package com.liskovsoft.smartyoutubetv.webaddons.old;
+package com.liskovsoft.smartyoutubetv.webscripts.old;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.webaddons.old.WebAddon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class ScriptsAddon implements WebAddon {
 
     public ScriptsAddon(Context context) {
         mContext = context;
-        mList = Helpers.listAssetFiles(mContext, ADDON_FOLDER);
+        mList = Helpers.getAssetFiles(mContext, ADDON_FOLDER);
         mCssList = extractCssList();
         mJsList = extractJsList();
     }

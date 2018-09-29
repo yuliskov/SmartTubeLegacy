@@ -15,7 +15,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import com.liskovsoft.smartyoutubetv.common.okhttp.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 
 import java.io.File;
@@ -410,7 +410,7 @@ class MyXWalkLibraryLoader {
                 mDownloadId = mDownloadManager.enqueue(request);
             } catch (IllegalStateException ex) {
                 Log.e(TAG, ex.getMessage(), ex);
-                Helpers.showMessage(mContext, TAG, ex);
+                MessageHelpers.showMessage(mContext, TAG, ex);
             }
 
             return isDone ? DownloadManager.STATUS_SUCCESSFUL : DownloadManager.STATUS_FAILED;
@@ -448,7 +448,7 @@ class MyXWalkLibraryLoader {
                     mListener.onDownloadCompleted(uri);
                 } catch (IllegalStateException ex) {
                     Log.e(TAG, ex.getMessage(), ex);
-                    Helpers.showMessage(mContext, TAG, ex);
+                    MessageHelpers.showMessage(mContext, TAG, ex);
                     mListener.onDownloadFailed(result, DownloadManager.ERROR_UNKNOWN);
                 }
             } else {

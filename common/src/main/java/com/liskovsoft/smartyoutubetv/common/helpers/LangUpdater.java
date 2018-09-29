@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import com.liskovsoft.smartyoutubetv.common.R;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;

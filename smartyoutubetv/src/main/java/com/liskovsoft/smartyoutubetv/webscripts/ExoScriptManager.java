@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webaddons;
+package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.List;
 
 public class ExoScriptManager implements ScriptManager {
-    private static final String CORE_FOLDER = "core";
     private final Context mContext;
     private List<String> mOnLoadScripts;
     private List<String> mStyles;
@@ -16,8 +15,8 @@ public class ExoScriptManager implements ScriptManager {
         mContext = context;
 
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            mOnLoadScripts = Helpers.listAssetFiles(context, CORE_FOLDER, "exoplayer.js");
-            mStyles = Helpers.listAssetFiles(context, CORE_FOLDER, "exoplayer.css");
+            mOnLoadScripts = Helpers.getAssetFiles(context, CORE_DIR, "exoplayer.js");
+            mStyles = Helpers.getAssetFiles(context, CORE_DIR, "exoplayer.css");
         }
     }
 
@@ -28,11 +27,11 @@ public class ExoScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnLoadScripts() {
-        return Helpers.getSequenceResourceStream(mContext, mOnLoadScripts);
+        return Helpers.getAsset(mContext, mOnLoadScripts);
     }
 
     @Override
     public InputStream getStyles() {
-        return Helpers.getSequenceResourceStream(mContext, mStyles);
+        return Helpers.getAsset(mContext, mStyles);
     }
 }

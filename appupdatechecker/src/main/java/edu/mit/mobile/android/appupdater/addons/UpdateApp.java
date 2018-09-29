@@ -11,7 +11,7 @@ import android.webkit.*;
 import android.widget.Toast;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
-import com.liskovsoft.smartyoutubetv.common.okhttp.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 
 import java.io.*;
 
@@ -72,7 +72,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             path = manager.getUriForDownloadedFile(id).getPath();
         } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
             Log.e(TAG, ex.getMessage(), ex);
-            Helpers.showMessage(mContext, TAG, ex);
+            MessageHelpers.showMessage(mContext, TAG, ex);
         }
         return path;
     }

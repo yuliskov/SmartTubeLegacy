@@ -2,8 +2,8 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.webaddons.MainScriptManager;
-import com.liskovsoft.smartyoutubetv.webaddons.ScriptManager;
+import com.liskovsoft.smartyoutubetv.webscripts.MainScriptManager;
+import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 
 public class ScriptManagerInterceptor extends RequestInterceptor {
     private final Context mContext;
