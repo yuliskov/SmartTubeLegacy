@@ -68,9 +68,16 @@ var EventUtils = {
         window.addEventListener(EventTypes.HASH_CHANGE, function(){
             var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
             if (isPlayerOpened) {
-                Utils.setSmallDelay(listener.onPlaybackEvent, listener); // video initialized with small delay
+                Utils.setSmallDelay(listener.revertToOriginal, listener); // video initialized with small delay
             }
         }, false);
+    },
+
+    delayUntilPlayerBeInitialized: function(fn) {
+        var testFn = function() {
+            return Utils.$(YouTubeConstants.PLAYER_PLAY_BUTTON_SELECTOR);
+        };
+        Utils.delayTillTestFnSuccess(fn, testFn);
     },
 
     triggerEvent: function(element, type, keyCode) {

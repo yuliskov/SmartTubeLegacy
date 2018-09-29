@@ -5,9 +5,22 @@ Description: Imitate press on OK button after seek
 console.log("Scripts::Running script enable_4k.js");
 
 function Enable4KAddon() {
+    // this.originWidth = 0;
+    // this.originHeight = 0;
     this.run = function() {
+        // this.originWidth = window.innerWidth;
+        // this.originHeight = window.innerHeight;
         this.applyFakeResolution();
+        // var $this = this;
+        // EventUtils.delayUntilPlayerBeInitialized(function() {
+        //     $this.revertToOriginal();
+        // });
     };
+
+    // this.revertToOriginal = function() {
+    //     Utils.overrideProp("window.innerWidth", this.originWidth);
+    //     Utils.overrideProp("window.innerHeight", this.originHeight);
+    // };
 
     this.applyFakeResolution = function() {
         // NOTE: WONT WORK PROPERLY

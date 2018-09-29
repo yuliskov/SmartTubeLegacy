@@ -1,0 +1,4 @@
+/* Hide Viewport from debug info. Since it shows unreal values on tv boxes: pixel density problem */
+.html5-video-info-panel-content > :nth-child(2) {
+    display: none !important;
+}
