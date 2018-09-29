@@ -15,31 +15,8 @@ var EventUtils = {
     /**
      * Calls listener.onKeyEvent(event) every time key event arrives
      */
-    addPlayerKeyPressListener: function(listener) {
-        if (!this.isPlayerInitialized()) {
-            // player not initialized yet
-            var $this = this;
-            setTimeout(function() {
-                $this.addPlayerKeyPressListener(listener);
-            }, $this.checkIntervalMS);
-            return;
-        }
-
-        console.log("EventUtils::addPlayerKeyPressListener");
-
-        this.addKeyPressListener(listener, YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
-    },
-
-    /**
-     * Calls listener.onKeyEvent(event) every time key event arrives
-     */
-    addAppListener: function(listener) {
+    addGlobalKeyPressListener: function(listener) {
         this.addKeyPressListener(listener, YouTubeConstants.APP_CONTAINER_SELECTOR);
-    },
-
-    isPlayerInitialized: function() {
-        var elem = Utils.$(YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
-        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS_NAME);
     },
 
     /**
@@ -58,6 +35,42 @@ var EventUtils = {
         container.addEventListener(EventTypes.KEY_UP, function(event) {
             listener.onKeyEvent(event);
         });
+    },
+
+    isPlayerInitialized: function() {
+        var elem = Utils.$(YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
+        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS_NAME);
+    },
+
+    /**
+     * Calls listener.onKeyEvent(event) every time key event arrives
+     */
+    addPlayerKeyPressListener: function(listener) {
+        if (!this.isPlayerInitialized()) {
+            // player not initialized yet
+            var $this = this;
+            setTimeout(function() {
+                $this.addPlayerKeyPressListener(listener);
+            }, $this.checkIntervalMS);
+            return;
+        }
+
+        console.log("EventUtils::addPlayerKeyPressListener");
+
+        this.addKeyPressListener(listener, YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
+    },
+
+    /**
+     * Calls listener.onPlaybackEvent() every time player start to play an video
+     */
+    addPlaybackListener: function(listener) {
+        // do everytime video loads:
+        window.addEventListener(EventTypes.HASH_CHANGE, function(){
+            var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
+            if (isPlayerOpened) {
+                Utils.setSmallDelay(listener.onPlaybackEvent, listener); // video initialized with small delay
+            }
+        }, false);
     },
 
     triggerEvent: function(element, type, keyCode) {
@@ -91,19 +104,6 @@ var EventUtils = {
     triggerEnter: function(selector) {
         // simulate mouse/enter key press
         this.triggerEvent(selector, EventTypes.KEY_UP, KeyCodes.ENTER);
-    },
-
-    /**
-     * Calls listener.onPlaybackEvent() every time player start to play an video
-     */
-    addOnPlaybackListener: function(listener) {
-        // do everytime video loads:
-        window.addEventListener(EventTypes.HASH_CHANGE, function(){
-            var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
-            if (isPlayerOpened) {
-                Utils.setSmallDelay(listener.onPlaybackEvent, listener); // video initialized with small delay
-            }
-        }, false);
     }
 };
 

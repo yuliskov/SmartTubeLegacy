@@ -7,7 +7,7 @@ console.log("Scripts::Running script video_zoom_fix.js");
 
 function VideoZoomFixAddon() {
     this.run = function() {
-        EventUtils.addOnPlaybackListener(this);
+        EventUtils.addPlaybackListener(this);
     };
 
     this.onPlaybackEvent = function() {
