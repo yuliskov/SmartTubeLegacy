@@ -13,9 +13,8 @@ import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherSimpleRoutineInjector;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
-import com.liskovsoft.smartyoutubetv.injectors.MyJsCssTweaksInjector;
 import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
@@ -35,7 +34,7 @@ public class ControllerEventListener implements Controller.EventListener {
     private final WebViewJavaScriptInterface mJSInterface;
     //private final MyJsCssTweaksInjector mTweakInjector;
     private final VideoFormatInjector mFormatInjector;
-    private final DecipherSimpleRoutineInjector mDecipherRoutineInjector;
+    private final DecipherRoutineInjector mDecipherRoutineInjector;
     private final GenericEventResourceInjector mEventResourceInjector;
     private final StateUpdater mStateUpdater;
     private final MainApkUpdater mApkUpdater;
@@ -51,7 +50,7 @@ public class ControllerEventListener implements Controller.EventListener {
 
         //mTweakInjector = new MyJsCssTweaksInjector(mContext);
         mFormatInjector = new VideoFormatInjector(mContext);
-        mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
+        mDecipherRoutineInjector = new DecipherRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
     }

@@ -13,11 +13,13 @@ import okhttp3.Response;
 
 import java.io.InputStream;
 
-// intercepts "tv-player.js"
-public class CipherInterceptor extends RequestInterceptor {
+/**
+ * intercepts "tv-player.js"
+ */
+public class DecipherInterceptor extends RequestInterceptor {
     private String mJSDecipherCode;
 
-    public CipherInterceptor(Context context) {
+    public DecipherInterceptor(Context context) {
         Browser.getBus().register(this);
     }
 
