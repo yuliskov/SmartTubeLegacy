@@ -79,7 +79,30 @@ var Utils = {
         Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
     },
 
-    // temporal override, after timeout prop will be reverted to original state
+    /**
+     * Override prop limited number of times.
+     * After limit is reached prop will be reverted to the original state.
+     */
+    overridePropNum: function(propStr, value, nums) {
+        var originVal = eval(propStr);
+
+        var arr = propStr.split(".");      // Split the string using dot as separator
+        var lastVal = arr.pop();       // Get last element
+        var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
+
+        var numCalled = 0;
+        Object.defineProperty(eval(firstVal), lastVal, { get: function() {
+                ++numCalled;
+                if (numCalled > nums) {
+                    return originVal;
+                }
+                return value;
+            }, configurable: true, enumerable: true });
+    },
+
+    /**
+     * Temporal override. After timeout prop will be reverted to the original state.
+     */
     overridePropTemp: function(propStr, value, timeoutMS) {
         var currentTimeMS = this.getCurrentTimeMs();
         var originVal = eval(propStr);
@@ -89,7 +112,9 @@ var Utils = {
         var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
 
         var $this = this;
+        // var numCalled = 0;
         Object.defineProperty(eval(firstVal), lastVal, { get: function() {
+            // console.log("Utils::" + propStr + " called " + ++numCalled + " times");
             var timeSpanned = $this.getCurrentTimeMs() - currentTimeMS;
             if (timeSpanned > timeoutMS) {
                 return originVal;

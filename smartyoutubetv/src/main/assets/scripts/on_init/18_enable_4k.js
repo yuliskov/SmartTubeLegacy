@@ -4,23 +4,23 @@ Description: Imitate press on OK button after seek
 
 console.log("Scripts::Running script enable_4k.js");
 
+/**
+ * HACK: give the fake width/height values only on the init stage.
+ * This approach solves zoomed video problem.
+ * So, we must calculate how much each prop called on the init stage.
+ * Below values is calculated by me through the logging mechanism.
+ */
 function Enable4KAddon() {
-    // this.originWidth = 0;
-    // this.originHeight = 0;
-    this.run = function() {
-        // this.originWidth = window.innerWidth;
-        // this.originHeight = window.innerHeight;
-        this.applyFakeResolution();
-        // var $this = this;
-        // EventUtils.delayUntilPlayerBeInitialized(function() {
-        //     $this.revertToOriginal();
-        // });
-    };
+    // HACK: give the fake width/height values only on the init stage.
+    // This approach solves zoomed video problem.
+    // So, we must calculate how much each prop called on the init stage.
+    // Below values is calculated by me through the logging mechanism.
+    this.INIT_WIDTH_CALLS = 26;
+    this.INIT_HEIGHT_CALLS = 31;
 
-    // this.revertToOriginal = function() {
-    //     Utils.overrideProp("window.innerWidth", this.originWidth);
-    //     Utils.overrideProp("window.innerHeight", this.originHeight);
-    // };
+    this.run = function() {
+        this.applyFakeResolution();
+    };
 
     this.applyFakeResolution = function() {
         // NOTE: WONT WORK PROPERLY
@@ -28,7 +28,7 @@ function Enable4KAddon() {
         DeviceUtils.forceEnableAllCodecs();
 
         // remove asterisk from dimensions value like "950x640*2"
-        window.devicePixelRatio = 1.0;
+        // window.devicePixelRatio = 1.0;
 
         // if (!app)
         //     return;
@@ -40,10 +40,13 @@ function Enable4KAddon() {
         // fake resolution (does't have influence on video resolution)
         // 4k: 3840 x 2160
         // 2k: 2560 x 1440
-        var w = 3840, h = 2160, timeoutMS = 10000;
+        var w = 3840, h = 2160;
 
-        Utils.overridePropTemp("window.innerWidth", w, timeoutMS);
-        Utils.overridePropTemp("window.innerHeight", h, timeoutMS);
+        Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
+        Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
+
+        // Utils.overridePropTemp("window.innerWidth", w, timeoutMS);
+        // Utils.overridePropTemp("window.innerHeight", h, timeoutMS);
 
         // Utils.overrideProp("window.innerWidth", w);
         // Utils.overrideProp("window.innerHeight", h);
@@ -61,7 +64,7 @@ function Enable4KAddon() {
         //
         // Utils.overrideProp("window.screen.width", w);
         // Utils.overrideProp("window.screen.height", h);
-    }
+    };
 }
 
 new Enable4KAddon().run();
