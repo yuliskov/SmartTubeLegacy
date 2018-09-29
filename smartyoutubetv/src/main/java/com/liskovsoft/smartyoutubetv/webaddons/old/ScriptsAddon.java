@@ -1,7 +1,8 @@
-package com.liskovsoft.smartyoutubetv.webaddons;
+package com.liskovsoft.smartyoutubetv.webaddons.old;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.webaddons.old.WebAddon;
 
 import java.util.ArrayList;
 import java.util.List;

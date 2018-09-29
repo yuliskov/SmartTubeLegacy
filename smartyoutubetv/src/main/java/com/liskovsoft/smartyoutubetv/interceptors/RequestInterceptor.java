@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.MediaType;
 import okhttp3.Response;
@@ -34,15 +35,15 @@ public abstract class RequestInterceptor {
         return resourceResponse;
     }
 
-    protected WebResourceResponse prependResponse(String url, InputStream resourceStream) {
+    protected WebResourceResponse prependResponse(String url, InputStream toPrepend) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
         InputStream responseStream = response.body().byteStream();
-        return createResponse(response.body().contentType(), new SequenceInputStream(resourceStream, responseStream));
+        return createResponse(response.body().contentType(), Helpers.appendStream(toPrepend, responseStream));
     }
 
-    protected WebResourceResponse appendResponse(String url, InputStream resourceStream) {
+    protected WebResourceResponse appendResponse(String url, InputStream toAppend) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
         InputStream responseStream = response.body().byteStream();
-        return createResponse(response.body().contentType(), new SequenceInputStream(responseStream, resourceStream));
+        return createResponse(response.body().contentType(), Helpers.appendStream(responseStream, toAppend));
     }
 }

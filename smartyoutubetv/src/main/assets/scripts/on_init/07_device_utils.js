@@ -20,10 +20,15 @@ var DeviceUtils = {
             return;
         }
 
-        window.MediaSource.isTypeSupported = function(str) {
-            console.log('DeviceUtils::force enable ' + str + 'codec');
-            return true;
-        };
+        window.MediaSource.isTypeSupported = function(native) {
+            return function(str) {
+                if (str.indexOf('3840') != -1) {
+                    console.log('DeviceUtils::force enable ' + str + ' codec');
+                    return true;
+                }
+                return native.call(window.MediaSource, str);
+            }
+        }(window.MediaSource.isTypeSupported);
     },
 
     disableCodec: function(codec) {

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.webaddons;
+package com.liskovsoft.smartyoutubetv.webaddons.old;
 
 import android.content.Context;
 

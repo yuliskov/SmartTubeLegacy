@@ -52,7 +52,11 @@ public class Helpers {
         return matchSubstr(host.toLowerCase(), mask.toLowerCase());
     }
 
-    public static InputStream createSequenceStream(Context ctx, List<String> paths) {
+    public static InputStream getSequenceResourceStream(Context ctx, List<String> paths) {
+        if (paths == null) {
+            return null;
+        }
+
         InputStream is = null;
 
         for (String path : paths) {
@@ -64,6 +68,22 @@ public class Helpers {
             is = new SequenceInputStream(is, asset);
         }
         return is;
+    }
+
+    public static InputStream appendStream(InputStream first, InputStream second) {
+        if (first == null && second == null) {
+            return null;
+        }
+
+        if (first == null) {
+            return second;
+        }
+
+        if (second == null) {
+            return first;
+        }
+
+        return new SequenceInputStream(first, second);
     }
 
     public static InputStream getAsset(Context ctx, String fileName) {

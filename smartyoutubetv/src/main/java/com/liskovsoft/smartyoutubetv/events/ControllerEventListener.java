@@ -78,8 +78,9 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
-        // WebView w = tab.getWebView();
-        // injectWebFiles(w);
+        //WebView w = tab.getWebView();
+        //injectWebFiles(w);
+        bindTabToInjectors(tab);
         syncCookies(tab);
     }
 
@@ -132,6 +133,13 @@ public class ControllerEventListener implements Controller.EventListener {
 
         WebView webView = tab.getWebView();
         webView.addJavascriptInterface(mJSInterface, JS_INTERFACE_NAME);
+    }
+
+    private void bindTabToInjectors(Tab tab) {
+        WebView w = tab.getWebView();
+        mFormatInjector.add(w);
+        mDecipherRoutineInjector.add(w);
+        mEventResourceInjector.add(w);
     }
 
     //private void injectWebFiles(WebView w) {

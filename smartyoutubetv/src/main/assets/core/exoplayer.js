@@ -1,5 +1,7 @@
 // NOTE: this file can be tested independently for other *.js
 
+console.log("Scripts::Running core script exoplayer.js");
+
 /////////// GoogleButton ////////////////
 
 // java constants

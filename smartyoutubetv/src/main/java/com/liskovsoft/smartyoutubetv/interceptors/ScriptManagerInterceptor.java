@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.webaddons.MainScriptManager;
 import com.liskovsoft.smartyoutubetv.webaddons.ScriptManager;
 
 public class ScriptManagerInterceptor extends RequestInterceptor {
@@ -19,7 +20,7 @@ public class ScriptManagerInterceptor extends RequestInterceptor {
     public ScriptManagerInterceptor(Context context) {
         super();
         mContext = context;
-        mManager = new ScriptManager(context);
+        mManager = new MainScriptManager(context);
     }
 
     @Override
