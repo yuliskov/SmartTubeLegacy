@@ -33,7 +33,7 @@ public class ControllerEventListener implements Controller.EventListener {
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
     private final WebViewJavaScriptInterface mJSInterface;
-    private final MyJsCssTweaksInjector mTweakInjector;
+    //private final MyJsCssTweaksInjector mTweakInjector;
     private final VideoFormatInjector mFormatInjector;
     private final DecipherSimpleRoutineInjector mDecipherRoutineInjector;
     private final GenericEventResourceInjector mEventResourceInjector;
@@ -49,7 +49,7 @@ public class ControllerEventListener implements Controller.EventListener {
         mLoadingManager = new LoadingManager(context);
         mApkUpdater = new MainApkUpdater(context);
 
-        mTweakInjector = new MyJsCssTweaksInjector(mContext);
+        //mTweakInjector = new MyJsCssTweaksInjector(mContext);
         mFormatInjector = new VideoFormatInjector(mContext);
         mDecipherRoutineInjector = new DecipherSimpleRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
@@ -78,8 +78,8 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onPageFinished(Tab tab) {
-        WebView w = tab.getWebView();
-        injectWebFiles(w);
+        // WebView w = tab.getWebView();
+        // injectWebFiles(w);
         syncCookies(tab);
     }
 
@@ -134,14 +134,14 @@ public class ControllerEventListener implements Controller.EventListener {
         webView.addJavascriptInterface(mJSInterface, JS_INTERFACE_NAME);
     }
 
-    private void injectWebFiles(WebView w) {
-        mTweakInjector.add(w);
-        mFormatInjector.add(w);
-        mDecipherRoutineInjector.add(w);
-        mEventResourceInjector.add(w);
-
-        mTweakInjector.inject();
-    }
+    //private void injectWebFiles(WebView w) {
+    //    mTweakInjector.add(w);
+    //    mFormatInjector.add(w);
+    //    mDecipherRoutineInjector.add(w);
+    //    mEventResourceInjector.add(w);
+    //
+    //    mTweakInjector.inject();
+    //}
 
     private class LoadingManager {
         private final View mLoadingWidget;

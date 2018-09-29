@@ -14,6 +14,18 @@ var DeviceUtils = {
         // do init here
     },
 
+    forceEnableAllCodecs: function() {
+        if (!window.MediaSource) {
+            console.log('DeviceUtils::disableCodec: MediaSource is null');
+            return;
+        }
+
+        window.MediaSource.isTypeSupported = function(str) {
+            console.log('DeviceUtils::force enable ' + str + 'codec');
+            return true;
+        };
+    },
+
     disableCodec: function(codec) {
         if (!codec) {
             console.log('DeviceUtils::disableCodec: codec is null');

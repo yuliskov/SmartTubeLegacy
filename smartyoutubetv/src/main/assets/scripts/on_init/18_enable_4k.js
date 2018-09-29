@@ -12,6 +12,8 @@ function Enable4KAddon() {
     this.applyFakeResolution = function() {
         // NOTE: WONT WORK PROPERLY
 
+        DeviceUtils.forceEnableAllCodecs();
+
         // remove asterisk from dimensions value like "950x640*2"
         window.devicePixelRatio = 1.0;
 
@@ -25,10 +27,13 @@ function Enable4KAddon() {
         // fake resolution (does't have influence on video resolution)
         // 4k: 3840 x 2160
         // 2k: 2560 x 1440
-        var w = 3840, h = 2160, timeoutMS = 1000;
+        var w = 3840, h = 2160, timeoutMS = 10000;
 
         Utils.overridePropTemp("window.innerWidth", w, timeoutMS);
         Utils.overridePropTemp("window.innerHeight", h, timeoutMS);
+
+        // Utils.overrideProp("window.innerWidth", w);
+        // Utils.overrideProp("window.innerHeight", h);
 
         // NOTE: there is no need to override props below
 

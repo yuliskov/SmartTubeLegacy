@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.SequenceInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -51,6 +52,20 @@ public class Helpers {
         return matchSubstr(host.toLowerCase(), mask.toLowerCase());
     }
 
+    public static InputStream createSequenceStream(Context ctx, List<String> paths) {
+        InputStream is = null;
+
+        for (String path : paths) {
+            InputStream asset = Helpers.getAsset(ctx, path);
+            if (is == null) {
+                is = asset;
+                continue;
+            }
+            is = new SequenceInputStream(is, asset);
+        }
+        return is;
+    }
+
     public static InputStream getAsset(Context ctx, String fileName) {
         InputStream is = null;
         try {
@@ -62,6 +77,10 @@ public class Helpers {
     }
 
     public static List<String> listAssetFiles(Context ctx, String path) {
+        return listAssetFiles(ctx, path, null);
+    }
+
+    public static List<String> listAssetFiles(Context ctx, String path, String ext) {
         String [] list;
         List<String> result = new ArrayList<>();
         try {
@@ -69,12 +88,13 @@ public class Helpers {
             if (list.length > 0) {
                 // This is a folder
                 for (String file : list) {
-                    List<String> nestedList = listAssetFiles(ctx, path + "/" + file); // folder???
+                    List<String> nestedList = listAssetFiles(ctx, path + "/" + file, ext); // folder???
                     if (!nestedList.isEmpty()) // folder???
                         result.addAll(nestedList);
                     else {
                         // This is a file
-                        result.add(path + "/" + file);
+                        if (ext == null || file.endsWith(ext))
+                            result.add(path + "/" + file);
                     }
                 }
             }

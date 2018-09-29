@@ -1,9 +1,12 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.MediaType;
+import okhttp3.Response;
 
 import java.io.InputStream;
+import java.io.SequenceInputStream;
 
 public abstract class RequestInterceptor {
     public abstract boolean test(String url);
@@ -29,5 +32,17 @@ public abstract class RequestInterceptor {
                 is
         );
         return resourceResponse;
+    }
+
+    protected WebResourceResponse prependResponse(String url, InputStream resourceStream) {
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
+        InputStream responseStream = response.body().byteStream();
+        return createResponse(response.body().contentType(), new SequenceInputStream(resourceStream, responseStream));
+    }
+
+    protected WebResourceResponse appendResponse(String url, InputStream resourceStream) {
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
+        InputStream responseStream = response.body().byteStream();
+        return createResponse(response.body().contentType(), new SequenceInputStream(responseStream, resourceStream));
     }
 }

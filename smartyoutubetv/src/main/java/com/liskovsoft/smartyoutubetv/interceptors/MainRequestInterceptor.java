@@ -13,6 +13,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mContext = context;
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
+        mInterceptors.add(new ScriptManagerInterceptor(context));
         mInterceptors.add(new OpenExternalPlayerInterceptor(context));
     }
 
