@@ -29,7 +29,7 @@ public class EndCardsScriptManager implements ScriptManager {
     @Override
     public InputStream getStyles() {
         if (isEnabled) {
-            return Helpers.getAsset(mContext, ADDONS_DIR + "/" + "no_endcards.css");
+            return Helpers.getAsset(mContext, CORE_DIR + "/" + "no_endcards.css");
         }
         return null;
     }

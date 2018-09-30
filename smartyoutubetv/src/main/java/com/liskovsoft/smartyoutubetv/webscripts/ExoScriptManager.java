@@ -27,11 +27,11 @@ public class ExoScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnLoadScripts() {
-        return Helpers.getAsset(mContext, mOnLoadScripts);
+        return Helpers.getAssetMerged(mContext, mOnLoadScripts);
     }
 
     @Override
     public InputStream getStyles() {
-        return Helpers.getAsset(mContext, mStyles);
+        return Helpers.getAssetMerged(mContext, mStyles);
     }
 }

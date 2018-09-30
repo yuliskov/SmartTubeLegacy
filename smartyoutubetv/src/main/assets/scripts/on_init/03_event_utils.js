@@ -80,16 +80,16 @@ var EventUtils = {
         Utils.delayTillTestFnSuccess(fn, testFn);
     },
 
-    triggerEvent: function(element, type, keyCode) {
-        var el = element;
-        if (Utils.isSelector(element)) {
-            el = Utils.$(element);
+    triggerEvent: function(elementOrSelector, type, keyCode) {
+        var el = elementOrSelector;
+        if (Utils.isSelector(elementOrSelector)) {
+            el = Utils.$(elementOrSelector);
         }
 
-        console.log("EventUtils::triggerEvent: " + element + " " + type + " " + keyCode);
+        console.log("EventUtils::triggerEvent: " + elementOrSelector + " " + type + " " + keyCode);
 
         if (!el) {
-            console.warn("EventUtils::triggerEvent: unable to find " + element);
+            console.warn("EventUtils::triggerEvent: unable to find " + elementOrSelector);
             return;
         }
 

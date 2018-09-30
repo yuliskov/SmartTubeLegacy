@@ -1,18 +1,15 @@
-/*
-Description:
-On the WebView engine low resolution play icon appears before each clip.
-Fix that by replacing it with the simple black screen.
-*/
+/**
+ * Description:
+ * On the WebView engine low resolution play icon appears before each clip.
+ * Fix that by replacing it with the simple black screen.
+ */
 
 console.log("Scripts::Running script player_background_fix.js");
 
 function PlayerBackgroundFixAddon() {
     this.run = function() {
         if (DeviceUtils.isWebView()) {
-            var $this = this;
-            this.delayUntilPlayerBeInitialized(function() {
-                $this.hideShowPlayerBackground();
-            })
+            this.hideShowPlayerBackground();
         }
     };
 
@@ -29,7 +26,7 @@ function PlayerBackgroundFixAddon() {
         }
 
         var container = Utils.$(YouTubeConstants.PLAYER_WRAPPER_SELECTOR);
-        var loaderHtml = '<div class="loader-container"></div>';
+        var loaderHtml = '<div class="loader-container"></div>'; // don't make global, lost this ref
         var loader = Utils.appendHtml(container, loaderHtml);
 
         function startPlayer(event) {
@@ -65,15 +62,8 @@ function PlayerBackgroundFixAddon() {
         player.addEventListener('loadstart', startPlayer, false); // start loading
         player.addEventListener('playing', showPlayer, false); // finished loading
         player.addEventListener('abort', hidePlayer, false); // video closed
-        window.addEventListener('hashchange', hideShowPlayer, false);
+        // window.addEventListener('hashchange', hideShowPlayer, false);
         player.callbackSet = true;
-    };
-
-    this.delayUntilPlayerBeInitialized = function(fn) {
-        var testFn = function() {
-            return Utils.$(YouTubeConstants.PLAYER_PLAY_BUTTON_SELECTOR);
-        };
-        Utils.delayTillTestFnSuccess(fn, testFn);
     };
 }
 

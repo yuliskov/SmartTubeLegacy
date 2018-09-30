@@ -69,7 +69,16 @@ public class Helpers {
         return new SequenceInputStream(first, second);
     }
 
-    public static InputStream getAsset(Context ctx, List<String> paths) {
+    private static InputStream appendNewLine(InputStream textStream) {
+        InputStream newLineStream = new ByteArrayInputStream("\n".getBytes());
+        return appendStream(textStream, newLineStream);
+    }
+
+    public static InputStream getAssetMerged(Context ctx, List<String> paths) {
+        return getAssetMerged(ctx, paths, true);
+    }
+
+    public static InputStream getAssetMerged(Context ctx, List<String> paths, boolean newLine) {
         if (paths == null) {
             return null;
         }
@@ -78,11 +87,9 @@ public class Helpers {
 
         for (String path : paths) {
             InputStream asset = Helpers.getAsset(ctx, path);
-            if (is == null) {
-                is = asset;
-                continue;
-            }
-            is = new SequenceInputStream(is, asset);
+            if (newLine)
+                asset = appendNewLine(asset);
+            is = appendStream(is, asset);
         }
         return is;
     }
