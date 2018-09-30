@@ -87,14 +87,14 @@ function DoubleBackAddon() {
         if (isShown) {
             // this.addCancelListener();
             this.doClickOnCancel();
-            window.app && window.app.showExitMsg();
+            DeviceUtils.getApp().showExitMsg();
         }
         return isShown;
     };
 
     this.doExit = function() {
         console.log('exiting from the app');
-        window.app && window.app.closeApp();
+        DeviceUtils.getApp().closeApp();
     };
 }
 

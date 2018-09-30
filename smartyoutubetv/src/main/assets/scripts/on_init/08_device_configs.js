@@ -36,7 +36,7 @@ var WebViewConfig = {
     'NEO-U1': 'webm', // (github)
     'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     'X92': 'webm', // (gmail)
-    //'': 'webm' // all devices (entry must be last in the list)
+    '': 'webm' // all devices (entry must be last in the list)
 };
 
 /**
@@ -64,5 +64,5 @@ var XWalkConfig = {
     'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     'NEO-U1': 'webm', // (github)
     'X92': 'webm', // (gmail)
-    //'': 'webm' // all devices (entry must be last in the list)
+    '': 'webm' // all devices (entry must be last in the list)
 };

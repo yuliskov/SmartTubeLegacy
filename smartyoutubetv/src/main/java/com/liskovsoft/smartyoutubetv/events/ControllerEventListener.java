@@ -2,21 +2,23 @@ package com.liskovsoft.smartyoutubetv.events;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
-import com.liskovsoft.smartyoutubetv.injectors.MyWebViewClientDecorator;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
+import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
@@ -25,20 +27,20 @@ import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.VideoFormatInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ControllerEventListener implements Controller.EventListener {
+public class ControllerEventListener implements Controller.EventListener, Tab.EventListener {
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private static final String JS_INTERFACE_NAME = "app";
     private final Context mContext;
     private final KeysTranslator mTranslator;
     private final LoadingManager mLoadingManager;
     private final WebViewJavaScriptInterface mJSInterface;
-    //private final MyJsCssTweaksInjector mTweakInjector;
     private final VideoFormatInjector mFormatInjector;
     private final DecipherRoutineInjector mDecipherRoutineInjector;
     private final GenericEventResourceInjector mEventResourceInjector;
     private final StateUpdater mStateUpdater;
     private final MainApkUpdater mApkUpdater;
     private final Controller mController;
+    private final RequestInterceptor mInterceptor;
 
     public ControllerEventListener(Context context, Controller controller, KeysTranslator translator) {
         mContext = context;
@@ -48,20 +50,29 @@ public class ControllerEventListener implements Controller.EventListener {
         mLoadingManager = new LoadingManager(context);
         mApkUpdater = new MainApkUpdater(context);
 
-        //mTweakInjector = new MyJsCssTweaksInjector(mContext);
         mFormatInjector = new VideoFormatInjector(mContext);
         mDecipherRoutineInjector = new DecipherRoutineInjector(mContext);
         mEventResourceInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
+        mInterceptor = new MainRequestInterceptor(mContext);
     }
 
     @Override
-    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient client) {
-        return new MyWebViewClientDecorator(client, mContext);
+    public WebResourceResponse shouldInterceptRequest(Tab tab, WebResourceRequest request) {
+        String url = request.getUrl().toString();
+        return processRequest(url);
     }
 
     @Override
-    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client) {
+    public WebResourceResponse shouldInterceptRequest(Tab tab, String url) {
+        return processRequest(url);
+    }
+
+    private WebResourceResponse processRequest(String url) {
+        if (mInterceptor.test(url)) {
+            return mInterceptor.intercept(url);
+        }
+
         return null;
     }
 
@@ -70,15 +81,16 @@ public class ControllerEventListener implements Controller.EventListener {
     }
 
     @Override
-    public void onPageStarted(Tab tab) {
+    public void onPageStarted(Tab tab, Bitmap favicon) {
         // js must be added before page fully loaded???
         addJSInterface(tab);
     }
 
+    /**
+     * inject here custom styles and scripts
+     */
     @Override
-    public void onPageFinished(Tab tab) {
-        //WebView w = tab.getWebView();
-        //injectWebFiles(w);
+    public void onPageFinished(Tab tab, String url) {
         bindTabToInjectors(tab);
         syncCookies(tab);
     }
@@ -88,7 +100,7 @@ public class ControllerEventListener implements Controller.EventListener {
      * <br/>
      * In other places {@link WebView#getUrl WebView.getUrl} may return <code>null</code> because page not done loading.
      * <br/>
-     * I've got a mistake. I tried to wait {@link #onPageFinished(Tab) onPageFinished} event. DO NOT DO THIS.
+     * I've got a mistake. I tried to wait {@link #onPageFinished(Tab, String) onPageFinished} event. DO NOT DO THIS.
      * <br/>
      * <a href="https://stackoverflow.com/questions/13773037/webview-geturl-returns-null-because-page-not-done-loading">More info</a>
      * @param tab tab
@@ -108,6 +120,7 @@ public class ControllerEventListener implements Controller.EventListener {
 
     @Override
     public void onTabCreated(Tab tab) {
+        tab.setListener(this);
         mLoadingManager.show(tab);
     }
 
@@ -140,15 +153,6 @@ public class ControllerEventListener implements Controller.EventListener {
         mDecipherRoutineInjector.add(w);
         mEventResourceInjector.add(w);
     }
-
-    //private void injectWebFiles(WebView w) {
-    //    mTweakInjector.add(w);
-    //    mFormatInjector.add(w);
-    //    mDecipherRoutineInjector.add(w);
-    //    mEventResourceInjector.add(w);
-    //
-    //    mTweakInjector.inject();
-    //}
 
     private class LoadingManager {
         private final View mLoadingWidget;

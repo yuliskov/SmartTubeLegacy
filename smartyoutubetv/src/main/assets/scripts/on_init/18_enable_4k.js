@@ -25,7 +25,7 @@ function Enable4KAddon() {
     this.applyFakeResolution = function() {
         // NOTE: WONT WORK PROPERLY
 
-        DeviceUtils.forceEnableAllCodecs();
+        // DeviceUtils.forceEnableAllCodecs();
 
         // remove asterisk from dimensions value like "950x640*2"
         // window.devicePixelRatio = 1.0;

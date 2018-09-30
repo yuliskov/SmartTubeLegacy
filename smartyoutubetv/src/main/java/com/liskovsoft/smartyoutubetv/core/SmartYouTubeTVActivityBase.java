@@ -109,7 +109,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         mHeaders.put("user-agent", mUAManager.getUA());
 
         mController = new SimpleUIController(this);
-        mController.setEventListener(new ControllerEventListener(this, mController, mTranslator));
+        mController.setListener(new ControllerEventListener(this, mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);
         Intent intent = (icicle == null) ? transformIntentData(getIntent()) : null;

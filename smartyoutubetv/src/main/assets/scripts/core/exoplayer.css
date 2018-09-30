@@ -9,3 +9,8 @@
 video {
 	-webkit-filter: brightness(0);
 }
+
+/* hide debug panel */
+.html5-video-info-panel {
+    display: none !important;
+}

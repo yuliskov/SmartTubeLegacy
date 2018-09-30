@@ -103,6 +103,28 @@ public class Tab implements PictureListener {
     private DownloadListener mDownloadListener;
     // Main WebView wrapper
     private View mContainer;
+    private EventListener mListener;
+
+    public interface EventListener {
+        void onPageStarted(Tab tab, Bitmap favicon);
+        void onPageFinished(Tab tab, String url);
+        void onReceiveError(Tab tab);
+        /**
+         * Fired one time per session.<br/>
+         * Usually this means that network connection is good.<br/>
+         * Also it is a good place to hide any loading placeholder.
+         * @param tab tab object
+         */
+        void onLoadSuccess(Tab tab);
+        /**
+         * Called on new API 21+
+         */
+        WebResourceResponse shouldInterceptRequest(Tab tab, WebResourceRequest request);
+        /**
+         * Called on old API 14+
+         */
+        WebResourceResponse shouldInterceptRequest(Tab tab, String url);
+    }
 
     // Construct a new tab
     Tab(WebViewController wvcontroller, WebView w) {
@@ -163,6 +185,13 @@ public class Tab implements PictureListener {
         setWebView(w, true);
     }
 
+    public void setListener(EventListener listener) {
+        if (mListener != null) {
+            throw new IllegalStateException("Tab Listener could be added only once!");
+        }
+        mListener = listener;
+    }
+
     /**
      * Sets the WebView for this tab, correctly removing the old WebView from
      * the container view.
@@ -198,9 +227,6 @@ public class Tab implements PictureListener {
         if (mMainView != null) {
             restoreInitialScale();
 
-            onSetWebViewClient();
-            onSetWebChromeClient();
-
             mMainView.setWebViewClient(mWebViewClient);
             mMainView.setWebChromeClient(mWebChromeClient);
             // Attach DownloadManager so that downloads can start in an active
@@ -224,16 +250,6 @@ public class Tab implements PictureListener {
                 mSavedState = null;
             }
         }
-    }
-
-    private void onSetWebViewClient() {
-        WebViewClient newWebViewClient = mWebViewController.onSetWebViewClient(this, mWebViewClient);
-        mWebViewClient = newWebViewClient == null ? mWebViewClient : newWebViewClient;
-    }
-
-    private void onSetWebChromeClient() {
-        WebChromeClient newWebChromeClient = mWebViewController.onSetWebChromeClient(this, mWebChromeClient);
-        mWebChromeClient = newWebChromeClient == null ? mWebChromeClient : newWebChromeClient;
     }
 
     /**
@@ -884,13 +900,14 @@ public class Tab implements PictureListener {
             if (errorCode == WebViewClient.ERROR_UNKNOWN) // ignore fake errors on Android 7.0
                 return;
 
-            mWebViewController.onReceiveError(Tab.this);
+            if (mListener != null)
+                mListener.onReceiveError(Tab.this);
             mLoadSuccess = false;
         }
 
         private void onLoadSuccess() {
-            if (mLoadSuccess)
-                mWebViewController.onLoadSuccess(Tab.this);
+            if (mLoadSuccess && mListener != null)
+                mListener.onLoadSuccess(Tab.this);
 
             mLoadSuccess = false;
         }
@@ -943,7 +960,9 @@ public class Tab implements PictureListener {
             }
 
             // finally update the UI in the activity if it is in the foreground
-            mWebViewController.onPageStarted(Tab.this, view, favicon);
+            if (mListener != null)
+                mListener.onPageStarted(Tab.this, favicon);
+            mWebViewController.onPageStarted(Tab.this, favicon);
 
             updateBookmarkedStatus();
         }
@@ -960,7 +979,9 @@ public class Tab implements PictureListener {
                 sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
             }
             syncCurrentState(view, url);
-            mWebViewController.onPageFinished(Tab.this);
+            if (mListener != null)
+                mListener.onPageFinished(Tab.this, url);
+            mWebViewController.onPageFinished(Tab.this, url);
 
             onLoadSuccess();
         }
@@ -978,28 +999,31 @@ public class Tab implements PictureListener {
             mLoadSuccess = true;
 
             if (!mDisableOverrideUrlLoading && mInForeground) {
-                return mWebViewController.shouldOverrideUrlLoading(Tab.this,
-                        view, url);
+                return mWebViewController.shouldOverrideUrlLoading(Tab.this, url);
             } else {
                 return false;
             }
         }
 
-        /**
-         * Don't afraid that method does noting. It logic will be decorated inside {@link Tab#onSetWebViewClient()}
-         */
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
             Log.i(TAG, "should intercept1? " + url);
+
+            if (mListener != null) {
+                return mListener.shouldInterceptRequest(Tab.this, url);
+            }
+
             return super.shouldInterceptRequest(view, url);
         }
-
-        /**
-         * Don't afraid that method does noting. It logic will be decorated inside {@link Tab#onSetWebViewClient()}
-         */
+        
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             Log.i(TAG, "should intercept2? " + request);
+
+            if (mListener != null) {
+                return mListener.shouldInterceptRequest(Tab.this, request);
+            }
+
             return super.shouldInterceptRequest(view, request);
         }
     };
@@ -1149,12 +1173,11 @@ public class Tab implements PictureListener {
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             mCurrentState.mFavicon = icon;
-            mWebViewController.onFavicon(Tab.this, view, icon);
+            mWebViewController.onFavicon(Tab.this, icon);
         }
 
         @Override
-        public void onReceivedTouchIconUrl(WebView view, String url,
-                                           boolean precomposed) {
+        public void onReceivedTouchIconUrl(WebView view, String url, boolean precomposed) {
             final ContentResolver cr = mContext.getContentResolver();
             // Let precomposed icons take precedence over non-composed
             // icons.

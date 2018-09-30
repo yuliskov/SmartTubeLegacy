@@ -79,24 +79,12 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private int mMenuState;
     private boolean mMenuIsDown;
     private boolean mShouldShowErrorConsole;
-    private List<EventListener> mEventListeners = new ArrayList<>();
+    private List<EventListener> mListeners = new ArrayList<>();
     private Uri mDefaultUrl;
     private Map<String, String> mDefaultHeaders;
     private Intent mIntent;
 
     public interface EventListener {
-        void onReceiveError(Tab tab);
-        /**
-         * Fired one time per session.<br/>
-         * Usually this means that network connection is good.<br/>
-         * Also it is a good place to hide any loading placeholder.
-         * @param tab tab object
-         */
-        void onLoadSuccess(Tab tab);
-        WebViewClient onSetWebViewClient(Tab tab, WebViewClient client);
-        WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient client);
-        void onPageFinished(Tab tab);
-        void onPageStarted(Tab tab);
         void onControllerStart();
         void onSaveControllerState(Bundle state);
         void onRestoreControllerState(Bundle state);
@@ -479,17 +467,27 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     @Override
+    public void onPageStarted(Tab tab, Bitmap favicon) {
+        
+    }
+
+    @Override
+    public void onPageFinished(Tab tab, String url) {
+
+    }
+
+    @Override
     public void onReceivedTitle(Tab tab, String title) {
 
     }
 
     @Override
-    public void onFavicon(Tab tab, WebView view, Bitmap icon) {
+    public void onFavicon(Tab tab, Bitmap icon) {
 
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(Tab tab, WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(Tab tab, String url) {
         return false;
     }
 
@@ -1475,72 +1473,27 @@ public class Controller implements UiController, WebViewController, ActivityCont
     // My Custom Methods
 
     @Override
-    public void setEventListener(EventListener listener) {
-        mEventListeners.add(listener);
-    }
-
-    @Override
-    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient) {
-        WebViewClient result = null;
-        for (EventListener l : mEventListeners) {
-            result = l.onSetWebViewClient(tab, webViewClient);
-        }
-        return result;
-    }
-
-    @Override
-    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient) {
-        WebChromeClient result = null;
-        for (EventListener l : mEventListeners) {
-            result = l.onSetWebChromeClient(tab, webChromeClient);
-        }
-        return result;
-    }
-
-    @Override
-    public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
-        for (EventListener l : mEventListeners) {
-            l.onPageStarted(tab);
-        }
-    }
-
-
-    /**
-     * inject here custom styles and scripts
-     *
-     * @param tab
-     */
-    @Override
-    public void onPageFinished(Tab tab) {
-        for (EventListener l : mEventListeners) {
-            l.onPageFinished(tab);
-        }
-    }
-
-    @Override
-    public void onReceiveError(Tab tab) {
-        for (EventListener l : mEventListeners) {
-            l.onReceiveError(tab);
-        }
+    public void setListener(EventListener listener) {
+        mListeners.add(listener);
     }
 
     @Override
     public void onControllerStart() {
-        for (EventListener l : mEventListeners) {
+        for (EventListener l : mListeners) {
             l.onControllerStart();
         }
     }
 
     @Override
     public void onSaveControllerState(Bundle state) {
-        for (EventListener l : mEventListeners) {
+        for (EventListener l : mListeners) {
             l.onSaveControllerState(state);
         }
     }
 
     @Override
     public void onRestoreControllerState(Bundle state) {
-        for (EventListener l : mEventListeners) {
+        for (EventListener l : mListeners) {
             l.onRestoreControllerState(state);
         }
     }
@@ -1561,15 +1514,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     @Override
-    public void onLoadSuccess(Tab tab) {
-        for (EventListener l : mEventListeners) {
-            l.onLoadSuccess(tab);
-        }
-    }
-
-    @Override
     public void onTabCreated(Tab tab) {
-        for (EventListener l : mEventListeners) {
+        for (EventListener l : mListeners) {
             l.onTabCreated(tab);
         }
     }

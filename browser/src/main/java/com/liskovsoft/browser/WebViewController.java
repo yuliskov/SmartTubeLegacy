@@ -13,6 +13,8 @@ import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -35,17 +37,17 @@ public interface WebViewController {
 
     void createSubWindow(Tab tab);
 
-    void onPageStarted(Tab tab, WebView view, Bitmap favicon);
+    void onPageStarted(Tab tab, Bitmap favicon);
 
-    void onPageFinished(Tab tab);
+    void onPageFinished(Tab tab, String url);
 
     void onProgressChanged(Tab tab);
 
     void onReceivedTitle(Tab tab, final String title);
 
-    void onFavicon(Tab tab, WebView view, Bitmap icon);
+    void onFavicon(Tab tab, Bitmap icon);
 
-    boolean shouldOverrideUrlLoading(Tab tab, WebView view, String url);
+    boolean shouldOverrideUrlLoading(Tab tab, String url);
 
     boolean shouldOverrideKeyEvent(KeyEvent event);
 
@@ -107,17 +109,13 @@ public interface WebViewController {
 
     // My Custom Methods
     
-    void setEventListener(Controller.EventListener listener);
-    WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient);
-    WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient);
-    void onReceiveError(Tab tab);
+    void setListener(Controller.EventListener listener);
     void onControllerStart();
     void onSaveControllerState(Bundle state);
     void onRestoreControllerState(Bundle state);
     void setDefaultUrl(Uri url);
     void setDefaultHeaders(Map<String, String> headers);
     Map<String,String> getDefaultHeaders();
-    void onLoadSuccess(Tab tab);
 
     // End My Custom Methods
 }

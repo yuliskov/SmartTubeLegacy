@@ -10,6 +10,7 @@ import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 
+// TODO: delete
 public class MyWebViewClientDecorator extends WebViewClient {
     private final WebViewClient mWebViewClient;
     private final RequestInterceptor mInterceptor;

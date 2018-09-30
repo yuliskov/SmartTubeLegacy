@@ -67,18 +67,18 @@ public class PreloadController implements WebViewController {
     }
 
     @Override
-    public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
+    public void onPageStarted(Tab tab, Bitmap favicon) {
         if (LOGD_ENABLED) Log.d(LOGTAG, "onPageStarted()");
-        if (view != null) {
+        if (tab.getWebView() != null) {
             // Clear history of all previously visited pages. When the
             // user visits a preloaded tab, the only item in the history
             // list should the currently viewed page.
-            view.clearHistory();
+            tab.getWebView().clearHistory();
         }
     }
 
     @Override
-    public void onPageFinished(Tab tab) {
+    public void onPageFinished(Tab tab, String url) {
         if (LOGD_ENABLED) Log.d(LOGTAG, "onPageFinished()");
         if (tab != null) {
             final WebView view = tab.getWebView();
@@ -101,12 +101,12 @@ public class PreloadController implements WebViewController {
     }
 
     @Override
-    public void onFavicon(Tab tab, WebView view, Bitmap icon) {
+    public void onFavicon(Tab tab, Bitmap icon) {
         if (LOGD_ENABLED) Log.d(LOGTAG, "onFavicon()");
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(Tab tab, WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(Tab tab, String url) {
         if (LOGD_ENABLED) Log.d(LOGTAG, "shouldOverrideUrlLoading()");
         return false;
     }
@@ -258,22 +258,7 @@ public class PreloadController implements WebViewController {
     // My Custom Methods
 
     @Override
-    public void setEventListener(EventListener listener) {
-
-    }
-
-    @Override
-    public WebViewClient onSetWebViewClient(Tab tab, WebViewClient webViewClient) {
-        return null;
-    }
-
-    @Override
-    public WebChromeClient onSetWebChromeClient(Tab tab, WebChromeClient webChromeClient) {
-        return null;
-    }
-
-    @Override
-    public void onReceiveError(Tab tab) {
+    public void setListener(EventListener listener) {
 
     }
 
@@ -305,11 +290,6 @@ public class PreloadController implements WebViewController {
     @Override
     public Map<String, String> getDefaultHeaders() {
         return null;
-    }
-
-    @Override
-    public void onLoadSuccess(Tab tab) {
-        
     }
 
     // End My Custom Methods

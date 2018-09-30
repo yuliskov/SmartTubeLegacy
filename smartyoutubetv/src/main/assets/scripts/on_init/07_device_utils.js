@@ -45,10 +45,12 @@ var DeviceUtils = {
 
         var $this = this;
         window.MediaSource.isTypeSupported = function(native) {
-            return function(str) {
-                if ($this.specCmp(str, codec))
+            return function(fullCodec) {
+                // console.log('DeviceUtils::isTypeSupported ' + fullCodec);
+                // YouTube's 4K videos encoded exclusively in WEBM codec
+                if ($this.specCmp(fullCodec, codec) && !$this.is4KCodec(codec))
                     return false;
-                return native.call(window.MediaSource, str);
+                return native.call(window.MediaSource, fullCodec);
             }
         }(window.MediaSource.isTypeSupported);
     },
@@ -61,23 +63,23 @@ var DeviceUtils = {
         this.disableCodec(this.MP4);
     },
 
-    /*
-    Compare special strings.
-    Returns true even when the second string is empty: this.specCmp('abc', '') == true
-    Or when strings partially matched: this.specCmp('abc', 'ab') == true
-    */
-    specCmp: function(str1, str2) {
-        str1 = str1.toLowerCase();
-        str2 = str2.toLowerCase();
-        return str1.indexOf(str2) >= 0;
+    /**
+     * Compare special strings.
+     * Returns true even when the second string is empty: this.specCmp('abc', '') == true
+     * Or when strings partially matched: this.specCmp('abc', 'ab') == true
+     */
+    specCmp: function(fullCodec, codec) {
+        fullCodec = fullCodec.toLowerCase();
+        codec = codec.toLowerCase();
+        return fullCodec.indexOf(codec) >= 0;
     },
 
     getApp: function() {
-        if (!app) {
+        if (!window.app) {
             console.log("DeviceUtils::global var 'app' isn't defined");
         }
 
-        return app;
+        return window.app;
     },
 
     getEngineType: function() {
@@ -96,6 +98,18 @@ var DeviceUtils = {
     isXWalk: function() {
         var type = this.getEngineType();
         return type == this.XWALK;
+    },
+
+    /**
+     * YouTube's 4K videos encoded exclusively in WEBM codec
+     */
+    is4KCodec: function(codec) {
+        if (codec.indexOf('width=3840') != -1) {
+            console.log('DeviceUtils::force enable ' + codec + ' codec');
+            return true;
+        }
+
+        return false;
     }
 };
 
