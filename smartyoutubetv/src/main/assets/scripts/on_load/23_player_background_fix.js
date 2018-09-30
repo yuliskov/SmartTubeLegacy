@@ -7,6 +7,7 @@
 console.log("Scripts::Running script player_background_fix.js");
 
 function PlayerBackgroundFixAddon() {
+    this.loaderHtml = '<div class="loader-container"></div>';
     this.run = function() {
         if (DeviceUtils.isWebView()) {
             this.hideShowPlayerBackground();
@@ -17,7 +18,7 @@ function PlayerBackgroundFixAddon() {
         var player = document.getElementsByTagName('video')[0];
         if (!player) {
             console.log("PlayerBackgroundFixAddon:: player not exist... waiting for the player...");
-            setTimeout(this.hideShowPlayerBackground, 500);
+            Utils.setDelay(this.hideShowPlayerBackground, this, 500);
             return;
         }
 
@@ -26,8 +27,8 @@ function PlayerBackgroundFixAddon() {
         }
 
         var container = Utils.$(YouTubeConstants.PLAYER_WRAPPER_SELECTOR);
-        var loaderHtml = '<div class="loader-container"></div>'; // don't make global, lost this ref
-        var loader = Utils.appendHtml(container, loaderHtml);
+
+        var loader = Utils.appendHtml(container, this.loaderHtml);
 
         function startPlayer(event) {
             var howStarted = event == null ? "normally" : "from event";
@@ -48,7 +49,7 @@ function PlayerBackgroundFixAddon() {
 
         // fix when clicked on the next button
         function hideShowPlayer() {
-            if (!player.currentTime) { // player not initialized
+            if (!player.played.length) { // player not initialized
                 hidePlayer();
             } else {
                 showPlayer();
@@ -62,7 +63,7 @@ function PlayerBackgroundFixAddon() {
         player.addEventListener('loadstart', startPlayer, false); // start loading
         player.addEventListener('playing', showPlayer, false); // finished loading
         player.addEventListener('abort', hidePlayer, false); // video closed
-        // window.addEventListener('hashchange', hideShowPlayer, false);
+        window.addEventListener('hashchange', hideShowPlayer, false); // detect open new video without closing current
         player.callbackSet = true;
     };
 }

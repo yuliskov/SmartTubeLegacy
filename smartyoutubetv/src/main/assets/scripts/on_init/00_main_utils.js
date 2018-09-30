@@ -208,12 +208,19 @@ var Utils = {
         var interval = setInterval(delayFnInt, delayIntervalMS);
     },
 
-    setSmallDelay: function(fn, obj) {
+    /**
+     * Same as {@link setTimeout} but preserves <b>this</b> reference
+     */
+    setDelay: function(fn, obj, delayMS) {
         if (fn) {
             setTimeout(function() {
                 fn.call(obj);
-            }, 1000);
+            }, delayMS);
         }
+    },
+
+    setSmallDelay: function(fn, obj) {
+        this.setDelay(fn, obj, 1000);
     }
 };
 
