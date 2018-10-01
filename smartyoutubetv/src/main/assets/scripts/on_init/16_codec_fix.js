@@ -52,10 +52,15 @@ function CodecFixAddon() {
             return false;
         if (!window.thisDevice)
             window.thisDevice = DeviceUtils.getDeviceName();
+        if (!window.thisDeviceHardware)
+            window.thisDeviceHardware = DeviceUtils.getDeviceHardware();
         var argsLen = arguments.length;
         for (var i = 0; i < argsLen; i++) {
             var device = arguments[i];
             if (DeviceUtils.specCmp(window.thisDevice, device)) {
+                return true;
+            }
+            if (DeviceUtils.specCmp(window.thisDeviceHardware, device)) {
                 return true;
             }
         }

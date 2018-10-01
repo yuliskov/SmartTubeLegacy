@@ -18,7 +18,7 @@ function PlayerBackgroundFixAddon() {
         var player = document.getElementsByTagName('video')[0];
         if (!player) {
             console.log("PlayerBackgroundFixAddon:: player not exist... waiting for the player...");
-            Utils.setDelay(this.hideShowPlayerBackground, this, 500);
+            Utils.postDelayed(this.hideShowPlayerBackground, this, 500);
             return;
         }
 

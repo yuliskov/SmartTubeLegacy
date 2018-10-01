@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -77,6 +78,16 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return Helpers.getDeviceName();
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public String getDeviceHardware() {
+        return Build.HARDWARE;
     }
 
     /*

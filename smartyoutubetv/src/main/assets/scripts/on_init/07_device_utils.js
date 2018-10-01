@@ -20,15 +20,10 @@ var DeviceUtils = {
             return;
         }
 
-        window.MediaSource.isTypeSupported = function(native) {
-            return function(str) {
-                if (str.indexOf('3840') != -1) {
-                    console.log('DeviceUtils::force enable ' + str + ' codec');
-                    return true;
-                }
-                return native.call(window.MediaSource, str);
-            }
-        }(window.MediaSource.isTypeSupported);
+        window.MediaSource.isTypeSupported = function(type) {
+            console.log('DeviceUtils::force enable ' + type + ' codec');
+            return true;
+        };
     },
 
     disableCodec: function(codec) {
@@ -68,10 +63,10 @@ var DeviceUtils = {
      * Returns true even when the second string is empty: this.specCmp('abc', '') == true
      * Or when strings partially matched: this.specCmp('abc', 'ab') == true
      */
-    specCmp: function(fullCodec, codec) {
-        fullCodec = fullCodec.toLowerCase();
-        codec = codec.toLowerCase();
-        return fullCodec.indexOf(codec) >= 0;
+    specCmp: function(fullSpec, spec) {
+        fullSpec = fullSpec.toLowerCase();
+        spec = spec.toLowerCase();
+        return fullSpec.indexOf(spec) >= 0;
     },
 
     getApp: function() {
@@ -88,6 +83,10 @@ var DeviceUtils = {
 
     getDeviceName: function() {
         return this.getApp().getDeviceName();
+    },
+
+    getDeviceHardware: function() {
+        return this.getApp().getDeviceHardware();
     },
     
     isWebView: function() {
@@ -121,7 +120,7 @@ var DeviceUtils = {
         }
 
         // Allow user to create shortcuts, i.e. just "webm"
-        let formats = {
+        var formats = {
             ogg: 'video/ogg; codecs="theora"',
             h264: 'video/mp4; codecs="avc1.42E01E"',
             webm: 'video/webm; codecs="vp8, vorbis"',

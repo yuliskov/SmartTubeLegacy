@@ -19,51 +19,61 @@ function Enable4KAddon() {
     this.INIT_HEIGHT_CALLS = 31;
 
     this.run = function() {
+        // DeviceUtils.forceEnableAllCodecs();
         this.increaseResolution();
+        // this.awaitVideoElement();
     };
 
+    this.awaitVideoElement = function() {
+        var video = Utils.$('video');
+        if (!video) {
+            Utils.postDelayed(this.awaitVideoElement, this, 100);
+            return;
+        }
+        this.updatePlayerSupportedTypes(video);
+        this.setErrorLogging(video);
+    };
+
+    this.setErrorLogging = function(video) {
+        // video.addEventListener('error', function() {
+        //     console.log("Enable4KAddon::error occurred " + video.error.message);
+        // });
+
+        video.onerror = function() {
+            console.log("Enable4KAddon::error occurred " + video.error.code + "; details: " + video.error.message);
+        };
+    };
+
+    this.updatePlayerSupportedTypes = function(video) {
+        video.canPlayType = function(type) {
+            console.log("Enable4KAddon::canPlayType " + type);
+            return "probably";
+        };
+    };
+
+    /**
+     * Overrides {@link window.innerWidth} and {@link window.innerHeight} properties<br/>
+     * There are no need to override other similar props.<br/>
+     * List of that props (just for your reference):<br/>
+     * {@link window.outerWidth}<br/>
+     * {@link window.outerHeight}<br/>
+     * {@link document.documentElement.clientWidth}<br/>
+     * {@link document.documentElement.clientHeight}<br/>
+     * {@link window.screen.availWidth}<br/>
+     * {@link window.screen.availHeight}<br/>
+     * {@link window.screen.width}<br/>
+     * {@link window.screen.height}<br/>
+     */
     this.increaseResolution = function() {
         // NOTE: WONT WORK PROPERLY
-
-        // DeviceUtils.forceEnableAllCodecs();
-
         // remove asterisk from dimensions value like "950x640*2"
         // window.devicePixelRatio = 1.0;
 
-        // if (!app)
-        //     return;
-
-        // android resolution (can differ from physical resolution)
-        // var arr = app.getDeviceResolution().split('x');
-        // var w = arr[0], h = arr[1];
-
-        // fake resolution (does't have influence on video resolution)
-        // 4k: 3840 x 2160
-        // 2k: 2560 x 1440
+        // imitate 4K resolution
         var w = 3840, h = 2160;
 
         Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
         Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
-
-        // Utils.overridePropTemp("window.innerWidth", w, timeoutMS);
-        // Utils.overridePropTemp("window.innerHeight", h, timeoutMS);
-
-        // Utils.overrideProp("window.innerWidth", w);
-        // Utils.overrideProp("window.innerHeight", h);
-
-        // NOTE: there is no need to override props below
-
-        // Utils.overrideProp("window.outerWidth", w);
-        // Utils.overrideProp("window.outerHeight", h);
-        //
-        // Utils.overrideProp("document.documentElement.clientWidth", w);
-        // Utils.overrideProp("document.documentElement.clientHeight", h);
-        //
-        // Utils.overrideProp("window.screen.availWidth", w);
-        // Utils.overrideProp("window.screen.availHeight", h);
-        //
-        // Utils.overrideProp("window.screen.width", w);
-        // Utils.overrideProp("window.screen.height", h);
     };
 }
 

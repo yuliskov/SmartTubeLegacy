@@ -1,6 +1,6 @@
 /**
  * Description: Contains codec configurations for different devices.
- * Format: {'device name': 'codecs to exclude', ...}
+ * Format: {'device name': 'disabled codec', ...}
  * Device's name should be named accordingly to the CPU-Z.
  * You can find name here: CPU-Z > Device tab > Model field
  */
@@ -11,10 +11,12 @@ console.log("Scripts::Running script device_configs.js");
  * Configuration for the WebView browser's engine (1th and 3rd launchers)
  */
 var WebViewConfig = {
-    'AOSP on p383 (p383)': 'mp4', // diqus
-    'UNI (m201_th12)': 'mp4', // gmail
+    'amlogic': 'mp4', // all amlogic based boards
+    // 'X96mini (p281)': 'mp4', // amlogic: Telegram group
+    'AOSP on p383 (p383)': 'mp4', // amlogic: disqus
+    'UNI (m201_th12)': 'mp4', // amlogic: gmail
     // 'IPTV-1000': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/119
-    'MiBOX3S (queenchristina)': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/124
+    'MiBOX3S (queenchristina)': 'mp4', // amlogic: https://github.com/yuliskov/SmartYouTubeTV/issues/124
     '(vbox86p)': 'mp4', // Genymotion virtual device
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9
     'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
@@ -25,7 +27,7 @@ var WebViewConfig = {
     'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
     'MiTV2-40 (hancock)': 'webm', // MiTV2 40" (gmail)
     'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
-    'MiTV4 (pulpfiction)': 'mp4', // MiTV4 (github > issues)
+    'MiTV4 (pulpfiction)': 'mp4', // amlogic: MiTV4 (github > issues)
     'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
     'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
     'NG3128HD': 'webm, mp4', // (github > issues)
@@ -43,7 +45,9 @@ var WebViewConfig = {
  * Configuration for the CrossWalk browser's engine (2nd and 4th launchers)
  */
 var XWalkConfig = {
-    'AOSP on p383 (p383)': 'mp4', // diqus
+    'amlogic': 'mp4', // all amlogic based boards
+    // 'X96mini (p281)': 'mp4', // amlogic: Telegram group
+    'AOSP on p383 (p383)': 'mp4', // amlogic: disqus
     'UNI (m201_th12)': 'mp4', // gmail
     '(vbox86p)': 'mp4', // Genymotion virtual device
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9

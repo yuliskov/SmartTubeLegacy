@@ -185,7 +185,7 @@ var Utils = {
     /**
      * Same as {@link setTimeout} but preserves <b>this</b> reference
      */
-    setDelay: function(fn, obj, delayMS) {
+    postDelayed: function(fn, obj, delayMS) {
         if (fn) {
             setTimeout(function() {
                 fn.call(obj);
@@ -193,8 +193,8 @@ var Utils = {
         }
     },
 
-    setSmallDelay: function(fn, obj) {
-        this.setDelay(fn, obj, 1000);
+    postSmallDelayed: function(fn, obj) {
+        this.postDelayed(fn, obj, 1000);
     }
 };
 
