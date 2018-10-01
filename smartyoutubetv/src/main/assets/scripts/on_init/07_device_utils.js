@@ -15,8 +15,11 @@ var DeviceUtils = {
     },
 
     forceEnableAllCodecs: function() {
+        if (!window.MediaSource)
+            window.MediaSource = window.WebKitMediaSource;
+
         if (!window.MediaSource) {
-            console.log('DeviceUtils::disableCodec: MediaSource is null');
+            console.log('DeviceUtils::forceEnableAllCodecs: MediaSource is null');
             return;
         }
 
@@ -31,6 +34,10 @@ var DeviceUtils = {
             console.log('DeviceUtils::disableCodec: codec is null');
             return;
         }
+
+        if (!window.MediaSource)
+            window.MediaSource = window.WebKitMediaSource;
+
         if (!window.MediaSource) {
             console.log('DeviceUtils::disableCodec: MediaSource is null');
             return;
@@ -39,15 +46,18 @@ var DeviceUtils = {
         console.log('DeviceUtils::disableCodec: ' + codec + ' on ' + window.thisDevice + ' device');
 
         var $this = this;
-        window.MediaSource.isTypeSupported = function(native) {
+
+        function overrideIsTypeSupported(origin, obj) {
             return function(fullCodec) {
                 // console.log('DeviceUtils::isTypeSupported ' + fullCodec);
                 // YouTube's 4K videos encoded exclusively in WEBM codec
                 if ($this.specCmp(fullCodec, codec) && !$this.is4KCodec(codec))
                     return false;
-                return native.call(window.MediaSource, fullCodec);
+                return origin.call(obj, fullCodec);
             }
-        }(window.MediaSource.isTypeSupported);
+        }
+
+        window.MediaSource.isTypeSupported = overrideIsTypeSupported(window.MediaSource.isTypeSupported, window.MediaSource);
     },
 
     disableWebmCodec: function() {

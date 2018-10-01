@@ -27,7 +27,7 @@ function Enable4KAddon() {
     this.awaitVideoElement = function() {
         var video = Utils.$('video');
         if (!video) {
-            Utils.postDelayed(this.awaitVideoElement, this, 100);
+            Utils.postDelayed(this.awaitVideoElement, this, 10000);
             return;
         }
         this.updatePlayerSupportedTypes(video);
@@ -35,13 +35,21 @@ function Enable4KAddon() {
     };
 
     this.setErrorLogging = function(video) {
-        // video.addEventListener('error', function() {
-        //     console.log("Enable4KAddon::error occurred " + video.error.message);
-        // });
+        video.addEventListener('error', function() {
+            console.log("Enable4KAddon::error occurred " + video.error.message);
+        });
 
-        video.onerror = function() {
-            console.log("Enable4KAddon::error occurred " + video.error.code + "; details: " + video.error.message);
-        };
+        video.addEventListener('canplay', function() {
+            console.log("Enable4KAddon::canplay occurred " + video.error.message);
+        });
+
+        video.addEventListener('canplaythrough', function() {
+            console.log("Enable4KAddon::canplaythrough occurred " + video.error.message);
+        });
+
+        // video.onerror = function() {
+        //     console.log("Enable4KAddon::error occurred " + video.error.code + "; details: " + video.error.message);
+        // };
     };
 
     this.updatePlayerSupportedTypes = function(video) {
