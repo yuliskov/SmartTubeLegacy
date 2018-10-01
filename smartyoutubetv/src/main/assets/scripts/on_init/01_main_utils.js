@@ -4,32 +4,6 @@ Description: Common routines
 
 console.log("Scripts::Running script main_utils.js");
 
-var KeyCodes = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
-    ENTER: 13,
-    ESC: 27
-};
-
-var EventTypes = {
-    KEY_UP: 'keyup',
-    KEY_DOWN: 'keydown',
-    HASH_CHANGE: 'hashchange'
-};
-
-var YouTubeConstants = {
-    APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
-    SEARCH_FIELD_SELECTOR: '#search-input',
-    PLAYER_CONTAINER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
-    PLAYER_CONTAINER_CLASS_NAME: 'watch',
-    PLAYER_WRAPPER_SELECTOR: '.html5-video-container', // parent element of the 'video' tag
-    PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
-    PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',
-    PLAYER_URL_KEY: 'watch'
-};
-
 var Utils = {
     checkIntervalMS: 3000,
     listeners: {},
@@ -74,7 +48,7 @@ var Utils = {
     overrideProp: function(propStr, value) {
         var arr = propStr.split(".");      // Split the string using dot as separator
         var lastVal = arr.pop();       // Get last element
-        var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separatos
+        var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separator
 
         Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
     },
@@ -83,7 +57,7 @@ var Utils = {
      * Override prop limited number of times.
      * After limit is reached prop will be reverted to the original state.
      */
-    overridePropNum: function(propStr, value, nums) {
+    overridePropNum: function(propStr, value, nums) { // pure function
         var originVal = eval(propStr);
 
         var arr = propStr.split(".");      // Split the string using dot as separator
