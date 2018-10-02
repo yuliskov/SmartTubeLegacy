@@ -139,6 +139,32 @@ var DeviceUtils = {
         };
 
         return video.canPlayType(formats[type] || type);
+    },
+
+    // variable number of arguments
+    /**
+     * Compares current device with device spec supplied as parameter<br/>
+     * <b>Device spec</b> could be short device name or name of the board's hardware
+     * @returns {boolean} is this my device
+     */
+    isMyDevice: function() {
+        if (arguments.length == 0)
+            return false;
+        if (!window.thisDevice)
+            window.thisDevice = DeviceUtils.getDeviceName();
+        if (!window.thisDeviceHardware)
+            window.thisDeviceHardware = DeviceUtils.getDeviceHardware();
+        var argsLen = arguments.length;
+        for (var i = 0; i < argsLen; i++) {
+            var device = arguments[i];
+            if (DeviceUtils.specCmp(window.thisDevice, device)) {
+                return true;
+            }
+            if (DeviceUtils.specCmp(window.thisDeviceHardware, device)) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 

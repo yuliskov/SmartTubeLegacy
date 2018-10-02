@@ -183,14 +183,34 @@ var Utils = {
     },
 
     /**
-     * Same as {@link setTimeout} but preserves <b>this</b> reference
+     * Same as {@link setInterval} but preserves <b>this</b> reference
      */
-    postDelayed: function(fn, obj, delayMS) {
+    postCycled: function(fn, obj, delayMS) {
+        var result = null;
         if (fn) {
-            setTimeout(function() {
+            result = setInterval(function() {
                 fn.call(obj);
             }, delayMS);
         }
+        return result;
+    },
+
+    /**
+     * Same as {@link setTimeout} but preserves <b>this</b> reference
+     */
+    postDelayed: function(fn, obj, delayMS) {
+        var result = null;
+        if (fn) {
+            result = setTimeout(function() {
+                fn.call(obj);
+            }, delayMS);
+        }
+        return result;
+    },
+
+    cancelPost: function(result) {
+        clearTimeout(result);
+        clearInterval(result);
     },
 
     postSmallDelayed: function(fn, obj) {

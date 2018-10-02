@@ -33,7 +33,7 @@ function CodecFixAddon() {
      */
     this.applyCodecFixes = function(deviceMap) {
         for (var device in deviceMap) {
-            if (this.isThisDevice(device)) {
+            if (DeviceUtils.isMyDevice(device)) {
                 // multiple codecs supported, divided by comma
                 var codecs = deviceMap[device].split(',');
                 var codecsLen = codecs.length;
@@ -44,27 +44,6 @@ function CodecFixAddon() {
                 break;
             }
         }
-    };
-
-    // variable number of arguments
-    this.isThisDevice = function() {
-        if (arguments.length == 0)
-            return false;
-        if (!window.thisDevice)
-            window.thisDevice = DeviceUtils.getDeviceName();
-        if (!window.thisDeviceHardware)
-            window.thisDeviceHardware = DeviceUtils.getDeviceHardware();
-        var argsLen = arguments.length;
-        for (var i = 0; i < argsLen; i++) {
-            var device = arguments[i];
-            if (DeviceUtils.specCmp(window.thisDevice, device)) {
-                return true;
-            }
-            if (DeviceUtils.specCmp(window.thisDeviceHardware, device)) {
-                return true;
-            }
-        }
-        return false;
     };
 }
 

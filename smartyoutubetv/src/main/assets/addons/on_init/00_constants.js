@@ -16,7 +16,8 @@ var KeyCodes = {
 var EventTypes = {
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
-    HASH_CHANGE: 'hashchange'
+    HASH_CHANGE: 'hashchange',
+    PLAYER_PLAY: 'play'
 };
 
 var YouTubeConstants = {
