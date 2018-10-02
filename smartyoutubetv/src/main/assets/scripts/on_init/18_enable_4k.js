@@ -19,7 +19,7 @@ function Enable4KAddon() {
     this.INIT_HEIGHT_CALLS = 31;
 
     this.run = function() {
-        // DeviceUtils.forceEnableAllCodecs();
+        DeviceUtils.forceEnableAllCodecs();
         this.increaseResolution();
         // this.awaitVideoElement();
     };
@@ -27,14 +27,18 @@ function Enable4KAddon() {
     this.awaitVideoElement = function() {
         var video = Utils.$('video');
         if (!video) {
-            Utils.postDelayed(this.awaitVideoElement, this, 10000);
+            Utils.postDelayed(this.awaitVideoElement, this, 100);
             return;
         }
-        this.updatePlayerSupportedTypes(video);
         this.setErrorLogging(video);
+        this.updatePlayerSupportedTypes(video);
     };
 
     this.setErrorLogging = function(video) {
+        video.addEventListener('play', function() {
+            console.log("Enable4KAddon::on play");
+        });
+
         video.addEventListener('error', function() {
             console.log("Enable4KAddon::error occurred " + video.error.message);
         });
