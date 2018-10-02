@@ -19,7 +19,9 @@ function Enable4KAddon() {
     this.INIT_HEIGHT_CALLS = 31;
 
     this.run = function() {
-        DeviceUtils.forceEnableAllCodecs();
+        if (navigator.mediaCapabilities)
+            Utils.logMethod(navigator.mediaCapabilities.decodingInfo, navigator.mediaCapabilities);
+        // DeviceUtils.forceEnableAllCodecs();
         this.increaseResolution();
         // this.awaitVideoElement();
     };

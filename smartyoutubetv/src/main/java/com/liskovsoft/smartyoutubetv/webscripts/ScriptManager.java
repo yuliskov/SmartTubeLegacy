@@ -3,10 +3,11 @@ package com.liskovsoft.smartyoutubetv.webscripts;
 import java.io.InputStream;
 
 public interface ScriptManager {
-    String ROOT_DIR = "scripts";
-    String ON_INIT_DIR = ROOT_DIR + "/" + "on_init";
-    String ON_LOAD_DIR = ROOT_DIR + "/" + "on_load";
-    String CORE_DIR = ROOT_DIR + "/" + "core";
+    String ADDONS_ROOT_DIR = "addons";
+    String ADDONS_INIT_DIR = ADDONS_ROOT_DIR + "/" + "on_init";
+    String ADDONS_LOAD_DIR = ADDONS_ROOT_DIR + "/" + "on_load";
+    String ADDONS_STYLES_DIR = ADDONS_ROOT_DIR + "/" + "styles";
+    String CORE_ROOT_DIR = "core";
     InputStream getOnInitScripts();
     InputStream getOnLoadScripts();
     InputStream getStyles();

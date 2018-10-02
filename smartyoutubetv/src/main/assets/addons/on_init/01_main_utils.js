@@ -45,7 +45,7 @@ var Utils = {
         return d.getTime();
     },
 
-    overrideProp: function(propStr, value) {
+    overrideProp: function(propStr, value) { // pure function
         var arr = propStr.split(".");      // Split the string using dot as separator
         var lastVal = arr.pop();       // Get last element
         var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separator

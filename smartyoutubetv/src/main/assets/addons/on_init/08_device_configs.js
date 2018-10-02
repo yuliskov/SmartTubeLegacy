@@ -42,3 +42,10 @@ var XWalkConfig = {
     '32T18': '', // KTU84M (gmail, tailand)
     '': 'webm' // other devices (entry must be the last in the list)
 };
+
+/**
+ * How often video should by synced with audio in seconds
+ */
+var VideoSyncConfig = {
+    'X96mini (p281)': 60, // amlogic: Telegram group
+};

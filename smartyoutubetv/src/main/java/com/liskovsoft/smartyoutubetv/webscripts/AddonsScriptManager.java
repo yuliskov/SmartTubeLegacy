@@ -6,23 +6,22 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import java.io.InputStream;
 import java.util.List;
 
-public class ExoScriptManager implements ScriptManager {
+public class AddonsScriptManager implements ScriptManager {
     private final Context mContext;
-    private List<String> mOnLoadScripts;
-    private List<String> mStyles;
+    private final List<String> mOnInitScripts;
+    private final List<String> mOnLoadScripts;
+    private final List<String> mStyles;
 
-    public ExoScriptManager(Context context) {
+    public AddonsScriptManager(Context context) {
         mContext = context;
-
-        if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            mOnLoadScripts = Helpers.getAssetFiles(context, CORE_ROOT_DIR, "exoplayer.js");
-            mStyles = Helpers.getAssetFiles(context, CORE_ROOT_DIR, "exoplayer.css");
-        }
+        mOnInitScripts = Helpers.getAssetFiles(mContext, ADDONS_INIT_DIR, ".js");
+        mOnLoadScripts = Helpers.getAssetFiles(mContext, ADDONS_LOAD_DIR, ".js");
+        mStyles = Helpers.getAssetFiles(mContext, ADDONS_STYLES_DIR, ".css");
     }
 
     @Override
     public InputStream getOnInitScripts() {
-        return null;
+        return Helpers.getAssetMerged(mContext, mOnInitScripts);
     }
 
     @Override

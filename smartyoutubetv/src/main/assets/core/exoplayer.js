@@ -148,15 +148,11 @@ function ExoUtils() {
         // we can't pause video because history will not work
         function onStart() {
             console.log('ExoUtils.onStart called');
-            // this style already in exoplayer.css
-            // player.style['-webkit-filter'] = 'brightness(0)';
             // msg 4 future me
             // 'paused' video won't invoke history update
-            // player.muted = true;
-            // player.volume = 0;
             // don't call pause!!! or video remains paused event after play
             player.play();
-            player.volume = 0;
+            player.muted = true;
         }
 
         onStart();
@@ -168,7 +164,7 @@ function ExoUtils() {
         // 'loadeddata' is first event when video can be muted
         player.addEventListener('loadeddata', onStart, false);
 
-        player.setAttribute(callbackSet, true);
+        player.setAttribute(callbackSet, "true");
     };
 
     // supply selector list
