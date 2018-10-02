@@ -195,6 +195,16 @@ var Utils = {
 
     postSmallDelayed: function(fn, obj) {
         this.postDelayed(fn, obj, 1000);
+    },
+
+    logMethod: function(fn, obj) {
+        if (!obj || !fn)
+            return;
+
+        obj[fn.name] = function() {
+            console.log("Utils::logMethod: " + fn + ' ' + arguments);
+            return fn.apply(obj, arguments);
+        };
     }
 };
 
