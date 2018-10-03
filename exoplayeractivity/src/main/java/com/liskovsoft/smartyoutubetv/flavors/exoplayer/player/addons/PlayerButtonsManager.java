@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
 import java.util.HashMap;
@@ -145,19 +146,31 @@ public class PlayerButtonsManager {
 
     @TargetApi(17)
     private void displayShareDialog() {
+        String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerActivity.VIDEO_ID);
+        Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
+        PlayerUtil.showMultiChooser(mPlayerActivity, videoUrl);
+    }
+
+    @TargetApi(17)
+    private void displayShareDialog2() {
+        Intent openIntent = new Intent();
+        openIntent.setAction(Intent.ACTION_VIEW);
+        String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerActivity.VIDEO_ID);
+        Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
+        openIntent.setData(videoUrl);
+        mPlayerActivity.startActivity(openIntent);
+    }
+
+    @TargetApi(17)
+    private void displayShareDialogOld() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerActivity.VIDEO_ID);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, convertToUri(videoId).toString());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, PlayerUtil.convertToFullUrl(videoId).toString());
         sendIntent.setType("text/plain");
         Intent chooserIntent = Intent.createChooser(sendIntent, mPlayerActivity.getResources().getText(R.string.send_to));
         chooserIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         mPlayerActivity.startActivity(chooserIntent);
-    }
-
-    private Uri convertToUri(String videoId) {
-        String url = String.format("https://www.youtube.com/watch?v=%s", videoId);
-        return Uri.parse(url);
     }
 
     public Intent createResultIntent() {

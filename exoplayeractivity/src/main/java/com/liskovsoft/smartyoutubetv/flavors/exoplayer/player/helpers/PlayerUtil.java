@@ -15,10 +15,14 @@
  */
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
+import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.Locale;
@@ -126,5 +130,23 @@ import java.util.Locale;
 
     private static boolean notAVideo(Format format) {
         return format.height == -1;
+    }
+
+    public static Uri convertToFullUrl(String videoId) {
+        String url = String.format("https://www.youtube.com/watch?v=%s", videoId);
+        return Uri.parse(url);
+    }
+
+    @TargetApi(17)
+    public static void showMultiChooser(Context context, Uri url) {
+        Intent primaryIntent = new Intent(Intent.ACTION_VIEW);
+        Intent secondaryIntent = new Intent(Intent.ACTION_SEND);
+        primaryIntent.setData(url);
+        secondaryIntent.putExtra(Intent.EXTRA_TEXT, url.toString());
+        secondaryIntent.setType("text/plain");
+        Intent chooserIntent = Intent.createChooser(primaryIntent, context.getResources().getText(R.string.send_to));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { secondaryIntent });
+        chooserIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        context.startActivity(chooserIntent);
     }
 }
