@@ -7,14 +7,14 @@ import com.squareup.otto.Subscribe;
 
 import java.util.HashSet;
 
-final class AssetFileInjectWatcher {
-    private static final String TAG = AssetFileInjectWatcher.class.getSimpleName();
-    private static AssetFileInjectWatcher sInstance;
+final class ResourceInjectorWatcher {
+    private static final String TAG = ResourceInjectorWatcher.class.getSimpleName();
+    private static ResourceInjectorWatcher sInstance;
     private HashSet<Listener> mListeners = new HashSet<>();
 
-    public static AssetFileInjectWatcher instance() {
+    public static ResourceInjectorWatcher instance() {
         if (sInstance == null) {
-            sInstance = new AssetFileInjectWatcher();
+            sInstance = new ResourceInjectorWatcher();
         }
         return sInstance;
     }
@@ -23,7 +23,7 @@ final class AssetFileInjectWatcher {
         void onAssetFileInjectEvent(String fileName);
     }
 
-    private AssetFileInjectWatcher() {
+    private ResourceInjectorWatcher() {
         Browser.getBus().register(this);
     }
 

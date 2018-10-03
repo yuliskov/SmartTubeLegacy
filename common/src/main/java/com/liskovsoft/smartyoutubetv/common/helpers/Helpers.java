@@ -29,7 +29,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Helpers {
+public final class Helpers {
     /**
      * Simple wildcard matching routine. Implemented without regex. So you may expect huge performance boost.
      * @param host
@@ -74,6 +74,9 @@ public class Helpers {
         return appendStream(textStream, newLineStream);
     }
 
+    /**
+     * Merge string assets. Silently add new line after each asset.
+     */
     public static InputStream getAssetMerged(Context ctx, List<String> paths) {
         return getAssetMerged(ctx, paths, true);
     }

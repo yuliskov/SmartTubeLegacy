@@ -46,7 +46,15 @@ var XWalkConfig = {
 /**
  * How often video should by synced with audio in milliseconds
  */
-var VideoSyncConfig = {
+var WebViewSyncConfig = {
     'X96mini (p281)': 30*1000, // amlogic: Telegram group
     'MiBOX_mini': 30*1000
+};
+
+/**
+ * How often video should by synced with audio in milliseconds
+ */
+var XWalkSyncConfig = {
+    'X96mini (p281)': 3*60*1000, // amlogic: Telegram group
+    'MiBOX_mini': 3*60*1000
 };

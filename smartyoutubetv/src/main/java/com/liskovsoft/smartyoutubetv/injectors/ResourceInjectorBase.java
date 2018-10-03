@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Listener {
+public abstract class ResourceInjectorBase implements ResourceInjectorWatcher.Listener {
     private static final String TAG = ResourceInjectorBase.class.getSimpleName();
     private final Context mContext;
     private final Set<WebView> mWebViews = new HashSet<>();
@@ -34,7 +34,7 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
     private String testAssetTemplateCache;
     private String jsInjectTemplateCache;
     private String cssInjectTemplateCache;
-    private AssetFileInjectWatcher mWatcher;
+    private ResourceInjectorWatcher mWatcher;
 
     public ResourceInjectorBase(Context context) {
         this(context, null);
@@ -45,7 +45,7 @@ public abstract class ResourceInjectorBase implements AssetFileInjectWatcher.Lis
         if (webView != null)
             mWebViews.add(webView);
 
-        mWatcher = AssetFileInjectWatcher.instance();
+        mWatcher = ResourceInjectorWatcher.instance();
         mWatcher.addListener(this);
     }
 

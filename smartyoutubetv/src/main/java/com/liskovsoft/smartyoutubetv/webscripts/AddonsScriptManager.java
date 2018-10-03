@@ -10,13 +10,15 @@ public class AddonsScriptManager implements ScriptManager {
     private final Context mContext;
     private final List<String> mOnInitScripts;
     private final List<String> mOnLoadScripts;
-    private final List<String> mStyles;
+    private final List<String> mOnInitStyles;
+    private final List<String> mOnLoadStyles;
 
     public AddonsScriptManager(Context context) {
         mContext = context;
         mOnInitScripts = Helpers.getAssetFiles(mContext, ADDONS_INIT_DIR, ".js");
         mOnLoadScripts = Helpers.getAssetFiles(mContext, ADDONS_LOAD_DIR, ".js");
-        mStyles = Helpers.getAssetFiles(mContext, ADDONS_STYLES_DIR, ".css");
+        mOnInitStyles = Helpers.getAssetFiles(mContext, ADDONS_INIT_DIR, ".css");
+        mOnLoadStyles = Helpers.getAssetFiles(mContext, ADDONS_LOAD_DIR, ".css");
     }
 
     @Override
@@ -31,6 +33,8 @@ public class AddonsScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        return Helpers.getAssetMerged(mContext, mStyles);
+        InputStream initStyles = Helpers.getAssetMerged(mContext, mOnInitStyles);
+        InputStream loadStyles = Helpers.getAssetMerged(mContext, mOnLoadStyles);
+        return Helpers.appendStream(initStyles, loadStyles);
     }
 }

@@ -6,7 +6,6 @@ public interface ScriptManager {
     String ADDONS_ROOT_DIR = "addons";
     String ADDONS_INIT_DIR = ADDONS_ROOT_DIR + "/" + "on_init";
     String ADDONS_LOAD_DIR = ADDONS_ROOT_DIR + "/" + "on_load";
-    String ADDONS_STYLES_DIR = ADDONS_ROOT_DIR + "/" + "styles";
     String CORE_ROOT_DIR = "core";
     InputStream getOnInitScripts();
     InputStream getOnLoadScripts();
