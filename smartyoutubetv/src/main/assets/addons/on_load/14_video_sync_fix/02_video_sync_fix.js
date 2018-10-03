@@ -13,7 +13,7 @@ function VideoSyncFixAddon() {
     };
 
     this.setupListener = function() {
-        this.timeout = this.findDeviceConfig();
+        this.timeout = this.findProperTimeout();
         if (this.timeout == 0)
             return;
 
@@ -34,13 +34,13 @@ function VideoSyncFixAddon() {
         this.postResult = Utils.postCycled(this.syncVideo, this, this.timeout);
     };
 
-    this.findDeviceConfig = function() {
+    this.findProperTimeout = function() {
         var config = {};
         if (DeviceUtils.isWebView()) {
-            config = WebViewSyncConfig;
+            config = SyncConfig_WebView;
         }
         if (DeviceUtils.isXWalk()) {
-            config = XWalkSyncConfig;
+            config = SyncConfig_XWalk;
         }
         for (var device in config) {
             if (DeviceUtils.isMyDevice(device)) {

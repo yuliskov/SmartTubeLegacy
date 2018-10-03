@@ -1,16 +1,16 @@
 /**
  * Description: Contains codec configurations for different devices.
- * Format: {'device name': 'disabled codec', ...}
+ * Format: {'device_name or platform': 'disabled_codec', ...}
  * Device's name should be named accordingly to the CPU-Z.
  * You can find name here: CPU-Z > Device tab > Model field
  */
 
-console.log("Scripts::Running script device_configs.js");
+console.log("Scripts::Running script codec_fix_config.js");
 
 /**
- * Configuration for the WebView browser's engine (1th and 3rd launchers)
+ * Config for the WebView browser's engine (1th launcher)
  */
-var WebViewConfig = {
+var CodecConfig_WebView = {
     'amlogic': 'mp4', // amlogic boards have troubles with avc codec
     '(vbox86p)': 'mp4', // Genymotion virtual device
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9 (enable all formats)
@@ -27,9 +27,9 @@ var WebViewConfig = {
 };
 
 /**
- * Configuration for the CrossWalk browser's engine (2nd and 4th launchers)
+ * Config for the CrossWalk browser's engine (2nd launcher)
  */
-var XWalkConfig = {
+var CodecConfig_XWalk = {
     'amlogic': 'mp4', // amlogic boards have troubles with avc codec
     '(vbox86p)': 'mp4', // Genymotion virtual device
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9 (enable all formats)
@@ -39,22 +39,6 @@ var XWalkConfig = {
     'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
     'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
     't95m': '', // (gmail)
-    '32T18': '', // KTU84M (gmail, tailand)
+    '32T18': '', // KTU84M (gmail, thailand)
     '': 'webm' // other devices (entry must be the last in the list)
-};
-
-/**
- * How often video should by synced with audio in milliseconds
- */
-var WebViewSyncConfig = {
-    'X96mini (p281)': 30*1000, // amlogic: Telegram group
-    'MiBOX_mini': 30*1000
-};
-
-/**
- * How often video should by synced with audio in milliseconds
- */
-var XWalkSyncConfig = {
-    'X96mini (p281)': 3*60*1000, // amlogic: Telegram group
-    'MiBOX_mini': 3*60*1000
 };

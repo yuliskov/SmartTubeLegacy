@@ -15,11 +15,11 @@ function CodecFixAddon() {
      */
     this.findProperConfig = function() {
         if (DeviceUtils.isWebView()) {
-            return WebViewConfig;
+            return CodecConfig_WebView;
         }
 
         if (DeviceUtils.isXWalk()) {
-            return XWalkConfig;
+            return CodecConfig_XWalk;
         }
 
         console.log("CodecFixAddon::unknown engine type " + DeviceUtils.getEngineType());
