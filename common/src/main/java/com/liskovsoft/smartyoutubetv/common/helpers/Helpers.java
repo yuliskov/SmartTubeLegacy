@@ -107,6 +107,14 @@ public final class Helpers {
         return is;
     }
 
+    public static List<String> getAssetJSFiles(Context ctx, String dir) {
+        return getAssetFiles(ctx, dir, ".js");
+    }
+
+    public static List<String> getAssetCSSFiles(Context ctx, String dir) {
+        return getAssetFiles(ctx, dir, ".css");
+    }
+
     public static List<String> getAssetFiles(Context ctx, String dir) {
         return getAssetFiles(ctx, dir, null);
     }

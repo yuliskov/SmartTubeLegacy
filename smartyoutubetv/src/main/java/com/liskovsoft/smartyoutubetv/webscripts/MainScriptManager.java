@@ -13,6 +13,7 @@ public class MainScriptManager implements ScriptManager {
 
     public MainScriptManager(Context context) {
         mContext = context;
+        mManagers.add(new CommonScriptManager(context));
         mManagers.add(new AddonsScriptManager(context));
         mManagers.add(new ExoScriptManager(context));
         mManagers.add(new EndCardsScriptManager(context));

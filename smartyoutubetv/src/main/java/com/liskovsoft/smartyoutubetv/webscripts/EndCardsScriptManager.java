@@ -5,15 +5,18 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 
 import java.io.InputStream;
+import java.util.List;
 
 public class EndCardsScriptManager implements ScriptManager {
     private final Context mContext;
     private final boolean isEnabled;
+    private final List<String> mStyles;
 
     public EndCardsScriptManager(Context context) {
         mContext = context;
         SmartPreferences mPrefs = SmartPreferences.instance(context);
         isEnabled = mPrefs.getEnableEndCards();
+        mStyles = Helpers.getAssetCSSFiles(mContext, CORE_ENDCARDS_DIR);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class EndCardsScriptManager implements ScriptManager {
     @Override
     public InputStream getStyles() {
         if (isEnabled) {
-            return Helpers.getAsset(mContext, CORE_ROOT_DIR + "/" + "no_endcards.css");
+            return Helpers.getAssetMerged(mContext, mStyles);
         }
         return null;
     }

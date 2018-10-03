@@ -15,10 +15,10 @@ public class AddonsScriptManager implements ScriptManager {
 
     public AddonsScriptManager(Context context) {
         mContext = context;
-        mOnInitScripts = Helpers.getAssetFiles(mContext, ADDONS_INIT_DIR, ".js");
-        mOnLoadScripts = Helpers.getAssetFiles(mContext, ADDONS_LOAD_DIR, ".js");
-        mOnInitStyles = Helpers.getAssetFiles(mContext, ADDONS_INIT_DIR, ".css");
-        mOnLoadStyles = Helpers.getAssetFiles(mContext, ADDONS_LOAD_DIR, ".css");
+        mOnInitScripts = Helpers.getAssetJSFiles(mContext, ADDONS_INIT_DIR);
+        mOnLoadScripts = Helpers.getAssetJSFiles(mContext, ADDONS_LOAD_DIR);
+        mOnInitStyles = Helpers.getAssetCSSFiles(mContext, ADDONS_INIT_DIR);
+        mOnLoadStyles = Helpers.getAssetCSSFiles(mContext, ADDONS_LOAD_DIR);
     }
 
     @Override

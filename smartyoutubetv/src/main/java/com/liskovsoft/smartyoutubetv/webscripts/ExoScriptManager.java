@@ -15,8 +15,8 @@ public class ExoScriptManager implements ScriptManager {
         mContext = context;
 
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            mOnLoadScripts = Helpers.getAssetFiles(context, CORE_ROOT_DIR, "exoplayer.js");
-            mStyles = Helpers.getAssetFiles(context, CORE_ROOT_DIR, "exoplayer.css");
+            mOnLoadScripts = Helpers.getAssetJSFiles(context, CORE_EXO_DIR);
+            mStyles = Helpers.getAssetCSSFiles(context, CORE_EXO_DIR);
         }
     }
 
