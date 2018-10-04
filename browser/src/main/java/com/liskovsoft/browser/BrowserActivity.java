@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import com.liskovsoft.browser.addons.SimpleUIController;
+import com.liskovsoft.browser.fragments.ActivityFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import android.annotation.SuppressLint;
@@ -17,7 +17,7 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowserActivity extends Fragment {
+public class BrowserActivity extends Fragment implements ActivityFragment {
     private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
@@ -34,7 +34,7 @@ public class BrowserActivity extends Fragment {
     private Bundle mIcicle;
 
     @Override
-    protected void onCreate(Bundle icicle) {
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         // this routine is a simple demonstration what you can do with controller
@@ -51,8 +51,8 @@ public class BrowserActivity extends Fragment {
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mDefaultUserAgent);
 
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? getIntent() : null;
+        mController = new SimpleUIController(getActivity());
+        Intent intent = (icicle == null) ? getActivity().getIntent() : null;
         mController.start(intent);
         mController.loadUrl(mDefaultHomeUrl, mHeaders);
     }
@@ -71,15 +71,15 @@ public class BrowserActivity extends Fragment {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        // super.onBackPressed();
+        getActivity().finish();
     }
 
     @Override
     public void finish() {
         // NOTE: fix state saving when finishing activity
         saveBrowserState(null);
-        super.finish();
+        //super.finish();
         System.exit(0);
     }
 
@@ -89,7 +89,7 @@ public class BrowserActivity extends Fragment {
      *  the saved state.
      */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         saveBrowserState(outState);
     }
@@ -102,7 +102,7 @@ public class BrowserActivity extends Fragment {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (mController == null) {
             return;
@@ -113,7 +113,7 @@ public class BrowserActivity extends Fragment {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (mController == null) {
             return;
@@ -124,7 +124,7 @@ public class BrowserActivity extends Fragment {
 
     @SuppressLint("MissingSuperCall")
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         // NOTE: don't try to call onDestroy(). Or you will get instant crash
         super.onResume();
         if (mController == null) {
@@ -168,7 +168,7 @@ public class BrowserActivity extends Fragment {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    public void onNewIntent(Intent intent) {
         if (mController == null || intent == null) {
             return;
         }
@@ -177,8 +177,8 @@ public class BrowserActivity extends Fragment {
             Bundle outState = new Bundle();
             mController.onSaveInstanceState(outState);
             finish();
-            getApplicationContext().startActivity(
-                    new Intent(getApplicationContext(), BrowserActivity.class)
+            getActivity().getApplicationContext().startActivity(
+                    new Intent(getActivity().getApplicationContext(), BrowserActivity.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(EXTRA_STATE, outState));
             return;
@@ -190,10 +190,10 @@ public class BrowserActivity extends Fragment {
         // Only process intents if the screen is on and the device is unlocked
         // aka, if we will be user-visible
         if (mKeyguardManager == null) {
-            mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            mKeyguardManager = (KeyguardManager) getActivity().getSystemService(Context.KEYGUARD_SERVICE);
         }
         if (mPowerManager == null) {
-            mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            mPowerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
         }
         boolean ignore = !mPowerManager.isScreenOn();
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
