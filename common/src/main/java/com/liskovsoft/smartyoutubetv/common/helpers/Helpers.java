@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -30,6 +31,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Helpers {
+    private static HashMap<String, List<String>> sCache = new HashMap<>();
+
     /**
      * Simple wildcard matching routine. Implemented without regex. So you may expect huge performance boost.
      * @param host
@@ -129,7 +132,17 @@ public final class Helpers {
         return getAssetFiles(ctx, dir, null);
     }
 
-    public static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
+    //public static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
+    //    String key = dir + endsWith;
+    //    List<String> cached = sCache.get(key);
+    //    if (cached != null)
+    //        return cached;
+    //    List<String> newFiles = getAssetFiles_(ctx, dir, endsWith);
+    //    sCache.put(key, newFiles);
+    //    return newFiles;
+    //}
+
+    private static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
         String [] list;
         List<String> result = new ArrayList<>();
         try {

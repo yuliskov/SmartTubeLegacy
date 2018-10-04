@@ -9,7 +9,7 @@
     <string name="save_selection">Запам`ятати</string>
     <string name="bootstrap_bottom_title">У випадку проблем, перейдіть на 4К версію</string>
     <string name="starting_popup_fmt">Запускається %s лаунчер&#8230;</string>
-    <string name="loading_bottom_msg">Натисніть \"Назад\", щоб повернутися до головного екрану</string>
+    <string name="loading_bottom_msg">Порада: Натисніть Назад, щоб повернутися до головного екрану</string>
     <string name="language_dialog_title">Оберіть мову</string>
     <string name="language">Мова</string>
     <string name="autoframerate">Автофреймрейт</string>
