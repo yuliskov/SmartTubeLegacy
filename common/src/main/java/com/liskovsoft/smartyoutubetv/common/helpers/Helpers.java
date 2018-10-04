@@ -107,6 +107,16 @@ public final class Helpers {
         return is;
     }
 
+    public static InputStream getAssetCSSFilesMerged(Context ctx, String dir) {
+        List<String> assetFiles = getAssetCSSFiles(ctx, dir);
+        return Helpers.getAssetMerged(ctx, assetFiles);
+    }
+
+    public static InputStream getAssetJSFilesMerged(Context ctx, String dir) {
+        List<String> assetFiles = getAssetJSFiles(ctx, dir);
+        return Helpers.getAssetMerged(ctx, assetFiles);
+    }
+
     public static List<String> getAssetJSFiles(Context ctx, String dir) {
         return getAssetFiles(ctx, dir, ".js");
     }

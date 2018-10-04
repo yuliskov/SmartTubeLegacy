@@ -8,15 +8,13 @@ import java.util.List;
 
 public class ExoScriptManager implements ScriptManager {
     private final Context mContext;
-    private List<String> mOnLoadScripts;
-    private List<String> mStyles;
+    private boolean isExo;
 
     public ExoScriptManager(Context context) {
         mContext = context;
 
         if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            mOnLoadScripts = Helpers.getAssetJSFiles(context, CORE_EXO_DIR);
-            mStyles = Helpers.getAssetCSSFiles(context, CORE_EXO_DIR);
+            isExo = true;
         }
     }
 
@@ -27,11 +25,15 @@ public class ExoScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnLoadScripts() {
-        return Helpers.getAssetMerged(mContext, mOnLoadScripts);
+        if (!isExo)
+            return null;
+        return Helpers.getAssetJSFilesMerged(mContext, CORE_EXO_DIR);
     }
 
     @Override
     public InputStream getStyles() {
-        return Helpers.getAssetMerged(mContext, mStyles);
+        if (!isExo)
+            return null;
+        return Helpers.getAssetCSSFilesMerged(mContext, CORE_EXO_DIR);
     }
 }

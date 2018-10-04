@@ -18,7 +18,6 @@ public class ScriptManagerInterceptor extends RequestInterceptor {
     private final ScriptManager mManager;
 
     public ScriptManagerInterceptor(Context context) {
-        super();
         mContext = context;
         mManager = new MainScriptManager(context);
     }

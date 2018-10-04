@@ -20,4 +20,13 @@
     <string name="preferred_codec">Декодер</string>
     <string name="select_preferred_codec">Обмежити кодек та чіткість</string>
     <string name="no_restrictions">Без обмежень</string>
+    <string name="save_selection_tip">Не показувати цей екран у слідуючий раз</string>
+    <string name="endcards_tip">Показувати підказки наприкінці відео (тільки 1080)</string>
+    <string name="language_tip">Змінити мову</string>
+    <string name="update_check_tip">Перевіряти оновлення</string>
+    <string name="webview_tip">До 1080p на більшості пристроїв</string>
+    <string name="xwalk_tip">До 1080p і деколи більш стабільна робота</string>
+    <string name="exo_tip">До 4K на більшості пристроїв</string>
+    <string name="exo_alt_tip">До 4K і деколи більш стабільна робота</string>
+    <string name="exit_msg">Натисніть двічі Назад щоб вийти</string>
 </resources>

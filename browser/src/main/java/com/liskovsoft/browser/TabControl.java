@@ -166,6 +166,7 @@ public class TabControl {
         Tab t = new Tab(mController, w, state);
         mTabs.add(t);
         sLogger.info("Creating tab # {} with id {}. Total tabs: {}", ++mTabCount, t.getId(), mTabs.size());
+        // mController.onTabCreated(t);
         return t;
     }
 

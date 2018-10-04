@@ -21,6 +21,7 @@ import android.view.WindowManager.LayoutParams;
 import android.webkit.*;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
+import android.widget.FrameLayout;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.addons.xwalk.XWalkInitHandler;

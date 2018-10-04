@@ -10,13 +10,11 @@ import java.util.List;
 public class EndCardsScriptManager implements ScriptManager {
     private final Context mContext;
     private final boolean isEnabled;
-    private final List<String> mStyles;
 
     public EndCardsScriptManager(Context context) {
         mContext = context;
         SmartPreferences mPrefs = SmartPreferences.instance(context);
         isEnabled = mPrefs.getEnableEndCards();
-        mStyles = Helpers.getAssetCSSFiles(mContext, CORE_ENDCARDS_DIR);
     }
 
     @Override
@@ -31,9 +29,9 @@ public class EndCardsScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        if (isEnabled) {
-            return Helpers.getAssetMerged(mContext, mStyles);
+        if (!isEnabled) {
+            return null;
         }
-        return null;
+        return Helpers.getAssetCSSFilesMerged(mContext, CORE_ENDCARDS_DIR);
     }
 }

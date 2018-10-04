@@ -8,33 +8,25 @@ import java.util.List;
 
 public class AddonsScriptManager implements ScriptManager {
     private final Context mContext;
-    private final List<String> mOnInitScripts;
-    private final List<String> mOnLoadScripts;
-    private final List<String> mOnInitStyles;
-    private final List<String> mOnLoadStyles;
 
     public AddonsScriptManager(Context context) {
         mContext = context;
-        mOnInitScripts = Helpers.getAssetJSFiles(mContext, ADDONS_INIT_DIR);
-        mOnLoadScripts = Helpers.getAssetJSFiles(mContext, ADDONS_LOAD_DIR);
-        mOnInitStyles = Helpers.getAssetCSSFiles(mContext, ADDONS_INIT_DIR);
-        mOnLoadStyles = Helpers.getAssetCSSFiles(mContext, ADDONS_LOAD_DIR);
     }
 
     @Override
     public InputStream getOnInitScripts() {
-        return Helpers.getAssetMerged(mContext, mOnInitScripts);
+        return Helpers.getAssetJSFilesMerged(mContext, ADDONS_INIT_DIR);
     }
 
     @Override
     public InputStream getOnLoadScripts() {
-        return Helpers.getAssetMerged(mContext, mOnLoadScripts);
+        return Helpers.getAssetJSFilesMerged(mContext, ADDONS_LOAD_DIR);
     }
 
     @Override
     public InputStream getStyles() {
-        InputStream initStyles = Helpers.getAssetMerged(mContext, mOnInitStyles);
-        InputStream loadStyles = Helpers.getAssetMerged(mContext, mOnLoadStyles);
+        InputStream initStyles = Helpers.getAssetCSSFilesMerged(mContext, ADDONS_INIT_DIR);
+        InputStream loadStyles = Helpers.getAssetCSSFilesMerged(mContext, ADDONS_LOAD_DIR);
         return Helpers.appendStream(initStyles, loadStyles);
     }
 }

@@ -43,6 +43,8 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
+        Log.i(TAG, "SmartYouTubeTVActivityBase::init");
+
         // fix lang in case activity has been destroyed and then restored
         setupLang();
         setupUA();
@@ -105,6 +107,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     private void createController(Bundle icicle) {
+        Log.i(TAG, "SmartYouTubeTVActivityBase::createController");
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mUAManager.getUA());
 

@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import android.widget.FrameLayout;
 import com.liskovsoft.browser.UI.ComboViews;
 
 import java.util.List;
