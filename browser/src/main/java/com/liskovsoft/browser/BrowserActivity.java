@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -16,7 +17,7 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowserActivity extends AppCompatActivity {
+public class BrowserActivity extends Fragment {
     private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
