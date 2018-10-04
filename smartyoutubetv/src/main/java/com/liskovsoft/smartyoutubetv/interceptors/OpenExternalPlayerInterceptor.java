@@ -4,7 +4,7 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.MainExoInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity;
+import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVFragment;
 import com.liskovsoft.smartyoutubetv.flavors.webview.interceptors.OpenPlayerIntentInterceptor;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
@@ -13,7 +13,7 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
-        boolean isWebView = mContext instanceof SmartYouTubeTVActivity;
+        boolean isWebView = mContext instanceof SmartYouTubeTVFragment;
         boolean isXWalk = mContext instanceof com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity;
         boolean isExo = mContext instanceof SmartYouTubeTVExoBase;
         if (isWebView || isXWalk) {
