@@ -26,6 +26,8 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
+        if (mInterceptor == null)
+            return false;
         return mInterceptor.test(url);
     }
 
