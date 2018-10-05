@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 
 public class SmartYouTubeTVActivity extends AppCompatActivity {
     private SmartYouTubeTVFragment fragment;
@@ -34,17 +35,17 @@ public class SmartYouTubeTVActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return super.onKeyUp(keyCode, event) || fragment.onKeyUp(keyCode, event);
+        return fragment.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        return super.onKeyLongPress(keyCode, event) || fragment.onKeyLongPress(keyCode, event);
+        return fragment.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event) || fragment.onKeyDown(keyCode, event);
+        return fragment.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -61,12 +62,12 @@ public class SmartYouTubeTVActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        return super.dispatchKeyEvent(event) || fragment.dispatchKeyEvent(event);
+        return fragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
     }
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-        return super.dispatchGenericMotionEvent(ev) || fragment.dispatchGenericMotionEvent(ev);
+        return fragment.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
     }
 
     @Override

@@ -131,6 +131,24 @@ public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
+    //@Override
+    //public boolean onKeyDown(int keyCode, KeyEvent event) {
+    //    event = mTranslator.doTranslateKeys(event);
+    //    return super.onKeyDown(event.getKeyCode(), event);
+    //}
+    //
+    //@Override
+    //public boolean onKeyUp(int keyCode, KeyEvent event) {
+    //    event = mTranslator.doTranslateKeys(event);
+    //    return super.onKeyUp(event.getKeyCode(), event);
+    //}
+    //
+    //@Override
+    //public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+    //    event = mTranslator.doTranslateKeys(event);
+    //    return super.onKeyLongPress(event.getKeyCode(), event);
+    //}
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = mTranslator.doTranslateKeys(event);
