@@ -31,4 +31,5 @@
     <string name="hide_playback_errors">Приховувати помилки відтворення</string>
     <string name="no_subtitle_msg">Відео не містить субтитри</string>
     <string name="time_title">Зараз: %1$s</string>
+    <string name="restrict">Обмежити</string>
 </resources>

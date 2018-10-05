@@ -13,7 +13,7 @@
     <string name="exo_desc">4K Main</string>
     <string name="exo_desc2">4K Alt</string>
     <string name="bootstrap_bottom_title">Launchers are differed by the stability of work on a concrete device</string>
-    <string name="loading_bottom_msg">Tip: Press Back button to return to the main screen</string>
+    <string name="loading_bottom_msg">Press Back button to return to the main screen</string>
     <string name="app_name_720">1080 Main</string>
     <string name="app_name_1080">1080 Alt</string>
     <string name="app_name_4k">4K Main</string>
