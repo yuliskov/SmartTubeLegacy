@@ -265,7 +265,8 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        stateManager.persistState(); // player about to crash
+        if (stateManager != null)
+            stateManager.persistState(); // player about to crash
     }
 
     @Override
@@ -473,7 +474,8 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     }
 
     void retryIfNeeded() {
-        stateManager.persistState();
+        if (stateManager != null)
+            stateManager.persistState();
 
         if (needRetrySource) {
             initializePlayer();

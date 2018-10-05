@@ -362,6 +362,9 @@ public abstract class BaseUi implements UI {
                 (FrameLayout) container.findViewById(R.id.webview_wrapper);
         wrapper.removeView(mainView);
         mContentView.removeView(container);
+
+        // TODO: Tab could be detached or removed. Is this the same thing?
+        tab.setListener(null);
     }
 
     @Override
