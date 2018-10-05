@@ -89,7 +89,7 @@ public class IntentHandler {
             current.loadUrl(uri.toString(), null);
             return;
         }
-        if (BrowserActivity.ACTION_SHOW_BOOKMARKS.equals(action)) {
+        if (BrowserFragment.ACTION_SHOW_BOOKMARKS.equals(action)) {
             mController.bookmarksOrHistoryPicker(ComboViews.Bookmarks);
             return;
         }
@@ -137,7 +137,7 @@ public class IntentHandler {
             }
             if (Intent.ACTION_VIEW.equals(action)
                      && !mActivity.getPackageName().equals(appId)) {
-                if (!BrowserActivity.isTablet(mActivity)
+                if (!BrowserFragment.isTablet(mActivity)
                         && !mSettings.allowAppTabs()) {
                     Tab appTab = mTabControl.getTabFromAppId(appId);
                     if (appTab != null) {
@@ -354,7 +354,7 @@ public class IntentHandler {
             this.mSearchBoxQueryToSubmit = searchBoxQueryToSubmit;
             if (intent != null) {
                 mDisableUrlOverride = intent.getBooleanExtra(
-                        BrowserActivity.EXTRA_DISABLE_URL_OVERRIDE, false);
+                        BrowserFragment.EXTRA_DISABLE_URL_OVERRIDE, false);
             } else {
                 mDisableUrlOverride = false;
             }

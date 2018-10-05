@@ -17,8 +17,8 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BrowserActivity extends Fragment implements ActivityFragment {
-    private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
+public abstract class BrowserFragment extends Fragment implements ActivityFragment {
+    private static final Logger logger = LoggerFactory.getLogger(BrowserFragment.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
     private final String mDefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -38,7 +38,7 @@ public class BrowserActivity extends Fragment implements ActivityFragment {
         super.onCreate(icicle);
 
         // this routine is a simple demonstration what you can do with controller
-        if (this.getClass() == BrowserActivity.class) {
+        if (this.getClass() == BrowserFragment.class) {
             createController(icicle);
         }
     }
@@ -145,8 +145,7 @@ public class BrowserActivity extends Fragment implements ActivityFragment {
         if (mController == null) {
             return false;
         }
-        return mController.onKeyDown(keyCode, event) ||
-                super.onKeyDown(keyCode, event);
+        return mController.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -154,8 +153,7 @@ public class BrowserActivity extends Fragment implements ActivityFragment {
         if (mController == null) {
             return false;
         }
-        return mController.onKeyLongPress(keyCode, event) ||
-                super.onKeyLongPress(keyCode, event);
+        return mController.onKeyLongPress(keyCode, event);
     }
 
     @Override
@@ -163,8 +161,7 @@ public class BrowserActivity extends Fragment implements ActivityFragment {
         if (mController == null) {
             return false;
         }
-        return mController.onKeyUp(keyCode, event) ||
-                super.onKeyUp(keyCode, event);
+        return mController.onKeyUp(keyCode, event);
     }
 
     @Override
@@ -178,7 +175,7 @@ public class BrowserActivity extends Fragment implements ActivityFragment {
             mController.onSaveInstanceState(outState);
             finish();
             getActivity().getApplicationContext().startActivity(
-                    new Intent(getActivity().getApplicationContext(), BrowserActivity.class)
+                    new Intent(getActivity().getApplicationContext(), BrowserFragment.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(EXTRA_STATE, outState));
             return;

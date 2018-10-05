@@ -13,9 +13,10 @@ public class ExoScriptManager implements ScriptManager {
     public ExoScriptManager(Context context) {
         mContext = context;
 
-        if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-            isExo = true;
-        }
+        // TODO: fragments, fix later
+        //if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
+        //    isExo = true;
+        //}
     }
 
     @Override

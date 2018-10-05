@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.KeyEvent;
-import com.liskovsoft.browser.addons.MainBrowserActivity;
 
 public abstract class PlayerLongPressActivity extends Activity {
     @Override

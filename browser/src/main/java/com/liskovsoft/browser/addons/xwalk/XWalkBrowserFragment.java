@@ -3,17 +3,17 @@ package com.liskovsoft.browser.addons.xwalk;
 import android.os.Bundle;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.browser.BrowserActivity;
+import com.liskovsoft.browser.BrowserFragment;
 import org.xwalk.core.MyXWalkUpdater;
 import org.xwalk.core.XWalkInitializer;
 
-public abstract class XWalkBrowserActivity extends BrowserActivity implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
+public abstract class XWalkBrowserFragment extends BrowserFragment implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
     private MyXWalkUpdater mXWalkUpdater;
     private Bundle mBundle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (Browser.getEngineType() == EngineType.XWalk) {
@@ -26,7 +26,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
         // API, including invoking setContentView() with the layout which
         // holds the XWalkView object.
 
-        mXWalkInitializer = new XWalkInitializer(this, this);
+        mXWalkInitializer = new XWalkInitializer(this, getActivity());
         mXWalkInitializer.initAsync();
 
         // Until onXWalkInitCompleted() is invoked, you should do nothing with the
@@ -41,7 +41,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (mXWalkInitializer == null) {
@@ -78,7 +78,7 @@ public abstract class XWalkBrowserActivity extends BrowserActivity implements XW
     @Override
     public void onXWalkInitFailed() {
         if (mXWalkUpdater == null) {
-            mXWalkUpdater = new MyXWalkUpdater(this, this);
+            mXWalkUpdater = new MyXWalkUpdater(this, getActivity());
         }
 
         setupXWalkApkUrl();

@@ -16,7 +16,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
-import com.liskovsoft.browser.addons.MainBrowserActivity;
+import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
@@ -31,8 +31,8 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
-    private static final String TAG = SmartYouTubeTVActivityBase.class.getSimpleName();
+public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
+    private static final String TAG = SmartYouTubeTVFragmentBase.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here
     private Map<String, String> mHeaders;
@@ -42,7 +42,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     private UAManager mUAManager;
 
     @Override
-    protected void onCreate(Bundle icicle) {
+    public void onCreate(Bundle icicle) {
         Log.i(TAG, "SmartYouTubeTVActivityBase::init");
 
         // fix lang in case activity has been destroyed and then restored
@@ -64,7 +64,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         String label = null;
         try {
             label = getResources().getString(
-                    getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
+                    getActivity().getPackageManager().getActivityInfo(getActivity().getComponentName(), 0).labelRes);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -73,20 +73,18 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Browser.activityRestored = true;
         }
-
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void setupUA() {
-        mUAManager = new UAManager(this);
+        mUAManager = new UAManager(getActivity());
     }
 
     private void initPermissions() {
-        PermissionManager.verifyStoragePermissions(this);
+        PermissionManager.verifyStoragePermissions(getActivity());
     }
 
     private void initKeys() {
@@ -98,11 +96,11 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     private void setupLang() {
-        new LangUpdater(this).update();
+        new LangUpdater(getActivity()).update();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
     }
 
@@ -111,26 +109,26 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mUAManager.getUA());
 
-        mController = new SimpleUIController(this);
-        mController.setListener(new ControllerEventListener(this, mController, mTranslator));
+        mController = new SimpleUIController(getActivity());
+        mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);
-        Intent intent = (icicle == null) ? transformIntentData(getIntent()) : null;
+        Intent intent = (icicle == null) ? transformIntentData(getActivity().getIntent()) : null;
         mController.start(intent);
         setController(mController);
     }
 
     private void makeActivityFullscreen() {
-        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
 
         if (VERSION.SDK_INT >= 19) {
-            View decorView = getWindow().getDecorView();
+            View decorView = getActivity().getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
 
     private void makeActivityHorizontal() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -138,8 +136,9 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
         event = mTranslator.doTranslateKeys(event);
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) { // remember real back remapped in translator
             onBackPressed();
+            return true;
         }
-        return super.dispatchKeyEvent(event);
+        return false;
     }
 
     @Override
@@ -156,7 +155,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
                     return false;
             }
         }
-        return super.dispatchGenericMotionEvent(event);
+        return false;
     }
 
     private void fakeVerticalScroll(MotionEvent event) {
@@ -184,7 +183,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    public void onNewIntent(Intent intent) {
         super.onNewIntent(transformIntentData(intent));
     }
 
@@ -202,10 +201,10 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
     @SuppressLint("WrongConstant")
     private void returnToLaunchersDialog() {
         Intent intent = new Intent();
-        intent.setClass(this, BootstrapActivity.class);
+        intent.setClass(getActivity(), BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
 
-        boolean activityExists = intent.resolveActivityInfo(getPackageManager(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) != null;
+        boolean activityExists = intent.resolveActivityInfo(getActivity().getPackageManager(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) != null;
 
         if (activityExists) {
             startActivity(intent);
@@ -218,9 +217,9 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
             // Check if the only required permission has been granted
             if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Camera permission has been granted, preview can be displayed
-                Toast.makeText(this, "REQUEST_EXTERNAL_STORAGE permission has been granted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "REQUEST_EXTERNAL_STORAGE permission has been granted", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Unable to grant REQUEST_EXTERNAL_STORAGE permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Unable to grant REQUEST_EXTERNAL_STORAGE permission", Toast.LENGTH_LONG).show();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

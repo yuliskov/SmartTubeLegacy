@@ -151,27 +151,28 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void openExoPlayer(final Intent playerIntent) {
-        String msg = "About to start ExoPlayer activity for Regular item";
-        Log.d(TAG, msg);
-        final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
-
-        ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
-            @Override
-            public void onDone() {
-                // isOK == false means that app has been unloaded from memory while doing playback
-                boolean isOK = setupResultListener(activity);
-                if (isOK) {
-                    activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
-                }
-            }
-
-            @Override
-            public void onCancel() {
-                mManager.onCancel();
-            }
-        };
-
-        fetchButtonStates(playerIntent, listener);
+        // TODO: fragments, fix later
+        //String msg = "About to start ExoPlayer activity for Regular item";
+        //Log.d(TAG, msg);
+        //final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
+        //
+        //ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
+        //    @Override
+        //    public void onDone() {
+        //        // isOK == false means that app has been unloaded from memory while doing playback
+        //        boolean isOK = setupResultListener(activity);
+        //        if (isOK) {
+        //            activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
+        //        }
+        //    }
+        //
+        //    @Override
+        //    public void onCancel() {
+        //        mManager.onCancel();
+        //    }
+        //};
+        //
+        //fetchButtonStates(playerIntent, listener);
     }
 
     private void fetchButtonStates(Intent intent, ActionsReceiver.Listener listener) {

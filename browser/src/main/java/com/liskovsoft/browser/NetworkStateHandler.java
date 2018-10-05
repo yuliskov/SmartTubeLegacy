@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Handle network state changes
  */
 public class NetworkStateHandler {
-    private static final Logger logger = LoggerFactory.getLogger(BrowserActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(BrowserFragment.class);
     private Activity mActivity;
     private Controller mController;
 

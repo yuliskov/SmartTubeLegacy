@@ -3,9 +3,9 @@ package com.liskovsoft.smartyoutubetv.core;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.KeyEvent;
-import com.liskovsoft.browser.addons.MainBrowserActivity;
+import com.liskovsoft.browser.addons.MainBrowserFragment;
 
-public abstract class SmartYouTubeTVLongPressActivity extends MainBrowserActivity {
+public abstract class SmartYouTubeTVLongPressFragment extends MainBrowserFragment {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ESCAPE) {
@@ -26,7 +26,7 @@ public abstract class SmartYouTubeTVLongPressActivity extends MainBrowserActivit
         if (keyCode == KeyEvent.KEYCODE_ESCAPE) {
             //Handle what you want in long press.
             if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-                finishAffinity();
+                getActivity().finishAffinity();
             }
             return true;
         }

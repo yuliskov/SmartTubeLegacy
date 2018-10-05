@@ -2,10 +2,10 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
 
 import android.app.Activity;
 import android.content.Intent;
-import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVActivityBase;
+import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVFragmentBase;
 
 // marker class
-public abstract class SmartYouTubeTVExoBase extends SmartYouTubeTVActivityBase {
+public abstract class SmartYouTubeTVExoBase extends SmartYouTubeTVFragmentBase {
     private OnActivityResultListener mOnActivityResultListener;
     private MyResult mResult;
 
@@ -14,7 +14,7 @@ public abstract class SmartYouTubeTVExoBase extends SmartYouTubeTVActivityBase {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mOnActivityResultListener != null) {
             mOnActivityResultListener.onActivityResult(requestCode, resultCode, data);
         }

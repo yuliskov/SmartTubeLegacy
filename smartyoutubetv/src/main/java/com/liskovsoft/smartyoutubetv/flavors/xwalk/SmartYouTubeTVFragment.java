@@ -2,10 +2,10 @@ package com.liskovsoft.smartyoutubetv.flavors.xwalk;
 
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVActivityBase;
+import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVFragmentBase;
 
-public class SmartYouTubeTVActivity extends SmartYouTubeTVActivityBase {
-    public SmartYouTubeTVActivity() {
+public class SmartYouTubeTVFragment extends SmartYouTubeTVFragmentBase {
+    public SmartYouTubeTVFragment() {
         // don't forget set preferred engine
         Browser.setEngineType(EngineType.XWalk);
     }

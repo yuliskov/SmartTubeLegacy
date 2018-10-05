@@ -13,14 +13,15 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
-        boolean isWebView = mContext instanceof SmartYouTubeTVFragment;
-        boolean isXWalk = mContext instanceof com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity;
-        boolean isExo = mContext instanceof SmartYouTubeTVExoBase;
-        if (isWebView || isXWalk) {
-            mInterceptor = new OpenPlayerIntentInterceptor(mContext);
-        } else if (isExo) {
-            mInterceptor = new MainExoInterceptor(mContext);
-        }
+        // TODO: fragments, fix later
+        //boolean isWebView = mContext instanceof SmartYouTubeTVFragment;
+        //boolean isXWalk = mContext instanceof com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVFragment;
+        //boolean isExo = mContext instanceof SmartYouTubeTVExoBase;
+        //if (isWebView || isXWalk) {
+        //    mInterceptor = new OpenPlayerIntentInterceptor(mContext);
+        //} else if (isExo) {
+        //    mInterceptor = new MainExoInterceptor(mContext);
+        //}
     }
 
     @Override

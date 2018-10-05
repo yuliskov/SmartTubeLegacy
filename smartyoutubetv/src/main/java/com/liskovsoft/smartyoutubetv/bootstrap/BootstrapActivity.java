@@ -134,7 +134,7 @@ public class BootstrapActivity extends ActivityBase {
                 clazz = SmartYouTubeTVFragment.class;
                 break;
             case R.id.button_xwalk:
-                clazz = com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class;
+                clazz = com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVFragment.class;
                 break;
             case R.id.button_exo:
                 clazz = SmartYouTubeTVExoWebView.class;

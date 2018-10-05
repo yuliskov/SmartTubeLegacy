@@ -85,19 +85,19 @@ public class ActionsSender {
      * Actually, on old devices not possible to stop the video. So skip to the next one.
      * @param buttons button states
      */
-    private void applyFixesForOldWebView(Map<String, Boolean> buttons) {
-        if (VERSION.SDK_INT >= 21) {
-            return;
-        }
-        if (mContext instanceof SmartYouTubeTVExoXWalk) {
-            return;
-        }
-        // replace track_ended with button_next
-        Boolean isEnded = buttons.get(PlayerActivity.TRACK_ENDED);
-        isEnded = isEnded == null ? false : isEnded; // fix NPE
-        if (isEnded) {
-            buttons.put(PlayerActivity.TRACK_ENDED, false);
-            buttons.put(PlayerActivity.BUTTON_NEXT, true);
-        }
-    }
+    //private void applyFixesForOldWebView(Map<String, Boolean> buttons) {
+    //    if (VERSION.SDK_INT >= 21) {
+    //        return;
+    //    }
+    //    if (mContext instanceof SmartYouTubeTVExoXWalk) {
+    //        return;
+    //    }
+    //    // replace track_ended with button_next
+    //    Boolean isEnded = buttons.get(PlayerActivity.TRACK_ENDED);
+    //    isEnded = isEnded == null ? false : isEnded; // fix NPE
+    //    if (isEnded) {
+    //        buttons.put(PlayerActivity.TRACK_ENDED, false);
+    //        buttons.put(PlayerActivity.BUTTON_NEXT, true);
+    //    }
+    //}
 }

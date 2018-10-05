@@ -50,7 +50,7 @@
 
         <!-- Root (bootstrap) Activity -->
         <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent in stack -->
-        <activity android:name=".flavors.xwalk.SmartYouTubeTVActivity"
+        <activity android:name=".flavors.xwalk.SmartYouTubeTVFragment"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
                   android:icon="@mipmap/ic_launcher_main"
                   android:label="@string/app_name"

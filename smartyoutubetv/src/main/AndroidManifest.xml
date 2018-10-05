@@ -110,7 +110,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".flavors.xwalk.SmartYouTubeTVActivity"
+            android:name=".flavors.xwalk.SmartYouTubeTVFragment"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:icon="@mipmap/ic_launcher_main"
