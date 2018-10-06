@@ -51,6 +51,11 @@ public abstract class BrowserFragment extends Fragment implements ActivityFragme
         return inflater.inflate(R.layout.browser_fragment, container, false);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
     //protected void beginInitWebView(Bundle icicle) {
     //    createController(icicle);
     //}

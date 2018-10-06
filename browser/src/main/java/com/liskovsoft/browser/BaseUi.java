@@ -47,9 +47,7 @@ public abstract class BaseUi implements UI {
         mActivity = browser;
         mUiController = controller;
         mTabControl = controller.getTabControl();
-        // NOTE: fragments, activity code
-        // FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
-        FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(R.id.browser_container);
+        FrameLayout frameLayout = findRootLayout();
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
@@ -64,6 +62,13 @@ public abstract class BaseUi implements UI {
 
         // dirty hack to make WebView receive focus
         initSupportActionBar();
+    }
+
+    private FrameLayout findRootLayout() {
+        if (mActivity instanceof BrowserActivity) {
+            return ((BrowserActivity)mActivity).getRootLayout();
+        }
+        return (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
     /**
