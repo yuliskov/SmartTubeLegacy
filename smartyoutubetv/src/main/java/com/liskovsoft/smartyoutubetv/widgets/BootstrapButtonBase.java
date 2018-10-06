@@ -60,7 +60,7 @@ public class BootstrapButtonBase extends LinearLayout {
             return;
         }
 
-        mOldTipText = (String) mTipTextView.getText();
+        mOldTipText = mTipTextView.getText().toString();
         mTipTextView.setText(mTipText);
     }
 
