@@ -186,8 +186,8 @@ public class Tab implements PictureListener {
     }
 
     public void setListener(EventListener listener) {
-        if (mListener != null) {
-            throw new IllegalStateException("Tab Listener could be added only once!");
+        if (mListener != null && listener != null) {
+            throw new IllegalStateException("Attempt to overwrite previously established Tab Listener!");
         }
         mListener = listener;
     }
