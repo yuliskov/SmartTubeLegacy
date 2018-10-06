@@ -47,7 +47,9 @@ public abstract class BaseUi implements UI {
         mActivity = browser;
         mUiController = controller;
         mTabControl = controller.getTabControl();
-        FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        // NOTE: fragments, activity code
+        // FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(R.id.browser_container);
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);

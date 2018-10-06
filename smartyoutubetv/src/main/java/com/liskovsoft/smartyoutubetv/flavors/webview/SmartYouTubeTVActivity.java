@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 
 public class SmartYouTubeTVActivity extends AppCompatActivity {
     private SmartYouTubeTVFragment fragment;

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.browser.fragments.ActivityFragment;
 import org.slf4j.Logger;
@@ -41,6 +44,11 @@ public abstract class BrowserFragment extends Fragment implements ActivityFragme
         if (this.getClass() == BrowserFragment.class) {
             createController(icicle);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.browser_fragment, container, false);
     }
 
     //protected void beginInitWebView(Bundle icicle) {
