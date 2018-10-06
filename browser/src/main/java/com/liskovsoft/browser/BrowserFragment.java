@@ -1,5 +1,6 @@
 package com.liskovsoft.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -15,7 +16,6 @@ import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.browser.fragments.ActivityFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import android.annotation.SuppressLint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +37,8 @@ public abstract class BrowserFragment extends Fragment implements ActivityFragme
     private Bundle mIcicle;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onActivityCreated(Bundle icicle) {
+        super.onActivityCreated(icicle);
 
         // this routine is a simple demonstration what you can do with controller
         if (this.getClass() == BrowserFragment.class) {
@@ -49,11 +49,6 @@ public abstract class BrowserFragment extends Fragment implements ActivityFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.browser_fragment, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     //protected void beginInitWebView(Bundle icicle) {

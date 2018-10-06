@@ -42,13 +42,13 @@ public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
     private UAManager mUAManager;
 
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onActivityCreated(Bundle icicle) {
         Log.i(TAG, "SmartYouTubeTVActivityBase::init");
 
         // fix lang in case activity has been destroyed and then restored
         setupLang();
         setupUA();
-        super.onCreate(icicle);
+        super.onActivityCreated(icicle);
 
         initRemoteUrl();
         initKeys();

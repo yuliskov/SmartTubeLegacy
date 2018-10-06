@@ -13,8 +13,8 @@ public abstract class XWalkBrowserFragment extends BrowserFragment implements XW
     private Bundle mBundle;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         if (Browser.getEngineType() == EngineType.XWalk) {
             initXWalk(savedInstanceState);
