@@ -106,23 +106,31 @@ public class ExoInterceptor extends RequestInterceptor {
         Log.d(TAG, "Video manifest received");
         dataParser.parse(new OnMediaFoundCallback() {
             private GenericInfo mInfo;
+            private Sample mSample;
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
-                Log.d(TAG, "Video manifest parsed");
-                Sample sample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
-                Intent exoIntent = createExoIntent(sample, mInfo);
-                openExoPlayer(exoIntent);
+                mSample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
             }
             @Override
             public void onLiveUrlFound(final Uri hlsUrl) {
-                Sample sample = SampleHelpers.buildFromUri(hlsUrl);
-                Intent exoIntent = createExoIntent(sample, mInfo);
-                openExoPlayer(exoIntent);
+                mSample = SampleHelpers.buildFromUri(hlsUrl);
             }
 
             @Override
             public void onInfoFound(GenericInfo info) {
                 mInfo = info;
+            }
+
+            @Override
+            public void onDone() {
+                if (mSample == null || mInfo == null) {
+                    mManager.onCancel();
+                    return;
+                }
+
+                Log.d(TAG, "Video info has been parsed... opening exoplayer...");
+                Intent exoIntent = createExoIntent(mSample, mInfo);
+                openExoPlayer(exoIntent);
             }
         });
     }

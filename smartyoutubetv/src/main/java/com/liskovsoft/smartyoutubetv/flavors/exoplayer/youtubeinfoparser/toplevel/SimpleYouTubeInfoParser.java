@@ -61,6 +61,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onLiveUrlFound(mHlsUrl);
             if (!mMPDBuilder.isEmpty())
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+
+            mMediaFoundCallback.onDone();
         }
     }
 

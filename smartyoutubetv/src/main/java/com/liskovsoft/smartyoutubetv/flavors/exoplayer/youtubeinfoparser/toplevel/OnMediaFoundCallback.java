@@ -9,4 +9,5 @@ public abstract class OnMediaFoundCallback {
     public void onDashMPDFound(InputStream mpdContent){}
     public void onLiveUrlFound(Uri hlsUrl){}
     public void onInfoFound(GenericInfo info){}
+    public abstract void onDone();
 }

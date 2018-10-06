@@ -56,19 +56,30 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
     private void parseAndOpenExoPlayer() {
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
         dataParser.parse(new OnMediaFoundCallback() {
+            private Uri mHlsUrl;
+            private InputStream mMpdContent;
             private GenericInfo mInfo;
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
-                MPDExtractInterceptor.this.onDashMPDFound(mpdContent);
+                mMpdContent = mpdContent;
             }
             @Override
             public void onLiveUrlFound(final Uri hlsUrl) {
-                MPDExtractInterceptor.this.onLiveUrlFound(hlsUrl);
+                mHlsUrl = hlsUrl;
             }
 
             @Override
             public void onInfoFound(GenericInfo info) {
                 mInfo = info;
+            }
+
+            @Override
+            public void onDone() {
+                if (mMpdContent != null) {
+                    MPDExtractInterceptor.this.onDashMPDFound(mMpdContent);
+                } else if (mHlsUrl != null) {
+                    MPDExtractInterceptor.this.onLiveUrlFound(mHlsUrl);
+                }
             }
         });
     }
