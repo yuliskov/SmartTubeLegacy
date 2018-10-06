@@ -29,7 +29,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebug
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.CodecDataSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
@@ -354,7 +354,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.restrict_codec_btn) {
-            GenericSelectorDialog.create(this, new CodecDataSource(this));
+            GenericSelectorDialog.create(this, new RestrictCodecDataSource(this));
         }
     }
 

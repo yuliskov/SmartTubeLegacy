@@ -8,11 +8,11 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSel
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CodecDataSource implements DataSource {
+public class RestrictCodecDataSource implements DataSource {
     private final ExoPreferences mPrefs;
     private final Context mContext;
 
-    public CodecDataSource(Context ctx) {
+    public RestrictCodecDataSource(Context ctx) {
         mContext = ctx;
         mPrefs = ExoPreferences.instance(ctx);
     }
@@ -21,18 +21,12 @@ public class CodecDataSource implements DataSource {
     public Map<String, String> getDialogItems() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put(mContext.getString(R.string.no_restrictions), "");
-        map.put("AVC, 2160p", "avc|2160");
-        map.put("AVC, 1440p", "avc|1440");
+        map.put("AVC, 4K", "avc|2160");
         map.put("AVC, 1080p", "avc|1080");
-        map.put("AVC, 720p", "avc|720");
-        map.put("VP9, 2160p", "vp9|2160");
-        map.put("VP9, 1440p", "vp9|1440");
+        map.put("VP9, 4K", "vp9|2160");
         map.put("VP9, 1080p", "vp9|1080");
-        map.put("VP9, 720p", "vp9|720");
-        map.put("AVC, VP9, 2160p", "|2160");
-        map.put("AVC, VP9, 1440p", "|1440");
-        map.put("AVC, VP9, 1080p", "|1080");
-        map.put("AVC, VP9, 720p", "|720");
+        map.put("AVC+VP9, 4K", "|2160");
+        map.put("AVC+VP9, 1080p", "|1080");
         return map;
     }
 

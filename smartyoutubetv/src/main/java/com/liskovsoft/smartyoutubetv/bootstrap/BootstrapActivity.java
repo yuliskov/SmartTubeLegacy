@@ -12,7 +12,7 @@ import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.CodecDataSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
@@ -66,7 +66,7 @@ public class BootstrapActivity extends ActivityBase {
                 Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_preferred_codec:
-                GenericSelectorDialog.create(this, new CodecDataSource(this));
+                GenericSelectorDialog.create(this, new RestrictCodecDataSource(this));
                 break;
         }
     }
