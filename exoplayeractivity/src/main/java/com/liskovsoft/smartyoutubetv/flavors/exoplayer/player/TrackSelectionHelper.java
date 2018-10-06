@@ -335,6 +335,9 @@ import java.util.TreeSet;
         } else { // change quality
             isDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
+            if (tag == null) {
+                return;
+            }
             int groupIndex = tag.first;
             int trackIndex = tag.second;
 
@@ -354,11 +357,6 @@ import java.util.TreeSet;
 
         // save immediately
         onClick(null, 0);
-
-        // close dialog
-        //if (alertDialog != null)
-        //    alertDialog.dismiss();
-        //alertDialog = null;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
