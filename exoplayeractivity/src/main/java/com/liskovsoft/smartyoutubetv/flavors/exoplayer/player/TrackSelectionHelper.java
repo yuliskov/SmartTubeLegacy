@@ -308,7 +308,7 @@ import java.util.TreeSet;
         if (override != null) {
             selector.setSelectionOverride(rendererIndex, trackGroups, override);
         } else {
-            selector.clearSelectionOverrides(rendererIndex);
+            selector.clearSelectionOverrides(rendererIndex); // Auto quality button selected
         }
         ((PlayerActivity) context).retryIfNeeded();
     }
@@ -319,7 +319,7 @@ import java.util.TreeSet;
         if (view == disableView) {
             isDisabled = true;
             override = null;
-        } else if (view == defaultView) {
+        } else if (view == defaultView) { // Auto quality button selected
             isDisabled = false;
             override = null;
         } else if (view == enableRandomAdaptationView) {
