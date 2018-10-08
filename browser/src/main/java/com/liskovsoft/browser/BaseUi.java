@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.*;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebView;
@@ -13,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.liskovsoft.browser.addons.xwalk.XWalkWebViewAdapter;
+import com.liskovsoft.browser.fragments.MyActivityInterface;
 
 import java.util.List;
 
@@ -65,8 +65,8 @@ public abstract class BaseUi implements UI {
     }
 
     private FrameLayout findRootLayout() {
-        if (mActivity instanceof BrowserActivity) {
-            return ((BrowserActivity)mActivity).getRootLayout();
+        if (mActivity instanceof MyActivityInterface) {
+            return ((MyActivityInterface)mActivity).getRootLayout();
         }
         return (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
     }

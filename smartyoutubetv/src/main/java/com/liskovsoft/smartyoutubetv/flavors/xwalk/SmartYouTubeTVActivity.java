@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.webview;
+package com.liskovsoft.smartyoutubetv.flavors.xwalk;
 
 import android.support.v4.app.Fragment;
 import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVManagerActivity;

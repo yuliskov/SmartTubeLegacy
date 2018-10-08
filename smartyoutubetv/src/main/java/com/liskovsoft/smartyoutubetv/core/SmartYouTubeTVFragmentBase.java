@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.BrowserActivity;
+import com.liskovsoft.browser.fragments.MyActivityInterface;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -147,8 +147,8 @@ public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
     }
 
     private void setDispatchEvent(KeyEvent event) {
-        if (getActivity() instanceof BrowserActivity) {
-            ((BrowserActivity) getActivity()).setDispatchEvent(event);
+        if (getActivity() instanceof MyActivityInterface) {
+            ((MyActivityInterface) getActivity()).setDispatchEvent(event);
         }
     }
 

@@ -13,13 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
+import com.liskovsoft.browser.fragments.MyFragmentInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BrowserFragment extends Fragment implements ActivityFragment {
+public abstract class BrowserFragment extends Fragment implements MyFragmentInterface {
     private static final Logger logger = LoggerFactory.getLogger(BrowserFragment.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
