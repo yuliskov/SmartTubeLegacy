@@ -23,7 +23,7 @@ var CodecConfig_WebView = {
     'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
     'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
-    'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
+    // 'MiTV4A (matrix)': 'mp4', // amlogic: MiTV4A (4pda)
     'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
     'NG3128HD': 'webm, mp4', // (github > issues)
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9 (enable all formats)
@@ -54,7 +54,7 @@ var CodecConfig_XWalk = {
     'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
     'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
-    'MiTV4A (matrix)': 'mp4', // MiTV4A (4pda)
+    // 'MiTV4A (matrix)': 'mp4', // amlogic: MiTV4A (4pda)
     'MiTV4 (missionimpossible)': 'mp4', // MiTV4 65 (4pda)
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9 (enable all formats)
     't95m': '', // (gmail)
