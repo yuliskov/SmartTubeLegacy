@@ -4,7 +4,7 @@ import android.view.KeyEvent;
 
 public class KeysTranslator {
     private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
-    private boolean mDownFired;
+    private int mDownFired = 0;
     private boolean mDisable = true;
 
     /**
@@ -14,13 +14,15 @@ public class KeysTranslator {
      * @return is ignored
      */
     private boolean isEventIgnored(KeyEvent event) {
+        mDownFired = mDownFired < 0 ? 0 : mDownFired; // do reset sometimes
+
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mDownFired = true;
+            mDownFired++;
             return false;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_UP && mDownFired) {
-            mDownFired = false;
+        if (event.getAction() == KeyEvent.ACTION_UP && mDownFired > 0) {
+            mDownFired--;
             return false;
         }
 

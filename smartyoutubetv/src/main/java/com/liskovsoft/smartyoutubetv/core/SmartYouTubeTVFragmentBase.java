@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.browser.BrowserActivity;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -131,32 +132,24 @@ public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-    //@Override
-    //public boolean onKeyDown(int keyCode, KeyEvent event) {
-    //    event = mTranslator.doTranslateKeys(event);
-    //    return super.onKeyDown(event.getKeyCode(), event);
-    //}
-    //
-    //@Override
-    //public boolean onKeyUp(int keyCode, KeyEvent event) {
-    //    event = mTranslator.doTranslateKeys(event);
-    //    return super.onKeyUp(event.getKeyCode(), event);
-    //}
-    //
-    //@Override
-    //public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-    //    event = mTranslator.doTranslateKeys(event);
-    //    return super.onKeyLongPress(event.getKeyCode(), event);
-    //}
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = mTranslator.doTranslateKeys(event);
+        setDispatchEvent(event);
+
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) { // remember real back remapped in translator
             onBackPressed();
             return true;
         }
+
+
         return false;
+    }
+
+    private void setDispatchEvent(KeyEvent event) {
+        if (getActivity() instanceof BrowserActivity) {
+            ((BrowserActivity) getActivity()).setDispatchEvent(event);
+        }
     }
 
     @Override

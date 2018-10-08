@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
-import com.liskovsoft.browser.fragments.ActivityFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

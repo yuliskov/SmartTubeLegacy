@@ -12,12 +12,18 @@ import com.liskovsoft.browser.BrowserActivity;
 
 public class SmartYouTubeTVActivity extends AppCompatActivity implements BrowserActivity {
     private SmartYouTubeTVFragment mFragment;
+    private KeyEvent mEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        hideTitleBar();
         initFragments();
+    }
+
+    private void hideTitleBar() {
+        setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
     private void initFragments() {
@@ -63,7 +69,11 @@ public class SmartYouTubeTVActivity extends AppCompatActivity implements Browser
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        return mFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
+        return mFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
+    }
+
+    private KeyEvent modifyEvent(KeyEvent event) {
+        return mEvent != null ? mEvent : event;
     }
 
     @Override
@@ -80,5 +90,10 @@ public class SmartYouTubeTVActivity extends AppCompatActivity implements Browser
     @Override
     public FrameLayout getRootLayout() {
         return (FrameLayout) mFragment.getView();
+    }
+
+    @Override
+    public void setDispatchEvent(KeyEvent event) {
+        mEvent = event;
     }
 }

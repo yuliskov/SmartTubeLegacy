@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.fragments;
+package com.liskovsoft.browser;
 
 import android.content.Intent;
 import android.os.Bundle;

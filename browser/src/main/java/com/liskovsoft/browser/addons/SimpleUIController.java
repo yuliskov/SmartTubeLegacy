@@ -19,6 +19,7 @@ public class SimpleUIController extends Controller {
      */
     private void hideActionBar(Activity context) {
         // we must set theme before ui instantiation
+        // NOTE: don't work when inside fragment
         context.setTheme(R.style.SimpleUITheme);
     }
 
