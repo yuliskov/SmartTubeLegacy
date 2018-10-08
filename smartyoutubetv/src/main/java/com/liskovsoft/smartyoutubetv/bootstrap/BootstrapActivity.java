@@ -16,8 +16,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCo
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVManagerActivity;
-import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity;
+import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVActivity1;
+import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity2;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton;
 import io.fabric.sdk.android.Fabric;
 
@@ -129,13 +129,13 @@ public class BootstrapActivity extends ActivityBase {
     }
 
     public void selectFlavour(View view) {
-        Class clazz = SmartYouTubeTVActivity.class;
+        Class clazz = SmartYouTubeTVActivity1.class;
         switch (view.getId()) {
             case R.id.button_webview:
-                clazz = SmartYouTubeTVActivity.class;
+                clazz = SmartYouTubeTVActivity1.class;
                 break;
             case R.id.button_xwalk:
-                clazz = com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVActivity.class;
+                clazz = SmartYouTubeTVActivity2.class;
                 break;
             case R.id.button_exo:
                 clazz = SmartYouTubeTVExoWebView.class;
