@@ -1,11 +1,11 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
 import com.liskovsoft.smartyoutubetv.core.fragments.SmartYouTubeTVFragmentBase;
 
 // marker class
-public abstract class SmartYouTubeTVExoBase extends SmartYouTubeTVFragmentBase {
+public abstract class SmartYouTubeTV4KFragmentBase extends SmartYouTubeTVFragmentBase {
     private OnActivityResultListener mOnActivityResultListener;
     private MyResult mResult;
 

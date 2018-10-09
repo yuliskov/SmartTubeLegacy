@@ -2,10 +2,6 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.MainExoInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTVFragment;
-import com.liskovsoft.smartyoutubetv.flavors.webview.interceptors.OpenPlayerIntentInterceptor;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private RequestInterceptor mInterceptor;

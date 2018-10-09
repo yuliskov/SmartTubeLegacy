@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoWebView;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoXWalk;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
@@ -138,10 +138,10 @@ public class BootstrapActivity extends ActivityBase {
                 clazz = SmartYouTubeTV1080AltActivity.class;
                 break;
             case R.id.button_exo:
-                clazz = SmartYouTubeTVExoWebView.class;
+                clazz = SmartYouTubeTV4K.class;
                 break;
             case R.id.button_exo2:
-                clazz = SmartYouTubeTVExoXWalk.class;
+                clazz = SmartYouTubeTV4KAlt.class;
                 break;
         }
 

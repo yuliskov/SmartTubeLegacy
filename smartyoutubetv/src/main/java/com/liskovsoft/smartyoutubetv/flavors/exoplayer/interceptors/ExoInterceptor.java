@@ -9,8 +9,8 @@ import android.webkit.WebResourceResponse;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase.OnActivityResultListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
@@ -180,7 +180,7 @@ public class ExoInterceptor extends RequestInterceptor {
         processor.run();
     }
 
-    private boolean setupResultListener(SmartYouTubeTVExoBase activity) {
+    private boolean setupResultListener(SmartYouTubeTV4KFragmentBase activity) {
         return activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
