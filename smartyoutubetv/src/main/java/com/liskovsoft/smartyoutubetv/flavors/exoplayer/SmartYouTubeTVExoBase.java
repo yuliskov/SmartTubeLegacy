@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
 
 import android.app.Activity;
 import android.content.Intent;
-import com.liskovsoft.smartyoutubetv.core.SmartYouTubeTVFragmentBase;
+import com.liskovsoft.smartyoutubetv.core.fragments.SmartYouTubeTVFragmentBase;
 
 // marker class
 public abstract class SmartYouTubeTVExoBase extends SmartYouTubeTVFragmentBase {

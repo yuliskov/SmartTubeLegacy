@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.core;
+package com.liskovsoft.smartyoutubetv.core.fragments;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.core;
+package com.liskovsoft.smartyoutubetv.core.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,12 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.fragments.MyActivityInterface;
 import com.liskovsoft.browser.fragments.MyFragmentInterface;
+import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 
-public abstract class SmartYouTubeTVManagerActivity extends AppCompatActivity implements MyActivityInterface {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class EventManagerActivity extends AppCompatActivity implements MyActivityInterface {
     private KeyEvent mEvent;
     private Fragment mFragment;
     private MyFragmentInterface mInterface;
@@ -22,23 +26,16 @@ public abstract class SmartYouTubeTVManagerActivity extends AppCompatActivity im
         super.onCreate(savedInstanceState);
 
         hideTitleBar();
-        initFragments();
     }
 
     private void hideTitleBar() {
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
-    private void initFragments() {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        mFragment = getFragment();
-        mInterface = (MyFragmentInterface) mFragment;
-        transaction.add(android.R.id.content, mFragment);
-        transaction.commit();
+    protected void setActiveFragment(Fragment fragment) {
+        mFragment = fragment;
+        mInterface = (MyFragmentInterface) fragment;
     }
-
-    protected abstract Fragment getFragment();
 
     @Override
     protected void onNewIntent(Intent intent) {
