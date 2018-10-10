@@ -11,7 +11,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerButtonsManager {
-    private final PlayerFragment mPlayerActivity;
+    private final ExoPlayerFragment mPlayerActivity;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
     private final SimpleExoPlayerView mExoPlayerView;
     private final ExoPreferences mPrefs;
 
-    public PlayerButtonsManager(PlayerFragment playerActivity) {
+    public PlayerButtonsManager(ExoPlayerFragment playerActivity) {
         mPlayerActivity = playerActivity;
         mExoPlayerView = (SimpleExoPlayerView) mPlayerActivity.findViewById(R.id.player_view);
         mButtonStates = new HashMap<>();
@@ -50,7 +50,7 @@ public class PlayerButtonsManager {
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !extras.containsKey(entry.getValue());
             // NOTE: fix phantom subscribe/unsubscribe
-            boolean isSubscribeButton = entry.getValue().equals(PlayerFragment.BUTTON_SUBSCRIBE);
+            boolean isSubscribeButton = entry.getValue().equals(ExoPlayerFragment.BUTTON_SUBSCRIBE);
             if (isButtonDisabled && isSubscribeButton) {
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = mPlayerActivity.findViewById(btnId);
@@ -78,8 +78,8 @@ public class PlayerButtonsManager {
     private boolean excludeButton(Integer btnId) {
         String btnName = mIdTagMapping.get(btnId);
         switch (btnName) {
-            case PlayerFragment.BUTTON_NEXT:
-            case PlayerFragment.BUTTON_PREV:
+            case ExoPlayerFragment.BUTTON_NEXT:
+            case ExoPlayerFragment.BUTTON_PREV:
                 return true;
         }
 
@@ -87,13 +87,13 @@ public class PlayerButtonsManager {
     }
 
     private void initIdTagMapping() {
-        mIdTagMapping.put(R.id.exo_user, PlayerFragment.BUTTON_USER_PAGE);
-        mIdTagMapping.put(R.id.exo_like, PlayerFragment.BUTTON_LIKE);
-        mIdTagMapping.put(R.id.exo_dislike, PlayerFragment.BUTTON_DISLIKE);
-        mIdTagMapping.put(R.id.exo_subscribe, PlayerFragment.BUTTON_SUBSCRIBE);
-        mIdTagMapping.put(R.id.exo_prev, PlayerFragment.BUTTON_PREV);
-        mIdTagMapping.put(R.id.exo_next2, PlayerFragment.BUTTON_NEXT);
-        mIdTagMapping.put(R.id.exo_suggestions, PlayerFragment.BUTTON_SUGGESTIONS);
+        mIdTagMapping.put(R.id.exo_user, ExoPlayerFragment.BUTTON_USER_PAGE);
+        mIdTagMapping.put(R.id.exo_like, ExoPlayerFragment.BUTTON_LIKE);
+        mIdTagMapping.put(R.id.exo_dislike, ExoPlayerFragment.BUTTON_DISLIKE);
+        mIdTagMapping.put(R.id.exo_subscribe, ExoPlayerFragment.BUTTON_SUBSCRIBE);
+        mIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
+        mIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
+        mIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
@@ -140,13 +140,13 @@ public class PlayerButtonsManager {
         }
 
         if (isBackButton) {
-            mPlayerActivity.doGracefulExit(PlayerFragment.BUTTON_BACK);
+            mPlayerActivity.doGracefulExit(ExoPlayerFragment.BUTTON_BACK);
         }
     }
 
     @TargetApi(17)
     private void displayShareDialog() {
-        String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerFragment.VIDEO_ID);
+        String videoId = mPlayerActivity.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_ID);
         Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
         PlayerUtil.showMultiChooser(mPlayerActivity, videoUrl);
     }
@@ -155,7 +155,7 @@ public class PlayerButtonsManager {
     private void displayShareDialog2() {
         Intent openIntent = new Intent();
         openIntent.setAction(Intent.ACTION_VIEW);
-        String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerFragment.VIDEO_ID);
+        String videoId = mPlayerActivity.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_ID);
         Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
         openIntent.setData(videoUrl);
         mPlayerActivity.startActivity(openIntent);
@@ -165,7 +165,7 @@ public class PlayerButtonsManager {
     private void displayShareDialogOld() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        String videoId = mPlayerActivity.getIntent().getStringExtra(PlayerFragment.VIDEO_ID);
+        String videoId = mPlayerActivity.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_ID);
         sendIntent.putExtra(Intent.EXTRA_TEXT, PlayerUtil.convertToFullUrl(videoId).toString());
         sendIntent.setType("text/plain");
         Intent chooserIntent = Intent.createChooser(sendIntent, mPlayerActivity.getResources().getText(R.string.send_to));

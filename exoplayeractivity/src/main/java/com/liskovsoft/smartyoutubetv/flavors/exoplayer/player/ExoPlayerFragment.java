@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,8 +22,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.browser.fragments.ParentActivity;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
@@ -40,9 +40,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment, OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+public class ExoPlayerFragment extends ExoPlayerCoreFragment implements PlayerFragment, OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
     public static final int REQUEST_CODE = 123;
-    private static final String TAG = PlayerFragment.class.getName();
+    private static final String TAG = ExoPlayerFragment.class.getName();
 
     public static final String BUTTON_USER_PAGE = "button_user_page";
     public static final String BUTTON_LIKE = "button_like";
@@ -92,10 +92,10 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
         super.initializePlayer();
 
         if (needNewPlayer) {
-            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerFragment.this);
+            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, getActivity());
 
             // Do not move this code to another place!!! This statement must come after player initialization
-            autoFrameRateManager = new AutoFrameRateManager(this, player);
+            autoFrameRateManager = new AutoFrameRateManager(getActivity(), player);
 
             playerInitializer.initVideoTitle();
         }
@@ -110,7 +110,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
                 if (stateManager == null) { // run once
-                    stateManager = new PlayerStateManager(PlayerFragment.this, player, trackSelector);
+                    stateManager = new PlayerStateManager(ExoPlayerFragment.this, player, trackSelector);
                     stateManager.restoreState(rendererTrackGroupArrays);
                 }
 
@@ -160,7 +160,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PlayerFragment.this.showDebugView(show);
+                    ExoPlayerFragment.this.showDebugView(show);
                 }
             }, 1000);
             return;
@@ -199,22 +199,25 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
         if (autoFrameRateManager != null) {
             intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
         }
-        setResult(Activity.RESULT_OK, intent);
 
-        finish();
-        overridePendingTransition(0, 0);
+        // TODO: handle player's exit
+        //setResult(Activity.RESULT_OK, intent);
+        //
+        //finish();
+        //overridePendingTransition(0, 0);
     }
 
     @Override
     public void onBackPressed() {
-        doGracefulExit(PlayerFragment.BUTTON_BACK);
+        doGracefulExit(ExoPlayerFragment.BUTTON_BACK);
 
         // moveTaskToBack(true); // don't exit at this point
     }
 
     @Override
     public void finish() {
-        super.finish();
+        // TODO: not implemented??
+        // super.finish();
     }
 
     @Override
@@ -297,7 +300,14 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
         simpleExoPlayerView.showController();
 
         // If the event was not handled then see if the player view can handle it as a media key event.
-        return super.dispatchKeyEvent(event) || simpleExoPlayerView.dispatchMediaKeyEvent(event);
+        setDispatchEvent(event);
+        return simpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    private void setDispatchEvent(KeyEvent event) {
+        if (getActivity() instanceof ParentActivity) {
+            ((ParentActivity) getActivity()).setDispatchEvent(event);
+        }
     }
 
     /**
@@ -318,9 +328,13 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     private boolean isUpKey(KeyEvent event) {
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+
         boolean isUp = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP;
         if (isUp) {
-            View upBtn = findViewById(R.id.up_catch_button);
+            View upBtn = root.findViewById(R.id.up_catch_button);
             return upBtn.isFocused();
         }
         return false;
@@ -337,7 +351,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
             return true;
         }
 
-        return super.dispatchKeyEvent(event);
+        return false;
     }
 
     private boolean isVolumeEvent(KeyEvent event) {
@@ -354,7 +368,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.restrict_codec_btn) {
-            GenericSelectorDialog.create(this, new RestrictCodecDataSource(this));
+            GenericSelectorDialog.create(getActivity(), new RestrictCodecDataSource(getActivity()));
         }
     }
 
@@ -364,7 +378,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     private void addRestrictCodecButton() {
-        TextToggleButton button = new TextToggleButton(this);
+        TextToggleButton button = new TextToggleButton(getActivity());
         button.setId(R.id.restrict_codec_btn);
         button.setText(R.string.restrict);
         button.setOnClickListener(this);
@@ -387,7 +401,10 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     private void updateClockView() {
-        TextView clock = findViewById(R.id.clock);
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+        TextView clock = root.findViewById(R.id.clock);
         Time time = new Time();
         time.setToNow();
         // details about format: http://php.net/manual/en/function.strftime.php
@@ -396,8 +413,11 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     private void resetStateOfLayoutToggleButtons() {
-        LayoutToggleButton toggleButton1 = findViewById(R.id.player_options_btn);
-        LayoutToggleButton toggleButton2 = findViewById(R.id.player_quality_btn);
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+        LayoutToggleButton toggleButton1 = root.findViewById(R.id.player_options_btn);
+        LayoutToggleButton toggleButton2 = root.findViewById(R.id.player_quality_btn);
         toggleButton1.resetState();
         toggleButton2.resetState();
     }
@@ -433,7 +453,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
 
         if (playbackState == Player.STATE_ENDED) {
             // doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
-            doGracefulExit(PlayerFragment.TRACK_ENDED);
+            doGracefulExit(ExoPlayerFragment.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {
@@ -483,12 +503,12 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     public void setHidePlaybackErrors(boolean hideErrors) {
-        ExoPreferences prefs = ExoPreferences.instance(this);
+        ExoPreferences prefs = ExoPreferences.instance(getActivity());
         prefs.setHidePlaybackErrors(hideErrors);
     }
 
     public boolean getHidePlaybackErrors() {
-        ExoPreferences prefs = ExoPreferences.instance(this);
+        ExoPreferences prefs = ExoPreferences.instance(getActivity());
         return prefs.getHidePlaybackErrors();
     }
 
@@ -497,7 +517,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PlayerFragment.this.setRepeatEnabled(enabled);
+                    ExoPlayerFragment.this.setRepeatEnabled(enabled);
                 }
             }, 1000);
             return;
@@ -508,7 +528,7 @@ public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft
     }
 
     public void onSpeedClicked() {
-        GenericSelectorDialog.create(this, new SpeedDataSource(this, player));
+        GenericSelectorDialog.create(getActivity(), new SpeedDataSource(getActivity(), player));
     }
 
     @Override

@@ -42,7 +42,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 import java.util.Locale;
 
@@ -257,7 +257,7 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
         } else {
             Activity ctx = this.context;
             if (ctx == null) {
-                ctx = (PlayerFragment) viewGroup.getContext();
+                ctx = (ExoPlayerFragment) viewGroup.getContext();
             }
             WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
             int displayModeId = windowLayoutParams.preferredDisplayModeId;

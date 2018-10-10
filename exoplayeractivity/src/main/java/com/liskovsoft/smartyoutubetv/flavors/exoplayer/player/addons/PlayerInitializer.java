@@ -12,12 +12,12 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 import java.util.Locale;
 
 public class PlayerInitializer {
-    private final PlayerFragment mPlayer;
+    private final ExoPlayerFragment mPlayer;
     private final SimpleExoPlayerView mExoPlayerView;
     private TextView videoTitle;
     private TextView videoTitle2;
@@ -27,7 +27,7 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_180MIN_MS = 20000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 30000;
 
-    public PlayerInitializer(PlayerFragment player) {
+    public PlayerInitializer(ExoPlayerFragment player) {
         mPlayer = player;
         mExoPlayerView = mPlayer.findViewById(R.id.player_view);
         
@@ -57,7 +57,7 @@ public class PlayerInitializer {
     }
 
     public String getMainTitle() {
-        return mPlayer.getIntent().getStringExtra(PlayerFragment.VIDEO_TITLE);
+        return mPlayer.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
     }
 
     public String getSecondTitle() {
@@ -72,7 +72,7 @@ public class PlayerInitializer {
 
     private String getAuthor() {
         Intent intent = mPlayer.getIntent();
-        return intent.getStringExtra(PlayerFragment.VIDEO_AUTHOR);
+        return intent.getStringExtra(ExoPlayerFragment.VIDEO_AUTHOR);
     }
 
     /**
@@ -81,13 +81,13 @@ public class PlayerInitializer {
      */
     private String getPublishDate() {
         Intent intent = mPlayer.getIntent();
-        String published = intent.getStringExtra(PlayerFragment.VIDEO_DATE);
+        String published = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
         return published == null ? "" : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {
         Intent intent = mPlayer.getIntent();
-        String viewCount = intent.getStringExtra(PlayerFragment.VIDEO_VIEW_COUNT);
+        String viewCount = intent.getStringExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT);
         return formatNumber(viewCount);
     }
 

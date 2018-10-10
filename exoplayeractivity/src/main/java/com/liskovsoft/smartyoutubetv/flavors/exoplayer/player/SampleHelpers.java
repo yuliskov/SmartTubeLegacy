@@ -44,7 +44,7 @@ public final class SampleHelpers {
     }
 
     private static String mergeTitles(String title, String title2) {
-        return title + PlayerFragment.DELIMITER + title2;
+        return title + ExoPlayerFragment.DELIMITER + title2;
     }
 
     public abstract static class Sample {
@@ -68,16 +68,16 @@ public final class SampleHelpers {
         }
 
         public Intent buildIntent(Context context) {
-            Intent intent = new Intent(context, PlayerFragment.class);
-            intent.putExtra(PlayerFragment.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
+            Intent intent = new Intent(context, ExoPlayerFragment.class);
+            intent.putExtra(ExoPlayerFragment.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
             if (drmSchemeUuid != null) {
-                intent.putExtra(PlayerFragment.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
-                intent.putExtra(PlayerFragment.DRM_LICENSE_URL, drmLicenseUrl);
-                intent.putExtra(PlayerFragment.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+                intent.putExtra(ExoPlayerFragment.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
+                intent.putExtra(ExoPlayerFragment.DRM_LICENSE_URL, drmLicenseUrl);
+                intent.putExtra(ExoPlayerFragment.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
-            intent.putExtra(PlayerFragment.VIDEO_TITLE, this.name);
+            intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, this.name);
             return intent;
         }
 
@@ -109,9 +109,9 @@ public final class SampleHelpers {
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
                     .setData(Uri.parse(uri))
-                    .putExtra(PlayerFragment.MPD_CONTENT_EXTRA, mpdContent)
-                    .putExtra(PlayerFragment.EXTENSION_EXTRA, extension)
-                    .setAction(PlayerFragment.ACTION_VIEW);
+                    .putExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA, mpdContent)
+                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, extension)
+                    .setAction(ExoPlayerFragment.ACTION_VIEW);
         }
 
     }
@@ -137,8 +137,8 @@ public final class SampleHelpers {
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
                     .setData(Uri.parse(uri))
-                    .putExtra(PlayerFragment.EXTENSION_EXTRA, extension)
-                    .setAction(PlayerFragment.ACTION_VIEW);
+                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, extension)
+                    .setAction(ExoPlayerFragment.ACTION_VIEW);
         }
 
     }
@@ -167,9 +167,9 @@ public final class SampleHelpers {
                 extensions[i] = children[i].extension;
             }
             return super.buildIntent(context)
-                    .putExtra(PlayerFragment.URI_LIST_EXTRA, uris)
-                    .putExtra(PlayerFragment.EXTENSION_LIST_EXTRA, extensions)
-                    .setAction(PlayerFragment.ACTION_VIEW_LIST);
+                    .putExtra(ExoPlayerFragment.URI_LIST_EXTRA, uris)
+                    .putExtra(ExoPlayerFragment.EXTENSION_LIST_EXTRA, extensions)
+                    .setAction(ExoPlayerFragment.ACTION_VIEW_LIST);
         }
 
     }

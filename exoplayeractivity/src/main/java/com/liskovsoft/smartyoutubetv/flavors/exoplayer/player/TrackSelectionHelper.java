@@ -278,10 +278,10 @@ import java.util.TreeSet;
     }
 
     private void updateViews() {
-        AutoFrameRateManager autoFrameRateManager = ((PlayerFragment) context).getAutoFrameRateManager();
+        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) context).getAutoFrameRateManager();
         autoframerateView.setChecked(autoFrameRateManager.getEnabled());
 
-        hideErrorsView.setChecked(((PlayerFragment) context).getHidePlaybackErrors());
+        hideErrorsView.setChecked(((ExoPlayerFragment) context).getHidePlaybackErrors());
 
         disableView.setChecked(isDisabled);
         defaultView.setChecked(!isDisabled && override == null);
@@ -310,7 +310,7 @@ import java.util.TreeSet;
         } else {
             selector.clearSelectionOverrides(rendererIndex); // Auto quality button selected
         }
-        ((PlayerFragment) context).retryIfNeeded();
+        ((ExoPlayerFragment) context).retryIfNeeded();
     }
 
     // View.OnClickListener
@@ -326,11 +326,11 @@ import java.util.TreeSet;
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
         } else if (view == autoframerateView) {
             boolean checked = autoframerateView.isChecked();
-            AutoFrameRateManager autoFrameRateManager = ((PlayerFragment) context).getAutoFrameRateManager();
+            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) context).getAutoFrameRateManager();
             autoFrameRateManager.setEnabled(!checked);
         } else if (view == hideErrorsView) {
             boolean checked = hideErrorsView.isChecked();
-            PlayerFragment player = (PlayerFragment) context;
+            ExoPlayerFragment player = (ExoPlayerFragment) context;
             player.setHidePlaybackErrors(!checked);
         } else { // change quality
             isDisabled = false;

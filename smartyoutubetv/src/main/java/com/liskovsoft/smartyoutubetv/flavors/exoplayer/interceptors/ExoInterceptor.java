@@ -12,7 +12,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase.OnActivityResultListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -140,10 +140,10 @@ public class ExoInterceptor extends RequestInterceptor {
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
         final Intent playerIntent = sample.buildIntent(mContext);
-        playerIntent.putExtra(PlayerFragment.VIDEO_TITLE, info.getTitle());
-        playerIntent.putExtra(PlayerFragment.VIDEO_AUTHOR, info.getAuthor());
-        playerIntent.putExtra(PlayerFragment.VIDEO_VIEW_COUNT, info.getViewCount());
-        playerIntent.putExtra(PlayerFragment.VIDEO_ID, extractVideoId());
+        playerIntent.putExtra(ExoPlayerFragment.VIDEO_TITLE, info.getTitle());
+        playerIntent.putExtra(ExoPlayerFragment.VIDEO_AUTHOR, info.getAuthor());
+        playerIntent.putExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT, info.getViewCount());
+        playerIntent.putExtra(ExoPlayerFragment.VIDEO_ID, extractVideoId());
         mCachedIntent = playerIntent;
         return playerIntent;
     }

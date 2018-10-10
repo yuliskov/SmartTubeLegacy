@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.DisplaySyncHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.UhdHelper;
 
@@ -14,22 +14,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Pull actions from {@link PlayerFragment} and sends them back to the WebView
+ * Pull actions from {@link ExoPlayerFragment} and sends them back to the WebView
  */
 public class ActionsSender {
     private static final String TAG = ActionsSender.class.getSimpleName();
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
     private final String[] mPlayerButtons = {
-            PlayerFragment.BUTTON_LIKE,
-            PlayerFragment.BUTTON_DISLIKE,
-            PlayerFragment.BUTTON_SUBSCRIBE,
-            PlayerFragment.BUTTON_USER_PAGE,
-            PlayerFragment.BUTTON_PREV,
-            PlayerFragment.BUTTON_NEXT,
-            PlayerFragment.BUTTON_BACK,
-            PlayerFragment.BUTTON_SUGGESTIONS,
-            PlayerFragment.TRACK_ENDED
+            ExoPlayerFragment.BUTTON_LIKE,
+            ExoPlayerFragment.BUTTON_DISLIKE,
+            ExoPlayerFragment.BUTTON_SUBSCRIBE,
+            ExoPlayerFragment.BUTTON_USER_PAGE,
+            ExoPlayerFragment.BUTTON_PREV,
+            ExoPlayerFragment.BUTTON_NEXT,
+            ExoPlayerFragment.BUTTON_BACK,
+            ExoPlayerFragment.BUTTON_SUGGESTIONS,
+            ExoPlayerFragment.TRACK_ENDED
     };
 
     public ActionsSender(Context context, ExoInterceptor interceptor) {
@@ -38,8 +38,8 @@ public class ActionsSender {
     }
 
     /**
-     * Sends {@link PlayerFragment} actions to the WebView (after delay)
-     * @param intent contains {@link PlayerFragment} actions
+     * Sends {@link ExoPlayerFragment} actions to the WebView (after delay)
+     * @param intent contains {@link ExoPlayerFragment} actions
      */
     public void bindActions(Intent intent) {
         if (intent == null) {
@@ -74,7 +74,7 @@ public class ActionsSender {
         boolean autoframerateChecked = ExoPreferences.instance(mContext).getAutoframerateChecked();
         if (autoframerateChecked &&
             new DisplaySyncHelper(mContext).supportsDisplayModeChange()) {
-            int displayModId = intent.getIntExtra(PlayerFragment.DISPLAY_MODE_ID, 0);
+            int displayModId = intent.getIntExtra(ExoPlayerFragment.DISPLAY_MODE_ID, 0);
             new UhdHelper(mContext).setPreferredDisplayModeId(((Activity) mContext).getWindow(), displayModId, true);
         }
     }

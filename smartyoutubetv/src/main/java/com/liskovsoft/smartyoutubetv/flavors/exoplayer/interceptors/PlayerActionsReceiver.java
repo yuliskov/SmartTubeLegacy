@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GetButtonStatesCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class PlayerActionsReceiver implements Runnable {
      * @return true if user didn't tapped back key
      */
     private boolean checkIntent() {
-        if (mIntent.hasExtra(PlayerFragment.BUTTON_SUBSCRIBE) ||
-            mIntent.hasExtra(PlayerFragment.BUTTON_NEXT))
+        if (mIntent.hasExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE) ||
+            mIntent.hasExtra(ExoPlayerFragment.BUTTON_NEXT))
             return true;
 
         Log.w(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");

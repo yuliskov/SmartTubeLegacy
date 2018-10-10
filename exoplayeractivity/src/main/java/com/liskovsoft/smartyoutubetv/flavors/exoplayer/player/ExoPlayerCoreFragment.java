@@ -64,8 +64,8 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.UUID;
 
-public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
-    private static final String TAG = PlayerCoreFragment.class.getName();
+public abstract class ExoPlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+    private static final String TAG = ExoPlayerCoreFragment.class.getName();
     protected static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     
