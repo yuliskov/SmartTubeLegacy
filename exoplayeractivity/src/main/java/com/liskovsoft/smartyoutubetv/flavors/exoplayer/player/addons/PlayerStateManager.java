@@ -30,7 +30,7 @@ public class PlayerStateManager {
     private static final int SUBTITLE_RENDERER_INDEX = 2;
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
     private static final int LEGACY_DEVICES_MAX_WIDTH = 1950;
-    private final ExoPlayerFragment mPlayerActivity;
+    private final ExoPlayerFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
@@ -40,11 +40,11 @@ public class PlayerStateManager {
     private String mDefaultTrackId;
     private String mDefaultSubtitleLang;
 
-    public PlayerStateManager(ExoPlayerFragment playerActivity, SimpleExoPlayer player, DefaultTrackSelector selector) {
-        mPlayerActivity = playerActivity;
+    public PlayerStateManager(ExoPlayerFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
+        mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
-        mPrefs = new ExoPreferences(playerActivity);
+        mPrefs = new ExoPreferences(playerFragment.getActivity());
     }
 
     /**
@@ -97,7 +97,7 @@ public class PlayerStateManager {
     }
 
     public void restoreTrackPosition() {
-        String title = mPlayerActivity.getMainTitle() + mPlayer.getDuration(); // create something like hash
+        String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
         long pos = mPrefs.getPosition(title);
         if (pos != C.TIME_UNSET)
             mPlayer.seekTo(pos);
@@ -149,7 +149,7 @@ public class PlayerStateManager {
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
 
-                if (PlayerUtil.isPreferredFormat(mPlayerActivity, format)) {
+                if (PlayerUtil.isPreferredFormat(mPlayerFragment.getActivity(), format)) {
                     MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
                     if (tracksEquals(format.id, trackId)) {
                         result.clear();
@@ -286,7 +286,7 @@ public class PlayerStateManager {
             return;
         }
         long position = mPlayer.getCurrentPosition();
-        String title = mPlayerActivity.getMainTitle() + duration; // create something like hash
+        String title = mPlayerFragment.getMainTitle() + duration; // create something like hash
         boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
         boolean isVideoJustStarts = position < MAX_START_DURATION_MILLIS;
         if (almostAllVideoSeen || isVideoJustStarts) {

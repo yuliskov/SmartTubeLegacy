@@ -73,6 +73,7 @@ import java.util.TreeSet;
     private CheckedTextView[][] trackViews;
     private AlertDialog alertDialog;
     private Context context;
+    private PlayerCoreFragment playerFragment;
 
     private class TrackViewComparator implements Comparator<CheckedTextView> {
         @Override
@@ -110,15 +111,16 @@ import java.util.TreeSet;
     /**
      * Shows the selection dialog for a given renderer.
      *
-     * @param activity      The parent activity.
+     * @param fragment      The parent activity.
      * @param title         The dialog's title.
      * @param trackInfo     The current track information.
      * @param rendererIndex The index of the renderer.
      */
-    public void showSelectionDialog(Activity activity, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
+    public void showSelectionDialog(PlayerCoreFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
         this.trackInfo = trackInfo;
         this.rendererIndex = rendererIndex;
-        context = activity;
+        context = fragment.getActivity();
+        playerFragment = fragment;
 
         trackGroups = trackInfo.getTrackGroups(rendererIndex);
         trackGroupsAdaptive = new boolean[trackGroups.length];
@@ -129,7 +131,7 @@ import java.util.TreeSet;
         isDisabled = selector.getRendererDisabled(rendererIndex);
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }
@@ -278,10 +280,10 @@ import java.util.TreeSet;
     }
 
     private void updateViews() {
-        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) context).getAutoFrameRateManager();
+        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment)playerFragment).getAutoFrameRateManager();
         autoframerateView.setChecked(autoFrameRateManager.getEnabled());
 
-        hideErrorsView.setChecked(((ExoPlayerFragment) context).getHidePlaybackErrors());
+        hideErrorsView.setChecked(playerFragment.getHidePlaybackErrors());
 
         disableView.setChecked(isDisabled);
         defaultView.setChecked(!isDisabled && override == null);
@@ -310,7 +312,7 @@ import java.util.TreeSet;
         } else {
             selector.clearSelectionOverrides(rendererIndex); // Auto quality button selected
         }
-        ((ExoPlayerFragment) context).retryIfNeeded();
+        ((ExoPlayerFragment)playerFragment).retryIfNeeded();
     }
 
     // View.OnClickListener
@@ -326,11 +328,11 @@ import java.util.TreeSet;
             setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
         } else if (view == autoframerateView) {
             boolean checked = autoframerateView.isChecked();
-            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) context).getAutoFrameRateManager();
+            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) playerFragment).getAutoFrameRateManager();
             autoFrameRateManager.setEnabled(!checked);
         } else if (view == hideErrorsView) {
             boolean checked = hideErrorsView.isChecked();
-            ExoPlayerFragment player = (ExoPlayerFragment) context;
+            ExoPlayerFragment player = ((ExoPlayerFragment) playerFragment);
             player.setHidePlaybackErrors(!checked);
         } else { // change quality
             isDisabled = false;

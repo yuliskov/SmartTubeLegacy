@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.format.Time;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class ExoPlayerFragment extends ExoPlayerCoreFragment implements PlayerFragment, OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+public class ExoPlayerFragment extends PlayerCoreFragment implements PlayerFragment, OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
     public static final int REQUEST_CODE = 123;
     private static final String TAG = ExoPlayerFragment.class.getName();
 
@@ -70,10 +71,10 @@ public class ExoPlayerFragment extends ExoPlayerCoreFragment implements PlayerFr
     private boolean durationSet;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         // fix lang in case activity has been destroyed and then restored
         // setupLang();
-        super.onCreate(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
         // NOTE: completely disable open/close animation for activity
         // overridePendingTransition(0, 0);
 
@@ -539,5 +540,25 @@ public class ExoPlayerFragment extends ExoPlayerCoreFragment implements PlayerFr
     @Override
     public void openIntent(Intent intent) {
         
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        return false;
     }
 }

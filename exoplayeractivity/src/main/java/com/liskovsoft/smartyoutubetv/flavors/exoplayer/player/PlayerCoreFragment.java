@@ -64,8 +64,8 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.UUID;
 
-public abstract class ExoPlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
-    private static final String TAG = ExoPlayerCoreFragment.class.getName();
+public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+    private static final String TAG = PlayerCoreFragment.class.getName();
     protected static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     
@@ -111,7 +111,9 @@ public abstract class ExoPlayerCoreFragment extends Fragment implements OnClickL
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
-    
+
+    private Intent mIntent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.player_activity, container, false);
@@ -144,6 +146,14 @@ public abstract class ExoPlayerCoreFragment extends Fragment implements OnClickL
         simpleExoPlayerView = (SimpleExoPlayerView) root.findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
+    }
+
+    public void setIntent(Intent intent) {
+        mIntent = intent;
+    }
+
+    public Intent getIntent() {
+        return mIntent;
     }
 
     public void initializePlayer() {
@@ -379,7 +389,7 @@ public abstract class ExoPlayerCoreFragment extends Fragment implements OnClickL
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
                 trackSelectionHelper.showSelectionDialog(
-                        getActivity(),
+                        this,
                         ((TextToggleButton) view).getText(),
                         trackSelector.getCurrentMappedTrackInfo(),
                         (int) view.getTag()

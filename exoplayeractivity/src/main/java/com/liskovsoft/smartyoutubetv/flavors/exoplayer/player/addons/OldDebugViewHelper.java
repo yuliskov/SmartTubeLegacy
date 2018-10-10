@@ -186,7 +186,8 @@ public final class OldDebugViewHelper implements Runnable, Player.EventListener 
         }
         Activity ctx = this.context;
         if (ctx == null) {
-            ctx = (ExoPlayerFragment) textView.getContext();
+            // ctx = (ExoPlayerFragment) textView.getContext();
+            return "";
         }
         WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
         return " preferredDisplayModeId:" + windowLayoutParams.preferredDisplayModeId;

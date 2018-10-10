@@ -70,14 +70,6 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param viewGroup The {@link TextView} that should be updated to display the information.
      */
-    public DetailDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup) {
-        this(player, viewGroup, null);
-    }
-
-    /**
-     * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
-     * @param viewGroup The {@link TextView} that should be updated to display the information.
-     */
     public DetailDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
         this.player = player;
         this.viewGroup = viewGroup;
@@ -257,7 +249,8 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
         } else {
             Activity ctx = this.context;
             if (ctx == null) {
-                ctx = (ExoPlayerFragment) viewGroup.getContext();
+                // ctx = (ExoPlayerFragment) viewGroup.getContext();
+                return;
             }
             WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
             int displayModeId = windowLayoutParams.preferredDisplayModeId;

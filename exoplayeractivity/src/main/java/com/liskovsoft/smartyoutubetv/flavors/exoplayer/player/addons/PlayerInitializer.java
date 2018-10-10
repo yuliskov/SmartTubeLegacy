@@ -17,8 +17,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import java.util.Locale;
 
 public class PlayerInitializer {
-    private final ExoPlayerFragment mPlayer;
+    private final ExoPlayerFragment mPlayerFragment;
     private final SimpleExoPlayerView mExoPlayerView;
+    private final View mRootView;
     private TextView videoTitle;
     private TextView videoTitle2;
     private static final int SEEK_INCREMENT_10MIN_MS = 5000;
@@ -27,37 +28,40 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_180MIN_MS = 20000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 30000;
 
-    public PlayerInitializer(ExoPlayerFragment player) {
-        mPlayer = player;
-        mExoPlayerView = mPlayer.findViewById(R.id.player_view);
+    public PlayerInitializer(ExoPlayerFragment playerFragment) {
+        mPlayerFragment = playerFragment;
+        mRootView = mPlayerFragment.getView();
+        if (mRootView == null)
+            throw new IllegalStateException("Fragment's root view is null");
+        mExoPlayerView = mRootView.findViewById(R.id.player_view);
         
-        makeActivityFullscreen();
-        makeActivityHorizontal();
+        // makeActivityFullscreen();
+        // makeActivityHorizontal();
     }
 
     private void makeActivityFullscreen() {
-        mPlayer.getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+        mPlayerFragment.getActivity().getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
 
         if (VERSION.SDK_INT >= 19) {
-            View decorView = mPlayer.getWindow().getDecorView();
+            View decorView = mPlayerFragment.getActivity().getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View
                     .SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
 
-    private void makeActivityHorizontal() {
-        mPlayer.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
+    //private void makeActivityHorizontal() {
+    //    mPlayerFragment.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    //}
 
     public void initVideoTitle() {
-        videoTitle = mPlayer.findViewById(R.id.video_title);
+        videoTitle = mRootView.findViewById(R.id.video_title);
         videoTitle.setText(getMainTitle());
-        videoTitle2 = mPlayer.findViewById(R.id.video_title2);
+        videoTitle2 = mRootView.findViewById(R.id.video_title2);
         videoTitle2.setText(getSecondTitle());
     }
 
     public String getMainTitle() {
-        return mPlayer.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
+        return mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
     }
 
     public String getSecondTitle() {
@@ -65,13 +69,13 @@ public class PlayerInitializer {
                 getAuthor(),
                 getPublishDate(),
                 getViewCount(),
-                mPlayer.getString(R.string.view_count));
+                mPlayerFragment.getString(R.string.view_count));
 
         return secondTitle;
     }
 
     private String getAuthor() {
-        Intent intent = mPlayer.getIntent();
+        Intent intent = mPlayerFragment.getIntent();
         return intent.getStringExtra(ExoPlayerFragment.VIDEO_AUTHOR);
     }
 
@@ -80,13 +84,13 @@ public class PlayerInitializer {
      * @return publish date
      */
     private String getPublishDate() {
-        Intent intent = mPlayer.getIntent();
+        Intent intent = mPlayerFragment.getIntent();
         String published = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
         return published == null ? "" : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {
-        Intent intent = mPlayer.getIntent();
+        Intent intent = mPlayerFragment.getIntent();
         String viewCount = intent.getStringExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT);
         return formatNumber(viewCount);
     }
@@ -156,7 +160,7 @@ public class PlayerInitializer {
      */
     public void applySurfaceFix(SimpleExoPlayer player) {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
-        SurfaceManager2 manager = new SurfaceManager2(mPlayer, player);
+        SurfaceManager2 manager = new SurfaceManager2(mPlayerFragment.getActivity(), player);
         videoSurfaceView.getHolder().addCallback(manager);
     }
 }
