@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.core.fragments;
+package com.liskovsoft.smartyoutubetv.flavors.common.fragments;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.fragments.MyActivityInterface;
+import com.liskovsoft.browser.fragments.ParentActivity;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -32,8 +32,8 @@ import android.annotation.SuppressLint;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
-    private static final String TAG = SmartYouTubeTVFragmentBase.class.getSimpleName();
+public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
+    private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here
     private Map<String, String> mHeaders;
@@ -147,8 +147,8 @@ public abstract class SmartYouTubeTVFragmentBase extends MainBrowserFragment {
     }
 
     private void setDispatchEvent(KeyEvent event) {
-        if (getActivity() instanceof MyActivityInterface) {
-            ((MyActivityInterface) getActivity()).setDispatchEvent(event);
+        if (getActivity() instanceof ParentActivity) {
+            ((ParentActivity) getActivity()).setDispatchEvent(event);
         }
     }
 

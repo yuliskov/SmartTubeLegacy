@@ -13,15 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
-import com.liskovsoft.browser.fragments.MyFragmentInterface;
+import com.liskovsoft.browser.fragments.BrowserFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BrowserFragment extends Fragment implements MyFragmentInterface {
-    private static final Logger logger = LoggerFactory.getLogger(BrowserFragment.class);
+public abstract class BaseBrowserFragment extends Fragment implements BrowserFragment {
+    private static final Logger logger = LoggerFactory.getLogger(BaseBrowserFragment.class);
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
     private final String mDefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -37,18 +37,18 @@ public abstract class BrowserFragment extends Fragment implements MyFragmentInte
     private Bundle mIcicle;
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.browser_fragment, container, false);
+    }
+
+    @Override
     public void onActivityCreated(Bundle icicle) {
         super.onActivityCreated(icicle);
 
         // this routine is a simple demonstration what you can do with controller
-        if (this.getClass() == BrowserFragment.class) {
+        if (this.getClass() == BaseBrowserFragment.class) {
             createController(icicle);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.browser_fragment, container, false);
     }
 
     //protected void beginInitWebView(Bundle icicle) {
@@ -183,7 +183,7 @@ public abstract class BrowserFragment extends Fragment implements MyFragmentInte
             mController.onSaveInstanceState(outState);
             finish();
             getActivity().getApplicationContext().startActivity(
-                    new Intent(getActivity().getApplicationContext(), BrowserFragment.class)
+                    new Intent(getActivity().getApplicationContext(), BaseBrowserFragment.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra(EXTRA_STATE, outState));
             return;

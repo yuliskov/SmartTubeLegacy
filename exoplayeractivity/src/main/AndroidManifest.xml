@@ -5,7 +5,7 @@
     <application>
         <!-- NOTE: exoplayer specific section -->
         <activity
-            android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity"
+            android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/app_name_exo"
             android:launchMode="singleTop"

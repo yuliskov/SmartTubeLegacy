@@ -40,9 +40,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class PlayerActivity extends PlayerCoreActivity implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+public class PlayerFragment extends PlayerCoreFragment implements com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment, OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
     public static final int REQUEST_CODE = 123;
-    private static final String TAG = PlayerActivity.class.getName();
+    private static final String TAG = PlayerFragment.class.getName();
 
     public static final String BUTTON_USER_PAGE = "button_user_page";
     public static final String BUTTON_LIKE = "button_like";
@@ -72,19 +72,19 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // fix lang in case activity has been destroyed and then restored
-        setupLang();
+        // setupLang();
         super.onCreate(savedInstanceState);
         // NOTE: completely disable open/close animation for activity
-        overridePendingTransition(0, 0);
+        // overridePendingTransition(0, 0);
 
         buttonsManager = new PlayerButtonsManager(this);
         buttonsManager.syncButtonStates(); // onCheckedChanged depends on this
         playerInitializer = new PlayerInitializer(this);
     }
 
-    private void setupLang() {
-        new LangUpdater(this).update();
-    }
+    //private void setupLang() {
+    //    new LangUpdater(this).update();
+    //}
 
     @Override
     public void initializePlayer() {
@@ -92,7 +92,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
         super.initializePlayer();
 
         if (needNewPlayer) {
-            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerActivity.this);
+            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, PlayerFragment.this);
 
             // Do not move this code to another place!!! This statement must come after player initialization
             autoFrameRateManager = new AutoFrameRateManager(this, player);
@@ -110,7 +110,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
                 if (stateManager == null) { // run once
-                    stateManager = new PlayerStateManager(PlayerActivity.this, player, trackSelector);
+                    stateManager = new PlayerStateManager(PlayerFragment.this, player, trackSelector);
                     stateManager.restoreState(rendererTrackGroupArrays);
                 }
 
@@ -160,7 +160,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PlayerActivity.this.showDebugView(show);
+                    PlayerFragment.this.showDebugView(show);
                 }
             }, 1000);
             return;
@@ -207,7 +207,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     @Override
     public void onBackPressed() {
-        doGracefulExit(PlayerActivity.BUTTON_BACK);
+        doGracefulExit(PlayerFragment.BUTTON_BACK);
 
         // moveTaskToBack(true); // don't exit at this point
     }
@@ -433,7 +433,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
         if (playbackState == Player.STATE_ENDED) {
             // doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
-            doGracefulExit(PlayerActivity.TRACK_ENDED);
+            doGracefulExit(PlayerFragment.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {
@@ -497,7 +497,7 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    PlayerActivity.this.setRepeatEnabled(enabled);
+                    PlayerFragment.this.setRepeatEnabled(enabled);
                 }
             }, 1000);
             return;
@@ -509,5 +509,15 @@ public class PlayerActivity extends PlayerCoreActivity implements OnClickListene
 
     public void onSpeedClicked() {
         GenericSelectorDialog.create(this, new SpeedDataSource(this, player));
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void openIntent(Intent intent) {
+        
     }
 }

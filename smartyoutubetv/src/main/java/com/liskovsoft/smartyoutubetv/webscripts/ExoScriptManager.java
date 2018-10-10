@@ -2,9 +2,9 @@ package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class ExoScriptManager implements ScriptManager {
     private final Context mContext;
@@ -13,10 +13,9 @@ public class ExoScriptManager implements ScriptManager {
     public ExoScriptManager(Context context) {
         mContext = context;
 
-        // TODO: fragments, fix later
-        //if (mContext instanceof com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTVExoBase) {
-        //    isExo = true;
-        //}
+        if (mContext instanceof TwoFragmentsManagerActivity) {
+            isExo = true;
+        }
     }
 
     @Override

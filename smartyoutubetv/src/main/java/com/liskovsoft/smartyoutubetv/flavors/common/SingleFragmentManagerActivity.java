@@ -1,9 +1,10 @@
-package com.liskovsoft.smartyoutubetv.core.fragments;
+package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import com.liskovsoft.browser.fragments.GenericFragment;
 
 public abstract class SingleFragmentManagerActivity extends EventManagerActivity {
     private Fragment mFragment;
@@ -17,7 +18,7 @@ public abstract class SingleFragmentManagerActivity extends EventManagerActivity
     }
 
     private void setupEvents() {
-        setActiveFragment(mFragment);
+        setActiveFragment((GenericFragment) mFragment);
     }
 
     private void initFragments() {

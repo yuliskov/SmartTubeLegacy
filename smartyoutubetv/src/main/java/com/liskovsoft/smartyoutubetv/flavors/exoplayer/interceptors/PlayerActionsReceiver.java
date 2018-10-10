@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GetButtonStatesCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -16,8 +16,8 @@ import java.util.Map;
 /**
  * Gets real button states from the WebView
  */
-public class ActionsReceiver implements Runnable {
-    private static final String TAG = ActionsReceiver.class.getSimpleName();
+public class PlayerActionsReceiver implements Runnable {
+    private static final String TAG = PlayerActionsReceiver.class.getSimpleName();
     private static final long RESPONSE_CHECK_DELAY_MS = 3000;
     private final Context mContext;
     private final Intent mIntent;
@@ -30,7 +30,7 @@ public class ActionsReceiver implements Runnable {
         void onCancel();
     }
 
-    public ActionsReceiver(Context context, Intent intent, Listener listener) {
+    public PlayerActionsReceiver(Context context, Intent intent, Listener listener) {
         mContext = context;
         mIntent = intent;
         mListener = listener;
@@ -41,8 +41,8 @@ public class ActionsReceiver implements Runnable {
      * @return true if user didn't tapped back key
      */
     private boolean checkIntent() {
-        if (mIntent.hasExtra(PlayerActivity.BUTTON_SUBSCRIBE) ||
-            mIntent.hasExtra(PlayerActivity.BUTTON_NEXT))
+        if (mIntent.hasExtra(PlayerFragment.BUTTON_SUBSCRIBE) ||
+            mIntent.hasExtra(PlayerFragment.BUTTON_NEXT))
             return true;
 
         Log.w(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");

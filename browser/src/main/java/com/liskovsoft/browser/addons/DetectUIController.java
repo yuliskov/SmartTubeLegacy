@@ -13,7 +13,7 @@ public class DetectUIController extends Controller {
      * Create UI that best fit into your device.
      */
     private void initUi() {
-        boolean xlarge = BrowserFragment.isTablet(mActivity);
+        boolean xlarge = BaseBrowserFragment.isTablet(mActivity);
         UI ui;
         if (xlarge) {
             ui = new XLargeUi(mActivity, this);

@@ -9,9 +9,10 @@ import android.webkit.WebResourceResponse;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase.OnActivityResultListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -34,6 +35,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionsSender mActionSender;
     private final BackgroundActionManager mManager;
+    private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
     private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
@@ -54,7 +56,7 @@ public class ExoInterceptor extends RequestInterceptor {
                     public void run() {
                         if (mCachedIntent != null) {
                             Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
-                            openExoPlayer(mCachedIntent);
+                            prepareAndOpenExoPlayer(mCachedIntent);
                         }
                     }
                 });
@@ -64,6 +66,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
+        mFragmentsManager = (TwoFragmentsManager) context;
         mInterceptor = interceptor;
         mActionSender = new ActionsSender(context, this);
         mReceiver = new GenericStringResultReceiver();
@@ -130,17 +133,17 @@ public class ExoInterceptor extends RequestInterceptor {
 
                 Log.d(TAG, "Video info has been parsed... opening exoplayer...");
                 Intent exoIntent = createExoIntent(mSample, mInfo);
-                openExoPlayer(exoIntent);
+                prepareAndOpenExoPlayer(exoIntent);
             }
         });
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
         final Intent playerIntent = sample.buildIntent(mContext);
-        playerIntent.putExtra(PlayerActivity.VIDEO_TITLE, info.getTitle());
-        playerIntent.putExtra(PlayerActivity.VIDEO_AUTHOR, info.getAuthor());
-        playerIntent.putExtra(PlayerActivity.VIDEO_VIEW_COUNT, info.getViewCount());
-        playerIntent.putExtra(PlayerActivity.VIDEO_ID, extractVideoId());
+        playerIntent.putExtra(PlayerFragment.VIDEO_TITLE, info.getTitle());
+        playerIntent.putExtra(PlayerFragment.VIDEO_AUTHOR, info.getAuthor());
+        playerIntent.putExtra(PlayerFragment.VIDEO_VIEW_COUNT, info.getViewCount());
+        playerIntent.putExtra(PlayerFragment.VIDEO_ID, extractVideoId());
         mCachedIntent = playerIntent;
         return playerIntent;
     }
@@ -150,36 +153,36 @@ public class ExoInterceptor extends RequestInterceptor {
         return query.get("video_id");
     }
 
-    private void openExoPlayer(final Intent playerIntent) {
-        // TODO: fragments, fix later
-        //String msg = "About to start ExoPlayer activity for Regular item";
-        //Log.d(TAG, msg);
-        //final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
-        //
-        //ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
-        //    @Override
-        //    public void onDone() {
-        //        // isOK == false means that app has been unloaded from memory while doing playback
-        //        boolean isOK = setupResultListener(activity);
-        //        if (isOK) {
-        //            activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
-        //        }
-        //    }
-        //
-        //    @Override
-        //    public void onCancel() {
-        //        mManager.onCancel();
-        //    }
-        //};
-        //
-        //fetchButtonStates(playerIntent, listener);
-    }
+    private void prepareAndOpenExoPlayer(final Intent playerIntent) {
+        String msg = "About to start ExoPlayer activity for Regular item";
+        Log.d(TAG, msg);
+        // final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
 
-    private void fetchButtonStates(Intent intent, ActionsReceiver.Listener listener) {
-        final Runnable processor = new ActionsReceiver(mContext, intent, listener);
+        PlayerActionsReceiver.Listener listener = new PlayerActionsReceiver.Listener() {
+            @Override
+            public void onDone() {
+                // isOK == false means that app has been unloaded from memory while doing playback
+
+                // TODO: handle player's results
+                //boolean isOK = setupResultListener(activity);
+                //if (isOK) {
+                //    activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
+                //}
+
+                mFragmentsManager.openExoPlayer(playerIntent);
+            }
+
+            @Override
+            public void onCancel() {
+                mManager.onCancel();
+            }
+        };
+
+        Runnable processor = new PlayerActionsReceiver(mContext, playerIntent, listener);
         processor.run();
     }
 
+    // TODO: handle player's results
     private boolean setupResultListener(SmartYouTubeTV4KFragmentBase activity) {
         return activity.setOnActivityResultListener(new OnActivityResultListener() {
             @Override

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
+// import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 
 import java.io.InputStream;
 import java.util.List;
@@ -44,7 +44,7 @@ public final class SampleHelpers {
     }
 
     private static String mergeTitles(String title, String title2) {
-        return title + PlayerActivity.DELIMITER + title2;
+        return title + PlayerFragment.DELIMITER + title2;
     }
 
     public abstract static class Sample {
@@ -64,20 +64,20 @@ public final class SampleHelpers {
             this.preferExtensionDecoders = preferExtensionDecoders;
 
             // need to be cleared, see PlayerActivity for details
-            ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, null);
+            // ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, null);
         }
 
         public Intent buildIntent(Context context) {
-            Intent intent = new Intent(context, PlayerActivity.class);
-            intent.putExtra(PlayerActivity.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
+            Intent intent = new Intent(context, PlayerFragment.class);
+            intent.putExtra(PlayerFragment.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
             if (drmSchemeUuid != null) {
-                intent.putExtra(PlayerActivity.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
-                intent.putExtra(PlayerActivity.DRM_LICENSE_URL, drmLicenseUrl);
-                intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+                intent.putExtra(PlayerFragment.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
+                intent.putExtra(PlayerFragment.DRM_LICENSE_URL, drmLicenseUrl);
+                intent.putExtra(PlayerFragment.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
-            intent.putExtra(PlayerActivity.VIDEO_TITLE, this.name);
+            intent.putExtra(PlayerFragment.VIDEO_TITLE, this.name);
             return intent;
         }
 
@@ -96,10 +96,10 @@ public final class SampleHelpers {
                          String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            //this.mpdContent = Utils.toString(mpdStream);
-            this.mpdContent = null;
-            // fix TransactionTooLargeException
-            ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, Helpers.toString(mpdStream));
+            // this.mpdContent = null;
+            this.mpdContent = Helpers.toString(mpdStream);
+            // fix TransactionTooLargeException (not actual, since we're passing intent between fragments)
+            // ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, Helpers.toString(mpdStream));
 
             this.extension = extension;
             this.uri = uri;
@@ -109,9 +109,9 @@ public final class SampleHelpers {
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
                     .setData(Uri.parse(uri))
-                    .putExtra(PlayerActivity.MPD_CONTENT_EXTRA, mpdContent)
-                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
-                    .setAction(PlayerActivity.ACTION_VIEW);
+                    .putExtra(PlayerFragment.MPD_CONTENT_EXTRA, mpdContent)
+                    .putExtra(PlayerFragment.EXTENSION_EXTRA, extension)
+                    .setAction(PlayerFragment.ACTION_VIEW);
         }
 
     }
@@ -137,8 +137,8 @@ public final class SampleHelpers {
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
                     .setData(Uri.parse(uri))
-                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
-                    .setAction(PlayerActivity.ACTION_VIEW);
+                    .putExtra(PlayerFragment.EXTENSION_EXTRA, extension)
+                    .setAction(PlayerFragment.ACTION_VIEW);
         }
 
     }
@@ -167,9 +167,9 @@ public final class SampleHelpers {
                 extensions[i] = children[i].extension;
             }
             return super.buildIntent(context)
-                    .putExtra(PlayerActivity.URI_LIST_EXTRA, uris)
-                    .putExtra(PlayerActivity.EXTENSION_LIST_EXTRA, extensions)
-                    .setAction(PlayerActivity.ACTION_VIEW_LIST);
+                    .putExtra(PlayerFragment.URI_LIST_EXTRA, uris)
+                    .putExtra(PlayerFragment.EXTENSION_LIST_EXTRA, extensions)
+                    .setAction(PlayerFragment.ACTION_VIEW_LIST);
         }
 
     }

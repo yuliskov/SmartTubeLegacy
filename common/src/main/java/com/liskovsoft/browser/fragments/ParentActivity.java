@@ -3,7 +3,7 @@ package com.liskovsoft.browser.fragments;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
-public interface MyActivityInterface {
+public interface ParentActivity {
     FrameLayout getRootLayout();
     void setDispatchEvent(KeyEvent event);
 }

@@ -6,7 +6,7 @@ import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.DelayedCommandCallInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class KodiInterceptor extends MPDExtractInterceptor {
     private void closeWebPlayerWindow() {
         // Web-player's window not needed anymore. Close it.
         HashMap<String, Boolean> map = new HashMap<>();
-        map.put(PlayerActivity.BUTTON_BACK, true);
+        map.put(PlayerFragment.BUTTON_BACK, true);
         updateLastCommand(new SyncButtonsCommand(map));
     }
 }

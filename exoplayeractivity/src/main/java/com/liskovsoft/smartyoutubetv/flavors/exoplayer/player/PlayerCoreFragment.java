@@ -1,13 +1,15 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -62,8 +64,8 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.UUID;
 
-public abstract class PlayerCoreActivity extends Activity implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
-    private static final String TAG = PlayerCoreActivity.class.getName();
+public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+    private static final String TAG = PlayerCoreFragment.class.getName();
     protected static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     
@@ -109,10 +111,15 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.player_activity, container, false);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         shouldAutoPlay = true;
         clearResumePosition();
@@ -122,16 +129,19 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER);
         }
 
-        setContentView(R.layout.player_activity);
-        View rootView = findViewById(R.id.root);
+        // setContentView(R.layout.player_activity);
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+        View rootView = root.findViewById(R.id.root);
         rootView.setOnClickListener(this);
-        debugRootView = (LinearLayout) findViewById(R.id.controls_root);
-        debugViewGroup = (FrameLayout) findViewById(R.id.debug_view_group);
-        playerTopBar = (LinearLayout) findViewById(R.id.player_top_bar);
-        retryButton = (TextToggleButton) findViewById(R.id.retry_button);
+        debugRootView = (LinearLayout) root.findViewById(R.id.controls_root);
+        debugViewGroup = (FrameLayout) root.findViewById(R.id.debug_view_group);
+        playerTopBar = (LinearLayout) root.findViewById(R.id.player_top_bar);
+        retryButton = (TextToggleButton) root.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(this);
 
-        simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.player_view);
+        simpleExoPlayerView = (SimpleExoPlayerView) root.findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
     }
@@ -160,10 +170,10 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
             }
 
             boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false);
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getApplication()).useExtensionRenderers()
+            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getActivity().getApplication()).useExtensionRenderers()
                     ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER : DefaultRenderersFactory
                     .EXTENSION_RENDERER_MODE_ON) : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager, extensionRendererMode);
+            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, extensionRendererMode);
 
 
             // increase player's buffer size to 60 secs
@@ -207,7 +217,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
                 showToast(getString(R.string.unexpected_intent_action, action));
                 return;
             }
-            if (Util.maybeRequestReadExternalStoragePermission(this, uris)) {
+            if (Util.maybeRequestReadExternalStoragePermission(getActivity(), uris)) {
                 // The player will be reinitialized if the permission is granted.
                 return;
             }
@@ -289,7 +299,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
      * @return A new DataSource factory.
      */
     private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
-        return ((ExoApplication) getApplication()).buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+        return ((ExoApplication) getActivity().getApplication()).buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 
     /**
@@ -300,7 +310,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
      * @return A new HttpDataSource factory.
      */
     private HttpDataSource.Factory buildHttpDataSourceFactory(boolean useBandwidthMeter) {
-        return ((ExoApplication) getApplication()).buildHttpDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+        return ((ExoApplication) getActivity().getApplication()).buildHttpDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 
     private MediaSource buildMPDMediaSource(Uri uri, InputStream mpdContent) {
@@ -356,7 +366,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
     }
 
     protected void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     // OnClickListener methods
@@ -369,7 +379,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
                 trackSelectionHelper.showSelectionDialog(
-                        this,
+                        getActivity(),
                         ((TextToggleButton) view).getText(),
                         trackSelector.getCurrentMappedTrackInfo(),
                         (int) view.getTag()
@@ -397,7 +407,7 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
             if (trackGroups.length != 0) {
-                TextToggleButton button = new TextToggleButton(this);
+                TextToggleButton button = new TextToggleButton(getActivity());
                 int label, id;
                 switch (player.getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
@@ -503,7 +513,10 @@ public abstract class PlayerCoreActivity extends Activity implements OnClickList
     }
 
     private boolean errorWhileClickedOnPlayButton() {
-        View pauseBtn = findViewById(R.id.exo_pause);
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+        View pauseBtn = root.findViewById(R.id.exo_pause);
         return needRetrySource && pauseBtn.isFocused();
     }
 

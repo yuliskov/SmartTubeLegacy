@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.liskovsoft.browser.addons.xwalk.XWalkWebViewAdapter;
-import com.liskovsoft.browser.fragments.MyActivityInterface;
+import com.liskovsoft.browser.fragments.ParentActivity;
 
 import java.util.List;
 
@@ -65,8 +65,8 @@ public abstract class BaseUi implements UI {
     }
 
     private FrameLayout findRootLayout() {
-        if (mActivity instanceof MyActivityInterface) {
-            return ((MyActivityInterface)mActivity).getRootLayout();
+        if (mActivity instanceof ParentActivity) {
+            return ((ParentActivity)mActivity).getRootLayout();
         }
         return (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
     }

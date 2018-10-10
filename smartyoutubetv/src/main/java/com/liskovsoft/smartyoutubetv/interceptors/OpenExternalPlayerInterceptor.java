@@ -2,6 +2,11 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.MainExoInterceptor;
+import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
+import com.liskovsoft.smartyoutubetv.flavors.webview.interceptors.OpenPlayerIntentInterceptor;
+import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private RequestInterceptor mInterceptor;
@@ -9,15 +14,14 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
 
     public OpenExternalPlayerInterceptor(Context context) {
         mContext = context;
-        // TODO: fragments, fix later
-        //boolean isWebView = mContext instanceof SmartYouTubeTVFragment;
-        //boolean isXWalk = mContext instanceof com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTVFragment;
-        //boolean isExo = mContext instanceof SmartYouTubeTVExoBase;
-        //if (isWebView || isXWalk) {
-        //    mInterceptor = new OpenPlayerIntentInterceptor(mContext);
-        //} else if (isExo) {
-        //    mInterceptor = new MainExoInterceptor(mContext);
-        //}
+        boolean isWebView = mContext instanceof SmartYouTubeTV1080Activity;
+        boolean isXWalk = mContext instanceof SmartYouTubeTV1080AltActivity;
+        boolean isExo = mContext instanceof TwoFragmentsManagerActivity;
+        if (isWebView || isXWalk) {
+            mInterceptor = new OpenPlayerIntentInterceptor(mContext);
+        } else if (isExo) {
+            mInterceptor = new MainExoInterceptor(mContext);
+        }
     }
 
     @Override

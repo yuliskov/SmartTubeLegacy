@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerFragment;
 
 import java.util.Locale;
 
@@ -186,7 +186,7 @@ public final class OldDebugViewHelper implements Runnable, Player.EventListener 
         }
         Activity ctx = this.context;
         if (ctx == null) {
-            ctx = (PlayerActivity) textView.getContext();
+            ctx = (PlayerFragment) textView.getContext();
         }
         WindowManager.LayoutParams windowLayoutParams = ctx.getWindow().getAttributes();
         return " preferredDisplayModeId:" + windowLayoutParams.preferredDisplayModeId;

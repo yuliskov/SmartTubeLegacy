@@ -44,7 +44,7 @@ public class ComboViewActivity extends AppCompatActivity implements CombinedBook
 
         final ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        if (BrowserFragment.isTablet(this)) {
+        if (BaseBrowserFragment.isTablet(this)) {
             bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
             bar.setHomeButtonEnabled(true);
         } else {

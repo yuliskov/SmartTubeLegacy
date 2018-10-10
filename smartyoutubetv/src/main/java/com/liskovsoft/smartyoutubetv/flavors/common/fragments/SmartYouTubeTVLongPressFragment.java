@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.core.fragments;
+package com.liskovsoft.smartyoutubetv.flavors.common.fragments;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;

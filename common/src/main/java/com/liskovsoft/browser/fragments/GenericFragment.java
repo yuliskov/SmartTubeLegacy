@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-public interface MyFragmentInterface {
+public interface GenericFragment {
     void onBackPressed();
     void finish();
     boolean onKeyDown(int keyCode, KeyEvent event);

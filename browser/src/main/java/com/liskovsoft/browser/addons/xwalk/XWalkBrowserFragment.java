@@ -3,11 +3,11 @@ package com.liskovsoft.browser.addons.xwalk;
 import android.os.Bundle;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.browser.BrowserFragment;
+import com.liskovsoft.browser.BaseBrowserFragment;
 import org.xwalk.core.MyXWalkUpdater;
 import org.xwalk.core.XWalkInitializer;
 
-public abstract class XWalkBrowserFragment extends BrowserFragment implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
+public abstract class XWalkBrowserFragment extends BaseBrowserFragment implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
     private MyXWalkUpdater mXWalkUpdater;
     private Bundle mBundle;
