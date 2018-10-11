@@ -8,6 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -324,7 +327,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         private final String mMethodName;
 
         private Method mResolvedMethod;
-        private Context mResolvedContext;
+        private Object mResolvedContext;
 
         public DeclaredOnCheckedChangeListener(@NonNull View hostView, @NonNull String methodName) {
             mHostView = hostView;
@@ -351,19 +354,30 @@ public abstract class ToggleButtonBase extends LinearLayout {
         @NonNull
         private void resolveMethod(@Nullable Context context, @NonNull String name) {
             while (context != null) {
-                try {
-                    if (!context.isRestricted()) {
-                        final Method method = context.getClass().getMethod(mMethodName, ToggleButtonBase.class, boolean.class);
+                // activity case
+                if (!context.isRestricted()) {
+                    Method method = getMethod(context.getClass(), mMethodName, ToggleButtonBase.class, boolean.class);
+                    if (method != null) {
+                        mResolvedMethod = method;
+                        mResolvedContext = context;
+                        return;
+                    }
+                }
+
+                // fragment case
+                if (context instanceof FragmentActivity) { // search inside fragments
+                    FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                    for (Fragment fragment : manager.getFragments()) {
+                        Method method = getMethod(fragment.getClass(), mMethodName, ToggleButtonBase.class, boolean.class);
                         if (method != null) {
                             mResolvedMethod = method;
-                            mResolvedContext = context;
+                            mResolvedContext = fragment;
                             return;
                         }
                     }
-                } catch (NoSuchMethodException e) {
-                    // Failed to find method, keep searching up the hierarchy.
                 }
 
+                // next
                 if (context instanceof ContextWrapper) {
                     context = ((ContextWrapper) context).getBaseContext();
                 } else {
@@ -378,6 +392,19 @@ public abstract class ToggleButtonBase extends LinearLayout {
             throw new IllegalStateException("Could not find method " + mMethodName
                     + "(ToggleButtonBase, boolean) in a parent or ancestor Context for app:onCheckedChanged "
                     + "attribute defined on view " + mHostView.getClass() + idText);
+        }
+
+        private Method getMethod(Class<?> clazz, java.lang.String methodName, java.lang.Class<?>... parameterTypes) {
+            try {
+                Method method = clazz.getMethod(methodName, parameterTypes);
+                if (method != null) {
+                    return method;
+                }
+            } catch (NoSuchMethodException e) {
+                // Failed to find method, keep searching up the hierarchy.
+                return null;
+            }
+            return null;
         }
     }
 }
