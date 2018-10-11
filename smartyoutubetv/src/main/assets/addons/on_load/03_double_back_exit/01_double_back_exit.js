@@ -37,6 +37,7 @@ function DoubleBackAddon() {
 	this.doubleCheckAndExit = function(keyCode) {
         var esc = 27;
         if (keyCode === esc) {
+            this.addCancelListener();
             this.detectDoublePress();
         }
     };
@@ -63,6 +64,8 @@ function DoubleBackAddon() {
         }
 
         var container = document.querySelector(this.cancelBtnSel);
+        if (!container)
+            return;
         var $this = this;
         container.addEventListener('keyup', function(event) {
             console.log('DoubleBackAddon::dialog:keyup... ');
@@ -85,9 +88,9 @@ function DoubleBackAddon() {
         var isShown = Utils.hasClass(dialog, this.dialogShownClass);
         console.log('DoubleBackAddon::isDialogShown... ' + isShown);
         if (isShown) {
-            // this.addCancelListener();
-            this.doClickOnCancel();
-            DeviceUtils.getApp().showExitMsg();
+            // github issue: don't hide exit dialog but allow user to exit through double back
+            // this.doClickOnCancel(); // hide dialog immediately
+            DeviceUtils.getApp().showExitMsg(); // display toast msg
         }
         return isShown;
     };

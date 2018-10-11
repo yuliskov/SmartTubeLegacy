@@ -12,6 +12,7 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.events.AssetFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.PostDecipheredSignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
@@ -169,12 +170,7 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public void showExitMsg() {
         if (mContext instanceof Activity) {
-            Helpers.postOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(mContext, R.string.exit_msg, Toast.LENGTH_LONG).show();
-                }
-            });
+            MessageHelpers.showMessageThrottled(mContext, mContext.getResources().getString(R.string.exit_msg));
         }
     }
 
