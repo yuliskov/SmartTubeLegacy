@@ -451,7 +451,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        updateButtonVisibilities();
+        new Handler(getActivity().getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                updateButtonVisibilities();
+            }
+        });
+
         if (trackGroups != lastSeenTrackGroupArray) {
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
