@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
@@ -19,14 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerButtonsManager {
-    private final ExoPlayerFragment mPlayerFragment;
+    private final ExoPlayerBaseFragment mPlayerFragment;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
     private final SimpleExoPlayerView mExoPlayerView;
     private final ExoPreferences mPrefs;
     private final View mRootView;
 
-    public PlayerButtonsManager(ExoPlayerFragment playerFragment) {
+    public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
         mRootView = mPlayerFragment.getView();
         if (mRootView == null)

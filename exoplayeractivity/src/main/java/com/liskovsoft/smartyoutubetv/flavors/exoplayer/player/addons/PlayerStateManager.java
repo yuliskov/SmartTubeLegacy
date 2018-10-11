@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
@@ -30,7 +31,7 @@ public class PlayerStateManager {
     private static final int SUBTITLE_RENDERER_INDEX = 2;
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
     private static final int LEGACY_DEVICES_MAX_WIDTH = 1950;
-    private final ExoPlayerFragment mPlayerFragment;
+    private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
@@ -40,7 +41,7 @@ public class PlayerStateManager {
     private String mDefaultTrackId;
     private String mDefaultSubtitleLang;
 
-    public PlayerStateManager(ExoPlayerFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
+    public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;

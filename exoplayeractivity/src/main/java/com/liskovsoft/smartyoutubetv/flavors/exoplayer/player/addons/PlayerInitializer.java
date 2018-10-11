@@ -12,12 +12,13 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 import java.util.Locale;
 
 public class PlayerInitializer {
-    private final ExoPlayerFragment mPlayerFragment;
+    private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayerView mExoPlayerView;
     private final View mRootView;
     private TextView videoTitle;
@@ -28,7 +29,7 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_180MIN_MS = 20000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 30000;
 
-    public PlayerInitializer(ExoPlayerFragment playerFragment) {
+    public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
         mRootView = mPlayerFragment.getView();
         if (mRootView == null)

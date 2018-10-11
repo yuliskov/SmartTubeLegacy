@@ -19,6 +19,7 @@ public abstract class TwoFragmentsManagerActivity extends EventManagerActivity i
 
         initBrowserFragment();
         initPlayerFragment();
+        swapFragments(mBrowserFragment, mPlayerFragment);
         setupEvents();
     }
 
@@ -50,19 +51,19 @@ public abstract class TwoFragmentsManagerActivity extends EventManagerActivity i
 
     @Override
     public void openExoPlayer(Intent intent) {
-        swapFragments((Fragment) mPlayerFragment, (Fragment) mBrowserFragment);
+        swapFragments(mPlayerFragment, mBrowserFragment);
         setActiveFragment(mPlayerFragment);
-        mPlayerFragment.openIntent(intent);
+        mPlayerFragment.openVideo(intent);
     }
 
-    private void swapFragments(Fragment toBeShown, Fragment toBeHidden) {
+    private void swapFragments(Object toBeShown, Object toBeHidden) {
         // switch to the second activity and pass intent to it
         if (toBeShown == null || toBeHidden == null)
             return;
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.show(toBeShown);
-        transaction.hide(toBeHidden);
+        transaction.show((Fragment) toBeShown);
+        transaction.hide((Fragment) toBeHidden);
         transaction.commit();
     }
 }
