@@ -158,19 +158,10 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         String msg = "About to start ExoPlayer activity for Regular item";
         Log.d(TAG, msg);
-        // final SmartYouTubeTVExoBase activity = (SmartYouTubeTVExoBase) mContext;
 
         PlayerActionsReceiver.Listener listener = new PlayerActionsReceiver.Listener() {
             @Override
             public void onDone() {
-                // isOK == false means that app has been unloaded from memory while doing playback
-
-                // TODO: handle player's results
-                //boolean isOK = setupResultListener(activity);
-                //if (isOK) {
-                //    activity.startActivityForResult(playerIntent, PlayerActivity.REQUEST_CODE);
-                //}
-
                 mFragmentsManager.openExoPlayer(playerIntent);
             }
 
@@ -182,17 +173,6 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
         Runnable processor = new PlayerActionsReceiver(mContext, playerIntent, listener);
         processor.run();
-    }
-
-    // TODO: handle player's results
-    private boolean setupResultListener(SmartYouTubeTV4KFragmentBase activity) {
-        return activity.setOnActivityResultListener(new OnActivityResultListener() {
-            @Override
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                mManager.onClose();
-                mActionSender.bindActions(data);
-            }
-        });
     }
     
     public void onPlayerClosed(Intent intent) {
