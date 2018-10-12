@@ -64,6 +64,6 @@ public abstract class TwoFragmentsManagerActivity extends EventManagerActivity i
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.show((Fragment) toBeShown);
         transaction.hide((Fragment) toBeHidden);
-        transaction.commit();
+        transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
     }
 }

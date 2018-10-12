@@ -146,6 +146,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     @SuppressLint("NewApi")
     private void addJSInterface(Tab tab) {
+        logger.info("ControllerEventListener::on addJSInterface");
+
         mJSInterface.add(tab);
 
         WebView webView = tab.getWebView();
