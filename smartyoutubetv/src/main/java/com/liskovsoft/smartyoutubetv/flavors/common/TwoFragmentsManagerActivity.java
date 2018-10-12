@@ -5,15 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.browser.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor.PlayerClosedEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
+    private PlayerListener mPlayerListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void openExoPlayer(Intent intent) {
         swapFragments(mPlayerFragment, mBrowserFragment);
-        setActiveFragment(mPlayerFragment);
         mPlayerFragment.openVideo(intent);
     }
 
@@ -67,10 +67,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         transaction.show((Fragment) toBeShown);
         transaction.hide((Fragment) toBeHidden);
         transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+
+        setActiveFragment((GenericFragment) toBeShown);
     }
 
     @Override
-    public void playerClosed(Intent intent) {
-        Browser.getBus().post(new PlayerClosedEvent(intent));
+    public void setPlayerListener(PlayerListener listener) {
+        mPlayerListener = listener;
+    }
+
+    @Override
+    public void onPlayerClosed(Intent intent) {
+        swapFragments(mBrowserFragment, mPlayerFragment);
+        mPlayerListener.onPlayerClosed(intent);
     }
 }

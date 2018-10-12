@@ -29,7 +29,7 @@ import okhttp3.Response;
 
 import java.io.InputStream;
 
-public class ExoInterceptor extends RequestInterceptor {
+public class ExoInterceptor extends RequestInterceptor implements PlayerListener {
     private final Context mContext;
     private static final String TAG = ExoInterceptor.class.getSimpleName();
     private final DelayedCommandCallInterceptor mInterceptor;
@@ -41,18 +41,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
-
-    public static class PlayerClosedEvent {
-        private Intent mIntent;
-
-        public PlayerClosedEvent(Intent intent) {
-            mIntent = intent;
-        }
-
-        public Intent getIntent() {
-            return mIntent;
-        }
-    }
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -84,7 +72,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mReceiver = new GenericStringResultReceiver();
         mManager = new BackgroundActionManager();
 
-        Browser.getBus().register(this);
+        mFragmentsManager.setPlayerListener(this);
     }
 
     @Override
@@ -206,11 +194,10 @@ public class ExoInterceptor extends RequestInterceptor {
             }
         });
     }
-
-    @Subscribe
-    public void onPlayerColosed(PlayerClosedEvent event) {
+    
+    public void onPlayerClosed(Intent intent) {
         mManager.onClose();
-        mActionSender.bindActions(event.getIntent());
+        mActionSender.bindActions(intent);
     }
 
     public void updateLastCommand(GenericCommand command) {

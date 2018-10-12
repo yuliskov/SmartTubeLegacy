@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
@@ -196,7 +197,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
         }
 
-        ((TwoFragmentsManager) getActivity()).playerClosed(intent);
+        ((PlayerListener) getActivity()).onPlayerClosed(intent);
 
         // TODO: handle player's exit
         //setResult(Activity.RESULT_OK, intent);

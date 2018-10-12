@@ -18,19 +18,23 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = translateEscapeToBack(event);
+        setDispatchEvent(event);
 
         if (isVolumeEvent(event))
             return false;
 
+        if (isBackKey(event) && !isUiVisible() && event.getAction() == KeyEvent.ACTION_UP) {
+            onBackPressed();
+        }
+
         if (isBackKey(event) || isUpKey(event)) {
-            return handleBack(event);
+            return hideUI(event);
         }
 
         // Show the controls on any key event.
         simpleExoPlayerView.showController();
 
         // If the event was not handled then see if the player view can handle it as a media key event.
-        setDispatchEvent(event);
         return simpleExoPlayerView.dispatchMediaKeyEvent(event);
     }
 
@@ -53,9 +57,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         return false;
     }
 
-    private boolean handleBack(KeyEvent event) {
+    private boolean hideUI(KeyEvent event) {
         boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
-        boolean isVisible = interfaceVisibilityState == View.VISIBLE;
+        boolean isVisible = isUiVisible();
 
         if (isVisible) {
             if (isUp) {
@@ -65,6 +69,10 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         return false;
+    }
+
+    private boolean isUiVisible() {
+        return interfaceVisibilityState == View.VISIBLE;
     }
 
     /**
