@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
+import com.liskovsoft.browser.fragments.FragmentManager;
 import com.liskovsoft.browser.fragments.GenericFragment;
-import com.liskovsoft.browser.fragments.ParentActivity;
 
-public abstract class EventManagerActivity extends FragmentActivity implements ParentActivity {
+public abstract class FragmentManagerActivity extends FragmentActivity implements FragmentManager {
     private KeyEvent mEvent;
     private GenericFragment mFragment;
 

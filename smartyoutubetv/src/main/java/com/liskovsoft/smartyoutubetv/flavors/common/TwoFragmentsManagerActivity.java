@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor.PlayerClosedEvent;
 
-public abstract class TwoFragmentsManagerActivity extends EventManagerActivity implements TwoFragmentsManager {
+public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
 

@@ -1,42 +1,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.browser.fragments.ParentActivity;
+import com.liskovsoft.browser.fragments.FragmentManager;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
@@ -117,8 +89,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     private void setDispatchEvent(KeyEvent event) {
-        if (getActivity() instanceof ParentActivity) {
-            ((ParentActivity) getActivity()).setDispatchEvent(event);
+        if (getActivity() instanceof FragmentManager) {
+            ((FragmentManager) getActivity()).setDispatchEvent(event);
         }
     }
 

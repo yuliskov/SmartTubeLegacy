@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import com.liskovsoft.browser.fragments.GenericFragment;
 
-public abstract class SingleFragmentManagerActivity extends EventManagerActivity {
+public abstract class SingleFragmentManagerActivity extends FragmentManagerActivity {
     private Fragment mFragment;
 
     @Override
