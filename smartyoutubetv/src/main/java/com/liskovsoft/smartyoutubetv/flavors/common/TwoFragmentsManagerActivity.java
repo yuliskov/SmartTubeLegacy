@@ -64,8 +64,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             return;
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.show((Fragment) toBeShown);
-        transaction.hide((Fragment) toBeHidden);
+        transaction.attach((Fragment) toBeShown);
+        transaction.detach((Fragment) toBeHidden);
         transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
 
         setActiveFragment((GenericFragment) toBeShown);
