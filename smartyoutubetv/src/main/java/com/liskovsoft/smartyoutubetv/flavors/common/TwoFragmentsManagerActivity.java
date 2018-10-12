@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor.PlayerClosedEvent;
 
 public abstract class TwoFragmentsManagerActivity extends EventManagerActivity implements TwoFragmentsManager {
     private BrowserFragment mBrowserFragment;
@@ -65,5 +67,10 @@ public abstract class TwoFragmentsManagerActivity extends EventManagerActivity i
         transaction.show((Fragment) toBeShown);
         transaction.hide((Fragment) toBeHidden);
         transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+    }
+
+    @Override
+    public void playerClosed(Intent intent) {
+        Browser.getBus().post(new PlayerClosedEvent(intent));
     }
 }

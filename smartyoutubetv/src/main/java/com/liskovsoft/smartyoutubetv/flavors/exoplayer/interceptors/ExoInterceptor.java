@@ -42,6 +42,18 @@ public class ExoInterceptor extends RequestInterceptor {
     private Intent mCachedIntent;
     private String mCurrentUrl;
 
+    public static class PlayerClosedEvent {
+        private Intent mIntent;
+
+        public PlayerClosedEvent(Intent intent) {
+            mIntent = intent;
+        }
+
+        public Intent getIntent() {
+            return mIntent;
+        }
+    }
+
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
             Browser.getBus().register(this);
@@ -71,6 +83,8 @@ public class ExoInterceptor extends RequestInterceptor {
         mActionSender = new ActionsSender(context, this);
         mReceiver = new GenericStringResultReceiver();
         mManager = new BackgroundActionManager();
+
+        Browser.getBus().register(this);
     }
 
     @Override
@@ -191,6 +205,12 @@ public class ExoInterceptor extends RequestInterceptor {
                 mActionSender.bindActions(data);
             }
         });
+    }
+
+    @Subscribe
+    public void onPlayerColosed(PlayerClosedEvent event) {
+        mManager.onClose();
+        mActionSender.bindActions(event.getIntent());
     }
 
     public void updateLastCommand(GenericCommand command) {

@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.browser.fragments.ParentActivity;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
@@ -199,6 +200,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
         }
 
+        ((TwoFragmentsManager) getActivity()).playerClosed(intent);
+
         // TODO: handle player's exit
         //setResult(Activity.RESULT_OK, intent);
         //
@@ -322,7 +325,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
     protected void releasePlayer() {
         if (player != null) {
-            debugViewHelper.stop();
+            if (debugViewHelper != null)
+                debugViewHelper.stop();
             debugViewHelper = null;
             shouldAutoPlay = player.getPlayWhenReady();
             updateResumePosition();
