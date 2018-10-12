@@ -43,4 +43,4 @@ function RussianTextFixAddon() {
     };
 }
 
-new RussianTextFixAddon().run();
+// new RussianTextFixAddon().run();
