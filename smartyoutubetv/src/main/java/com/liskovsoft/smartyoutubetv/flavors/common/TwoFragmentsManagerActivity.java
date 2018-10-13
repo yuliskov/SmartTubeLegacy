@@ -23,15 +23,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         initBrowserFragment();
         initPlayerFragment();
         swapFragments(mBrowserFragment, mPlayerFragment);
-        setupEvents();
     }
 
     protected abstract BrowserFragment getBrowserFragment();
     protected abstract PlayerFragment getPlayerFragment();
-
-    private void setupEvents() {
-        setActiveFragment(mBrowserFragment);
-    }
 
     private void initBrowserFragment() {
         mBrowserFragment = getBrowserFragment();
@@ -64,11 +59,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             return;
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.attach((Fragment) toBeShown);
-        transaction.detach((Fragment) toBeHidden);
+        transaction.show((Fragment) toBeShown);
+        transaction.hide((Fragment) toBeHidden);
         transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
 
-        setActiveFragment((GenericFragment) toBeShown);
+        setActiveFragment((GenericFragment) toBeShown, true);
     }
 
     @Override

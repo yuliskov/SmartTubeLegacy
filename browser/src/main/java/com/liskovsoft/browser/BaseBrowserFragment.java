@@ -1,6 +1,5 @@
 package com.liskovsoft.browser;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.browser.fragments.GenericFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +35,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     private KeyguardManager mKeyguardManager;
     private PowerManager mPowerManager;
     private Bundle mIcicle;
+    private int mState;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,6 +113,10 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     @Override
     public void onPause() {
         super.onPause();
+        pauseController();
+    }
+
+    private void pauseController() {
         if (mController == null) {
             return;
         }
@@ -123,6 +128,10 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     @Override
     public void onResume() {
         super.onResume();
+        resumeController();
+    }
+
+    private void resumeController() {
         if (mController == null) {
             return;
         }
@@ -204,5 +213,22 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
         logger.info("ignore intents: {}", ignore);
         return ignore;
+    }
+
+    @Override
+    public int getState() {
+        return mState;
+    }
+
+    @Override
+    public void onStopFragment() {
+        pauseController();
+        mState = GenericFragment.STATE_STOPPED;
+    }
+
+    @Override
+    public void onStartFragment() {
+        resumeController();
+        mState = GenericFragment.STATE_STARTED;
     }
 }

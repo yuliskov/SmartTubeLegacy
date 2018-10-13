@@ -224,10 +224,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
     @Override
     public void onPause() {
-        if (stateManager != null) {
-            stateManager.persistState();
-            stateManager = null; // force restore state
-        }
+        saveState();
 
         super.onPause();
         if (Util.SDK_INT <= 23) {
@@ -240,6 +237,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         super.onStop();
         if (Util.SDK_INT > 23) {
             releasePlayer();
+        }
+    }
+
+    protected void saveState() {
+        if (stateManager != null) {
+            stateManager.persistState();
+            stateManager = null; // force restore state
         }
     }
 

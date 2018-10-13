@@ -25,8 +25,38 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
-    protected void setActiveFragment(GenericFragment fragment) {
+    protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
+        //if (pausePrevious)
+        //    stopFragment();
+
         mFragment = fragment;
+
+        //if (pausePrevious)
+        //    startFragment();
+    }
+
+    /**
+     * imitate of resuming of new activity
+     */
+    private void startFragment() {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_STARTED) {
+            return;
+        }
+
+        // one event instead of onStart and then onResume
+        mFragment.onStartFragment();
+    }
+
+    /**
+     * imitate pausing of old unused activity
+     */
+    private void stopFragment() {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_STOPPED) {
+            return;
+        }
+
+        // one event instead of onPause and then onStop
+        mFragment.onStopFragment();
     }
 
     @Override

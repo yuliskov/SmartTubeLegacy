@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.browser.fragments.FragmentManager;
+import com.liskovsoft.browser.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 
@@ -14,6 +15,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
 public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFragment {
+    private int mState;
+
     // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -158,5 +161,23 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
         return false;
+    }
+
+    @Override
+    public int getState() {
+        return mState;
+    }
+
+    @Override
+    public void onStopFragment() {
+        saveState();
+        releasePlayer();
+        mState = GenericFragment.STATE_STOPPED;
+    }
+
+    @Override
+    public void onStartFragment() {
+        initializePlayer();
+        mState = GenericFragment.STATE_STARTED;
     }
 }

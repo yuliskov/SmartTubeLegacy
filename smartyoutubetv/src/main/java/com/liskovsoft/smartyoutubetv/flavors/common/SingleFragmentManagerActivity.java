@@ -18,7 +18,7 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
     }
 
     private void setupEvents() {
-        setActiveFragment((GenericFragment) mFragment);
+        setActiveFragment((GenericFragment) mFragment, true);
     }
 
     private void initFragments() {
