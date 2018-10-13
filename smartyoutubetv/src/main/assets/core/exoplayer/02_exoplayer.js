@@ -401,15 +401,15 @@ function YouButton(selector) {
             return;
 
         var isChecked = this.getChecked();
-        if (isChecked === null) {
-            console.log("YouButton: button is disabled: exiting: " + this.selector);
-            return;
-        }
+        // if (isChecked === null) {
+        //     console.log("YouButton: button is disabled or not exists: exiting: " + this.selector);
+        //     return;
+        // }
         if (isChecked === doChecked) {
             return;
         }
 
-        console.log("YouButton.setChecked: " + selector + " " + doChecked);
+        console.log("YouButton.setChecked: " + selector + ' ' + doChecked + ' ' + this.findToggle());
         exoutils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
