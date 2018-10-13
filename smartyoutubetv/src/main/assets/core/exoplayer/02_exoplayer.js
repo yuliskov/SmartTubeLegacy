@@ -25,7 +25,9 @@ var GoogleConstants = {
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
     BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button",
     BUTTON_USER_PAGE: ".pivot-channel-tile",
-    BUTTON_NEXT: ".icon-player-next",
+    // multiple selectors: first that exists is used
+    // so now we can match buttons from the different app versions
+    BUTTON_NEXT: [".new-skip-forward-button", ".icon-player-next"],
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: ".back.no-model.legend-item",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
@@ -33,7 +35,7 @@ var GoogleConstants = {
     PLAYER_RUN_ONCE: "player_run_once" // fake button (use internal logic)
 };
 
-function GoogleButton() {
+function GoogleLocalConstants() {
     this.hiddenClass = 'hidden';
     this.disabledClass = 'disabled';
     this.selectedClass = 'toggle-selected';
@@ -48,6 +50,8 @@ function GoogleButton() {
     this.keysContainerSelector = '#watch'; // div that receives keys events
     this.playerUrlTemplate = '/watch/'; // url part of the opened player
     this.videoSelector = 'video';
+    this.uploadDate = '.uploaded-date';
+    this.videoDetails = '.player-video-details';
 }
 
 ////////// End GoogleButton //////////////////
@@ -60,6 +64,10 @@ function ExoUtils() {
     function isSelector(el) {
         return typeof el === 'string' || el instanceof String;
     }
+
+    this.isArray = function(obj) {
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
 
     this.triggerEvent = function(element, type, keyCode) {
         var el = element;
@@ -128,6 +136,17 @@ function ExoUtils() {
     };
 
     this.$ = function(selector) {
+        // allow to use arrays as selectors like ['a', 'b', 'c']
+        // return first element that exists
+        if (this.isArray(selector)) {
+            for (var i = 0; i < selector.length; i++) {
+                var el = document.querySelector(selector[i]);
+                if (el != null)
+                    return el;
+            }
+            return null;
+        }
+
         if (!isSelector(selector))
             return selector;
         return document.querySelectorAll(selector)[0];
@@ -167,6 +186,23 @@ function ExoUtils() {
         player.setAttribute(callbackSet, "true");
     };
 
+    this.getVideoDate = function() {
+        var element = this.$(this.uploadDate);
+        if (element != null) {
+            return element.innerHTML;
+        }
+
+        element = this.$(this.videoDetails);
+        if (element != null) {
+            var parts = element.innerHTML.split('•');
+            if (parts.length == 3) {
+                return parts[2].trim();
+            }
+        }
+
+        return "";
+    };
+
     // supply selector list
     this.getButtonStates = function() {
         this.muteVideo();
@@ -190,7 +226,7 @@ function ExoUtils() {
             states[newName] = isChecked;
         }
 
-        states[PlayerActivity.VIDEO_DATE] = document.querySelector('.uploaded-date').innerHTML;
+        states[PlayerActivity.VIDEO_DATE] = this.getVideoDate();
 
         // don't let app to close video player (see ActionsReceiver.java)
         if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {
@@ -231,7 +267,7 @@ function ExoUtils() {
     };
 }
 
-ExoUtils.prototype = new GoogleButton();
+ExoUtils.prototype = new GoogleLocalConstants();
 
 // if you intend to remove this var don't forget to do the same inside GetButtonStatesCommand and SyncButtonsCommand classes
 window.exoutils = new ExoUtils();
@@ -320,7 +356,7 @@ function YouButtonInitializer(btn) {
     };
 }
 
-YouButtonInitializer.prototype = new GoogleButton();
+YouButtonInitializer.prototype = new GoogleLocalConstants();
 YouButtonInitializer.callbackStack = [];
 
 /////////////////// End YouButtonInitializer ///////////////////////
@@ -381,7 +417,7 @@ function YouButton(selector) {
     this.initializer.apply();
 }
 
-YouButton.prototype = new GoogleButton();
+YouButton.prototype = new GoogleLocalConstants();
 YouButton.fromSelector = function(selector) {
     function createButton(selector) {
         switch (selector) {
@@ -449,7 +485,7 @@ function TrackEndFakeButton(selector) {
     };
 }
 
-TrackEndFakeButton.prototype = new GoogleButton();
+TrackEndFakeButton.prototype = new GoogleLocalConstants();
 
 /////// KeyActivityWatcher
 
@@ -471,7 +507,7 @@ function KeyActivityWatcher() {
         console.log("exoplayer.js: KeyActivityWatcher: do init...");
     }
 
-    KeyActivityWatcherService.prototype = new GoogleButton();
+    KeyActivityWatcherService.prototype = new GoogleLocalConstants();
 
     if (!window.keyActivityWatcherService) {
         window.keyActivityWatcherService = new KeyActivityWatcherService();
@@ -482,7 +518,7 @@ function KeyActivityWatcher() {
     };
 }
 
-KeyActivityWatcher.prototype = new GoogleButton();
+KeyActivityWatcher.prototype = new GoogleLocalConstants();
 KeyActivityWatcher.disable = function() {
     new KeyActivityWatcher(null);
 };
@@ -524,7 +560,7 @@ function SuggestionsWatcher(host) {
         console.log("Watcher: do init...");
     }
 
-    SuggestionsWatcherService.prototype = new GoogleButton();
+    SuggestionsWatcherService.prototype = new GoogleLocalConstants();
 
     if (!window.suggestionsWatcherService) {
         window.suggestionsWatcherService = new SuggestionsWatcherService();
@@ -533,7 +569,7 @@ function SuggestionsWatcher(host) {
     window.suggestionsWatcherService.setHost(host);
 }
 
-SuggestionsWatcher.prototype = new GoogleButton();
+SuggestionsWatcher.prototype = new GoogleLocalConstants();
 SuggestionsWatcher.disable = function() {
     new SuggestionsWatcher(null);
 };
@@ -591,7 +627,7 @@ function SuggestionsFakeButton(selector) {
     };
 }
 
-SuggestionsFakeButton.prototype = new GoogleButton();
+SuggestionsFakeButton.prototype = new GoogleLocalConstants();
 
 function PlayerRunOnceFakeButton(selector) {
     this.selector = selector;

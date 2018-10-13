@@ -90,7 +90,7 @@ function DoubleBackAddon() {
         if (isShown) {
             // github issue: don't hide exit dialog but allow user to exit through double back
             // this.doClickOnCancel(); // hide dialog immediately
-            DeviceUtils.getApp().showExitMsg(); // display toast msg
+            // DeviceUtils.getApp().showExitMsg(); // display toast msg
         }
         return isShown;
     };
