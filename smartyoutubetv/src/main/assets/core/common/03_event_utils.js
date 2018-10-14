@@ -39,7 +39,7 @@ var EventUtils = {
 
     isPlayerInitialized: function() {
         var elem = Utils.$(YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
-        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS_NAME);
+        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS);
     },
 
     /**
