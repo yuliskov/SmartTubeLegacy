@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -11,6 +12,7 @@ import com.liskovsoft.browser.fragments.FragmentManager;
 import com.liskovsoft.browser.fragments.GenericFragment;
 
 public abstract class FragmentManagerActivity extends FragmentActivity implements FragmentManager {
+    private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mFragment;
 
@@ -26,37 +28,41 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     }
 
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
-        //if (pausePrevious)
-        //    stopFragment();
+        if (pausePrevious)
+            hideFragment();
 
         mFragment = fragment;
 
-        //if (pausePrevious)
-        //    startFragment();
+        if (pausePrevious)
+            showFragment();
     }
 
     /**
      * imitate of resuming of new activity
      */
-    private void startFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_STARTED) {
+    private void showFragment() {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_VISIBLE) {
             return;
         }
 
+        Log.d(TAG, "Starting fragment: " + mFragment.getClass().getSimpleName());
+
         // one event instead of onStart and then onResume
-        mFragment.onStartFragment();
+        mFragment.onShowFragment();
     }
 
     /**
      * imitate pausing of old unused activity
      */
-    private void stopFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_STOPPED) {
+    private void hideFragment() {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_HIDDEN) {
             return;
         }
 
+        Log.d(TAG, "Stopping fragment: " + mFragment.getClass().getSimpleName());
+
         // one event instead of onPause and then onStop
-        mFragment.onStopFragment();
+        mFragment.onHideFragment();
     }
 
     @Override

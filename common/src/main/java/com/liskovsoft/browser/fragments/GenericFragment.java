@@ -6,8 +6,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public interface GenericFragment {
-    int STATE_STARTED = 0;
-    int STATE_STOPPED = 1;
+    int STATE_VISIBLE = 0;
+    int STATE_HIDDEN = 1;
     void onBackPressed();
     void finish();
     boolean onKeyDown(int keyCode, KeyEvent event);
@@ -18,7 +18,7 @@ public interface GenericFragment {
     boolean dispatchKeyEvent(KeyEvent event);
     boolean dispatchGenericMotionEvent(MotionEvent event);
     void onRestoreInstanceState(Bundle savedInstanceState);
-    void onStartFragment();
-    void onStopFragment();
+    void onShowFragment();
+    void onHideFragment();
     int getState();
 }

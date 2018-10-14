@@ -48,9 +48,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void openExoPlayer(Intent intent) {
-        swapFragments(mPlayerFragment, mBrowserFragment);
-        mPlayerFragment.openVideo(intent);
+    public void openExoPlayer(final Intent intent) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                swapFragments(mPlayerFragment, mBrowserFragment);
+                mPlayerFragment.openVideo(intent);
+            }
+        });
     }
 
     private void swapFragments(Object toBeShown, Object toBeHidden) {

@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.browser.fragments.FragmentManager;
 import com.liskovsoft.browser.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
@@ -164,20 +165,74 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        if (getState() == GenericFragment.STATE_HIDDEN) {
+            return;
+        }
+
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getState() == GenericFragment.STATE_HIDDEN) {
+            return;
+        }
+
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (getState() == GenericFragment.STATE_HIDDEN) {
+            return;
+        }
+
+        saveState();
+
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (getState() == GenericFragment.STATE_HIDDEN) {
+            return;
+        }
+
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
     public int getState() {
         return mState;
     }
 
     @Override
-    public void onStopFragment() {
+    public void onHideFragment() {
         saveState();
         releasePlayer();
-        mState = GenericFragment.STATE_STOPPED;
+        mState = GenericFragment.STATE_HIDDEN;
     }
 
     @Override
-    public void onStartFragment() {
+    public void onShowFragment() {
         initializePlayer();
-        mState = GenericFragment.STATE_STARTED;
+        mState = GenericFragment.STATE_VISIBLE;
     }
 }
