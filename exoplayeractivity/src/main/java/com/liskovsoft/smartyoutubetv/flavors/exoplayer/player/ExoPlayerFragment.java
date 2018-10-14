@@ -75,10 +75,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         return false;
     }
 
-    private boolean isUiVisible() {
-        return interfaceVisibilityState == View.VISIBLE;
-    }
-
     /**
      * Fix for the unknown usb remote controller (see <a href="https://smartyoutubetv.github.io/#comment-3742343397">disqus</a> for details).
      * @param event event
@@ -135,7 +131,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         shouldAutoPlay = true;
         clearResumePosition();
         setIntent(intent);
-        buttonsManager.syncButtonStates(); // onCheckedChanged depends on this
+        syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
     }
 

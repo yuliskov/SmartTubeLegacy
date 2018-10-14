@@ -60,13 +60,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
     public static final String DISPLAY_MODE_ID = "display_mode_id";
 
     private DetailDebugViewHelper debugViewHelper;
-    
-    protected int interfaceVisibilityState;
-    protected PlayerButtonsManager buttonsManager;
+
+    private boolean durationSet;
+    private int interfaceVisibilityState;
+    private PlayerButtonsManager buttonsManager;
     private PlayerStateManager stateManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
-    private boolean durationSet;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -100,8 +100,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
     protected void initializeTrackSelector() {
         TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-
-        // TODO: modified: force all format support
+        
         trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
             @Override
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
@@ -213,6 +212,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         }
     }
 
+    protected void syncButtonStates() {
+        if (buttonsManager != null)
+            buttonsManager.syncButtonStates();
+    }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -302,6 +306,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             trackSelector = null;
             trackSelectionHelper = null;
             eventLogger = null;
+            stateManager = null;
+            durationSet = false;
         }
     }
 
@@ -398,5 +404,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
     public void onSpeedClicked() {
         GenericSelectorDialog.create(getActivity(), new SpeedDataSource(getActivity(), player));
+    }
+
+    protected boolean isUiVisible() {
+        return interfaceVisibilityState == View.VISIBLE;
     }
 }

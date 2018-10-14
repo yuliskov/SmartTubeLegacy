@@ -4,5 +4,5 @@ import android.content.Intent;
 import com.liskovsoft.browser.fragments.GenericFragment;
 
 public interface PlayerFragment extends GenericFragment {
-    void openVideo(Intent intent);
+    void openVideo(Intent videoIntent);
 }

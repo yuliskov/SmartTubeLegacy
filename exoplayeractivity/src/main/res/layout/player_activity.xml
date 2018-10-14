@@ -21,7 +21,8 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView android:id="@+id/player_view"
                                                           android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"/>
+                                                          android:layout_height="match_parent"
+                                                          android:background="@color/black"/>
 
     <include layout="@layout/player_top_bar"/>
 
