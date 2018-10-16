@@ -205,13 +205,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         //overridePendingTransition(0, 0);
     }
 
-    protected void saveState() {
-        if (stateManager != null) {
-            stateManager.persistState();
-            stateManager = null; // force restore state
-        }
-    }
-
     protected void syncButtonStates() {
         if (buttonsManager != null)
             buttonsManager.syncButtonStates();
@@ -294,19 +287,38 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         toggleButton2.resetState();
     }
 
+    /**
+     * Entry point: open brand new video
+     * @param intent video info
+     */
+    protected void openVideoFromIntent(Intent intent) {
+        releasePlayer(); // forget previous state
+        shouldAutoPlay = true;
+        clearResumePosition();
+        setIntent(intent);
+        syncButtonStates(); // onCheckedChanged depends on this
+        initializePlayer();
+    }
+
+    /**
+     * Used when exoplayer's fragment no longer visible (e.g. paused)
+     */
     protected void releasePlayer() {
         if (player != null) {
+            simpleExoPlayerView.hideController();
+            if (stateManager != null)
+                stateManager.persistState();
             if (debugViewHelper != null)
                 debugViewHelper.stop();
-            debugViewHelper = null;
             shouldAutoPlay = player.getPlayWhenReady();
             updateResumePosition();
             player.release();
+            debugViewHelper = null;
             player = null;
             trackSelector = null;
             trackSelectionHelper = null;
             eventLogger = null;
-            stateManager = null;
+            stateManager = null; // force restore state
             durationSet = false;
         }
     }

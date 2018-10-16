@@ -137,13 +137,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             throw new IllegalStateException("Fragment's root view is null");
         View rootView = root.findViewById(R.id.root);
         rootView.setOnClickListener(this);
-        debugRootView = (LinearLayout) root.findViewById(R.id.controls_root);
-        debugViewGroup = (FrameLayout) root.findViewById(R.id.debug_view_group);
-        playerTopBar = (LinearLayout) root.findViewById(R.id.player_top_bar);
-        retryButton = (TextToggleButton) root.findViewById(R.id.retry_button);
+        debugRootView = root.findViewById(R.id.controls_root);
+        debugViewGroup = root.findViewById(R.id.debug_view_group);
+        playerTopBar = root.findViewById(R.id.player_top_bar);
+        retryButton = root.findViewById(R.id.retry_button);
         retryButton.setOnClickListener(this);
 
-        simpleExoPlayerView = (SimpleExoPlayerView) root.findViewById(R.id.player_view);
+        simpleExoPlayerView = root.findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
     }

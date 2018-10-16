@@ -126,16 +126,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     @Override
-    public void openVideo(Intent intent) {
-        releasePlayer();
-        shouldAutoPlay = true;
-        clearResumePosition();
-        setIntent(intent);
-        syncButtonStates(); // onCheckedChanged depends on this
-        initializePlayer();
-    }
-
-    @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
 
     }
@@ -194,8 +184,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
         }
 
-        saveState();
-
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
@@ -215,13 +203,17 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     @Override
+    public void openVideo(Intent intent) {
+        openVideoFromIntent(intent);
+    }
+
+    @Override
     public int getState() {
         return mState;
     }
 
     @Override
     public void onHideFragment() {
-        saveState();
         releasePlayer();
         mState = GenericFragment.STATE_HIDDEN;
     }
