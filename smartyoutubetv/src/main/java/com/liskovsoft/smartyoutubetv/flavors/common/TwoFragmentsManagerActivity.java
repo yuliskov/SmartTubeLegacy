@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.Toast;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.browser.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
@@ -80,5 +82,24 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerClosed(Intent intent) {
         swapFragments(mBrowserFragment, mPlayerFragment);
         mPlayerListener.onPlayerClosed(intent);
+    }
+
+    private void showFragment(GenericFragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.show((Fragment) fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void bringBrowserToFront() {
+        Toast.makeText(this, "Displaying suggestions above player window", Toast.LENGTH_LONG).show();
+        //showFragment(mPlayerFragment);
+        //View rootView = ((Fragment) mBrowserFragment).getView();
+        //if (rootView == null) {
+        //    return;
+        //}
+        //rootView.bringToFront();
+        //rootView.setAlpha(0.5f);
     }
 }

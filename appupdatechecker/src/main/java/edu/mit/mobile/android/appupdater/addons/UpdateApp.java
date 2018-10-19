@@ -49,20 +49,28 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
         });
     }
 
-    private String downloadPackage(String uri) {
+    private File getCacheDir() {
         // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
         if (!PermissionManager.checkStoragePermissions((Activity) mContext)) {
-           showMessage("Storage permission not granted!");
-           return null;
+            showMessage("Storage permission not granted!");
+            return null;
         }
 
         if (cacheDir == null) { // no storage, try to use SDCard
             cacheDir = Environment.getExternalStorageDirectory();
             showMessage("Please, make sure that SDCard is mounted");
         }
-        File outputFile = new File(cacheDir, "update.apk");
 
+        return cacheDir;
+    }
+
+    private String downloadPackage(String uri) {
+        File cacheDir = getCacheDir();
+        if (cacheDir == null) {
+            return null;
+        }
+        File outputFile = new File(cacheDir, "update.apk");
         String path = null;
         try {
             MyDownloadManager manager = new MyDownloadManager(mContext);

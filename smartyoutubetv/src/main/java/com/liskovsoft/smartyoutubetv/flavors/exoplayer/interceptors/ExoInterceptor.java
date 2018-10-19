@@ -10,8 +10,6 @@ import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4KFragmentBase.OnActivityResultListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
@@ -178,6 +176,10 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     public void onPlayerClosed(Intent intent) {
         mManager.onClose();
         mActionSender.bindActions(intent);
+
+        if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false)) {
+            mFragmentsManager.bringBrowserToFront();
+        }
     }
 
     public void updateLastCommand(GenericCommand command) {

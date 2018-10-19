@@ -27,6 +27,10 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
+    protected GenericFragment getActiveFragment() {
+        return mFragment;
+    }
+
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (pausePrevious)
             hideFragment();
