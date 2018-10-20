@@ -36,6 +36,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     private PowerManager mPowerManager;
     private Bundle mIcicle;
     private int mState;
+    private View mWrapper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -230,5 +231,15 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     public void onShowFragment() {
         resumeController();
         mState = GenericFragment.STATE_VISIBLE;
+    }
+
+    @Override
+    public View getWrapper() {
+        return mWrapper;
+    }
+
+    @Override
+    public void setWrapper(View wrapper) {
+        mWrapper = wrapper;
     }
 }

@@ -13,6 +13,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
@@ -21,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injecto
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.ErrorTranslator;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
@@ -42,6 +44,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private final MainApkUpdater mApkUpdater;
     private final Controller mController;
     private final RequestInterceptor mInterceptor;
+    private final ErrorTranslator mErrorTranslator;
 
     public ControllerEventListener(Context context, Controller controller, KeysTranslator translator) {
         mContext = context;
@@ -56,6 +59,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         mGenericInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
         mInterceptor = new MainRequestInterceptor(mContext);
+        mErrorTranslator = new ErrorTranslator(mContext);
     }
 
     private FrameLayout getRootView() {
@@ -109,10 +113,12 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
      * <br/>
      * <a href="https://stackoverflow.com/questions/13773037/webview-geturl-returns-null-because-page-not-done-loading">More info</a>
      * @param tab tab
+     * @param errorCode see {@link android.webkit.WebViewClient} for details
      */
     @Override
-    public void onReceiveError(Tab tab) {
-        logger.info("onReceiveError called");
+    public void onReceiveError(Tab tab, int errorCode) {
+        logger.info("onReceiveError called: errorCode: " + errorCode);
+        mLoadingManager.setMessage(mErrorTranslator.translate(errorCode));
         tab.reload();
     }
 
@@ -213,6 +219,11 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
                     setLoadingVisibility(tab, false);
                 }
             }, 500);
+        }
+
+        public void setMessage(String message) {
+            TextView text = mLoadingWidget.findViewById(R.id.loading_message);
+            text.setText(message);
         }
     }
 }

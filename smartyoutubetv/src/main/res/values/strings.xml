@@ -49,4 +49,6 @@
     <string name="exo_tip">Up to 4K on most of the devices</string>
     <string name="exo_alt_tip">Up to 4K and more stable work</string>
     <string name="exit_msg">Press double back to exit from the app</string>
+    <string name="error_host_lookup">No internet connection: %s</string>
+    <string name="error_unknown">Connection error: %s</string>
 </resources>

@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
@@ -21,31 +23,24 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_exo);
 
-        initBrowserFragment();
-        initPlayerFragment();
+        initFragments();
         swapFragments(mBrowserFragment, mPlayerFragment);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
     protected abstract PlayerFragment getPlayerFragment();
 
-    private void initBrowserFragment() {
-        mBrowserFragment = getBrowserFragment();
-        initFragment((Fragment) mBrowserFragment);
-    }
-
-    private void initPlayerFragment() {
+    private void initFragments() {
         mPlayerFragment = getPlayerFragment();
-        initFragment((Fragment) mPlayerFragment);
-    }
-
-    private void initFragment(Fragment fragment) {
-        if (fragment == null)
-            return;
+        mBrowserFragment = getBrowserFragment();
+        mPlayerFragment.setWrapper(findViewById(R.id.player_wrapper));
+        mBrowserFragment.setWrapper(findViewById(R.id.browser_wrapper));
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(android.R.id.content, fragment);
+        transaction.add(R.id.player_wrapper, (Fragment) mPlayerFragment);
+        transaction.add(R.id.browser_wrapper, (Fragment) mBrowserFragment);
         transaction.commit();
     }
 
@@ -60,17 +55,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         });
     }
 
-    private void swapFragments(Object toBeShown, Object toBeHidden) {
-        // switch to the second activity and pass intent to it
+    private void swapFragments(GenericFragment toBeShown, GenericFragment toBeHidden) {
         if (toBeShown == null || toBeHidden == null)
             return;
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.show((Fragment) toBeShown);
-        transaction.hide((Fragment) toBeHidden);
-        transaction.commit(); // TODO: fix java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
 
-        setActiveFragment((GenericFragment) toBeShown, true);
+        // switch to the second activity and pass intent to it
+        sendViewToBack(toBeHidden.getWrapper());
+
+        setActiveFragment(toBeShown, true);
     }
 
     @Override
@@ -84,22 +76,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         mPlayerListener.onPlayerClosed(intent);
     }
 
-    private void showFragment(GenericFragment fragment) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.show((Fragment) fragment);
-        transaction.commit();
+    private void sendViewToBack(View child) {
+        ViewGroup parent = (ViewGroup) child.getParent();
+        if (parent != null && parent.indexOfChild(child) != 0) {
+            parent.removeView(child);
+            parent.addView(child, 0);
+        }
     }
 
     @Override
     public void bringBrowserToFront() {
-        Toast.makeText(this, "Displaying suggestions above player window", Toast.LENGTH_LONG).show();
-        //showFragment(mPlayerFragment);
-        //View rootView = ((Fragment) mBrowserFragment).getView();
-        //if (rootView == null) {
-        //    return;
-        //}
-        //rootView.bringToFront();
-        //rootView.setAlpha(0.5f);
+        Toast.makeText(this, "Making suggestions semitransparent...", Toast.LENGTH_LONG).show();
+        mBrowserFragment.getWrapper().setAlpha(0.3f);
     }
 }

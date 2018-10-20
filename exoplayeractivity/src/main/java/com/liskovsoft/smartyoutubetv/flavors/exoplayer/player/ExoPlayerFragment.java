@@ -17,6 +17,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
  */
 public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFragment {
     private int mState;
+    private View mWrapper;
 
     // NOTE: entry point to handle keys
     @Override
@@ -222,5 +223,15 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onShowFragment() {
         initializePlayer();
         mState = GenericFragment.STATE_VISIBLE;
+    }
+
+    @Override
+    public View getWrapper() {
+        return mWrapper;
+    }
+
+    @Override
+    public void setWrapper(View wrapper) {
+        mWrapper = wrapper;
     }
 }

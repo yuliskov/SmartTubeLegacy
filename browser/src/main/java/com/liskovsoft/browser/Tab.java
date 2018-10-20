@@ -108,7 +108,7 @@ public class Tab implements PictureListener {
     public interface EventListener {
         void onPageStarted(Tab tab, Bitmap favicon);
         void onPageFinished(Tab tab, String url);
-        void onReceiveError(Tab tab);
+        void onReceiveError(Tab tab, int errorCode);
         /**
          * Fired one time per session.<br/>
          * Usually this means that network connection is good.<br/>
@@ -901,7 +901,7 @@ public class Tab implements PictureListener {
                 return;
 
             if (mListener != null)
-                mListener.onReceiveError(Tab.this);
+                mListener.onReceiveError(Tab.this, errorCode);
             mLoadSuccess = false;
         }
 

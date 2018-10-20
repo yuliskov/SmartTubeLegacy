@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 
 public interface GenericFragment {
     int STATE_VISIBLE = 0;
@@ -21,4 +22,6 @@ public interface GenericFragment {
     void onShowFragment();
     void onHideFragment();
     int getState();
+    View getWrapper();
+    void setWrapper(View wrapper);
 }

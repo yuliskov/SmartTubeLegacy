@@ -34,4 +34,6 @@
     <string name="exo_tip">До 4К, остановитесь на нем, если все работает</string>
     <string name="exo_alt_tip">До 4К, выберите его в случае проблем</string>
     <string name="exit_msg">Нажмите дважды Назад чтобы выйти из приложения</string>
+    <string name="error_host_lookup">Неполучается подключиться к интернету: %s</string>
+    <string name="error_unknown">Ошибка соединения: %s</string>
 </resources>
