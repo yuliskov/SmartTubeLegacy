@@ -25,23 +25,97 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exo);
 
-        initFragments();
-        swapFragments(mBrowserFragment, mPlayerFragment);
+        // all fragments should be initialized on start
+        // or you will get different kinds of errors
+        // because this process takes some time
+        initBrowserFragment();
+        initPlayerFragment();
+        setActiveFragment(mBrowserFragment, true);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
     protected abstract PlayerFragment getPlayerFragment();
 
-    private void initFragments() {
-        mPlayerFragment = getPlayerFragment();
+    private void initBrowserFragment() {
         mBrowserFragment = getBrowserFragment();
-        mPlayerFragment.setWrapper(findViewById(R.id.player_wrapper));
         mBrowserFragment.setWrapper(findViewById(R.id.browser_wrapper));
+        initFragment(mBrowserFragment);
+    }
+
+    private void initPlayerFragment() {
+        mPlayerFragment = getPlayerFragment();
+        mPlayerFragment.setWrapper(findViewById(R.id.player_wrapper));
+        initFragment(mPlayerFragment);
+    }
+
+    private void initFragment(GenericFragment fragment) {
+        if (fragment.getWrapper() == null) {
+            throw new IllegalStateException("Fragment not initialized");
+        }
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.player_wrapper, (Fragment) mPlayerFragment);
-        transaction.add(R.id.browser_wrapper, (Fragment) mBrowserFragment);
+        transaction.add(fragment.getWrapper().getId(), (Fragment) fragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
+        if (mBrowserFragment == null || mPlayerFragment == null) {
+            return;
+        }
+
+        // if other fragment not initialized - skip remove
+        // remove other fragment if exists
+        // if container is empty add this
+
+        GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
+
+        removeFromContainer(removeCandidate);
+        addToContainer(fragment);
+
+        super.setActiveFragment(fragment, pausePrevious);
+    }
+
+    private void removeFromContainer(GenericFragment fragment) {
+        if (!isInitialized(fragment)) {
+            return;
+        }
+
+        ViewGroup container = findViewById(R.id.exo_container);
+        View child = fragment.getWrapper();
+
+        if (containsChild(container, child)) {
+            container.removeView(child);
+        }
+    }
+
+    private void addToContainer(GenericFragment fragment) {
+        // can't do this here because initialization takes time
+        //if (!isInitialized(fragment)) {
+        //    initFragment(fragment);
+        //}
+
+        ViewGroup container = findViewById(R.id.exo_container);
+        View child = fragment.getWrapper();
+
+        if (!containsChild(container, child)) {
+            container.addView(child);
+        }
+    }
+
+    private static boolean containsChild(ViewGroup container, View view) {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child.equals(view)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isInitialized(GenericFragment fragment) {
+        return ((Fragment) fragment).getView() != null;
     }
 
     @Override
@@ -49,20 +123,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                swapFragments(mPlayerFragment, mBrowserFragment);
+                setActiveFragment(mPlayerFragment, true);
                 mPlayerFragment.openVideo(intent);
             }
         });
-    }
-
-    private void swapFragments(GenericFragment toBeShown, GenericFragment toBeHidden) {
-        if (toBeShown == null || toBeHidden == null)
-            return;
-
-        // switch to the second activity and pass intent to it
-        sendViewToBack(toBeHidden.getWrapper());
-
-        setActiveFragment(toBeShown, true);
     }
 
     @Override
@@ -72,7 +136,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onPlayerClosed(Intent intent) {
-        swapFragments(mBrowserFragment, mPlayerFragment);
+        setActiveFragment(mBrowserFragment, true);
         mPlayerListener.onPlayerClosed(intent);
     }
 
@@ -87,6 +151,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void bringBrowserToFront() {
         Toast.makeText(this, "Making suggestions semitransparent...", Toast.LENGTH_LONG).show();
-        mBrowserFragment.getWrapper().setAlpha(0.3f);
+        // mBrowserFragment.getWrapper().setAlpha(0.3f);
     }
 }
