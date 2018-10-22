@@ -283,10 +283,11 @@ public class AppUpdateChecker {
                 MyRequest request = new MyRequest(Uri.parse(urlStr));
                 long reqId = manager.enqueue(request);
 
+                // put this line before json parsing that could produce an error
+                mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
+
                 InputStream content = manager.getStreamForDownloadedFile(reqId);
                 jo = new JSONObject(StreamUtils.inputStreamToString(content));
-
-                mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
             } catch (final IllegalStateException | JSONException ex) {
                 Log.e(TAG, ex.getMessage(), ex);
                 errorMsg = Helpers.toString(ex);
