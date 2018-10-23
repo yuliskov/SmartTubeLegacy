@@ -177,9 +177,9 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mManager.onClose();
         mActionSender.bindActions(intent);
 
-        if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false)) {
-            mFragmentsManager.bringBrowserToFront();
-        }
+        //if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false)) {
+        //    mFragmentsManager.bringBrowserToFront();
+        //}
     }
 
     public void updateLastCommand(GenericCommand command) {

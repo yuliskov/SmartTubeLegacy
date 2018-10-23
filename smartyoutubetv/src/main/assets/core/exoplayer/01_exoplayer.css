@@ -1,0 +1,27 @@
+/* hide unneeded elements when opening suggestions */
+/* this includes the title-bar and the player's buttons (timer, play, pause etc) */
+/* hide debug panel */
+.fresh-transport-controls.transport-controls,
+.title-card.watch-title-tray,
+.html5-video-info-panel {
+    display: none !important;
+}
+
+/* hide bg on the early stage */
+/*video {*/
+	/*-webkit-filter: brightness(0);*/
+/*}*/
+
+/* Suggestions on transparent background */
+
+div.player,
+div.loader-container,
+body {
+    background-color: transparent !important;
+}
+
+video {
+    visibility: hidden !important;
+}
+
+/* End Suggestions on transparent background */

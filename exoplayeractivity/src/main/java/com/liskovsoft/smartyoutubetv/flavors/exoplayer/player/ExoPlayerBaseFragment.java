@@ -197,12 +197,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         }
 
         ((PlayerListener) getActivity()).onPlayerClosed(intent);
-
-        // TODO: handle player's exit
-        //setResult(Activity.RESULT_OK, intent);
-        //
-        //finish();
-        //overridePendingTransition(0, 0);
     }
 
     protected void syncButtonStates() {

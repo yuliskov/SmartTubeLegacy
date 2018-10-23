@@ -1,12 +1,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Toast;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.browser.fragments.GenericFragment;
@@ -14,11 +16,13 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
+    private boolean mTransparencyDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
 
-        removeFromContainer(removeCandidate);
+        if (pausePrevious)
+            removeFromContainer(removeCandidate);
         addToContainer(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
@@ -136,8 +141,41 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onPlayerClosed(Intent intent) {
-        setActiveFragment(mBrowserFragment, true);
+        boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
+        if (suggestionsClicked) {
+            setActiveFragment(mBrowserFragment, false);
+            setBrowserTransparency();
+        } else {
+            setActiveFragment(mBrowserFragment, true);
+        }
         mPlayerListener.onPlayerClosed(intent);
+    }
+
+    private void setBrowserTransparency() {
+        if (mTransparencyDone) {
+            return;
+        }
+
+        setBrowserTransparencyRecursive((ViewGroup) mBrowserFragment.getWrapper());
+
+        mTransparencyDone = true;
+    }
+
+    private void setBrowserTransparencyRecursive(ViewGroup container) {
+        if (container == null) {
+            return;
+        }
+
+        container.setBackgroundColor(Color.TRANSPARENT);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            child.setBackgroundColor(Color.RED);
+            //// set hw accel off: API 11+ fix
+            //child.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            if (child instanceof ViewGroup) {
+                setBrowserTransparencyRecursive((ViewGroup) child);
+            }
+        }
     }
 
     private void sendViewToBack(View child) {
