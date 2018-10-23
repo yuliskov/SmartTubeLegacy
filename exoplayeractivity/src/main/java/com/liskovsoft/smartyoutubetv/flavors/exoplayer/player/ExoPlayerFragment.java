@@ -106,24 +106,16 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public void onBackPressed() {
         doGracefulExit(ExoPlayerBaseFragment.BUTTON_BACK);
-
-        // moveTaskToBack(true); // don't exit at this point
     }
 
     @Override
     public void finish() {
-        // TODO: not implemented??
-        // super.finish();
+        // NOP, since we are using fragments
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         // NOP, since we're not handling activity's intents
-
-        //releasePlayer();
-        //shouldAutoPlay = true;
-        //clearResumePosition();
-        //setIntent(intent);
     }
 
     @Override

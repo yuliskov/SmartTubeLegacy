@@ -12,7 +12,7 @@
 	/*-webkit-filter: brightness(0);*/
 /*}*/
 
-/* Suggestions on transparent background */
+/* Make suggestions background transparent */
 
 div.player,
 div.loader-container,
@@ -24,4 +24,4 @@ video {
     visibility: hidden !important;
 }
 
-/* End Suggestions on transparent background */
+/* End Make suggestions background transparent */

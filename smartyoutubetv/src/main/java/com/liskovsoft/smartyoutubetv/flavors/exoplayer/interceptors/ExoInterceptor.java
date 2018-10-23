@@ -36,12 +36,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private final GenericStringResultReceiver mReceiver; // don't delete, its system bus receiver
+    private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
 
-    private class GenericStringResultReceiver {
-        GenericStringResultReceiver() {
+    private class SuggestionsWatcher {
+        SuggestionsWatcher() {
             Browser.getBus().register(this);
         }
 
@@ -53,8 +53,9 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
                     @Override
                     public void run() {
                         if (mCachedIntent != null) {
-                            Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
-                            prepareAndOpenExoPlayer(mCachedIntent);
+                            // Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
+                            //prepareAndOpenExoPlayer(mCachedIntent);
+                            prepareAndOpenExoPlayer(null); // player should already be running so pass null
                         }
                     }
                 });
@@ -67,7 +68,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mFragmentsManager = (TwoFragmentsManager) context;
         mInterceptor = interceptor;
         mActionSender = new ActionsSender(context, this);
-        mReceiver = new GenericStringResultReceiver();
+        mReceiver = new SuggestionsWatcher();
         mManager = new BackgroundActionManager();
 
         mFragmentsManager.setPlayerListener(this);
@@ -156,6 +157,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         String msg = "About to start ExoPlayer activity for Regular item";
         Log.d(TAG, msg);
+
+        if (playerIntent == null) {
+            mFragmentsManager.openExoPlayer(null); // player is already running
+            return;
+        }
 
         PlayerActionsReceiver.Listener listener = new PlayerActionsReceiver.Listener() {
             @Override

@@ -129,7 +129,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             @Override
             public void run() {
                 setActiveFragment(mPlayerFragment, true);
-                mPlayerFragment.openVideo(intent);
+                if (intent != null)
+                    mPlayerFragment.openVideo(intent);
             }
         });
     }
@@ -156,6 +157,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             return;
         }
 
+        getRootLayout().setBackgroundColor(Color.BLACK);
         setBrowserTransparencyRecursive((ViewGroup) mBrowserFragment.getWrapper());
 
         mTransparencyDone = true;
@@ -170,7 +172,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         for (int i = 0; i < container.getChildCount(); i++) {
             View child = container.getChildAt(i);
             child.setBackgroundColor(Color.RED);
-            //// set hw accel off: API 11+ fix
+            //// set hw acceleration off: API 11+ fix
             //child.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             if (child instanceof ViewGroup) {
                 setBrowserTransparencyRecursive((ViewGroup) child);

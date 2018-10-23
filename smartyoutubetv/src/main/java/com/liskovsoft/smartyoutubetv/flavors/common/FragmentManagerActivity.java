@@ -37,8 +37,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
 
         mFragment = fragment;
 
-        if (pausePrevious)
-            showFragment();
+        showFragment();
     }
 
     /**

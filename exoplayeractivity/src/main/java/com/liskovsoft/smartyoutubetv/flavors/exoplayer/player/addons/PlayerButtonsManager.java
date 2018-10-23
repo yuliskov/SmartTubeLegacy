@@ -110,7 +110,7 @@ public class PlayerButtonsManager {
         boolean isSubtitleButton = id == R.id.exo_captions;
         boolean isNextButton = id == R.id.exo_next2 && isChecked;
         boolean isPrevButton = id == R.id.exo_prev && isChecked;
-        boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
+        boolean isSuggestions = id == R.id.exo_suggestions;
         boolean isShareButton = id == R.id.exo_share;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
@@ -186,7 +186,13 @@ public class PlayerButtonsManager {
                 continue;
             resultIntent.putExtra(realKey, entry.getValue());
         }
+        resetState();
         return resultIntent;
+    }
+
+    private void resetState() {
+        mButtonStates.put(R.id.exo_suggestions, false);
+        mButtonStates.put(R.id.exo_back, false);
     }
 
     private void initStatsButton() {
