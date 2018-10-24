@@ -187,17 +187,21 @@ function ExoUtils() {
     };
 
     this.getVideoDate = function() {
-        var element = this.$(this.uploadDate);
+        var element;
+        var parts;
+
+        element = this.$(this.uploadDate);
         if (element != null) {
-            return element.innerHTML;
+            parts = element.innerHTML.split(':');
+            // get last part with date only
+            return parts[parts.length - 1].trim();
         }
 
         element = this.$(this.videoDetails);
         if (element != null) {
-            var parts = element.innerHTML.split('•');
-            if (parts.length == 3) {
-                return parts[2].trim();
-            }
+            parts = element.innerHTML.split('•');
+            // get last part with date only
+            return parts[parts.length - 1].trim();
         }
 
         return "";
