@@ -29,7 +29,7 @@ var GoogleConstants = {
     // so now we can match buttons from the different app versions
     BUTTON_NEXT: [".new-skip-forward-button", ".icon-player-next"],
     BUTTON_PREV: ".icon-player-prev",
-    BUTTON_BACK: ".back.no-model.legend-item",
+    BUTTON_BACK: "#legend .back",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
     TRACK_ENDED: "track_ended", // fake button (use internal logic)
     PLAYER_RUN_ONCE: "player_run_once" // fake button (use internal logic)
@@ -40,7 +40,7 @@ function GoogleLocalConstants() {
     this.disabledClass = 'disabled';
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
-    this.backBtnSelector = '.back.no-model.legend-item';
+    this.backBtnSelector = '#legend .back';
     this.bottomBarSelector = '#transport-controls';
     this.bottomBarControllerSelector = '#watch';
     this.controlsBarSelector = '#buttons-list';
@@ -282,6 +282,12 @@ window.exoutils = new ExoUtils();
 
 ///////////////// YouButtonInitializer /////////////////////////
 
+/**
+ * Decorator for methods {@link YouButton.setChecked} and {@link YouButton.getChecked}<br/>
+ * Decorator purpose: to initialize the buttons before they will be checked
+ * @param btn element to decorate
+ * @constructor
+ */
 function YouButtonInitializer(btn) {
     this.btn = btn;
     this.callbackStack = YouButtonInitializer.callbackStack;
@@ -296,8 +302,9 @@ function YouButtonInitializer(btn) {
         setTimeout(function() {
             callback();
             $this.callbackStack.shift();
-            if ($this.callbackStack[0])
+            if ($this.callbackStack[0]) {
                 $this.callbackStack[0]();
+            }
         }, timeout);
     };
     this.setCheckedWrapper = function(callback) {
@@ -310,8 +317,9 @@ function YouButtonInitializer(btn) {
         }
         callback();
         this.callbackStack.shift();
-        if (this.callbackStack[0])
+        if (this.callbackStack[0]) {
             this.callbackStack[0]();
+        }
     };
 
     this.getCheckedWrapper = function(callback) {
@@ -328,10 +336,11 @@ function YouButtonInitializer(btn) {
 
         var realSetChecked = this.btn.setChecked;
         this.btn.setChecked = function(doChecked) {
-            console.log('YouButtonInitializer: YouButton.setChecked called');
+            // console.log('YouButtonInitializer: setChecked wrapper called: ' + $this.btn.selector);
             var thisBtn = this;
             var callback = function() {
                 $this.setCheckedWrapper(function() {
+                    // console.log("YouButtonInitializer: calling real setChecked for: " + $this.btn.selector);
                     realSetChecked.call(thisBtn, doChecked);
                 });
             };
@@ -347,9 +356,10 @@ function YouButtonInitializer(btn) {
         // can't use stack! we have to return immediately! no delays allowed!
         var realGetChecked = this.btn.getChecked;
         this.btn.getChecked = function() {
-            console.log('YouButtonInitializer: YouButton.getChecked called');
+            // console.log('YouButtonInitializer: getChecked wrapper called: ' + $this.btn.selector);
             var thisBtn = this;
             return $this.getCheckedWrapper(function() {
+                // console.log("YouButtonInitializer: calling real getChecked for: " + $this.btn.selector);
                 return realGetChecked.call(thisBtn);
             });
         };
@@ -379,7 +389,7 @@ function YouButton(selector) {
     };
 
     this.playerIsClosed = function() {
-        return document.location.href.indexOf(this.playerUrlTemplate) === -1;
+        return exoutils.$('video').style.display == 'none';
     };
 
     this.getChecked = function() {
@@ -397,15 +407,18 @@ function YouButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (this.playerIsClosed())
+        if (this.playerIsClosed()) {
+            console.log("YouButton.setChecked: video is closed already... do nothing: " + selector);
             return;
+        }
 
         var isChecked = this.getChecked();
         // if (isChecked === null) {
         //     console.log("YouButton: button is disabled or not exists: exiting: " + this.selector);
         //     return;
         // }
-        if (isChecked === doChecked) {
+        if (isChecked == doChecked) {
+            console.log("YouButton.setChecked: already checked... do nothing: " + selector + ' ' + isChecked);
             return;
         }
 
