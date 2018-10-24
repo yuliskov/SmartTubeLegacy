@@ -34,7 +34,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // because this process takes some time
         initBrowserFragment();
         initPlayerFragment();
-        delayInitBrowserTransparency();
         setActiveFragment(mBrowserFragment, true);
     }
 
@@ -151,15 +150,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         mPlayerListener.onPlayerClosed(intent);
     }
 
-    private void delayInitBrowserTransparency() {
-        new Handler(getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initBrowserTransparency();
-            }
-        }, 500);
-    }
-
     private void initBrowserTransparency() {
         if (mTransparencyDone) {
             return;
@@ -181,7 +171,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         for (int i = 0; i < container.getChildCount(); i++) {
             View child = container.getChildAt(i);
             child.setBackgroundColor(Color.TRANSPARENT);
-            //// set hw acceleration off: API 11+ fix
+            // set hw acceleration off: API 11+ fix
             //child.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             if (child instanceof ViewGroup) {
                 setBrowserTransparencyRecursive((ViewGroup) child);
@@ -198,8 +188,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void bringBrowserToFront() {
-        Toast.makeText(this, "Making suggestions semitransparent...", Toast.LENGTH_LONG).show();
-        // mBrowserFragment.getWrapper().setAlpha(0.3f);
+    public void onLoadSuccess() {
+        initBrowserTransparency();
     }
 }

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
@@ -217,6 +219,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
                 @Override
                 public void run() {
                     setLoadingVisibility(tab, false);
+                    ((TwoFragmentsManager) mContext).onLoadSuccess();
                 }
             }, 500);
         }
