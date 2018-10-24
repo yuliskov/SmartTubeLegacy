@@ -197,7 +197,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
     @Override
     public void openVideo(Intent intent) {
-        openVideoFromIntent(intent);
+        if (intent != null)
+            openVideoFromIntent(intent);
     }
 
     @Override

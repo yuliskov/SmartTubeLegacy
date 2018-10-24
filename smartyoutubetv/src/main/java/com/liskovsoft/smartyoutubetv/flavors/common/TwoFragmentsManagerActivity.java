@@ -3,12 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Toast;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.browser.fragments.GenericFragment;
@@ -34,6 +34,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // because this process takes some time
         initBrowserFragment();
         initPlayerFragment();
+        delayInitBrowserTransparency();
         setActiveFragment(mBrowserFragment, true);
     }
 
@@ -129,8 +130,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             @Override
             public void run() {
                 setActiveFragment(mPlayerFragment, true);
-                if (intent != null)
-                    mPlayerFragment.openVideo(intent);
+                mPlayerFragment.openVideo(intent);
             }
         });
     }
@@ -145,20 +145,29 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
         if (suggestionsClicked) {
             setActiveFragment(mBrowserFragment, false);
-            setBrowserTransparency();
         } else {
             setActiveFragment(mBrowserFragment, true);
         }
         mPlayerListener.onPlayerClosed(intent);
     }
 
-    private void setBrowserTransparency() {
+    private void delayInitBrowserTransparency() {
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initBrowserTransparency();
+            }
+        }, 500);
+    }
+
+    private void initBrowserTransparency() {
         if (mTransparencyDone) {
             return;
         }
 
-        getRootLayout().setBackgroundColor(Color.BLACK);
-        setBrowserTransparencyRecursive((ViewGroup) mBrowserFragment.getWrapper());
+        findViewById(R.id.exo_container).setBackgroundColor(Color.BLACK);
+        ViewGroup wrapper = (ViewGroup) mBrowserFragment.getWrapper();
+        setBrowserTransparencyRecursive(wrapper);
 
         mTransparencyDone = true;
     }
@@ -171,7 +180,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         container.setBackgroundColor(Color.TRANSPARENT);
         for (int i = 0; i < container.getChildCount(); i++) {
             View child = container.getChildAt(i);
-            child.setBackgroundColor(Color.RED);
+            child.setBackgroundColor(Color.TRANSPARENT);
             //// set hw acceleration off: API 11+ fix
             //child.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             if (child instanceof ViewGroup) {

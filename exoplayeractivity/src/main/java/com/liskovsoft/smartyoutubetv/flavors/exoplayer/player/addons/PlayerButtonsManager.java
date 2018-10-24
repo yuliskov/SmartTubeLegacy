@@ -110,7 +110,7 @@ public class PlayerButtonsManager {
         boolean isSubtitleButton = id == R.id.exo_captions;
         boolean isNextButton = id == R.id.exo_next2 && isChecked;
         boolean isPrevButton = id == R.id.exo_prev && isChecked;
-        boolean isSuggestions = id == R.id.exo_suggestions;
+        boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
         boolean isShareButton = id == R.id.exo_share;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
@@ -118,33 +118,24 @@ public class PlayerButtonsManager {
 
         if (isSpeedButton) {
             mPlayerFragment.onSpeedClicked();
-        }
-
-        if (isSubtitleButton) {
+        } else if (isSubtitleButton) {
             View subBtn = mRootView.findViewById(R.id.exo_captions2); // we have two sub buttons with different ids
             if (subBtn == null) {
                 Toast.makeText(mPlayerFragment.getActivity(), R.string.no_subtitle_msg, Toast.LENGTH_LONG).show();
             } else {
                 mPlayerFragment.onClick(subBtn);
             }
-        }
-
-        if (isRepeatButton) {
+        } else if (isRepeatButton) {
             mPlayerFragment.setRepeatEnabled(isChecked);
             mPrefs.setCheckedState(id, isChecked);
-        }
-
-        if (isShareButton)
+        } else if (isShareButton) {
             displayShareDialog();
-
-        if (isUserPageButton    ||
-            isNextButton        ||
-            isPrevButton        ||
-            isSuggestions) {
+        } else if (isUserPageButton    ||
+                   isNextButton        ||
+                   isPrevButton        ||
+                   isSuggestions) {
             mPlayerFragment.doGracefulExit();
-        }
-
-        if (isBackButton) {
+        } else if (isBackButton) {
             mPlayerFragment.doGracefulExit(ExoPlayerFragment.BUTTON_BACK);
         }
     }

@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextButton
             android:id="@+id/exo_suggestions"
             style="@style/ExoMediaButton2.Suggestions"/>
     </LinearLayout>

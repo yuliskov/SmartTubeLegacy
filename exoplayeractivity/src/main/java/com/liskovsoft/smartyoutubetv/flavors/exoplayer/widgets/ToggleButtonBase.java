@@ -197,7 +197,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         return mIsChecked;
     }
     
-    private void toggle() {
+    protected void toggle() {
         mIsChecked = !mIsChecked;
         initElems();
     }
