@@ -219,7 +219,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
                 @Override
                 public void run() {
                     setLoadingVisibility(tab, false);
-                    ((TwoFragmentsManager) mContext).onLoadSuccess();
+                    if (mContext instanceof  TwoFragmentsManager)
+                        ((TwoFragmentsManager) mContext).onLoadSuccess();
                 }
             }, 500);
         }

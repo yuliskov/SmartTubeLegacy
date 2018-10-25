@@ -182,15 +182,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     public void onPlayerClosed(Intent intent) {
         mManager.onClose();
         mActionSender.bindActions(intent);
-
-        //if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false)) {
-        //    mFragmentsManager.bringBrowserToFront();
-        //}
     }
 
     public void updateLastCommand(GenericCommand command) {
         mInterceptor.setCommand(command);
         // force call command without adding to the history (in case WebView)
-        mInterceptor.forceRun(false);
+        mInterceptor.forceRun(true);
     }
 }
