@@ -39,10 +39,10 @@ function ExoConstants() {
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
     this.backBtnSelector = '#legend .back';
-    this.playerControlsSelector = '#transport-controls';
+    this.mainControlsSelector = '#transport-controls';
     this.controlsBarSelector = '#buttons-list';
     this.playButtonSelector = ".icon-player-play.toggle-button";
-    this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
+    // this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
     this.mainTitleSelector = '.title-card.watch-title-tray';
     this.eventReceiverSelector = '#watch'; // div that receives keys events
     this.videoSelector = 'video';

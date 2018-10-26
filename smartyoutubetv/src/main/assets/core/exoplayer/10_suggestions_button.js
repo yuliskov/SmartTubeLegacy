@@ -16,7 +16,7 @@ function SuggestionsWatcher(host) {
                 return;
             }
 
-            var playerControls = exoutils.$($this.playerControlsSelector);
+            var playerControls = exoutils.$($this.mainControlsSelector);
 
             if (exoutils.hasClass(playerControls, $this.hiddenClass)) {
                 $this.host.suggestionsIsClosed();
@@ -97,6 +97,8 @@ function SuggestionsFakeButton(selector) {
             return;
         }
 
+        console.log("SuggestionsFakeButton::closeSuggestions");
+
         var esc = 27;
         exoutils.triggerEvent(this.eventReceiverSelector, 'keyup', esc);
 
@@ -112,12 +114,12 @@ function SuggestionsFakeButton(selector) {
     this.needToCloseSuggestions = function() {
         console.log("SuggestionsFakeButton: needToCloseSuggestions");
 
-        this.closeSuggestions();
-
         var $this = this;
+        // immediate close not working here, so take delay
         setTimeout(function() {
+            $this.closeSuggestions();
             $this.sendClose();
-        }, 50);
+        }, 100);
     };
 
     this.getChecked = function() {
