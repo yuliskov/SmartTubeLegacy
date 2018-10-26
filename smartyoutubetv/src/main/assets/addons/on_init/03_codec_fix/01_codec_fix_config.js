@@ -12,6 +12,7 @@ console.log("Scripts::Running script codec_fix_config.js");
  */
 var CodecConfig_WebView = {
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
+    'Hi3798CV100 (Hi3798CV100)': 'mp4', // github issue #176
     'X96mini (p281)': 'mp4', // amlogic: Telegram group
     'AOSP on p383 (p383)': 'mp4', // amlogic: disqus
     'UNI (m201_th12)': 'mp4', // amlogic: gmail
@@ -46,6 +47,7 @@ var CodecConfig_WebView = {
  */
 var CodecConfig_XWalk = {
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
+    'Hi3798CV100 (Hi3798CV100)': 'mp4', // github issue #176
     'X96mini (p281)': 'mp4', // amlogic: Telegram group
     'AOSP on p383 (p383)': 'mp4', // amlogic: disqus
     'MiTV4 (pulpfiction)': 'mp4', // amlogic: MiTV4 (github > issues)
