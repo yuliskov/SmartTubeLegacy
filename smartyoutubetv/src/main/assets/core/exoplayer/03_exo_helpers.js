@@ -59,11 +59,23 @@ function ExoUtils() {
         this.triggerEvent(selector, 'keyup', 13);
     };
 
-    this.hasClass = function(elem, klass) {
+    this.addClass = function(elem, cls) {
+        if (!this.hasClass(elem, cls)) {
+            elem.className += ' ' + cls;
+        }
+    };
+
+    this.removeClass = function(ele, cls) {
+        if (this.hasClass(ele, cls)) {
+            ele.className = ele.className.replace(cls, '');
+        }
+    };
+
+    this.hasClass = function(elem, cls) {
         if (!elem) {
             return null;
         }
-        return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
+        return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     };
 
     this.isDisabled = function(element) {

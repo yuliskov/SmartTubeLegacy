@@ -27,6 +27,7 @@ function YouButtonDecorator(btn) {
             }
         }, timeout);
     };
+
     this.setCheckedWrapper = function(callback) {
         var obj = exoutils.$(this.btn.selector);
         if (!obj || !obj.children.length) {
