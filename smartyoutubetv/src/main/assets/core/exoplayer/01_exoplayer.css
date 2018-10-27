@@ -1,6 +1,8 @@
 /* hide unneeded elements when opening suggestions */
-/* this includes the title-bar and the player's buttons (timer, play, pause etc) */
+/* this includes title-bar and the player's buttons (timer, play, pause etc) */
+/* hide suggestions list when it's partially visible */
 /* hide debug panel */
+/*:not(.focused).pivot-shelf-list ,*/
 .fresh-transport-controls.transport-controls,
 .title-card.watch-title-tray,
 .html5-video-info-panel {

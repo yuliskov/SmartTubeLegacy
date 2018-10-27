@@ -22,10 +22,10 @@ function DoubleBackAddon() {
             return;
         }
 
-        var container = document.querySelector(YouTubeConstants.KEY_EVENTS_RECEIVER_SELECTOR);
+        var container = document.querySelector(YouTubeConstants.APP_EVENTS_RECEIVER_SELECTOR);
         var $this = this;
-        container.addEventListener(EventTypes.KEY_UP, function(event) {
-            console.log('DoubleBackAddon::root:' + EventTypes.KEY_UP + '...');
+        container.addEventListener(DefaultEvents.KEY_UP, function(event) {
+            console.log('DoubleBackAddon::root:' + DefaultEvents.KEY_UP + '...');
             $this.doubleCheckAndExit(event.keyCode);
         });
 
@@ -33,7 +33,7 @@ function DoubleBackAddon() {
     };
 
     this.doubleCheckAndExit = function(keyCode) {
-        if (keyCode === KeyCodes.ESC) {
+        if (keyCode === DefaultKeys.ESC) {
             this.addOKListener();
             this.addCancelListener();
             this.detectDoublePress();
@@ -63,8 +63,8 @@ function DoubleBackAddon() {
             return;
 
         var $this = this;
-        container.addEventListener(EventTypes.KEY_DOWN, function(e) {
-            if (e.keyCode != KeyCodes.ENTER)
+        container.addEventListener(DefaultEvents.KEY_DOWN, function(e) {
+            if (e.keyCode != DefaultKeys.ENTER)
                 return;
             console.log('DoubleBackAddon::dialog:ok pressed... ');
             $this.doExit();
@@ -85,7 +85,7 @@ function DoubleBackAddon() {
         if (!container)
             return;
         var $this = this;
-        container.addEventListener(EventTypes.KEY_UP, function(event) {
+        container.addEventListener(DefaultEvents.KEY_UP, function(event) {
             console.log('DoubleBackAddon::dialog:keyup... ');
             $this.doubleCheckAndExit(event.keyCode);
         });

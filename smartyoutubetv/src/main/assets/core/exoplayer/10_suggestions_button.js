@@ -1,5 +1,3 @@
-// NOTE: this file doesn't depend on common js files
-
 console.log("Scripts::Running core script suggestions_button.js");
 
 /**
@@ -10,15 +8,16 @@ console.log("Scripts::Running core script suggestions_button.js");
 function SuggestionsWatcher(host) {
     function SuggestionsWatcherService() {
         var $this = this;
+        var skipBlur = false;
 
-        var onBlurHandler = function() {
+        var closeSuggestions = function() {
             if ($this.host == null) {
                 return;
             }
 
-            var playerControls = exoutils.$($this.mainControlsSelector);
+            var playerControls = Utils.$($this.playerControlsSelector);
 
-            if (exoutils.hasClass(playerControls, $this.hiddenClass)) {
+            if (Utils.hasClass(playerControls, $this.hiddenClass)) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -27,18 +26,28 @@ function SuggestionsWatcher(host) {
             $this.host = null;
         };
 
-        var container = exoutils.$(this.suggestionsListSelector);
-        if (container == null) {
-            var interval = setInterval(function() {
-                container = exoutils.$($this.suggestionsListSelector);
-                if (container != null) {
-                    clearInterval(interval);
-                    container.addEventListener($this.componentBlurEvent, onBlurHandler);
-                }
-            }, 1000);
-        } else {
-            container.addEventListener(this.componentBlurEvent, onBlurHandler);
-        }
+        var onBlurHandler = function() {
+            if (!skipBlur) {
+                closeSuggestions();
+            }
+            skipBlur = false;
+        };
+
+        var onKeyDownHandler = function(e) {
+            if (e.keyCode == DefaultKeys.ENTER) {
+                console.log("SuggestionsWatcher: user have clicked on thumbnail");
+                skipBlur = true;
+            }
+        };
+
+        var onFocusHandler = function() {
+            console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
+            closeSuggestions();
+        };
+
+        EventUtils.addListener(this.suggestionsListSelector, this.componentBlurEvent, onBlurHandler);
+        EventUtils.addListener(this.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
+        EventUtils.addListener(this.eventReceiverSelector, this.componentFocusEvent, onFocusHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -69,14 +78,14 @@ function SuggestionsFakeButton(selector) {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
         // pause keeps sound off
-        var player = document.getElementsByTagName('video')[0];
+        var player = Utils.$('video');
         player && player.pause();
 
         var downCode = 40;
         // we assume that no interface currently shown
         // press twice
-        exoutils.triggerEvent(this.eventReceiverSelector, 'keydown', downCode);
-        exoutils.triggerEvent(this.eventReceiverSelector, 'keydown', downCode);
+        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_DOWN, downCode);
 
         // start point
         this.watcher = new SuggestionsWatcher(this);
@@ -98,9 +107,8 @@ function SuggestionsFakeButton(selector) {
         }
 
         console.log("SuggestionsFakeButton::closeSuggestions");
-
-        var esc = 27;
-        exoutils.triggerEvent(this.eventReceiverSelector, 'keyup', esc);
+        
+        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;
     };

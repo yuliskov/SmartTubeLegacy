@@ -21,7 +21,7 @@ function PlayerSeekAddon() {
             clearTimeout(this.myTimeout);
         }
 
-        var notLeftOrRight = e.keyCode !== KeyCodes.LEFT && e.keyCode !== KeyCodes.RIGHT;
+        var notLeftOrRight = e.keyCode !== DefaultKeys.LEFT && e.keyCode !== DefaultKeys.RIGHT;
 
         if (notLeftOrRight) {
             return;

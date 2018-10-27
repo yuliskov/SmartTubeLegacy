@@ -39,7 +39,7 @@ function ExoConstants() {
     this.selectedClass = 'toggle-selected';
     this.optionsBtnSelector = '#transport-more-button';
     this.backBtnSelector = '#legend .back';
-    this.mainControlsSelector = '#transport-controls';
+    this.playerControlsSelector = '#transport-controls';
     this.controlsBarSelector = '#buttons-list';
     this.playButtonSelector = ".icon-player-play.toggle-button";
     // this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
@@ -49,6 +49,10 @@ function ExoConstants() {
     this.uploadDate = '.uploaded-date';
     this.videoDetails = '.player-video-details';
     this.suggestionsListSelector = 'div.pivot-shelf-list';
-    this.componentBlurEvent = 'component-blur';
     this.componentFocusEvent = 'component-focus';
+    this.channelScreenSelector = '.channel';
+    this.searchScreenSelector = '#search-text-entry';
+    this.componentBlurEvent = 'component-blur';
+    this.modelChangedEvent = 'model:changed';
+    this.emptyModelClass = 'no-model';
 }

@@ -4,7 +4,7 @@ Description: Common routines
 
 console.log("Scripts::Running script constants.js");
 
-var KeyCodes = {
+var DefaultKeys = {
     UP: 38,
     DOWN: 40,
     LEFT: 37,
@@ -13,7 +13,7 @@ var KeyCodes = {
     ESC: 27
 };
 
-var EventTypes = {
+var DefaultEvents = {
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
     HASH_CHANGE: 'hashchange',
@@ -21,13 +21,13 @@ var EventTypes = {
 };
 
 var YouTubeConstants = {
-    KEY_EVENTS_RECEIVER_SELECTOR: '#leanback',
+    APP_EVENTS_RECEIVER_SELECTOR: '#leanback', // div that receives keys events for app
     DIALOG_WINDOW_SELECTOR: '#dialog-stage',
     DIALOG_CANCEL_BUTTON_SELECTOR: '#dialog-cancel-button',
     DIALOG_OK_BUTTON_SELECTOR: '#dialog-ok-button',
     APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
     SEARCH_FIELD_SELECTOR: '#search-input',
-    PLAYER_CONTAINER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
+    PLAYER_EVENTS_RECEIVER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
     PLAYER_WRAPPER_SELECTOR: '.html5-video-container', // parent element of the 'video' tag
     PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
     PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',

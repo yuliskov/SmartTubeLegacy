@@ -59,18 +59,6 @@ function ExoUtils() {
         this.triggerEvent(selector, 'keyup', 13);
     };
 
-    this.addClass = function(elem, cls) {
-        if (!this.hasClass(elem, cls)) {
-            elem.className += ' ' + cls;
-        }
-    };
-
-    this.removeClass = function(ele, cls) {
-        if (this.hasClass(ele, cls)) {
-            ele.className = ele.className.replace(cls, '');
-        }
-    };
-
     this.hasClass = function(elem, cls) {
         if (!elem) {
             return null;
@@ -165,6 +153,16 @@ function ExoUtils() {
         }
 
         return "";
+    };
+
+    /**
+     * Hide player in case it is visible
+     */
+    this.hidePlayerUi = function() {
+        var controls = Utils.$(this.playerControlsSelector);
+        if (!this.hasClass(controls, this.hiddenClass)) {
+            EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
     };
 
     // supply selector list

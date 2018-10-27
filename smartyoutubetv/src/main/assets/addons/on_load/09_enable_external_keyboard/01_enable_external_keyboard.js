@@ -21,7 +21,7 @@ function EnableExternalKeyboardAddon() {
 
         var callback = function() {
             var searchInput = Utils.$(YouTubeConstants.SEARCH_FIELD_SELECTOR);
-            EventUtils.triggerEvent(searchInput, EventTypes.KEY_UP, KeyCodes.UP);
+            EventUtils.triggerEvent(searchInput, DefaultEvents.KEY_UP, DefaultKeys.UP);
         };
 
         Utils.delayTillTestFnSuccess(callback, testFn);

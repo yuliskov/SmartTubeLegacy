@@ -24,7 +24,7 @@ function VideoSyncFixAddon() {
         }
 
         var $this = this;
-        v.addEventListener(EventTypes.PLAYER_PLAY, function() {
+        v.addEventListener(DefaultEvents.PLAYER_PLAY, function() {
             $this.postSyncCallback();
         }, false);
     };

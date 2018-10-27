@@ -32,13 +32,13 @@ var EventUtils = {
 
         var container = Utils.$(rootSelector);
         console.log('EventUtils::addListener:keyup... ');
-        container.addEventListener(EventTypes.KEY_UP, function(event) {
+        container.addEventListener(DefaultEvents.KEY_UP, function(event) {
             listener.onKeyEvent(event);
         });
     },
 
     isPlayerInitialized: function() {
-        var elem = Utils.$(YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
+        var elem = Utils.$(YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
         return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS);
     },
 
@@ -57,7 +57,7 @@ var EventUtils = {
 
         console.log("EventUtils::addPlayerKeyPressListener");
 
-        this.addKeyPressListener(listener, YouTubeConstants.PLAYER_CONTAINER_SELECTOR);
+        this.addKeyPressListener(listener, YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
     },
 
     /**
@@ -65,7 +65,7 @@ var EventUtils = {
      */
     addPlaybackListener: function(listener) {
         // do everytime video loads:
-        window.addEventListener(EventTypes.HASH_CHANGE, function(){
+        window.addEventListener(DefaultEvents.HASH_CHANGE, function(){
             var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
             if (isPlayerOpened) {
                 Utils.postSmallDelayed(listener.onPlaybackEvent, listener); // video initialized with small delay
@@ -110,7 +110,28 @@ var EventUtils = {
 
     triggerEnter: function(selector) {
         // simulate mouse/enter key press
-        this.triggerEvent(selector, EventTypes.KEY_UP, KeyCodes.ENTER);
+        this.triggerEvent(selector, DefaultEvents.KEY_UP, DefaultKeys.ENTER);
+    },
+
+    /**
+     * Adds lister or waits till element be initialized
+     * @param selector desired element as selector
+     * @param event desired event
+     * @param handler callback
+     */
+    addListener: function(selector, event, handler) {
+        var container = Utils.$(selector);
+        if (container == null) {
+            var interval = setInterval(function() {
+                container = Utils.$(selector);
+                if (container != null) {
+                    clearInterval(interval);
+                    container.addEventListener(event, handler, false);
+                }
+            }, 1000);
+        } else {
+            container.addEventListener(event, handler, false);
+        }
     }
 };
 

@@ -16,17 +16,29 @@ var Utils = {
         return typeof el === 'string' || el instanceof String;
     },
 
-    hasClass: function(elem, klass) {
+    addClass: function(elem, cls) {
+        if (!this.hasClass(elem, cls)) {
+            elem.className += ' ' + cls;
+        }
+    },
+
+    removeClass: function(elem, cls) {
+        if (this.hasClass(elem, cls)) {
+            elem.className = elem.className.replace(cls, '');
+        }
+    },
+
+    hasClass: function(elem, cls) {
         if (!elem) {
             return null;
         }
-        return (" " + elem.className + " ").indexOf(" " + klass + " ") > -1;
+        return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     },
 
     $: function(selector) {
         if (!this.isSelector(selector))
             return selector;
-        return document.querySelectorAll(selector)[0];
+        return document.querySelector(selector);
     },
 
     appendHtml: function(el, str) {
@@ -134,12 +146,12 @@ var Utils = {
             
             var keyCode = event.keyCode;
 
-            if (keyCode != KeyCodes.UP &&
-                keyCode != KeyCodes.DOWN &&
-                keyCode != KeyCodes.LEFT &&
-                keyCode != KeyCodes.RIGHT &&
-                keyCode != KeyCodes.ESC &&
-                keyCode != KeyCodes.ENTER) {
+            if (keyCode != DefaultKeys.UP &&
+                keyCode != DefaultKeys.DOWN &&
+                keyCode != DefaultKeys.LEFT &&
+                keyCode != DefaultKeys.RIGHT &&
+                keyCode != DefaultKeys.ESC &&
+                keyCode != DefaultKeys.ENTER) {
                 return;
             }
 
@@ -151,7 +163,7 @@ var Utils = {
                 // cleanup
                 if (runOnce) {
                     console.log('Utils::delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
-                    document.removeEventListener(EventTypes.KEY_DOWN, delayFnKey, true);
+                    document.removeEventListener(DefaultEvents.KEY_DOWN, delayFnKey, true);
                 }
                 // actual call
                 callback();
@@ -178,7 +190,7 @@ var Utils = {
         };
 
         // concurrent triggers (only one left in the end)
-        document.addEventListener(EventTypes.KEY_DOWN, delayFnKey, true); // useCapture: true
+        document.addEventListener(DefaultEvents.KEY_DOWN, delayFnKey, true); // useCapture: true
         var interval = setInterval(delayFnInt, delayIntervalMS);
     },
 
