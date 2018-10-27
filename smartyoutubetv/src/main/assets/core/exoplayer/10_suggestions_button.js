@@ -40,14 +40,17 @@ function SuggestionsWatcher(host) {
             }
         };
 
-        var onFocusHandler = function() {
-            console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
-            closeSuggestions();
+        var onFocusHandler = function(e) {
+            if (Utils.hasClass(e.target, $this.focusedClass)) {
+                console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
+                closeSuggestions();
+            }
         };
 
         EventUtils.addListener(this.suggestionsListSelector, this.componentBlurEvent, onBlurHandler);
         EventUtils.addListener(this.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(this.eventReceiverSelector, this.componentFocusEvent, onFocusHandler);
+        EventUtils.addListener(this.channelScreenSelector, this.modelChangedEvent, onFocusHandler());
+        EventUtils.addListener(this.searchScreenSelector, this.modelChangedEvent, onFocusHandler());
 
         this.setHost = function(host) {
             this.host = host;
@@ -84,8 +87,8 @@ function SuggestionsFakeButton(selector) {
         var downCode = 40;
         // we assume that no interface currently shown
         // press twice
-        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_DOWN, downCode);
-        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
 
         // start point
         this.watcher = new SuggestionsWatcher(this);
@@ -108,7 +111,7 @@ function SuggestionsFakeButton(selector) {
 
         console.log("SuggestionsFakeButton::closeSuggestions");
         
-        EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;
     };

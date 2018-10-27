@@ -34,6 +34,7 @@ var PlayerActivityMapping = {
 };
 
 function ExoConstants() {
+    this.focusedClass = 'focused';
     this.hiddenClass = 'hidden';
     this.disabledClass = 'disabled';
     this.selectedClass = 'toggle-selected';
@@ -44,15 +45,16 @@ function ExoConstants() {
     this.playButtonSelector = ".icon-player-play.toggle-button";
     // this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
     this.mainTitleSelector = '.title-card.watch-title-tray';
-    this.eventReceiverSelector = '#watch'; // div that receives keys events
+    this.eventRootSelector = '#watch'; // div that receives keys events
     this.videoSelector = 'video';
     this.uploadDate = '.uploaded-date';
     this.videoDetails = '.player-video-details';
     this.suggestionsListSelector = 'div.pivot-shelf-list';
     this.componentFocusEvent = 'component-focus';
-    this.channelScreenSelector = '.channel';
-    this.searchScreenSelector = '#search-text-entry';
+    this.channelScreenSelector = '.channel'; // empty on boot because of lazy initialization behavior
+    this.searchScreenSelector = '.search'; // empty on boot because of lazy initialization behavior
     this.componentBlurEvent = 'component-blur';
     this.modelChangedEvent = 'model:changed';
     this.emptyModelClass = 'no-model';
+    this.transportShowingClass = 'transport-showing';
 }

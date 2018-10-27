@@ -3,11 +3,11 @@
 /* hide suggestions list when it's partially visible */
 /* hide debug panel */
 /*:not(.focused).pivot-shelf-list ,*/
-.fresh-transport-controls.transport-controls,
-.title-card.watch-title-tray,
-.html5-video-info-panel {
-    display: none !important;
-}
+/*.fresh-transport-controls.transport-controls,*/
+/*.title-card.watch-title-tray,*/
+/*.html5-video-info-panel {*/
+    /*display: none !important;*/
+/*}*/
 
 /* hide bg on the early stage */
 /*video {*/

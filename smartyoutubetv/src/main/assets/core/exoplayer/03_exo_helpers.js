@@ -49,7 +49,7 @@ function ExoUtils() {
     };
 
     this.triggerButton = function(keyCode) {
-        var container = this.$(this.eventReceiverSelector);
+        var container = this.$(this.eventRootSelector);
         var type = 'keydown';
         this.triggerEvent(container, type, keyCode);
     };
@@ -161,7 +161,7 @@ function ExoUtils() {
     this.hidePlayerUi = function() {
         var controls = Utils.$(this.playerControlsSelector);
         if (!this.hasClass(controls, this.hiddenClass)) {
-            EventUtils.triggerEvent(this.eventReceiverSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
     };
 
