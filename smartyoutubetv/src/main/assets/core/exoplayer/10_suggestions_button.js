@@ -49,8 +49,8 @@ function SuggestionsWatcher(host) {
 
         EventUtils.addListener(this.suggestionsListSelector, this.componentBlurEvent, onBlurHandler);
         EventUtils.addListener(this.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(this.channelScreenSelector, this.modelChangedEvent, onFocusHandler());
-        EventUtils.addListener(this.searchScreenSelector, this.modelChangedEvent, onFocusHandler());
+        EventUtils.addListener(this.channelScreenSelector, this.modelChangedEvent, onFocusHandler);
+        EventUtils.addListener(this.searchScreenSelector, this.modelChangedEvent, onFocusHandler);
 
         this.setHost = function(host) {
             this.host = host;

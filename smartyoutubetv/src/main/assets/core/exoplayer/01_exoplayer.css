@@ -3,18 +3,13 @@
 /* hide suggestions list when it's partially visible */
 /* hide debug panel */
 /*:not(.focused).pivot-shelf-list ,*/
-/*.fresh-transport-controls.transport-controls,*/
-/*.title-card.watch-title-tray,*/
-/*.html5-video-info-panel {*/
-    /*display: none !important;*/
-/*}*/
+.fresh-transport-controls.transport-controls,
+.title-card.watch-title-tray,
+.html5-video-info-panel {
+    visibility: hidden !important;
+}
 
-/* hide bg on the early stage */
-/*video {*/
-	/*-webkit-filter: brightness(0);*/
-/*}*/
-
-/* Make suggestions background transparent */
+/* Make suggestions' background transparent */
 
 div.player,
 div.loader-container,
@@ -26,4 +21,4 @@ video {
     visibility: hidden !important;
 }
 
-/* End Make suggestions background transparent */
+/* End Make suggestions' background transparent */
