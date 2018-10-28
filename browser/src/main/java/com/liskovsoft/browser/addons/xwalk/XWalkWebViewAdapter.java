@@ -17,6 +17,10 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     private final XWalkView mXWalkView;
     private XWalkResourceClientAdapter mResourceClient;
 
+    public XWalkWebViewAdapter(Context context) {
+        this(null, context);
+    }
+
     public XWalkWebViewAdapter(Map<String, String> headers, Context context) {
         this(headers, context, null);
     }
@@ -40,6 +44,8 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         //XWalkPreferences.setValue(XWalkPreferences.ANIMATABLE_XWALK_VIEW, true);
 
         mXWalkView = new XWalkView(context, attrs);
+        mResourceClient = new XWalkResourceClientAdapter(this, mXWalkView);
+        mXWalkView.setResourceClient(mResourceClient);
     }
 
     @Override
@@ -125,8 +131,12 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
     @Override
     public void setWebViewClient(WebViewClient client) {
-        mResourceClient = new XWalkResourceClientAdapter(client, this, mXWalkView);
-        mXWalkView.setResourceClient(mResourceClient);
+        mResourceClient.setWebViewClient(client);
+    }
+
+    @Override
+    public void setWebChromeClient(WebChromeClient client) {
+        mResourceClient.setWebChromeClient(client);
     }
 
     @Override

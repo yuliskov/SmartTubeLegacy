@@ -121,7 +121,7 @@ function ExoUtils() {
             // msg 4 future me
             // 'paused' video won't invoke history update
             // don't call pause!!! or video remains paused event after play
-            player.play();
+            // player.play();
             player.muted = true;
         }
 
@@ -209,13 +209,13 @@ function ExoUtils() {
         YouButton.resetCache(); // activity just started
         console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
 
-        // suggestions checked, cancel other tasks
-        if (states[PlayerActivity.BUTTON_SUGGESTIONS]) {
-            var suggestSelector = PlayerActivityMapping.BUTTON_SUGGESTIONS;
-            var suggestBtn = YouButton.fromSelector(suggestSelector);
-            suggestBtn.setChecked(true);
-            return;
-        }
+        // // suggestions checked, cancel other tasks
+        // if (states[PlayerActivity.BUTTON_SUGGESTIONS]) {
+        //     var suggestSelector = PlayerActivityMapping.BUTTON_SUGGESTIONS;
+        //     var suggestBtn = YouButton.fromSelector(suggestSelector);
+        //     suggestBtn.setChecked(true);
+        //     return;
+        // }
 
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];

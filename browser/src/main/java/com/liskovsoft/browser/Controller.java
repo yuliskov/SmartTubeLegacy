@@ -21,7 +21,6 @@ import android.view.WindowManager.LayoutParams;
 import android.webkit.*;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
-import android.widget.FrameLayout;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.addons.xwalk.XWalkInitHandler;
@@ -824,6 +823,27 @@ public class Controller implements UiController, WebViewController, ActivityCont
         return mLoadStopped;
     }
 
+    private void pauseWebViewTimersWithDelay(final Tab tab) {
+        if (pauseWebViewTimers(tab)) {
+            return;
+        }
+
+        int checkTimeout = 1000;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!pauseWebViewTimers(tab)) {
+                    if (mWakeLock == null) {
+                        PowerManager pm = (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
+                        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Browser");
+                    }
+                    mWakeLock.acquire();
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(RELEASE_WAKELOCK), WAKELOCK_TIMEOUT);
+                }
+            }
+        }, checkTimeout);
+    }
+
     /**
      * Pause all WebView timers using the WebView of the given tab
      *
@@ -833,12 +853,33 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private boolean pauseWebViewTimers(Tab tab) {
         if (tab == null) {
             return true;
-        } else if (!tab.inPageLoad()) {
+        }
+
+        if (!tab.inPageLoad()) {
             CookieSyncManager.getInstance().stopSync();
             WebViewTimersControl.getInstance().onBrowserActivityPause(getCurrentWebView());
             return true;
         }
+
         return false;
+    }
+
+    /**
+     * resume all WebView timers using the WebView instance of the given tab
+     *
+     * @param tab guaranteed non-null
+     */
+    private void resumeWebViewTimers(Tab tab) {
+        if (tab == null) {
+            return;
+        }
+
+        boolean inLoad = tab.inPageLoad();
+        if ((!mActivityPaused && !inLoad) || (mActivityPaused && inLoad)) {
+            CookieSyncManager.getInstance().startSync();
+            WebView w = tab.getWebView();
+            WebViewTimersControl.getInstance().onBrowserActivityResume(w);
+        }
     }
 
     // Called when loading from context menu or LOAD_URL message
@@ -926,14 +967,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         Tab tab = mTabControl.getCurrentTab();
         if (tab != null) {
             tab.pause();
-            if (!pauseWebViewTimers(tab)) {
-                if (mWakeLock == null) {
-                    PowerManager pm = (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
-                    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Browser");
-                }
-                mWakeLock.acquire();
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(RELEASE_WAKELOCK), WAKELOCK_TIMEOUT);
-            }
+            pauseWebViewTimersWithDelay(tab);
         }
         mUi.onPause();
         mNetworkHandler.onPause();
@@ -972,20 +1006,6 @@ public class Controller implements UiController, WebViewController, ActivityCont
         if (mWakeLock != null && mWakeLock.isHeld()) {
             mHandler.removeMessages(RELEASE_WAKELOCK);
             mWakeLock.release();
-        }
-    }
-
-    /**
-     * resume all WebView timers using the WebView instance of the given tab
-     *
-     * @param tab guaranteed non-null
-     */
-    private void resumeWebViewTimers(Tab tab) {
-        boolean inLoad = tab.inPageLoad();
-        if ((!mActivityPaused && !inLoad) || (mActivityPaused && inLoad)) {
-            CookieSyncManager.getInstance().startSync();
-            WebView w = tab.getWebView();
-            WebViewTimersControl.getInstance().onBrowserActivityResume(w);
         }
     }
 
@@ -1396,79 +1416,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
      * Entry point for all browser commands.
      */
     private void startHandler() {
-        mHandler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case OPEN_BOOKMARKS:
-                        bookmarksOrHistoryPicker(ComboViews.Bookmarks);
-                        break;
-                    case FOCUS_NODE_HREF: {
-                        String url = (String) msg.getData().get("url");
-                        String title = (String) msg.getData().get("title");
-                        String src = (String) msg.getData().get("src");
-                        if (url == "") url = src; // use image if no anchor
-                        if (TextUtils.isEmpty(url)) {
-                            break;
-                        }
-                        HashMap focusNodeMap = (HashMap) msg.obj;
-                        WebView view = (WebView) focusNodeMap.get("webview");
-                        // Only apply the action if the top window did not change.
-                        if (getCurrentTopWebView() != view) {
-                            break;
-                        }
-
-                        // switch no longer work with non-constant vars
-                        if (msg.arg1 == R.id.open_context_menu_id) {
-                            loadUrlFromContext(url);
-
-                        } else if (msg.arg1 == R.id.view_image_context_menu_id) {
-                            loadUrlFromContext(src);
-
-                        } else if (msg.arg1 == R.id.open_newtab_context_menu_id) {
-                            final Tab parent = mTabControl.getCurrentTab();
-                            openTab(url, parent, !mSettings.openInBackground(), true);
-
-                        } else if (msg.arg1 == R.id.copy_link_context_menu_id) {
-                            copy(url);
-
-                        } else if (msg.arg1 == R.id.save_link_context_menu_id || msg.arg1 == R.id.download_context_menu_id) {
-                            DownloadHandler.onDownloadStartNoStream(mActivity, url, view.getSettings().getUserAgentString(), null, null, null, view
-                                    .isPrivateBrowsingEnabled());
-
-                        }
-                        break;
-                    }
-
-                    case LOAD_URL:
-                        loadUrlFromContext((String) msg.obj);
-                        break;
-
-                    case STOP_LOAD:
-                        stopLoading();
-                        break;
-
-                    case RELEASE_WAKELOCK:
-                        if (mWakeLock != null && mWakeLock.isHeld()) {
-                            mWakeLock.release();
-                            // if we reach here, Browser should be still in the
-                            // background loading after WAKELOCK_TIMEOUT (5-min).
-                            // To avoid burning the battery, stop loading.
-                            mTabControl.stopAllLoading();
-                        }
-                        break;
-
-                    case UPDATE_BOOKMARK_THUMBNAIL:
-                        Tab tab = (Tab) msg.obj;
-                        if (tab != null) {
-                            updateScreenshot(tab);
-                        }
-                        break;
-                }
-            }
-        };
-
+        mHandler = new MessageHandler();
     }
 
     // My Custom Methods
@@ -1522,4 +1470,76 @@ public class Controller implements UiController, WebViewController, ActivityCont
     }
 
     // End My Custom Methods
+
+    private class MessageHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case OPEN_BOOKMARKS:
+                    bookmarksOrHistoryPicker(ComboViews.Bookmarks);
+                    break;
+                case FOCUS_NODE_HREF: {
+                    String url = (String) msg.getData().get("url");
+                    String title = (String) msg.getData().get("title");
+                    String src = (String) msg.getData().get("src");
+                    if (url == "") url = src; // use image if no anchor
+                    if (TextUtils.isEmpty(url)) {
+                        break;
+                    }
+                    HashMap focusNodeMap = (HashMap) msg.obj;
+                    WebView view = (WebView) focusNodeMap.get("webview");
+                    // Only apply the action if the top window did not change.
+                    if (getCurrentTopWebView() != view) {
+                        break;
+                    }
+
+                    // switch no longer work with non-constant vars
+                    if (msg.arg1 == R.id.open_context_menu_id) {
+                        loadUrlFromContext(url);
+
+                    } else if (msg.arg1 == R.id.view_image_context_menu_id) {
+                        loadUrlFromContext(src);
+
+                    } else if (msg.arg1 == R.id.open_newtab_context_menu_id) {
+                        final Tab parent = mTabControl.getCurrentTab();
+                        openTab(url, parent, !mSettings.openInBackground(), true);
+
+                    } else if (msg.arg1 == R.id.copy_link_context_menu_id) {
+                        copy(url);
+
+                    } else if (msg.arg1 == R.id.save_link_context_menu_id || msg.arg1 == R.id.download_context_menu_id) {
+                        DownloadHandler.onDownloadStartNoStream(mActivity, url, view.getSettings().getUserAgentString(), null, null, null, view
+                                .isPrivateBrowsingEnabled());
+
+                    }
+                    break;
+                }
+
+                case LOAD_URL:
+                    loadUrlFromContext((String) msg.obj);
+                    break;
+
+                case STOP_LOAD:
+                    stopLoading();
+                    break;
+
+                case RELEASE_WAKELOCK:
+                    if (mWakeLock != null && mWakeLock.isHeld()) {
+                        mWakeLock.release();
+                        // if we reach here, Browser should be still in the
+                        // background loading after WAKELOCK_TIMEOUT (5-min).
+                        // To avoid burning the battery, stop loading.
+                        mTabControl.stopAllLoading();
+                    }
+                    break;
+
+                case UPDATE_BOOKMARK_THUMBNAIL:
+                    Tab tab = (Tab) msg.obj;
+                    if (tab != null) {
+                        updateScreenshot(tab);
+                    }
+                    break;
+            }
+        }
+    }
 }

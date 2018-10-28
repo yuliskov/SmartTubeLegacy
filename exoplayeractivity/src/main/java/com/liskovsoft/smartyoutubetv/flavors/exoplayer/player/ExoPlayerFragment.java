@@ -147,7 +147,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onStart() {
         super.onStart();
 
-        if (getState() == GenericFragment.STATE_HIDDEN) {
+        if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
@@ -160,7 +160,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onResume() {
         super.onResume();
 
-        if (getState() == GenericFragment.STATE_HIDDEN) {
+        if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
@@ -173,7 +173,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onPause() {
         super.onPause();
 
-        if (getState() == GenericFragment.STATE_HIDDEN) {
+        if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
@@ -186,7 +186,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onStop() {
         super.onStop();
 
-        if (getState() == GenericFragment.STATE_HIDDEN) {
+        if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
@@ -207,15 +207,15 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     @Override
-    public void onHideFragment() {
+    public void onPauseFragment() {
         releasePlayer();
-        mState = GenericFragment.STATE_HIDDEN;
+        mState = GenericFragment.STATE_PAUSED;
     }
 
     @Override
-    public void onShowFragment() {
+    public void onResumeFragment() {
         initializePlayer();
-        mState = GenericFragment.STATE_VISIBLE;
+        mState = GenericFragment.STATE_RESUMED;
     }
 
     @Override

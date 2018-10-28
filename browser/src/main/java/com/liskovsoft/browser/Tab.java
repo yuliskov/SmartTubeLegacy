@@ -889,7 +889,9 @@ public class Tab implements PictureListener {
     // -------------------------------------------------------------------------
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
-    private WebViewClient mWebViewClient = new WebViewClient() {
+    private WebViewClient mWebViewClient = new MainWindowClient();
+
+    private class MainWindowClient extends WebViewClient {
         boolean mFirstStarted;
         boolean mLoadSuccess = true;
         final String TAG = Tab.class.getSimpleName() + "." + WebViewClient.class.getSimpleName();
@@ -1032,7 +1034,8 @@ public class Tab implements PictureListener {
     // WebChromeClient implementation for the main WebView
     // -------------------------------------------------------------------------
 
-    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+    private WebChromeClient mWebChromeClient = new MainWindowChromeClient();
+    private class MainWindowChromeClient extends WebChromeClient {
         // Helper method to create a new tab or sub window.
         private void createWindow(final boolean dialog, final Message msg) {
             WebView.WebViewTransport transport =

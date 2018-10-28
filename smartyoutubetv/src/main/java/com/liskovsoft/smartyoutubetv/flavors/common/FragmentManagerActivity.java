@@ -44,28 +44,28 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
      * imitate of resuming of new activity
      */
     private void showFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_VISIBLE) {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_RESUMED) {
             return;
         }
 
         Log.d(TAG, "Starting fragment: " + mFragment.getClass().getSimpleName());
 
         // one event instead of onStart and then onResume
-        mFragment.onShowFragment();
+        mFragment.onResumeFragment();
     }
 
     /**
      * imitate pausing of old unused activity
      */
     private void hideFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_HIDDEN) {
+        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
         Log.d(TAG, "Stopping fragment: " + mFragment.getClass().getSimpleName());
 
         // one event instead of onPause and then onStop
-        mFragment.onHideFragment();
+        mFragment.onPauseFragment();
     }
 
     @Override
