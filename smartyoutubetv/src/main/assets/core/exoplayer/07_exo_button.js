@@ -14,7 +14,7 @@ function YouButton(selector) {
     this.findToggle = function() {
         var btn = exoutils.$(selector);
 
-        btn || console.warn("YouButton.findToggle: unable to find " + selector);
+        btn || console.warn("YouButton: unable to find " + selector);
 
         return btn;
     };
@@ -33,13 +33,13 @@ function YouButton(selector) {
             var isDisabled = exoutils.hasClass(toggle, this.disabledClass);
             this.isChecked = isDisabled ? null : isChecked;
         }
-        console.log("YouButton.getChecked: " + selector + " " + this.isChecked);
+        console.log("YouButton: getChecked: " + selector + " " + this.isChecked);
         return this.isChecked;
     };
 
     this.setChecked = function(doChecked) {
         if (this.playerIsClosed()) {
-            console.log("YouButton.setChecked: video is closed already... do nothing: " + selector);
+            console.log("YouButton: setChecked: video is closed already... do nothing: " + selector);
             return;
         }
 
@@ -49,11 +49,11 @@ function YouButton(selector) {
         //     return;
         // }
         if (isChecked == doChecked) {
-            console.log("YouButton.setChecked: already checked... do nothing: " + selector + ' ' + isChecked);
+            console.log("YouButton: setChecked: already checked... do nothing: " + selector + ' ' + isChecked);
             return;
         }
 
-        console.log("YouButton.setChecked: " + selector + ' ' + doChecked + ' ' + this.findToggle());
+        console.log("YouButton: setChecked: " + selector + ' ' + doChecked + ' ' + this.findToggle());
         exoutils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
@@ -69,8 +69,6 @@ YouButton.fromSelector = function(selector) {
                 return new TrackEndFakeButton(selector);
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
-            case PlayerActivityMapping.PLAYER_RUN_ONCE:
-                return new PlayerRunOnceFakeButton(selector);
             default:
                 // NOTE: all other buttons is processed here
                 return new YouButton(selector);
@@ -82,7 +80,7 @@ YouButton.fromSelector = function(selector) {
     if (!this.btnMap[selector]) {
         this.btnMap[selector] = createButton(selector);
     } else {
-        console.log("YouButton.fromSelector: getting button from cache");
+        console.log("YouButton: fromSelector: getting button from cache");
     }
     return this.btnMap[selector];
 };

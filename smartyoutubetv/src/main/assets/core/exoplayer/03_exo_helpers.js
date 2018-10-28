@@ -117,7 +117,7 @@ function ExoUtils() {
 
         // we can't pause video because history will not work
         function onStart() {
-            console.log('ExoUtils.onStart called');
+            console.log('ExoUtils: video has been loaded into webview... force start playback');
             // msg 4 future me
             // 'paused' video won't invoke history update
             // don't call pause!!! or video remains paused event after play

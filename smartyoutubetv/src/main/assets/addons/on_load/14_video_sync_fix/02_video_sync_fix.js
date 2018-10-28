@@ -61,4 +61,5 @@ function VideoSyncFixAddon() {
     };
 }
 
-new VideoSyncFixAddon().run();
+if (!DeviceUtils.isExo())
+    new VideoSyncFixAddon().run();

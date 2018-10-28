@@ -34,4 +34,5 @@ function VideoZoomFixAddon() {
     };
 }
 
-new VideoZoomFixAddon().run();
+if (!DeviceUtils.isExo())
+    new VideoZoomFixAddon().run();

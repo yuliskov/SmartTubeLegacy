@@ -68,4 +68,5 @@ function PlayerBackgroundFixAddon() {
     };
 }
 
-new PlayerBackgroundFixAddon().run();
+if (!DeviceUtils.isExo())
+    new PlayerBackgroundFixAddon().run();

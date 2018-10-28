@@ -109,6 +109,10 @@ var DeviceUtils = {
         return type == this.XWALK;
     },
 
+    isExo: function() {
+        return this.getApp().isExo();
+    },
+
     /**
      * YouTube's 4K videos encoded exclusively in WEBM codec
      */

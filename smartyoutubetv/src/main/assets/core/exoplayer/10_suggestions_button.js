@@ -41,7 +41,8 @@ function SuggestionsWatcher(host) {
         };
 
         var onFocusHandler = function(e) {
-            if (Utils.hasClass(e.target, $this.focusedClass)) {
+            if (Utils.hasClass(e.target, $this.hiddenClass) &&
+                Utils.hasClass(e.target, $this.transportShowingClass)) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 closeSuggestions();
             }
@@ -49,8 +50,7 @@ function SuggestionsWatcher(host) {
 
         EventUtils.addListener(this.suggestionsListSelector, this.componentBlurEvent, onBlurHandler);
         EventUtils.addListener(this.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(this.channelScreenSelector, this.modelChangedEvent, onFocusHandler);
-        EventUtils.addListener(this.searchScreenSelector, this.modelChangedEvent, onFocusHandler);
+        EventUtils.addListener(this.eventRootSelector, this.modelChangedEvent, onFocusHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -138,12 +138,9 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        console.log("FakeButton: clicking on the fake item");
         if (doChecked) { // fake btn can only be checked
+            console.log("SuggestionsFakeButton: opening suggestions");
             this.openSuggestions();
-            //this.showSuggestions();
-        } else {
-            //this.hideSuggestions();
         }
 
     };

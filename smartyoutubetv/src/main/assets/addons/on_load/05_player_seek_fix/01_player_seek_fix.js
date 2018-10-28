@@ -39,4 +39,5 @@ function PlayerSeekAddon() {
     };
 }
 
-new PlayerSeekAddon().run();
+if (!DeviceUtils.isExo())
+    new PlayerSeekAddon().run();

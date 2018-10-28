@@ -6,7 +6,7 @@
 .fresh-transport-controls.transport-controls,
 .title-card.watch-title-tray,
 .html5-video-info-panel {
-    visibility: hidden !important;
+    display: none !important;
 }
 
 /* Make suggestions' background transparent */

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -14,7 +16,6 @@ import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import com.liskovsoft.browser.search.SearchEngine;
 import com.liskovsoft.browser.search.SearchEngines;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -125,6 +126,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     public static String getFactoryResetHomeUrl(Context context) {
         requireInitialization();
         return sFactoryResetUrl;
+    }
+
+    public boolean allowUniversalAccessFromFileURLs() {
+        return mPrefs.getBoolean(PREF_ALLOW_UNIVERSAL_ACCESS_FROM_FILE_URLS, true);
     }
 
     // -----------------------------
@@ -328,6 +333,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         // youtube: fit layout into screen
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setUseWideViewPort(isWideViewport());
+
+        if (VERSION.SDK_INT >= 16)
+            settings.setAllowUniversalAccessFromFileURLs(allowUniversalAccessFromFileURLs());
 
         String ua = mCustomUserAgents.get(settings);
         if (ua != null) {

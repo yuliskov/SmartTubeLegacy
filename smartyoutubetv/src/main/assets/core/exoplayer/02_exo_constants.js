@@ -13,8 +13,7 @@ var PlayerActivity = {
     BUTTON_NEXT: "button_next",
     BUTTON_BACK: "button_back",
     BUTTON_SUGGESTIONS: "button_suggestions",
-    TRACK_ENDED: "track_ended",
-    PLAYER_RUN_ONCE: "player_run_once" // indicates that webview instance not restored after player close
+    TRACK_ENDED: "track_ended"
 };
 
 // java constants in js code
@@ -29,8 +28,7 @@ var PlayerActivityMapping = {
     BUTTON_PREV: ".icon-player-prev",
     BUTTON_BACK: "#legend .back",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
-    TRACK_ENDED: "track_ended", // fake button (use internal logic)
-    PLAYER_RUN_ONCE: "player_run_once" // fake button (use internal logic)
+    TRACK_ENDED: "track_ended" // fake button (use internal logic)
 };
 
 function ExoConstants() {
@@ -51,8 +49,8 @@ function ExoConstants() {
     this.videoDetails = '.player-video-details';
     this.suggestionsListSelector = 'div.pivot-shelf-list';
     this.componentFocusEvent = 'component-focus';
-    this.channelScreenSelector = '.channel'; // empty on boot because of lazy initialization behavior
-    this.searchScreenSelector = '.search'; // empty on boot because of lazy initialization behavior
+    this.channelScreenSelector = '#channel.channel'; // empty on boot because of lazy initialization behavior
+    this.searchScreenSelector = '#search.search'; // empty on boot because of lazy initialization behavior
     this.componentBlurEvent = 'component-blur';
     this.modelChangedEvent = 'model:changed';
     this.emptyModelClass = 'no-model';

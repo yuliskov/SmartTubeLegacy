@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.events.AssetFileInjectEvent;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.PostDecipheredSignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
@@ -182,5 +183,15 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public String getEngineType() {
         return Browser.getEngineType().name();
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean isExo() {
+        return mContext instanceof TwoFragmentsManagerActivity;
     }
 }
