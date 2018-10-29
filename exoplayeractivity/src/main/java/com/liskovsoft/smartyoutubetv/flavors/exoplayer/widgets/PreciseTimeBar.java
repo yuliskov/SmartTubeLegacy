@@ -71,6 +71,9 @@ public class PreciseTimeBar extends View implements TimeBar {
     private static final int DEFAULT_SCRUBBER_ENABLED_SIZE = 12;
     private static final int DEFAULT_SCRUBBER_DISABLED_SIZE = 0;
     private static final int DEFAULT_SCRUBBER_DRAGGED_SIZE = 16;
+    // non-linear seek speed
+    private static final long SPEED_INCREASE_PERIOD_MS = 1000;
+    private static final double SPEED_INCREASE_FACTOR = 1.5;
 
     private final Rect seekBounds;
     private final Rect progressBar;
@@ -103,13 +106,14 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     private boolean scrubbing;
     private long scrubPosition;
-    private boolean scrubSync = true;
     private long duration;
     private long position;
     private long bufferedPosition;
     private int adGroupCount;
     private long[] adGroupTimesMs;
     private boolean[] playedAdGroups;
+    private long mCalcIncrement;
+    private long mSeekStartTime;
 
     /**
      * Creates a new time bar.
@@ -215,7 +219,7 @@ public class PreciseTimeBar extends View implements TimeBar {
     @Override
     public void setPosition(long position) {
         this.position = position;
-        if (scrubSync)
+        if (!scrubbing)
             scrubPosition = position;
         setContentDescription(getProgressText());
         update();
@@ -431,7 +435,6 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     private void startScrubbing() {
         scrubbing = true;
-        scrubSync = false;
         ViewParent parent = getParent();
         if (parent != null) {
             parent.requestDisallowInterceptTouchEvent(true);
@@ -443,7 +446,6 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     private void stopScrubbing(boolean canceled) {
         scrubbing = false;
-        scrubSync = true;
         ViewParent parent = getParent();
         if (parent != null) {
             parent.requestDisallowInterceptTouchEvent(false);
@@ -558,6 +560,7 @@ public class PreciseTimeBar extends View implements TimeBar {
             return false;
         }
         long scrubberPosition = getScrubberPosition();
+        positionChange = calculateIncrement(positionChange);
         scrubPosition = Util.constrainValue(scrubberPosition + positionChange, 0, duration);
         if (scrubPosition == scrubberPosition) {
             return false;
@@ -570,6 +573,29 @@ public class PreciseTimeBar extends View implements TimeBar {
         }
         update();
         return true;
+    }
+
+    private long calculateIncrement(long increment) {
+        if (!scrubbing) {
+            mSeekStartTime = System.currentTimeMillis();
+            mCalcIncrement = increment;
+            return increment;
+        }
+
+        // increase seek speed by 1.5 every 1 second
+        long timePassed = System.currentTimeMillis() - mSeekStartTime;
+        long timeFactor = timePassed / SPEED_INCREASE_PERIOD_MS;
+        if (timeFactor == 1) {
+            mSeekStartTime = System.currentTimeMillis();
+            mCalcIncrement *= SPEED_INCREASE_FACTOR;
+        }
+
+        if ((increment < 0 && mCalcIncrement > 0) ||
+            (increment > 0 && mCalcIncrement < 0)) {
+            mCalcIncrement = -mCalcIncrement;
+        }
+
+        return mCalcIncrement;
     }
 
     private static int dpToPx(DisplayMetrics displayMetrics, int dps) {
