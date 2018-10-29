@@ -69,6 +69,8 @@ YouButton.fromSelector = function(selector) {
                 return new TrackEndFakeButton(selector);
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
+            case PlayerActivityMapping.BUTTON_BACK:
+                return new BackButton(selector);
             default:
                 // NOTE: all other buttons is processed here
                 return new YouButton(selector);
