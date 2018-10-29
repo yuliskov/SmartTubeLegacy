@@ -582,17 +582,20 @@ public class PreciseTimeBar extends View implements TimeBar {
             return increment;
         }
 
+        // user changed seek direction
+        if ((increment < 0 && mCalcIncrement > 0) ||
+            (increment > 0 && mCalcIncrement < 0)) {
+            mSeekStartTime = System.currentTimeMillis();
+            mCalcIncrement = increment;
+            return increment;
+        }
+
         // increase seek speed by 1.5 every 1 second
         long timePassed = System.currentTimeMillis() - mSeekStartTime;
         long timeFactor = timePassed / SPEED_INCREASE_PERIOD_MS;
         if (timeFactor == 1) {
             mSeekStartTime = System.currentTimeMillis();
             mCalcIncrement *= SPEED_INCREASE_FACTOR;
-        }
-
-        if ((increment < 0 && mCalcIncrement > 0) ||
-            (increment > 0 && mCalcIncrement < 0)) {
-            mCalcIncrement = -mCalcIncrement;
         }
 
         return mCalcIncrement;
