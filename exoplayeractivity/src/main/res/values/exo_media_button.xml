@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="ExoMediaButton2">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ExoMediaButton2.Options">
+        <item name="layout1">@+id/layout1</item>
+        <item name="layout2">@+id/player_options_row</item>
+        <item name="textOff">@string/options</item>
+        <item name="textOn">@string/options</item>
+        <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
+    </style>
+
+    <style name="ExoMediaButton2.Quality">
+        <item name="layout1">@+id/layout1</item>
+        <item name="layout2">@+id/controls_root</item>
+        <item name="textOff">@string/quality</item>
+        <item name="textOn">@string/quality</item>
+        <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
+    </style>
+
+    <style name="ExoMediaButton2.Speed">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/video_speed</item>
+        <item name="imageOff">@mipmap/btn_speed</item>
+        <item name="imageOn">@mipmap/btn_speed</item>
+        <item name="android:contentDescription">@string/video_speed</item>
+    </style>
+    <style name="ExoMediaButton2.Repeat">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/repeat_video</item>
+        <item name="imageOff">@mipmap/btn_repeat_off</item>
+        <item name="imageOn">@mipmap/btn_repeat_on</item>
+        <item name="android:contentDescription">@string/repeat_video</item>
+    </style>
+    <style name="ExoMediaButton2.Next">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/next_video</item>
+        <item name="imageOff">@mipmap/btn_next</item>
+        <item name="imageOn">@mipmap/btn_next</item>
+        <item name="android:contentDescription">@string/exo_controls_next_description</item>
+    </style>
+    <style name="ExoMediaButton2.Pause">
+        <item name="desc">@string/pause</item>
+        <item name="imageOff">@mipmap/btn_pause</item>
+        <item name="imageOn">@mipmap/btn_pause</item>
+        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+    </style>
+    <style name="ExoMediaButton2.Play">
+        <item name="desc">@string/play</item>
+        <item name="imageOff">@mipmap/btn_play</item>
+        <item name="imageOn">@mipmap/btn_play</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+    </style>
+    <style name="ExoMediaButton2.Previous">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/prev_video</item>
+        <item name="imageOff">@mipmap/btn_prev</item>
+        <item name="imageOn">@mipmap/btn_prev</item>
+        <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+    </style>
+
+    <style name="ExoMediaButton2.Captions">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/captions</item>
+        <item name="imageOff">@mipmap/btn_captions_off</item>
+        <item name="imageOn">@mipmap/btn_captions_off</item>
+    </style>
+
+    <style name="ExoMediaButton2.Share">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/share_video</item>
+        <item name="imageOff">@mipmap/btn_share_off</item>
+        <item name="imageOn">@mipmap/btn_share_off</item>
+    </style>
+
+    <style name="ExoMediaButton2.User">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/user_page</item>
+        <item name="imageOff">@mipmap/btn_user_off</item>
+        <item name="imageOn">@mipmap/btn_user_on</item>
+    </style>
+
+    <style name="ExoMediaButton2.Like">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/like</item>
+        <item name="imageOff">@mipmap/btn_like_off</item>
+        <item name="imageOn">@mipmap/btn_like_on</item>
+    </style>
+
+    <style name="ExoMediaButton2.Dislike">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/dislike</item>
+        <item name="imageOff">@mipmap/btn_dislike_off</item>
+        <item name="imageOn">@mipmap/btn_dislike_on</item>
+    </style>
+
+    <style name="ExoMediaButton2.Subscribe">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/subscribe</item>
+        <item name="imageOff">@mipmap/btn_subscribe_off</item>
+        <item name="imageOn">@mipmap/btn_subscribe_on</item>
+    </style>
+
+    <style name="ExoMediaButton2.Stats">
+        <item name="desc">@string/stats</item>
+        <item name="imageOff">@mipmap/btn_stats_off</item>
+        <item name="imageOn">@mipmap/btn_stats_on</item>
+    </style>
+
+    <style name="ExoMediaButton2.Video">
+        <item name="textOff">@string/video</item>
+        <item name="textOn">@string/video</item>
+    </style>
+
+    <style name="ExoMediaButton2.Audio">
+        <item name="textOff">@string/audio</item>
+        <item name="textOn">@string/audio</item>
+    </style>
+
+    <style name="ExoMediaButton2.Subtitles">
+        <item name="textOff">@string/text</item>
+        <item name="textOn">@string/text</item>
+    </style>
+
+    <style name="ExoMediaButton2.Retry">
+        <item name="textOff">@string/retry</item>
+        <item name="textOn">@string/retry</item>
+    </style>
+
+    <style name="ExoMediaButton2.Restrict">
+        <item name="textOff">@string/restrict</item>
+        <item name="textOn">@string/restrict</item>
+    </style>
+
+    <style name="ExoMediaButton2.Suggestions">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="textOff">@string/suggested_videos</item>
+        <item name="textOn">@string/suggested_videos</item>
+    </style>
+
+    <style name="ExoMediaButton2.Back">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="imageOff">@mipmap/btn_back</item>
+        <item name="imageOn">@mipmap/btn_back</item>
+        <item name="textOff">@string/go_back</item>
+        <item name="textOn">@string/go_back</item>
+    </style>
+
+    <style name="ExoMediaButton2_UpCatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

@@ -21,7 +21,7 @@
               android:includeFontPadding="false"
               android:textColor="#ffffff"/>
 
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.PreciseTimeBar
         android:id="@id/exo_progress"
         android:layout_width="0dp"
         android:layout_weight="1"

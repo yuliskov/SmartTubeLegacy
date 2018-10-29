@@ -11,13 +11,10 @@
         <attr name="onCheckedChanged" format="string"/>
     </declare-styleable>
 
-    <color name="white">#ffffff</color>
-    <color name="white_50">#7dffffff</color>
-    <color name="white_70">#b2ffffff</color>
-    <color name="black">#000000</color>
-    <color name="red">#ff0000</color>
-    <color name="transparent">#00ffffff</color>
-    <color name="light_blue">#2793e6</color>
+    <declare-styleable name="LayoutToggleButton">
+        <attr name="layout1" format="reference"/>
+        <attr name="layout2" format="reference"/>
+    </declare-styleable>
 
     <dimen name="toggle_button_desc_width">60dp</dimen>
     <dimen name="toggle_button_width">38dp</dimen>
