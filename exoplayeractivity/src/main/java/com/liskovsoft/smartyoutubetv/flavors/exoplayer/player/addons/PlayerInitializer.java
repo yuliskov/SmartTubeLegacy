@@ -25,9 +25,9 @@ public class PlayerInitializer {
     private TextView videoTitle2;
     private static final int SEEK_INCREMENT_10MIN_MS = 5 * 1000;
     private static final int SEEK_INCREMENT_60MIN_MS = 10 * 1000;
-    private static final int SEEK_INCREMENT_120MIN_MS = 15 * 1000;
-    private static final int SEEK_INCREMENT_180MIN_MS = 15 * 1000;
-    private static final int SEEK_INCREMENT_MORE_180MIN_MS = 15 * 1000;
+    private static final int SEEK_INCREMENT_120MIN_MS = 10 * 1000;
+    private static final int SEEK_INCREMENT_180MIN_MS = 10 * 1000;
+    private static final int SEEK_INCREMENT_MORE_180MIN_MS = 10 * 1000;
 
     public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
