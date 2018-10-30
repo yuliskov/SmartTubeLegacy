@@ -37,8 +37,8 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         super(headers, context, attrs, defStyle, privateBrowsing);
 
         // we don't need this WebView because it serves as simple wrapper
-        super.onPause();
         super.pauseTimers();
+        super.onPause();
 
         // maybe this fixes crashes on mitv2?
         //XWalkPreferences.setValue(XWalkPreferences.ANIMATABLE_XWALK_VIEW, true);

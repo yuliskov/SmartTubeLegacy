@@ -11,10 +11,10 @@ function BackButton(selector) {
         this.retryTimes--;
         var $this = this;
         setTimeout(function() {
-            var isBackFailed = !Utils.hasClass(Utils.$($this.selector), $this.emptyModelClass);
+            var isBackFailed = !Utils.hasClass(Utils.$($this.eventRootSelector), $this.emptyModelClass);
+            console.log("BackButton: is back failed? do retry?... " + isBackFailed);
             if (isBackFailed) {
-                console.log("BackButton: trigger back failed... do retry... " + $this.selector);
-                EventUtils.triggerEnter($this.selector);
+                $this.setChecked(true);
             }
         }, 100);
     };
@@ -26,11 +26,10 @@ function BackButton(selector) {
 
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
-        var $this = this;
         if (doChecked) {
-            setTimeout(function() {
-                EventUtils.triggerEnter($this.selector);
-            }, 100); // give chance for other events to end up their work
+            // give chance for other events to end up their work
+            EventUtils.triggerEnter(this.selector);
+            this.retryOnFail();
         }
     };
 }

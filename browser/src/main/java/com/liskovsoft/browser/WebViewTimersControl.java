@@ -39,18 +39,22 @@ public class WebViewTimersControl {
         if (LOGD_ENABLED) Log.d(LOGTAG, "Resuming webview timers, view=" + wv);
         if (wv != null) {
             wv.resumeTimers();
+            wv.onResume();
         }
     }
 
     private void maybePauseTimers(WebView wv) {
         if (!mBrowserActive && !mPrerenderActive && wv != null) {
-            if (LOGD_ENABLED) Log.d(LOGTAG, "Pausing webview timers, view=" + wv);
+            if (LOGD_ENABLED)
+                Log.d(LOGTAG, "Pausing webview timers, view=" + wv);
             wv.pauseTimers();
+            wv.onPause();
         }
     }
 
     public void onBrowserActivityResume(WebView wv) {
-        if (LOGD_ENABLED) Log.d(LOGTAG, "onBrowserActivityResume");
+        if (LOGD_ENABLED)
+            Log.d(LOGTAG, "onBrowserActivityResume");
         mBrowserActive = true;
         resumeTimers(wv);
     }
