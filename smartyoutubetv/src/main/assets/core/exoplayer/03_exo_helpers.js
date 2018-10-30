@@ -121,7 +121,7 @@ function ExoUtils() {
             // msg 4 future me
             // 'paused' video won't invoke history update
             // don't call pause!!! or video remains paused event after play
-            // player.play();
+            player.play();
             player.muted = true;
         }
 

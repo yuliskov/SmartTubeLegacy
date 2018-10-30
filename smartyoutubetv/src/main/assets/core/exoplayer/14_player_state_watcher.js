@@ -20,4 +20,4 @@ function PlayerStateWatcher() {
 
 PlayerStateWatcher.prototype = new ExoConstants();
 
-new PlayerStateWatcher();
+// new PlayerStateWatcher();
