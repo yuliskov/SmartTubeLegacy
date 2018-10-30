@@ -36,9 +36,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private static final String CANCEL_PENDING_ACTIONS = "cancel_pending_actions";
+    private static final String ENABLE_PENDING_ACTIONS = "enable_pending_actions";
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
+    private boolean mEnablePendingActions;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -49,17 +52,25 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         public void onGenericStringResult(GenericStringResultEvent event) {
             String action = event.getResult();
             if (action.equals(CLOSE_SUGGESTIONS)) {
-                new Handler(mContext.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mCachedIntent != null) {
-                            // Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
-                            //prepareAndOpenExoPlayer(mCachedIntent);
-                            prepareAndOpenExoPlayer(null); // player should already be running so pass null
-                        }
-                    }
-                });
+                returnToPlayer();
+            } else if (action.equals(ENABLE_PENDING_ACTIONS)) {
+                mEnablePendingActions = true;
+            } else if (action.equals(CANCEL_PENDING_ACTIONS)) {
+                mEnablePendingActions = false;
             }
+        }
+
+        private void returnToPlayer() {
+            new Handler(mContext.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mCachedIntent != null) {
+                        // Toast.makeText(mContext, R.string.returning_to_the_video, Toast.LENGTH_LONG).show();
+                        //prepareAndOpenExoPlayer(mCachedIntent);
+                        prepareAndOpenExoPlayer(null); // player should already be running so pass null
+                    }
+                }
+            });
         }
     }
 
