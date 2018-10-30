@@ -33,17 +33,17 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
 
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (pausePrevious)
-            hideFragment();
+            pauseFragment();
 
         mFragment = fragment;
 
-        showFragment();
+        resumeFragment();
     }
 
     /**
      * imitate of resuming of new activity
      */
-    private void showFragment() {
+    private void resumeFragment() {
         if (mFragment == null || mFragment.getState() == GenericFragment.STATE_RESUMED) {
             return;
         }
@@ -57,7 +57,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     /**
      * imitate pausing of old unused activity
      */
-    private void hideFragment() {
+    private void pauseFragment() {
         if (mFragment == null || mFragment.getState() == GenericFragment.STATE_PAUSED) {
             return;
         }

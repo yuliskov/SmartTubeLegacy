@@ -14,7 +14,7 @@ function BackButton(selector) {
             var isBackFailed = !Utils.hasClass(Utils.$($this.selector), $this.emptyModelClass);
             if (isBackFailed) {
                 console.log("BackButton: trigger back failed... do retry... " + $this.selector);
-                $this.setChecked(true);
+                EventUtils.triggerEnter($this.selector);
             }
         }, 100);
     };
@@ -26,9 +26,11 @@ function BackButton(selector) {
 
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
+        var $this = this;
         if (doChecked) {
-            EventUtils.triggerEnter(this.selector);
-            this.retryOnFail();
+            setTimeout(function() {
+                EventUtils.triggerEnter($this.selector);
+            }, 100); // give chance for other events to end up their work
         }
     };
 }
