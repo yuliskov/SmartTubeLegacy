@@ -14,6 +14,7 @@ var DefaultKeys = {
 };
 
 var DefaultEvents = {
+    PLAYER_DATA_LOADED: 'loadeddata',
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
     HASH_CHANGE: 'hashchange',

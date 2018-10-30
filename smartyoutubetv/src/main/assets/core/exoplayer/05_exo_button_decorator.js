@@ -13,7 +13,7 @@ function YouButtonDecorator(btn) {
     this.callbackStack = YouButtonDecorator.callbackStack;
 
     this.doPressOnOptionsBtn = function() {
-        exoutils.triggerEnter(this.optionsBtnSelector);
+        EventUtils.triggerEnter(this.optionsBtnSelector);
     };
 
     this.doCallbackIfReady = function(callback) {
@@ -29,7 +29,7 @@ function YouButtonDecorator(btn) {
     };
 
     this.setCheckedWrapper = function(callback) {
-        var obj = exoutils.$(this.btn.selector);
+        var obj = Utils.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             this.doPressOnOptionsBtn();
             console.log('YouButtonDecorator.initBtn: btn not initialized: ' + this.btn.selector);
@@ -44,7 +44,7 @@ function YouButtonDecorator(btn) {
     };
 
     this.getCheckedWrapper = function(callback) {
-        var obj = exoutils.$(this.btn.selector);
+        var obj = Utils.$(this.btn.selector);
         if (!obj || !obj.children.length) {
             console.log('YouButtonDecorator.initBtn2: btn not initialized: ' + this.btn.selector);
             this.doPressOnOptionsBtn();

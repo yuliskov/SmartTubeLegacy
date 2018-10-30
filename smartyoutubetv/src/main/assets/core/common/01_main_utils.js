@@ -16,6 +16,10 @@ var Utils = {
         return typeof el === 'string' || el instanceof String;
     },
 
+    isArray: function(obj) {
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    },
+
     addClass: function(elem, cls) {
         if (!this.hasClass(elem, cls)) {
             elem.className += ' ' + cls;
@@ -36,6 +40,17 @@ var Utils = {
     },
 
     $: function(selector) {
+        // allow to use arrays as selectors like ['a', 'b', 'c']
+        // return first element existed element
+        if (this.isArray(selector)) {
+            for (var i = 0; i < selector.length; i++) {
+                var el = document.querySelector(selector[i]);
+                if (el != null)
+                    return el;
+            }
+            return null;
+        }
+
         if (!this.isSelector(selector))
             return selector;
         return document.querySelector(selector);
@@ -63,6 +78,11 @@ var Utils = {
         var firstVal = arr.join(".");  // Re-join the remaining substrings, using dot as separator
 
         Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
+    },
+
+    overrideProp2: function(obj, propName, value) { // pure function
+        obj[propName] = value;
+        Object.defineProperty(obj, propName, { get: function(){return value}, set: function(val){}, configurable: true, enumerable: true });
     },
 
     /**

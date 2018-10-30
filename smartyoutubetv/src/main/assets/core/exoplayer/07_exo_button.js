@@ -8,11 +8,11 @@ function YouButton(selector) {
     this.initializer = new YouButtonDecorator(this);
 
     this.doPressOnOptionsBtn = function() {
-        exoutils.triggerEnter(this.optionsBtnSelector);
+        EventUtils.triggerEnter(this.optionsBtnSelector);
     };
 
     this.findToggle = function() {
-        var btn = exoutils.$(selector);
+        var btn = Utils.$(selector);
 
         btn || console.warn("YouButton: unable to find " + selector);
 
@@ -20,7 +20,7 @@ function YouButton(selector) {
     };
 
     this.playerIsClosed = function() {
-        return exoutils.$('video').style.display == 'none';
+        return Utils.$('video').style.display == 'none';
     };
 
     this.getChecked = function() {
@@ -29,8 +29,8 @@ function YouButton(selector) {
 
         if (this.isChecked === undefined) {
             var toggle = this.findToggle();
-            var isChecked = exoutils.hasClass(toggle, this.selectedClass);
-            var isDisabled = exoutils.hasClass(toggle, this.disabledClass);
+            var isChecked = Utils.hasClass(toggle, this.selectedClass);
+            var isDisabled = Utils.hasClass(toggle, this.disabledClass);
             this.isChecked = isDisabled ? null : isChecked;
         }
         console.log("YouButton: getChecked: " + selector + " " + this.isChecked);
@@ -54,7 +54,7 @@ function YouButton(selector) {
         }
 
         console.log("YouButton: setChecked: " + selector + ' ' + doChecked + ' ' + this.findToggle());
-        exoutils.triggerEnter(this.findToggle());
+        EventUtils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
 

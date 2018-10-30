@@ -9,7 +9,7 @@ function TrackEndFakeButton(selector) {
         console.log("TrackEndFakeButton: I'm about to start off!");
         window.lastButtonName = PlayerActivity.TRACK_ENDED;
 
-        var player = exoutils.$(this.videoSelector);
+        var player = Utils.$(this.videoSelector);
         if (player) {
             console.log("TrackEndFakeButton: before jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
 
