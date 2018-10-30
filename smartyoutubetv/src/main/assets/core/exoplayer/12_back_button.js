@@ -1,6 +1,4 @@
-// NOTE: this file doesn't depend on common js files
-
-console.log("Scripts::Running core script track_end_button.js");
+console.log("Scripts::Running core script back_button.js");
 
 function BackButton(selector) {
     this.selector = selector;
