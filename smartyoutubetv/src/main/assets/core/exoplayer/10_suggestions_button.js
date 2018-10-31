@@ -96,7 +96,11 @@ function SuggestionsFakeButton(selector) {
             return;
         }
 
-        ExoUtils.sendAction(this.CLOSE_SUGGESTIONS);
+        var $this = this;
+        // immediate close not working here, so take delay
+        setTimeout(function() {
+            ExoUtils.sendAction($this.CLOSE_SUGGESTIONS);
+        }, 100);
 
         this.alreadySent = true;
     };
