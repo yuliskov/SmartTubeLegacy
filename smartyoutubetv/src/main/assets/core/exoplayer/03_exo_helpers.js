@@ -125,6 +125,14 @@ var ExoUtils = {
     },
 
     syncButtons: function(states) {
+        var $this = this;
+        // 'likes not saved' fix
+        setTimeout(function() {
+            $this.syncButtonsReal(states);
+        }, 100);
+    },
+
+    syncButtonsReal: function(states) {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 

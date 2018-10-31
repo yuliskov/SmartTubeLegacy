@@ -77,15 +77,10 @@ function SuggestionsFakeButton(selector) {
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
-        // pause keeps sound off
-        var player = Utils.$('video');
-        player && player.pause();
-
-        var downCode = 40;
         // we assume that no interface currently shown
         // press twice
-        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
-        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
 
         // start point
         this.watcher = new SuggestionsWatcher(this);

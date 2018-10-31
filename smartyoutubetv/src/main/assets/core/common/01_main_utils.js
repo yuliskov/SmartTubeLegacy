@@ -53,6 +53,7 @@ var Utils = {
 
         if (!this.isSelector(selector))
             return selector;
+
         return document.querySelector(selector);
     },
 
@@ -257,6 +258,16 @@ var Utils = {
             console.log("Utils::logMethod: " + fn + ' ' + arguments);
             return fn.apply(obj, arguments);
         };
+    },
+
+    show: function(selector) {
+        var el = this.$(selector);
+        el.style.display = 'initial';
+    },
+
+    hide: function(selector) {
+        var el = this.$(selector);
+        el.style.display = 'none';
     }
 };
 

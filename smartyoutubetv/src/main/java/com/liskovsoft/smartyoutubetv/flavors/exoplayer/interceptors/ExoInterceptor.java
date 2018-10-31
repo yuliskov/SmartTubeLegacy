@@ -157,9 +157,6 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
-        String msg = "About to start ExoPlayer activity for Regular item";
-        Log.d(TAG, msg);
-
         if (playerIntent == null) {
             mFragmentsManager.openExoPlayer(null); // player is already running
             return;
@@ -168,6 +165,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         PlayerActionsReceiver.Listener listener = new PlayerActionsReceiver.Listener() {
             @Override
             public void onDone() {
+                Log.d(TAG, "About to start ExoPlayer activity for Regular item");
                 mFragmentsManager.openExoPlayer(playerIntent);
             }
 

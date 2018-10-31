@@ -7,7 +7,7 @@ console.log("Scripts::Running core script back_button.js");
  */
 function BackButton(selector) {
     this.selector = selector;
-    this.retryTimes = 3;
+    this.retryTimes = 5;
 
     this.retryOnFail = function() {
         if (this.retryTimes == 0) {
@@ -18,6 +18,7 @@ function BackButton(selector) {
         var $this = this;
         setTimeout(function() {
             if (!ExoUtils.playerIsClosed()) {
+                console.log("BackButton: back failed... do retry...");
                 $this.retryOnFail();
             }
         }, 100);
@@ -31,7 +32,11 @@ function BackButton(selector) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            this.retryOnFail();
+            var $this = this;
+            // 'likes not saved' fix
+            setTimeout(function() {
+                $this.retryOnFail();
+            }, 100);
         }
     };
 }
