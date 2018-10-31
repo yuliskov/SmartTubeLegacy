@@ -1,5 +1,10 @@
 console.log("Scripts::Running core script back_button.js");
 
+/**
+ * Automatic exit from the opened player.<br/>
+ * Checks that player is running and performs back press.
+ * @param selector back button selector
+ */
 function BackButton(selector) {
     this.selector = selector;
     this.retryTimes = 3;
@@ -9,12 +14,11 @@ function BackButton(selector) {
             return;
         }
         this.retryTimes--;
+        EventUtils.triggerEnter(this.selector);
         var $this = this;
         setTimeout(function() {
-            var isBackFailed = !Utils.hasClass(Utils.$($this.eventRootSelector), $this.emptyModelClass);
-            console.log("BackButton: is back failed? do retry?... " + isBackFailed);
-            if (isBackFailed) {
-                $this.setChecked(true);
+            if (!ExoUtils.playerIsClosed()) {
+                $this.retryOnFail();
             }
         }, 100);
     };
@@ -27,11 +31,7 @@ function BackButton(selector) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            // give chance for other events to end up their work
-            EventUtils.triggerEnter(this.selector);
             this.retryOnFail();
         }
     };
 }
-
-BackButton.prototype = new ExoConstants();

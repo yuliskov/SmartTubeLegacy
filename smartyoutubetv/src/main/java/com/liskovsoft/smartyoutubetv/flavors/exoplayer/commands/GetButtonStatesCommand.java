@@ -13,7 +13,7 @@ public class GetButtonStatesCommand extends GenericCommand {
     /**
      * for details see {@link com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector}
      */
-    private final String GET_STATE_COMMAND = "JSON.stringify(exoutils.getButtonStates())";
+    private final String GET_STATE_COMMAND = "JSON.stringify(ExoUtils.getButtonStates())";
     private GenericStringResultReceiver mReceiver;
 
     public interface Callback {

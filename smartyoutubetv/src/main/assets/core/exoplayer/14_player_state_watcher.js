@@ -6,18 +6,16 @@ function PlayerStateWatcher() {
     var $this = this;
 
     function notifyPendingActions(e) {
-        if (Utils.hasClass(e.target, $this.emptyModelClass)) {
+        if (Utils.hasClass(e.target, ExoConstants.emptyModelClass)) {
             console.log("PlayerStateWatcher: cancel pending actions...");
-            // exoutils.sendAction($this.CANCEL_PENDING_ACTIONS);
+            // ExoUtils.sendAction($this.CANCEL_PENDING_ACTIONS);
         } else {
             console.log("PlayerStateWatcher: enable pending actions...");
-            // exoutils.sendAction($this.ENABLE_PENDING_ACTIONS);
+            // ExoUtils.sendAction($this.ENABLE_PENDING_ACTIONS);
         }
     }
 
-    EventUtils.addListener(this.eventRootSelector, this.modelChangedEvent, notifyPendingActions);
+    EventUtils.addListener(ExoConstants.eventRootSelector, ExoConstants.modelChangedEvent, notifyPendingActions);
 }
-
-PlayerStateWatcher.prototype = new ExoConstants();
 
 // new PlayerStateWatcher();

@@ -1,5 +1,3 @@
-// NOTE: this file doesn't depend on common js files
-
 console.log("Scripts::Running core script exo_constants.js");
 
 // java constants
@@ -11,9 +9,9 @@ var PlayerActivity = {
     BUTTON_USER_PAGE: "button_user_page",
     BUTTON_PREV: "button_prev",
     BUTTON_NEXT: "button_next",
-    BUTTON_BACK: "button_back",
     BUTTON_SUGGESTIONS: "button_suggestions",
-    TRACK_ENDED: "track_ended"
+    TRACK_ENDED: "track_ended",
+    BUTTON_BACK: "button_back" // should be the last
 };
 
 // java constants in js code
@@ -26,34 +24,33 @@ var PlayerActivityMapping = {
     // so now we can match buttons from the different app versions
     BUTTON_NEXT: [".new-skip-forward-button", ".icon-player-next"],
     BUTTON_PREV: ".icon-player-prev",
-    BUTTON_BACK: "#legend .back",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
-    TRACK_ENDED: "track_ended" // fake button (use internal logic)
+    TRACK_ENDED: "track_ended", // fake button (use internal logic)
+    BUTTON_BACK: "#legend .back" // should be the last
 };
 
-function ExoConstants() {
-    this.focusedClass = 'focused';
-    this.hiddenClass = 'hidden';
-    this.disabledClass = 'disabled';
-    this.selectedClass = 'toggle-selected';
-    this.optionsBtnSelector = '#transport-more-button';
-    this.backBtnSelector = '#legend .back';
-    this.playerControlsSelector = '#transport-controls';
-    this.controlsBarSelector = '#buttons-list';
-    this.playButtonSelector = ".icon-player-play.toggle-button";
-    // this.mainControlsSelector = '.fresh-transport-controls.transport-controls';
-    this.mainTitleSelector = '.title-card.watch-title-tray';
-    this.eventRootSelector = '#watch.watch'; // div that receives keys events
-    this.videoSelector = 'video';
-    this.uploadDate = '.uploaded-date';
-    this.videoDetails = '.player-video-details';
-    this.suggestionsListSelector = 'div.pivot-shelf-list';
-    this.componentFocusEvent = 'component-focus';
-    this.channelScreenSelector = '#channel.channel'; // empty on boot because of lazy initialization behavior
-    this.searchScreenSelector = '#search.search'; // empty on boot because of lazy initialization behavior
-    this.componentBlurEvent = 'component-blur';
-    this.modelChangedEvent = 'model:changed';
-    this.emptyModelClass = 'no-model';
-    this.transportShowingClass = 'transport-showing';
-    this.playerUiHiddenClass = 'watch-idle';
-}
+var ExoConstants = {
+    focusedClass: 'focused',
+    hiddenClass: 'hidden',
+    disabledClass: 'disabled',
+    selectedClass: 'toggle-selected',
+    optionsBtnSelector: '#transport-more-button',
+    backBtnSelector: '#legend .back',
+    playerControlsSelector: '#transport-controls',
+    controlsBarSelector: '#buttons-list',
+    playButtonSelector: ".icon-player-play.toggle-button",
+    // mainControlsSelector: '.fresh-transport-controls.transport-controls',
+    mainTitleSelector: '.title-card.watch-title-tray',
+    eventRootSelector: '#watch.watch', // div that receives keys events
+    uploadDate: '.uploaded-date',
+    videoDetails: '.player-video-details',
+    suggestionsListSelector: 'div.pivot-shelf-list',
+    componentFocusEvent: 'component-focus',
+    channelScreenSelector: '#channel.channel', // empty on boot because of lazy initialization behavior
+    searchScreenSelector: '#search.search', // empty on boot because of lazy initialization behavior
+    componentBlurEvent: 'component-blur',
+    modelChangedEvent: 'model:changed',
+    emptyModelClass: 'no-model',
+    transportShowingClass: 'transport-showing',
+    playerUiHiddenClass: 'watch-idle'
+};

@@ -15,9 +15,9 @@ function SuggestionsWatcher(host) {
                 return;
             }
 
-            var playerControls = Utils.$($this.playerControlsSelector);
+            var playerControls = Utils.$(ExoConstants.playerControlsSelector);
 
-            if (Utils.hasClass(playerControls, $this.hiddenClass)) {
+            if (Utils.hasClass(playerControls, ExoConstants.hiddenClass)) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -41,16 +41,16 @@ function SuggestionsWatcher(host) {
         };
 
         var onFocusHandler = function(e) {
-            if (Utils.hasClass(e.target, $this.hiddenClass) &&
-                Utils.hasClass(e.target, $this.transportShowingClass)) {
+            if (Utils.hasClass(e.target, ExoConstants.hiddenClass) &&
+                Utils.hasClass(e.target, ExoConstants.transportShowingClass)) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 closeSuggestions();
             }
         };
 
-        EventUtils.addListener(this.suggestionsListSelector, this.componentBlurEvent, onBlurHandler);
-        EventUtils.addListener(this.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(this.eventRootSelector, this.modelChangedEvent, onFocusHandler);
+        EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
+        EventUtils.addListener(ExoConstants.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
+        EventUtils.addListener(ExoConstants.eventRootSelector, ExoConstants.modelChangedEvent, onFocusHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -59,8 +59,6 @@ function SuggestionsWatcher(host) {
         console.log("SuggestionsWatcher: do init...");
     }
 
-    SuggestionsWatcherService.prototype = new ExoConstants();
-
     if (!window.suggestionsWatcherService) {
         window.suggestionsWatcherService = new SuggestionsWatcherService();
     }
@@ -68,7 +66,6 @@ function SuggestionsWatcher(host) {
     window.suggestionsWatcherService.setHost(host);
 }
 
-SuggestionsWatcher.prototype = new ExoConstants();
 SuggestionsWatcher.disable = function() {
     new SuggestionsWatcher(null);
 };
@@ -87,8 +84,8 @@ function SuggestionsFakeButton(selector) {
         var downCode = 40;
         // we assume that no interface currently shown
         // press twice
-        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
-        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
+        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, downCode);
 
         // start point
         this.watcher = new SuggestionsWatcher(this);
@@ -99,7 +96,7 @@ function SuggestionsFakeButton(selector) {
             return;
         }
 
-        exoutils.sendAction(this.CLOSE_SUGGESTIONS);
+        ExoUtils.sendAction(this.CLOSE_SUGGESTIONS);
 
         this.alreadySent = true;
     };
@@ -111,7 +108,7 @@ function SuggestionsFakeButton(selector) {
 
         console.log("SuggestionsFakeButton::closeSuggestions");
         
-        EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;
     };
@@ -145,5 +142,3 @@ function SuggestionsFakeButton(selector) {
 
     };
 }
-
-SuggestionsFakeButton.prototype = new ExoConstants();

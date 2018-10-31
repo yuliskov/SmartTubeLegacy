@@ -1,32 +1,36 @@
 console.log("Scripts::Running core script exo_helpers.js");
 
 /**
+ * Note: if you intend to rename this var don't forget to do the same inside
+ * <b>GetButtonStatesCommand</b> and <b>SyncButtonsCommand</b> classes<br/>
+ *
  * Usage: <b>PressCommandBase.java</b><br/>
- * <code>exoutils.triggerEvent(exoutils.$('%s'), 'keyup', 13);</code><br/>
+ * <code>ExoUtils.triggerEvent(ExoUtils.$('%s'), 'keyup', 13);</code><br/>
+ *
  * Usage: <b>PressCommandBase.java</b><br/>
- * <code>exoutils.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);</code>
+ * <code>ExoUtils.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);</code>
  * @constructor empty
  */
-function ExoUtils() {
-    this.isComponentDisabled = function(element) {
+var ExoUtils = {
+    isComponentDisabled: function(element) {
         var el = element;
         if (Utils.isSelector(element)) {
             el = Utils.$(element);
         }
-        var hasClass = Utils.hasClass(el, this.disabledClass);
+        var hasClass = Utils.hasClass(el, ExoConstants.disabledClass);
         console.log("ExoUtils.isDisabled: " + element + " " + hasClass);
         return hasClass;
-    };
+    },
 
-    this.isComponentHidden = function(element) {
+    isComponentHidden: function(element) {
         var el = element;
         if (Utils.isSelector(element)) {
             el = Utils.$(element);
         }
-        var hasClass = Utils.hasClass(el, this.hiddenClass);
+        var hasClass = Utils.hasClass(el, ExoConstants.hiddenClass);
         console.log("ExoUtils.isHidden: " + element + " " + hasClass);
         return hasClass;
-    };
+    },
 
     // events order:
     // emptied
@@ -34,7 +38,7 @@ function ExoUtils() {
     // loadedmetadata
     // loadeddata (first frame of the video has been loaded)
     // playing
-    this.preparePlayer = function() {
+    preparePlayer: function() {
         var player = Utils.$('video');
         if (!player || this.preparePlayerDone)
             return;
@@ -55,16 +59,16 @@ function ExoUtils() {
         player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
 
         this.preparePlayerDone = true;
-    };
+    },
 
-    this.getVideoDate = function() {
-        var element = Utils.$(this.uploadDate);
+    getVideoDate: function() {
+        var element = Utils.$(ExoConstants.uploadDate);
         if (element != null) {
             // don't rely on : symbol parsing here! because it depends on localization
             return element.innerHTML;
         }
 
-        element = Utils.$(this.videoDetails);
+        element = Utils.$(ExoConstants.videoDetails);
         if (element != null) {
             var parts = element.innerHTML.split('•');
             if (parts.length == 3) {
@@ -73,20 +77,20 @@ function ExoUtils() {
         }
 
         return "";
-    };
+    },
 
     /**
      * Hide player in case it is visible
      */
-    this.hidePlayerUi = function() {
-        var controls = Utils.$(this.playerControlsSelector);
-        if (!Utils.hasClass(controls, this.hiddenClass)) {
-            EventUtils.triggerEvent(this.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+    hidePlayerUi: function() {
+        var controls = Utils.$(ExoConstants.playerControlsSelector);
+        if (!Utils.hasClass(controls, ExoConstants.hiddenClass)) {
+            EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
-    };
+    },
 
     // supply selector list
-    this.getButtonStates = function() {
+    getButtonStates: function() {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
@@ -118,9 +122,9 @@ function ExoUtils() {
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
 
         return states;
-    };
+    },
 
-    this.syncButtons = function(states) {
+    syncButtons: function(states) {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
@@ -138,19 +142,18 @@ function ExoUtils() {
             var btn = YouButton.fromSelector(selector);
             btn.setChecked(isChecked);
         }
-    };
+    },
 
-    this.sendAction = function(action) {
+    sendAction: function(action) {
         // code that sends string constant to activity
         if (app && app.onGenericStringResult) {
             app.onGenericStringResult(action);
         } else {
             console.log('ExoUtils: app not found');
         }
-    };
-}
+    },
 
-ExoUtils.prototype = new ExoConstants();
-
-// if you intend to remove this var don't forget to do the same inside GetButtonStatesCommand and SyncButtonsCommand classes
-window.exoutils = new ExoUtils();
+    playerIsClosed: function() {
+        return Utils.hasClass(Utils.$(ExoConstants.eventRootSelector), ExoConstants.emptyModelClass);
+    }
+};

@@ -1,5 +1,3 @@
-// NOTE: this file doesn't depend on common js files
-
 console.log("Scripts::Running core script track_end_button.js");
 
 function TrackEndFakeButton(selector) {
@@ -9,7 +7,7 @@ function TrackEndFakeButton(selector) {
         console.log("TrackEndFakeButton: I'm about to start off!");
         window.lastButtonName = PlayerActivity.TRACK_ENDED;
 
-        var player = Utils.$(this.videoSelector);
+        var player = Utils.$('video');
         if (player) {
             console.log("TrackEndFakeButton: before jumping to the end: curtime: " + player.currentTime + ", duration: " + player.duration);
 
@@ -34,5 +32,3 @@ function TrackEndFakeButton(selector) {
             this.playerJumpToEnd();
     };
 }
-
-TrackEndFakeButton.prototype = new ExoConstants();

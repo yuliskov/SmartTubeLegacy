@@ -1,5 +1,3 @@
-// NOTE: this file doesn't depend on common js files
-
 console.log("Scripts::Running core script exo_button_decorator.js");
 
 /**
@@ -13,7 +11,7 @@ function YouButtonDecorator(btn) {
     this.callbackStack = YouButtonDecorator.callbackStack;
 
     this.doPressOnOptionsBtn = function() {
-        EventUtils.triggerEnter(this.optionsBtnSelector);
+        EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
     };
 
     this.doCallbackIfReady = function(callback) {
@@ -87,5 +85,4 @@ function YouButtonDecorator(btn) {
     };
 }
 
-YouButtonDecorator.prototype = new ExoConstants();
 YouButtonDecorator.callbackStack = [];

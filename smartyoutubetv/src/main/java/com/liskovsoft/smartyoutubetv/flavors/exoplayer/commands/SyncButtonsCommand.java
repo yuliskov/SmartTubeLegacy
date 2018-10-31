@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.util.Map;
 
 public class SyncButtonsCommand extends GenericCommand {
-    private static final String COMMAND = "exoutils.syncButtons";
+    private static final String COMMAND = "ExoUtils.syncButtons";
     private final Map<String, Boolean> mStates;
 
     public SyncButtonsCommand(Map<String, Boolean> buttonStates) {

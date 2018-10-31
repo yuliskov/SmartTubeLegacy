@@ -1,5 +1,3 @@
-// NOTE: this file doesn't depend on common js files
-
 console.log("Scripts::Running core script exo_button.js");
 
 function YouButton(selector) {
@@ -8,7 +6,7 @@ function YouButton(selector) {
     this.initializer = new YouButtonDecorator(this);
 
     this.doPressOnOptionsBtn = function() {
-        EventUtils.triggerEnter(this.optionsBtnSelector);
+        EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
     };
 
     this.findToggle = function() {
@@ -19,18 +17,14 @@ function YouButton(selector) {
         return btn;
     };
 
-    this.playerIsClosed = function() {
-        return Utils.$('video').style.display == 'none';
-    };
-
     this.getChecked = function() {
-        if (this.playerIsClosed())
+        if (ExoUtils.playerIsClosed())
             return null; // element not exists (see ActionReceiver.java for details)
 
         if (this.isChecked === undefined) {
             var toggle = this.findToggle();
-            var isChecked = Utils.hasClass(toggle, this.selectedClass);
-            var isDisabled = Utils.hasClass(toggle, this.disabledClass);
+            var isChecked = Utils.hasClass(toggle, ExoConstants.selectedClass);
+            var isDisabled = Utils.hasClass(toggle, ExoConstants.disabledClass);
             this.isChecked = isDisabled ? null : isChecked;
         }
         console.log("YouButton: getChecked: " + selector + " " + this.isChecked);
@@ -38,7 +32,7 @@ function YouButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (this.playerIsClosed()) {
+        if (ExoUtils.playerIsClosed()) {
             console.log("YouButton: setChecked: video is closed already... do nothing: " + selector);
             return;
         }
@@ -61,7 +55,6 @@ function YouButton(selector) {
     this.initializer.apply();
 }
 
-YouButton.prototype = new ExoConstants();
 YouButton.fromSelector = function(selector) {
     function createButton(selector) {
         switch (selector) {
