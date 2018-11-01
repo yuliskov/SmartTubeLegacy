@@ -26,6 +26,8 @@
         <!--<item name="android:windowAnimationStyle">@null</item>-->
     </style>
 
+    <style name="LoadMessageAppearance" parent="android:TextAppearance.Large"/>
+
     <color name="white">#ffffff</color>
     <color name="white_50">#7dffffff</color>
     <color name="white_70">#b2ffffff</color>
