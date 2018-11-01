@@ -342,6 +342,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             playerInitializer.initTimeBar(player); // set proper time increments
         }
 
+        int visibility = playbackState == Player.STATE_IDLE ||
+                playbackState == Player.STATE_BUFFERING ? View.VISIBLE : View.GONE;
+        loadingView.setVisibility(visibility);
+
         super.onPlayerStateChanged(playWhenReady, playbackState);
     }
 

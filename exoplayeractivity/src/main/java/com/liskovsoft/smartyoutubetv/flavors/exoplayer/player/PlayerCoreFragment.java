@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -91,6 +92,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     protected SimpleExoPlayerView simpleExoPlayerView;
     protected LinearLayout debugRootView;
+    protected TextView loadingView;
     protected FrameLayout debugViewGroup;
     protected TextToggleButton retryButton;
 
@@ -138,6 +140,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         View rootView = root.findViewById(R.id.root);
         rootView.setOnClickListener(this);
         debugRootView = root.findViewById(R.id.controls_root);
+        loadingView = root.findViewById(R.id.loading_view);
         debugViewGroup = root.findViewById(R.id.debug_view_group);
         playerTopBar = root.findViewById(R.id.player_top_bar);
         retryButton = root.findViewById(R.id.retry_button);
@@ -146,6 +149,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         simpleExoPlayerView = root.findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
         simpleExoPlayerView.requestFocus();
+
+        // hide ui player by default
+        simpleExoPlayerView.setControllerAutoShow(false);
+        playerTopBar.setVisibility(View.GONE);
     }
 
     public void setIntent(Intent intent) {

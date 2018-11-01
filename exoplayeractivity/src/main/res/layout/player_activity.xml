@@ -27,4 +27,6 @@
     <include layout="@layout/player_top_bar"/>
 
     <include layout="@layout/player_debug_view"/>
+
+    <include layout="@layout/player_loading_view"/>
 </FrameLayout>
