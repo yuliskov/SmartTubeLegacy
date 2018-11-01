@@ -1,14 +1,14 @@
 console.log("Scripts::Running core script exo_button_decorator.js");
 
 /**
- * Decorator for methods {@link YouButton.setChecked} and {@link YouButton.getChecked}<br/>
+ * Decorator for methods {@link ExoButton.setChecked} and {@link ExoButton.getChecked}<br/>
  * Decorator purpose: to initialize the buttons before they will be checked
  * @param btn element to decorate
  * @constructor
  */
-function YouButtonDecorator(btn) {
+function ExoButtonDecorator(btn) {
     this.btn = btn;
-    this.callbackStack = YouButtonDecorator.callbackStack;
+    this.callbackStack = ExoButtonDecorator.callbackStack;
 
     this.doPressOnOptionsBtn = function() {
         EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
@@ -85,4 +85,4 @@ function YouButtonDecorator(btn) {
     };
 }
 
-YouButtonDecorator.callbackStack = [];
+ExoButtonDecorator.callbackStack = [];

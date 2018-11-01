@@ -94,7 +94,7 @@ var ExoUtils = {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
-        YouButton.resetCache(); // activity just started
+        ExoButton.resetCache(); // activity just started
 
         var states = {};
 
@@ -104,7 +104,7 @@ var ExoUtils = {
         for (var idx in reversedKeys) {
             var key = reversedKeys[idx];
             var selector = PlayerActivityMapping[key];
-            var btn = YouButton.fromSelector(selector);
+            var btn = ExoButton.fromSelector(selector);
             var newName = PlayerActivity[key];
             var isChecked = btn.getChecked();
             if (isChecked === null) // exclude disabled buttons from result
@@ -138,7 +138,7 @@ var ExoUtils = {
 
         window.lastButtonName = null;
 
-        YouButton.resetCache(); // activity just started
+        ExoButton.resetCache(); // activity just started
         console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
 
         for (var key in PlayerActivity) {
@@ -147,7 +147,7 @@ var ExoUtils = {
             if (isChecked == undefined) // button gone, removed etc..
                 continue;
             var selector = PlayerActivityMapping[key];
-            var btn = YouButton.fromSelector(selector);
+            var btn = ExoButton.fromSelector(selector);
             btn.setChecked(isChecked);
         }
     },

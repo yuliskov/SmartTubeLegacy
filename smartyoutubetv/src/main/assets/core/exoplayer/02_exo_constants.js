@@ -6,7 +6,7 @@ var PlayerActivity = {
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
     BUTTON_SUBSCRIBE: "button_subscribe",
-    BUTTON_USER_PAGE: "button_user_page",
+    // BUTTON_USER_PAGE: "button_user_page",
     BUTTON_PREV: "button_prev",
     BUTTON_NEXT: "button_next",
     BUTTON_SUGGESTIONS: "button_suggestions",
@@ -19,7 +19,7 @@ var PlayerActivityMapping = {
     BUTTON_LIKE: ".icon-like.toggle-button",
     BUTTON_DISLIKE: ".icon-dislike.toggle-button",
     BUTTON_SUBSCRIBE: ".icon-logo-lozenge.toggle-button",
-    BUTTON_USER_PAGE: ".pivot-channel-tile",
+    // BUTTON_USER_PAGE: ".pivot-channel-tile",
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
     BUTTON_NEXT: [".new-skip-forward-button", ".icon-player-next"],
@@ -52,5 +52,6 @@ var ExoConstants = {
     modelChangedEvent: 'model:changed',
     emptyModelClass: 'no-model',
     transportShowingClass: 'transport-showing',
-    playerUiHiddenClass: 'watch-idle'
+    playerUiHiddenClass: 'watch-idle',
+    toggleButtonClass: 'toggle-button'
 };

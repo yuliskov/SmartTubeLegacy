@@ -13,7 +13,7 @@ function TrackEndFakeButton(selector) {
 
             if (isNaN(player.duration)) {
                 // something wrong, do workaround: play next track
-                var btn = YouButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
+                var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
                 btn.setChecked(true);
             } else {
                 player.currentTime = player.duration - 1; // seek to the end
