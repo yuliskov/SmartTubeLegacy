@@ -51,6 +51,21 @@ function ExoButtonDecorator(btn) {
     };
 
     this.apply = function() {
+        if (this.btn.applyOnGetCheckedOnly) {
+            this.applyGetChecked();
+            return;
+        }
+
+        if (this.btn.applyOnSetCheckedOnly) {
+            this.applySetChecked();
+            return;
+        }
+
+        this.applySetChecked();
+        this.applyGetChecked();
+    };
+
+    this.applySetChecked = function() {
         var $this = this;
 
         var realSetChecked = this.btn.setChecked;
@@ -71,6 +86,10 @@ function ExoButtonDecorator(btn) {
                 $this.callbackStack.push(callback);
             }
         };
+    };
+
+    this.applyGetChecked = function() {
+        var $this = this;
 
         // can't use stack! we have to return immediately! no delays allowed!
         var realGetChecked = this.btn.getChecked;

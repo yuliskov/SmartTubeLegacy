@@ -6,9 +6,9 @@ function ExoButton(selector) {
     this.initializer = new ExoButtonDecorator(this);
 
     this.findToggle = function() {
-        var btn = Utils.$(selector);
+        var btn = Utils.$(this.selector);
 
-        btn || console.warn("ExoButton: unable to find " + selector);
+        btn || console.warn("ExoButton: unable to find " + this.selector);
 
         return btn;
     };
@@ -23,13 +23,13 @@ function ExoButton(selector) {
             var isDisabled = Utils.hasClass(toggle, ExoConstants.disabledClass);
             this.isChecked = isDisabled ? null : isChecked;
         }
-        console.log("ExoButton: getChecked: " + selector + " " + this.isChecked);
+        console.log("ExoButton: getChecked: " + this.selector + " " + this.isChecked);
         return this.isChecked;
     };
 
     this.setChecked = function(doChecked) {
         if (ExoUtils.playerIsClosed()) {
-            console.log("ExoButton: setChecked: video is closed already... do nothing: " + selector);
+            console.log("ExoButton: setChecked: video is closed already... do nothing: " + this.selector);
             return;
         }
 
@@ -39,11 +39,11 @@ function ExoButton(selector) {
         //     return;
         // }
         if (isChecked == doChecked) {
-            console.log("ExoButton: setChecked: already checked... do nothing: " + selector + ' ' + isChecked);
+            console.log("ExoButton: setChecked: already checked... do nothing: " + this.selector + ' ' + isChecked);
             return;
         }
 
-        console.log("ExoButton: setChecked: " + selector + ' ' + doChecked + ' ' + this.findToggle());
+        console.log("ExoButton: setChecked: " + this.selector + ' ' + doChecked + ' ' + this.findToggle());
         EventUtils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
@@ -83,5 +83,3 @@ ExoButton.resetCache = function() {
     if (this.btnMap)
         delete this.btnMap;
 };
-
-ExoButton.prototype = new ExoButtonBase();
