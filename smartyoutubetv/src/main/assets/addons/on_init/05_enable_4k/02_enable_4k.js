@@ -19,9 +19,6 @@ function Enable4KAddon() {
     this.INIT_HEIGHT_CALLS = 31;
 
     this.run = function() {
-        // if (navigator.mediaCapabilities)
-        //     Utils.logMethod(navigator.mediaCapabilities.decodingInfo, navigator.mediaCapabilities);
-        // DeviceUtils.forceEnableAllCodecs();
         this.increaseResolution();
         // this.awaitVideoElement();
     };
@@ -32,30 +29,7 @@ function Enable4KAddon() {
             Utils.postDelayed(this.awaitVideoElement, this, 100);
             return;
         }
-        this.setErrorLogging(video);
-        this.updatePlayerSupportedTypes(video);
-    };
-
-    this.setErrorLogging = function(video) {
-        video.addEventListener('play', function() {
-            console.log("Enable4KAddon::on play");
-        });
-
-        video.addEventListener('error', function() {
-            console.log("Enable4KAddon::error occurred " + video.error.message);
-        });
-
-        video.addEventListener('canplay', function() {
-            console.log("Enable4KAddon::canplay occurred " + video.error.message);
-        });
-
-        video.addEventListener('canplaythrough', function() {
-            console.log("Enable4KAddon::canplaythrough occurred " + video.error.message);
-        });
-
-        // video.onerror = function() {
-        //     console.log("Enable4KAddon::error occurred " + video.error.code + "; details: " + video.error.message);
-        // };
+        this.updatePlayerSupportedTypes(video); // produces an error when launching the video
     };
 
     this.updatePlayerSupportedTypes = function(video) {
@@ -69,14 +43,11 @@ function Enable4KAddon() {
      * Overrides {@link window.innerWidth} and {@link window.innerHeight} properties<br/>
      * There are no need to override other similar props.<br/>
      * List of that props (just for your reference):<br/>
+     * {@link window.innerWidth}<br/>
      * {@link window.outerWidth}<br/>
-     * {@link window.outerHeight}<br/>
      * {@link document.documentElement.clientWidth}<br/>
-     * {@link document.documentElement.clientHeight}<br/>
      * {@link window.screen.availWidth}<br/>
-     * {@link window.screen.availHeight}<br/>
      * {@link window.screen.width}<br/>
-     * {@link window.screen.height}<br/>
      */
     this.increaseResolution = function() {
         // NOTE: WONT WORK PROPERLY

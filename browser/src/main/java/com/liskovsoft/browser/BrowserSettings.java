@@ -132,6 +132,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_ALLOW_UNIVERSAL_ACCESS_FROM_FILE_URLS, true);
     }
 
+    public boolean allowFileAccessFromFileURLs() {
+        return mPrefs.getBoolean(PREF_ALLOW_FILE_ACCESS_FROM_FILE_URLS, true);
+    }
+
     // -----------------------------
     // getter/setters for debug_preferences.xml
     // -----------------------------
@@ -334,8 +338,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setUseWideViewPort(isWideViewport());
 
-        if (VERSION.SDK_INT >= 16)
+        if (VERSION.SDK_INT >= 16) {
             settings.setAllowUniversalAccessFromFileURLs(allowUniversalAccessFromFileURLs());
+            settings.setAllowFileAccessFromFileURLs(allowFileAccessFromFileURLs());
+        }
 
         String ua = mCustomUserAgents.get(settings);
         if (ua != null) {

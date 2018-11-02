@@ -33,6 +33,7 @@ public interface PreferenceKeys {
     static final String PREF_ALLOW_APP_TABS = "allow_apptabs";
     static final String PREF_INITIAL_SCALE = "initial_scale";
     static final String PREF_ALLOW_UNIVERSAL_ACCESS_FROM_FILE_URLS = "pref_allow_universal_access_from_file_urls";
+    static final String PREF_ALLOW_FILE_ACCESS_FROM_FILE_URLS = "pref_allow_file_access_from_file_urls";
 
     // ----------------------
     // Keys for debug_preferences.xml
