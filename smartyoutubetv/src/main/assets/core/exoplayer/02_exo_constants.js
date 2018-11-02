@@ -32,6 +32,8 @@ var PlayerActivityMapping = {
 };
 
 var ExoConstants = {
+    bottomUiSelector: '#bottom-half.bottom-half',
+    cornerButtonsSelector: '#legend.legend',
     focusedClass: 'focused',
     hiddenClass: 'hidden',
     disabledClass: 'disabled',
@@ -43,7 +45,7 @@ var ExoConstants = {
     playButtonSelector: ".icon-player-play.toggle-button",
     // mainControlsSelector: '.fresh-transport-controls.transport-controls',
     mainTitleSelector: '.title-card.watch-title-tray',
-    eventRootSelector: '#watch.watch', // div that receives keys events
+    playerUiSelector: '#watch.watch', // div that receives keys events
     uploadDateSelector: '.uploaded-date',
     viewCountSelector: '.view-count-label',
     videoDetails: '.player-video-details',

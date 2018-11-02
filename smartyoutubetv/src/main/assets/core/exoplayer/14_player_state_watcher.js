@@ -15,7 +15,7 @@ function PlayerStateWatcher() {
         }
     }
 
-    EventUtils.addListener(ExoConstants.eventRootSelector, ExoConstants.modelChangedEvent, notifyPendingActions);
+    EventUtils.addListener(ExoConstants.playerUiSelector, ExoConstants.modelChangedEvent, notifyPendingActions);
 }
 
 // new PlayerStateWatcher();

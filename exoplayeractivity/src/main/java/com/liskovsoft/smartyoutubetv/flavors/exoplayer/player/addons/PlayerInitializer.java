@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
+import android.text.Html;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -15,6 +16,8 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Locale;
 
 public class PlayerInitializer {
@@ -107,7 +110,7 @@ public class PlayerInitializer {
 
         boolean notNum = num.contains(" ");
         if (notNum) {
-            return num;
+            return Html.fromHtml(num).toString();
         }
 
         long no = Long.parseLong(num);

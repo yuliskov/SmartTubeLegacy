@@ -50,7 +50,7 @@ function SuggestionsWatcher(host) {
 
         EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
         EventUtils.addListener(ExoConstants.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(ExoConstants.eventRootSelector, ExoConstants.modelChangedEvent, onFocusHandler);
+        EventUtils.addListener(ExoConstants.playerUiSelector, ExoConstants.modelChangedEvent, onFocusHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -77,10 +77,12 @@ function SuggestionsFakeButton(selector) {
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
+        ExoUtils.enablePlayerUi();
+
         // we assume that no interface currently shown
         // press twice
-        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
-        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
 
         // start point
         this.watcher = new SuggestionsWatcher(this);
@@ -107,7 +109,7 @@ function SuggestionsFakeButton(selector) {
 
         console.log("SuggestionsFakeButton::closeSuggestions");
         
-        EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;
     };

@@ -39,6 +39,7 @@ var ExoUtils = {
     // loadeddata (first frame of the video has been loaded)
     // playing
     preparePlayer: function() {
+        this.disablePlayerUi();
         var player = Utils.$('video');
         if (!player || this.preparePlayerDone)
             return;
@@ -93,14 +94,14 @@ var ExoUtils = {
         return window.innerWidth;
     },
 
-    /**
-     * Hide player in case it is visible
-     */
-    hidePlayerUi: function() {
-        var controls = Utils.$(ExoConstants.playerControlsSelector);
-        if (!Utils.hasClass(controls, ExoConstants.hiddenClass)) {
-            EventUtils.triggerEvent(ExoConstants.eventRootSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
-        }
+    enablePlayerUi: function() {
+        Utils.show(ExoConstants.bottomUiSelector);
+        Utils.show(ExoConstants.cornerButtonsSelector);
+    },
+
+    disablePlayerUi: function() {
+        Utils.hide(ExoConstants.bottomUiSelector);
+        Utils.hide(ExoConstants.cornerButtonsSelector);
     },
 
     // supply selector list
@@ -136,7 +137,6 @@ var ExoUtils = {
         }
 
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
-
         return states;
     },
 
@@ -178,6 +178,6 @@ var ExoUtils = {
     },
 
     playerIsClosed: function() {
-        return Utils.hasClass(Utils.$(ExoConstants.eventRootSelector), ExoConstants.emptyModelClass);
+        return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.emptyModelClass);
     }
 };
