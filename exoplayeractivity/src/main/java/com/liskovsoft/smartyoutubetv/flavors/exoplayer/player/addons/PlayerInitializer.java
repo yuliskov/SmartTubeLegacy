@@ -104,7 +104,7 @@ public class PlayerInitializer {
      * @return formatted number as string
      */
     private String formatNumber(String num) {
-        if (num == null) {
+        if (num == null || num.isEmpty()) {
             return null;
         }
 
