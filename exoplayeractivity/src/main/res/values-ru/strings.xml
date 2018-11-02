@@ -39,5 +39,5 @@
     <string name="no_restrictions">Без ограничений</string>
     <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
     <string name="time_title">Сейчас: %1$s</string>
-    <string name="loading_view_message">ЗАГРУЗКА…</string>
+    <string name="loading_view_message">ЗАГРУЗКА...</string>
 </resources>

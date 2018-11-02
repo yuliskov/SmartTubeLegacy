@@ -2,6 +2,8 @@ console.log("Scripts::Running core script exo_constants.js");
 
 // java constants
 var PlayerActivity = {
+    VIDEO_VIEW_COUNT: "video_views",
+    SCREEN_WIDTH: "screen_width",
     VIDEO_DATE: "video_date",
     BUTTON_LIKE: "button_like",
     BUTTON_DISLIKE: "button_dislike",
@@ -42,7 +44,8 @@ var ExoConstants = {
     // mainControlsSelector: '.fresh-transport-controls.transport-controls',
     mainTitleSelector: '.title-card.watch-title-tray',
     eventRootSelector: '#watch.watch', // div that receives keys events
-    uploadDate: '.uploaded-date',
+    uploadDateSelector: '.uploaded-date',
+    viewCountSelector: '.view-count-label',
     videoDetails: '.player-video-details',
     suggestionsListSelector: 'div.pivot-shelf-list',
     componentFocusEvent: 'component-focus',

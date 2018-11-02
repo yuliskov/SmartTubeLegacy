@@ -66,11 +66,10 @@ public class PlayerInitializer {
     }
 
     public String getSecondTitle() {
-        String secondTitle = String.format("%s      %s      %s %s",
+        String secondTitle = String.format("%s      %s      %s",
                 getAuthor(),
                 getPublishDate(),
-                getViewCount(),
-                mPlayerFragment.getString(R.string.view_count));
+                getViewCount());
 
         return secondTitle;
     }
@@ -106,9 +105,15 @@ public class PlayerInitializer {
             return null;
         }
 
+        boolean notNum = num.contains(" ");
+        if (notNum) {
+            return num;
+        }
+
         long no = Long.parseLong(num);
-        String str = String.format(Locale.getDefault(), "%,d", no);
-        return str;
+        String count = String.format(Locale.getDefault(), "%,d", no);
+        String views = mPlayerFragment.getString(R.string.view_count);
+        return String.format("%s %s", count, views);
     }
 
     /**

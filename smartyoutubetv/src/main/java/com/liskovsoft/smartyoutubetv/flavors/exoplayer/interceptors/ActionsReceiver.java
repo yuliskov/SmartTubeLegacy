@@ -16,8 +16,8 @@ import java.util.Map;
 /**
  * Gets real button states from the WebView
  */
-public class PlayerActionsReceiver implements Runnable {
-    private static final String TAG = PlayerActionsReceiver.class.getSimpleName();
+public class ActionsReceiver implements Runnable {
+    private static final String TAG = ActionsReceiver.class.getSimpleName();
     private static final long RESPONSE_CHECK_DELAY_MS = 3000;
     private final Context mContext;
     private final Intent mIntent;
@@ -30,7 +30,7 @@ public class PlayerActionsReceiver implements Runnable {
         void onCancel();
     }
 
-    public PlayerActionsReceiver(Context context, Intent intent, Listener listener) {
+    public ActionsReceiver(Context context, Intent intent, Listener listener) {
         mContext = context;
         mIntent = intent;
         mListener = listener;
@@ -63,8 +63,11 @@ public class PlayerActionsReceiver implements Runnable {
             Object val = entry.getValue();
             if (val instanceof Boolean || val == null)
                 mIntent.putExtra(entry.getKey(), (Boolean) val);
-            if (val instanceof String  || val == null)
+            if (val instanceof String)
                 mIntent.putExtra(entry.getKey(), (String) val);
+            if (val instanceof Number) {
+                mIntent.putExtra(entry.getKey(), ((Number) val).intValue());
+            }
         }
     }
 

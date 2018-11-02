@@ -927,6 +927,9 @@ public class Tab implements PictureListener {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            if (mListener != null)
+                mListener.onPageStarted(Tab.this, favicon);
+
             // usually finish called after start
             // but sometimes there is fake finish
             mFirstStarted = true;
@@ -962,8 +965,6 @@ public class Tab implements PictureListener {
             }
 
             // finally update the UI in the activity if it is in the foreground
-            if (mListener != null)
-                mListener.onPageStarted(Tab.this, favicon);
             mWebViewController.onPageStarted(Tab.this, favicon);
 
             updateBookmarkedStatus();

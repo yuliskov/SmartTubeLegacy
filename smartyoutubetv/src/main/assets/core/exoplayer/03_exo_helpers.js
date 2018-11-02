@@ -61,8 +61,18 @@ var ExoUtils = {
         this.preparePlayerDone = true;
     },
 
+    getViewCount: function() {
+        var element = Utils.$(ExoConstants.viewCountSelector);
+        if (element != null) {
+            // don't rely on : symbol parsing here! because it depends on localization
+            return element.innerHTML;
+        }
+
+        return "";
+    },
+
     getVideoDate: function() {
-        var element = Utils.$(ExoConstants.uploadDate);
+        var element = Utils.$(ExoConstants.uploadDateSelector);
         if (element != null) {
             // don't rely on : symbol parsing here! because it depends on localization
             return element.innerHTML;
@@ -77,6 +87,10 @@ var ExoUtils = {
         }
 
         return "";
+    },
+
+    getScreenWidth: function() {
+        return window.innerWidth;
     },
 
     /**
@@ -113,6 +127,8 @@ var ExoUtils = {
         }
 
         states[PlayerActivity.VIDEO_DATE] = this.getVideoDate();
+        states[PlayerActivity.SCREEN_WIDTH] = this.getScreenWidth();
+        states[PlayerActivity.VIDEO_VIEW_COUNT] = this.getViewCount();
 
         // don't let app to close video player (see ActionsReceiver.java)
         if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {

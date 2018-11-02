@@ -52,12 +52,16 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
     public static final String BUTTON_BACK = "button_back";
     public static final String BUTTON_SUGGESTIONS = "button_suggestions";
     public static final String VIDEO_DATE = "video_date";
+    public static final String SCREEN_WIDTH = "screen_width";
     public static final String VIDEO_TITLE = "video_title";
     public static final String VIDEO_AUTHOR = "video_author";
     public static final String VIDEO_VIEW_COUNT = "video_views";
     public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
     public static final String DISPLAY_MODE_ID = "display_mode_id";
+    private static final float TEXT_SIZE_LARGE = 22;
+    private static final float TEXT_SIZE_MEDIUM = 18;
+    private static final float TEXT_SIZE_SMALL = 14;
 
     private DetailDebugViewHelper debugViewHelper;
 
@@ -96,6 +100,26 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
             playerInitializer.initVideoTitle();
         }
+    }
+
+    private void initializeUiScale() {
+        int width = getIntent().getIntExtra(SCREEN_WIDTH, 0);
+
+        if (getIntent() == null || width == 0) {
+            return;
+        }
+
+        if (width >= 960) {
+            loadingView.setTextSize(TEXT_SIZE_LARGE);
+            return;
+        }
+
+        if (width <= 640) {
+            loadingView.setTextSize(TEXT_SIZE_SMALL);
+            return;
+        }
+
+        loadingView.setTextSize(TEXT_SIZE_MEDIUM);
     }
 
     protected void initializeTrackSelector() {
@@ -292,6 +316,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
+        initializeUiScale();
     }
 
     /**

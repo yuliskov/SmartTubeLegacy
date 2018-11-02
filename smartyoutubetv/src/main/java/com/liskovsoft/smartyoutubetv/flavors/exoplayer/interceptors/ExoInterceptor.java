@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.webkit.WebResourceResponse;
-import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
@@ -162,7 +160,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             return;
         }
 
-        PlayerActionsReceiver.Listener listener = new PlayerActionsReceiver.Listener() {
+        ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
             @Override
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer activity for Regular item");
@@ -175,7 +173,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             }
         };
 
-        Runnable processor = new PlayerActionsReceiver(mContext, playerIntent, listener);
+        Runnable processor = new ActionsReceiver(mContext, playerIntent, listener);
         processor.run();
     }
     
