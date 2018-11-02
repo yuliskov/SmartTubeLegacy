@@ -66,7 +66,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
     private DetailDebugViewHelper debugViewHelper;
 
     private boolean durationSet;
-    private int interfaceVisibilityState;
+    private int interfaceVisibilityState = View.INVISIBLE;
     private PlayerButtonsManager buttonsManager;
     private PlayerStateManager stateManager;
     private AutoFrameRateManager autoFrameRateManager;
