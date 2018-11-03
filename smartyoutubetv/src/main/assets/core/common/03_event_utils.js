@@ -80,18 +80,29 @@ var EventUtils = {
         Utils.delayTillTestFnSuccess(fn, testFn);
     },
 
+    toSelector: function(el) {
+        if (!el)
+            return '';
+
+        var idPart = el.id ? '#' + el.id : '';
+        var classPart = el.className ? '.' + el.className.split(' ').join('.') : '';
+        return idPart + classPart;
+    },
+
     triggerEvent: function(elementOrSelector, type, keyCode) {
         var el = elementOrSelector;
         if (Utils.isSelector(elementOrSelector)) {
             el = Utils.$(elementOrSelector);
         }
 
-        console.log("EventUtils::triggerEvent: " + elementOrSelector + " " + type + " " + keyCode);
+        var elSelector = this.toSelector(el);
 
         if (!el) {
-            console.warn("EventUtils::triggerEvent: unable to find " + elementOrSelector);
+            console.warn("EventUtils::triggerEvent: unable to find " + elSelector);
             return;
         }
+
+        console.log("EventUtils::triggerEvent: " + elSelector + " " + type + " " + keyCode);
 
         if ('createEvent' in document) {
             // modern browsers, IE9+

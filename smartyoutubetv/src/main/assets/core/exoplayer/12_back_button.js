@@ -8,9 +8,10 @@ console.log("Scripts::Running core script back_button.js");
 function BackButton(selector) {
     this.selector = selector;
     this.retryTimes = 5;
+    this.checkDelayMS = 300;
 
     this.retryOnFail = function() {
-        if (this.retryTimes == 0) {
+        if (this.retryTimes == 0 || ExoUtils.playerIsClosed()) {
             return;
         }
         this.retryTimes--;
@@ -21,7 +22,7 @@ function BackButton(selector) {
                 console.log("BackButton: back failed... do retry...");
                 $this.retryOnFail();
             }
-        }, 100);
+        }, this.checkDelayMS);
     };
 
     this.getChecked = function() {
@@ -36,7 +37,9 @@ function BackButton(selector) {
             // 'likes not saved' fix
             setTimeout(function() {
                 $this.retryOnFail();
-            }, 100);
+            }, this.checkDelayMS);
         }
     };
 }
+
+BackButton.prototype = new ExoButton();

@@ -153,13 +153,12 @@ var Utils = {
 
     // detection is based on key events
     // combined detection: first by interval then by key in sake of performance
-    delayTillTestFnSuccess: function(callback, testFn, runOnce) {
+    delayTillTestFnSuccess: function(callback, testFn) {
         var delayIntervalMS = 500;
         var res = testFn();
         if (res) {
             callback();
-            if (runOnce)
-                return;
+            return;
         }
 
         var delayFnKey = function(event) {
@@ -182,10 +181,9 @@ var Utils = {
                     return;
 
                 // cleanup
-                if (runOnce) {
-                    console.log('Utils::delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
-                    document.removeEventListener(DefaultEvents.KEY_DOWN, delayFnKey, true);
-                }
+                console.log('Utils::delayTillElementBeInitialized: onkeydown: removing callback: ' + callback.toString().slice(0, 50));
+                document.removeEventListener(DefaultEvents.KEY_DOWN, delayFnKey, true);
+
                 // actual call
                 callback();
             }, delayIntervalMS);
@@ -200,10 +198,8 @@ var Utils = {
                 console.log('Utils::delayTillElementBeInitialized: interval: prepare to fire callback: ' + callback.toString().slice(0, 50));
 
                 // cleanup
-                if (runOnce) {
-                    console.log('Utils::delayTillElementBeInitialized: interval: removing callback: ' + callback.toString().slice(0, 50));
-                    clearInterval(interval);
-                }
+                console.log('Utils::delayTillElementBeInitialized: interval: removing callback: ' + callback.toString().slice(0, 50));
+                clearInterval(interval);
 
                 // actual call
                 callback();

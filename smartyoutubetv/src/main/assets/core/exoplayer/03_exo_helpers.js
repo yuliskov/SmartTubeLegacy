@@ -65,8 +65,17 @@ var ExoUtils = {
     getViewCount: function() {
         var element = Utils.$(ExoConstants.viewCountSelector);
         if (element != null) {
-            // don't rely on : symbol parsing here! because it depends on localization
+            // don't rely on , symbol parsing here! because it depends on localization
             return element.innerHTML;
+        }
+
+        // new player ui
+        element = Utils.$(ExoConstants.videoDetailsSelector);
+        if (element != null) {
+            var parts = element.innerHTML.split('•');
+            if (parts.length == 3) {
+                return parts[1].trim();
+            }
         }
 
         return "";
@@ -79,7 +88,8 @@ var ExoUtils = {
             return element.innerHTML;
         }
 
-        element = Utils.$(ExoConstants.videoDetails);
+        // new player ui
+        element = Utils.$(ExoConstants.videoDetailsSelector);
         if (element != null) {
             var parts = element.innerHTML.split('•');
             if (parts.length == 3) {

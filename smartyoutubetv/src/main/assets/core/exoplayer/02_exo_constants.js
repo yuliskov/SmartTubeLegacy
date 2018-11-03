@@ -48,7 +48,7 @@ var ExoConstants = {
     playerUiSelector: '#watch.watch', // div that receives keys events
     uploadDateSelector: '.uploaded-date',
     viewCountSelector: '.view-count-label',
-    videoDetails: '.player-video-details',
+    videoDetailsSelector: '.player-video-details',
     suggestionsListSelector: 'div.pivot-shelf-list',
     componentFocusEvent: 'component-focus',
     channelScreenSelector: '#channel.channel', // empty on boot because of lazy initialization behavior
