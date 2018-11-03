@@ -9,7 +9,7 @@ function SuggestionsWatcher(host) {
     function SuggestionsWatcherService() {
         var $this = this;
         var modelChangeEventTimeMS = 0;
-        var eventCheckPeriod = 200;
+        var eventCheckPeriod = 1000;
 
         var closeSuggestions = function() {
             if ($this.host == null) {
@@ -28,14 +28,16 @@ function SuggestionsWatcher(host) {
         };
 
         var onBlurHandler = function() {
+            var currentTimeMS = Utils.getCurrentTimeMs();
             setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
-                if (Utils.getCurrentTimeMs() - modelChangeEventTimeMS > eventCheckPeriod) {
-                    console.log("SuggestionsWatcher: simple close suggestions");
+                var diff = Math.abs(modelChangeEventTimeMS - currentTimeMS);
+                if (diff > eventCheckPeriod) {
+                    console.log("SuggestionsWatcher: simple close suggestions: " + diff);
                     closeSuggestions(); // event is standalone
                 } else {
                     console.log("SuggestionsWatcher: user have clicked on thumbnail");
                 }
-            }, eventCheckPeriod);
+            }, 100);
         };
 
         var onModelChangeHandler = function(e) {
