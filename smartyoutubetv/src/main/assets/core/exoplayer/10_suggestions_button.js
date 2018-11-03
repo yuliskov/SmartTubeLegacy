@@ -73,16 +73,31 @@ SuggestionsWatcher.disable = function() {
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
+    this.retryTimes = 4;
+
+    this.utilSuggestionsShown = function() {
+        var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
+        if (suggestionsShown || this.retryTimes <= 0)
+            return;
+
+        this.retryTimes--;
+
+        // we assume that no interface currently shown
+        // press multiple times util suggestion will have focus
+        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+
+        var $this = this;
+        setTimeout(function() {
+           $this.utilSuggestionsShown();
+        }, 100);
+    };
 
     this.openSuggestions = function() {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
         ExoUtils.enablePlayerUi();
 
-        // we assume that no interface currently shown
-        // press twice
-        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
-        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        this.utilSuggestionsShown();
 
         // start point
         this.watcher = new SuggestionsWatcher(this);
