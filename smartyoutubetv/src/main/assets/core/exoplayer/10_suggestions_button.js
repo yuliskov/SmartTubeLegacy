@@ -9,6 +9,7 @@ function SuggestionsWatcher(host) {
     function SuggestionsWatcherService() {
         var $this = this;
         var modelChangeEventTimeMS = 0;
+        var eventCheckPeriod = 200;
 
         var closeSuggestions = function() {
             if ($this.host == null) {
@@ -28,13 +29,13 @@ function SuggestionsWatcher(host) {
 
         var onBlurHandler = function() {
             setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
-                if (Utils.getCurrentTimeMs() - modelChangeEventTimeMS > 200) {
+                if (Utils.getCurrentTimeMs() - modelChangeEventTimeMS > eventCheckPeriod) {
                     console.log("SuggestionsWatcher: simple close suggestions");
                     closeSuggestions(); // event is standalone
                 } else {
                     console.log("SuggestionsWatcher: user have clicked on thumbnail");
                 }
-            }, 100);
+            }, eventCheckPeriod);
         };
 
         var onModelChangeHandler = function(e) {
@@ -43,13 +44,10 @@ function SuggestionsWatcher(host) {
             if (backToPlayer) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 closeSuggestions();
+                return;
             }
 
-            var maybeThumbnail = Utils.hasClass(e.target, ExoConstants.noModelClass) ||
-                Utils.hasClass(e.target, ExoConstants.watchIdleClass);
-            if (maybeThumbnail) {
-                modelChangeEventTimeMS = Utils.getCurrentTimeMs();
-            }
+            modelChangeEventTimeMS = Utils.getCurrentTimeMs();
         };
 
         EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
