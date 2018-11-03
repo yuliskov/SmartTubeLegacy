@@ -6,7 +6,7 @@ function PlayerStateWatcher() {
     var $this = this;
 
     function notifyPendingActions(e) {
-        if (Utils.hasClass(e.target, ExoConstants.emptyModelClass)) {
+        if (Utils.hasClass(e.target, ExoConstants.noModelClass)) {
             console.log("PlayerStateWatcher: cancel pending actions...");
             // ExoUtils.sendAction($this.CANCEL_PENDING_ACTIONS);
         } else {

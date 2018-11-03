@@ -55,8 +55,8 @@ var ExoConstants = {
     searchScreenSelector: '#search.search', // empty on boot because of lazy initialization behavior
     componentBlurEvent: 'component-blur',
     modelChangedEvent: 'model:changed',
-    emptyModelClass: 'no-model',
+    noModelClass: 'no-model',
     transportShowingClass: 'transport-showing',
-    playerUiHiddenClass: 'watch-idle',
+    watchIdleClass: 'watch-idle',
     toggleButtonClass: 'toggle-button'
 };

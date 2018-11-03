@@ -188,6 +188,6 @@ var ExoUtils = {
     },
 
     playerIsClosed: function() {
-        return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.emptyModelClass);
+        return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.noModelClass);
     }
 };

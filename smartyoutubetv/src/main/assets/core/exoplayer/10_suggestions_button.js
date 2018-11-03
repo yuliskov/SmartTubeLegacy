@@ -8,7 +8,7 @@ console.log("Scripts::Running core script suggestions_button.js");
 function SuggestionsWatcher(host) {
     function SuggestionsWatcherService() {
         var $this = this;
-        var skipBlur = false;
+        var modelChangeEventTimeMS = 0;
 
         var closeSuggestions = function() {
             if ($this.host == null) {
@@ -27,30 +27,33 @@ function SuggestionsWatcher(host) {
         };
 
         var onBlurHandler = function() {
-            if (!skipBlur) {
-                closeSuggestions();
-            }
-            skipBlur = false;
+            setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
+                if (Utils.getCurrentTimeMs() - modelChangeEventTimeMS > 200) {
+                    console.log("SuggestionsWatcher: simple close suggestions");
+                    closeSuggestions(); // event is standalone
+                } else {
+                    console.log("SuggestionsWatcher: user have clicked on thumbnail");
+                }
+            }, 100);
         };
 
-        var onKeyDownHandler = function(e) {
-            if (e.keyCode == DefaultKeys.ENTER) {
-                console.log("SuggestionsWatcher: user have clicked on thumbnail");
-                skipBlur = true;
-            }
-        };
-
-        var onFocusHandler = function(e) {
-            if (Utils.hasClass(e.target, ExoConstants.hiddenClass) &&
-                Utils.hasClass(e.target, ExoConstants.transportShowingClass)) {
+        var onModelChangeHandler = function(e) {
+            var backToPlayer = Utils.hasClass(e.target, ExoConstants.hiddenClass) &&
+                Utils.hasClass(e.target, ExoConstants.transportShowingClass);
+            if (backToPlayer) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 closeSuggestions();
+            }
+
+            var maybeThumbnail = Utils.hasClass(e.target, ExoConstants.noModelClass) ||
+                Utils.hasClass(e.target, ExoConstants.watchIdleClass);
+            if (maybeThumbnail) {
+                modelChangeEventTimeMS = Utils.getCurrentTimeMs();
             }
         };
 
         EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
-        EventUtils.addListener(ExoConstants.suggestionsListSelector, DefaultEvents.KEY_DOWN, onKeyDownHandler);
-        EventUtils.addListener(ExoConstants.playerUiSelector, ExoConstants.modelChangedEvent, onFocusHandler);
+        EventUtils.addListener(ExoConstants.playerUiSelector, ExoConstants.modelChangedEvent, onModelChangeHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -96,7 +99,6 @@ function SuggestionsFakeButton(selector) {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
         ExoUtils.enablePlayerUi();
-
         this.utilSuggestionsShown();
 
         // start point
