@@ -8,8 +8,8 @@ console.log("Scripts::Running core script suggestions_button.js");
 function SuggestionsWatcher(host) {
     function SuggestionsWatcherService() {
         var $this = this;
-        var modelChangeEventTimeMS = 0;
-        var eventCheckPeriod = 1000;
+        var modelChangeTimeStampMS = 0;
+        var relatedEventsTimeWindowMS = 1000;
 
         var closeSuggestions = function() {
             if ($this.host == null) {
@@ -30,8 +30,8 @@ function SuggestionsWatcher(host) {
         var onBlurHandler = function() {
             var currentTimeMS = Utils.getCurrentTimeMs();
             setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
-                var diff = Math.abs(modelChangeEventTimeMS - currentTimeMS);
-                if (diff > eventCheckPeriod) {
+                var diff = Math.abs(modelChangeTimeStampMS - currentTimeMS);
+                if (diff > relatedEventsTimeWindowMS) {
                     console.log("SuggestionsWatcher: simple close suggestions: " + diff);
                     closeSuggestions(); // event is standalone
                 } else {
@@ -49,7 +49,7 @@ function SuggestionsWatcher(host) {
                 return;
             }
 
-            modelChangeEventTimeMS = Utils.getCurrentTimeMs();
+            modelChangeTimeStampMS = Utils.getCurrentTimeMs();
         };
 
         EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
@@ -76,7 +76,8 @@ SuggestionsWatcher.disable = function() {
 function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
-    this.retryTimes = 4;
+    this.retryTimes = 10;
+    this.callDelayMS = 100;
 
     this.utilSuggestionsShown = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
@@ -85,6 +86,8 @@ function SuggestionsFakeButton(selector) {
 
         this.retryTimes--;
 
+        console.log("SuggestionsFakeButton: suggestions not showed... trying to open...");
+
         // we assume that no interface currently shown
         // press multiple times util suggestion will have focus
         EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
@@ -92,7 +95,7 @@ function SuggestionsFakeButton(selector) {
         var $this = this;
         setTimeout(function() {
            $this.utilSuggestionsShown();
-        }, 100);
+        }, this.callDelayMS);
     };
 
     this.openSuggestions = function() {
@@ -145,7 +148,7 @@ function SuggestionsFakeButton(selector) {
         setTimeout(function() {
             $this.closeSuggestions();
             $this.sendClose();
-        }, 100);
+        }, this.callDelayMS);
     };
 
     this.getChecked = function() {
@@ -157,6 +160,5 @@ function SuggestionsFakeButton(selector) {
             console.log("SuggestionsFakeButton: opening suggestions");
             this.openSuggestions();
         }
-
     };
 }
