@@ -85,7 +85,8 @@ var EventUtils = {
             return '';
 
         var idPart = el.id ? '#' + el.id : '';
-        var classPart = el.className ? '.' + el.className.split(' ').join('.') : '';
+        var cls = el.className.trim();
+        var classPart = cls ? '.' + cls.split(/[ ]+/).join('.') : '';
         return idPart + classPart;
     },
 

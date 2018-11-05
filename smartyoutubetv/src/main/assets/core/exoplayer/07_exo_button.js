@@ -34,10 +34,12 @@ function ExoButton(selector) {
         }
 
         var isChecked = this.getChecked();
-        // if (isChecked === null) {
-        //     console.log("ExoButton: button is disabled or not exists: exiting: " + this.selector);
-        //     return;
-        // }
+
+        if (isChecked == null) {
+            console.log("ExoButton: button is disabled or not exists: exiting: " + this.selector);
+            return;
+        }
+
         if (isChecked == doChecked) {
             console.log("ExoButton: setChecked: already checked... do nothing: " + this.selector + ' ' + isChecked);
             return;

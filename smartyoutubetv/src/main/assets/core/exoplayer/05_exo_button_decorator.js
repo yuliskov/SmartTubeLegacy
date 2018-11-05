@@ -11,6 +11,7 @@ function ExoButtonDecorator(btn) {
     this.callbackStack = [];
 
     this.doPressOnOptionsBtn = function() {
+        console.log("ExoButtonDecorator: clicking on options button");
         EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
     };
 

@@ -53,11 +53,13 @@ public class BackgroundActionManager {
     }
 
     public void onClose() {
+        Log.d(TAG, "Video is closed");
         mExitTime = System.currentTimeMillis();
         mPrevVideoId = null;
     }
 
     public void onCancel() {
+        Log.d(TAG, "Video is canceled");
         mPrevVideoId = null;
     }
 }

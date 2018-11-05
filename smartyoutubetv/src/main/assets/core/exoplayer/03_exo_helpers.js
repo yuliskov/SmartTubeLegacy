@@ -73,7 +73,7 @@ var ExoUtils = {
         element = Utils.$(ExoConstants.videoDetailsSelector);
         if (element != null) {
             var parts = element.innerHTML.split('•');
-            if (parts.length == 3) {
+            if (parts.length >= 2) {
                 return parts[1].trim();
             }
         }
@@ -92,7 +92,7 @@ var ExoUtils = {
         element = Utils.$(ExoConstants.videoDetailsSelector);
         if (element != null) {
             var parts = element.innerHTML.split('•');
-            if (parts.length == 3) {
+            if (parts.length >= 3) {
                 return parts[2].trim();
             }
         }
@@ -138,8 +138,8 @@ var ExoUtils = {
         }
 
         states[PlayerActivity.VIDEO_DATE] = this.getVideoDate();
-        states[PlayerActivity.SCREEN_WIDTH] = this.getScreenWidth();
         states[PlayerActivity.VIDEO_VIEW_COUNT] = this.getViewCount();
+        states[PlayerActivity.SCREEN_WIDTH] = this.getScreenWidth();
 
         // don't let app to close video player (see ActionsReceiver.java)
         if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {
