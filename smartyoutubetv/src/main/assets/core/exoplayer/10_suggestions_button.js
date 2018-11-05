@@ -62,11 +62,11 @@ function SuggestionsWatcher(host) {
         console.log("SuggestionsWatcher: do init...");
     }
 
-    if (!window.suggestionsWatcherService) {
-        window.suggestionsWatcherService = new SuggestionsWatcherService();
+    if (!SuggestionsWatcher.service) {
+        SuggestionsWatcher.service = new SuggestionsWatcherService();
     }
 
-    window.suggestionsWatcherService.setHost(host);
+    SuggestionsWatcher.service.setHost(host);
 }
 
 SuggestionsWatcher.disable = function() {
@@ -79,7 +79,7 @@ function SuggestionsFakeButton(selector) {
     this.retryTimes = 10;
     this.callDelayMS = 100;
 
-    this.utilSuggestionsShown = function() {
+    this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
         if (suggestionsShown || this.retryTimes <= 0)
             return;
@@ -94,7 +94,7 @@ function SuggestionsFakeButton(selector) {
 
         var $this = this;
         setTimeout(function() {
-           $this.utilSuggestionsShown();
+           $this.tryToOpenSuggestions();
         }, this.callDelayMS);
     };
 
@@ -102,10 +102,10 @@ function SuggestionsFakeButton(selector) {
         console.log("SuggestionsFakeButton: showing suggestions list");
 
         ExoUtils.enablePlayerUi();
-        this.utilSuggestionsShown();
+        this.tryToOpenSuggestions();
 
         // start point
-        this.watcher = new SuggestionsWatcher(this);
+        new SuggestionsWatcher(this);
     };
 
     this.sendClose = function() {

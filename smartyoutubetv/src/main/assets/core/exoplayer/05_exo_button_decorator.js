@@ -8,7 +8,7 @@ console.log("Scripts::Running core script exo_button_decorator.js");
  */
 function ExoButtonDecorator(btn) {
     this.btn = btn;
-    this.callbackStack = ExoButtonDecorator.callbackStack;
+    this.callbackStack = [];
 
     this.doPressOnOptionsBtn = function() {
         EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
@@ -103,5 +103,3 @@ function ExoButtonDecorator(btn) {
         };
     };
 }
-
-ExoButtonDecorator.callbackStack = [];

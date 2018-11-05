@@ -3,7 +3,7 @@ console.log("Scripts::Running core script exo_button.js");
 function ExoButton(selector) {
     this.selector = selector;
 
-    this.initializer = new ExoButtonDecorator(this);
+    this.decorator = new ExoButtonDecorator(this);
 
     this.findToggle = function() {
         var btn = Utils.$(this.selector);
@@ -48,7 +48,7 @@ function ExoButton(selector) {
         this.isChecked = doChecked;
     };
 
-    this.initializer.apply();
+    this.decorator.apply();
 }
 
 ExoButton.fromSelector = function(selector) {
@@ -72,7 +72,7 @@ ExoButton.fromSelector = function(selector) {
     if (!this.btnMap[selector]) {
         this.btnMap[selector] = createButton(selector);
     } else {
-        console.log("ExoButton: fromSelector: getting button from cache");
+        console.log("ExoButton: fromSelector: getting button from cache " + selector);
     }
     return this.btnMap[selector];
 };
