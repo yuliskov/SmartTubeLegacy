@@ -79,7 +79,7 @@ ExoButton.fromSelector = function(selector) {
                 return new BackButton(selector);
             case PlayerActivityMapping.BUTTON_PREV:
             case PlayerActivityMapping.BUTTON_NEXT:
-                return new PlayerButton(selector);
+                return new NextPrevButton(selector);
             default:
                 // all other buttons is processed here
                 return new ExoButton(selector);
