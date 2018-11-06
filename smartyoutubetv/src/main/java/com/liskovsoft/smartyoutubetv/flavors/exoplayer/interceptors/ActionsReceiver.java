@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class ActionsReceiver implements Runnable {
     private static final String TAG = ActionsReceiver.class.getSimpleName();
-    private static final long RESPONSE_CHECK_DELAY_MS = 3000;
+    private static final long RESPONSE_CHECK_DELAY_MS = 7_000;
     private final Context mContext;
     private final Intent mIntent;
     private final Listener mListener;
@@ -37,13 +37,14 @@ public class ActionsReceiver implements Runnable {
     }
 
     /**
-     * Check that user didn't tapped back key before actual playback
+     * Check that user didn't tapped back key before actual playback<br/>
+     * Buttons below are added to the intent only if player is currently shown.
      * @return true if user didn't tapped back key
      */
     private boolean checkIntent() {
         if (mIntent.hasExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE) ||
-            mIntent.hasExtra(ExoPlayerFragment.BUTTON_NEXT) ||
-            mIntent.hasExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT))
+            mIntent.hasExtra(ExoPlayerFragment.BUTTON_DISLIKE) ||
+            mIntent.hasExtra(ExoPlayerFragment.BUTTON_LIKE))
             return true;
 
         Log.d(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");
