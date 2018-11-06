@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
@@ -30,7 +29,6 @@ public class PlayerStateManager {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final int SUBTITLE_RENDERER_INDEX = 2;
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
-    private static final int LEGACY_DEVICES_MAX_WIDTH = 1950;
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -162,10 +160,7 @@ public class PlayerStateManager {
                         result.add(myFormat);
                     }
 
-
-                    // by default (first run or user never opened track dialog)
-                    // select no more than 1080p format for legacy devices support
-                    if (myFormat.height <= trackHeight || myFormat.width <= LEGACY_DEVICES_MAX_WIDTH)
+                    if (myFormat.height <= trackHeight)
                         backedList.add(myFormat);
                 }
             }
