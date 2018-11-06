@@ -18,12 +18,12 @@ public class BackgroundActionManager {
 
     public boolean cancelAction(String url) {
         // XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
-        if (videoClosedRecently) {
-            Log.d(TAG, "Video is closed recently");
-            mPrevCallTime = System.currentTimeMillis();
-            return true;
-        }
+        //boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
+        //if (videoClosedRecently) {
+        //    Log.d(TAG, "Video is closed recently");
+        //    mPrevCallTime = System.currentTimeMillis();
+        //    return true;
+        //}
 
         // throttle calls
         boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
@@ -44,6 +44,11 @@ public class BackgroundActionManager {
         if (sameVideo) {
             Log.d(TAG, "The same video encountered");
             mPrevCallTime = System.currentTimeMillis();
+            return true;
+        }
+
+        if (mPrevVideoId != null) {
+            Log.d(TAG, "Player already playing something");
             return true;
         }
 
