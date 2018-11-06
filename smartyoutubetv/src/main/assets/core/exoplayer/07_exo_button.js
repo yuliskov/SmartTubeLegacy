@@ -5,8 +5,22 @@ function ExoButton(selector) {
 
     this.decorator = new ExoButtonDecorator(this);
 
+    /**
+     * Return first element that exists (array of selectors case)
+     * @returns element element or null
+     */
     this.findToggle = function() {
-        var btn = Utils.$(this.selector);
+        var btn = null;
+
+        if (Utils.isArray(this.selector)) {
+            for (var i = 0; i < this.selector.length; i++) {
+                btn = Utils.$(this.selector[i]);
+                if (btn)
+                    break;
+            }
+        } else {
+            btn = Utils.$(this.selector);
+        }
 
         btn || console.warn("ExoButton: unable to find " + this.selector);
 
@@ -62,11 +76,12 @@ ExoButton.fromSelector = function(selector) {
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
             case PlayerActivityMapping.BUTTON_BACK:
+                return new BackButton(selector);
             case PlayerActivityMapping.BUTTON_PREV:
             case PlayerActivityMapping.BUTTON_NEXT:
-                return new NoStateButton(selector);
+                return new PlayerButton(selector);
             default:
-                // NOTE: all other buttons is processed here
+                // all other buttons is processed here
                 return new ExoButton(selector);
         }
     }

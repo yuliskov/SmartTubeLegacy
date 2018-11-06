@@ -163,12 +163,13 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
             @Override
             public void onDone() {
-                Log.d(TAG, "About to start ExoPlayer activity for Regular item");
+                Log.d(TAG, "About to start ExoPlayer fragment");
                 mFragmentsManager.openExoPlayer(playerIntent);
             }
 
             @Override
             public void onCancel() {
+                Log.d(TAG, "Cancel start of ExoPlayer fragment");
                 mManager.onCancel();
             }
         };

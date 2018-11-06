@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
-    private static final long NO_INTERACTION_TIMEOUT = 1_000;
+    private static final long NO_INTERACTION_TIMEOUT_MS = 1_000;
     private static final String VIDEO_ID_PARAM = "video_id";
     /**
      * fix playlist advance bug<br/>
@@ -18,24 +18,25 @@ public class BackgroundActionManager {
 
     public boolean cancelAction(String url) {
         // XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT;
+        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
         if (videoClosedRecently) {
-            Log.d(TAG, "System.currentTimeMillis() - mExitTime < " + NO_INTERACTION_TIMEOUT);
+            Log.d(TAG, "Video is closed recently");
             mPrevCallTime = System.currentTimeMillis();
             return true;
         }
 
         // throttle calls
-        boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT;
+        boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
         if (highCallRate) {
-            Log.d(TAG, "System.currentTimeMillis() - mLastCall < " + NO_INTERACTION_TIMEOUT);
+            Log.d(TAG, "To high call rate");
             mPrevCallTime = System.currentTimeMillis();
             return true;
         }
 
         // the same video could opened multiple times
         String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
-        if (videoId == null) { // supplied url doesn't contain video info
+        if (videoId == null) {
+            Log.d(TAG, "Supplied url doesn't contain video info");
             return true;
         }
 
