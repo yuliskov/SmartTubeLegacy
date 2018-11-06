@@ -42,10 +42,11 @@ public class ActionsReceiver implements Runnable {
      */
     private boolean checkIntent() {
         if (mIntent.hasExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE) ||
-            mIntent.hasExtra(ExoPlayerFragment.BUTTON_NEXT))
+            mIntent.hasExtra(ExoPlayerFragment.BUTTON_NEXT) ||
+            mIntent.hasExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT))
             return true;
 
-        Log.w(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");
+        Log.d(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");
         // Uncomment next section to debug
         return false;
     }
@@ -121,7 +122,8 @@ public class ActionsReceiver implements Runnable {
                 if (runOnce()) // don't run this method if doneResult() already executed
                     return;
 
-                mListener.onDone();
+                Log.d(TAG, "WebView didn't respond. Cancelling...");
+                mListener.onCancel();
             }
         }, RESPONSE_CHECK_DELAY_MS);
     }
