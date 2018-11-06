@@ -28,7 +28,7 @@ function TrackEndFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked)
+        if (doChecked && !ExoUtils.playerIsClosed())
             this.playerJumpToEnd();
     };
 }

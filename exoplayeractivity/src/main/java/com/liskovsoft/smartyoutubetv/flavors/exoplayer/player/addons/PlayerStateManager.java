@@ -165,7 +165,7 @@ public class PlayerStateManager {
 
                     // by default (first run or user never opened track dialog)
                     // select no more than 1080p format for legacy devices support
-                    if (myFormat.width <= LEGACY_DEVICES_MAX_WIDTH)
+                    if (myFormat.height <= trackHeight || myFormat.width <= LEGACY_DEVICES_MAX_WIDTH)
                         backedList.add(myFormat);
                 }
             }
