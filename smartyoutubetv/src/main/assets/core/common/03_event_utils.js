@@ -90,18 +90,23 @@ var EventUtils = {
         return idPart + classPart;
     },
 
+    // triggerEvent: function(elementOrSelector, type, keyCode) {
+    //     if (Utils.isArray(elementOrSelector)) {
+    //         for (var i = 0; i < elementOrSelector.length; i++) {
+    //             this.triggerEventReal(elementOrSelector[i], type, keyCode);
+    //         }
+    //         return;
+    //     }
+    //
+    //     this.triggerEventReal(elementOrSelector, type, keyCode);
+    // },
+
     triggerEvent: function(elementOrSelector, type, keyCode) {
         if (Utils.isArray(elementOrSelector)) {
-            for (var i = 0; i < elementOrSelector.length; i++) {
-                this.triggerEventReal(elementOrSelector[i], type, keyCode);
-            }
+            console.log("EventUtils::triggerEvent: arrays not supported: " + elementOrSelector);
             return;
         }
 
-        this.triggerEventReal(elementOrSelector, type, keyCode);
-    },
-
-    triggerEventReal: function(elementOrSelector, type, keyCode) {
         var el = elementOrSelector;
         if (Utils.isSelector(elementOrSelector)) {
             el = Utils.$(elementOrSelector);

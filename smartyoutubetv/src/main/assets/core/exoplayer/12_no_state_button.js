@@ -9,6 +9,16 @@ function NoStateButton(selector) {
     this.retryTimes = 10;
     this.checkDelayMS = 300;
 
+    // if (Utils.isArray(this.selector)) {
+    //     for (var i = 0; i < this.selector.length; i++) {
+    //         var el = Utils.$(this.selector[i]);
+    //         if (el) {
+    //             this.selector = this.selector[i];
+    //             break;
+    //         }
+    //     }
+    // }
+
     this.retryOnFail = function() {
         if (this.retryTimes <= 0 || ExoUtils.playerIsClosed()) {
             return;
