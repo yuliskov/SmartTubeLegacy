@@ -47,11 +47,6 @@ public class BackgroundActionManager {
             return true;
         }
 
-        if (mPrevVideoId != null) {
-            Log.d(TAG, "Player already playing something");
-            return true;
-        }
-
         mPrevVideoId = videoId;
         mPrevCallTime = System.currentTimeMillis();
 
