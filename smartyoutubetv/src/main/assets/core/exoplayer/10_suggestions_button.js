@@ -77,7 +77,7 @@ function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
     this.retryTimes = 10;
-    this.callDelayMS = 100;
+    this.callDelayMS = 300;
 
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);

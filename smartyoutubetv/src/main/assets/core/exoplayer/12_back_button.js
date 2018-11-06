@@ -7,21 +7,20 @@ console.log("Scripts::Running core script back_button.js");
  */
 function BackButton(selector) {
     this.selector = selector;
-    this.retryTimes = 5;
+    this.retryTimes = 10;
     this.checkDelayMS = 300;
 
     this.retryOnFail = function() {
-        if (this.retryTimes == 0 || ExoUtils.playerIsClosed()) {
+        if (ExoUtils.playerIsClosed() || this.retryTimes <= 0) {
             return;
         }
         this.retryTimes--;
+
         EventUtils.triggerEnter(this.selector);
         var $this = this;
         setTimeout(function() {
-            if (!ExoUtils.playerIsClosed()) {
-                console.log("BackButton: back failed... do retry...");
-                $this.retryOnFail();
-            }
+            console.log("BackButton: back failed... do retry...");
+            $this.retryOnFail();
         }, this.checkDelayMS);
     };
 

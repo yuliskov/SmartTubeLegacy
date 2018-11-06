@@ -53,7 +53,7 @@ public class PlayerButtonsManager {
             return;
         }
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
-            boolean isButtonDisabled = !extras.containsKey(entry.getValue());
+            boolean isButtonDisabled = !extras.containsKey(entry.getValue()); // no such button in data
             // NOTE: fix phantom subscribe/unsubscribe
             boolean isSubscribeButton = entry.getValue().equals(ExoPlayerFragment.BUTTON_SUBSCRIBE);
             if (isButtonDisabled && isSubscribeButton) {
@@ -72,6 +72,7 @@ public class PlayerButtonsManager {
 
             ToggleButtonBase btn = mRootView.findViewById(btnId);
             btn.setChecked(isChecked);
+            btn.enable(); // could be set unchecked by previous video
         }
     }
 

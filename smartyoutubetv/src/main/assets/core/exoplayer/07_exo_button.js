@@ -63,6 +63,9 @@ ExoButton.fromSelector = function(selector) {
                 return new SuggestionsFakeButton(selector);
             case PlayerActivityMapping.BUTTON_BACK:
                 return new BackButton(selector);
+            case PlayerActivityMapping.BUTTON_PREV:
+            case PlayerActivityMapping.BUTTON_NEXT:
+                return new StatelessButton(selector);
             default:
                 // NOTE: all other buttons is processed here
                 return new ExoButton(selector);
