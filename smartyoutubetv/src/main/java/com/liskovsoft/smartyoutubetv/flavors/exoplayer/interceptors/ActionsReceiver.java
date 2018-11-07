@@ -18,12 +18,13 @@ import java.util.Map;
  */
 public class ActionsReceiver implements Runnable {
     private static final String TAG = ActionsReceiver.class.getSimpleName();
-    private static final long RESPONSE_CHECK_DELAY_MS = 7_000;
+    private static final long RESPONSE_CHECK_DELAY_MS = 5_000;
     private final Context mContext;
     private final Intent mIntent;
     private final Listener mListener;
-    private boolean mRunOnce = false;
     private GenericCommand mStateCommand;
+    private boolean mDone;
+    private int mRetryCount = 1;
 
     interface Listener {
         void onDone();
@@ -102,8 +103,7 @@ public class ActionsReceiver implements Runnable {
      * Cancel callback if result contains wrong values (e.g. when player is closed)
      */
     private void doneResult() {
-        if (runOnce()) // don't run this method if startResponseCheck() already executed
-            return;
+        mDone = true;
 
         if (checkIntent()) {
             mListener.onDone();
@@ -120,22 +120,17 @@ public class ActionsReceiver implements Runnable {
         new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (runOnce()) // don't run this method if doneResult() already executed
+                if (mDone) // don't run this method if doneResult() already executed
                     return;
 
-                Log.d(TAG, "WebView didn't respond. Cancelling...");
-                mListener.onCancel();
+                if (mRetryCount <= 0)
+                    return;
+
+                mRetryCount--;
+
+                Log.d(TAG, "WebView didn't respond. Retrying...");
+                ActionsReceiver.this.run();
             }
         }, RESPONSE_CHECK_DELAY_MS);
-    }
-
-    /**
-     * Cast from phone fix (unable to interrupt video).
-     * Force do callback if there are no response from the WebView.
-     */
-    private boolean runOnce() {
-        boolean result = mRunOnce;
-        mRunOnce = true;
-        return result;
     }
 }
