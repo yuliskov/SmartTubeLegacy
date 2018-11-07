@@ -39,7 +39,7 @@ var CodecConfig_WebView = {
     // 'NEO-U1': 'webm', // (github)
     // 'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     // 'X92': 'webm', // (gmail)
-    '': 'webm' // other devices (entry should be the last in the list)
+    '': '' // other devices (entry should be the last in the list)
 };
 
 /**
@@ -70,5 +70,5 @@ var CodecConfig_XWalk = {
     // 'Hi3798MV100': 'webm', // Q1EN.2004 (gmail, china)
     // 'NEO-U1': 'webm', // (github)
     // 'X92': 'webm', // (gmail)
-    '': 'webm' // other devices (entry should be the last in the list)
+    '': '' // other devices (entry should be the last in the list)
 };
