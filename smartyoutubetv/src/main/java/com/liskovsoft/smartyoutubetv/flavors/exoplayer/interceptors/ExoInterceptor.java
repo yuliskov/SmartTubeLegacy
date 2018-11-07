@@ -86,7 +86,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mCurrentUrl = url;
 
         if (mManager.cancelAction(url)) {
-             return null;
+            Log.d(TAG, "Video canceled: " + url);
+            return null;
         }
 
         prepareResponseStream(url);
@@ -156,6 +157,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         if (playerIntent == null) {
+            Log.d(TAG, "Switching to the running player");
             mFragmentsManager.openExoPlayer(null); // player is already running
             return;
         }

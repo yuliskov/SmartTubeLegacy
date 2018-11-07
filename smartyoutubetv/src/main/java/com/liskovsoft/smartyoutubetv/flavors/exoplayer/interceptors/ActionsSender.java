@@ -43,9 +43,11 @@ public class ActionsSender {
      */
     public void bindActions(Intent intent) {
         if (intent == null) {
-            Log.w(TAG, "ActionsSender: activity result cannot be null");
+            Log.d(TAG, "ActionsSender: activity result cannot be null");
             return;
         }
+
+        Log.d(TAG, "Running SyncButtonsCommand");
 
         applyAutoframerate(intent);
         Map<String, Boolean> buttonStates = extractButtonStates(intent);

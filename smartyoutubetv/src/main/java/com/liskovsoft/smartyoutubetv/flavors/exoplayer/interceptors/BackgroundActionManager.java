@@ -17,6 +17,8 @@ public class BackgroundActionManager {
     private String mPrevVideoId;
 
     public boolean cancelAction(String url) {
+        Log.d(TAG, "Video closed ms ago: " + (System.currentTimeMillis() - mExitTime));
+
         // Search screen and XWalk fix: same video intercepted twice (Why??)
         boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
         if (videoClosedRecently) {
