@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv.misc.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
-    private static final long NO_INTERACTION_TIMEOUT_MS = 1_000;
+    private static final long NO_INTERACTION_TIMEOUT_MS = 500;
     private static final String VIDEO_ID_PARAM = "video_id";
     /**
      * fix playlist advance bug<br/>
@@ -17,13 +17,13 @@ public class BackgroundActionManager {
     private String mPrevVideoId;
 
     public boolean cancelAction(String url) {
-        // XWalk fix: same video intercepted twice (Why??)
-        //boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
-        //if (videoClosedRecently) {
-        //    Log.d(TAG, "Video is closed recently");
-        //    mPrevCallTime = System.currentTimeMillis();
-        //    return true;
-        //}
+        // Search screen and XWalk fix: same video intercepted twice (Why??)
+        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
+        if (videoClosedRecently) {
+            Log.d(TAG, "Video is closed recently");
+            mPrevCallTime = System.currentTimeMillis();
+            return true;
+        }
 
         // throttle calls
         boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
@@ -37,6 +37,7 @@ public class BackgroundActionManager {
         String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
         if (videoId == null) {
             Log.d(TAG, "Supplied url doesn't contain video info");
+            mPrevCallTime = System.currentTimeMillis();
             return true;
         }
 
