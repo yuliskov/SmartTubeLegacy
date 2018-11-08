@@ -114,7 +114,9 @@ var ExoUtils = {
         Utils.hide(ExoConstants.cornerButtonsSelector);
     },
 
-    // supply selector list
+    /**
+     * Used when calling through app boundaries.
+     */
     getButtonStates: function() {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
@@ -150,6 +152,9 @@ var ExoUtils = {
         return states;
     },
 
+    /**
+     * Used when calling through app boundaries.
+     */
     syncButtons: function(states) {
         var $this = this;
         // 'likes not saved' fix
@@ -181,6 +186,7 @@ var ExoUtils = {
     sendAction: function(action) {
         // code that sends string constant to activity
         if (app && app.onGenericStringResult) {
+            console.log("ExoUtils: sending action to the main app: " + action);
             app.onGenericStringResult(action);
         } else {
             console.log('ExoUtils: app not found');

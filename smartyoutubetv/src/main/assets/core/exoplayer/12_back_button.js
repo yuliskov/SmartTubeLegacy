@@ -7,7 +7,7 @@ console.log("Scripts::Running core script back_button.js");
 function BackButton(selector) {
     this.selector = selector;
     this.retryTimes = 10;
-    this.checkDelayMS = 300;
+    this.checkDelayMS = 500;
 
     this.retryOnFail = function() {
         if (this.retryTimes <= 0 || ExoUtils.playerIsClosed()) {
