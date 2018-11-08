@@ -103,6 +103,8 @@ public class ActionsReceiver implements Runnable {
      * Cancel callback if result contains wrong values (e.g. when player is closed)
      */
     private void doneResult() {
+        if (mDone)
+            return;
         mDone = true;
 
         if (checkIntent()) {
