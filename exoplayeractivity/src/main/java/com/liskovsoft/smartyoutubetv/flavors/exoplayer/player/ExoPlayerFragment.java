@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,6 +19,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
 public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFragment {
     private int mState;
     private View mWrapper;
+    private boolean mIsAttached;
+    private Intent mPendingIntent;
 
     // NOTE: entry point to handle keys
     @Override
@@ -195,10 +198,20 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
     }
 
+    /**
+     * Entry point for video playback
+     * @param intent video info
+     */
     @Override
     public void openVideo(Intent intent) {
-        if (intent != null)
+        if (!mIsAttached) {
+            mPendingIntent = intent;
+            return;
+        }
+
+        if (intent != null) {
             openVideoFromIntent(intent);
+        }
     }
 
     @Override
@@ -226,5 +239,18 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public void setWrapper(View wrapper) {
         mWrapper = wrapper;
+    }
+
+    /**
+     * Bugfix: {@link #getActivity} is null inside {@link #openVideo} routine
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mIsAttached = true;
+        if (mPendingIntent != null) {
+            openVideoFromIntent(mPendingIntent);
+            mPendingIntent = null;
+        }
     }
 }
