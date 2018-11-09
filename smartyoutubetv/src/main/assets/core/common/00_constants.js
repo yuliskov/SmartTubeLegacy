@@ -15,6 +15,8 @@ var DefaultKeys = {
 
 var DefaultEvents = {
     PLAYER_DATA_LOADED: 'loadeddata',
+    PLAYER_START_LOADING: 'loadstart',
+    PLAYER_PLAYING: 'playing',
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
     HASH_CHANGE: 'hashchange',

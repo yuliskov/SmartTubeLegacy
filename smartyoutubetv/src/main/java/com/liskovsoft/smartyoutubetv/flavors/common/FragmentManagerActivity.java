@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -31,6 +32,20 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         return mFragment;
     }
 
+    protected void setActiveFragment(GenericFragment fragment, long delayedPauseMS) {
+        final GenericFragment prevFragment = mFragment;
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pauseFragment(prevFragment);
+            }
+        }, delayedPauseMS);
+
+        mFragment = fragment;
+
+        resumeFragment();
+    }
+
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (pausePrevious)
             pauseFragment();
@@ -44,28 +59,36 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
      * imitate of resuming of new activity
      */
     private void resumeFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_RESUMED) {
+        resumeFragment(mFragment);
+    }
+
+    private void resumeFragment(GenericFragment fragment) {
+        if (fragment == null || fragment.getState() == GenericFragment.STATE_RESUMED) {
             return;
         }
 
-        Log.d(TAG, "Starting fragment: " + mFragment.getClass().getSimpleName());
+        Log.d(TAG, "Resuming fragment: " + fragment.getClass().getSimpleName());
 
         // one event instead of onStart and then onResume
-        mFragment.onResumeFragment();
+        fragment.onResumeFragment();
     }
 
     /**
      * imitate pausing of old unused activity
      */
     private void pauseFragment() {
-        if (mFragment == null || mFragment.getState() == GenericFragment.STATE_PAUSED) {
+        pauseFragment(mFragment);
+    }
+
+    private void pauseFragment(GenericFragment fragment) {
+        if (fragment == null || fragment.getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
-        Log.d(TAG, "Stopping fragment: " + mFragment.getClass().getSimpleName());
+        Log.d(TAG, "Pausing fragment: " + fragment.getClass().getSimpleName());
 
         // one event instead of onPause and then onStop
-        mFragment.onPauseFragment();
+        fragment.onPauseFragment();
     }
 
     @Override

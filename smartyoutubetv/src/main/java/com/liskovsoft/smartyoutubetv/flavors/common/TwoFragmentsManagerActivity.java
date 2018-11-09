@@ -32,8 +32,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // all fragments should be initialized on start
         // or you will get different kinds of errors
         // because this process takes some time
-        initPlayerFragment(); // player on so it could have more time for initialization
         initBrowserFragment();
+        initPlayerFragment();
         setActiveFragment(mBrowserFragment, true);
     }
 
@@ -60,6 +60,20 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(fragment.getWrapper().getId(), (Fragment) fragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void setActiveFragment(GenericFragment fragment, long delayedPauseMS) {
+        if (mBrowserFragment == null || mPlayerFragment == null) {
+            return;
+        }
+
+        GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
+
+        removeFromContainer(removeCandidate);
+        addToContainer(fragment);
+
+        super.setActiveFragment(fragment, delayedPauseMS);
     }
 
     @Override
@@ -128,7 +142,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setActiveFragment(mPlayerFragment, true);
+                setActiveFragment(mPlayerFragment, true); // delay gives a chance to webview to update it's history
                 mPlayerFragment.openVideo(intent);
             }
         });
