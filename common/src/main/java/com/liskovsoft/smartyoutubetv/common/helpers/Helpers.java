@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -292,5 +293,16 @@ public final class Helpers {
         Double val = (double) width / (double) picWidth;
         val = val * 100d;
         return val.intValue();
+    }
+
+    public static boolean isNaN(String num) {
+        return num == null          ||
+               num.isEmpty()        ||
+               num.contains(" ")    ||
+               num.contains(";")    ||
+               num.contains("&")    ||
+               num.contains(",")    ||
+               num.contains(".")    ||
+               num.contains(":");
     }
 }

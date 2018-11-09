@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
@@ -104,12 +105,11 @@ public class PlayerInitializer {
      * @return formatted number as string
      */
     private String formatNumber(String num) {
-        if (num == null || num.isEmpty()) {
+        if (num == null) {
             return null;
         }
-
-        boolean notNum = num.contains(" ");
-        if (notNum) {
+        
+        if (Helpers.isNaN(num)) {
             return Html.fromHtml(num).toString();
         }
 
