@@ -41,7 +41,8 @@ var ExoUtils = {
     preparePlayer: function() {
         this.disablePlayerUi();
         var player = Utils.$('video');
-        if (!player || this.preparePlayerDone)
+        var playbackAllowedMS = 5000;
+        if (!player || player.preparePlayerDone)
             return;
 
         Utils.overrideProp2(player, 'volume', 0);
@@ -49,17 +50,18 @@ var ExoUtils = {
         // we can't pause video because history will not work
         function onLoad() {
             console.log('ExoUtils: video has been loaded into webview... force start playback');
-            // msg 4 future me
-            // 'paused' video won't invoke history update
-            // don't call pause!!! or video remains paused event after play
-            player.play();
+            player.pause(); // playback may not start without pause before
+            player.play(); // start playback to invoke history update
+            setTimeout(function() {
+                player.pause(); // stop background playback
+            }, playbackAllowedMS);
         }
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
         player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
 
-        this.preparePlayerDone = true;
+        player.preparePlayerDone = true;
     },
 
     getViewCount: function() {

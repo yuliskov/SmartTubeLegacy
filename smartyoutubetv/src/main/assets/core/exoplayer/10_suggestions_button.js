@@ -81,8 +81,13 @@ function SuggestionsFakeButton(selector) {
 
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
-        if (suggestionsShown || this.retryTimes <= 0)
+        if (suggestionsShown)
             return;
+
+        if (this.retryTimes <= 0) {
+            this.sendClose();
+            return;
+        }
 
         this.retryTimes--;
 
