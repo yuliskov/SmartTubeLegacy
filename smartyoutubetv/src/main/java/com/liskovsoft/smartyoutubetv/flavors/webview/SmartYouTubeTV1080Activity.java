@@ -5,8 +5,15 @@ import com.liskovsoft.smartyoutubetv.flavors.common.SingleFragmentManagerActivit
 import com.liskovsoft.smartyoutubetv.flavors.webview.fragments.SmartYouTubeTV1080Fragment;
 
 public class SmartYouTubeTV1080Activity extends SingleFragmentManagerActivity {
+    private final Fragment mFragment;
+
+    public SmartYouTubeTV1080Activity() {
+        // create fragments in constructor so there will be more time for initialization
+        mFragment = new SmartYouTubeTV1080Fragment();
+    }
+
     @Override
     protected Fragment getFragment() {
-        return new SmartYouTubeTV1080Fragment();
+        return mFragment;
     }
 }

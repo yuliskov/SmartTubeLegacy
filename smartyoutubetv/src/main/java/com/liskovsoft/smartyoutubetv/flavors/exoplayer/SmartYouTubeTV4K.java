@@ -6,13 +6,22 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.fragments.SmartYouTubeTV4
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 public class SmartYouTubeTV4K extends TwoFragmentsManagerActivity {
+    private final BrowserFragment mBrowser;
+    private final PlayerFragment mPlayer;
+
+    public SmartYouTubeTV4K() {
+        // create fragments in constructor so there will be more time for initialization
+        mBrowser = new SmartYouTubeTV4KFragment();
+        mPlayer = new ExoPlayerFragment();
+    }
+
     @Override
     protected BrowserFragment getBrowserFragment() {
-        return new SmartYouTubeTV4KFragment();
+        return mBrowser;
     }
 
     @Override
     protected PlayerFragment getPlayerFragment() {
-        return new ExoPlayerFragment();
+        return mPlayer;
     }
 }

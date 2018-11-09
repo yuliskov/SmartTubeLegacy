@@ -32,8 +32,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // all fragments should be initialized on start
         // or you will get different kinds of errors
         // because this process takes some time
+        initPlayerFragment(); // player on so it could have more time for initialization
         initBrowserFragment();
-        initPlayerFragment();
         setActiveFragment(mBrowserFragment, true);
     }
 
