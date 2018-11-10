@@ -1,9 +1,9 @@
 package com.liskovsoft.browser;
 
-import android.app.Activity;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ public class XLargeUi extends TitleBarBaseUi {
     private final NavigationBarTablet mNavBar;
     private ActionBar mActionBar;
 
-    public XLargeUi(Activity browser, UiController controller) {
+    public XLargeUi(Fragment browser, UiController controller) {
         super(browser, controller);
 
         logger.info("About to load tablet interface");

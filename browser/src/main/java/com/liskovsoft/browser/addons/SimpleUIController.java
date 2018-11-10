@@ -1,15 +1,16 @@
 package com.liskovsoft.browser.addons;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.R;
 import com.liskovsoft.browser.UI;
 
 public class SimpleUIController extends Controller {
-    public SimpleUIController(Activity browser) {
-        super(browser);
-        hideActionBar(browser);
-        initUi();
+    public SimpleUIController(Fragment browser) {
+        super(browser.getActivity());
+        hideActionBar(browser.getActivity());
+        initUi(browser);
     }
 
     /**
@@ -23,8 +24,8 @@ public class SimpleUIController extends Controller {
         context.setTheme(R.style.SimpleUITheme);
     }
 
-    private void initUi() {
-        UI ui = new SimpleUi(mActivity, this);
+    private void initUi(Fragment browser) {
+        UI ui = new SimpleUi(browser, this);
         setUi(ui);
     }
 }

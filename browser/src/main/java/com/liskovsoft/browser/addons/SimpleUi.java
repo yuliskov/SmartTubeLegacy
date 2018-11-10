@@ -1,15 +1,10 @@
 package com.liskovsoft.browser.addons;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import com.liskovsoft.browser.BaseUi;
-import com.liskovsoft.browser.UiController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SimpleUi extends BaseUi {
-    private final Logger logger = LoggerFactory.getLogger(SimpleUi.class);
-
-    public SimpleUi(Activity browser, UiController controller) {
+    public SimpleUi(Fragment browser, SimpleUIController controller) {
         super(browser, controller);
     }
 }

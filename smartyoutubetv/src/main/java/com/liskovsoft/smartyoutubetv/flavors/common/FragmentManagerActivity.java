@@ -145,11 +145,6 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     }
 
     @Override
-    public FrameLayout getRootLayout() {
-        return (FrameLayout) ((Fragment) mFragment).getView();
-    }
-
-    @Override
     public void setDispatchEvent(KeyEvent event) {
         mEvent = event;
     }

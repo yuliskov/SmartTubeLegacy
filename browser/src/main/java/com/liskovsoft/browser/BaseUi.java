@@ -3,6 +3,7 @@ package com.liskovsoft.browser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.*;
@@ -43,16 +44,21 @@ public abstract class BaseUi implements UI {
     private Toast mStopToast;
     private boolean mActivityPaused;
 
-    public BaseUi(Activity browser, UiController controller) {
-        mActivity = browser;
+    /**
+     * Robust method when using fragments
+     * @param browser fragment
+     * @param controller controller
+     */
+    public BaseUi(Fragment browser, UiController controller) {
+        mActivity = browser.getActivity();
         mUiController = controller;
         mTabControl = controller.getTabControl();
-        FrameLayout frameLayout = findRootLayout();
+        FrameLayout frameLayout = (FrameLayout) browser.getView();
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
-        mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
-        mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
-        mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
-        mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
+        mFixedTitlebarContainer = frameLayout.findViewById(R.id.fixed_titlebar_container);
+        mContentView = frameLayout.findViewById(R.id.main_content);
+        mCustomViewContainer = frameLayout.findViewById(R.id.fullscreen_custom_content);
+        mErrorConsoleContainer = frameLayout.findViewById(R.id.error_console);
 
         // fix: attempt to invoke virtual method 'boolean com.liskovsoft.browser.BrowserSettings.useFullscreen()' on a null object reference
         BrowserSettings settings = BrowserSettings.getInstance();
@@ -62,13 +68,6 @@ public abstract class BaseUi implements UI {
 
         // dirty hack to make WebView receive focus
         initSupportActionBar();
-    }
-
-    private FrameLayout findRootLayout() {
-        if (mActivity instanceof FragmentManager) {
-            return ((FragmentManager)mActivity).getRootLayout();
-        }
-        return (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.liskovsoft.browser;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 
 public abstract class TitleBarBaseUi extends BaseUi {
     protected final TitleBar mTitleBar;
@@ -11,9 +11,9 @@ public abstract class TitleBarBaseUi extends BaseUi {
     private static final int MSG_HIDE_TITLEBAR = 1;
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
 
+    protected Handler mHandler = new TileHandler();
 
-    protected Handler mHandler = new Handler() {
-
+    private class TileHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_HIDE_TITLEBAR) {
@@ -21,9 +21,9 @@ public abstract class TitleBarBaseUi extends BaseUi {
             }
             TitleBarBaseUi.this.handleMessage(msg);
         }
-    };
+    }
 
-    public TitleBarBaseUi(Activity browser, UiController controller) {
+    public TitleBarBaseUi(Fragment browser, UiController controller) {
         super(browser, controller);
 
         mTitleBar = new TitleBar(mActivity, mUiController, this, mContentView);

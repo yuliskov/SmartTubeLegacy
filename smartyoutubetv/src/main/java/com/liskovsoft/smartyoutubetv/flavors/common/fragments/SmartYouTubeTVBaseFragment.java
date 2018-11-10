@@ -110,7 +110,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mUAManager.getUA());
 
-        mController = new SimpleUIController(getActivity());
+        mController = new SimpleUIController(this);
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mHeaders);

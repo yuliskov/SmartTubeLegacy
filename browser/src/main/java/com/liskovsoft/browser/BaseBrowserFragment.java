@@ -53,15 +53,11 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         }
     }
 
-    //protected void beginInitWebView(Bundle icicle) {
-    //    createController(icicle);
-    //}
-
     private void createController(Bundle icicle) {
         mHeaders = new HashMap<>();
         mHeaders.put("user-agent", mDefaultUserAgent);
 
-        mController = new SimpleUIController(getActivity());
+        mController = new SimpleUIController(this);
         Intent intent = (icicle == null) ? getActivity().getIntent() : null;
         mController.start(intent);
         mController.loadUrl(mDefaultHomeUrl, mHeaders);
