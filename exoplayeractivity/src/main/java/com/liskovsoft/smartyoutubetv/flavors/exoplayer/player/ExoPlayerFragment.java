@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -21,7 +20,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
-    private boolean mPendingResume;
 
     // NOTE: entry point to handle keys
     @Override
@@ -151,12 +149,14 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onStart() {
         super.onStart();
 
+        mIsAttached = true;
+
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
 
         if (Util.SDK_INT > 23) {
-            initializePlayer();
+            performInitialization();
         }
     }
 
@@ -169,7 +169,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if ((Util.SDK_INT <= 23 || player == null)) {
-            initializePlayer();
+            performInitialization();
         }
     }
 
@@ -189,6 +189,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public void onStop() {
         super.onStop();
+
+        mIsAttached = false;
 
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
@@ -231,7 +233,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         mState = GenericFragment.STATE_RESUMED;
 
         if (!mIsAttached) {
-            mPendingResume = true;
             return;
         }
 
@@ -249,12 +250,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     /**
-     * Bugfix: {@link #getActivity} is null inside {@link #openVideo} routine
+     * Bugfix: {@link #getActivity} is null inside {@link #openVideo} and {@link #onResumeFragment()} routines
      */
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mIsAttached = true;
+    public void performInitialization() {
+        if (!mIsAttached)
+            return;
 
         if (mPendingIntent != null) {
             openVideoFromIntent(mPendingIntent);
@@ -262,9 +262,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
         }
 
-        if (mPendingResume) {
-            mPendingResume = false;
-            initializePlayer();
-        }
+        initializePlayer();
     }
 }
