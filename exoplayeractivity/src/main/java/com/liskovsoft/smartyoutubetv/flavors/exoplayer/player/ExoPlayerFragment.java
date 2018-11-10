@@ -21,6 +21,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
+    private boolean mPendingResume;
 
     // NOTE: entry point to handle keys
     @Override
@@ -221,14 +222,20 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
     @Override
     public void onPauseFragment() {
-        releasePlayer();
         mState = GenericFragment.STATE_PAUSED;
+        releasePlayer();
     }
 
     @Override
     public void onResumeFragment() {
-        initializePlayer();
         mState = GenericFragment.STATE_RESUMED;
+
+        if (!mIsAttached) {
+            mPendingResume = true;
+            return;
+        }
+
+        initializePlayer();
     }
 
     @Override
@@ -248,9 +255,16 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onAttach(Context context) {
         super.onAttach(context);
         mIsAttached = true;
+
         if (mPendingIntent != null) {
             openVideoFromIntent(mPendingIntent);
             mPendingIntent = null;
+            return;
+        }
+
+        if (mPendingResume) {
+            mPendingResume = false;
+            initializePlayer();
         }
     }
 }

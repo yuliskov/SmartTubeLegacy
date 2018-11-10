@@ -223,14 +223,14 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
 
     @Override
     public void onPauseFragment() {
-        pauseController();
         mState = GenericFragment.STATE_PAUSED;
+        pauseController();
     }
 
     @Override
     public void onResumeFragment() {
-        resumeController();
         mState = GenericFragment.STATE_RESUMED;
+        resumeController();
     }
 
     @Override

@@ -303,6 +303,7 @@ public final class Helpers {
                num.contains("&")    ||
                num.contains(",")    ||
                num.contains(".")    ||
-               num.contains(":");
+               num.contains(":")    ||
+               !Character.isDigit(num.charAt(num.length() - 1));
     }
 }
