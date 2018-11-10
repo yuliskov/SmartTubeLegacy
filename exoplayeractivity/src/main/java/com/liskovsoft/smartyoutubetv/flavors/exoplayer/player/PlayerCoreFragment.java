@@ -482,9 +482,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
+        boolean isFatal = false;
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
             if (cause instanceof DecoderInitializationException) {
+                isFatal = true;
                 // Special case for decoder initialization failures.
                 DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
                 if (decoderInitializationException.decoderName == null) {
@@ -504,7 +506,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             showToast(errorString);
         }
         needRetrySource = true;
-        if (isBehindLiveWindow(e)) {
+        if (isBehindLiveWindow(e) || isFatal) {
             clearResumePosition();
             initializePlayer();
         } else {
