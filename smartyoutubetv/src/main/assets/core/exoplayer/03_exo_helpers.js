@@ -203,5 +203,10 @@ var ExoUtils = {
 
     playerIsClosed: function() {
         return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.noModelClass);
+    },
+
+    isDisabled: function(elem) {
+        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem));
+        return elem && elem.display == 'none';
     }
 };

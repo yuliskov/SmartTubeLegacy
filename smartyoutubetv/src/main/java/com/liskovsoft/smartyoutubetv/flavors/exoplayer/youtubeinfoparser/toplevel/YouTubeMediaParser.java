@@ -183,7 +183,7 @@ public class YouTubeMediaParser {
             return;
         }
 
-        if (signature.length() == COMMON_SIGNATURE_LENGTH) {
+        if (signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
             mDashMPDUrl.removeParam(MediaItem.S);
             mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
         } else {

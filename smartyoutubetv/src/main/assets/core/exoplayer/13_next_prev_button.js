@@ -11,13 +11,20 @@ function NextPrevButton(selector) {
 
     this.getChecked = function() {
         console.log("NextPrevButton: getChecked " + this.selector);
-        return null; // no state
+
+        return ExoUtils.isDisabled(this.findToggle()) ? null : false;
     };
 
     this.setChecked = function(doChecked) {
         console.log("NextPrevButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
+            if (ExoUtils.isDisabled(this.findToggle())) {
+                new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);
+                return;
+            }
+
             var $this = this;
+            // let other addons to do its work
             setTimeout(function() {
                 EventUtils.triggerEnter($this.findToggle());
             }, this.checkDelayMS);
