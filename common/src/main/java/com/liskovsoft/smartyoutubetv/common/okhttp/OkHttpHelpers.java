@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OkHttpHelpers {
     private static final int NUM_TRIES = 10;
+    private static final long RETRY_SLEEP_MS = 100;
     private static final long CONNECT_TIMEOUT_S = 20;
     private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static OkHttpClient mClient;
@@ -49,7 +50,7 @@ public class OkHttpHelpers {
             }
         }
 
-        if (lastEx != null) {
+        if (lastEx != null && okHttpResponse == null) {
             MessageHelpers.showLongMessage(sContext, TAG, lastEx.getMessage());
         }
 

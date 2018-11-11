@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel;
 
 import android.net.Uri;
+import android.util.Log;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesDoneEvent;
@@ -28,6 +29,7 @@ public class YouTubeMediaParser {
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
+    private static final String TAG = YouTubeMediaParser.class.getSimpleName();
     private final String mContent;
     private final int mId;
     private ParserListener mListener;
@@ -37,6 +39,7 @@ public class YouTubeMediaParser {
      */
     private WeirdUrl mDashMPDUrl;
     private List<MediaItem> mNewMediaItems;
+    private int COMMON_SIGNATURE_LENGTH = 81;
 
     public YouTubeMediaParser(String content) {
         mContent = content;
@@ -123,7 +126,7 @@ public class YouTubeMediaParser {
     private InputStream extractDashMPDContent() {
         String dashmpdUrl = mDashMPDUrl.toString();
         if (dashmpdUrl != null) {
-            // TODO: handle 403 (Auth error)
+            // handle null response: 403 (Auth error)
             Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
             return response == null ? null : response.body().byteStream();
         }
@@ -180,8 +183,12 @@ public class YouTubeMediaParser {
             return;
         }
 
-        mDashMPDUrl.removeParam(MediaItem.S);
-        mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
+        if (signature.length() == COMMON_SIGNATURE_LENGTH) {
+            mDashMPDUrl.removeParam(MediaItem.S);
+            mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
+        } else {
+            Log.d(TAG, "Video signature is wrong: " + signature);
+        }
 
         InputStream inputStream = extractDashMPDContent();
         SimpleMPDParser parser = new SimpleMPDParser(inputStream);
