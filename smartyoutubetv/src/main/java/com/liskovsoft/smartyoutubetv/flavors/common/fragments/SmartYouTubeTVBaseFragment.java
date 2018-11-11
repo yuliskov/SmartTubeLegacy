@@ -286,8 +286,8 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
      * @param url desktop url (see manifest file for the patterns)
      * @return video params
      */
-    private String extractVideoParamsFromUrl(String url) {
-        String[] patterns = {"list=\\w*", "v=\\w*", "youtu.be/\\w*"};
+    private String extractVideoIdParamFromUrl(String url) {
+        String[] patterns = {"list=[^&\\s]*", "v=[^&\\s]*", "youtu.be/[^&\\s]*"};
         String res = Helpers.runMultiMatcher(url, patterns);
         if (res == null) {
             Log.w(TAG, "Url not supported: " + url);
@@ -302,12 +302,12 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         if (uri == null)
             return null;
         String url = uri.toString();
-        String videoParam = extractVideoParamsFromUrl(url);
+        String videoParam = extractVideoIdParamFromUrl(url);
         if (videoParam == null) {
             return Uri.parse(mServiceUrl);
         }
-        String format = String.format(TEMPLATE_URL, videoParam);
-        return Uri.parse(format);
+        String fullUrl = String.format(TEMPLATE_URL, videoParam);
+        return Uri.parse(fullUrl);
     }
 
     ///////////////////////// End Youtube filter /////////////////////
