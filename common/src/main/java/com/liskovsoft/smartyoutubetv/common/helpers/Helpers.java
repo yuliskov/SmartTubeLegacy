@@ -296,14 +296,15 @@ public final class Helpers {
     }
 
     public static boolean isNaN(String num) {
-        return num == null          ||
-               num.isEmpty()        ||
-               num.contains(" ")    ||
-               num.contains(";")    ||
-               num.contains("&")    ||
-               num.contains(",")    ||
-               num.contains(".")    ||
-               num.contains(":")    ||
-               !Character.isDigit(num.charAt(num.length() - 1));
+        return num == null                                      ||
+               num.isEmpty()                                    ||
+               num.contains(" ")                                ||
+               num.contains(";")                                ||
+               num.contains("&")                                ||
+               num.contains(",")                                ||
+               num.contains(".")                                ||
+               num.contains(":")                                ||
+               !Character.isDigit(num.charAt(num.length() - 1)) ||
+               !Character.isDigit(num.charAt(0));
     }
 }
