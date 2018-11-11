@@ -34,7 +34,7 @@ var Utils = {
 
     hasClass: function(elem, cls) {
         if (!elem) {
-            return null;
+            return false;
         }
         return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     },

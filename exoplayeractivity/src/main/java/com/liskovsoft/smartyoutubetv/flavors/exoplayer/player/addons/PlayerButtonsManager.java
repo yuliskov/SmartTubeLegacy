@@ -69,18 +69,17 @@ public class PlayerButtonsManager {
 
             boolean isChecked = intent.getBooleanExtra(entry.getValue(), false);
             Integer btnId = entry.getKey();
-            if (excludeButton(btnId)) {
-                continue;
-            }
-
             ToggleButtonBase btn = mRootView.findViewById(btnId);
-            btn.setChecked(isChecked);
             btn.enable(); // could be set unchecked by previous video
+            if (!excludeButton(btnId)) {
+                btn.setChecked(isChecked);
+            }
         }
     }
 
     /**
-     * Exclude buttons that don't have states
+     * Exclude buttons that don't have states<br/>
+     * So they won't be checked twice
      * @param btnId button id
      * @return exclude button from processing
      */

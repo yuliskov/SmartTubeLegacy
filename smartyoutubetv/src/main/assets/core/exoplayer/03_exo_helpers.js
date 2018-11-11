@@ -206,7 +206,8 @@ var ExoUtils = {
     },
 
     isDisabled: function(elem) {
-        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem));
-        return elem && elem.display == 'none';
+        var hasClass = Utils.hasClass(elem, ExoConstants.disabledClass);
+        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
+        return hasClass;
     }
 };
