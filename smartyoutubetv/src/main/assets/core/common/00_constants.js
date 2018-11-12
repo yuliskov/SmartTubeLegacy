@@ -24,6 +24,7 @@ var DefaultEvents = {
 };
 
 var YouTubeConstants = {
+    // CSS Selectors
     APP_EVENTS_RECEIVER_SELECTOR: '#leanback', // div that receives keys events for app
     DIALOG_WINDOW_SELECTOR: '#dialog-stage',
     DIALOG_CANCEL_BUTTON_SELECTOR: '#dialog-cancel-button',
@@ -34,15 +35,25 @@ var YouTubeConstants = {
     PLAYER_WRAPPER_SELECTOR: '.html5-video-container', // parent element of the 'video' tag
     PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
     PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',
+    SURFACE_CONTENT_SELECTOR: '#surface-content', // holds all right area content
+    OPTIONS_APP_KEY_SELECTOR: '.app-version-key',
+    OPTIONS_APP_VALUE_SELECTOR: '.app-version-value',
+    // CSS Classes
     ELEMENT_IS_FOCUSED_CLASS: 'focused',
     PLAYER_CONTAINER_CLASS: 'watch',
-    PLAYER_URL_KEY: 'watch'
+    MODEL_LOADED_CLASS: 'loaded',
+    // DOM Events
+    MODEL_CHANGED_EVENT: 'model:changed',
+    // Other
+    PLAYER_URL_KEY: 'watch',
+    OPTIONS_VERSION_TITLE: 'Version',
+    OPTIONS_DEVICE_TITLE: 'Device'
 };
 
 /**
  * YouTube checks next types through the {@link window.MediaSource.isTypeSupported} method
  */
-var YouTubeAvailableTypes = [
+var YouTubeMediaTypes = [
     'video/webm; codecs="vp9"',
     'video/webm; codecs="vp9"; width=640',
     'video/webm; codecs="vp9"; width=99999',

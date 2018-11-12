@@ -22,11 +22,13 @@ function DoubleBackAddon() {
             return;
         }
 
-        var container = document.querySelector(YouTubeConstants.APP_EVENTS_RECEIVER_SELECTOR);
         var $this = this;
-        container.addEventListener(DefaultEvents.KEY_UP, function(event) {
-            console.log('DoubleBackAddon::root:' + DefaultEvents.KEY_UP + '...');
-            $this.doubleCheckAndExit(event.keyCode);
+        EventUtils.addListener(
+            YouTubeConstants.APP_EVENTS_RECEIVER_SELECTOR,
+            DefaultEvents.KEY_UP,
+            function(event) {
+                console.log('DoubleBackAddon::root:' + DefaultEvents.KEY_UP + '...');
+                $this.doubleCheckAndExit(event.keyCode);
         });
 
         this.rootListenerAdded = true;
@@ -58,12 +60,12 @@ function DoubleBackAddon() {
             return;
         }
 
-        var container = document.querySelector(YouTubeConstants.DIALOG_OK_BUTTON_SELECTOR);
+        var container = Utils.$(YouTubeConstants.DIALOG_OK_BUTTON_SELECTOR);
         if (!container)
             return;
 
         var $this = this;
-        container.addEventListener(DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(container, DefaultEvents.KEY_DOWN, function(e) {
             if (e.keyCode != DefaultKeys.ENTER)
                 return;
             console.log('DoubleBackAddon::dialog:ok pressed... ');
@@ -81,11 +83,11 @@ function DoubleBackAddon() {
             return;
         }
 
-        var container = document.querySelector(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
+        var container = Utils.$(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
         if (!container)
             return;
         var $this = this;
-        container.addEventListener(DefaultEvents.KEY_UP, function(event) {
+        EventUtils.addListener(container, DefaultEvents.KEY_UP, function(event) {
             console.log('DoubleBackAddon::dialog:keyup... ');
             $this.doubleCheckAndExit(event.keyCode);
         });
@@ -96,27 +98,27 @@ function DoubleBackAddon() {
     // don't show dialog completely
     // no need to setup any addition listener
     this.doClickOnCancel = function() {
-        var cancel = document.querySelector(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
+        var cancel = Utils.$(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
         if (Utils.hasClass(cancel, YouTubeConstants.ELEMENT_IS_FOCUSED_CLASS)) {
             EventUtils.triggerEnter(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
         }
     };
 
     this.isDialogShown = function() {
-        var dialog = document.querySelector(YouTubeConstants.DIALOG_WINDOW_SELECTOR);
+        var dialog = Utils.$(YouTubeConstants.DIALOG_WINDOW_SELECTOR);
         var isShown = Utils.hasClass(dialog, YouTubeConstants.ELEMENT_IS_FOCUSED_CLASS);
         console.log('DoubleBackAddon::isDialogShown... ' + isShown);
         if (isShown) {
             // github issue: don't hide exit dialog but allow user to exit through double back
             // this.doClickOnCancel(); // hide dialog immediately
-            DeviceUtils.getApp().showExitMsg(); // display toast msg
+            DeviceUtils.showExitMsg(); // display toast msg
         }
         return isShown;
     };
 
     this.doExit = function() {
         console.log('exiting from the app');
-        DeviceUtils.getApp().closeApp();
+        DeviceUtils.closeApp();
     };
 }
 

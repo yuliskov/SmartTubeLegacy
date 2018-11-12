@@ -39,6 +39,13 @@ var Utils = {
         return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     },
 
+    $$: function(selector) {
+        if (!this.isSelector(selector))
+            return selector;
+
+        return document.querySelectorAll(selector);
+    },
+
     $: function(selector) {
         // allow to use arrays as selectors like ['a', 'b', 'c']
         // return first element existed element
@@ -264,6 +271,18 @@ var Utils = {
     hide: function(selector) {
         var el = this.$(selector);
         el.style.display = 'none';
+    },
+    
+    content: function(elem, newContent) {
+        if (!elem)
+            return null;
+
+        if (newContent) {
+            elem.innerHTML = newContent;
+            return;
+        }
+
+        return elem.innerHTML;
     }
 };
 

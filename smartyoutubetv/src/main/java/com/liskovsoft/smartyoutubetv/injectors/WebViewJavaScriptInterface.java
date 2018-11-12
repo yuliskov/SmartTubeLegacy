@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
@@ -80,6 +81,16 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return Helpers.getDeviceName();
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public String getAppVersion() {
+        return BuildConfig.VERSION_NAME;
     }
 
     /*

@@ -17,6 +17,7 @@ function NextPrevButton(selector) {
 
     this.setChecked = function(doChecked) {
         console.log("NextPrevButton: setChecked " + this.selector + " " + doChecked);
+
         if (doChecked) {
             if (ExoUtils.isDisabled(this.findToggle())) {
                 new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);

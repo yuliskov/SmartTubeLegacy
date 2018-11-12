@@ -91,12 +91,24 @@ var DeviceUtils = {
         return this.getApp().getEngineType();
     },
 
+    getAppVersion: function() {
+        return this.getApp().getAppVersion();
+    },
+
     getDeviceName: function() {
         return this.getApp().getDeviceName();
     },
 
     getDeviceHardware: function() {
         return this.getApp().getDeviceHardware();
+    },
+
+    showExitMsg: function() {
+        return this.getApp().showExitMsg();
+    },
+
+    closeApp: function() {
+        return this.getApp().closeApp();
     },
     
     isWebView: function() {

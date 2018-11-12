@@ -132,15 +132,21 @@ var EventUtils = {
 
     /**
      * Adds lister or waits till element be initialized
-     * @param selector desired element as selector
+     * @param selectorOrElement desired element as selector
      * @param event desired event
      * @param handler callback
      */
-    addListener: function(selector, event, handler) {
-        var container = Utils.$(selector);
+    addListener: function(selectorOrElement, event, handler) {
+        var container = null;
+        if (Utils.isSelector(selectorOrElement)) {
+            container = Utils.$(selectorOrElement);
+        } else {
+            container = selectorOrElement;
+        }
+
         if (container == null) {
             var interval = setInterval(function() {
-                container = Utils.$(selector);
+                container = Utils.$(selectorOrElement);
                 if (container != null) {
                     clearInterval(interval);
                     container.addEventListener(event, handler, false);
