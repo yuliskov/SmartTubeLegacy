@@ -94,7 +94,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     @Override
     public void onPageStarted(Tab tab, Bitmap favicon) {
         // js must be added before page fully loaded???
-        addJSInterface(tab);
+        // addJSInterface(tab);
     }
 
     /**
@@ -133,6 +133,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     @Override
     public void onTabCreated(Tab tab) {
+        addJSInterface(tab);
         tab.setListener(this);
         mLoadingManager.show(tab);
     }
