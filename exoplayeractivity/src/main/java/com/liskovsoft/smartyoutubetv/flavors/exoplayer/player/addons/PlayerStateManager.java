@@ -205,7 +205,23 @@ public class PlayerStateManager {
                 continue;
             }
 
-            if (result.bitrate < fmt.bitrate) {
+            // don't relay on bitrate, since some video have improper bitrate measurement
+            // because of this, I've add frameRate comparision
+            if (result.height < fmt.height) {
+                result = fmt;
+                continue;
+            }
+
+            // don't relay on bitrate, since some video have improper bitrate measurement
+            // because of this, I've add frameRate comparision
+            if ((result.frameRate < fmt.frameRate) && (result.height == fmt.height)) {
+                result = fmt;
+                continue;
+            }
+
+            // don't relay on bitrate, since some video have improper bitrate measurement
+            // because of this, I've add frameRate comparision
+            if ((result.bitrate < fmt.bitrate) && (result.height == fmt.height)) {
                 result = fmt;
             }
         }
