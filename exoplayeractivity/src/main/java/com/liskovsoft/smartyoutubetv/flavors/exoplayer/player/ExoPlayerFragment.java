@@ -151,6 +151,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         mIsAttached = true;
 
+        // manager wants this fragment to be paused
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
@@ -164,6 +165,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onResume() {
         super.onResume();
 
+        // manager already've paused this fragment
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }

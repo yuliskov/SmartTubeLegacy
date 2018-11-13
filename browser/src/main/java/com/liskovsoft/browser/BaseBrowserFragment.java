@@ -1,5 +1,6 @@
 package com.liskovsoft.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -37,6 +38,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     private Bundle mIcicle;
     private int mState;
     private View mWrapper;
+    private boolean mIsAttached;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,8 +110,40 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        mIsAttached = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // manager wants this fragment to be paused
+        if (getState() == GenericFragment.STATE_PAUSED) {
+            return;
+        }
+
+        resumeController();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        mIsAttached = false;
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
+
+        // manager already've paused this fragment
+        if (getState() == GenericFragment.STATE_PAUSED) {
+            return;
+        }
+
         pauseController();
     }
 
@@ -122,12 +156,6 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         mController.onPause();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        resumeController();
-    }
-
     private void resumeController() {
         if (mController == null) {
             return;
@@ -136,19 +164,19 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         mController.onResume();
     }
 
-    //@SuppressLint("MissingSuperCall")
-    //@Override
-    //public void onDestroy() {
-    //    // NOTE: don't try to call onDestroy(). Or you will get instant crash
-    //    super.onResume();
-    //    if (mController == null) {
-    //        return;
-    //    }
-    //    logger.info("BrowserActivity.onDestroy: this=" + this);
-    //
-    //    // NOTE: BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
-    //    mController.onResume();
-    //}
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onDestroy() {
+        // NOTE: don't try to call onDestroy(). Or you will get instant crash
+        super.onResume();
+        if (mController == null) {
+            return;
+        }
+        logger.info("BrowserActivity.onDestroy: this=" + this);
+
+        // NOTE: BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
+        mController.onResume();
+    }
 
     public static boolean isTablet(Activity activity) {
         return activity.getResources().getBoolean(R.bool.isTablet);
@@ -226,6 +254,11 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     @Override
     public void onResumeFragment() {
         mState = GenericFragment.STATE_RESUMED;
+
+        if (!mIsAttached) {
+            return;
+        }
+
         resumeController();
     }
 
