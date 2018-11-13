@@ -2,14 +2,13 @@ console.log("Scripts::Running core script exo_button_decorator.js");
 
 /**
  * Decorator for methods {@link ExoButton.setChecked} and {@link ExoButton.getChecked}<br/>
- * Decorator purpose: to initialize the buttons before they will be checked
- * @param btn element to decorate
+ * Decorator purpose: initialize the buttons in same order they was checked
+ * @param btn button to decorate
  * @constructor
  */
 function ExoButtonDecorator(btn) {
     this.TAG = 'ExoButtonDecorator';
     this.btn = btn;
-    this.callbackStack = [];
     this.menuToggleTimeout = 1000; // timeout until Options show on/off
 
     this.doPressOnOptionsBtn = function() {
@@ -23,9 +22,9 @@ function ExoButtonDecorator(btn) {
             Log.d($this.TAG, "after toggle options: " + $this.btn.selector + ' ' + $this.btn.findToggle());
 
             callback();
-            $this.callbackStack.shift();
-            if ($this.callbackStack[0]) {
-                $this.callbackStack[0]();
+            ExoButtonDecorator.callbackStack.shift(); // remove this callback
+            if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
+                ExoButtonDecorator.callbackStack[0]();
             }
         }, this.menuToggleTimeout);
     };
@@ -33,15 +32,15 @@ function ExoButtonDecorator(btn) {
     this.setCheckedWrapper = function(callback) {
         var obj = this.btn.findToggle();
         if (!obj || !obj.children.length) {
-            this.doPressOnOptionsBtn();
             Log.d(this.TAG, 'set checked: btn not initialized: ' + this.btn.selector);
+            this.doPressOnOptionsBtn();
             this.doCallbackIfReady(callback);
             return;
         }
         callback();
-        this.callbackStack.shift();
-        if (this.callbackStack[0]) {
-            this.callbackStack[0]();
+        ExoButtonDecorator.callbackStack.shift(); // remove this callback
+        if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
+            ExoButtonDecorator.callbackStack[0]();
         }
     };
 
@@ -64,7 +63,6 @@ function ExoButtonDecorator(btn) {
 
     this.applySetChecked = function() {
         var $this = this;
-
         var realSetChecked = this.btn.setChecked;
         this.btn.setChecked = function(doChecked) {
             var thisBtn = this;
@@ -73,12 +71,12 @@ function ExoButtonDecorator(btn) {
                     realSetChecked.call(thisBtn, doChecked);
                 });
             };
-            if ($this.callbackStack.length === 0) {
-                $this.callbackStack.push(callback);
+            if (ExoButtonDecorator.callbackStack.length == 0) {
+                ExoButtonDecorator.callbackStack.push(callback);
                 callback();
             } else {
                 // simply push (call it later)
-                $this.callbackStack.push(callback);
+                ExoButtonDecorator.callbackStack.push(callback);
             }
         };
     };
@@ -96,3 +94,6 @@ function ExoButtonDecorator(btn) {
         };
     };
 }
+
+// global storage for pending callbacks
+ExoButtonDecorator.callbackStack = [];
