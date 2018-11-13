@@ -159,7 +159,7 @@ import java.util.Locale;
         MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
         TrackGroupArray groups = trackInfo.getTrackGroups(VIDEO_RENDERER_INDEX);
         SelectionOverride override = trackSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
-        if (override.tracks.length == 0)
+        if (override == null || override.tracks.length == 0)
             return null;
         return groups.get(override.groupIndex).getFormat(override.tracks[0]);
     }
