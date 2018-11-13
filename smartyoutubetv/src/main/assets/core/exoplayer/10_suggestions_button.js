@@ -157,7 +157,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.getChecked = function() {
-        return null; // not exists
+        return false;
     };
 
     this.setChecked = function(doChecked) {
