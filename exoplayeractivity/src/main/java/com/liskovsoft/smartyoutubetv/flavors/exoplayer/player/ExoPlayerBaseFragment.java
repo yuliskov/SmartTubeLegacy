@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RendererCapabilities;
@@ -18,11 +19,11 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
@@ -32,6 +33,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSel
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
@@ -295,6 +297,29 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         clock.setText(currentTime);
     }
 
+    private void updateQualityTitle() {
+        View root = getView();
+        if (root == null)
+            throw new IllegalStateException("Fragment's root view is null");
+
+        if (trackSelector == null)
+            return;
+
+        TextView quality = root.findViewById(R.id.video_quality);
+        Format format = PlayerUtil.getCurrentlyPlayingTrack(trackSelector);
+
+        if (format == null)
+            return;
+
+        String qualityLabel = PlayerUtil.extractQualityLabel(format);
+        String codec = PlayerUtil.extractCodec(format);
+        int fps = PlayerUtil.extractFps(format);
+        String separator = "/";
+        String qualityString = qualityLabel + separator + fps + separator + codec;
+
+        quality.setText(qualityString);
+    }
+
     private void resetStateOfLayoutToggleButtons() {
         View root = getView();
         if (root == null)
@@ -353,8 +378,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == Player.STATE_READY && !durationSet) {
             durationSet = true; // run once per video
-            if (stateManager != null)
-                stateManager.restoreTrackPosition(); // stateManage already should be initialized
+            if (stateManager != null) {
+                // stateManage should be initialized here
+                stateManager.restoreTrackPosition();
+                updateQualityTitle();
+            }
         }
 
         if (playbackState == Player.STATE_ENDED) {
@@ -403,6 +431,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         // Do nothing.
     }
 
+    /**
+     * At this point user've changed video quality
+     */
     void retryIfNeeded() {
         if (stateManager != null)
             stateManager.persistState();
@@ -410,6 +441,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         if (needRetrySource) {
             initializePlayer();
         }
+
+        updateQualityTitle();
     }
 
     public void setHidePlaybackErrors(boolean hideErrors) {

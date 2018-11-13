@@ -21,6 +21,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
@@ -31,6 +35,7 @@ import java.util.Locale;
  * Utility methods for demo application.
  */
 /*package*/ public final class PlayerUtil {
+    private static final int VIDEO_RENDERER_INDEX = 0;
 
     private PlayerUtil() {
     }
@@ -148,5 +153,48 @@ import java.util.Locale;
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { secondaryIntent });
         chooserIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         context.startActivity(chooserIntent);
+    }
+
+    public static Format getCurrentlyPlayingTrack(DefaultTrackSelector trackSelector) {
+        MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
+        TrackGroupArray groups = trackInfo.getTrackGroups(VIDEO_RENDERER_INDEX);
+        SelectionOverride override = trackSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
+        if (override.tracks.length == 0)
+            return null;
+        return groups.get(override.groupIndex).getFormat(override.tracks[0]);
+    }
+
+    public static String extractQualityLabel(Format format) {
+        String qualityLabel = "";
+
+        if (format.height <= 480) {
+            qualityLabel = "SD";
+        } else if (format.height <= 720) {
+            qualityLabel = "HD";
+        } else if (format.height <= 1080) {
+            qualityLabel = "FHD";
+        } else if (format.height <= 1440) {
+            qualityLabel = "QHD";
+        } else if (format.height <= 2160) {
+            qualityLabel = "4K";
+        }
+
+        return qualityLabel;
+    }
+
+    public static String extractCodec(Format format) {
+        String codec = "";
+
+        if (format.codecs.contains("vp9")) {
+            codec = "VP9";
+        } else if (format.codecs.contains("avc")) {
+            codec = "AVC";
+        }
+
+        return codec.toLowerCase();
+    }
+
+    public static int extractFps(Format format) {
+        return Math.round(format.frameRate);
     }
 }
