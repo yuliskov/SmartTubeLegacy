@@ -22,11 +22,11 @@ public class RestrictCodecDataSource implements DataSource {
         Map<String, String> map = new LinkedHashMap<>();
         map.put(mContext.getString(R.string.no_restrictions), "");
         map.put("AVC, 4K", "avc|2160");
-        map.put("AVC, 1080p", "avc|1080");
+        map.put("AVC, FHD", "avc|1080");
         map.put("VP9, 4K", "vp9|2160");
-        map.put("VP9, 1080p", "vp9|1080");
+        map.put("VP9, FHD", "vp9|1080");
         map.put("AVC+VP9, 4K", "|2160");
-        map.put("AVC+VP9, 1080p", "|1080");
+        map.put("AVC+VP9, FHD", "|1080");
         return map;
     }
 

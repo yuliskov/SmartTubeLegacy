@@ -35,9 +35,9 @@
     <string name="select_video_speed">Скорость видео</string>
     <string name="normal">Нормальная</string>
     <string name="go_back">Назад</string>
-    <string name="restrict">Огранич</string>
+    <string name="restrict">Пресет</string>
     <string name="no_restrictions">Без ограничений</string>
-    <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
+    <string name="select_preferred_codec">Выбрать видео пресет</string>
     <string name="time_title">Сейчас: %1$s</string>
     <string name="loading_view_message">ЗАГРУЗКА...</string>
 </resources>

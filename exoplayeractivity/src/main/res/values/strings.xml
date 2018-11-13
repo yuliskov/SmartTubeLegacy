@@ -53,9 +53,9 @@
     <string name="select_video_speed">Select video speed</string>
     <string name="normal">Normal</string>
     <string name="go_back">Go back</string>
-    <string name="restrict">Restrict</string>
+    <string name="restrict">Preset</string>
     <string name="no_restrictions">No restrictions</string>
-    <string name="select_preferred_codec">Restrict codec and resolution</string>
+    <string name="select_preferred_codec">Select video preset</string>
     <string name="time_title">Now: %1$s</string>
     <string name="loading_view_message">LOADING...</string>
 </resources>
