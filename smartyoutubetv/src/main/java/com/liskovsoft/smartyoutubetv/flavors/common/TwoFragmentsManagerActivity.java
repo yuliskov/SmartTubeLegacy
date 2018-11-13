@@ -3,14 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import com.liskovsoft.browser.fragments.BrowserFragment;
 import com.liskovsoft.browser.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.R;
@@ -171,14 +169,15 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             return;
         }
 
-        findViewById(R.id.exo_container).setBackgroundColor(Color.RED);
-        ViewGroup wrapper = (ViewGroup) mBrowserFragment.getWrapper();
-        setBrowserTransparencyRecursive(wrapper);
+        findViewById(R.id.exo_container).setBackgroundColor(Color.BLACK);
+
+        ViewGroup browser = (ViewGroup) mBrowserFragment.getWrapper();
+        setTransparencyRecursive(browser);
 
         mTransparencyDone = true;
     }
 
-    private void setBrowserTransparencyRecursive(ViewGroup container) {
+    private void setTransparencyRecursive(ViewGroup container) {
         if (container == null) {
             return;
         }
@@ -190,7 +189,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             // set hw acceleration off: API 11+ fix
             //child.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             if (child instanceof ViewGroup) {
-                setBrowserTransparencyRecursive((ViewGroup) child);
+                setTransparencyRecursive((ViewGroup) child);
             }
         }
     }
