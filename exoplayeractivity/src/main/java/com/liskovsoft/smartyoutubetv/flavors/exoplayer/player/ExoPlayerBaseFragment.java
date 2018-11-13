@@ -61,10 +61,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
     public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
     public static final String DISPLAY_MODE_ID = "display_mode_id";
-    private static final float TEXT_SIZE_EXTRA_LARGE = 27;
-    private static final float TEXT_SIZE_LARGE = 22;
-    private static final float TEXT_SIZE_MEDIUM = 18;
     private static final float TEXT_SIZE_SMALL = 14;
+    private static final float SCREEN_WIDTH_SMALL = 640;
 
     private DetailDebugViewHelper debugViewHelper;
 
@@ -112,22 +110,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             return;
         }
 
-        if (width >= 1280) {
-            loadingView.setTextSize(TEXT_SIZE_EXTRA_LARGE);
-            return;
-        }
+        float scaledWidth = width * TEXT_SIZE_SMALL / SCREEN_WIDTH_SMALL;
 
-        if (width >= 960) {
-            loadingView.setTextSize(TEXT_SIZE_LARGE);
-            return;
-        }
-
-        if (width >= 640) {
-            loadingView.setTextSize(TEXT_SIZE_MEDIUM);
-            return;
-        }
-
-        loadingView.setTextSize(TEXT_SIZE_SMALL);
+        loadingView.setTextSize(scaledWidth);
     }
 
     protected void initializeTrackSelector() {

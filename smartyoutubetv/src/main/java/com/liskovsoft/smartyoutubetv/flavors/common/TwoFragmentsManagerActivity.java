@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListen
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
+    private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
@@ -169,7 +171,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             return;
         }
 
-        findViewById(R.id.exo_container).setBackgroundColor(Color.BLACK);
+        findViewById(R.id.exo_container).setBackgroundColor(Color.RED);
         ViewGroup wrapper = (ViewGroup) mBrowserFragment.getWrapper();
         setBrowserTransparencyRecursive(wrapper);
 
@@ -203,6 +205,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onLoadSuccess() {
+        Log.d(TAG, "Browser content fully loaded");
         initBrowserTransparency();
     }
 }
