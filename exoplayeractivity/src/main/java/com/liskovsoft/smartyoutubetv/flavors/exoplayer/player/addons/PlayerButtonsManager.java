@@ -55,11 +55,7 @@ public class PlayerButtonsManager {
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !extras.containsKey(entry.getValue()); // no such button in data
             // NOTE: fix phantom subscribe/unsubscribe
-            boolean isSubscribeButton = entry.getValue().equals(ExoPlayerFragment.BUTTON_SUBSCRIBE);
-            boolean isPrevButton = entry.getValue().equals(ExoPlayerFragment.BUTTON_PREV);
-            boolean isNextButton = entry.getValue().equals(ExoPlayerFragment.BUTTON_NEXT);
-            boolean isNeededButton = isSubscribeButton || isPrevButton || isNextButton;
-            if (isButtonDisabled && isNeededButton) {
+            if (isButtonDisabled) {
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = mRootView.findViewById(btnId);
                 // NOTE: if no such state then mark button as disabled
