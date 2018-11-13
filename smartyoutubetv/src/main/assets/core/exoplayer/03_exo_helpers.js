@@ -12,6 +12,9 @@ console.log("Scripts::Running core script exo_helpers.js");
  * @constructor empty
  */
 var ExoUtils = {
+    FIRST_REVISION: 'first_revision',
+    SECOND_REVISION: 'second_revision',
+
     isComponentDisabled: function(element) {
         var el = element;
         if (Utils.isSelector(element)) {
@@ -209,5 +212,13 @@ var ExoUtils = {
         var hasClass = Utils.hasClass(elem, ExoConstants.disabledClass);
         console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
         return hasClass;
+    },
+
+    getPlayerRevision: function() {
+        var title = Utils.$(ExoConstants.newPlayerTitleSelector);
+        if (title)
+            return this.SECOND_REVISION;
+
+        return this.FIRST_REVISION;
     }
 };

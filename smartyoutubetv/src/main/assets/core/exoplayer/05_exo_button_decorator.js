@@ -7,31 +7,34 @@ console.log("Scripts::Running core script exo_button_decorator.js");
  * @constructor
  */
 function ExoButtonDecorator(btn) {
+    this.TAG = 'ExoButtonDecorator';
     this.btn = btn;
     this.callbackStack = [];
+    this.menuToggleTimeout = 1000; // timeout until Options show on/off
 
     this.doPressOnOptionsBtn = function() {
-        console.log("ExoButtonDecorator: clicking on options button");
+        Log.d(this.TAG, "clicking on options button");
         EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
     };
 
     this.doCallbackIfReady = function(callback) {
         var $this = this;
-        var timeout = 1000; // timeout until Options show on/off
         setTimeout(function() {
+            Log.d($this.TAG, "after toggle options: " + $this.btn.selector + ' ' + $this.btn.findToggle());
+
             callback();
             $this.callbackStack.shift();
             if ($this.callbackStack[0]) {
                 $this.callbackStack[0]();
             }
-        }, timeout);
+        }, this.menuToggleTimeout);
     };
 
     this.setCheckedWrapper = function(callback) {
         var obj = this.btn.findToggle();
         if (!obj || !obj.children.length) {
             this.doPressOnOptionsBtn();
-            console.log('YouButtonDecorator.initBtn: btn not initialized: ' + this.btn.selector);
+            Log.d(this.TAG, 'set checked: btn not initialized: ' + this.btn.selector);
             this.doCallbackIfReady(callback);
             return;
         }
@@ -45,7 +48,7 @@ function ExoButtonDecorator(btn) {
     this.getCheckedWrapper = function(callback) {
         var obj = this.btn.findToggle();
         if (!obj || !obj.children.length) {
-            console.log('YouButtonDecorator.initBtn2: btn not initialized: ' + this.btn.selector);
+            Log.d(this.TAG, 'get checked: btn not initialized: ' + this.btn.selector);
             this.doPressOnOptionsBtn();
         }
         return callback();

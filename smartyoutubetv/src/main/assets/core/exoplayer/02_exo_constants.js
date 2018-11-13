@@ -24,8 +24,8 @@ var PlayerActivityMapping = {
     // BUTTON_USER_PAGE: ".pivot-channel-tile",
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
-    BUTTON_NEXT: [".new-skip-forward-button", ".icon-player-next"],
-    BUTTON_PREV: ".icon-player-prev",
+    BUTTON_NEXT: [".new-skip-forward-button", ".button.icon-player-next"],
+    BUTTON_PREV: ".button.icon-player-prev",
     BUTTON_SUGGESTIONS: "button_suggestions", // fake button (use internal logic)
     TRACK_ENDED: "track_ended", // fake button (use internal logic)
     BUTTON_BACK: "#legend .back" // should be the last
@@ -58,5 +58,6 @@ var ExoConstants = {
     noModelClass: 'no-model',
     transportShowingClass: 'transport-showing',
     watchIdleClass: 'watch-idle',
-    toggleButtonClass: 'toggle-button'
+    toggleButtonClass: 'toggle-button',
+    newPlayerTitleSelector: '.watch-title-tray'
 };

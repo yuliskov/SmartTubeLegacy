@@ -13,11 +13,9 @@ function ExoButton(selector) {
         var btn = null;
 
         if (Utils.isArray(this.selector)) {
-            for (var i = 0; i < this.selector.length; i++) {
-                btn = Utils.$(this.selector[i]);
-                if (btn)
-                    break;
-            }
+            var revision = ExoUtils.getPlayerRevision();
+            var idx = revision == ExoUtils.SECOND_REVISION ? 0 : 1;
+            btn = Utils.$(this.selector[idx]);
         } else {
             btn = Utils.$(this.selector);
         }
