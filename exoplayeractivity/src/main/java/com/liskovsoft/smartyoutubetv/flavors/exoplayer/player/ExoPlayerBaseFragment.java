@@ -311,11 +311,12 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
         if (format == null)
             return;
 
-        String qualityLabel = PlayerUtil.extractQualityLabel(format);
-        String codec = PlayerUtil.extractCodec(format);
-        int fps = PlayerUtil.extractFps(format);
         String separator = "/";
-        String qualityString = qualityLabel + separator + fps + separator + codec;
+        String qualityLabel = PlayerUtil.extractQualityLabel(format) + separator;
+        String fps = PlayerUtil.extractFps(format) + separator;
+        fps = fps.equals(0 + separator) ? "" : fps;
+        String codec = PlayerUtil.extractCodec(format);
+        String qualityString = qualityLabel + fps + codec;
 
         quality.setText(qualityString);
     }

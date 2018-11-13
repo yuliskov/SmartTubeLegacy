@@ -195,6 +195,6 @@ import java.util.Locale;
     }
 
     public static int extractFps(Format format) {
-        return Math.round(format.frameRate);
+        return format.frameRate == -1 ? 0 : Math.round(format.frameRate);
     }
 }
