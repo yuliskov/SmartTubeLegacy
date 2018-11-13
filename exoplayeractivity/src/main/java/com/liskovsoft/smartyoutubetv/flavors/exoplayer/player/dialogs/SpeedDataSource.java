@@ -34,11 +34,15 @@ public class SpeedDataSource implements GenericSelectorDialog.DataSource {
 
     @Override
     public String getSelected() {
+        if (mPlayer == null)
+            return "1.0";
         return String.valueOf(mPlayer.getPlaybackParameters().speed);
     }
 
     @Override
     public void setSelected(String speed) {
+        if (mPlayer == null)
+            return;
         mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(speed), 1.0f));
     }
 
