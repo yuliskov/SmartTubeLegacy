@@ -164,19 +164,19 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         mController.onResume();
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onDestroy() {
-        // NOTE: don't try to call onDestroy(). Or you will get instant crash
-        super.onResume();
-        if (mController == null) {
-            return;
-        }
-        logger.info("BrowserActivity.onDestroy: this=" + this);
-
-        // NOTE: BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
-        mController.onResume();
-    }
+    //@SuppressLint("MissingSuperCall")
+    //@Override
+    //public void onDestroy() {
+    //    // NOTE: don't try to call onDestroy(). Or you will get instant crash
+    //    super.onResume();
+    //    if (mController == null) {
+    //        return;
+    //    }
+    //    logger.info("BrowserActivity.onDestroy: this=" + this);
+    //
+    //    // NOTE: BUGFIX: fixing bug with Resuming webview timers (friezed youtube logo)
+    //    mController.onResume();
+    //}
 
     public static boolean isTablet(Activity activity) {
         return activity.getResources().getBoolean(R.bool.isTablet);

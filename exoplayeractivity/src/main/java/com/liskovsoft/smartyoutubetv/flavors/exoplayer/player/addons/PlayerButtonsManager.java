@@ -96,6 +96,7 @@ public class PlayerButtonsManager {
         boolean isSpeedButton = id == R.id.exo_speed;
         boolean isBackButton = id == R.id.exo_back;
 
+        // TODO: move towards object oriented solution
         if (isSpeedButton) {
             mPlayerFragment.onSpeedClicked();
         } else if (isSubtitleButton) {
@@ -122,6 +123,9 @@ public class PlayerButtonsManager {
 
     @TargetApi(17)
     private void displayShareDialog() {
+        if (mPlayerFragment.getIntent() == null)
+            return;
+
         String videoId = mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_ID);
         Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
         PlayerUtil.showMultiChooser(mPlayerFragment.getActivity(), videoUrl);
