@@ -1,6 +1,6 @@
-/*
-Description: Common event routines
-*/
+/**
+ * Common event routines
+ */
 
 console.log("Scripts::Running script event_utils.js");
 

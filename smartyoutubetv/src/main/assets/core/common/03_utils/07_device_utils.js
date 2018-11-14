@@ -1,6 +1,6 @@
-/*
-Description: Imitate press on OK button after seek
-*/
+/**
+ * Device dependent routines
+ */
 
 console.log("Scripts::Running script device_utils.js");
 

@@ -1,6 +1,6 @@
-/*
-Description: Common routines
-*/
+/**
+ * Common routines
+ */
 
 console.log("Scripts::Running script main_utils.js");
 
