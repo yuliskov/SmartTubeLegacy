@@ -11,4 +11,8 @@ function CodecSelectorButton() {
     this.onClick = function() {
         Log.d(this.TAG, "user have clicked on the button");
     };
+
+    this.getTitle = function() {
+        return 'TEST-TITLE';
+    };
 }

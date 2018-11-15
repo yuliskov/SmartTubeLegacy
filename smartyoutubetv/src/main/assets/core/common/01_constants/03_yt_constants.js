@@ -20,12 +20,51 @@ var YouTubeConstants = {
     OPTIONS_APP_KEY_SELECTOR: '.app-version-key',
     OPTIONS_APP_VALUE_SELECTOR: '.app-version-value',
     // CSS Classes
-    ELEMENT_IS_FOCUSED_CLASS: 'focused',
+    ELEMENT_FOCUSED_CLASS: 'focused',
     PLAYER_CONTAINER_CLASS: 'watch',
     MODEL_LOADED_CLASS: 'loaded',
     // DOM Events
     MODEL_CHANGED_EVENT: 'model:changed',
+    COMPONENT_FOCUS_EVENT: 'component-focus',
+    COMPONENT_BLUR_EVENT: 'component-blur',
     // Other
+    PLAYER_URL_KEY: 'watch',
+    OPTIONS_VERSION_TITLE: 'Version',
+    OPTIONS_DEVICE_TITLE: 'Device'
+};
+
+/**
+ * Selectors for the YouTube elements
+ */
+var YouTubeSelectors = {
+    PLAYER_CONTROLS_CONTAINER: '.controls-row',
+    PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container'
+};
+
+/**
+ * Pure CSS classes (without dot notation)
+ */
+var YouTubeClasses = {
+    ELEMENT_FOCUSED: 'focused',
+    ELEMENT_DISABLED: 'disabled',
+    ELEMENT_SELECTED: 'selected',
+    PLAYER_CONTAINER: 'watch',
+    MODEL_LOADED: 'loaded'
+};
+
+/**
+ * Custom events
+ */
+var YouTubeEvents = {
+    MODEL_CHANGED_EVENT: 'model:changed',
+    COMPONENT_FOCUS_EVENT: 'component-focus',
+    COMPONENT_BLUR_EVENT: 'component-blur'
+};
+
+/**
+ * Unclassified YouTube keywords
+ */
+var YouTubeOther = {
     PLAYER_URL_KEY: 'watch',
     OPTIONS_VERSION_TITLE: 'Version',
     OPTIONS_DEVICE_TITLE: 'Device'

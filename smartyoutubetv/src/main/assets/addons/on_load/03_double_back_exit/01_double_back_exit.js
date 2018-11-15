@@ -99,14 +99,14 @@ function DoubleBackAddon() {
     // no need to setup any addition listener
     this.doClickOnCancel = function() {
         var cancel = Utils.$(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
-        if (Utils.hasClass(cancel, YouTubeConstants.ELEMENT_IS_FOCUSED_CLASS)) {
+        if (Utils.hasClass(cancel, YouTubeConstants.ELEMENT_FOCUSED_CLASS)) {
             EventUtils.triggerEnter(YouTubeConstants.DIALOG_CANCEL_BUTTON_SELECTOR);
         }
     };
 
     this.isDialogShown = function() {
         var dialog = Utils.$(YouTubeConstants.DIALOG_WINDOW_SELECTOR);
-        var isShown = Utils.hasClass(dialog, YouTubeConstants.ELEMENT_IS_FOCUSED_CLASS);
+        var isShown = Utils.hasClass(dialog, YouTubeConstants.ELEMENT_FOCUSED_CLASS);
         console.log('DoubleBackAddon::isDialogShown... ' + isShown);
         if (isShown) {
             // github issue: don't hide exit dialog but allow user to exit through double back
