@@ -13,7 +13,7 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="red">#ffff0000</color>
-    <color name="grey">#FF555555</color>
+    <color name="grey">#292929</color>
     <color name="transparent">#00ffffff</color>
 
     <color name="bookmarkWidgetHeader">#383847</color>
