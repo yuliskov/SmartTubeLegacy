@@ -22,7 +22,7 @@ var UiWatcher = {
             return;
 
         var $this = this;
-        ListenerUtil.addListener(
+        EventUtils.addListener(
             YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR,
             YouTubeConstants.MODEL_CHANGED_EVENT,
             function(e) {
