@@ -18,4 +18,8 @@ function UiButton(buttonData) {
         return UiHelpers.createElement(
             this.markup.replace('%TITLE%', this.data.getTitle()));
     };
+
+    this.getId = function() {
+        return 'codec-button';
+    };
 }

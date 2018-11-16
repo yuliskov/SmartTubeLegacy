@@ -17,6 +17,6 @@ function CodecSelectorAddon() {
     }
 }
 
-new CodecSelectorAddon().run();
+// new CodecSelectorAddon().run();
 
 

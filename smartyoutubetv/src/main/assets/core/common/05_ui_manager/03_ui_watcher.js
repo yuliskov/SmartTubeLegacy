@@ -15,6 +15,9 @@ var UiWatcher = {
     insert: function(button) {
         this.init();
         this.button = button;
+        if (Utils.$(YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR)) {
+            this.addButtons();
+        }
     },
 
     init: function() {
@@ -35,13 +38,22 @@ var UiWatcher = {
     },
 
     onVideoOpen: function() {
+        this.addButtons();
+    },
+
+    addButtons: function() {
         if (!this.button)
             return;
 
-        Log.d(this.TAG, "Player is opened... add new button");
+        Log.d(this.TAG, "Player is running... add new button");
 
-        this.removeFromNewUi(this.button.getElem());
+        var id = this.button.getId();
+        if (document.getElementById(id)) { // already inserted
+            return;
+        }
+
         this.insertIntoNewUi(this.button.getElem());
+        this.routeEvents(this.button.getElem());
     },
 
     /**
@@ -52,11 +64,15 @@ var UiWatcher = {
         UiHelpers.removeElem(elem);
     },
 
-    insertIntoNewUi: function(button) {
+    routeEvents: function(elem) {
+        
+    },
+
+    insertIntoNewUi: function(elem) {
         var prevButton = Utils.$(YouTubeSelectors.PLAYER_CAPTIONS_BUTTON) ||
             Utils.$(YouTubeSelectors.PLAYER_CHANNEL_BUTTON);
-        this.setPositionInNewUi(button);
-        UiHelpers.insertAfter(prevButton, button);
+        this.setPositionInNewUi(elem);
+        UiHelpers.insertAfter(prevButton, elem);
     },
 
     setPositionInNewUi: function(button) {
