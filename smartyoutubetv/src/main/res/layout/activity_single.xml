@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/exo_container"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
-        <FrameLayout  android:id="@+id/player_wrapper"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent">
-                      <!-- Player fragment will be placed here -->
-        </FrameLayout>
         <FrameLayout  android:id="@+id/browser_wrapper"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent">

@@ -1,6 +1,5 @@
 package com.liskovsoft.browser;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;

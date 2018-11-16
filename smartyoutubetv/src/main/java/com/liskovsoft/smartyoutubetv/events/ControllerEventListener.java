@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.events;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
@@ -48,7 +48,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private final RequestInterceptor mInterceptor;
     private final ErrorTranslator mErrorTranslator;
 
-    public ControllerEventListener(Context context, Controller controller, KeysTranslator translator) {
+    public ControllerEventListener(Activity context, Controller controller, KeysTranslator translator) {
         mContext = context;
         mController = controller;
         mTranslator = translator;
@@ -128,14 +128,16 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
         mApkUpdater.start();
-        mLoadingManager.hide(tab);
+        mLoadingManager.hide();
+        if (mContext instanceof  TwoFragmentsManager)
+            ((TwoFragmentsManager) mContext).onLoadSuccess();
     }
 
     @Override
     public void onTabCreated(Tab tab) {
         addJSInterface(tab);
         tab.setListener(this);
-        mLoadingManager.show(tab);
+        // mLoadingManager.show();
     }
 
     @Override
@@ -174,56 +176,22 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         private final String TAG = LoadingManager.class.getSimpleName();
         private final View mLoadingWidget;
 
-        public LoadingManager(Context ctx) {
-            LayoutInflater li = LayoutInflater.from(ctx);
-            mLoadingWidget = li.inflate(R.layout.loading_main, null);
+        public LoadingManager(Activity ctx) {
+            mLoadingWidget = ctx.findViewById(R.id.loading_main);
         }
 
-        private void setLoadingVisibility(Tab tab, boolean visible) {
-            FrameLayout wrapper = getWrapper(tab);
-            setLoadingVisibility(wrapper, visible);
+        public void show() {
+            mLoadingWidget.setVisibility(View.VISIBLE);
         }
 
-        private void setLoadingVisibility(FrameLayout wrapper, boolean visible) {
-            Log.i(TAG, "LoadingManager::setLoadingVisibility " + visible);
-
-            if (wrapper == null) {
-                return;
-            }
-
-            boolean hasNoParent = mLoadingWidget.getParent() == null;
-            if (visible && hasNoParent) {
-                wrapper.addView(mLoadingWidget);
-            } else {
-                wrapper.removeView(mLoadingWidget);
-            }
-        }
-
-        private FrameLayout getWrapper(Tab tab) {
-            if (tab == null) {
-                return null;
-            }
-            View container = tab.getViewContainer();
-            if (container == null) {
-                return null;
-            }
-            return container.findViewById(com.liskovsoft.browser.R.id.webview_wrapper);
-        }
-
-        public void show(Tab tab) {
-            setLoadingVisibility(tab, true);
-        }
-
-        public void hide(final Tab tab) {
+        public void hide() {
             new Handler(mContext.getMainLooper())
                     .postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setLoadingVisibility(tab, false);
-                    if (mContext instanceof  TwoFragmentsManager)
-                        ((TwoFragmentsManager) mContext).onLoadSuccess();
-                }
-            }, 500);
+                        @Override
+                        public void run() {
+                            mLoadingWidget.setVisibility(View.GONE);
+                        }
+                    }, 500);
         }
 
         public void setMessage(String message) {

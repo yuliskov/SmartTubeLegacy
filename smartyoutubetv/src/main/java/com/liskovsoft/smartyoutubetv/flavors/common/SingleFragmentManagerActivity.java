@@ -4,30 +4,32 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.R;
 
 public abstract class SingleFragmentManagerActivity extends FragmentManagerActivity {
-    private Fragment mFragment;
+    private BrowserFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_single);
 
-        initFragments();
+        initBrowserFragment();
         setupEvents();
     }
 
     private void setupEvents() {
-        setActiveFragment((GenericFragment) mFragment, true);
+        setActiveFragment(mFragment, true);
     }
 
-    private void initFragments() {
+    private void initBrowserFragment() {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        mFragment = getFragment();
-        transaction.add(android.R.id.content, mFragment);
+        mFragment = getBrowserFragment();
+        transaction.add(R.id.browser_wrapper, (Fragment) mFragment);
         transaction.commit();
     }
 
-    protected abstract Fragment getFragment();
+    protected abstract BrowserFragment getBrowserFragment();
 }
