@@ -5,43 +5,66 @@
 console.log("Scripts::Running script ui_watcher.js");
 
 var UiWatcher = {
+    TAG: 'UiWatcher',
+    DEFAULT_OFFSET: '80px',
+
     /**
      * Integrate button into player's ui
      * @param button {@link UiButton} widget
      */
     insert: function(button) {
-        var container = Utils.$(YouTubeSelectors.PLAYER_BUTTONS_CONTAINER);
-        UiHelpers.append(container, button.getElem());
+        this.init();
+        this.button = button;
     },
 
-    sortButtons: function(nodes) {
-        // sort buttons based on horizontal position on screen
-        function compareByOffset(a, b) {
-            if (a.offsetLeft < b.offsetLeft)
-                return -1;
-            if (a.offsetLeft > b.offsetLeft)
-                return 1;
-            return 0;
-        }
+    init: function() {
+        if (this.initDone)
+            return;
 
-        // move transport-more-button to the left
-        // NOTE: has un-proper sort among Options buttons
-        function compareById(a, b) {
-            var leftId = a.getAttribute('id');
-            var rightId = b.getAttribute('id');
-            var leftContains = leftId ? leftId.indexOf('transport-more-button') >= 0 : false;
-            var rightContains = rightId ? rightId.indexOf('transport-more-button') >= 0 : false;
-            if (leftContains && rightContains)
-                return 0;
-            if (rightContains)
-                return 1;
-            return 0;
-        }
+        var $this = this;
+        ListenerUtil.addListener(
+            YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR,
+            YouTubeConstants.MODEL_CHANGED_EVENT,
+            function(e) {
+                Log.d($this.TAG, "TEST");
+                if (Utils.hasClass(e.target, YouTubeClasses.WATCH_IDLE_CLASS))
+                    $this.onVideoOpen();
+            });
 
+        this.initDone = true;
+    },
 
-        var objArr = Array.prototype.slice.call(nodes);
+    onVideoOpen: function() {
+        if (!this.button)
+            return;
 
-        return objArr.sort(compareByOffset);
+        Log.d(this.TAG, "Player is opened... add new button");
+
+        this.removeFromNewUi(this.button.getElem());
+        this.insertIntoNewUi(this.button.getElem());
+    },
+
+    /**
+     * While some videos might have subs button, but others are not.
+     * @param elem element to remove
+     */
+    removeFromNewUi: function(elem) {
+        UiHelpers.removeElem(elem);
+    },
+
+    insertIntoNewUi: function(button) {
+        var prevButton = Utils.$(YouTubeSelectors.PLAYER_CAPTIONS_BUTTON) ||
+            Utils.$(YouTubeSelectors.PLAYER_CHANNEL_BUTTON);
+        this.setPositionInNewUi(button);
+        UiHelpers.insertAfter(prevButton, button);
+    },
+
+    setPositionInNewUi: function(button) {
+        var captions = Utils.$(YouTubeSelectors.PLAYER_CAPTIONS_BUTTON);
+        var captionsLeft = captions ? window.getComputedStyle(captions).left : this.DEFAULT_OFFSET;
+        var channel = Utils.$(YouTubeSelectors.PLAYER_CHANNEL_BUTTON);
+        var channelLeft = window.getComputedStyle(channel).left;
+        button.style.left = (captionsLeft - channelLeft);
     },
 
     addArrowKeysHandling: function(container) {
@@ -57,7 +80,7 @@ var UiWatcher = {
         buttons = this.sortButtons(buttons); // convert to array and sort
 
         if (!buttons)
-            console.log('Houston we have problems: cant find buttons');
+            Log.d(this.TAG, 'Houston we have problems: cant find buttons');
 
         var listener1 = function (event) {
             var buttons = container.querySelectorAll('.button, .toggle-button');
@@ -88,6 +111,36 @@ var UiWatcher = {
         observeDOM(container, onDomChanged);
         // reset state of buttons that managed in this script
         setOnInterfaceVisible(function(ev){resetButtonsState(null, buttons);});
+    },
+
+    sortButtons: function(nodes) {
+        // sort buttons based on horizontal position on screen
+        function compareByOffset(a, b) {
+            if (a.offsetLeft < b.offsetLeft)
+                return -1;
+            if (a.offsetLeft > b.offsetLeft)
+                return 1;
+            return 0;
+        }
+
+        // move transport-more-button to the left
+        // NOTE: has un-proper sort among Options buttons
+        function compareById(a, b) {
+            var leftId = a.getAttribute('id');
+            var rightId = b.getAttribute('id');
+            var leftContains = leftId ? leftId.indexOf('transport-more-button') >= 0 : false;
+            var rightContains = rightId ? rightId.indexOf('transport-more-button') >= 0 : false;
+            if (leftContains && rightContains)
+                return 0;
+            if (rightContains)
+                return 1;
+            return 0;
+        }
+
+
+        var objArr = Array.prototype.slice.call(nodes);
+
+        return objArr.sort(compareByOffset);
     },
 
     moveOutListener: function(event, objArr) {

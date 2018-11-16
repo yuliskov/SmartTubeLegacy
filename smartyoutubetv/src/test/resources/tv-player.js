@@ -42,7 +42,7 @@ e.prototype[Symbol.iterator]=e.prototype.entries;var h=0;return e});
 wa("Array.prototype.find",function(a){return a?a:function(a,c){a:{var b=this;b instanceof String&&(b=String(b));for(var e=b.length,f=0;f<e;f++){var h=b[f];if(a.call(c,h,f,b)){b=h;break a}}b=void 0}return b}});
 wa("Array.prototype.fill",function(a){return a?a:function(a,c,d){var b=this.length||0;0>c&&(c=Math.max(0,b+c));if(null==d||d>b)d=b;d=Number(d);0>d&&(d=Math.max(0,b+d));for(c=Number(c||0);c<d;c++)this[c]=a;return this}});
 wa("Set",function(a){function b(a){this.g=new Map;if(a){a=la(a);for(var b;!(b=a.next()).done;)this.add(b.value)}this.size=this.g.size}
-if(function(){if(!a||!a.prototype.entries||"function"!=typeof Object.seal)return!1;try{var b=Object.seal({x:4}),d=new a(la([b]));if(!d.has(b)||1!=d.size||d.add(b)!=d||1!=d.size||d.add({x:4})!=d||2!=d.size)return!1;var e=d.entries(),f=e.next();if(f.done||f.value[0]!=b||f.value[1]!=b)return!1;f=e.next();return f.done||f.value[0]==b||4!=f.value[0].x||f.value[1]!=f.value[0]?!1:e.next().done}catch(h){return!1}}())return a;
+if(function(){if(!a||!a.prototype.entries||"function"!=typeof Object.seal)return!1;try{var b=Object.seal({x:4}),d=new a(la([b]));if(!d.has(b)||1!=d.size||d.addListener(b)!=d||1!=d.size||d.addListener({x:4})!=d||2!=d.size)return!1;var e=d.entries(),f=e.next();if(f.done||f.value[0]!=b||f.value[1]!=b)return!1;f=e.next();return f.done||f.value[0]==b||4!=f.value[0].x||f.value[1]!=f.value[0]?!1:e.next().done}catch(h){return!1}}())return a;
 ca();ea();b.prototype.add=function(a){this.g.set(a,a);this.size=this.g.size;return this};
 b.prototype["delete"]=function(a){a=this.g["delete"](a);this.size=this.g.size;return a};
 b.prototype.clear=function(){this.g.clear();this.size=0};
@@ -3826,7 +3826,7 @@ var f=function(a){e({target:c.A,data:a})};
 this.D[d]=f;this.app.N.subscribe(a,f)}};
 g.removeEventListener=function(a,b){if(u(b)){var c=this.F[b];Ic(this.F,b);b=c}this.app.N.unsubscribe(a,b)};
 g.Mz=function(a,b){var c=u(b)?a+b:a+Ia(b),d=this.D[c];d&&(this.app.N.unsubscribe(a,d),Ic(this.D,c))};
-function KP(a,b){var c=a.app.g;c.Rf&&!a.G.has(b)&&(a.G.add(b),c={callerUrl:c.I,methodName:b},a.app.g.experiments.g("web_player_gel_logging_killswitch")||(a.app.g.experiments.g("web_player_gel_direct")?OO("webPlayerApiCalled",c,void 0,void 0):a.Fa("onLogToGel",{payload_name:"webPlayerApiCalled",payload:c})))}
+function KP(a,b){var c=a.app.g;c.Rf&&!a.G.has(b)&&(a.G.addListener(b),c={callerUrl:c.I,methodName:b},a.app.g.experiments.g("web_player_gel_logging_killswitch")||(a.app.g.experiments.g("web_player_gel_direct")?OO("webPlayerApiCalled",c,void 0,void 0):a.Fa("onLogToGel",{payload_name:"webPlayerApiCalled",payload:c})))}
 g.co=function(){return MP(this.app)};
 g.Ff=function(a,b){this.g&&NP(this.app,!0,this.playerType);OP(this.app,a,b,void 0,this.playerType)};
 g.getCurrentTime=function(){return this.app.getCurrentTime(this.playerType)};

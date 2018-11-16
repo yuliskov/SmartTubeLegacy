@@ -5,6 +5,7 @@
 console.log("Scripts::Running script event_utils.js");
 
 var EventUtils = {
+    TAG: 'EventUtils',
     checkIntervalMS: 3000,
     listeners: {},
 
@@ -137,24 +138,7 @@ var EventUtils = {
      * @param handler callback
      */
     addListener: function(selectorOrElement, event, handler) {
-        var container = null;
-        if (Utils.isSelector(selectorOrElement)) {
-            container = Utils.$(selectorOrElement);
-        } else {
-            container = selectorOrElement;
-        }
-
-        if (container == null) {
-            var interval = setInterval(function() {
-                container = Utils.$(selectorOrElement);
-                if (container != null) {
-                    clearInterval(interval);
-                    container.addEventListener(event, handler, false);
-                }
-            }, 1000);
-        } else {
-            container.addEventListener(event, handler, false);
-        }
+        ListenerUtil.addListener(selectorOrElement, event, handler);
     }
 };
 

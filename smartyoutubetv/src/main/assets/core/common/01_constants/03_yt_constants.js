@@ -38,7 +38,9 @@ var YouTubeConstants = {
  */
 var YouTubeSelectors = {
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
-    PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container'
+    PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container',
+    PLAYER_CAPTIONS_BUTTON: '.icon-player-closedcaptions.transport-controls-toggle-button',
+    PLAYER_CHANNEL_BUTTON: '.transport-controls-button.transport-channel-button'
 };
 
 /**
@@ -49,7 +51,8 @@ var YouTubeClasses = {
     ELEMENT_DISABLED: 'disabled',
     ELEMENT_SELECTED: 'selected',
     PLAYER_CONTAINER: 'watch',
-    MODEL_LOADED: 'loaded'
+    MODEL_LOADED: 'loaded',
+    WATCH_IDLE_CLASS: 'watch-idle'
 };
 
 /**
