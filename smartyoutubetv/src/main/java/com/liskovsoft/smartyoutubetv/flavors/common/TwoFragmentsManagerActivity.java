@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import com.liskovsoft.browser.fragments.BrowserFragment;
-import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.PlayerFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListener;
+import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
@@ -203,7 +203,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void onBrowserStarted() {
+    public void onBrowserReady() {
         Log.d(TAG, "Browser content started to load");
         initBrowserTransparency();
     }

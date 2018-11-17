@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.fragments;
+package com.liskovsoft.smartyoutubetv.fragments;
 
 import android.view.KeyEvent;
 import android.widget.FrameLayout;

@@ -3,14 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
-import com.liskovsoft.browser.fragments.FragmentManager;
-import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 
 public abstract class FragmentManagerActivity extends FragmentActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();

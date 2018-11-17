@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.xwalk;
 
-import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.flavors.common.SingleFragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.fragments.SmartYouTubeTV1080AltFragment;
 

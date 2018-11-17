@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.webview;
 
-import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.flavors.common.SingleFragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.webview.fragments.SmartYouTubeTV1080Fragment;
 

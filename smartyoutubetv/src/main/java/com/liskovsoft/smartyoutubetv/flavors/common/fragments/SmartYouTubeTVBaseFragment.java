@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;

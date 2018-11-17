@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
-import com.liskovsoft.browser.fragments.BrowserFragment;
-import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

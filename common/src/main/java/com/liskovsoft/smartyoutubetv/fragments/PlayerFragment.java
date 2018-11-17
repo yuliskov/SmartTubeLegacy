@@ -1,7 +1,7 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer;
+package com.liskovsoft.smartyoutubetv.fragments;
 
 import android.content.Intent;
-import com.liskovsoft.browser.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 
 public interface PlayerFragment extends GenericFragment {
     void openVideo(Intent videoIntent);

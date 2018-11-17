@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
+package com.liskovsoft.smartyoutubetv.fragments;
 
 import android.content.Intent;
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import com.liskovsoft.browser.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.R;
 
 public abstract class SingleFragmentManagerActivity extends FragmentManagerActivity {

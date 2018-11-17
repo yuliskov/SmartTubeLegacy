@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,7 +16,7 @@ import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
@@ -96,7 +94,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         // js must be added before page fully loaded???
         // addJSInterface(tab);
         if (mContext instanceof  TwoFragmentsManager)
-            ((TwoFragmentsManager) mContext).onBrowserStarted();
+            ((TwoFragmentsManager) mContext).onBrowserReady();
     }
 
     /**
