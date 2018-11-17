@@ -117,7 +117,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
 
         mIsAttached = true;
 
-        // manager wants this fragment to be paused
+        // fragment currently in background state
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }
@@ -134,7 +134,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
 
         mIsAttached = false;
 
-        // manager already've paused this fragment
+        // fragment currently in background state
         if (getState() == GenericFragment.STATE_PAUSED) {
             return;
         }

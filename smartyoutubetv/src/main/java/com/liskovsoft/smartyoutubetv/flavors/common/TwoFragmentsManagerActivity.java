@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -205,6 +206,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void onBrowserReady() {
         Log.d(TAG, "Browser content started to load");
-        initBrowserTransparency();
+         initBrowserTransparency();
     }
 }
