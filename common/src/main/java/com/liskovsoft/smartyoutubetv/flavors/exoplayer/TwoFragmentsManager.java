@@ -6,5 +6,5 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.PlayerListen
 public interface TwoFragmentsManager extends PlayerListener {
     void openExoPlayer(Intent intent);
     void setPlayerListener(PlayerListener listener);
-    void onLoadSuccess();
+    void onBrowserStarted();
 }

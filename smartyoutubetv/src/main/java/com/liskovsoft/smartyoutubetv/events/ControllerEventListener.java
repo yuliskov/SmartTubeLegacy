@@ -95,6 +95,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     public void onPageStarted(Tab tab, Bitmap favicon) {
         // js must be added before page fully loaded???
         // addJSInterface(tab);
+        if (mContext instanceof  TwoFragmentsManager)
+            ((TwoFragmentsManager) mContext).onBrowserStarted();
     }
 
     /**
@@ -129,8 +131,6 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         mTranslator.enable();
         mApkUpdater.start();
         mLoadingManager.hide();
-        if (mContext instanceof  TwoFragmentsManager)
-            ((TwoFragmentsManager) mContext).onLoadSuccess();
     }
 
     @Override

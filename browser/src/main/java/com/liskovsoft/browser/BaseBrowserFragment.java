@@ -108,16 +108,14 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         saveBrowserState(null); // app near got killed
     }
 
+    /**
+     * Screen might flash during pause. So doing hard work when ui not visible.
+     */
     @Override
     public void onStart() {
         super.onStart();
 
         mIsAttached = true;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         // manager wants this fragment to be paused
         if (getState() == GenericFragment.STATE_PAUSED) {
@@ -127,16 +125,14 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         resumeController();
     }
 
+    /**
+     * Screen might flash during pause. So doing hard work when ui not visible.
+     */
     @Override
     public void onStop() {
         super.onStop();
 
         mIsAttached = false;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
 
         // manager already've paused this fragment
         if (getState() == GenericFragment.STATE_PAUSED) {
