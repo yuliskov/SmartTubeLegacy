@@ -83,6 +83,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     private Uri mDefaultUrl;
     private Map<String, String> mDefaultHeaders;
     private Intent mIntent;
+    private boolean mCancelPendingPause;
 
     public interface EventListener {
         void onControllerStart();
@@ -829,9 +830,14 @@ public class Controller implements UiController, WebViewController, ActivityCont
         }
 
         int checkTimeout = 1000;
+        mCancelPendingPause = false;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (mCancelPendingPause) {
+                    return;
+                }
+
                 if (!pauseWebViewTimers(tab)) {
                     if (mWakeLock == null) {
                         PowerManager pm = (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
@@ -864,6 +870,27 @@ public class Controller implements UiController, WebViewController, ActivityCont
         return false;
     }
 
+    ///**
+    // * resume all WebView timers using the WebView instance of the given tab
+    // *
+    // * @param tab guaranteed non-null
+    // */
+    //private void resumeWebViewTimers(Tab tab) {
+    //    if (tab == null) {
+    //        return;
+    //    }
+    //
+    //    boolean inLoad = tab.inPageLoad();
+    //    if ((!mActivityPaused && !inLoad) || (mActivityPaused && inLoad)) {
+    //        mCancelPendingPause = true;
+    //        CookieSyncManager.getInstance().startSync();
+    //        WebView w = tab.getWebView();
+    //        WebViewTimersControl.getInstance().onBrowserActivityResume(w);
+    //    }
+    //
+    //    return;
+    //}
+
     /**
      * resume all WebView timers using the WebView instance of the given tab
      *
@@ -874,12 +901,12 @@ public class Controller implements UiController, WebViewController, ActivityCont
             return;
         }
 
-        boolean inLoad = tab.inPageLoad();
-        if ((!mActivityPaused && !inLoad) || (mActivityPaused && inLoad)) {
-            CookieSyncManager.getInstance().startSync();
-            WebView w = tab.getWebView();
-            WebViewTimersControl.getInstance().onBrowserActivityResume(w);
-        }
+        mCancelPendingPause = true;
+        CookieSyncManager.getInstance().startSync();
+        WebView w = tab.getWebView();
+        WebViewTimersControl.getInstance().onBrowserActivityResume(w);
+
+        return;
     }
 
     // Called when loading from context menu or LOAD_URL message
