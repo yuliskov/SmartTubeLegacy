@@ -22,6 +22,6 @@ var UiManager = {
         UiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
-        UiHelpers.insertAfter(this.leftBtn.getElem(), this.centerBtn.getElem());
+        UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
     }
 };

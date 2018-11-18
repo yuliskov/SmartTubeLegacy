@@ -15,12 +15,22 @@ var UiHelpers = {
         return div.firstChild;
     },
 
-    insertAfter: function(referenceNode, newNode) {
+    insertAfterDom: function(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     },
 
     removeElem: function(elem) {
         if (elem)
             elem.outerHTML = "";
+    },
+
+    insertAfter: function(existingButton, newButton) {
+        var target = existingButton.getElem();
+        if (!target) {
+            // TODO: wait till init
+            return;
+        }
+
+        this.insertAfterDom(existingButton.getElem(), newButton.getElem());
     }
 };
