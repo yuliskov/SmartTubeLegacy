@@ -40,7 +40,8 @@ var YouTubeSelectors = {
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
     PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container',
     PLAYER_CAPTIONS_BUTTON: '.icon-player-closedcaptions.transport-controls-toggle-button',
-    PLAYER_CHANNEL_BUTTON: '.transport-controls-button.transport-channel-button'
+    PLAYER_CHANNEL_BUTTON: '.transport-controls-button.transport-channel-button',
+    PLAYER_PLAY_BUTTON: '.icon-player-play'
 };
 
 /**
