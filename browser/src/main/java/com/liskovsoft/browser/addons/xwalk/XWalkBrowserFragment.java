@@ -21,7 +21,9 @@ public abstract class XWalkBrowserFragment extends BaseBrowserFragment implement
         }
     }
 
-    protected void initXWalk(Bundle icicle) {
+    private void initXWalk(Bundle icicle) {
+        mXWalkUpdater = new MyXWalkUpdater(this, getActivity());
+
         // Must call initAsync() before anything that involves the embedding
         // API, including invoking setContentView() with the layout which
         // holds the XWalkView object.
@@ -77,10 +79,6 @@ public abstract class XWalkBrowserFragment extends BaseBrowserFragment implement
 
     @Override
     public void onXWalkInitFailed() {
-        if (mXWalkUpdater == null) {
-            mXWalkUpdater = new MyXWalkUpdater(this, getActivity());
-        }
-
         setupXWalkApkUrl();
         mXWalkUpdater.updateXWalkRuntime();
     }

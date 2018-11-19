@@ -73,8 +73,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        // fix lang in case activity has been destroyed and then restored
-        // setupLang();
         super.onActivityCreated(savedInstanceState);
         // NOTE: completely disable open/close animation for activity
         // overridePendingTransition(0, 0);
