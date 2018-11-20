@@ -10,18 +10,17 @@ import org.xwalk.core.XWalkInitializer;
 public abstract class XWalkBrowserFragment extends BaseBrowserFragment implements XWalkInitializer.XWalkInitListener, MyXWalkUpdater.XWalkUpdateListener {
     private XWalkInitializer mXWalkInitializer;
     private MyXWalkUpdater mXWalkUpdater;
-    private Bundle mBundle;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (Browser.getEngineType() == EngineType.XWalk) {
-            initXWalk(savedInstanceState);
+            initXWalk();
         }
     }
 
-    private void initXWalk(Bundle icicle) {
+    private void initXWalk() {
         mXWalkUpdater = new MyXWalkUpdater(this, getActivity());
 
         // Must call initAsync() before anything that involves the embedding
@@ -38,8 +37,6 @@ public abstract class XWalkBrowserFragment extends BaseBrowserFragment implement
         // 3. Call mXWalkView.setXXClient(), e.g., setUIClient
         // 4. Call mXWalkView.setXXListener(), e.g., setDownloadListener
         // 5. Call mXWalkView.addJavascriptInterface()
-
-        mBundle = icicle;
     }
 
     @Override

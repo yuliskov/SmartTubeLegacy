@@ -30,21 +30,10 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         return mFragment;
     }
 
-    protected void setActiveFragment(GenericFragment fragment, long delayedPauseMS) {
-        final GenericFragment prevFragment = mFragment;
-        new Handler(getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pauseFragment(prevFragment);
-            }
-        }, delayedPauseMS);
-
-        mFragment = fragment;
-
-        resumeFragment();
-    }
-
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
+        if (fragment == null)
+            throw new IllegalStateException("Active fragment can't be null");
+
         if (pausePrevious)
             pauseFragment();
 
@@ -61,7 +50,12 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     }
 
     private void resumeFragment(GenericFragment fragment) {
-        if (fragment == null || fragment.getState() == GenericFragment.STATE_RESUMED) {
+        if (fragment == null) {
+            return;
+        }
+
+        if (fragment.getState() == GenericFragment.STATE_RESUMED) {
+            Log.d(TAG, "Fragment already resumed: " + fragment.getClass().getSimpleName());
             return;
         }
 
@@ -79,7 +73,12 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     }
 
     private void pauseFragment(GenericFragment fragment) {
-        if (fragment == null || fragment.getState() == GenericFragment.STATE_PAUSED) {
+        if (fragment == null) {
+            return;
+        }
+
+        if (fragment.getState() == GenericFragment.STATE_PAUSED) {
+            Log.d(TAG, "Fragment already paused: " + fragment.getClass().getSimpleName());
             return;
         }
 

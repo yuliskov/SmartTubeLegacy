@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
 public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFragment {
+    private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private int mState;
     private View mWrapper;
     private boolean mIsAttached;
@@ -259,6 +261,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
 
         if (mPendingIntent != null) {
+            Log.d(TAG, "Open video from pending intent");
             openVideoFromIntent(mPendingIntent);
             mPendingIntent = null;
             return;

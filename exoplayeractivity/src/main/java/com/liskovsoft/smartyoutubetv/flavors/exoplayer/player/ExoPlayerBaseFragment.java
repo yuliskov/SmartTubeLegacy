@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -323,6 +324,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
      * @param intent video info
      */
     protected void openVideoFromIntent(Intent intent) {
+        Log.d(TAG, "Open video from intent=" + intent);
         releasePlayer(); // forget previous state
         shouldAutoPlay = true;
         clearResumePosition();

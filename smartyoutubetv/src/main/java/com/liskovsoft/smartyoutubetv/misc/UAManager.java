@@ -1,7 +1,11 @@
 package com.liskovsoft.smartyoutubetv.misc;
 import android.content.Context;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UAManager {
+    public static final String USER_AGENT = "user-agent";
     /**
      * New UI
      */
@@ -15,17 +19,20 @@ public class UAManager {
      * Old UI (with exit dialog)
      */
     private final static String PHILIPS_SMART_TV = "Opera/9.80 (Linux armv7l; HbbTV/1.2.1 (; Philips; 40HFL5010T12; ; PHILIPSTV; CE-HTML/1.0 NETTV/4.4.1 SmartTvA/3.0.0 Firmware/004.002.036.135 (PhilipsTV, 3.1.1,)en) ) Presto/2.12.407 Version/12.50";
-    // private final SmartPreferences mPrefs;
+    private final HashMap<String, String> mHeaders;
+    private final Context mContext;
 
     public UAManager(Context ctx) {
-        // mPrefs = SmartPreferences.instance(ctx);
+        mContext = ctx;
+        mHeaders = new HashMap<>();
+        mHeaders.put(USER_AGENT, getUA());
     }
 
     public String getUA() {
-        //boolean oldUI = mPrefs.getBootstrapOldUI();
-        //
-        //return oldUI ? sPhilipsSmartTV : sLGSmartTV;
-
         return LG_SMART_TV;
+    }
+
+    public Map<String, String> getUAHeaders() {
+        return mHeaders;
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerButtonsManager {
+    private static final String TAG = PlayerButtonsManager.class.getSimpleName();
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
@@ -68,6 +70,8 @@ public class PlayerButtonsManager {
             ToggleButtonBase btn = mRootView.findViewById(btnId);
             btn.enable(); // could be set unchecked by previous video
             btn.setChecked(isChecked);
+
+            Log.d(TAG, "Init button: " + entry.getValue() + ": " + isChecked);
         }
     }
 
@@ -83,6 +87,8 @@ public class PlayerButtonsManager {
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         final int id = button.getId();
+
+        Log.d(TAG, "Button is checked: " + mIdTagMapping.get(id) + ": " + isChecked);
 
         mButtonStates.put(id, isChecked);
 

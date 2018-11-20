@@ -35,6 +35,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // because this process takes some time
         initBrowserFragment();
         initPlayerFragment();
+        Log.d(TAG, "creating fragments...");
         setActiveFragment(mBrowserFragment, true);
     }
 
@@ -64,20 +65,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    protected void setActiveFragment(GenericFragment fragment, long delayedPauseMS) {
-        if (mBrowserFragment == null || mPlayerFragment == null) {
-            return;
-        }
-
-        GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
-
-        removeFromContainer(removeCandidate);
-        addToContainer(fragment);
-
-        super.setActiveFragment(fragment, delayedPauseMS);
-    }
-
-    @Override
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (mBrowserFragment == null || mPlayerFragment == null) {
             return;
@@ -89,8 +76,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
 
-        if (pausePrevious)
+        if (pausePrevious) {
+            Log.d(TAG, "Remove fragment " + removeCandidate.getClass().getSimpleName());
             removeFromContainer(removeCandidate);
+        }
+
+        Log.d(TAG, "Add fragment " + fragment.getClass().getSimpleName());
         addToContainer(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
@@ -110,11 +101,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private void addToContainer(GenericFragment fragment) {
-        // can't do this here because initialization takes time
-        //if (!isInitialized(fragment)) {
-        //    initFragment(fragment);
-        //}
-
         ViewGroup container = findViewById(R.id.exo_container);
         View child = fragment.getWrapper();
 
@@ -143,6 +129,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "opening player for intent=" + intent);
                 setActiveFragment(mPlayerFragment, true); // delay gives a chance to webview to update it's history
                 mPlayerFragment.openVideo(intent);
             }
@@ -156,6 +143,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onPlayerClosed(Intent intent) {
+        Log.d(TAG, "player is closed with intent=" + intent);
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
         if (suggestionsClicked) {
             setActiveFragment(mBrowserFragment, false);

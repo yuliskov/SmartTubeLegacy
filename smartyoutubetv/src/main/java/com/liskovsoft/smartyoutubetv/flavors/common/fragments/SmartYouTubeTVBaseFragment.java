@@ -29,14 +29,10 @@ import com.liskovsoft.smartyoutubetv.misc.UAManager;
 import edu.mit.mobile.android.appupdater.addons.PermissionManager;
 import android.annotation.SuppressLint;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here
-    private Map<String, String> mHeaders;
     private KeysTranslator mTranslator;
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
     private final static String TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
@@ -106,14 +102,12 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void createController(Bundle icicle) {
-        Log.i(TAG, "SmartYouTubeTVActivityBase::createController");
-        mHeaders = new HashMap<>();
-        mHeaders.put("user-agent", mUAManager.getUA());
+        Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + getActivity().getIntent());
 
         mController = new SimpleUIController(this);
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
-        mController.setDefaultHeaders(mHeaders);
+        mController.setDefaultHeaders(mUAManager.getUAHeaders());
         Intent intent = (icicle == null) ? transformIntentData(getActivity().getIntent()) : null;
         mController.start(intent);
         setController(mController);
