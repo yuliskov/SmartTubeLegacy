@@ -117,12 +117,12 @@ var ExoUtils = {
 
     enablePlayerUi: function() {
         Utils.show(ExoConstants.bottomUiSelector);
-        Utils.show(ExoConstants.cornerButtonsSelector);
+        // Utils.show(ExoConstants.cornerButtonsSelector);
     },
 
     disablePlayerUi: function() {
         Utils.hide(ExoConstants.bottomUiSelector);
-        Utils.hide(ExoConstants.cornerButtonsSelector);
+        // Utils.hide(ExoConstants.cornerButtonsSelector);
     },
 
     /**

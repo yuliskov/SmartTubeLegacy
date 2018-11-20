@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,6 +16,12 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // fixing bug where player's menu shown on boot and browser forgot user agent
+            Log.d(TAG, "State not null... clearing");
+            savedInstanceState.clear();
+        }
+
         super.onCreate(savedInstanceState);
 
         hideTitleBar();

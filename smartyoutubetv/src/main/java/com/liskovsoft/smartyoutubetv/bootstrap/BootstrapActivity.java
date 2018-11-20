@@ -166,7 +166,7 @@ public class BootstrapActivity extends ActivityBase {
 
     private void startActivity(Context ctx, Class clazz) {
         Intent intent = getIntent(); // modify original intent
-        // NOTE: make activity transparent (non-reachable from launcher or from resents)
+        // NOTE: make activity transparent (non-reachable from launcher or from resent list)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
         
