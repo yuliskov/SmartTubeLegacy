@@ -77,7 +77,7 @@ public class AppUpdateChecker {
     public static final String SHARED_PREFERENCES_NAME = "edu.mit.mobile.android.appupdater.preferences";
     public static final String PREF_ENABLED = "enabled", PREF_MIN_INTERVAL = "min_interval", PREF_LAST_UPDATED = "last_checked";
 
-    private final String mVersionListUrl;
+    private final String[] mVersionListUrls;
     private int currentAppVersion;
 
     private JSONObject pkgInfo;
@@ -94,8 +94,17 @@ public class AppUpdateChecker {
      * @param updateListener
      */
     public AppUpdateChecker(Context context, String versionListUrl, OnAppUpdateListener updateListener) {
+        this(context, new String[]{versionListUrl}, updateListener);
+    }
+
+    /**
+     * @param context
+     * @param versionListUrls url array, tests url by access, first worked is used
+     * @param updateListener
+     */
+    public AppUpdateChecker(Context context, String[] versionListUrls, OnAppUpdateListener updateListener) {
+        mVersionListUrls = versionListUrls;
         mContext = context;
-        mVersionListUrl = versionListUrl;
         mUpdateListener = updateListener;
 
         try {
@@ -108,7 +117,7 @@ public class AppUpdateChecker {
         mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         // defaults are kept in the preference file for ease of tweaking
         // TODO put this on a thread somehow
-        PreferenceManager.setDefaultValues(mContext, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, false);
     }
 
     // min interval is stored as a string so a preference editor could potentially edit it using a text edit widget
@@ -172,7 +181,7 @@ public class AppUpdateChecker {
         Log.d(TAG, "checking for updates...");
         if (versionTask == null) {
             versionTask = new GetVersionJsonTask();
-            versionTask.execute(mVersionListUrl);
+            versionTask.execute(mVersionListUrls);
         } else {
             Log.w(TAG, "checkForUpdates() called while already checking for updates. Ignoring...");
         }
@@ -262,7 +271,7 @@ public class AppUpdateChecker {
 
     private GetVersionJsonTask versionTask;
 
-    private class GetVersionJsonTask extends AsyncTask<String, Integer, JSONObject> {
+    private class GetVersionJsonTask extends AsyncTask<String[], Integer, JSONObject> {
         private String errorMsg = null;
 
         @Override
@@ -272,9 +281,21 @@ public class AppUpdateChecker {
         }
 
         @Override
-        protected JSONObject doInBackground(String... params) {
+        protected JSONObject doInBackground(String[]... params) {
             publishProgress(0);
-            final String urlStr = params[0];
+            final String[] urls = params[0];
+            JSONObject jo = null;
+
+            for (String url : urls) {
+                jo = getJSON(url);
+                if (jo != null)
+                    break;
+            }
+
+            return jo;
+        }
+
+        private JSONObject getJSON(String urlStr) {
             JSONObject jo = null;
             try {
                 publishProgress(50);
@@ -283,11 +304,11 @@ public class AppUpdateChecker {
                 MyRequest request = new MyRequest(Uri.parse(urlStr));
                 long reqId = manager.enqueue(request);
 
-                // put this line before json parsing that could produce an error
-                mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
-
                 InputStream content = manager.getStreamForDownloadedFile(reqId);
                 jo = new JSONObject(StreamUtils.inputStreamToString(content));
+
+                // this line may not be executed because of json error above
+                mPrefs.edit().putLong(PREF_LAST_UPDATED, System.currentTimeMillis()).apply();
             } catch (final IllegalStateException | JSONException ex) {
                 Log.e(TAG, ex.getMessage(), ex);
                 errorMsg = Helpers.toString(ex);

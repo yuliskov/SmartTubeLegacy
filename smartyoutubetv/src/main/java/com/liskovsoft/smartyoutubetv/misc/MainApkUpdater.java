@@ -32,8 +32,9 @@ public class MainApkUpdater {
 
     private void checkForUpdates() {
         String updateUrl = mContext.getString(R.string.update_url);
+        String updateUrl2 = mContext.getString(R.string.update_url2);
         OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrl, dialog);
+        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, new String[]{updateUrl, updateUrl2}, dialog);
         updateChecker.forceCheckForUpdatesIfStalled(); // minimize server payload
     }
 }
