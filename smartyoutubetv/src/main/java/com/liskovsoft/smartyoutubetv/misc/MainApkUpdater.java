@@ -31,10 +31,10 @@ public class MainApkUpdater {
     }
 
     private void checkForUpdates() {
-        String updateUrl = mContext.getString(R.string.update_url);
-        String updateUrl2 = mContext.getString(R.string.update_url2);
+        String updateUrlGDrive = mContext.getString(R.string.update_url_gdrive);
+        String updateUrlGitHub = mContext.getString(R.string.update_url_github);
         OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, new String[]{updateUrl, updateUrl2}, dialog);
+        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, new String[]{updateUrlGDrive, updateUrlGitHub}, dialog);
         // to minimize server payload use forceCheckForUpdatesIfStalled()
         updateChecker.forceCheckForUpdates();
     }

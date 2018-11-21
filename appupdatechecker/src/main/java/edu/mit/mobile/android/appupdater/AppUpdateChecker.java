@@ -220,7 +220,7 @@ public class AppUpdateChecker {
         }
         final int latestVersionNumber = versionMap.firstKey();
         final String latestVersionName = versionMap.get(latestVersionNumber).getString("versionName");
-        JSONArray urls = pkgInfo.getJSONArray("downloadUrl");
+        JSONArray urls = pkgInfo.getJSONArray("downloadUrlList");
         final Uri[] downloadUrls = parse(urls);
 
         if (currentAppVersion > latestVersionNumber) {
