@@ -283,8 +283,11 @@ public class AppUpdateChecker {
         @Override
         protected JSONObject doInBackground(String[]... params) {
             publishProgress(0);
+
             final String[] urls = params[0];
             JSONObject jo = null;
+
+            publishProgress(50);
 
             for (String url : urls) {
                 jo = getJSON(url);
@@ -298,8 +301,6 @@ public class AppUpdateChecker {
         private JSONObject getJSON(String urlStr) {
             JSONObject jo = null;
             try {
-                publishProgress(50);
-
                 MyDownloadManager manager = new MyDownloadManager(mContext);
                 MyRequest request = new MyRequest(Uri.parse(urlStr));
                 long reqId = manager.enqueue(request);
