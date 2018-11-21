@@ -22,7 +22,7 @@ import java.io.*;
  *   atualizaApp.execute("http://serverurl/appfile.apk");
  * </pre>
  */
-public class UpdateApp extends AsyncTask<String,Void,Void> {
+public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private static final String TAG = UpdateApp.class.getSimpleName();
     private final Context mContext;
 
@@ -31,12 +31,19 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
     }
 
     @Override
-    protected Void doInBackground(String... arg0) {
-        String packagePath = arg0[0];
-        if (URLUtil.isValidUrl(packagePath)) {
-            packagePath = downloadPackage(packagePath);
+    protected Void doInBackground(Uri[]... args) {
+        Uri[] uris = args[0];
+
+        String path = null;
+        for (Uri uri : uris) {
+            if (URLUtil.isValidUrl(uri.toString())) {
+                path = downloadPackage(uri.toString());
+                if (path != null)
+                    break;
+            }
         }
-        installPackage(packagePath);
+
+        installPackage(path);
         return null;
     }
 
@@ -80,7 +87,7 @@ public class UpdateApp extends AsyncTask<String,Void,Void> {
             path = manager.getUriForDownloadedFile(id).getPath();
         } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
             Log.e(TAG, ex.getMessage(), ex);
-            MessageHelpers.showMessage(mContext, TAG, ex);
+            // MessageHelpers.showMessage(mContext, TAG, ex);
         }
         return path;
     }

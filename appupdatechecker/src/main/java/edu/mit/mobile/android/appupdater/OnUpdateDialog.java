@@ -19,7 +19,7 @@ import java.util.List;
 public class OnUpdateDialog implements OnAppUpdateListener {
     private final Context mContext;
     private final CharSequence mAppName;
-    private Uri mDownloadUri;
+    private Uri[] mDownloadUris;
     private final Handler mHandler;
     private static final int MSG_SHOW_DIALOG = 1;
     private Dialog mDialog;
@@ -46,8 +46,8 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         };
     }
 
-    public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri downloadUri) {
-        this.mDownloadUri = downloadUri;
+    public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris) {
+        this.mDownloadUris = downloadUris;
 
         if (!isLatestVersion) {
             final Builder db = new Builder(mContext);
@@ -75,7 +75,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
-                    downloadAndInstall(mDownloadUri);
+                    downloadAndInstall(mDownloadUris);
                 case Dialog.BUTTON_NEGATIVE:
                     postpone();
             }
@@ -87,8 +87,8 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         
     }
 
-    private void downloadAndInstall(Uri downloadUri) {
+    private void downloadAndInstall(Uri[] downloadUris) {
         UpdateApp updateApp = new UpdateApp(mContext);
-        updateApp.execute(downloadUri.toString());
+        updateApp.execute(downloadUris);
     }
 }

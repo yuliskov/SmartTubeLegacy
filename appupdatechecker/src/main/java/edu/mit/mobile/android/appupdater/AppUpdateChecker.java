@@ -20,8 +20,10 @@ package edu.mit.mobile.android.appupdater;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -217,17 +219,18 @@ public class AppUpdateChecker {
         }
         final int latestVersionNumber = versionMap.firstKey();
         final String latestVersionName = versionMap.get(latestVersionNumber).getString("versionName");
-        final Uri downloadUri = Uri.parse(pkgInfo.getString("downloadUrl"));
+        JSONArray urls = pkgInfo.getJSONArray("downloadUrl");
+        final Uri[] downloadUrls = parse(urls);
 
         if (currentAppVersion > latestVersionNumber) {
             Log.d(TAG, "We're newer than the latest published version (" + latestVersionName + "). Living in the future...");
-            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
+            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUrls);
             return;
         }
 
         if (currentAppVersion == latestVersionNumber) {
             Log.d(TAG, "We're at the latest version (" + currentAppVersion + ")");
-            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUri);
+            mUpdateListener.appUpdateStatus(true, latestVersionName, null, downloadUrls);
             return;
         }
 
@@ -243,7 +246,23 @@ public class AppUpdateChecker {
             }
         }
 
-        mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUri);
+        mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUrls);
+    }
+
+    private Uri[] parse(JSONArray urls) {
+        List<Uri> res = new ArrayList<>();
+        for (int i = 0; i < urls.length(); i++) {
+            String url = null;
+            try {
+                url = urls.getString(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (url != null)
+                res.add(Uri.parse(url));
+        }
+        return res.toArray(new Uri[] {});
     }
 
     private class VersionCheckException extends Exception {
