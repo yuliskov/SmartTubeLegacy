@@ -12,6 +12,7 @@ console.log("Scripts::Running core script exo_helpers.js");
  * @constructor empty
  */
 var ExoUtils = {
+    TAG: 'ExoUtils',
     FIRST_REVISION: 'first_revision',
     SECOND_REVISION: 'second_revision',
 
@@ -43,6 +44,7 @@ var ExoUtils = {
     // loadeddata (first frame of the video has been loaded)
     // playing
     preparePlayer: function() {
+        var $this = this;
         this.disablePlayerUi();
         var player = Utils.$('video');
         var playbackAllowedMS = 1000;
@@ -50,25 +52,28 @@ var ExoUtils = {
         if (!player || player.preparePlayerDone)
             return;
 
-        Utils.overrideProp2(player, 'volume', 0);
-
         // we can't pause video because history will not work
-        function onLoad() {
-            console.log('ExoUtils: video has been loaded into webview... force start playback');
-            player.play(); // start playback to invoke history update
-        }
+        // function onLoad() {
+        //     Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
+        //     setTimeout(function() {
+        //         player.play(); // start playback to invoke history update
+        //         onPlaying();
+        //     }, playbackAllowedMS);
+        // }
 
         function onPlaying() {
-            console.log('ExoUtils: playback just started... pausing...');
             setTimeout(function() {
+                Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
                 player.pause(); // prevent background playback
             }, playbackAllowedMS);
         }
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
-        player.addEventListener(DefaultEvents.PLAYER_PLAY, onPlaying, false);
+        // player.addEventListener(DefaultEvents.PLAYER_PLAY, onLoad, false);
+        player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
+
+        Utils.overrideProp2(player, 'volume', 0);
 
         player.preparePlayerDone = true;
     },
