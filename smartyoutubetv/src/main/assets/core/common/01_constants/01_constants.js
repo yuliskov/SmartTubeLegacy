@@ -17,8 +17,8 @@ var DefaultEvents = {
     PLAYER_DATA_LOADED: 'loadeddata',
     PLAYER_START_LOADING: 'loadstart',
     PLAYER_PLAYING: 'playing',
+    PLAYER_PLAY: 'play',
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
-    HASH_CHANGE: 'hashchange',
-    PLAYER_PLAY: 'play'
+    HASH_CHANGE: 'hashchange'
 };
