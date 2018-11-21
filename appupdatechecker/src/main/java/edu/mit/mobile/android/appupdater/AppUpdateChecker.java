@@ -168,6 +168,7 @@ public class AppUpdateChecker {
     }
 
     /**
+     * Minimize server payload!<br/>
      * Like {@link #forceCheckForUpdates} but only if prev update was long enough
      */
     public void forceCheckForUpdatesIfStalled() {
