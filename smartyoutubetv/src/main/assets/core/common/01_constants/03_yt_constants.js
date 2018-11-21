@@ -7,9 +7,9 @@ console.log("Scripts::Running script yt_constants.js");
 var YouTubeConstants = {
     // CSS Selectors
     APP_EVENTS_RECEIVER_SELECTOR: '#leanback', // div that receives keys events for app
-    DIALOG_WINDOW_SELECTOR: '#dialog-stage',
-    DIALOG_CANCEL_BUTTON_SELECTOR: '#dialog-cancel-button',
-    DIALOG_OK_BUTTON_SELECTOR: '#dialog-ok-button',
+    DIALOG_WINDOW_SELECTOR: ['#dialog-stage', '#overlay-stage'],
+    DIALOG_CANCEL_BUTTON_SELECTOR: ['#dialog-cancel-button', '.overlay-partials-menu-item'],
+    DIALOG_OK_BUTTON_SELECTOR: ['#dialog-ok-button', '.overlay-partials-menu-item'],
     APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
     SEARCH_FIELD_SELECTOR: '#search-input',
     PLAYER_EVENTS_RECEIVER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)

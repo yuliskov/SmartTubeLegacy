@@ -48,11 +48,11 @@ var Utils = {
 
     $: function(selector) {
         // allow to use arrays as selectors like ['a', 'b', 'c']
-        // return first element existed element
+        // return first element that exists
         if (this.isArray(selector)) {
             for (var i = 0; i < selector.length; i++) {
                 var el = document.querySelector(selector[i]);
-                if (el != null)
+                if (el && el.children.length)
                     return el;
             }
             return null;
