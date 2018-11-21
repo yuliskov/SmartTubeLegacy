@@ -1,7 +1,5 @@
-/* hide icons in the bottom-right corner (like search) */
-div#legend > div.search,
-div#legend > div.space,
-div#legend > div.delete {
+/* hide all icons from the bottom-right corner, except back icon */
+div#legend > div.legend-item:not(.airstream-back) {
     display: none !important;
 }
 
