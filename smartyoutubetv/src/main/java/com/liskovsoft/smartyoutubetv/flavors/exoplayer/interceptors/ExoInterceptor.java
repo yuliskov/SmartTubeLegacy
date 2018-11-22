@@ -41,6 +41,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private String mCurrentUrl;
     public static final String VIDEO_DATA_URL = "get_video_info";
     private static final String VIDEO_ID_PARAM = "video_id";
+    private boolean mPlayerDataLoadDone;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -58,13 +59,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         }
 
         private void pauseBrowser() {
-            new Handler(mContext.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mManager.isDoingPlayback())
-                        mFragmentsManager.pauseBrowser();
-                }
-            });
+            if (mPlayerDataLoadDone)
+                return;
+
+            mPlayerDataLoadDone = true;
+            if (mManager.isDone()) // player is playing some time
+                mFragmentsManager.pauseBrowser();
         }
 
         private void returnToPlayer() {
@@ -105,6 +105,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             Log.d(TAG, "Video canceled: " + url);
             return null;
         }
+
+        mPlayerDataLoadDone = false;
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
@@ -174,7 +176,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         if (playerIntent == null) {
             Log.d(TAG, "Switching to the running player");
-            mFragmentsManager.openExoPlayer(null); // player is already running
+            mFragmentsManager.openExoPlayer(null, true); // player is opened from suggestions
             return;
         }
 
@@ -182,7 +184,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             @Override
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer fragment");
-                mFragmentsManager.openExoPlayer(playerIntent);
+                mFragmentsManager.openExoPlayer(playerIntent, mPlayerDataLoadDone);
+                mManager.onDone();
             }
 
             @Override

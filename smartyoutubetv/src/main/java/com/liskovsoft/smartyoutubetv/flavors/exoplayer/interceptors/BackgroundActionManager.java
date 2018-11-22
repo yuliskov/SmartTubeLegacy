@@ -15,6 +15,7 @@ public class BackgroundActionManager {
     private long mExitTime;
     private long mPrevCallTime;
     private String mPrevVideoId;
+    private boolean mDone;
 
     public boolean cancelPlayback(String url) {
         if (!url.contains(ExoInterceptor.VIDEO_DATA_URL))
@@ -55,22 +56,30 @@ public class BackgroundActionManager {
 
         mPrevVideoId = videoId;
         mPrevCallTime = System.currentTimeMillis();
+        mDone = false;
 
         return false;
-    }
-
-    public boolean isDoingPlayback() {
-        return mPrevVideoId != null;
     }
 
     public void onClose() {
         Log.d(TAG, "Video is closed");
         mExitTime = System.currentTimeMillis();
         mPrevVideoId = null;
+        mDone = false;
     }
 
     public void onCancel() {
         Log.d(TAG, "Video is canceled");
         mPrevVideoId = null;
+        mDone = false;
+    }
+
+    public void onDone() {
+        Log.d(TAG, "Video has been opened");
+        mDone = true;
+    }
+
+    public boolean isDone() {
+        return mDone;
     }
 }

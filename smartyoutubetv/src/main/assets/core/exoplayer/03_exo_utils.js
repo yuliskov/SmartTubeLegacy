@@ -1,4 +1,4 @@
-console.log("Scripts::Running core script exo_helpers.js");
+console.log("Scripts::Running core script exo_utils.js");
 
 /**
  * Note: if you intend to rename this var don't forget to do the same inside
@@ -47,7 +47,8 @@ var ExoUtils = {
         var $this = this;
         this.disablePlayerUi();
         var player = Utils.$('video');
-        var playbackAllowedMS = 1000;
+        var onPlayDelayMS = 1000;
+        var onLoadDelayMS = 2000;
         var PLAYER_DATA_LOAD = "player_data_load";
 
         if (!player || player.preparePlayerDone)
@@ -58,14 +59,14 @@ var ExoUtils = {
             Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
             setTimeout(function() {
                 $this.sendAction(PLAYER_DATA_LOAD);
-            }, playbackAllowedMS);
+            }, onLoadDelayMS);
         }
 
         function onPlaying() {
             setTimeout(function() {
                 Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
                 player.pause(); // prevent background playback
-            }, playbackAllowedMS);
+            }, onPlayDelayMS);
         }
 
         // once player is created it will be reused by other videos
