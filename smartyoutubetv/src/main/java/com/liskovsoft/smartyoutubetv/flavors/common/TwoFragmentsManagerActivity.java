@@ -108,24 +108,19 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         ViewGroup container = findViewById(R.id.exo_container);
         View child = fragment.getWrapper();
 
-        // should be put on the top
-        if (containsChild(container, child)) {
-            container.removeView(child);
+        if (!containsChild(container, child)) {
+            container.addView(child);
+            return;
         }
 
-        container.addView(child);
+        // ensure that view is placed above others
 
-        //if (!containsChild(container, child)) {
-        //    container.addView(child);
-        //    return;
-        //}
-        //
-        //int idx = container.indexOfChild(child);
-        //int count = container.getChildCount();
-        //if ((idx + 1) != count) { // should be put on top
-        //    container.removeView(child);
-        //    container.addView(child);
-        //}
+        int idx = container.indexOfChild(child);
+        int count = container.getChildCount();
+        if ((idx + 1) != count) { // should be the top view
+            container.removeView(child);
+            container.addView(child);
+        }
     }
 
     private static boolean containsChild(ViewGroup container, View view) {

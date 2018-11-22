@@ -3,8 +3,8 @@ console.log("Scripts::Running core script track_end_button.js");
 function TrackEndFakeButton(selector) {
     this.selector = selector;
     this.retryCount = 5;
-    this.retryDelay = 500;
-    this.checkTimeoutMS = 2000;
+    this.retryDelayMS = 500;
+    this.checkTimeoutMS = 3000;
 
     this.playerJumpToEnd = function() {
         console.log("TrackEndFakeButton: I'm about to start off!");
@@ -12,8 +12,8 @@ function TrackEndFakeButton(selector) {
 
         var player = Utils.$('video');
         if (player) {
-            player.pause(); // seems that pause helps somehow to force playback
-            player.play();
+            // player.pause(); // seems that pause helps somehow to force playback
+            // player.play();
             console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
 
             if (isNaN(player.duration) && this.retryCount > 0) {
@@ -22,7 +22,7 @@ function TrackEndFakeButton(selector) {
                 this.pressNextButton();
             } else {
                 player.currentTime = player.duration - 1; // seek to the end (minus one second!)
-                player.pause(); // seems that pause helps somehow to force playback
+                // player.pause(); // seems that pause helps somehow to force playback
                 player.play();
                 this.startPlaybackCheck(player);
                 console.log("TrackEndFakeButton: after jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
@@ -52,7 +52,7 @@ function TrackEndFakeButton(selector) {
         var $this = this;
         setTimeout(function() {
             $this.playerJumpToEnd();
-        }, this.retryDelay);
+        }, this.retryDelayMS);
     };
 
     this.getChecked = function() {

@@ -200,9 +200,13 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     }
     
     public void onPlayerClosed(Intent intent) {
+        // prevent browser stop
+        mPlayerDataLoadDone = true;
+
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
         if (!suggestionsClicked)
             mManager.onClose();
+
         mActionSender.bindActions(intent);
     }
 
