@@ -16,7 +16,10 @@ public class BackgroundActionManager {
     private long mPrevCallTime;
     private String mPrevVideoId;
 
-    public boolean cancelAction(String url) {
+    public boolean cancelPlayback(String url) {
+        if (!url.contains(ExoInterceptor.VIDEO_DATA_URL))
+            return true;
+
         Log.d(TAG, "Video closed ms ago: " + (System.currentTimeMillis() - mExitTime));
 
         // Search screen and XWalk fix: same video intercepted twice (Why??)
@@ -54,6 +57,10 @@ public class BackgroundActionManager {
         mPrevCallTime = System.currentTimeMillis();
 
         return false;
+    }
+
+    public boolean isDoingPlayback() {
+        return mPrevVideoId != null;
     }
 
     public void onClose() {

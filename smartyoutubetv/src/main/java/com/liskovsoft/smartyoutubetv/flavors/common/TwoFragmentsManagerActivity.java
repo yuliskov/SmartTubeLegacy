@@ -101,23 +101,35 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private void addToContainer(GenericFragment fragment) {
+        if (!isInitialized(fragment)) {
+            return;
+        }
+
         ViewGroup container = findViewById(R.id.exo_container);
         View child = fragment.getWrapper();
 
-        if (!containsChild(container, child)) {
-            container.addView(child);
+        // should be put on the top
+        if (containsChild(container, child)) {
+            container.removeView(child);
         }
+
+        container.addView(child);
+
+        //if (!containsChild(container, child)) {
+        //    container.addView(child);
+        //    return;
+        //}
+        //
+        //int idx = container.indexOfChild(child);
+        //int count = container.getChildCount();
+        //if ((idx + 1) != count) { // should be put on top
+        //    container.removeView(child);
+        //    container.addView(child);
+        //}
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View child = container.getChildAt(i);
-            if (child.equals(view)) {
-                return true;
-            }
-        }
-
-        return false;
+        return container.indexOfChild(view) != -1;
     }
 
     private boolean isInitialized(GenericFragment fragment) {
@@ -130,10 +142,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             @Override
             public void run() {
                 Log.d(TAG, "opening player for intent=" + intent);
-                setActiveFragment(mPlayerFragment, true); // delay gives a chance to webview to update it's history
+
+                boolean doPause = intent == null;
+
+                setActiveFragment(mPlayerFragment, doPause); // delay gives a chance to webview to update it's history
                 mPlayerFragment.openVideo(intent);
             }
         });
+    }
+
+    @Override
+    public void pauseBrowser() {
+        pauseFragment(mBrowserFragment);
     }
 
     @Override
@@ -145,11 +165,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerClosed(Intent intent) {
         Log.d(TAG, "player is closed with intent=" + intent);
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
-        if (suggestionsClicked) {
-            setActiveFragment(mBrowserFragment, false);
-        } else {
-            setActiveFragment(mBrowserFragment, true);
-        }
+        setActiveFragment(mBrowserFragment, !suggestionsClicked);
         mPlayerListener.onPlayerClosed(intent);
     }
 

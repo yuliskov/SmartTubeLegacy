@@ -20,7 +20,7 @@ public class MainExoInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (url.contains("get_video_info")) {
+        if (url.contains(ExoInterceptor.VIDEO_DATA_URL)) {
             mCurrentInterceptor = mExoInterceptor;
             return true;
         }
@@ -29,8 +29,6 @@ public class MainExoInterceptor extends RequestInterceptor {
             mCurrentInterceptor = mCipherInterceptor;
             return true;
         }
-
-        // "videoplayback": MuteVideoInterceptor
 
         // useful places: ptracking, log_event, log_interaction
         // at this moment video should be added to history

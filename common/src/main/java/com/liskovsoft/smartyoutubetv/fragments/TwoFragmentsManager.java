@@ -6,4 +6,5 @@ public interface TwoFragmentsManager extends PlayerListener {
     void openExoPlayer(Intent intent);
     void setPlayerListener(PlayerListener listener);
     void onBrowserReady();
+    void pauseBrowser();
 }

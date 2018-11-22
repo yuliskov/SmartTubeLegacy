@@ -54,7 +54,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         resumeFragment(mFragment);
     }
 
-    private void resumeFragment(GenericFragment fragment) {
+    public void resumeFragment(GenericFragment fragment) {
         if (fragment == null) {
             return;
         }
@@ -77,7 +77,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         pauseFragment(mFragment);
     }
 
-    private void pauseFragment(GenericFragment fragment) {
+    public void pauseFragment(GenericFragment fragment) {
         if (fragment == null) {
             return;
         }

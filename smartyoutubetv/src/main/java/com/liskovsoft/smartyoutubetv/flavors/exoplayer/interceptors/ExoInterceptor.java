@@ -35,9 +35,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private static final String PLAYER_DATA_LOAD = "player_data_load";
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
+    public static final String VIDEO_DATA_URL = "get_video_info";
+    private static final String VIDEO_ID_PARAM = "video_id";
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -49,7 +52,19 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             String action = event.getResult();
             if (action.equals(CLOSE_SUGGESTIONS)) {
                 returnToPlayer();
+            } else if (action.equals(PLAYER_DATA_LOAD)) {
+                pauseBrowser();
             }
+        }
+
+        private void pauseBrowser() {
+            new Handler(mContext.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mManager.isDoingPlayback())
+                        mFragmentsManager.pauseBrowser();
+                }
+            });
         }
 
         private void returnToPlayer() {
@@ -86,7 +101,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
         mCurrentUrl = url;
 
-        if (mManager.cancelAction(url)) {
+        if (mManager.cancelPlayback(url)) {
             Log.d(TAG, "Video canceled: " + url);
             return null;
         }
@@ -153,7 +168,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
     private String extractVideoId() {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(mCurrentUrl);
-        return query.get("video_id");
+        return query.get(VIDEO_ID_PARAM);
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
