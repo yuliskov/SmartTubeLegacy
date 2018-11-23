@@ -207,6 +207,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void onBrowserReady() {
         Log.d(TAG, "Browser content started to load");
-         initBrowserTransparency();
+        initBrowserTransparency();
     }
 }

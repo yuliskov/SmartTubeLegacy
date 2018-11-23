@@ -4,7 +4,7 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
     this.retryCount = 5;
     this.retryDelayMS = 500;
-    this.checkTimeoutMS = 3000;
+    this.checkTimeoutMS = 2000;
 
     this.playerJumpToEnd = function() {
         console.log("TrackEndFakeButton: I'm about to start off!");

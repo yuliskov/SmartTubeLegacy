@@ -165,13 +165,11 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     private void bindTabToInjectors(Tab tab) {
         WebView w = tab.getWebView();
-        // mFormatInjector.add(w);
         mDecipherInjector.add(w);
         mGenericInjector.add(w);
     }
 
     private class LoadingManager {
-        private final String TAG = LoadingManager.class.getSimpleName();
         private final View mLoadingWidget;
 
         public LoadingManager(Activity ctx) {
