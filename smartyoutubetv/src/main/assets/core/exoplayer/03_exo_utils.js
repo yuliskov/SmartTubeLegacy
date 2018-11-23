@@ -49,29 +49,30 @@ var ExoUtils = {
         var player = Utils.$('video');
         var onPlayDelayMS = 1000;
         var onLoadDelayMS = 2000;
-        var PLAYER_DATA_LOAD = "player_data_load";
+        var PLAYBACK_STARTED = "playback_started";
 
         if (!player || player.preparePlayerDone)
             return;
 
-        // we can't pause video because history will not work
-        function onLoad() {
-            Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
-            setTimeout(function() {
-                $this.sendAction(PLAYER_DATA_LOAD);
-            }, onLoadDelayMS);
-        }
+        // // we can't pause video because history will not work
+        // function onLoad() {
+        //     Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
+        //     setTimeout(function() {
+        //         // $this.sendAction(PLAYER_DATA_LOAD);
+        //     }, onLoadDelayMS);
+        // }
 
         function onPlaying() {
             setTimeout(function() {
                 Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
+                $this.sendAction(PLAYBACK_STARTED);
                 player.pause(); // prevent background playback
             }, onPlayDelayMS);
         }
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
+        // player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
         Utils.overrideProp2(player, 'volume', 0);
@@ -123,12 +124,10 @@ var ExoUtils = {
 
     enablePlayerUi: function() {
         Utils.show(ExoConstants.bottomUiSelector);
-        // Utils.show(ExoConstants.cornerButtonsSelector);
     },
 
     disablePlayerUi: function() {
         Utils.hide(ExoConstants.bottomUiSelector);
-        // Utils.hide(ExoConstants.cornerButtonsSelector);
     },
 
     /**

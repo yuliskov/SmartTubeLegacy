@@ -132,23 +132,13 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void openExoPlayer(final Intent intent, final boolean pauseBrowser) {
+    public void openExoPlayer(final Intent intent) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "opening player for intent=" + intent);
-                setActiveFragment(mPlayerFragment, pauseBrowser);
+                setActiveFragment(mPlayerFragment, true);
                 mPlayerFragment.openVideo(intent);
-            }
-        });
-    }
-
-    @Override
-    public void pauseBrowser() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                pauseFragment(mBrowserFragment);
             }
         });
     }

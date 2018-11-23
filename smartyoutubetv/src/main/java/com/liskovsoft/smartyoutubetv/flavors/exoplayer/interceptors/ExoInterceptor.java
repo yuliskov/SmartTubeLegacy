@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -35,13 +36,14 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private static final String PLAYER_DATA_LOAD = "player_data_load";
+    private static final String PLAYBACK_STARTED = "playback_started";
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
     public static final String VIDEO_DATA_URL = "get_video_info";
     private static final String VIDEO_ID_PARAM = "video_id";
-    private boolean mPlayerDataLoadDone;
+    private boolean mPlaybackStarted;
+    private Listener mPlayerListener;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -53,18 +55,19 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             String action = event.getResult();
             if (action.equals(CLOSE_SUGGESTIONS)) {
                 returnToPlayer();
-            } else if (action.equals(PLAYER_DATA_LOAD)) {
-                pauseBrowser();
+            } else if (action.equals(PLAYBACK_STARTED)) {
+                playbackStarted();
             }
         }
 
-        private void pauseBrowser() {
-            if (mPlayerDataLoadDone)
+        private void playbackStarted() {
+            if (mPlaybackStarted) {
                 return;
+            }
 
-            mPlayerDataLoadDone = true;
-            if (mManager.isDone()) // player is playing some time
-                mFragmentsManager.pauseBrowser();
+            Log.d(TAG, "Playback is started");
+            mPlaybackStarted = true;
+            mPlayerListener.onDone();
         }
 
         private void returnToPlayer() {
@@ -106,7 +109,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             return null;
         }
 
-        mPlayerDataLoadDone = false;
+        mPlaybackStarted = false;
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
@@ -176,15 +179,19 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         if (playerIntent == null) {
             Log.d(TAG, "Switching to the running player");
-            mFragmentsManager.openExoPlayer(null, true); // player is opened from suggestions
+            mFragmentsManager.openExoPlayer(null); // player is opened from suggestions
             return;
         }
 
-        ActionsReceiver.Listener listener = new ActionsReceiver.Listener() {
+        mPlayerListener = new ActionsReceiver.Listener() {
             @Override
             public void onDone() {
+                if (!mPlaybackStarted) {
+                    return;
+                }
+
                 Log.d(TAG, "About to start ExoPlayer fragment");
-                mFragmentsManager.openExoPlayer(playerIntent, mPlayerDataLoadDone);
+                mFragmentsManager.openExoPlayer(playerIntent);
                 mManager.onDone();
             }
 
@@ -195,14 +202,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             }
         };
 
-        Runnable processor = new ActionsReceiver(mContext, playerIntent, listener);
+        Runnable processor = new ActionsReceiver(mContext, playerIntent, mPlayerListener);
         processor.run();
     }
     
     public void onPlayerClosed(Intent intent) {
-        // prevent browser stop
-        mPlayerDataLoadDone = true;
-
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
         if (!suggestionsClicked)
             mManager.onClose();

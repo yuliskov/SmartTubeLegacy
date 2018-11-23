@@ -12,7 +12,7 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 public abstract class FragmentManagerActivity extends FragmentActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
-    private GenericFragment mFragment;
+    private GenericFragment mActiveFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,30 +31,23 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
-    protected GenericFragment getActiveFragment() {
-        return mFragment;
-    }
-
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (fragment == null)
             throw new IllegalStateException("Active fragment can't be null");
 
-        if (pausePrevious)
-            pauseFragment();
+        if (mActiveFragment == fragment)
+            return;
 
-        mFragment = fragment;
+        if (pausePrevious) {
+            pauseFragment(mActiveFragment);
+        }
 
-        resumeFragment();
+        mActiveFragment = fragment;
+
+        resumeFragment(mActiveFragment);
     }
 
-    /**
-     * imitate of resuming of new activity
-     */
-    private void resumeFragment() {
-        resumeFragment(mFragment);
-    }
-
-    public void resumeFragment(GenericFragment fragment) {
+    private void resumeFragment(GenericFragment fragment) {
         if (fragment == null) {
             return;
         }
@@ -70,14 +63,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
         fragment.onResumeFragment();
     }
 
-    /**
-     * imitate pausing of old unused activity
-     */
-    private void pauseFragment() {
-        pauseFragment(mFragment);
-    }
-
-    public void pauseFragment(GenericFragment fragment) {
+    private void pauseFragment(GenericFragment fragment) {
         if (fragment == null) {
             return;
         }
@@ -96,39 +82,39 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mFragment.onNewIntent(intent);
+        mActiveFragment.onNewIntent(intent);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return mFragment.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
+        return mActiveFragment.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        return mFragment.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event);
+        return mActiveFragment.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return mFragment.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+        return mActiveFragment.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     @Override
     public void finish() {
         super.finish();
-        mFragment.finish();
+        mActiveFragment.finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mFragment.onBackPressed();
+        mActiveFragment.onBackPressed();
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        return mFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
+        return mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
     }
 
     private KeyEvent modifyEvent(KeyEvent event) {
@@ -137,13 +123,13 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-        return mFragment.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
+        return mActiveFragment.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mFragment.onRestoreInstanceState(savedInstanceState);
+        mActiveFragment.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
