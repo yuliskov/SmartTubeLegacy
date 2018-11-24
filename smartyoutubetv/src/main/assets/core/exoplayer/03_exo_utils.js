@@ -54,13 +54,13 @@ var ExoUtils = {
         if (!player || player.preparePlayerDone)
             return;
 
-        // // we can't pause video because history will not work
-        // function onLoad() {
-        //     Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
-        //     setTimeout(function() {
-        //         // $this.sendAction(PLAYER_DATA_LOAD);
-        //     }, onLoadDelayMS);
-        // }
+        // we can't pause video because history will not work
+        function onLoad() {
+            Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
+            setTimeout(function() {
+                // $this.sendAction(PLAYER_DATA_LOAD);
+            }, onLoadDelayMS);
+        }
 
         function onPlaying() {
             setTimeout(function() {
@@ -72,7 +72,7 @@ var ExoUtils = {
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        // player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
+        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
         Utils.overrideProp2(player, 'volume', 0);
