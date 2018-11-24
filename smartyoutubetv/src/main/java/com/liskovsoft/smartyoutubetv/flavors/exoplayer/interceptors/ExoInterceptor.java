@@ -44,6 +44,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private static final String VIDEO_ID_PARAM = "video_id";
     private boolean mPlaybackStarted;
     private Listener mPlayerListener;
+    private static final long FORCE_PLAYBACK_TIMEOUT_MS = 10_000;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -67,7 +68,10 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
             Log.d(TAG, "Playback is started");
             mPlaybackStarted = true;
-            mPlayerListener.onDone();
+
+            if (mManager.isDone()) {
+                mPlayerListener.onDone();
+            }
         }
 
         private void returnToPlayer() {
@@ -187,6 +191,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             @Override
             public void onDone() {
                 if (!mPlaybackStarted) {
+                    mManager.onDone();
+                    forcePlaybackCheck();
                     return;
                 }
 
@@ -205,7 +211,19 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         Runnable processor = new ActionsReceiver(mContext, playerIntent, mPlayerListener);
         processor.run();
     }
-    
+
+    /**
+     * Force to open the video if playback not started within specified timeout
+     */
+    private void forcePlaybackCheck() {
+        new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mReceiver.playbackStarted();
+            }
+        }, FORCE_PLAYBACK_TIMEOUT_MS);
+    }
+
     public void onPlayerClosed(Intent intent) {
         boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
         if (!suggestionsClicked)
