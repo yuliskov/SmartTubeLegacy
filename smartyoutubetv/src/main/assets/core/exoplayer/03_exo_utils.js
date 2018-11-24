@@ -47,8 +47,8 @@ var ExoUtils = {
         var $this = this;
         this.disablePlayerUi();
         var player = Utils.$('video');
-        var onPlayDelayMS = 1000;
-        var onLoadDelayMS = 2000;
+        var onPlayDelayMS = 2000;
+        var onLoadDelayMS = 1000;
         var PLAYBACK_STARTED = "playback_started";
 
         if (!player || player.preparePlayerDone)
@@ -58,7 +58,7 @@ var ExoUtils = {
         function onLoad() {
             Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
             setTimeout(function() {
-                // $this.sendAction(PLAYER_DATA_LOAD);
+                
             }, onLoadDelayMS);
         }
 

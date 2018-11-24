@@ -1,8 +1,8 @@
 /* hide title-bar */
-/* hide player's buttons (progress bar, play, pause etc) */
-/* hide debug panel */
 .watch-title-tray,
+/* hide player's buttons (progress bar, play, pause etc) */
 #transport-controls.transport-controls,
+/* hide debug panel */
 .html5-video-info-panel {
     display: none !important;
 }
