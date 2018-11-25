@@ -69,9 +69,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             Log.d(TAG, "Playback is started");
             mPlaybackStarted = true;
 
-            if (mManager.isDone()) {
-                mPlayerListener.onDone();
-            }
+            new Handler(mContext.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    mFragmentsManager.pausePrevious();
+                }
+            });
         }
 
         private void returnToPlayer() {
@@ -183,22 +186,17 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
         if (playerIntent == null) {
             Log.d(TAG, "Switching to the running player");
-            mFragmentsManager.openExoPlayer(null); // player is opened from suggestions
+            mFragmentsManager.openExoPlayer(null, true); // player is opened from suggestions
             return;
         }
 
         mPlayerListener = new ActionsReceiver.Listener() {
             @Override
             public void onDone() {
-                if (!mPlaybackStarted) {
-                    mManager.onDone();
-                    forcePlaybackCheck();
-                    return;
-                }
-
                 Log.d(TAG, "About to start ExoPlayer fragment");
-                mFragmentsManager.openExoPlayer(playerIntent);
+                forcePlaybackCheck();
                 mManager.onDone();
+                mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
             }
 
             @Override

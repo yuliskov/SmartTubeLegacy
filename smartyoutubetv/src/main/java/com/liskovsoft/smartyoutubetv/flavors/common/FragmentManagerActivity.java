@@ -13,6 +13,7 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
+    private GenericFragment mPrevFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,23 @@ public abstract class FragmentManagerActivity extends FragmentActivity implement
 
         if (pausePrevious) {
             pauseFragment(mActiveFragment);
+            mPrevFragment = null;
+        } else {
+            // same fragment to be paused later
+            mPrevFragment = mActiveFragment;
         }
 
         mActiveFragment = fragment;
 
         resumeFragment(mActiveFragment);
+    }
+
+    protected void pausePrevious() {
+        if (mPrevFragment == null)
+            return;
+
+        pauseFragment(mPrevFragment);
+        mPrevFragment = null;
     }
 
     private void resumeFragment(GenericFragment fragment) {
