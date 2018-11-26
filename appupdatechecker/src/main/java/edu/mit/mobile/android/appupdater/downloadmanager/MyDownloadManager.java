@@ -144,25 +144,27 @@ public final class MyDownloadManager {
     }
 
     public static OkHttpClient.Builder enableTls12OnPreLollipop(OkHttpClient.Builder client) {
-        if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
-            try {
-                SSLContext sc = SSLContext.getInstance("TLSv1.2");
-                sc.init(null, null, null);
-                client.sslSocketFactory(new Tls12SocketFactory(sc.getSocketFactory()));
+        //if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
+        //    return custom client;
+        //}
 
-                ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                        .tlsVersions(TlsVersion.TLS_1_2)
-                        .build();
+        try {
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, null, null);
+            client.sslSocketFactory(new Tls12SocketFactory(sc.getSocketFactory()));
 
-                List<ConnectionSpec> specs = new ArrayList<>();
-                specs.add(cs);
-                specs.add(ConnectionSpec.COMPATIBLE_TLS);
-                specs.add(ConnectionSpec.CLEARTEXT);
+            ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_2)
+                    .build();
 
-                client.connectionSpecs(specs);
-            } catch (Exception exc) {
-                Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc);
-            }
+            List<ConnectionSpec> specs = new ArrayList<>();
+            specs.add(cs);
+            specs.add(ConnectionSpec.COMPATIBLE_TLS);
+            specs.add(ConnectionSpec.CLEARTEXT);
+
+            client.connectionSpecs(specs);
+        } catch (Exception exc) {
+            Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc);
         }
 
         return client;
