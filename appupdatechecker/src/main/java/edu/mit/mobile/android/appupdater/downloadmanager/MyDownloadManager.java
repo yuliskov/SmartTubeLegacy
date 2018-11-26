@@ -19,7 +19,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
@@ -79,6 +78,8 @@ public final class MyDownloadManager {
     private long mRequestId;
     // private GoogleResolver mResolver;
     private InputStream mResponseStream;
+    private int mTotalLen = 0;
+    private Uri mFileUri;
 
     public MyDownloadManager(Context context) {
         mContext = context;
@@ -86,7 +87,7 @@ public final class MyDownloadManager {
         mClient = createOkHttpClient();
     }
 
-    private void run() {
+    private void doDownload() {
         if (!isNetworkAvailable()) {
             MessageHelpers.showMessage(mContext, "Internet connection not available!");
         }
@@ -178,9 +179,13 @@ public final class MyDownloadManager {
 
             byte[] buffer = new byte[1024];
             int len1;
+            int totalLen = 0;
             while ((len1 = is.read(buffer)) != -1) {
+                totalLen += len1;
                 fos.write(buffer, 0, len1);
             }
+
+            mTotalLen = totalLen;
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         } finally {
@@ -209,7 +214,11 @@ public final class MyDownloadManager {
     public long enqueue(MyRequest request) {
         mRequest = request;
         mRequestId = new Random().nextLong();
-        run();
+        doDownload();
+        if (mRequest.mDestinationUri != null) {
+            mFileUri = streamToFile(mResponseStream, getDestination());
+        }
+
         return mRequestId;
     }
 
@@ -218,7 +227,16 @@ public final class MyDownloadManager {
     }
 
     public Uri getUriForDownloadedFile(long requestId) {
-        return streamToFile(mResponseStream, getDestination());
+        return mFileUri;
+    }
+
+    /**
+     * Length in bytes of the file that obtained via {@link #getUriForDownloadedFile(long)}
+     * @param requestId unique request id
+     * @return length of the file in bytes
+     */
+    public int getSizeForDownloadedFile(long requestId) {
+        return mTotalLen;
     }
 
     public InputStream getStreamForDownloadedFile(long requestId) {

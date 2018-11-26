@@ -9,4 +9,5 @@
     <string name="pref_min_interval_title">Minimum update frequency</string>
     <string name="pref_min_interval_summary">Checks for updates at most this many minutes</string>
     <string name="no_external_storage_error">Can\'t install update. External storage does not exist.</string>
+    <string name="cant_download_msg">Can\'t download update. Please, check later.</string>
 </resources>

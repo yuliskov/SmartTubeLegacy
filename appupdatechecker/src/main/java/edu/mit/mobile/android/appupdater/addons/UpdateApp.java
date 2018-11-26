@@ -9,6 +9,7 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.*;
 import android.widget.Toast;
+import edu.mit.mobile.android.appupdater.R;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
@@ -43,7 +44,12 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             }
         }
 
-        installPackage(path);
+        if (path != null) {
+            installPackage(path);
+        } else {
+            showMessage(mContext.getResources().getString(R.string.cant_download_msg));
+        }
+
         return null;
     }
 
@@ -83,8 +89,13 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             MyDownloadManager manager = new MyDownloadManager(mContext);
             MyRequest request = new MyRequest(Uri.parse(uri));
             request.setDestinationUri(Uri.fromFile(outputFile));
-            long id = manager.enqueue(request);
-            path = manager.getUriForDownloadedFile(id).getPath();
+            try {
+                long id = manager.enqueue(request);
+                int size = manager.getSizeForDownloadedFile(id);
+                path = size > 1_000_000 ? manager.getUriForDownloadedFile(id).getPath() : null; // it could be a web page instead of apk
+            } catch (IllegalStateException ex) { // 403 or something else
+                Log.d(TAG, ex.toString());
+            }
         } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
             Log.e(TAG, ex.getMessage(), ex);
             // MessageHelpers.showMessage(mContext, TAG, ex);
