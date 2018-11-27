@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppDialogBase" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/dialog_bg_color</item>
+        <item name="android:background">@color/dialog_bg_color</item>
+        <item name="android:textColor">@color/dialog_text_color</item>
+    </style>
+    <style name="AppDialog" parent="AppDialogBase"></style>
+</resources>

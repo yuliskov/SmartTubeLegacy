@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog.DataSource;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DataSource;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 
 import java.util.Map;

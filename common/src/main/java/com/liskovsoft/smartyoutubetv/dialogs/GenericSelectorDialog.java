@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs;
+package com.liskovsoft.smartyoutubetv.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
-import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.R;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class GenericSelectorDialog implements OnClickListener {
     }
 
     private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppDialog);
         alertDialog = builder.setTitle(mDataSource.getTitle()).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }

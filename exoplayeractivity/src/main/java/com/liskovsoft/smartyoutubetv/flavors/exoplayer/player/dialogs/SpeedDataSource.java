@@ -4,6 +4,7 @@ import android.content.Context;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

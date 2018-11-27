@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs;
 import android.content.Context;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.GenericSelectorDialog.DataSource;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DataSource;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
