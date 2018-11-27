@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,6 +49,7 @@ import java.util.Locale;
  * A time bar that shows a current position, buffered position, duration and ad markers.
  */
 public class PreciseTimeBar extends View implements TimeBar {
+    private static final String TAG = PreciseTimeBar.class.getSimpleName();
 
     /**
      * The threshold in dps above the bar at which touch events trigger fine scrub mode.
@@ -270,6 +272,7 @@ public class PreciseTimeBar extends View implements TimeBar {
         if (!isEnabled() || duration <= 0) {
             return false;
         }
+
         Point touchPosition = resolveRelativeTouchPosition(event);
         int x = touchPosition.x;
         int y = touchPosition.y;
@@ -278,7 +281,7 @@ public class PreciseTimeBar extends View implements TimeBar {
                 if (isInSeekBar(x, y)) {
                     startScrubbing();
                     positionScrubber(x);
-                    scrubPosition = getScrubberPosition();
+                    scrubPosition = getTouchedScrubberPosition();
                     update();
                     invalidate();
                     return true;
@@ -293,7 +296,7 @@ public class PreciseTimeBar extends View implements TimeBar {
                         lastCoarseScrubXPosition = x;
                         positionScrubber(x);
                     }
-                    scrubPosition = getScrubberPosition();
+                    scrubPosition = getTouchedScrubberPosition();
                     if (listener != null) {
                         listener.onScrubMove(this, scrubPosition);
                     }
@@ -494,6 +497,14 @@ public class PreciseTimeBar extends View implements TimeBar {
         //return (scrubberBar.width() * duration) / progressBar.width();
 
         return scrubPosition;
+    }
+
+    private long getTouchedScrubberPosition() {
+        if (progressBar.width() <= 0 || duration == C.TIME_UNSET) {
+            return 0;
+        }
+
+        return (scrubberBar.width() * duration) / progressBar.width();
     }
 
     private boolean isInSeekBar(float x, float y) {
