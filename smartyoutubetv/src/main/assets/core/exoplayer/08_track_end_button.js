@@ -18,7 +18,7 @@ function TrackEndFakeButton(selector) {
             console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
 
             if (this.retryCount <= 0) {
-                // this.pressNextButton();
+                this.pressNextButton();
                 return;
             }
 
@@ -30,7 +30,7 @@ function TrackEndFakeButton(selector) {
                 }, this.retryDelayMS);
             } else {
                 player.currentTime = player.duration - 1; // seek to the end (minus one second!)
-                // this.startPlaybackCheck(player);
+                this.startPlaybackCheck(player);
                 console.log("TrackEndFakeButton: after jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
             }
         }
