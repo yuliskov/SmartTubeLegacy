@@ -131,7 +131,7 @@ import java.util.TreeSet;
         isDisabled = selector.getRendererDisabled(rendererIndex);
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialog);
         alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
     }

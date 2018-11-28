@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppDialogBase" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowBackground">@color/dialog_bg_color</item>
-        <item name="android:background">@color/dialog_bg_color</item>
+        <!-- Disables dialog borders on old api < 17 -->
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/dialog_text_color</item>
+
+        <!-- Radio button colors (selected items) -->
+        <!-- See details in style: Base.V7.Theme.AppCompat.Light -->
+        <item name="colorPrimaryDark">@color/dialog_text_color</item>
+        <item name="colorPrimary">@color/dialog_text_color</item>
+        <item name="colorAccent">@color/dialog_text_color</item>
+
+        <!-- Selection color in the list (Android 4.4) -->
+        <!--<item name="selectableItemBackground">@drawable/abc_item_background_holo_light</item>-->
     </style>
-    <style name="AppDialog" parent="AppDialogBase"></style>
+    <style name="AppDialog" parent="AppDialogBase">
+        <!-- Disables dialog border on old api < 17 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>
