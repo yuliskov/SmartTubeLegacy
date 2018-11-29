@@ -5,8 +5,8 @@
 
 __SmartYouTubeTV: An YouTube client for set-top boxes and Android-based TVs:__
 
-Visit discussion on the official page: 
- * <a href="https://smartyoutubetv.github.io/#comment-3432484129" target="_blank">[APP] SmartYouTubeTV</a>
+ * <a href="https://t.me/SmartYouTubeTV">Telegram group</a>
+ * <a href="https://smartyoutubetv.github.io/#comment-3432484129" target="_blank">Visit discussion on the official page</a>
 
 ### Features:
 
