@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+    Dialog style TODO:
+    - show divider (all api)
+    - hide title divider (old api)
+    -->
+
     <style name="AppDialogBase" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Disables dialog borders on old api < 17 -->
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/dialog_text_color</item>
 
         <!-- Radio button colors (selected items) -->
@@ -11,11 +15,13 @@
         <item name="colorPrimary">@color/dialog_text_color</item>
         <item name="colorAccent">@color/dialog_text_color</item>
 
-        <!-- Selection color in the list (Android 4.4) -->
-        <!--<item name="selectableItemBackground">@drawable/abc_item_background_holo_light</item>-->
+        <!-- Focused item highlight color -->
+        <!-- SDK example: @drawable/abc_item_background_holo_light -->
+        <item name="android:selectableItemBackground">@drawable/dialog_item_background</item>
     </style>
     <style name="AppDialog" parent="AppDialogBase">
         <!-- Disables dialog border on old api < 17 -->
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>
