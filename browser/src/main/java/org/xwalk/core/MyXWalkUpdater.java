@@ -298,7 +298,7 @@ public class MyXWalkUpdater {
     private XWalkUpdateListener mUpdateListener;
     private XWalkBackgroundUpdateListener mBackgroundUpdateListener;
     private Context mContext;
-    private XWalkDialogManager mDialogManager;
+    private MyXWalkDialogManager mDialogManager;
     private Runnable mDownloadCommand;
     private Runnable mCancelCommand;
 
@@ -311,7 +311,7 @@ public class MyXWalkUpdater {
     public MyXWalkUpdater(XWalkUpdateListener listener, Context context) {
         mUpdateListener = listener;
         mContext = context;
-        mDialogManager = new XWalkDialogManager(context);
+        mDialogManager = new MyXWalkDialogManager(context);
     }
 
     /**
@@ -319,10 +319,10 @@ public class MyXWalkUpdater {
      *
      * @param listener The {@link XWalkUpdateListener} to use
      * @param context The context which initiate the update
-     * @param dialogManager The {@link XWalkDialogManager} to use
+     * @param dialogManager The {@link MyXWalkDialogManager} to use
      */
     public MyXWalkUpdater(XWalkUpdateListener listener, Context context,
-            XWalkDialogManager dialogManager) {
+            MyXWalkDialogManager dialogManager) {
         mUpdateListener = listener;
         mContext = context;
         mDialogManager = dialogManager;
