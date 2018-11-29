@@ -212,6 +212,7 @@ public final class MyDownloadManager {
     }
 
     public long enqueue(MyRequest request) {
+        mFileUri = null;
         mRequest = request;
         mRequestId = new Random().nextLong();
         doDownload();
@@ -227,6 +228,9 @@ public final class MyDownloadManager {
     }
 
     public Uri getUriForDownloadedFile(long requestId) {
+        if (mFileUri == null) {
+            mFileUri = streamToFile(mResponseStream, getDestination());
+        }
         return mFileUri;
     }
 
