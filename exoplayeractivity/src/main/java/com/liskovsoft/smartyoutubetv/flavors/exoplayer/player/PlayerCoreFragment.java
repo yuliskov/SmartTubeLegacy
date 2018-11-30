@@ -156,7 +156,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         simpleExoPlayerView.setControllerAutoShow(false);
         playerTopBar.setVisibility(View.GONE);
 
-        playerHangListener = new PlayerHangListener(this);
+        playerHangListener = new PlayerHangListener(this, player);
     }
 
     public void setIntent(Intent intent) {
@@ -209,7 +209,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             player.addListener(this);
             player.addListener(eventLogger);
-            player.addListener(playerHangListener);
+            player.addListener(new PlayerHangListener(this, player));
             player.setAudioDebugListener(eventLogger);
             player.setVideoDebugListener(eventLogger);
             player.setMetadataOutput(eventLogger);

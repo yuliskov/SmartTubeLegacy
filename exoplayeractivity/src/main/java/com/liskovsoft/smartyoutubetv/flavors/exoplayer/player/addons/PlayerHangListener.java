@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
 import android.os.Handler;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
@@ -15,6 +16,7 @@ public class PlayerHangListener implements Player.EventListener {
     private boolean mHandlerStarted;
     private final Handler mHandler;
     private boolean mVideoLoading;
+    private ExoPlayer mPlayer;
     private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -22,9 +24,10 @@ public class PlayerHangListener implements Player.EventListener {
         }
     };
 
-    public PlayerHangListener(PlayerCoreFragment playerCoreFragment) {
+    public PlayerHangListener(PlayerCoreFragment playerCoreFragment, ExoPlayer player) {
         mPlayerCoreFragment = playerCoreFragment;
         mHandler = new Handler(mPlayerCoreFragment.getActivity().getMainLooper());
+        mPlayer = player;
     }
 
     @Override
@@ -53,8 +56,10 @@ public class PlayerHangListener implements Player.EventListener {
     }
 
     private void reloadPlayer() {
-        if (mVideoLoading)
-            mPlayerCoreFragment.initializePlayer();
+        if (mVideoLoading) {
+            mPlayer.setPlayWhenReady(false);
+            mPlayer.setPlayWhenReady(true);
+        }
     }
 
     @Override
