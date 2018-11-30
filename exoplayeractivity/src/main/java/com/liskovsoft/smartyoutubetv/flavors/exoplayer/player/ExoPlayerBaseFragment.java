@@ -40,7 +40,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final int REQUEST_CODE = 123;
     private static final String TAG = ExoPlayerBaseFragment.class.getName();
 
@@ -385,11 +385,15 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment implements OnClick
             playerInitializer.initTimeBar(player); // set proper time increments
         }
 
+        showLoadingMessage(playbackState);
+
+        super.onPlayerStateChanged(playWhenReady, playbackState);
+    }
+
+    private void showLoadingMessage(int playbackState) {
         int visibility = playbackState == Player.STATE_IDLE ||
                 playbackState == Player.STATE_BUFFERING ? View.VISIBLE : View.GONE;
         loadingView.setVisibility(visibility);
-
-        super.onPlayerStateChanged(playWhenReady, playbackState);
     }
 
     public AutoFrameRateManager getAutoFrameRateManager() {
