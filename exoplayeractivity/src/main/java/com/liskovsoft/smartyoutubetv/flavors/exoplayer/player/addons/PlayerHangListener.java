@@ -12,9 +12,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment
 public class PlayerHangListener implements Player.EventListener {
     private static final long VIDEO_CHECK_TIMEOUT_MS = 5_000;
     private final PlayerCoreFragment mPlayerCoreFragment;
-    private boolean mVideoLoaded;
     private boolean mHandlerStarted;
     private final Handler mHandler;
+    private boolean mVideoLoading;
     private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -29,14 +29,14 @@ public class PlayerHangListener implements Player.EventListener {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        mVideoLoaded = playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED;
+        mVideoLoading = playbackState == Player.STATE_IDLE || playbackState == Player.STATE_BUFFERING;
 
-        if (mVideoLoaded) {
-            stopReloadTimer();
+        if (mVideoLoading) {
+            startReloadTimer();
             return;
         }
 
-        startReloadTimer();
+        stopReloadTimer();
     }
 
     private void startReloadTimer() {
@@ -53,10 +53,8 @@ public class PlayerHangListener implements Player.EventListener {
     }
 
     private void reloadPlayer() {
-        if (mVideoLoaded)
-            return;
-
-        mPlayerCoreFragment.initializePlayer();
+        if (mVideoLoading)
+            mPlayerCoreFragment.initializePlayer();
     }
 
     @Override
