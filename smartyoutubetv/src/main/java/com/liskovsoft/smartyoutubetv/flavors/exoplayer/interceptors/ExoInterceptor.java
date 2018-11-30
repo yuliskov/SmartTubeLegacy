@@ -113,8 +113,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
         if (mManager.cancelPlayback(url)) {
             Log.d(TAG, "Video canceled: " + url);
-            if (mManager.isDone()) // player is doing playback
-                mReceiver.returnToPlayer();
+            //if (mManager.isDone()) // player is doing playback
+            //    mReceiver.returnToPlayer();
             return null;
         }
 

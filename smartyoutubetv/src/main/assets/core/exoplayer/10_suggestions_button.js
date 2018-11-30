@@ -74,6 +74,7 @@ SuggestionsWatcher.disable = function() {
 };
 
 function SuggestionsFakeButton(selector) {
+    this.TAG = "SuggestionsFakeButton";
     this.selector = selector;
     this.CLOSE_SUGGESTIONS = "action_close_suggestions";
     this.retryTimes = 10;
@@ -81,8 +82,10 @@ function SuggestionsFakeButton(selector) {
 
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
-        if (suggestionsShown)
+        if (suggestionsShown) {
+            Log.d(this.TAG, "Success. Suggestions has been showed!");
             return;
+        }
 
         if (this.retryTimes <= 0) {
             this.sendClose();
@@ -91,7 +94,7 @@ function SuggestionsFakeButton(selector) {
 
         this.retryTimes--;
 
-        console.log("SuggestionsFakeButton: suggestions not showed... trying to open...");
+        Log.d(this.TAG, "Suggestions not showed... trying to open...");
 
         // we assume that no interface currently shown
         // press multiple times util suggestion will have focus
@@ -104,8 +107,6 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.openSuggestions = function() {
-        console.log("SuggestionsFakeButton: showing suggestions list");
-
         ExoUtils.enablePlayerUi();
         this.tryToOpenSuggestions();
 
@@ -132,7 +133,7 @@ function SuggestionsFakeButton(selector) {
             return;
         }
 
-        console.log("SuggestionsFakeButton::closeSuggestions");
+        Log.d(this.TAG, "closeSuggestions");
         
         EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
@@ -140,13 +141,13 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.suggestionsIsClosed = function() {
-        console.log("SuggestionsFakeButton: suggestionsIsClosed");
+        Log.d(this.TAG, "suggestionsIsClosed");
 
         this.sendClose();
     };
 
     this.needToCloseSuggestions = function() {
-        console.log("SuggestionsFakeButton: needToCloseSuggestions");
+        Log.d(this.TAG, "needToCloseSuggestions");
 
         var $this = this;
         // immediate close not working here, so take delay
@@ -162,7 +163,7 @@ function SuggestionsFakeButton(selector) {
 
     this.setChecked = function(doChecked) {
         if (doChecked && !ExoUtils.playerIsClosed()) { // fake btn can only be checked
-            console.log("SuggestionsFakeButton: opening suggestions");
+            Log.d(this.TAG, "opening suggestions");
             this.openSuggestions();
         }
     };
