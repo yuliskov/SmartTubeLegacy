@@ -55,6 +55,7 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -115,6 +116,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private Intent mIntent;
+    private PlayerHangListener playerHangListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,6 +155,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         // hide ui player by default
         simpleExoPlayerView.setControllerAutoShow(false);
         playerTopBar.setVisibility(View.GONE);
+
+        playerHangListener = new PlayerHangListener(this);
     }
 
     public void setIntent(Intent intent) {
@@ -205,6 +209,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             player.addListener(this);
             player.addListener(eventLogger);
+            player.addListener(playerHangListener);
             player.setAudioDebugListener(eventLogger);
             player.setVideoDebugListener(eventLogger);
             player.setMetadataOutput(eventLogger);
