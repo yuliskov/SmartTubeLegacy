@@ -240,7 +240,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
         }
 
-        initializePlayer();
+        // player will be initialized later in openVideo routine
+        // initializePlayer();
     }
 
     @Override

@@ -155,8 +155,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         // hide ui player by default
         simpleExoPlayerView.setControllerAutoShow(false);
         playerTopBar.setVisibility(View.GONE);
-
-        playerHangListener = new PlayerHangListener(this, player);
     }
 
     public void setIntent(Intent intent) {
@@ -209,7 +207,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             player.addListener(this);
             player.addListener(eventLogger);
-            // player.addListener(new PlayerHangListener(this, player));
+            player.addListener(new PlayerHangListener(this, trackSelector));
             player.setAudioDebugListener(eventLogger);
             player.setVideoDebugListener(eventLogger);
             player.setMetadataOutput(eventLogger);
