@@ -115,12 +115,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         // ensure that view is placed above others
 
-        //int idx = container.indexOfChild(child);
-        //int count = container.getChildCount();
-        //if ((idx + 1) != count) { // should be the top view
-        //    container.removeView(child);
-        //    container.addView(child);
-        //}
+        int idx = container.indexOfChild(child);
+        int count = container.getChildCount();
+        if ((idx + 1) != count) { // should be the top view
+            container.removeView(child);
+            container.addView(child);
+        }
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
