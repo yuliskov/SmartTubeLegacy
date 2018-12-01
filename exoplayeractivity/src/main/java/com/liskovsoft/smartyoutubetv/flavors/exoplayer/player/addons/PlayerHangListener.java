@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 import android.os.Handler;
 import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
@@ -17,9 +18,10 @@ public class PlayerHangListener implements Player.EventListener {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final long VIDEO_CHECK_TIMEOUT_MS = 5_000;
     private final PlayerCoreFragment mPlayerCoreFragment;
-    private final DefaultTrackSelector mSelector;
-    private boolean mHandlerStarted;
     private final Handler mHandler;
+    private ExoPlayer mPlayer;
+    private DefaultTrackSelector mSelector;
+    private boolean mHandlerStarted;
     private boolean mVideoLoading;
     private final Runnable mRunnable = new Runnable() {
         @Override
@@ -29,8 +31,17 @@ public class PlayerHangListener implements Player.EventListener {
     };
 
     public PlayerHangListener(PlayerCoreFragment playerCoreFragment, DefaultTrackSelector selector) {
-        mPlayerCoreFragment = playerCoreFragment;
+        this(playerCoreFragment);
         mSelector = selector;
+    }
+
+    public PlayerHangListener(PlayerCoreFragment playerCoreFragment, ExoPlayer player) {
+        this(playerCoreFragment);
+        mPlayer = player;
+    }
+
+    public PlayerHangListener(PlayerCoreFragment playerCoreFragment) {
+        mPlayerCoreFragment = playerCoreFragment;
         mHandler = new Handler(mPlayerCoreFragment.getActivity().getMainLooper());
     }
 
@@ -59,10 +70,25 @@ public class PlayerHangListener implements Player.EventListener {
                     Toast.LENGTH_LONG)
                     .show();
 
-            reloadSelectedTrack();
+            // reloadSelectedTrack();
+            stopStartPlayer();
         }
 
         mHandlerStarted = false;
+    }
+
+    private void stopStartPlayer() {
+        if (mPlayer == null)
+            return;
+
+        mPlayer.setPlayWhenReady(false); // pause
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPlayer.setPlayWhenReady(true); // resume
+                startReloadTimer();
+            }
+        }, 1_000);
     }
 
     private void reloadSelectedTrack() {
