@@ -82,11 +82,11 @@ public class PlayerHangListener implements Player.EventListener {
             return;
 
         mPlayer.setPlayWhenReady(false); // pause
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPlayer.setPlayWhenReady(true); // resume
-                // startReloadTimer();
             }
         }, 1_000);
     }
