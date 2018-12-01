@@ -325,9 +325,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      */
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
-        releasePlayer(); // forget previous state
-        shouldAutoPlay = true;
-        clearResumePosition();
+        releasePlayer(); // dispose player
+        shouldAutoPlay = true; // force autoplay
+        clearResumePosition(); // restore position will be done later from the app storage
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
@@ -335,26 +335,34 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     /**
-     * Used when exoplayer's fragment no longer visible (e.g. paused)
+     * Used when exoplayer's fragment no longer visible (e.g. paused/resumed/stopped/started)
      */
     protected void releasePlayer() {
         if (player != null) {
-            simpleExoPlayerView.hideController();
-            if (stateManager != null)
-                stateManager.persistState();
-            if (debugViewHelper != null)
-                debugViewHelper.stop();
-            shouldAutoPlay = player.getPlayWhenReady();
-            updateResumePosition();
+            shouldAutoPlay = player.getPlayWhenReady(); // save paused state
+            updateResumePosition(); // save position
             player.release();
-            debugViewHelper = null;
-            player = null;
-            trackSelector = null;
-            trackSelectionHelper = null;
-            eventLogger = null;
-            stateManager = null; // force restore state
-            durationSet = false;
         }
+
+        if (simpleExoPlayerView != null) {
+            simpleExoPlayerView.hideController();
+        }
+
+        if (stateManager != null) {
+            stateManager.persistState();
+        }
+
+        if (debugViewHelper != null) {
+            debugViewHelper.stop();
+        }
+
+        player = null;
+        stateManager = null; // force restore state
+        debugViewHelper = null;
+        trackSelector = null;
+        trackSelectionHelper = null;
+        eventLogger = null;
+        durationSet = false;
     }
 
     // ExoPlayer.EventListener implementation

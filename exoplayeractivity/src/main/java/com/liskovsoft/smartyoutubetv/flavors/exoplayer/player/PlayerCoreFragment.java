@@ -127,7 +127,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        shouldAutoPlay = true;
+        // shouldAutoPlay = true;
         clearResumePosition();
         mediaDataSourceFactory = buildDataSourceFactory(true);
         mainHandler = new Handler();
