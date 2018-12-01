@@ -86,7 +86,7 @@ public class PlayerHangListener implements Player.EventListener {
             @Override
             public void run() {
                 mPlayer.setPlayWhenReady(true); // resume
-                startReloadTimer();
+                // startReloadTimer();
             }
         }, 1_000);
     }
