@@ -147,9 +147,9 @@ public abstract class BaseUi implements UI {
      * @param event contains action and keycode
      * @return event is handled or not
      */
-    public boolean dispatchKey(int code, KeyEvent event){
+    public boolean dispatchKey(int code, KeyEvent event) {
         if (mActiveTab != null) {
-            // mContentView.requestFocus(); // issue #191: XWalk: no key reaction sometimes (temporal solution: use a mouse)
+            mContentView.requestFocus(); // issue #191: XWalk: no key reaction sometimes (temporal solution: use a mouse)
             return mContentView.dispatchKeyEvent(event);
         }
         return false;
