@@ -240,10 +240,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
         }
 
-        // move focus from BaseUi to ExoPlayer
-        simpleExoPlayerView.requestFocus();
-
-        // player will be initialized later in openVideo routine
+        // prevent double init: player will be initialized later in openVideo routine
         // initializePlayer();
     }
 
