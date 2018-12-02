@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppDialog" parent="@style/AppDialogBase">
+        <!-- radio color -->
         <item name="android:buttonTint">@color/dialog_text_color</item>
     </style>
 </resources>

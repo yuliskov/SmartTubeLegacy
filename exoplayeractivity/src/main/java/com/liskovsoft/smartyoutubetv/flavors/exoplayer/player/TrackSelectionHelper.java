@@ -16,11 +16,10 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.support.v7.app.AlertDialog;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
