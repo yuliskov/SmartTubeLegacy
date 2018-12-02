@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 
-public class ActivityBase extends AppCompatActivity {
+public abstract class ActivityBase extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
