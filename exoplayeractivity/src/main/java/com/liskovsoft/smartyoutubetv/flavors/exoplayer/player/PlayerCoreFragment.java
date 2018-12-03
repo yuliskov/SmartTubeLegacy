@@ -195,11 +195,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, extensionRendererMode);
 
 
-            // increase player's buffer size to 120 (30 * 4) secs
+            // increase player's min/max buffer size to 60 secs
             // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
             DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
                     DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 4,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
             player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
