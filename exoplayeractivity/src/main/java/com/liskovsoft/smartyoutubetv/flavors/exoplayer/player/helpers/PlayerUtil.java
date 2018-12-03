@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedT
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 import java.util.Locale;
@@ -36,6 +38,7 @@ import java.util.Locale;
  */
 /*package*/ public final class PlayerUtil {
     private static final int VIDEO_RENDERER_INDEX = 0;
+    private static final String MIME_SEPARATOR = "/";
 
     private PlayerUtil() {
     }
@@ -46,7 +49,7 @@ import java.util.Locale;
      * @param format {@link Format} of the track.
      * @return a generated name specific to the track.
      */
-    public static String buildTrackName(Format format) {
+    public static CharSequence buildTrackName(Format format) {
         String trackName;
         if (MimeTypes.isVideo(format.sampleMimeType)) {
             trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildResolutionString(format),
@@ -55,8 +58,27 @@ import java.util.Locale;
             trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
                     buildAudioPropertyString(format)), buildBitrateString(format)), buildTrackIdString(format)), buildCodecTypeString(format));
         } else {
-            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)),
-                    buildTrackIdString(format)), buildSampleMimeTypeString(format));
+            trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), buildSampleMimeTypeString(format));
+        }
+        return trackName.length() == 0 ? "unknown" : trackName;
+    }
+
+    /**
+     * Builds a track name for display.
+     *
+     * @param format {@link Format} of the track.
+     * @return a generated name specific to the track.
+     */
+    public static CharSequence buildTrackNameShort(Format format) {
+        String trackName;
+        if (MimeTypes.isVideo(format.sampleMimeType)) {
+            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildResolutionString(format),
+                    buildFPSString(format)), buildBitrateString(format)), buildCodecTypeStringShort(format)), buildHDRString(format));
+        } else if (MimeTypes.isAudio(format.sampleMimeType)) {
+            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
+                    buildAudioPropertyString(format)), buildBitrateString(format)), buildCodecTypeStringShort(format));
+        } else {
+            trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), buildCodecTypeStringShort(format));
         }
         return trackName.length() == 0 ? "unknown" : trackName;
     }
@@ -65,8 +87,25 @@ import java.util.Locale;
         if (format.sampleMimeType == null ||
             format.codecs == null)
             return "";
-        String prefix = format.sampleMimeType.split("/")[0];
+        String prefix = format.sampleMimeType.split(MIME_SEPARATOR)[0];
         return String.format("%s/%s", prefix, format.codecs);
+    }
+
+    private static String buildCodecTypeStringShort(Format format) {
+        String codecs = format.codecs;
+
+        if (codecs == null)
+            return "";
+
+        String[] codecNames = {"avc", "vp9", "mp4a", "vorbis"};
+
+        for (String codecName : codecNames) {
+            if (codecs.contains(codecName)) {
+                return codecName;
+            }
+        }
+
+        return codecs;
     }
 
     private static String buildHDRString(Format format) {
@@ -74,11 +113,11 @@ import java.util.Locale;
     }
 
     private static String buildFPSString(Format format) {
-        return format.frameRate == Format.NO_VALUE ? "" : format.frameRate + "fps";
+        return format.frameRate == Format.NO_VALUE ? "" : Helpers.formatFloat(format.frameRate, 1) + "fps";
     }
 
     private static String buildResolutionString(Format format) {
-        return format.width == Format.NO_VALUE || format.height == Format.NO_VALUE ? "" : format.width + "x" + format.height;
+        return format.width == Format.NO_VALUE || format.height == Format.NO_VALUE ? "" : align(format.width + "x" + format.height, 9);
     }
 
     private static String buildAudioPropertyString(Format format) {
@@ -91,7 +130,8 @@ import java.util.Locale;
     }
 
     private static String buildBitrateString(Format format) {
-        return format.bitrate == Format.NO_VALUE ? "" : String.format(Locale.US, "%.2fMbit", format.bitrate / 1000000f);
+        double bitrateMB = Helpers.round(format.bitrate / 1_000_000f, 2);
+        return format.bitrate == Format.NO_VALUE || bitrateMB == 0 ? "" : String.format(Locale.US, "%sMbit", Helpers.formatFloat(bitrateMB, 2));
     }
 
     private static String joinWithSeparator(String first, String second) {
@@ -196,5 +236,26 @@ import java.util.Locale;
 
     public static int extractFps(Format format) {
         return format.frameRate == -1 ? 0 : Math.round(format.frameRate);
+    }
+
+    /**
+     * Prepend spaces to make needed length
+     */
+    private static String align(String input, int totalLen) {
+        int strLen = input.length();
+        int addLen = totalLen - strLen;
+        StringBuilder inputBuilder = new StringBuilder(input);
+        for (int i = 0; i < addLen; i++) {
+            inputBuilder.insert(0, "  "); // two spaces as one digit
+        }
+        input = inputBuilder.toString();
+        return input;
+    }
+
+    /**
+     * Add html color tag
+     */
+    private static String color(String input, String color) {
+        return String.format("<font color=\"%s\">%s</font>", color, input);
     }
 }

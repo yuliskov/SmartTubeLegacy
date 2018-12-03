@@ -211,7 +211,7 @@ import java.util.TreeSet;
 
                 CheckedTextView trackView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                trackView.setText(PlayerUtil.buildTrackName(format));
+                trackView.setText(PlayerUtil.buildTrackNameShort(format));
                 trackView.setFocusable(true);
                 trackView.setTag(Pair.create(groupIndex, trackIndex));
                 trackView.setTag(R.string.track_view_format, format);

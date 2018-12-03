@@ -281,6 +281,30 @@ public final class Helpers {
     }
 
     /**
+     * Format float and remove unneeded zeroes after dot
+     */
+    public static String formatFloat(double d, int places) {
+        if (d == (long) d) {
+            return String.format(Locale.US, "%d", (long) d);
+        } else {
+            String formatStr = "%." + places + "f"; // e.g. "%.2f"
+            return String.format(Locale.US, formatStr, d);
+        }
+    }
+
+    /**
+     * Limit digits after dot
+     */
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+    /**
      * Get scale for use in {@link android.webkit.WebView} instantiation
      * @param ctx context
      * @param picWidth constant that I knew beforehand
