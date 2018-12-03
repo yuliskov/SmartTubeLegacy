@@ -131,11 +131,11 @@ import java.util.Locale;
 
     private static String buildBitrateString(Format format) {
         double bitrateMB = Helpers.round(format.bitrate / 1_000_000f, 2);
-        return format.bitrate == Format.NO_VALUE || bitrateMB == 0 ? "" : String.format(Locale.US, "%sMbit", Helpers.formatFloat(bitrateMB, 2));
+        return format.bitrate == Format.NO_VALUE || bitrateMB == 0 ? "" : align(String.format(Locale.US, "%sMbit", Helpers.formatFloat(bitrateMB, 2)), 9);
     }
 
     private static String joinWithSeparator(String first, String second) {
-        return first.length() == 0 ? second : (second.length() == 0 ? first : first + ", " + second);
+        return first.length() == 0 ? second : (second.length() == 0 ? first : first + "    " + second);
     }
 
     private static String buildTrackIdString(Format format) {
@@ -241,12 +241,25 @@ import java.util.Locale;
     /**
      * Prepend spaces to make needed length
      */
+    private static String align2(String input, int totalLen) {
+        int strLen = input.length();
+        if (strLen == totalLen)
+            return input;
+
+        String fmt = "%-" + totalLen + "s";
+
+        return String.format(fmt, input);
+    }
+
+    /**
+     * Prepend spaces to make needed length
+     */
     private static String align(String input, int totalLen) {
         int strLen = input.length();
         int addLen = totalLen - strLen;
         StringBuilder inputBuilder = new StringBuilder(input);
         for (int i = 0; i < addLen; i++) {
-            inputBuilder.insert(0, "  "); // two spaces as one digit
+            inputBuilder.append("  "); // two spaces as one digit
         }
         input = inputBuilder.toString();
         return input;
