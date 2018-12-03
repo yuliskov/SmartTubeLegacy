@@ -381,6 +381,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 stateManager.restoreTrackPosition();
                 updateQualityTitle();
             }
+
+            if (player != null) {
+                player.setPlayWhenReady(true);
+            }
         }
 
         if (playbackState == Player.STATE_ENDED) {
