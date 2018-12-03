@@ -214,7 +214,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             simpleExoPlayerView.setPlayer(player);
             //player.setPlayWhenReady(shouldAutoPlay);
-            player.setPlayWhenReady(false);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
@@ -270,7 +269,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             if (haveResumePosition) {
                 player.seekTo(resumeWindow, resumePosition);
             }
-            player.prepare(mediaSource, !haveResumePosition, false);
+            //player.prepare(mediaSource, !haveResumePosition, false);
+            player.prepare(mediaSource, !haveResumePosition, !haveResumePosition);
 
             needRetrySource = false;
             updateButtonVisibilities();
