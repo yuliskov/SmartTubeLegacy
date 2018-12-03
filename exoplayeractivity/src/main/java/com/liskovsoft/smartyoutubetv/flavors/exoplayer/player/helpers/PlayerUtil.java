@@ -163,14 +163,13 @@ import java.util.Locale;
         }
 
         String[] split = codecAndHeight.split("\\|");
-        String codec = split[0];
-        String height = split[1];
-        if (format.codecs.contains(codec) &&
-                format.height <= Integer.parseInt(height)) {
-            return true;
-        }
+        String height = split[0];
+        String fps = split[1];
+        String codec = split[2];
+        return format.height <= Integer.parseInt(height) &&
+               format.frameRate <= Integer.parseInt(fps) &&
+               format.codecs.contains(codec);
 
-        return false;
     }
 
     private static boolean notAVideo(Format format) {
