@@ -124,7 +124,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             @Override
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
-                forceAllFormatsSupport(rendererFormatSupports);
+                // forceAllFormatsSupport(rendererFormatSupports);
 
                 return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
             }
