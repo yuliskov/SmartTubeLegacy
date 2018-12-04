@@ -99,6 +99,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             playerInitializer.initVideoTitle();
         }
+
+        if (stateManager == null) {
+            stateManager = new PlayerStateManager2(ExoPlayerBaseFragment.this, player, trackSelector);
+        }
     }
 
     private void initializeUiScale() {
@@ -119,11 +123,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
             @Override
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
-
-                if (stateManager == null) { // run once
-                    stateManager = new PlayerStateManager2(ExoPlayerBaseFragment.this, player, trackSelector);
-                    // stateManager.restoreState(rendererTrackGroupArrays);
-                }
 
                 forceAllFormatsSupport(rendererFormatSupports);
 
