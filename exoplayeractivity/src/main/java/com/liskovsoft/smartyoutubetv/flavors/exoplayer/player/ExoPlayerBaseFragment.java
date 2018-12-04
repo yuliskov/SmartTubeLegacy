@@ -380,9 +380,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 updateQualityTitle();
             }
 
-            if (player != null) {
-                player.setPlayWhenReady(shouldAutoPlay);
-            }
+            //if (player != null) {
+            //    player.setPlayWhenReady(shouldAutoPlay);
+            //}
         }
 
         if (playbackState == Player.STATE_ENDED) {
