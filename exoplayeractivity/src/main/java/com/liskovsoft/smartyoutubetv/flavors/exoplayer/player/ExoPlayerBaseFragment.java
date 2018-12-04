@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
@@ -68,7 +69,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private boolean durationSet;
     private int interfaceVisibilityState = View.INVISIBLE;
     private PlayerButtonsManager buttonsManager;
-    private PlayerStateManager stateManager;
+    private PlayerStateManager2 stateManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
 
@@ -120,8 +121,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
                 if (stateManager == null) { // run once
-                    stateManager = new PlayerStateManager(ExoPlayerBaseFragment.this, player, trackSelector);
-                    stateManager.restoreState(rendererTrackGroupArrays);
+                    stateManager = new PlayerStateManager2(ExoPlayerBaseFragment.this, player, trackSelector);
+                    // stateManager.restoreState(rendererTrackGroupArrays);
                 }
 
                 forceAllFormatsSupport(rendererFormatSupports);
@@ -378,7 +379,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             durationSet = true; // run once per video
             if (stateManager != null) {
                 // stateManage should be initialized here
-                stateManager.restoreTrackPosition();
+                stateManager.restoreState();
                 updateQualityTitle();
             }
 
