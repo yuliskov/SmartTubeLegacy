@@ -98,10 +98,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             autoFrameRateManager = new AutoFrameRateManager(getActivity(), player);
 
             playerInitializer.initVideoTitle();
-        }
 
-        if (stateManager == null) {
-            stateManager = new PlayerStateManager2(ExoPlayerBaseFragment.this, player, trackSelector);
+            stateManager = new PlayerStateManager2(this, player, trackSelector);
         }
     }
 
