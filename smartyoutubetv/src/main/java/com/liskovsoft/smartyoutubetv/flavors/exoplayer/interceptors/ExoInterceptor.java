@@ -57,7 +57,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             if (action.equals(CLOSE_SUGGESTIONS)) {
                 returnToPlayer();
             } else if (action.equals(PLAYBACK_STARTED)) {
-                playbackStarted();
+                // playbackStarted();
             }
         }
 
@@ -197,8 +197,9 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer fragment");
                 mManager.onDone();
-                forcePlaybackCheck();
-                mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
+                // forcePlaybackCheck();
+                // mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
+                mFragmentsManager.openExoPlayer(playerIntent, true); // don't pause until playback is started
             }
 
             @Override

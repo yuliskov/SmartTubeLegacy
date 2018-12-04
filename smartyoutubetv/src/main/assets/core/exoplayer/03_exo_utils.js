@@ -65,14 +65,14 @@ var ExoUtils = {
         function onPlaying() {
             setTimeout(function() {
                 Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
-                $this.sendAction(PLAYBACK_STARTED);
+                // $this.sendAction(PLAYBACK_STARTED);
                 player.pause(); // prevent background playback
             }, onPlayDelayMS);
         }
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
+        // player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
         Utils.overrideProp2(player, 'volume', 0);
