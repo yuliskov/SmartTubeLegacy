@@ -258,7 +258,7 @@ import java.util.Locale;
         int addLen = totalLen - strLen;
         StringBuilder inputBuilder = new StringBuilder(input);
         for (int i = 0; i < addLen; i++) {
-            inputBuilder.append("  "); // two spaces as one digit
+            inputBuilder.append("   "); // three spaces equal one char
         }
         input = inputBuilder.toString();
         return input;
