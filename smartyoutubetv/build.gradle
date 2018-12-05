@@ -74,7 +74,7 @@ android {
     // https://stackoverflow.com/questions/18332474/how-to-set-versionname-in-apk-filename-using-gradle
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def project = "SmartYouTubeTV"
+            def project = "SYTV"
             def flavor = variant.productFlavors[-1].name.capitalize()
             def buildType = variant.variantData.variantConfiguration.buildType.name.take(1)
             def version = variant.versionName
