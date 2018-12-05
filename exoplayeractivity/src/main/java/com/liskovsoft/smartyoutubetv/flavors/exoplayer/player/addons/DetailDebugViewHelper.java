@@ -78,6 +78,7 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
     }
 
     private void inflate() {
+        viewGroup.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.debug_view, viewGroup, true);
         column1 = (LinearLayout) viewGroup.findViewById(R.id.debug_view_column1);
