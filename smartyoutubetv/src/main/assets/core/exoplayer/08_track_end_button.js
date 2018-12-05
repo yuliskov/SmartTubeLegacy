@@ -2,9 +2,8 @@ console.log("Scripts::Running core script track_end_button.js");
 
 function TrackEndFakeButton(selector) {
     this.selector = selector;
-    this.retryCount = 5;
-    this.retryDelayMS = 500;
-    this.checkTimeoutMS = 2000;
+    this.retryCount = 20;
+    this.checkTimeoutMS = 1000;
 
     this.playerJumpToEnd = function() {
         console.log("TrackEndFakeButton: I'm about to start off!");
@@ -13,12 +12,11 @@ function TrackEndFakeButton(selector) {
         var $this = this;
         var player = Utils.$('video');
         if (player) {
-            player.pause(); // seems that pause helps somehow to force playback
             player.play();
             console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
 
-            if (this.retryCount <= 0) {
-                this.pressNextButton();
+            if (this.retryCount <= 0 || ExoUtils.playerIsClosed()) {
+                // this.pressNextButton();
                 return;
             }
 
@@ -27,7 +25,7 @@ function TrackEndFakeButton(selector) {
             if (isNaN(player.duration)) {
                 setTimeout(function() { // do retry
                     $this.playerJumpToEnd();
-                }, this.retryDelayMS);
+                }, this.checkTimeoutMS);
             } else {
                 player.currentTime = player.duration - 1; // seek to the end (minus one second!)
                 this.startPlaybackCheck(player);
@@ -59,6 +57,7 @@ function TrackEndFakeButton(selector) {
 
     this.setChecked = function(doChecked) {
         if (doChecked && !ExoUtils.playerIsClosed()) {
+            ExoUtils.enablePlayerUi();
             this.playerJumpToEnd();
         }
     };
