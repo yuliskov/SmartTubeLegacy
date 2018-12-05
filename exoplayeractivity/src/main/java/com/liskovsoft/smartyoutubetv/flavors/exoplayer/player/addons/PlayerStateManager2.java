@@ -109,6 +109,9 @@ public class PlayerStateManager2 {
             return;
         }
         Pair<Integer, Integer> trackGroupAndIndex = findProperTrack();
+        if (trackGroupAndIndex == null) {
+            return;
+        }
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
         TrackGroupArray trackGroupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
@@ -122,6 +125,9 @@ public class PlayerStateManager2 {
     private Pair<Integer, Integer> findProperTrack() {
         Set<MyFormat> fmts = findCandidates();
         MyFormat fmt = findClosestTrack(fmts);
+        if (fmt == null) {
+            return null;
+        }
         mDefaultTrackId = fmt.id;
         return fmt.pair;
     }
@@ -245,11 +251,8 @@ public class PlayerStateManager2 {
     private boolean trackGroupIsEmpty() {
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
         TrackGroupArray groupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
-        if (groupArray == null) {
-            return false;
-        }
 
-        return groupArray.length == 0;
+        return groupArray == null || groupArray.length == 0;
     }
 
     public void persistState() {

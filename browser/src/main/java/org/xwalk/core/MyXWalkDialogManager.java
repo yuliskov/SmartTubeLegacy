@@ -504,13 +504,17 @@ public class MyXWalkDialogManager {
     }
 
     void dismissDialog() {
-        if (mActiveDialog == null)
+        if (mActiveDialog == null) {
             return;
+        }
         mActiveDialog.dismiss();
         mActiveDialog = null;
     }
 
     void setProgress(int progress, int max) {
+        if (mActiveDialog == null) {
+            return;
+        }
         ProgressDialog dialog = (ProgressDialog) mActiveDialog;
         dialog.setIndeterminate(false);
         dialog.setMax(max);

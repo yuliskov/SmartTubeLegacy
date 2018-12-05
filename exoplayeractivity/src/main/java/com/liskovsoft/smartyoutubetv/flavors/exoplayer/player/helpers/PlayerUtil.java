@@ -199,6 +199,9 @@ import java.util.Locale;
 
     public static Format getCurrentlyPlayingTrack(DefaultTrackSelector trackSelector) {
         MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
+        if (trackInfo == null) {
+            return null;
+        }
         TrackGroupArray groups = trackInfo.getTrackGroups(VIDEO_RENDERER_INDEX);
         SelectionOverride override = trackSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
         if (override == null || override.tracks.length == 0)
