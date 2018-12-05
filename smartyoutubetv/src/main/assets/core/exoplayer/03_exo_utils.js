@@ -173,6 +173,10 @@ var ExoUtils = {
             states[PlayerActivity.BUTTON_NEXT] = null;
         }
 
+        if (this.playerIsClosed()) {
+            this.showPlayerBg();
+        }
+
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
         return states;
     },
