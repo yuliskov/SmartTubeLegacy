@@ -45,7 +45,6 @@ var ExoUtils = {
     // playing
     preparePlayer: function() {
         var $this = this;
-        this.disablePlayerUi();
         var player = Utils.$('video');
         var onPlayDelayMS = 2000;
         var onLoadDelayMS = 1000;
@@ -122,6 +121,14 @@ var ExoUtils = {
         return window.innerWidth;
     },
 
+    hidePlayerBg: function() {
+        Utils.$('body').style.backgroundImage = 'initial';
+    },
+
+    showPlayerBg: function() {
+        Utils.$('body').style.backgroundImage = '';
+    },
+
     enablePlayerUi: function() {
         Utils.show(ExoConstants.bottomUiSelector);
     },
@@ -134,6 +141,8 @@ var ExoUtils = {
      * Used when calling through app boundaries.
      */
     getButtonStates: function() {
+        this.hidePlayerBg();
+        this.disablePlayerUi();
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 

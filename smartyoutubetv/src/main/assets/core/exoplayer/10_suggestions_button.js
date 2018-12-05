@@ -164,6 +164,8 @@ function SuggestionsFakeButton(selector) {
     this.setChecked = function(doChecked) {
         if (doChecked && !ExoUtils.playerIsClosed()) { // fake btn can only be checked
             Log.d(this.TAG, "opening suggestions");
+            ExoUtils.enablePlayerUi();
+            ExoUtils.hidePlayerBg();
             this.openSuggestions();
         }
     };
