@@ -13,7 +13,7 @@
     <View android:id="@id/exo_shutter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"/>
+        android:background="@color/youtube_background"/> <!-- bg of player when no video loaded -->
 
     <ImageView android:id="@id/exo_artwork"
         android:layout_width="match_parent"

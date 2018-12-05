@@ -27,12 +27,4 @@
     </style>
 
     <style name="LoadMessageAppearance" parent="android:TextAppearance.Large"/>
-
-    <color name="white">#ffffff</color>
-    <color name="white_50">#7dffffff</color>
-    <color name="white_70">#b2ffffff</color>
-    <color name="black">#000000</color>
-    <color name="red">#ff0000</color>
-    <color name="transparent">#00ffffff</color>
-    <color name="light_blue">#2793e6</color>
 </resources>
