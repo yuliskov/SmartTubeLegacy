@@ -21,8 +21,8 @@ public class RestrictCodecDataSource implements DataSource {
     public Map<String, String> getDialogItems() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put(mContext.getString(R.string.no_restrictions), "");
-        map.put("4K       60fps    vp9", "2160|60|vp9"); // extra alignment (one char == two spaces)
-        map.put("4K       30fps    vp9", "2160|30|vp9"); // extra alignment (one char == two spaces)
+        map.put("4K     60fps    vp9", "2160|60|vp9");
+        map.put("4K     30fps    vp9", "2160|30|vp9");
         map.put("FHD    60fps    avc", "1080|60|avc");
         map.put("FHD    60fps    vp9", "1080|60|vp9");
         map.put("FHD    30fps    avc", "1080|30|avc");

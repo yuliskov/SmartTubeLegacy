@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.common.R;
 
 import java.util.ArrayList;
@@ -52,8 +53,18 @@ public class GenericSelectorDialog implements OnClickListener {
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppDialog);
-        alertDialog = builder.setTitle(mDataSource.getTitle()).setView(buildView(builder.getContext())).create();
+        View title = createCustomTitle(builder.getContext());
+        alertDialog = builder.setCustomTitle(title).setView(buildView(builder.getContext())).create();
         alertDialog.show();
+    }
+
+    private View createCustomTitle(Context context) {
+        String title = mDataSource.getTitle();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
+        TextView textView = titleView.findViewById(R.id.title);
+        textView.setText(title);
+        return titleView;
     }
 
     @SuppressLint("InflateParams")
@@ -69,7 +80,7 @@ public class GenericSelectorDialog implements OnClickListener {
         mDialogItems = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : mDataSource.getDialogItems().entrySet()) {
-            CheckedTextView dialogItem = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+            CheckedTextView dialogItem = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
             dialogItem.setBackgroundResource(selectableItemBackgroundResourceId);
             dialogItem.setText(entry.getKey());
 

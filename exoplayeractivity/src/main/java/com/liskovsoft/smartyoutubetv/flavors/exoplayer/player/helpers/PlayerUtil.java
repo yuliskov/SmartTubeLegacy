@@ -113,7 +113,7 @@ import java.util.Locale;
     }
 
     private static String buildFPSString(Format format) {
-        return format.frameRate == Format.NO_VALUE ? "" : Helpers.formatFloat(format.frameRate, 1) + "fps";
+        return format.frameRate == Format.NO_VALUE ? "" : align(Helpers.formatFloat(format.frameRate) + "fps", 5);
     }
 
     private static String buildResolutionString(Format format) {
@@ -131,7 +131,7 @@ import java.util.Locale;
 
     private static String buildBitrateString(Format format) {
         double bitrateMB = Helpers.round(format.bitrate / 1_000_000f, 2);
-        return format.bitrate == Format.NO_VALUE || bitrateMB == 0 ? "" : align(String.format(Locale.US, "%sMbit", Helpers.formatFloat(bitrateMB, 2)), 9);
+        return format.bitrate == Format.NO_VALUE || bitrateMB == 0 ? "" : align(String.format("%sMbit", Helpers.formatFloat(bitrateMB)), 9);
     }
 
     private static String joinWithSeparator(String first, String second) {
@@ -240,28 +240,9 @@ import java.util.Locale;
     /**
      * Prepend spaces to make needed length
      */
-    private static String align2(String input, int totalLen) {
-        int strLen = input.length();
-        if (strLen == totalLen)
-            return input;
-
-        String fmt = "%-" + totalLen + "s";
-
-        return String.format(fmt, input);
-    }
-
-    /**
-     * Prepend spaces to make needed length
-     */
     private static String align(String input, int totalLen) {
-        int strLen = input.length();
-        int addLen = totalLen - strLen;
-        StringBuilder inputBuilder = new StringBuilder(input);
-        for (int i = 0; i < addLen; i++) {
-            inputBuilder.append("   "); // three spaces equal one char
-        }
-        input = inputBuilder.toString();
-        return input;
+        String fmt = "%-" + totalLen + "s"; // align left
+        return String.format(fmt, input);
     }
 
     /**

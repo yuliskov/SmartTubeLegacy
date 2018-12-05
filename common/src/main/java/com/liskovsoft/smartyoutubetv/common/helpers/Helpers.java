@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -283,13 +285,13 @@ public final class Helpers {
     /**
      * Format float and remove unneeded zeroes after dot
      */
-    public static String formatFloat(double d, int places) {
-        if (d == (long) d) {
-            return String.format(Locale.US, "%d", (long) d);
-        } else {
-            String formatStr = "%." + places + "f"; // e.g. "%.2f"
-            return String.format(Locale.US, formatStr, d);
-        }
+    public static String formatFloat(double d) {
+        // This is to show symbol . instead of ,
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+        // Define the maximum number of decimals (number of symbols #)
+        DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+
+        return df.format(d);
     }
 
     /**

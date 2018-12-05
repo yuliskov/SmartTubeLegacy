@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -131,8 +132,17 @@ import java.util.TreeSet;
         override = selector.getSelectionOverride(rendererIndex, trackGroups);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialog);
-        alertDialog = builder.setTitle(title).setView(buildView(builder.getContext())).create();
+        alertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
+                .setView(buildView(builder.getContext())).create();
         alertDialog.show();
+    }
+
+    private View createCustomTitle(Context context, CharSequence title) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
+        TextView textView = titleView.findViewById(R.id.title);
+        textView.setText(title);
+        return titleView;
     }
     
     @SuppressLint("InflateParams")
@@ -146,7 +156,7 @@ import java.util.TreeSet;
         attributeArray.recycle();
 
         // View for Autoframerate checkbox.
-        hideErrorsView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+        hideErrorsView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
         hideErrorsView.setBackgroundResource(selectableItemBackgroundResourceId);
         hideErrorsView.setText(R.string.hide_playback_errors);
         hideErrorsView.setFocusable(true);
@@ -158,7 +168,7 @@ import java.util.TreeSet;
         }
 
         // View for Autoframerate checkbox.
-        autoframerateView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+        autoframerateView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
         autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
         autoframerateView.setText(R.string.enable_autoframerate);
         autoframerateView.setFocusable(true);
@@ -170,7 +180,7 @@ import java.util.TreeSet;
         }
 
         // View for disabling the renderer.
-        disableView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        disableView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
         disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.selection_disabled);
         disableView.setFocusable(true);
@@ -180,7 +190,7 @@ import java.util.TreeSet;
         root.addView(disableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
-        defaultView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+        defaultView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
         defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.selection_default);
         defaultView.setFocusable(true);
@@ -209,7 +219,7 @@ import java.util.TreeSet;
                 haveSupportedTracks = true;
                 Format format = group.getFormat(trackIndex);
 
-                CheckedTextView trackView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_single_choice, root, false);
+                CheckedTextView trackView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);
                 trackView.setText(PlayerUtil.buildTrackNameShort(format));
                 trackView.setFocusable(true);
@@ -235,7 +245,7 @@ import java.util.TreeSet;
             defaultView.setText(R.string.selection_default_none);
         } else if (haveAdaptiveTracks) { // NOTE: adaptation is performed between selected tracks (you must select more than one)
             // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, root, false);
+            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
             enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
             enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
             enableRandomAdaptationView.setOnClickListener(this);
