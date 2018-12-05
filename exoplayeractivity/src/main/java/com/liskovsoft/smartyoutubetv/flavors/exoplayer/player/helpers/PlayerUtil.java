@@ -163,6 +163,9 @@ import java.util.Locale;
         }
 
         String[] split = codecAndHeight.split("\\|");
+        if (split.length != 3) { // contains values from previous versions
+            return true;
+        }
         String height = split[0];
         String fps = split[1];
         String codec = split[2];

@@ -27,6 +27,8 @@ public class RestrictCodecDataSource implements DataSource {
         map.put("FHD    60fps    vp9", "1080|60|vp9");
         map.put("FHD    30fps    avc", "1080|30|avc");
         map.put("FHD    30fps    vp9", "1080|30|vp9");
+        map.put("FHD    60fps    avc+vp9", "1080|60|");
+        map.put("FHD    30fps    avc+vp9", "1080|30|");
         return map;
     }
 
