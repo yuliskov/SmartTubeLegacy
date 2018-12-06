@@ -10,11 +10,11 @@ var UiManager = {
 
     /**
      * Creates button from the supplied data and adds it to the player
-     * @param buttonData object with onClick method
+     * @param buttonDescription object with onClick method
      */
-    addToPlayer: function(buttonData) {
+    addToPlayer: function(buttonDescription) {
         // create buttons
-        this.centerBtn = UiButton.fromData(buttonData);
+        this.centerBtn = UiButton.fromData(buttonDescription);
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 
@@ -23,5 +23,29 @@ var UiManager = {
 
         // add to player's ui
         UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
+    },
+
+    showPlayerUi: function() {
+
+    },
+
+    hidePlayerUi: function() {
+        
+    },
+
+    enablePlayerUi: function() {
+
+    },
+
+    disablePlayerUi: function() {
+
+    },
+
+    enablePlayerTransparency: function() {
+        
+    },
+    
+    disablePlayerTransparency: function() {
+        
     }
 };
