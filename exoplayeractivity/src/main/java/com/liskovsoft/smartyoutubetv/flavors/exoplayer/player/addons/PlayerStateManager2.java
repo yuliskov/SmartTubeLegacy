@@ -60,6 +60,10 @@ public class PlayerStateManager2 {
         restoreTrackPosition();
     }
 
+    /**
+     * Some decoders might not have enough time for initialization<br/>
+     * <a href="https://github.com/yuliskov/SmartYouTubeTV/issues/203">GitHub issue #203</a><br/>
+     */
     private void waitCodecInit() {
         try {
             Thread.sleep(1_000);
