@@ -53,6 +53,12 @@ public class PlayerStateManager2 {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
+        try {
+            Thread.sleep(3_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         restoreTrackIndex();
         restoreSubtitleTrack();
         restoreTrackPosition();

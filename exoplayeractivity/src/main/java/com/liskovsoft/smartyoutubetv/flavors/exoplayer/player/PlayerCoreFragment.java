@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,7 +55,6 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -117,7 +115,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private Intent mIntent;
-    private PlayerHangListener playerHangListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -214,7 +211,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             player.setMetadataOutput(eventLogger);
 
             simpleExoPlayerView.setPlayer(player);
-            player.setPlayWhenReady(shouldAutoPlay);
+            // player.setPlayWhenReady(shouldAutoPlay);
         }
         if (needNewPlayer || needRetrySource) {
             String action = intent.getAction();
