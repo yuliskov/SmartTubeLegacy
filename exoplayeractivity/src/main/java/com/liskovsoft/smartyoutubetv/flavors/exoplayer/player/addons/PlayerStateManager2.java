@@ -50,6 +50,12 @@ public class PlayerStateManager2 {
      * Be aware that you can't get tracks from {@link MappedTrackInfo#getTrackGroups(int)} because tracks not initialized yet
      */
     public void restoreState() {
+        try {
+            Thread.sleep(3_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         restoreTrackIndex();
         // don't restore track position here: instead do it lately from the Player.onPlayerStateChanged event
         restoreSubtitleTrack();
