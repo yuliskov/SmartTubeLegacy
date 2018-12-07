@@ -37,6 +37,7 @@ var YouTubeConstants = {
  * Selectors for the YouTube elements
  */
 var YouTubeSelectors = {
+    PLAYER_EVENTS_RECEIVER: '#watch',
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
     PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container',
     PLAYER_CAPTIONS_BUTTON: '.icon-player-closedcaptions.transport-controls-toggle-button',

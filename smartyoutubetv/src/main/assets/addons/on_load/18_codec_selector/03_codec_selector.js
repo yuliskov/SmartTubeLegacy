@@ -9,14 +9,12 @@ function CodecSelectorAddon() {
     this.TAG = 'CodecSelectorAddon';
 
     this.run = function() {
-        if (DeviceUtils.isExo())
-            return;
-
         var btn = new CodecSelectorButton();
-        UiManager.addToPlayer(btn);
+        UiManager.insertButton(btn);
     }
 }
 
-// new CodecSelectorAddon().run();
+if (!DeviceUtils.isExo())
+    new CodecSelectorAddon().run();
 
 

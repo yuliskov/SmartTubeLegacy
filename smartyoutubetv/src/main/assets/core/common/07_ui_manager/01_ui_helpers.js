@@ -24,11 +24,24 @@ var UiHelpers = {
             elem.outerHTML = "";
     },
 
-    insertAfter: function(existingButton, newButton) {
+    insertAfter: function(existingButton, newButton, fromListener) {
         var target = existingButton.getElem();
+        var $this = this;
+        var listener = function(e) {
+            $this.insertAfter(existingButton, newButton, true);
+        };
         if (!target) {
+            if (fromListener) // avoid multiple listeners
+                return;
+
             // TODO: wait till init
+            EventUtils.addListener(
+                YouTubeSelectors.PLAYER_EVENTS_RECEIVER,
+                YouTubeEvents.MODEL_CHANGED_EVENT,
+                listener);
             return;
+        } else {
+            EventUtils.removeListener(listener);
         }
 
         this.insertAfterDom(existingButton.getElem(), newButton.getElem());

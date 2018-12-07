@@ -31,6 +31,9 @@ function UiDataButton(buttonData) {
 function UiSelectorButton(selector) {
     this.TAG = 'UiSelectorButton';
     this.selector = selector;
+    this.getElem = function() {
+        return Utils.$(selector);
+    }
 }
 
 UiButton.fromData = function(buttonData) {

@@ -139,6 +139,10 @@ var EventUtils = {
      */
     addListener: function(selectorOrElement, event, handler) {
         ListenerUtil.addListener(selectorOrElement, event, handler);
+    },
+
+    removeListener: function(selectorOrElement, event, handler) {
+        ListenerUtil.removeListener(selectorOrElement, event, handler);
     }
 };
 

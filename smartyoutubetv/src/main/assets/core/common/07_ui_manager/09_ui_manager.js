@@ -12,7 +12,7 @@ var UiManager = {
      * Creates button from the supplied data and adds it to the player
      * @param buttonDescription object with onClick method
      */
-    addToPlayer: function(buttonDescription) {
+    insertButton: function(buttonDescription) {
         // create buttons
         this.centerBtn = UiButton.fromData(buttonDescription);
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
