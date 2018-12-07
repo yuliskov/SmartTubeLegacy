@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -21,15 +20,12 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
-import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
@@ -37,6 +33,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
+import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
