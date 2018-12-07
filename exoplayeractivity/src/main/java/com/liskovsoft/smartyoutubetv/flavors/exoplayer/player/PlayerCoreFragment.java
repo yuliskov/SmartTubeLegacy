@@ -211,6 +211,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             player.setMetadataOutput(eventLogger);
 
             simpleExoPlayerView.setPlayer(player);
+            player.setPlayWhenReady(false);
             // player.setPlayWhenReady(shouldAutoPlay);
         }
         if (needNewPlayer || needRetrySource) {
