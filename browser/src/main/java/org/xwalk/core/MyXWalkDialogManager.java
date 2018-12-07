@@ -507,7 +507,9 @@ public class MyXWalkDialogManager {
         if (mActiveDialog == null) {
             return;
         }
-        mActiveDialog.dismiss();
+        if (mActiveDialog.isShowing()) {
+            mActiveDialog.dismiss();
+        }
         mActiveDialog = null;
     }
 
