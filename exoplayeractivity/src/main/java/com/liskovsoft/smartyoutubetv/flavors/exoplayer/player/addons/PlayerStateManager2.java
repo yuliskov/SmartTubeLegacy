@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
+import com.google.android.exoplayer2.Player;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,17 +48,12 @@ public class PlayerStateManager2 {
     }
 
     /**
-     * Be aware that you can't get tracks from {@link MappedTrackInfo#getTrackGroups(int)} because tracks not initialized yet
+     * Don't restore track position immediately!!<br/>
+     * Instead use this method inside {@link Player.EventListener#onPlayerStateChanged onPlayerStateChanged} event<br/>
+     * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
-        try {
-            Thread.sleep(3_000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         restoreTrackIndex();
-        // don't restore track position here: instead do it lately from the Player.onPlayerStateChanged event
         restoreSubtitleTrack();
         restoreTrackPosition();
     }
