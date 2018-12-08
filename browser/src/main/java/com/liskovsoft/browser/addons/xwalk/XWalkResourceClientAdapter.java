@@ -1,16 +1,19 @@
 package com.liskovsoft.browser.addons.xwalk;
 
+import android.net.http.SslError;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import com.liskovsoft.browser.Tab.MainWindowClient;
 import org.xwalk.core.XWalkResourceClient;
 import org.xwalk.core.XWalkView;
 import org.xwalk.core.XWalkWebResourceRequest;
 import org.xwalk.core.XWalkWebResourceResponse;
 
 public class XWalkResourceClientAdapter extends XWalkResourceClient {
-    private WebViewClient mWebViewClient;
+    private MainWindowClient mWebViewClient;
     private WebChromeClient mWebChromeClient;
     private final WebView mWebView;
 
@@ -20,11 +23,16 @@ public class XWalkResourceClientAdapter extends XWalkResourceClient {
     }
 
     public void setWebViewClient(WebViewClient client) {
-        mWebViewClient = client;
+        mWebViewClient = (MainWindowClient) client;
     }
 
     public void setWebChromeClient(WebChromeClient client) {
         mWebChromeClient = client;
+    }
+
+    @Override
+    public void onReceivedSslError(XWalkView view, ValueCallback<Boolean> callback, SslError error) {
+        mWebViewClient.onReceivedSslError(mWebView, callback, error);
     }
 
     @Override

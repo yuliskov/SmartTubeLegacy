@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.webkit.*;
 import android.webkit.WebView.PictureListener;
+import com.liskovsoft.browser.addons.xwalk.XWalkResourceClientAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -891,10 +892,22 @@ public class Tab implements PictureListener {
     // -------------------------------------------------------------------------
     private WebViewClient mWebViewClient = new MainWindowClient();
 
-    private class MainWindowClient extends WebViewClient {
+    public class MainWindowClient extends WebViewClient {
         boolean mFirstStarted;
         boolean mLoadSuccess = true;
         final String TAG = Tab.class.getSimpleName() + "." + WebViewClient.class.getSimpleName();
+
+        /**
+         * More code: see {@link XWalkResourceClientAdapter#onReceivedSslError}
+         */
+        public void onReceivedSslError(WebView view, ValueCallback<Boolean> callback, SslError error) {
+            callback.onReceiveValue(true); // Ignore SSL certificate errors
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed(); // Ignore SSL certificate errors
+        }
 
         private void onReceiveError(int errorCode) {
             Log.w(TAG, "network error");
@@ -907,13 +920,6 @@ public class Tab implements PictureListener {
             mLoadSuccess = false;
         }
 
-        private void onLoadSuccess() {
-            if (mLoadSuccess && mListener != null)
-                mListener.onLoadSuccess(Tab.this);
-
-            mLoadSuccess = false;
-        }
-
         @TargetApi(23)
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -923,6 +929,13 @@ public class Tab implements PictureListener {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             onReceiveError(errorCode);
+        }
+
+        private void onLoadSuccess() {
+            if (mLoadSuccess && mListener != null)
+                mListener.onLoadSuccess(Tab.this);
+
+            mLoadSuccess = false;
         }
 
         @Override
