@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Convenience class to hold {@link Display} Display object.
+ * Convenience class to hold {@link DisplayHolder} Display object.
  *
  */
-public class Display{
+public class DisplayHolder {
 
     /**
      * Stub method to create the ModeInstance. In real world we need not to do it here.

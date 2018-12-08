@@ -18,11 +18,11 @@ public interface UhdHelperListener {
      * {@link UhdHelper#setPreferredDisplayModeId(Window, int,boolean) setPreferredDisplayModeId}
      * returns a true.
      *
-     * @param mode The {@link Display.Mode Mode} object containing
+     * @param mode The {@link DisplayHolder.Mode Mode} object containing
      *             the mode switched to OR NULL if there was a timeout
      *             or internal error while changing the mode.
      */
-    void onModeChanged(Display.Mode mode);
+    void onModeChanged(DisplayHolder.Mode mode);
 
 }
 

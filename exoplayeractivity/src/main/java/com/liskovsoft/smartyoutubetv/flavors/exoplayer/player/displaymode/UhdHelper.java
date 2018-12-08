@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -43,7 +44,7 @@ public class UhdHelper {
     private WorkHandler mWorkHandler;
     private OverlayStateChangeReceiver overlayStateChangeReceiver;
     boolean isReceiversRegistered;
-    private Display mInternalDisplay;
+    private DisplayHolder mInternalDisplay;
     private boolean showInterstitial = false;
     private boolean isInterstitialFadeReceived = false;
     private Window mTargetWindow;
@@ -78,7 +79,7 @@ public class UhdHelper {
     @SuppressLint("NewApi")
     public UhdHelper(Context context) {
         mContext = context;
-        mInternalDisplay = new Display();
+        mInternalDisplay = new DisplayHolder();
         mIsSetModeInProgress = new AtomicBoolean(false);
         mWorkHandler = new WorkHandler(Looper.getMainLooper());
         overlayStateChangeReceiver = new OverlayStateChangeReceiver();
@@ -117,7 +118,7 @@ public class UhdHelper {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MODE_CHANGED_MSG:
-                    Display.Mode mode = getMode();
+                    DisplayHolder.Mode mode = getMode();
                     if (mode == null) {
                         Log.w(TAG, "Mode query returned null after onDisplayChanged callback");
                         return;
@@ -137,7 +138,7 @@ public class UhdHelper {
                     doPostModeSetCleanup();
                     break;
                 case SEND_CALLBACK_WITH_SUPPLIED_RESULT:
-                    maybeDoACallback((Display.Mode) msg.obj);
+                    maybeDoACallback((DisplayHolder.Mode) msg.obj);
                     if (msg.arg1 == 1) {
                         doPostModeSetCleanup();
                     }
@@ -160,7 +161,7 @@ public class UhdHelper {
             }
         }
 
-        private void maybeDoACallback(Display.Mode mode) {
+        private void maybeDoACallback(DisplayHolder.Mode mode) {
             if (this.mCallbackListener != null) {
                 Log.d(TAG, "Sending callback to listener");
                 this.mCallbackListener.onModeChanged(mode);
@@ -240,10 +241,10 @@ public class UhdHelper {
     /**
      * Returns the current Display mode.
      *
-     * @return {@link Display.Mode Mode}
+     * @return {@link DisplayHolder.Mode Mode}
      * that is currently set on the system or NULL if an error occurred.
      */
-    public Display.Mode getMode() {
+    public DisplayHolder.Mode getMode() {
         android.view.Display currentDisplay = getCurrentDisplay();
         if (currentDisplay == null) {
             return null;
@@ -262,14 +263,14 @@ public class UhdHelper {
 
     /**
      * Utility function to parse android.view.Display,Mode to
-     * {@link Display.Mode mode}
+     * {@link DisplayHolder.Mode mode}
      *
      * @param systemMode mode
-     * @return {@link Display.Mode Mode} object
+     * @return {@link DisplayHolder.Mode Mode} object
      * or NULL if an error occurred.
      */
-    private Display.Mode convertReturnedModeToInternalMode(Object systemMode) {
-        Display.Mode returnedInstance = null;
+    private DisplayHolder.Mode convertReturnedModeToInternalMode(Object systemMode) {
+        DisplayHolder.Mode returnedInstance = null;
         try {
             Class<?> modeClass = systemMode.getClass();
             int modeId = (int) modeClass.getDeclaredMethod(sGetModeIdMethodName).invoke(systemMode);
@@ -287,16 +288,16 @@ public class UhdHelper {
      * Returns all the supported modes.
      *
      * @return An array of
-     * {@link Display.Mode Mode} objects
+     * {@link DisplayHolder.Mode Mode} objects
      * or NULL if an error occurred.
      */
-    public Display.Mode[] getSupportedModes() {
-        Display.Mode[] returnedSupportedModes = {};
+    public DisplayHolder.Mode[] getSupportedModes() {
+        DisplayHolder.Mode[] returnedSupportedModes = {};
         try {
             Class<?> classToInvestigate = Class.forName(sDisplayClassName);
             Method getSupportedMethod = classToInvestigate.getDeclaredMethod(sSupportedModesMethodName);
             Object[] SupportedModes = (Object[]) getSupportedMethod.invoke(getCurrentDisplay());
-            returnedSupportedModes = new Display.Mode[SupportedModes.length];
+            returnedSupportedModes = new DisplayHolder.Mode[SupportedModes.length];
             int i = 0;
             for (Object mode : SupportedModes) {
                 returnedSupportedModes[i++] = convertReturnedModeToInternalMode(mode);
@@ -389,7 +390,7 @@ public class UhdHelper {
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, null));
             return;
         }
-        Display.Mode currentMode = getMode();
+        DisplayHolder.Mode currentMode = getMode();
         if (currentMode == null || currentMode.getModeId() == modeId) {
             Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
             //send and cleanup receivers/callback listeners
@@ -397,10 +398,10 @@ public class UhdHelper {
             return;
         }
         //Check if the modeId given is even supported by the system.
-        Display.Mode[] supportedModes = getSupportedModes();
+        DisplayHolder.Mode[] supportedModes = getSupportedModes();
         boolean isRequestedModeSupported = false;
         boolean isRequestedModeUhd = false;
-        for (Display.Mode mode : supportedModes) {
+        for (DisplayHolder.Mode mode : supportedModes) {
             if (mode.getModeId() == modeId) {
                 isRequestedModeUhd = (mode.getPhysicalHeight() >= HEIGHT_UHD ? true : false);
                 isRequestedModeSupported = true;
@@ -430,7 +431,10 @@ public class UhdHelper {
 
             @Override
             public void onDisplayChanged(int displayId) {
-                Log.i(TAG, "onDisplayChanged. id= " + displayId + " " + mDisplayManager.getDisplay(displayId).toString());
+                Display display = mDisplayManager.getDisplay(displayId);
+                if (display != null) {
+                    Log.i(TAG, "onDisplayChanged. id= " + displayId + " " + display.toString());
+                }
                 mWorkHandler.obtainMessage(MODE_CHANGED_MSG).sendToTarget();
             }
         };

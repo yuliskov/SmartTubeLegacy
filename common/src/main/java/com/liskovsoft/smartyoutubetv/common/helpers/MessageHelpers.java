@@ -31,12 +31,18 @@ public class MessageHelpers {
             return;
         }
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        Runnable toast = new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
             }
-        });
+        };
+
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            toast.run();
+        } else {
+            new Handler(Looper.getMainLooper()).post(toast);
+        }
     }
 
     public static void showLongMessage(Context ctx, String TAG, String msg) {

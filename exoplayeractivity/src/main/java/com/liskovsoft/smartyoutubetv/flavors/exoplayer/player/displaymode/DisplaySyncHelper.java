@@ -27,16 +27,16 @@ public class DisplaySyncHelper implements UhdHelperListener {
         mContext = context;
     }
 
-    private List<Display.Mode> filterSameResolutionModes(Display.Mode[] oldModes, Display.Mode currentMode) {
+    private List<DisplayHolder.Mode> filterSameResolutionModes(DisplayHolder.Mode[] oldModes, DisplayHolder.Mode currentMode) {
         if (currentMode == null) {
             return Collections.emptyList();
         }
 
-        ArrayList<Display.Mode> newModes = new ArrayList<>();
+        ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
         int oldModesLen = oldModes.length;
 
         for (int i = 0; i < oldModesLen; ++i) {
-            Display.Mode mode = oldModes[i];
+            DisplayHolder.Mode mode = oldModes[i];
             if (mode == null) {
                 continue;
             }
@@ -49,12 +49,12 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private ArrayList<Display.Mode> filterUHDModes(Display.Mode[] oldModes) {
-        ArrayList<Display.Mode> newModes = new ArrayList<>();
+    private ArrayList<DisplayHolder.Mode> filterUHDModes(DisplayHolder.Mode[] oldModes) {
+        ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
         int modesNum = oldModes.length;
 
         for (int i = 0; i < modesNum; ++i) {
-            Display.Mode mode = oldModes[i];
+            DisplayHolder.Mode mode = oldModes[i];
             Log.i("DisplaySyncHelper", "Check fo UHD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
             if (mode.getPhysicalHeight() >= 2160) {
                 Log.i("DisplaySyncHelper", "Found! UHD");
@@ -69,7 +69,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private Display.Mode findCloserMode(List<Display.Mode> modes, float rate) {
+    private DisplayHolder.Mode findCloserMode(List<DisplayHolder.Mode> modes, float rate) {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
         relatedRates.put(1500, new int[]{6000, 3000});
         relatedRates.put(2397, new int[]{2397, 2400, 6000, 3000});
@@ -87,11 +87,11 @@ public class DisplaySyncHelper implements UhdHelperListener {
         }
 
         if (relatedRates.containsKey(myRate)) {
-            HashMap<Integer, Display.Mode> rateAndMode = new HashMap<>();
+            HashMap<Integer, DisplayHolder.Mode> rateAndMode = new HashMap<>();
             Iterator modeIterator = modes.iterator();
 
             while (modeIterator.hasNext()) {
-                Display.Mode mode = (Display.Mode) modeIterator.next();
+                DisplayHolder.Mode mode = (DisplayHolder.Mode) modeIterator.next();
                 rateAndMode.put((int) (mode.getRefreshRate() * 100.0F), mode);
             }
 
@@ -153,7 +153,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
     }
 
     @Override
-    public void onModeChanged(Display.Mode mode) {
+    public void onModeChanged(DisplayHolder.Mode mode) {
         mDisplaySyncInProgress = false;
 
         if (mode == null && mUhdHelper.getMode() == null) {
@@ -204,9 +204,9 @@ public class DisplaySyncHelper implements UhdHelperListener {
                 mUhdHelper = new UhdHelper(mContext);
             }
 
-            Display.Mode[] modes = mUhdHelper.getSupportedModes();
+            DisplayHolder.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
-            List<Display.Mode> resultModes = new ArrayList<>();
+            List<DisplayHolder.Mode> resultModes = new ArrayList<>();
             if (getSwitchToUHD()) {
                 if (videoWidth > 1920) {
                     resultModes = filterUHDModes(modes);
@@ -218,12 +218,12 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
             if (getNeedDisplaySync() || isUHD) {
                 Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + getNeedDisplaySync() + " Need UHD switch: " + isUHD);
-                Display.Mode mode = mUhdHelper.getMode();
+                DisplayHolder.Mode mode = mUhdHelper.getMode();
                 if (!isUHD) {
                     resultModes = filterSameResolutionModes(modes, mode);
                 }
 
-                Display.Mode closerMode = findCloserMode(resultModes, videoFramerate);
+                DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
                 if (closerMode == null) {
                     Log.i("DisplaySyncHelper", "Could not find closer refresh rate for " + videoFramerate + "fps");
                     return false;
