@@ -1,12 +1,12 @@
 package edu.mit.mobile.android.appupdater;
 
-import android.support.v7.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import edu.mit.mobile.android.appupdater.addons.UpdateApp;
 
 import java.util.List;
@@ -22,35 +22,19 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     private Uri[] mDownloadUris;
     private final Handler mHandler;
     private static final int MSG_SHOW_DIALOG = 1;
-    private Dialog mDialog;
+    private AlertDialog mDialog;
 
     public OnUpdateDialog(Context context, CharSequence appName) {
         mContext = context;
         mAppName = appName;
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MSG_SHOW_DIALOG:
-                        try {
-                            // TODO fix this so it'll pop up appropriately
-                            mDialog.show();
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                            // XXX ignore for the moment
-                        }
-
-                        break;
-                }
-            }
-        };
+        mHandler = new MyHandler();
     }
 
     public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris) {
         this.mDownloadUris = downloadUris;
 
         if (!isLatestVersion) {
-            final Builder db = new Builder(mContext, com.liskovsoft.smartyoutubetv.common.R.style.AppDialog);
+            final Builder db = new Builder(mContext, R.style.AppDialog);
             db.setTitle(mAppName);
 
             final StringBuilder sb = new StringBuilder();
@@ -66,7 +50,6 @@ public class OnUpdateDialog implements OnAppUpdateListener {
             db.setNegativeButton(R.string.cancel, dialogOnClickListener);
             mDialog = db.create();
             mHandler.sendEmptyMessage(MSG_SHOW_DIALOG);
-
         }
     }
 
@@ -74,9 +57,9 @@ public class OnUpdateDialog implements OnAppUpdateListener {
 
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
-                case Dialog.BUTTON_POSITIVE:
+                case AlertDialog.BUTTON_POSITIVE:
                     downloadAndInstall(mDownloadUris);
-                case Dialog.BUTTON_NEGATIVE:
+                case AlertDialog.BUTTON_NEGATIVE:
                     postpone();
             }
 
@@ -90,5 +73,23 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     private void downloadAndInstall(Uri[] downloadUris) {
         UpdateApp updateApp = new UpdateApp(mContext);
         updateApp.execute(downloadUris);
+    }
+
+    private class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SHOW_DIALOG:
+                    try {
+                        // TODO fix this so it'll pop up appropriately
+                        mDialog.show();
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                        // XXX ignore for the moment
+                    }
+
+                    break;
+            }
+        }
     }
 }
