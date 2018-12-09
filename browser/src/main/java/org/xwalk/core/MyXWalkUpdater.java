@@ -14,6 +14,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build.VERSION;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -308,7 +309,7 @@ public class MyXWalkUpdater {
      * @param listener The {@link XWalkUpdateListener} to use
      * @param context The context which initiate the update
      */
-    public MyXWalkUpdater(XWalkUpdateListener listener, Context context) {
+    public MyXWalkUpdater(XWalkUpdateListener listener, FragmentActivity context) {
         mUpdateListener = listener;
         mContext = context;
         mDialogManager = new MyXWalkDialogManager(context);

@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -226,7 +228,7 @@ public class MyXWalkDialogManager {
 
     private static final String TAG = "XWalkLib";
 
-    private Context mContext;
+    private FragmentActivity mContext;
     private Dialog mActiveDialog;
 
     private AlertDialog mNotFoundDialog;
@@ -259,7 +261,7 @@ public class MyXWalkDialogManager {
      *        itself
      * @since 7.0
      */
-    public MyXWalkDialogManager(Context context) {
+    public MyXWalkDialogManager(FragmentActivity context) {
         mContext = context;
     }
 
@@ -504,7 +506,7 @@ public class MyXWalkDialogManager {
     }
 
     void dismissDialog() {
-        if (mActiveDialog == null) {
+        if (mActiveDialog == null || mContext.isFinishing()) {
             return;
         }
         if (mActiveDialog.isShowing()) {

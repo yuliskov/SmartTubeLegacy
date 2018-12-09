@@ -550,9 +550,9 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (errorWhileClickedOnPlayButton()) {
-            initializePlayer();
-        }
+        //if (errorWhileClickedOnPlayButton()) {
+        //    initializePlayer();
+        //}
 
         updateButtonVisibilities();
     }
