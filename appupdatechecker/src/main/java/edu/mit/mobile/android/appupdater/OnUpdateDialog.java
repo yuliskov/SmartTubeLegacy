@@ -1,6 +1,6 @@
 package edu.mit.mobile.android.appupdater;
 
-import android.app.AlertDialog.Builder;
+import android.support.v7.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,7 +50,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         this.mDownloadUris = downloadUris;
 
         if (!isLatestVersion) {
-            final Builder db = new Builder(mContext);
+            final Builder db = new Builder(mContext, com.liskovsoft.smartyoutubetv.common.R.style.AppDialog);
             db.setTitle(mAppName);
 
             final StringBuilder sb = new StringBuilder();
