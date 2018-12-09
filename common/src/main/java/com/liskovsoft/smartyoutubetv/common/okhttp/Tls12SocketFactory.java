@@ -1,12 +1,11 @@
-package edu.mit.mobile.android.appupdater.downloadmanager;
+package com.liskovsoft.smartyoutubetv.common.okhttp;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Enables TLS v1.2 when creating SSLSockets.
