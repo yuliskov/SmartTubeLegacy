@@ -63,6 +63,7 @@ public class PlayerStateManager2 {
     /**
      * Some decoders might not have enough time for initialization<br/>
      * <a href="https://github.com/yuliskov/SmartYouTubeTV/issues/203">GitHub issue #203</a><br/>
+     * <a href="https://github.com/yuliskov/SmartYouTubeTV/issues/205">GitHub issue #205</a><br/>
      */
     private void waitCodecInit() {
         try {

@@ -25,6 +25,7 @@ public class SpeedDataSource implements GenericSelectorDialog.DataSource {
         mItems.put(mContext.getString(R.string.normal), "1.0");
         mItems.put("1.25", "1.25");
         mItems.put("1.5", "1.5");
+        mItems.put("1.75", "1.75");
         mItems.put("2", "2.0");
     }
 
