@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import com.liskovsoft.browser.search.SearchEngine;
@@ -187,6 +188,26 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
     }
 
+    /**
+     * youtube measures all elements in 'rem' units<br/>
+     * 'rem' units heavily depend on text size<br/>
+     * this could be a problem when changing system font size<br/>
+     * so we need to force normal text zoom<br/>
+     * <br/>
+     * also, don't forget to set minimum font size to 1:<br/>
+     * <a href="https://stackoverflow.com/questions/41179357/android-webview-rem-units-scale-way-to-large-for-boxes">stackoverflow discussion</a><br/>
+     * {@link WebSettings#setMinimumFontSize(int)}<br/>
+     * {@link WebSettings#setMinimumLogicalFontSize(int)}<br/>
+     * <br/>
+     * other useful api that have the same effect as text zooming:<br/>
+     * {@link WebSettings#setTextSize(TextSize)}<br/>
+     * {@link WebSettings#setDefaultFontSize(int)}<br/>
+     * @return zoom in percents
+     */
+    public int getTextZoom() {
+        return mPrefs.getInt(PREF_TEXT_ZOOM, 100);
+    }
+
     // TODO: Cache
     public ZoomDensity getDefaultZoom() {
         String zoom = mPrefs.getString(PREF_DEFAULT_ZOOM, ZoomDensity.MEDIUM.name());
@@ -334,7 +355,13 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
         settings.setSavePassword(rememberPasswords());
 
+        // fix android bug when measuring 'rem' units
+        // https://stackoverflow.com/questions/41179357/android-webview-rem-units-scale-way-to-large-for-boxes
+        settings.setMinimumFontSize(1);
+        settings.setMinimumLogicalFontSize(1);
+
         // youtube: fit layout into screen
+        settings.setTextZoom(getTextZoom());
         settings.setDefaultZoom(getDefaultZoom());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setUseWideViewPort(isWideViewport());
