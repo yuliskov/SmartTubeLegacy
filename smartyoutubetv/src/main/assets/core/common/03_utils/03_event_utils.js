@@ -16,14 +16,17 @@ var EventUtils = {
     /**
      * Calls listener.onKeyEvent(event) every time key event arrives
      */
-    addGlobalKeyPressListener: function(listener) {
-        this.addKeyPressListener(listener, YouTubeConstants.APP_CONTAINER_SELECTOR);
-    },
+    addKeyPressListener: function(listener, selector) {
+        // TODO: provide more optimized routine
+        if (!this.isPlayerInitialized()) {
+            // player not initialized yet
+            var $this = this;
+            setTimeout(function() {
+                $this.addKeyPressListener(listener, selector);
+            }, $this.checkIntervalMS);
+            return;
+        }
 
-    /**
-     * Calls listener.onKeyEvent(event) every time key event arrives
-     */
-    addKeyPressListener: function(listener, rootSelector) {
         if (this.listeners[listener.onKeyEvent]) {
             console.log("EventUtils::this listener already added... do nothing");
             return;
@@ -31,31 +34,24 @@ var EventUtils = {
 
         this.listeners[listener.onKeyEvent] = true;
 
-        var container = Utils.$(rootSelector);
+        var container = Utils.$(selector);
         console.log('EventUtils::addListener:keyup... ');
         container.addEventListener(DefaultEvents.KEY_UP, function(event) {
             listener.onKeyEvent(event);
         });
     },
 
-    isPlayerInitialized: function() {
-        var elem = Utils.$(YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
-        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS);
+    /**
+     * Calls listener.onKeyEvent(event) every time key event arrives
+     */
+    addGlobalKeyPressListener: function(listener) {
+        this.addKeyPressListener(listener, YouTubeConstants.APP_CONTAINER_SELECTOR);
     },
 
     /**
      * Calls listener.onKeyEvent(event) every time key event arrives
      */
     addPlayerKeyPressListener: function(listener) {
-        if (!this.isPlayerInitialized()) {
-            // player not initialized yet
-            var $this = this;
-            setTimeout(function() {
-                $this.addPlayerKeyPressListener(listener);
-            }, $this.checkIntervalMS);
-            return;
-        }
-
         console.log("EventUtils::addPlayerKeyPressListener");
 
         this.addKeyPressListener(listener, YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
@@ -65,7 +61,7 @@ var EventUtils = {
      * Calls listener.onPlaybackEvent() every time player start to play an video
      */
     addPlaybackListener: function(listener) {
-        // do everytime video loads:
+        // do every time when video loads:
         window.addEventListener(DefaultEvents.HASH_CHANGE, function(){
             var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
             if (isPlayerOpened) {
@@ -79,6 +75,11 @@ var EventUtils = {
             return Utils.$(YouTubeConstants.PLAYER_PLAY_BUTTON_SELECTOR);
         };
         Utils.delayTillTestFnSuccess(fn, testFn);
+    },
+
+    isPlayerInitialized: function() {
+        var elem = Utils.$(YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
+        return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS);
     },
 
     toSelector: function(el) {

@@ -5,23 +5,24 @@ Description: Imitate press on OK button after seek
 console.log("Scripts::Running script player_seek_fix.js");
 
 function PlayerSeekAddon() {
-	this.progressBarSelector = "#transport-controls";
+    this.TAG = 'PlayerSeekAddon';
 	this.timeoutTimeMS = 1000;
 	this.myTimeout = null;
+	this.progressBarSelector = '#transport-controls .new-progress-bar';
 
     this.run = function() {
-    	EventUtils.addPlayerKeyPressListener(this);
+    	EventUtils.addKeyPressListener(this, this.progressBarSelector);
     };
 
     this.onKeyEvent = function(e) {
-    	console.log("PlayerSeekAddon::onKeyEvent:" + e.keyCode);
+    	Log.d(this.TAG, "onKeyEvent:" + e.keyCode);
 
         if (this.myTimeout) {
-            console.log('PlayerSeekAddon::Clear unneeded timeout');
+            Log.d(this.TAG, 'Clear unneeded timeout');
             clearTimeout(this.myTimeout);
         }
 
-        var notLeftOrRight = e.keyCode !== DefaultKeys.LEFT && e.keyCode !== DefaultKeys.RIGHT;
+        var notLeftOrRight = e.keyCode != DefaultKeys.LEFT && e.keyCode != DefaultKeys.RIGHT;
 
         if (notLeftOrRight) {
             return;
@@ -34,8 +35,8 @@ function PlayerSeekAddon() {
     };
 
     this.doPressOnOKButton = function() {
-    	console.log('PlayerSeekAddon::Imitate press on OK button');
-    	EventUtils.triggerEnter(this.progressBarSelector);
+    	Log.d(this.TAG, 'Imitate press on OK button');
+    	EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
     };
 }
 
