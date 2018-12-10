@@ -34,7 +34,11 @@ public class MessageHelpers {
         Runnable toast = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show();
+                } catch (Exception ex) { // NPE fix
+                    ex.printStackTrace();
+                }
             }
         };
 
