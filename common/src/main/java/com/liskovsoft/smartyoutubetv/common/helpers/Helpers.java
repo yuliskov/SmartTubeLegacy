@@ -369,7 +369,7 @@ public final class Helpers {
     }
 
     /**
-     * Setup fixed font size regardless of the system settings
+     * Force normal font size regardless of the system settings
      * @param configuration app config
      * @param ctx activity
      */
@@ -379,7 +379,7 @@ public final class Helpers {
             return;
         }
 
-        configuration.fontScale = (float) 1.0;
+        configuration.fontScale = (float) 1.0; // normal size
         DisplayMetrics metrics = ctx.getResources().getDisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         metrics.scaledDensity = configuration.fontScale * metrics.density;

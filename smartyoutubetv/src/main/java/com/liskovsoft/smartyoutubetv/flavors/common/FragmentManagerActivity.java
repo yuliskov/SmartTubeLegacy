@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 
@@ -18,6 +19,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupLang();
+
         if (savedInstanceState != null) {
             // fixing bug where player's menu shown on boot and browser forgot user agent
             Log.d(TAG, "State not null... clearing");
@@ -154,5 +157,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     private void setupFontSize() {
         Helpers.adjustFontScale(getResources().getConfiguration(), this);
+    }
+
+    private void setupLang() {
+        new LangUpdater(this).update();
     }
 }
