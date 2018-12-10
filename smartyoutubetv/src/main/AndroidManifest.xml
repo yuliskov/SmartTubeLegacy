@@ -57,7 +57,7 @@
         <!-- NOTE: avoid setting launchMode or you will get new activity every time from launcher -->
         <!-- NOTE: also, you'll got problems with activity restarting (System.exit) -->
         <activity android:name=".bootstrap.BootstrapActivity"
-                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
                   android:icon="@mipmap/ic_launcher_main"
                   android:label="@string/app_name"
                   android:windowSoftInputMode="adjustResize"
@@ -106,7 +106,7 @@
         <activity
             android:name=".flavors.webview.SmartYouTubeTV1080Activity"
             android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:icon="@mipmap/ic_launcher_main"
             android:label="@string/app_name_720"
             android:launchMode="singleTask"
@@ -115,7 +115,7 @@
         <activity
             android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"
             android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:icon="@mipmap/ic_launcher_main"
             android:label="@string/app_name_1080"
             android:launchMode="singleTask"
@@ -124,7 +124,7 @@
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4K"
             android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:icon="@mipmap/ic_launcher_main"
             android:label="@string/app_name_4k"
             android:launchMode="singleTask"
@@ -133,7 +133,7 @@
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
             android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:icon="@mipmap/ic_launcher_main"
             android:label="@string/app_name_4k_alt"
             android:launchMode="singleTask"

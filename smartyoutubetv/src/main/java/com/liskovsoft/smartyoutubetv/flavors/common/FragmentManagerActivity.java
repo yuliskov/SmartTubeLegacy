@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 
@@ -24,6 +25,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         super.onCreate(savedInstanceState);
+        setupFontSize();
 
         hideTitleBar();
     }
@@ -148,5 +150,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     @Override
     public void setDispatchEvent(KeyEvent event) {
         mEvent = event;
+    }
+
+    private void setupFontSize() {
+        Helpers.adjustFontScale(getResources().getConfiguration(), this);
     }
 }

@@ -1,14 +1,17 @@
 package com.liskovsoft.smartyoutubetv.common.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -363,5 +366,23 @@ public final class Helpers {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Setup fixed font size regardless of the system settings
+     * @param configuration app config
+     * @param ctx activity
+     */
+    public static void adjustFontScale(Configuration configuration, Activity ctx) {
+        WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return;
+        }
+
+        configuration.fontScale = (float) 1.0;
+        DisplayMetrics metrics = ctx.getResources().getDisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        ctx.getBaseContext().getResources().updateConfiguration(configuration, metrics);
     }
 }
