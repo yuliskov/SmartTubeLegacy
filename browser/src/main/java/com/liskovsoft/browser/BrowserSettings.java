@@ -99,12 +99,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_FULLSCREEN, false);
     }
 
-    // TODO: Cache
-    public ZoomDensity getDefaultZoom() {
-        String zoom = mPrefs.getString(PREF_DEFAULT_ZOOM, "MEDIUM");
-        return ZoomDensity.valueOf(zoom);
-    }
-
     public boolean enableJavascript() {
         return mPrefs.getBoolean(PREF_ENABLE_JAVASCRIPT, true);
     }
@@ -191,6 +185,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
 
     public boolean blockPopupWindows() {
         return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
+    }
+
+    // TODO: Cache
+    public ZoomDensity getDefaultZoom() {
+        String zoom = mPrefs.getString(PREF_DEFAULT_ZOOM, ZoomDensity.MEDIUM.name());
+        return ZoomDensity.valueOf(zoom);
     }
 
     public boolean loadPageInOverviewMode() {
@@ -330,11 +330,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
      */
     private void syncSetting(WebSettings settings) {
         settings.setJavaScriptEnabled(enableJavascript());
-        settings.setDefaultZoom(getDefaultZoom());
         settings.setPluginState(getPluginState());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
         settings.setSavePassword(rememberPasswords());
+
         // youtube: fit layout into screen
+        settings.setDefaultZoom(getDefaultZoom());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setUseWideViewPort(isWideViewport());
 
