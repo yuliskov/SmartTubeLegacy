@@ -31,8 +31,16 @@ public class OkHttpHelpers {
     }
 
     public static Response doOkHttpRequest(String url) {
-        if (mClient == null)
+        if (mClient == null) {
             mClient = createOkHttpClient();
+        }
+
+        return doOkHttpRequest(url, mClient);
+    }
+
+    public static Response doOkHttpRequest(String url, OkHttpClient client) {
+        if (client == null)
+            client = createOkHttpClient();
 
         Request okHttpRequest = new Request.Builder()
                 .url(url)
@@ -42,7 +50,7 @@ public class OkHttpHelpers {
         Exception lastEx = null;
         for (int tries = NUM_TRIES; tries > 0; tries--) {
             try {
-                okHttpResponse = mClient.newCall(okHttpRequest).execute();
+                okHttpResponse = client.newCall(okHttpRequest).execute();
                 if (!okHttpResponse.isSuccessful()) {
                     throw new IllegalStateException("Unexpected code " + okHttpResponse);
                 }

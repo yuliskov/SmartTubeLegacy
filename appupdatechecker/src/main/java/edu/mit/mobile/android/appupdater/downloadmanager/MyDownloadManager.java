@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Environment;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -43,8 +44,6 @@ import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Random;
-
-import static com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers.setupBuilder;
 
 /**
  * Progress listener example:
@@ -84,6 +83,27 @@ public final class MyDownloadManager {
 
         String url = mRequest.mDownloadUri.toString();
 
+        Response response = OkHttpHelpers.doOkHttpRequest(url, mClient);
+
+        if (response == null || response.body() == null) {
+            throw new IllegalStateException("Error: bad response");
+        }
+
+        try {
+            // NOTE: actual downloading is going here (while reading a stream)
+            mResponseStream = new ByteArrayInputStream(response.body().bytes());
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    private void doDownload2() {
+        if (!isNetworkAvailable()) {
+            MessageHelpers.showMessage(mContext, "Internet connection not available!");
+        }
+
+        String url = mRequest.mDownloadUri.toString();
+
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -97,7 +117,7 @@ public final class MyDownloadManager {
                 mResponseStream = new ByteArrayInputStream(response.body().bytes());
                 break; // no exception is thrown - job is done
             } catch (SocketTimeoutException | UnknownHostException ex) {
-                if (tries == 1) // swallow 3 times
+                if (tries == 1) // swallow num times
                     throw new IllegalStateException(ex);
             } catch (IOException | RuntimeException ex) {
                 throw new IllegalStateException(ex);
@@ -118,7 +138,7 @@ public final class MyDownloadManager {
         Builder builder = new Builder()
                 .addNetworkInterceptor(intercept);
 
-        return setupBuilder(builder).build();
+        return OkHttpHelpers.setupBuilder(builder).build();
     }
 
     private Uri streamToFile(InputStream is, Uri destination) {
