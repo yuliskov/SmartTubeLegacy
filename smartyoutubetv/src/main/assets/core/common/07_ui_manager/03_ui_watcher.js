@@ -15,19 +15,24 @@ var UiWatcher = {
 
     disableButtonEvents: function() {
         var $this = this;
-        var firstBtnSel = this.buttonArr[0];
-        var centerBntSel = this.buttonArr[1];
-        var lastBtnSel = this.buttonArr[2];
+        var firstBtn = this.buttonArr[0];
+        var centerBnt = this.buttonArr[1];
+        var lastBtn = this.buttonArr[2];
 
-        EventUtils.addListener(firstBtnSel, DefaultEvents.KEY_DOWN, function(e) {
+        Log.d(this.TAG, "add listeners to buttons: " + firstBtn.getElem());
+
+        EventUtils.addListener(firstBtn.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+            Log.d($this.TAG, "on keydown " + e);
             $this.onFirstButtonKey(e);
         });
 
-        EventUtils.addListener(centerBntSel, DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(centerBnt.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+            Log.d($this.TAG, "on keydown " + e);
             $this.onCenterButtonKey(e);
         });
 
-        EventUtils.addListener(lastBtnSel, DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(lastBtn.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+            Log.d($this.TAG, "on keydown " + e);
             $this.onLastButtonKey(e);
         });
     },

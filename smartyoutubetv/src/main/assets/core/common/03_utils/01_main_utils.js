@@ -52,7 +52,7 @@ var Utils = {
         if (this.isArray(selector)) {
             for (var i = 0; i < selector.length; i++) {
                 var el = document.querySelector(selector[i]);
-                if (el && el.children.length)
+                if (el && el.children && el.children.length)
                     return el;
             }
             return null;

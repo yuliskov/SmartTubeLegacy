@@ -20,8 +20,11 @@ function UiDataButton(buttonData) {
      * Get DOM element
      */
     this.getElem = function() {
-        return UiHelpers.createElement(
-            this.markup.replace('%TITLE%', this.data.getTitle()));
+        if (this.elem == null) {
+            this.elem = UiHelpers.createElement(
+                this.markup.replace('%TITLE%', this.data.getTitle()));
+        }
+        return this.elem;
     };
 
     this.getId = function() {
