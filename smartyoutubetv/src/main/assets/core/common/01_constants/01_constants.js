@@ -20,5 +20,6 @@ var DefaultEvents = {
     PLAYER_PLAY: 'play',
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
-    HASH_CHANGE: 'hashchange'
+    HASH_CHANGE: 'hashchange',
+    FOCUS_IN: 'focusin'
 };

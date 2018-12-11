@@ -14,7 +14,7 @@ function CodecSelectorAddon() {
     }
 }
 
-// if (!DeviceUtils.isExo())
-//     new CodecSelectorAddon().run();
+if (!DeviceUtils.isExo())
+    new CodecSelectorAddon().run();
 
 

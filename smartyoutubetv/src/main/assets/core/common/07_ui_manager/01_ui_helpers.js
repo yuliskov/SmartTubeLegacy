@@ -41,7 +41,10 @@ var UiHelpers = {
                 listener);
             return;
         } else {
-            EventUtils.removeListener(listener);
+            EventUtils.removeListener(
+                YouTubeSelectors.PLAYER_EVENTS_RECEIVER,
+                YouTubeEvents.MODEL_CHANGED_EVENT,
+                listener);
         }
 
         this.insertAfterDom(existingButton.getElem(), newButton.getElem());

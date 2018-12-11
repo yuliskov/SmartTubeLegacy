@@ -12,7 +12,8 @@ function UiDataButton(buttonData) {
     this.data = buttonData;
     this.markup =
         '<div class="transport-controls-button" tabindex="-1" role="button" style="left: 15rem; position: absolute; width: initial">' +
-        '<span>%TITLE%</span>' +
+        '<div class="background" style="width: 100%; border-radius: 0;"></div>' +
+        '<span style="padding: 10px">%TITLE%</span>' +
         '</div>';
 
     /**

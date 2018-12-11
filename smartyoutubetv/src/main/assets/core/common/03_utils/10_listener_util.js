@@ -36,7 +36,7 @@ var ListenerUtil = {
         var container = this.getContainer(selectorOrElement);
 
         if (!container || !container.children || !container.children.length) {
-            Log.d(this.TAG, "Can't add listener: element " + selectorOrElement + " not initialized... waiting...");
+            Log.d(this.TAG, "Can't remove listener: element " + selectorOrElement + " not initialized... waiting...");
             this.addPendingHandler(
                 {
                     selectorOrElement: selectorOrElement,
@@ -95,7 +95,7 @@ var ListenerUtil = {
     executeHandler: function(handlerObj) {
         var container = this.getContainer(handlerObj.selectorOrElement);
 
-        if (!container || !container.children.length) {
+        if (!container || !container.children || !container.children.length) {
             return false;
         } else {
             Log.d(this.TAG, "Success, element is found... add listener to it " + container);
