@@ -5,6 +5,14 @@
 console.log("Scripts::Running script ui_button.js");
 
 function UiButton() {
+    this.focus = function() {
+        Utils.ytFocus(this.getElem());
+        this.getElem().focus();
+    };
+
+    this.unfocus = function() {
+        Utils.ytUnfocus(this.getElem());
+    };
 }
 
 function UiDataButton(buttonData) {
@@ -32,6 +40,8 @@ function UiDataButton(buttonData) {
     };
 }
 
+UiDataButton.prototype = new UiButton();
+
 function UiSelectorButton(selector) {
     this.TAG = 'UiSelectorButton';
     this.selector = selector;
@@ -39,6 +49,8 @@ function UiSelectorButton(selector) {
         return Utils.$(selector);
     }
 }
+
+UiSelectorButton.prototype = new UiButton();
 
 UiButton.fromData = function(buttonData) {
     return new UiDataButton(buttonData);

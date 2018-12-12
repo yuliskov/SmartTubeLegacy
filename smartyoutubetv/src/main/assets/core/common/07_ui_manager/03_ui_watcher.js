@@ -22,17 +22,14 @@ var UiWatcher = {
         Log.d(this.TAG, "add listeners to buttons: " + firstBtn.getElem());
 
         EventUtils.addListener(firstBtn.getElem() || firstBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
-            Log.d($this.TAG, "on keydown " + e);
             $this.onFirstButtonKey(e);
         });
 
         EventUtils.addListener(centerBnt.getElem() || centerBnt.selector, DefaultEvents.KEY_DOWN, function(e) {
-            Log.d($this.TAG, "on keydown " + e);
             $this.onCenterButtonKey(e);
         });
 
         EventUtils.addListener(lastBtn.getElem() || lastBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
-            Log.d($this.TAG, "on keydown " + e);
             $this.onLastButtonKey(e);
         });
     },
@@ -42,17 +39,38 @@ var UiWatcher = {
             return;
         }
 
+        this.direction = e.keyCode;
+        this.ytButton = e.target;
+
         // override right key
         e.stopPropagation();
-
         Log.d(this.TAG, "select center button");
+
         var centerBtn = this.buttonArr[1];
-        centerBtn.getElem().focus();
+        centerBtn.focus();
+        Utils.ytUnfocus(e.target);
     },
 
     onCenterButtonKey: function(e) {
         Log.d(this.TAG, "move selection to the youtube button");
-        EventUtils.triggerEvent(this.buttonsContainerSel, DefaultEvents.KEY_DOWN, e.keyCode);
+
+        e.stopPropagation();
+
+        var sameDirection = e.keyCode == this.direction;
+        var leftOrRight = e.keyCode == DefaultKeys.LEFT || e.keyCode == DefaultKeys.RIGHT;
+
+        if (!leftOrRight) {
+            return;
+        }
+
+        if (sameDirection) {
+            EventUtils.triggerEvent(this.buttonsContainerSel, DefaultEvents.KEY_DOWN, e.keyCode);
+        } else {
+            Utils.ytFocus(this.ytButton);
+        }
+
+        var centerBtn = this.buttonArr[1];
+        centerBtn.unfocus();
     },
 
     onLastButtonKey: function(e) {
@@ -60,11 +78,15 @@ var UiWatcher = {
             return;
         }
 
+        this.direction = e.keyCode;
+        this.ytButton = e.target;
+
         // override left key
         e.stopPropagation();
-
         Log.d(this.TAG, "select center button");
+
         var centerBtn = this.buttonArr[1];
-        centerBtn.getElem().focus();
+        centerBtn.focus();
+        Utils.ytUnfocus(e.target);
     },
 };

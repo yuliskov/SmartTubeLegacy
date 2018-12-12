@@ -287,6 +287,17 @@ var Utils = {
         }
 
         return elem.innerHTML;
+    },
+
+    ytFocus: function(elem) {
+        this.addClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
+        if (elem) {
+            elem.focus();
+        }
+    },
+
+    ytUnfocus: function(elem) {
+        this.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
     }
 };
 
