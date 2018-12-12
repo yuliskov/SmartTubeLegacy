@@ -28,9 +28,16 @@ function UiDataButton(buttonData) {
      * Get DOM element
      */
     this.getElem = function() {
+        var $this = this;
         if (this.elem == null) {
             this.elem = UiHelpers.createElement(
                 this.markup.replace('%TITLE%', this.data.getTitle()));
+
+            EventUtils.addListener(this.elem, DefaultEvents.ON_CLICK, function(e) {
+                if ($this.data.onClick) {
+                    $this.data.onClick();
+                }
+            });
         }
         return this.elem;
     };

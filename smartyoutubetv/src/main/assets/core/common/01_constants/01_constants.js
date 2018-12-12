@@ -21,5 +21,6 @@ var DefaultEvents = {
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
     HASH_CHANGE: 'hashchange',
-    FOCUS_IN: 'focusin'
+    FOCUS_IN: 'focusin',
+    ON_CLICK: 'click'
 };

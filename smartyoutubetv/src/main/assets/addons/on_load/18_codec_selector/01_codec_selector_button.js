@@ -13,6 +13,6 @@ function CodecSelectorButton() {
     };
 
     this.getTitle = function() {
-        return 'TEST-TITLE';
+        return 'Codec';
     };
 }
