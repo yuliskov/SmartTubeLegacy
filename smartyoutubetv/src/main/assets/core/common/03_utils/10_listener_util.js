@@ -4,6 +4,9 @@
 
 console.log("Scripts::Running script listener_util.js");
 
+/**
+ * Uses 'model-change' event to watch out over the element initialization
+ */
 var ListenerUtil = {
     TAG: 'ListenerUtil',
     handlers: [],
@@ -16,10 +19,17 @@ var ListenerUtil = {
      * @param handler callback
      */
     addListener: function(selectorOrElement, event, handler) {
+        if (!EventUtils.toSelector(selectorOrElement)) {
+            Log.e(this.TAG, "can't add add listener: selector or element is: " + selectorOrElement);
+            return;
+        }
+
+        Log.d(this.TAG, "Trying to add listener to the " + EventUtils.toSelector(selectorOrElement));
+
         var container = this.getContainer(selectorOrElement);
 
         if (!container || !container.children || !container.children.length) {
-            Log.d(this.TAG, "Can't add listener: element " + selectorOrElement + " not initialized... waiting...");
+            Log.d(this.TAG, "Can't add listener: element " + EventUtils.toSelector(selectorOrElement) + " not initialized... waiting...");
             this.addPendingHandler(
                 {
                     selectorOrElement: selectorOrElement,
@@ -27,7 +37,7 @@ var ListenerUtil = {
                     handler: handler
                 });
         } else {
-            Log.d(this.TAG, "Element already initialized... add listener to it " + container);
+            Log.d(this.TAG, "Element already initialized... add listener to it " + EventUtils.toSelector(container));
             container.addEventListener(event, handler, false);
         }
     },
@@ -36,7 +46,7 @@ var ListenerUtil = {
         var container = this.getContainer(selectorOrElement);
 
         if (!container || !container.children || !container.children.length) {
-            Log.d(this.TAG, "Can't remove listener: element " + selectorOrElement + " not initialized... waiting...");
+            Log.d(this.TAG, "Can't remove listener: element " + EventUtils.toSelector(selectorOrElement) + " not initialized... waiting...");
             this.addPendingHandler(
                 {
                     selectorOrElement: selectorOrElement,
@@ -44,7 +54,7 @@ var ListenerUtil = {
                     handler: handler
                 });
         } else {
-            Log.d(this.TAG, "Element already initialized... add listener to it " + container);
+            Log.d(this.TAG, "Element already initialized... remove listener from it " + EventUtils.toSelector(container));
             container.removeEventListener(event, handler, false);
         }
     },
@@ -74,13 +84,7 @@ var ListenerUtil = {
 
         var $this = this;
         var surface = Utils.$(YouTubeConstants.SURFACE_CONTENT_SELECTOR);
-        var onModelChanged = function() {
-            if ($this.handlers.length == 0) {
-                surface.removeEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
-                $this.initDone = false;
-                return;
-            }
-
+        var checkHandlers = function() {
             Log.d($this.TAG, "Checking pending handlers... " + $this.handlers);
 
             for (var i = 0; i < $this.handlers.length; i++) {
@@ -89,6 +93,15 @@ var ListenerUtil = {
                     $this.handlers.splice(i, 1); // remove handler on success
             }
         };
+        var onModelChanged = function() {
+            if ($this.handlers.length == 0) {
+                surface.removeEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
+                $this.initDone = false;
+                return;
+            }
+
+            setTimeout(checkHandlers, 1000);
+        };
         surface.addEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
     },
 
@@ -96,9 +109,10 @@ var ListenerUtil = {
         var container = this.getContainer(handlerObj.selectorOrElement);
 
         if (!container || !container.children || !container.children.length) {
+            Log.d(this.TAG, "Can't execute handler: element " + EventUtils.toSelector(handlerObj.selectorOrElement) + " not initialized... waiting...");
             return false;
         } else {
-            Log.d(this.TAG, "Success, element is found... add listener to it " + container);
+            Log.d(this.TAG, "Success, element is found... add listener to it " + EventUtils.toSelector(container));
             container.addEventListener(handlerObj.event, handlerObj.handler, false);
             return true;
         }

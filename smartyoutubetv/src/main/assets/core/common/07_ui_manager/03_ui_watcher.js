@@ -21,17 +21,17 @@ var UiWatcher = {
 
         Log.d(this.TAG, "add listeners to buttons: " + firstBtn.getElem());
 
-        EventUtils.addListener(firstBtn.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(firstBtn.getElem() || firstBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
             Log.d($this.TAG, "on keydown " + e);
             $this.onFirstButtonKey(e);
         });
 
-        EventUtils.addListener(centerBnt.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(centerBnt.getElem() || centerBnt.selector, DefaultEvents.KEY_DOWN, function(e) {
             Log.d($this.TAG, "on keydown " + e);
             $this.onCenterButtonKey(e);
         });
 
-        EventUtils.addListener(lastBtn.getElem(), DefaultEvents.KEY_DOWN, function(e) {
+        EventUtils.addListener(lastBtn.getElem() || lastBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
             Log.d($this.TAG, "on keydown " + e);
             $this.onLastButtonKey(e);
         });
@@ -46,8 +46,8 @@ var UiWatcher = {
         e.stopPropagation();
 
         Log.d(this.TAG, "select center button");
-        var centerBntSel = this.buttonArr[1];
-        Utils.$(centerBntSel).focus();
+        var centerBtn = this.buttonArr[1];
+        centerBtn.getElem().focus();
     },
 
     onCenterButtonKey: function(e) {
@@ -64,7 +64,7 @@ var UiWatcher = {
         e.stopPropagation();
 
         Log.d(this.TAG, "select center button");
-        var centerBntSel = this.buttonArr[1];
-        Utils.$(centerBntSel).focus();
+        var centerBtn = this.buttonArr[1];
+        centerBtn.getElem().focus();
     },
 };

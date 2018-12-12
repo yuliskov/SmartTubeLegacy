@@ -83,8 +83,21 @@ var EventUtils = {
     },
 
     toSelector: function(el) {
-        if (!el)
+        if (!el) {
             return null;
+        }
+
+        if (Utils.isString(el)) {
+            return el;
+        }
+
+        if (Utils.isArray(el)) {
+            return el;
+        }
+
+        if (!el.tagName) {
+            return null;
+        }
 
         var idPart = el.id ? '#' + el.id : '';
         var cls = el.className ? el.className.trim() : '';

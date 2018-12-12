@@ -13,11 +13,15 @@ var Utils = {
     },
 
     isSelector: function(el) {
-        return typeof el === 'string' || el instanceof String;
+        return typeof el === 'string' || el instanceof String || this.isArray(el);
     },
 
     isArray: function(obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
+    },
+
+    isString: function(obj) {
+        return Object.prototype.toString.call(obj) === "[object String]";
     },
 
     addClass: function(elem, cls) {

@@ -4,5 +4,10 @@ var Log = {
     d: function(tag, msg) {
         tag = tag ? tag : 'UNTAGGED';
         console.log(tag + ': ' + msg);
+    },
+
+    e: function(tag, msg) {
+        tag = tag ? tag : 'UNTAGGED';
+        console.error(tag + ': ' + msg);
     }
 };
