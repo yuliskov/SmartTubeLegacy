@@ -19,9 +19,10 @@ function UiDataButton(buttonData) {
     this.TAG = 'UiDataButton';
     this.data = buttonData;
     this.markup =
-        '<div class="transport-controls-button" tabindex="-1" role="button" style="left: 15rem; position: absolute; width: initial">' +
-        '<div class="background" style="width: 100%; border-radius: 0;"></div>' +
-        '<span style="padding: 10px">%TITLE%</span>' +
+        '<div class="%ICON_CLASS% toggle-button transport-controls-toggle-button" ' +
+        'tabindex="-1" role="button" style="left: 15rem; position: absolute;">' +
+        '<div class="background"></div>' +
+        '<span class="label">%TITLE%</span>' +
         '</div>';
 
     /**
@@ -31,7 +32,10 @@ function UiDataButton(buttonData) {
         var $this = this;
         if (this.elem == null) {
             this.elem = UiHelpers.createElement(
-                this.markup.replace('%TITLE%', this.data.getTitle()));
+                this.markup
+                    .replace('%TITLE%', this.data.getTitle())
+                    .replace('%ICON_CLASS%', this.data.getIconClass())
+            );
 
             EventUtils.addListener(this.elem, DefaultEvents.ON_CLICK, function(e) {
                 if ($this.data.onClick) {
