@@ -55,7 +55,8 @@ var YouTubeClasses = {
     ELEMENT_SELECTED: 'selected',
     PLAYER_CONTAINER: 'watch',
     MODEL_LOADED: 'loaded',
-    WATCH_IDLE_CLASS: 'watch-idle'
+    WATCH_IDLE_CLASS: 'watch-idle',
+    BUTTON_TOGGLED: 'toggle-selected'
 };
 
 /**

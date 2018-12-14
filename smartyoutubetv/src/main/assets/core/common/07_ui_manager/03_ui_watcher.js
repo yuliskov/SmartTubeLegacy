@@ -8,7 +8,27 @@ var UiWatcher = {
     TAG: 'UiWatcher',
     buttonsContainerSel: '#buttons-list',
 
+    resetEvents: function() {
+        if (!this.buttonArr) {
+            return;
+        }
+
+        for (var i = 0; i < this.buttonArr.length; i++) {
+            this.unsetListener(this.buttonArr[i]);
+        }
+    },
+
+    unsetListener: function(btn) {
+        if (btn.getElem() && btn.onKeyDown) {
+            EventUtils.removeListener(btn.getElem(), DefaultEvents.KEY_DOWN, btn.onKeyDown);
+        }
+    },
+
     handleMovements: function(buttonArr) {
+        if (this.buttonArr) {
+            this.resetEvents();
+        }
+
         this.buttonArr = buttonArr;
         this.disableButtonEvents();
     },
@@ -16,22 +36,28 @@ var UiWatcher = {
     disableButtonEvents: function() {
         var $this = this;
         var firstBtn = this.buttonArr[0];
-        var centerBnt = this.buttonArr[1];
+        var centerBtn = this.buttonArr[1];
         var lastBtn = this.buttonArr[2];
 
         Log.d(this.TAG, "add listeners to buttons: " + firstBtn.getElem());
 
-        EventUtils.addListener(firstBtn.getElem() || firstBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
+        firstBtn.onKeyDown = function(e) {
             $this.onFirstButtonKey(e);
-        });
+        };
 
-        EventUtils.addListener(centerBnt.getElem() || centerBnt.selector, DefaultEvents.KEY_DOWN, function(e) {
+        centerBtn.onKeyDown = function(e) {
             $this.onCenterButtonKey(e);
-        });
+        };
 
-        EventUtils.addListener(lastBtn.getElem() || lastBtn.selector, DefaultEvents.KEY_DOWN, function(e) {
+        lastBtn.onKeyDown = function(e) {
             $this.onLastButtonKey(e);
-        });
+        };
+
+        EventUtils.addListener(firstBtn.getElem() || firstBtn.selector, DefaultEvents.KEY_DOWN, firstBtn.onKeyDown);
+
+        EventUtils.addListener(centerBtn.getElem() || centerBtn.selector, DefaultEvents.KEY_DOWN, centerBtn.onKeyDown);
+
+        EventUtils.addListener(lastBtn.getElem() || lastBtn.selector, DefaultEvents.KEY_DOWN, lastBtn.onKeyDown);
     },
 
     onFirstButtonKey: function(e) {

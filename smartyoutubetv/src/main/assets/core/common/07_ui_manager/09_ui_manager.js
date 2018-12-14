@@ -23,11 +23,17 @@ var UiManager = {
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 
+
+        // var moreBtn = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
+        // if (Utils.hasClass(moreBtn, YouTubeClasses.BUTTON_TOGGLED)) {
+        //     UiHelpers.removeBtn(this.centerBtn);
+        //     return;
+        // }
+
         // begin to handle movements
         UiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
-        UiHelpers.removeBtn(this.centerBtn);
         UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
     },
 
