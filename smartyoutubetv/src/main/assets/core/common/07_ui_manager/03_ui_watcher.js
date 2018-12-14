@@ -89,4 +89,26 @@ var UiWatcher = {
         centerBtn.focus();
         Utils.ytUnfocus(e.target);
     },
+
+    onUiUpdate: function(linstener) {
+        this.listener = linstener;
+        this.setupUiChangeListener();
+    },
+
+    setupUiChangeListener: function() {
+        if (this.setupUiChangeIsDone) {
+            return;
+        }
+
+        this.setupUiChangeIsDone = true;
+
+        var onUiChange = function(e) {
+            if (this.listener) {
+                this.listener.onUiUpdate();
+            }
+        };
+
+        EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, onUiChange);
+        EventUtils.addListener(YouTubeSelectors.PLAYER_MORE_BUTTON, DefaultEvents.KEY_DOWN, onUiChange);
+    }
 };

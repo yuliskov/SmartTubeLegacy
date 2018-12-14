@@ -24,6 +24,12 @@ var UiHelpers = {
             elem.outerHTML = "";
     },
 
+    removeBtn: function(btn) {
+        if (btn.getElem()) {
+            this.removeElem(btn.getElem());
+        }
+    },
+
     insertAfter: function(existingButton, newButton, fromListener) {
         var target = existingButton.getElem();
         var $this = this;

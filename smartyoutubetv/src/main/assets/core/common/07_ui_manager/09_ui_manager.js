@@ -13,8 +13,13 @@ var UiManager = {
      * @param buttonDescription object with onClick method
      */
     insertButton: function(buttonDescription) {
+        this.buttonDescription = buttonDescription;
+        UiWatcher.onUiUpdate(this);
+    },
+
+    onUiUpdate: function() {
         // create buttons
-        this.centerBtn = UiButton.fromData(buttonDescription);
+        this.centerBtn = UiButton.fromData(this.buttonDescription);
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 
@@ -22,6 +27,7 @@ var UiManager = {
         UiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
+        UiHelpers.removeBtn(this.centerBtn);
         UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
     },
 
