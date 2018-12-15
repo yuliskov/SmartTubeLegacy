@@ -119,6 +119,7 @@ var UiWatcher = {
     onUiUpdate: function(linstener) {
         this.listener = linstener;
         this.setupUiChangeListener();
+        Log.d(this.TAG, "Ui change listener has been added");
     },
 
     setupUiChangeListener: function() {
@@ -128,9 +129,11 @@ var UiWatcher = {
 
         this.setupUiChangeIsDone = true;
 
+        var $this = this;
         var onUiChange = function(e) {
-            if (this.listener) {
-                this.listener.onUiUpdate();
+            Log.d($this.TAG, "Running ui change listener");
+            if ($this.listener) {
+                $this.listener.onUiUpdate();
             }
         };
 

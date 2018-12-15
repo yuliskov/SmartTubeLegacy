@@ -5,6 +5,7 @@
 console.log("Scripts::Running script ui_manager.js");
 
 var UiManager = {
+    TAG: 'UiManager',
     LEFT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_CAPTIONS_BUTTON, YouTubeSelectors.PLAYER_CHANNEL_BUTTON],
     RIGHT_BUTTON_SELECTOR: YouTubeSelectors.PLAYER_PLAY_BUTTON,
 
@@ -18,6 +19,8 @@ var UiManager = {
     },
 
     onUiUpdate: function() {
+        Log.d(this.TAG, 'onUiUpdate');
+
         // create buttons
         this.centerBtn = UiButton.fromData(this.buttonDescription);
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
