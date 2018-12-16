@@ -16,6 +16,10 @@ var Utils = {
         return typeof el === 'string' || el instanceof String || this.isArray(el);
     },
 
+    flattenArray: function(arr) {
+        return [].concat.apply([], arr);
+    },
+
     isArray: function(obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
     },
@@ -54,6 +58,7 @@ var Utils = {
         // allow to use arrays as selectors like ['a', 'b', 'c']
         // return first element that exists
         if (this.isArray(selector)) {
+            // selector = this.flattenArray(selector);
             for (var i = 0; i < selector.length; i++) {
                 var el = document.querySelector(selector[i]);
                 if (el && el.children && el.children.length)

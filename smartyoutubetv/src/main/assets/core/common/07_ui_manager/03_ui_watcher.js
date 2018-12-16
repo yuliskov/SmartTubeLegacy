@@ -39,7 +39,10 @@ var UiWatcher = {
         var centerBtn = this.buttonArr[1];
         var lastBtn = this.buttonArr[2];
 
-        Log.d(this.TAG, "add listeners to buttons: " + firstBtn.getElem());
+        Log.d(this.TAG, "add listeners to buttons: " +
+            EventUtils.toSelector(firstBtn.getElem() || firstBtn.selector) + " "  +
+            EventUtils.toSelector(centerBtn.getElem() || centerBtn.selector) + " " +
+            EventUtils.toSelector(lastBtn.getElem() || lastBtn.selector));
 
         firstBtn.onKeyDown = function(e) {
             $this.onFirstButtonKey(e);

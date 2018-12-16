@@ -100,7 +100,9 @@ var ListenerUtil = {
                 return;
             }
 
-            setTimeout(checkHandlers, 1000);
+            checkHandlers();
+
+            // setTimeout(checkHandlers, 1000);
         };
         surface.addEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
     },
