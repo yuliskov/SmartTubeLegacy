@@ -47,30 +47,38 @@ var Utils = {
         return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     },
 
-    $$: function(selector) {
-        if (!this.isSelector(selector))
-            return selector;
+    $$: function(elementOrSelector) {
+        if (!elementOrSelector) {
+            return null;
+        }
 
-        return document.querySelectorAll(selector);
+        if (!this.isSelector(elementOrSelector))
+            return elementOrSelector;
+
+        return document.querySelectorAll(elementOrSelector);
     },
 
-    $: function(selector) {
+    $: function(elementOrSelector) {
+        if (!elementOrSelector) {
+            return null;
+        }
+
         // allow to use arrays as selectors like ['a', 'b', 'c']
         // return first element that exists
-        if (this.isArray(selector)) {
-            // selector = this.flattenArray(selector);
-            for (var i = 0; i < selector.length; i++) {
-                var el = document.querySelector(selector[i]);
+        if (this.isArray(elementOrSelector)) {
+            // elementOrSelector = this.flattenArray(elementOrSelector);
+            for (var i = 0; i < elementOrSelector.length; i++) {
+                var el = document.querySelector(elementOrSelector[i]);
                 if (el && el.children && el.children.length)
                     return el;
             }
             return null;
         }
 
-        if (!this.isSelector(selector))
-            return selector;
+        if (!this.isSelector(elementOrSelector))
+            return elementOrSelector;
 
-        return document.querySelector(selector);
+        return document.querySelector(elementOrSelector);
     },
 
     appendHtml: function(el, str) {

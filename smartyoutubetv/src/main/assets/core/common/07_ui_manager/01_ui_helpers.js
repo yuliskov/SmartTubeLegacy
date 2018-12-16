@@ -15,6 +15,13 @@ var UiHelpers = {
         return div.firstChild;
     },
 
+    removeFromDom: function(elementOrSelector) {
+        var el = Utils.$(elementOrSelector);
+        if (el) {
+            el.parentNode.removeChild(el);
+        }
+    },
+
     insertAfterDom: function(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     },
