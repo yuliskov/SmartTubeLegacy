@@ -9,7 +9,8 @@ function CodecSelectorButton() {
     this.TAG = 'CodecSelectorButton';
 
     this.onClick = function() {
-        Log.d(this.TAG, "user have clicked on the button");
+        Log.d(this.TAG, "user have clicked on the codec selector button");
+        DeviceUtils.openCodecSelector();
     };
 
     this.getTitle = function() {

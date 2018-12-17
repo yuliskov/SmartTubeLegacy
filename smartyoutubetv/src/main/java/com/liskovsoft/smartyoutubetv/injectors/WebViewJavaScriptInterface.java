@@ -205,4 +205,14 @@ public class WebViewJavaScriptInterface {
     public boolean isExo() {
         return mContext instanceof TwoFragmentsManagerActivity;
     }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void openCodecSelector() {
+        // new CodecSelectorAddon().run();
+    }
 }

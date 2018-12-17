@@ -107,8 +107,12 @@ var DeviceUtils = {
         return this.getApp().showExitMsg();
     },
 
+    openCodecSelector: function() {
+        this.getApp().openCodecSelector();
+    },
+
     closeApp: function() {
-        return this.getApp().closeApp();
+        this.getApp().closeApp();
     },
     
     isWebView: function() {
