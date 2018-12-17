@@ -14,6 +14,12 @@ function CodecFixAddon() {
      * Obtains device map for WebView or XWalk respectively
      */
     this.findProperConfig = function() {
+        // CodecSelectorAddon usage
+        var disabledCodec = DeviceUtils.getPreferredCodec();
+        if (disabledCodec) {
+            return {'': disabledCodec};
+        }
+
         if (DeviceUtils.isWebView()) {
             return CodecConfig_WebView;
         }

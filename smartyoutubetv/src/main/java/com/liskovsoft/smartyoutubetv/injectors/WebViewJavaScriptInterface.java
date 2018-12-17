@@ -20,6 +20,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericBooleanResultEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEventWithId;
+import com.liskovsoft.smartyoutubetv.misc.CodecSelectorAddon;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,6 +127,16 @@ public class WebViewJavaScriptInterface {
     public void switchResolution(String formatName) {
         Browser.getBus().post(new SwitchResolutionEvent(formatName));
 
+        reloadTab();
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    private void reloadTab() {
         Handler handler = new Handler(mContext.getMainLooper());
         handler.post(new Runnable() {
             @Override
@@ -213,6 +224,16 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void openCodecSelector() {
-        // new CodecSelectorAddon().run();
+        new CodecSelectorAddon(mContext, this).run();
+    }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public String getPreferredCodec() {
+        return new CodecSelectorAddon(mContext, this).getPreferredCodec();
     }
 }

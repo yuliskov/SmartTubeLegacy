@@ -14,6 +14,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static final String BOOTSTRAP_ENDCARDS = "bootstrapEndCards";
+    private static final String PREFERRED_CODEC = "preferredCodec";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -85,6 +86,17 @@ public final class SmartPreferences {
 
     public String getPreferredLanguage() {
         String name = mPrefs.getString(BOOTSTRAP_SELECTED_LANGUAGE, "");
+        return name;
+    }
+
+    public void setPreferredCodec(String name) {
+        mPrefs.edit()
+                .putString(PREFERRED_CODEC, name)
+                .apply();
+    }
+
+    public String getPreferredCodec() {
+        String name = mPrefs.getString(PREFERRED_CODEC, "");
         return name;
     }
 

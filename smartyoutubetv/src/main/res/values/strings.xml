@@ -52,4 +52,5 @@
     <string name="exit_msg">Press double back to exit from the app</string>
     <string name="error_host_lookup">No internet connection: %s</string>
     <string name="error_unknown">Connection error: %s</string>
+    <string name="codec_selector_title">Select codec</string>
 </resources>

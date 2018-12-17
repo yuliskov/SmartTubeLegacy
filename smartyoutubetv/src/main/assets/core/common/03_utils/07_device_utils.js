@@ -185,6 +185,10 @@ var DeviceUtils = {
             }
         }
         return false;
+    },
+
+    getPreferredCodec: function() {
+        return this.getApp().getPreferredCodec();
     }
 };
 

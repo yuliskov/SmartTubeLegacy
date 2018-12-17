@@ -36,4 +36,5 @@
     <string name="exit_msg">Нажмите дважды Назад чтобы выйти из приложения</string>
     <string name="error_host_lookup">Неполучается подключиться к интернету: %s</string>
     <string name="error_unknown">Ошибка соединения: %s</string>
+    <string name="codec_selector_title">Выберите кодек</string>
 </resources>
