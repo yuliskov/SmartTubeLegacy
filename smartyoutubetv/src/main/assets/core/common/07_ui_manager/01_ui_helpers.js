@@ -15,6 +15,10 @@ var UiHelpers = {
         return div.firstChild;
     },
 
+    insertAfterDom: function(referenceNode, newNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    },
+
     removeFromDom: function(elementOrSelector) {
         var el = Utils.$(elementOrSelector);
         if (el) {
@@ -22,18 +26,9 @@ var UiHelpers = {
         }
     },
 
-    insertAfterDom: function(referenceNode, newNode) {
-        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-    },
-
-    removeElem: function(elem) {
-        if (elem)
-            elem.outerHTML = "";
-    },
-
     removeBtn: function(btn) {
         if (btn.getElem()) {
-            this.removeElem(btn.getElem());
+            this.removeFromDom(btn.getElem());
         }
     },
 

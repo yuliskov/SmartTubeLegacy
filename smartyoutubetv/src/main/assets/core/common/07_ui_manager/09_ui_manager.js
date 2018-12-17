@@ -14,18 +14,16 @@ var UiManager = {
      * @param buttonDescription object with onClick method
      */
     insertButton: function(buttonDescription) {
-        this.buttonDescription = buttonDescription;
+        // create buttons
+        this.centerBtn = UiButton.fromData(buttonDescription);
+        this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
+        this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
+
         UiWatcher.onUiUpdate(this);
     },
 
     onUiUpdate: function() {
         Log.d(this.TAG, 'onUiUpdate');
-
-        // create buttons
-        this.centerBtn = UiButton.fromData(this.buttonDescription);
-        this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
-        this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
-
 
         // var moreBtn = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
         // if (Utils.hasClass(moreBtn, YouTubeClasses.BUTTON_TOGGLED)) {
