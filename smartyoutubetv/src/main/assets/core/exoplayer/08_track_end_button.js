@@ -2,7 +2,7 @@ console.log("Scripts::Running core script track_end_button.js");
 
 function TrackEndFakeButton(selector) {
     this.selector = selector;
-    this.retryCount = 20;
+    this.retryCount = 10;
     this.checkTimeoutMS = 1000;
 
     this.playerJumpToEnd = function() {
@@ -16,7 +16,7 @@ function TrackEndFakeButton(selector) {
             console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
 
             if (this.retryCount <= 0 || ExoUtils.playerIsClosed()) {
-                // this.pressNextButton();
+                this.pressNextButton();
                 return;
             }
 
