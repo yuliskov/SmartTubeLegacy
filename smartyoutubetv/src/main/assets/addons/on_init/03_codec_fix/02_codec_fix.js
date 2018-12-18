@@ -15,9 +15,11 @@ function CodecFixAddon() {
      */
     this.findProperConfig = function() {
         // CodecSelectorAddon usage
-        var disabledCodec = DeviceUtils.getPreferredCodec();
-        if (disabledCodec) {
-            return {'': disabledCodec};
+        switch (DeviceUtils.getPreferredCodec()) {
+            case DeviceUtils.MP4:
+                return CodecConfig_MP4;
+            case DeviceUtils.WEBM:
+                return CodecConfig_WEBM;
         }
 
         if (DeviceUtils.isWebView()) {

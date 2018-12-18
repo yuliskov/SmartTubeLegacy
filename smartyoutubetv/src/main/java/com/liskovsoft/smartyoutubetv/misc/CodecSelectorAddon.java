@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DataSource;
@@ -11,8 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CodecSelectorAddon {
-    private static final String AVC_CODEC = "mp4";
-    private static final String VP9_CODEC = "webm";
+    private static final String MP4 = "mp4";
+    private static final String WEBM = "webm";
     private final Context mContext;
     private final WebViewJavaScriptInterface mJavaScriptInterface;
     private final Map<String, String> mCodecs;
@@ -22,8 +23,8 @@ public class CodecSelectorAddon {
         mJavaScriptInterface = javaScriptInterface;
         mCodecs = new LinkedHashMap<>();
         mCodecs.put("Auto", "");
-        mCodecs.put("AVC", VP9_CODEC);
-        mCodecs.put("VP9", AVC_CODEC);
+        mCodecs.put("AVC", MP4);
+        mCodecs.put("VP9", WEBM);
     }
 
     private class CodecSelectorDataSource implements DataSource {
@@ -47,6 +48,7 @@ public class CodecSelectorAddon {
             // update settings
             SmartPreferences.instance(mContext).setPreferredCodec(tag);
             // restart app
+            MessageHelpers.showMessage(mContext, R.string.restart_app_msg);
         }
 
         @Override

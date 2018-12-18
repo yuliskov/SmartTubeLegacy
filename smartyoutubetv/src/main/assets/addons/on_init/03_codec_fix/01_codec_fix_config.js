@@ -72,3 +72,6 @@ var CodecConfig_XWalk = {
     // 'X92': 'webm', // (gmail)
     '': 'webm' // other devices (entry should be the last in the list)
 };
+
+var CodecConfig_MP4 = {'': 'webm'};
+var CodecConfig_WEBM = {'': 'mp4'};

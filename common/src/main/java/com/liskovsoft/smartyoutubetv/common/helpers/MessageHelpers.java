@@ -54,4 +54,8 @@ public class MessageHelpers {
             showMessage(ctx, TAG, msg);
         }
     }
+
+    public static void showMessage(Context ctx, int msg) {
+        showMessage(ctx, ctx.getResources().getString(msg));
+    }
 }

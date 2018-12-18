@@ -37,4 +37,5 @@
     <string name="error_host_lookup">Неполучается подключиться к интернету: %s</string>
     <string name="error_unknown">Ошибка соединения: %s</string>
     <string name="codec_selector_title">Выберите кодек</string>
+    <string name="restart_app_msg">Перезапустите приложение, чтобы изменения вступили в силу</string>
 </resources>

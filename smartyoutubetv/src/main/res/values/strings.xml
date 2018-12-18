@@ -53,4 +53,5 @@
     <string name="error_host_lookup">No internet connection: %s</string>
     <string name="error_unknown">Connection error: %s</string>
     <string name="codec_selector_title">Select codec</string>
+    <string name="restart_app_msg">You need to restart app in order the changes to apply</string>
 </resources>
