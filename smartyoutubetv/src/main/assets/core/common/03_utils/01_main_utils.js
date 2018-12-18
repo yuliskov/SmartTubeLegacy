@@ -66,13 +66,16 @@ var Utils = {
         // allow to use arrays as selectors like ['a', 'b', 'c']
         // return first element that exists
         if (this.isArray(elementOrSelector)) {
-            // elementOrSelector = this.flattenArray(elementOrSelector);
-            for (var i = 0; i < elementOrSelector.length; i++) {
-                var el = document.querySelector(elementOrSelector[i]);
-                if (el && el.children && el.children.length)
-                    return el;
+            var selectors = this.flattenArray(elementOrSelector);
+            var el = null;
+            for (var i = 0; i < selectors.length; i++) {
+                el = document.querySelector(selectors[i]);
+                if (el && el.children && el.children.length &&
+                    !Utils.hasClass(el, YouTubeClasses.ELEMENT_DISABLED)) {
+                    break;
+                }
             }
-            return null;
+            return el;
         }
 
         if (!this.isSelector(elementOrSelector))

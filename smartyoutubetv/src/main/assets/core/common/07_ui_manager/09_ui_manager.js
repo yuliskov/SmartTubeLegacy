@@ -6,7 +6,7 @@ console.log("Scripts::Running script ui_manager.js");
 
 var UiManager = {
     TAG: 'UiManager',
-    LEFT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_CAPTIONS_BUTTON, YouTubeSelectors.PLAYER_CHANNEL_BUTTON],
+    LEFT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_SUBS_BUTTON, YouTubeSelectors.PLAYER_CHANNEL_BUTTON],
     RIGHT_BUTTON_SELECTOR: YouTubeSelectors.PLAYER_PLAY_BUTTON,
 
     /**
@@ -25,17 +25,22 @@ var UiManager = {
     onUiUpdate: function() {
         Log.d(this.TAG, 'onUiUpdate');
 
-        // var moreBtn = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
-        // if (Utils.hasClass(moreBtn, YouTubeClasses.BUTTON_TOGGLED)) {
-        //     UiHelpers.removeBtn(this.centerBtn);
-        //     return;
-        // }
+        // hide my btn when options is opened
+        if (this.isMoreBtnToggled()) {
+            UiHelpers.removeBtn(this.centerBtn);
+            return;
+        }
 
         // begin to handle movements
         UiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
         UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
+    },
+
+    isMoreBtnToggled: function() {
+        var moreBtn = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
+        return Utils.hasClass(moreBtn, YouTubeClasses.BUTTON_TOGGLED);
     },
 
     showPlayerUi: function() {

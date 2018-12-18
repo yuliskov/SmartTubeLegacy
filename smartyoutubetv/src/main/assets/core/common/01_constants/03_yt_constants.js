@@ -40,8 +40,8 @@ var YouTubeSelectors = {
     PLAYER_EVENTS_RECEIVER: '#watch',
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
     PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container',
-    PLAYER_CAPTIONS_BUTTON: '.icon-player-closedcaptions.transport-controls-toggle-button',
-    PLAYER_CHANNEL_BUTTON: '.transport-controls-button.transport-channel-button',
+    PLAYER_SUBS_BUTTON: ['.material-icon-closed-caption.transport-controls-toggle-button', '.icon-player-closedcaptions.transport-controls-toggle-button'],
+    PLAYER_CHANNEL_BUTTON: '.transport-channel-button.transport-controls-button',
     PLAYER_PREV_BUTTON: '.material-icon-skip-previous',
     PLAYER_PLAY_BUTTON: ['.material-icon-play-arrow', '.icon-player-play'],
     PLAYER_MORE_BUTTON: '#transport-more-button'

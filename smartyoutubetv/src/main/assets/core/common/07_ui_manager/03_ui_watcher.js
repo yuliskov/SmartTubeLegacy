@@ -8,26 +8,32 @@ var UiWatcher = {
     TAG: 'UiWatcher',
     buttonsContainerSel: '#buttons-list',
 
-    resetEvents: function() {
-        if (!this.buttonArr) {
+    resetEvents: function(buttonArr) {
+        if (!buttonArr) {
             return;
         }
 
-        for (var i = 0; i < this.buttonArr.length; i++) {
-            this.unsetListener(this.buttonArr[i]);
+        for (var i = 0; i < buttonArr.length; i++) {
+            this.unsetListener(buttonArr[i]);
         }
     },
 
     unsetListener: function(btn) {
         if (btn.getElem() && btn.onKeyDown) {
+            Log.d(this.TAG, "Resetting events to: " + EventUtils.toSelector(btn.getElem()));
             EventUtils.removeListener(btn.getElem(), DefaultEvents.KEY_DOWN, btn.onKeyDown);
+            btn.onKeyDown = null;
         }
     },
 
     handleMovements: function(buttonArr) {
         if (this.buttonArr) {
-            this.resetEvents();
+            this.resetEvents(this.buttonArr);
         }
+
+        this.firstBtn = buttonArr[0];
+        this.centerBtn = buttonArr[1];
+        this.lastBtn = buttonArr[2];
 
         this.buttonArr = buttonArr;
         this.disableButtonEvents();
@@ -35,32 +41,33 @@ var UiWatcher = {
 
     disableButtonEvents: function() {
         var $this = this;
-        var firstBtn = this.buttonArr[0];
-        var centerBtn = this.buttonArr[1];
-        var lastBtn = this.buttonArr[2];
 
         Log.d(this.TAG, "add listeners to buttons: " +
-            EventUtils.toSelector(firstBtn.getElem() || firstBtn.selector) + " "  +
-            EventUtils.toSelector(centerBtn.getElem() || centerBtn.selector) + " " +
-            EventUtils.toSelector(lastBtn.getElem() || lastBtn.selector));
+            EventUtils.toSelector(this.firstBtn.getElem() || this.firstBtn.selector) + " "  +
+            EventUtils.toSelector(this.centerBtn.getElem() || this.centerBtn.selector) + " " +
+            EventUtils.toSelector(this.lastBtn.getElem() || this.lastBtn.selector));
 
-        firstBtn.onKeyDown = function(e) {
+        this.addKeyDownListener(this.firstBtn, function(e) {
             $this.onFirstButtonKey(e);
-        };
+        });
 
-        centerBtn.onKeyDown = function(e) {
+        this.addKeyDownListener(this.centerBtn, function(e) {
             $this.onCenterButtonKey(e);
-        };
+        });
 
-        lastBtn.onKeyDown = function(e) {
+        this.addKeyDownListener(this.lastBtn, function(e) {
             $this.onLastButtonKey(e);
-        };
+        });
+    },
 
-        EventUtils.addListener(firstBtn.getElem() || firstBtn.selector, DefaultEvents.KEY_DOWN, firstBtn.onKeyDown);
+    addKeyDownListener: function(btn, handler) {
+        if (btn.onKeyDown) { // don't add listener twice
+            Log.d(this.TAG, "Handler already added to: " + EventUtils.toSelector(btn.getElem()));
+            return;
+        }
 
-        EventUtils.addListener(centerBtn.getElem() || centerBtn.selector, DefaultEvents.KEY_DOWN, centerBtn.onKeyDown);
-
-        EventUtils.addListener(lastBtn.getElem() || lastBtn.selector, DefaultEvents.KEY_DOWN, lastBtn.onKeyDown);
+        btn.onKeyDown = handler;
+        EventUtils.addListener(btn.getElem() || btn.selector, DefaultEvents.KEY_DOWN, btn.onKeyDown);
     },
 
     onFirstButtonKey: function(e) {
@@ -73,16 +80,13 @@ var UiWatcher = {
 
         // override right key
         e.stopPropagation();
-        Log.d(this.TAG, "select center button");
+        Log.d(this.TAG, "move selection to the center button, from: " + EventUtils.toSelector(e.target));
 
-        var centerBtn = this.buttonArr[1];
-        centerBtn.focus();
+        this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
     },
 
     onCenterButtonKey: function(e) {
-        Log.d(this.TAG, "move selection to the youtube button");
-
         e.stopPropagation();
 
         var sameDirection = e.keyCode == this.direction;
@@ -92,14 +96,15 @@ var UiWatcher = {
             return;
         }
 
+        Log.d(this.TAG, "move selection to the youtube button");
+
         if (sameDirection) {
             EventUtils.triggerEvent(this.buttonsContainerSel, DefaultEvents.KEY_DOWN, e.keyCode);
         } else {
             Utils.ytFocus(this.ytButton);
         }
 
-        var centerBtn = this.buttonArr[1];
-        centerBtn.unfocus();
+        this.centerBtn.unfocus();
     },
 
     onLastButtonKey: function(e) {
@@ -112,10 +117,9 @@ var UiWatcher = {
 
         // override left key
         e.stopPropagation();
-        Log.d(this.TAG, "select center button");
+        Log.d(this.TAG, "move selection to the center button, from: " + EventUtils.toSelector(e.target));
 
-        var centerBtn = this.buttonArr[1];
-        centerBtn.focus();
+        this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
     },
 
