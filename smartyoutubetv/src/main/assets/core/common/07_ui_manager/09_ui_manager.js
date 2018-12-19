@@ -7,7 +7,7 @@ console.log("Scripts::Running script ui_manager.js");
 var UiManager = {
     TAG: 'UiManager',
     LEFT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_SUBS_BUTTON, YouTubeSelectors.PLAYER_CHANNEL_BUTTON],
-    RIGHT_BUTTON_SELECTOR: YouTubeSelectors.PLAYER_PLAY_BUTTON,
+    RIGHT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_PREV_BUTTON, YouTubeSelectors.PLAYER_PLAY_BUTTON],
 
     /**
      * Creates button from the supplied data and adds it to the player
