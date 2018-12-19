@@ -21,7 +21,7 @@ var UiHelpers = {
 
     removeFromDom: function(elementOrSelector) {
         var el = Utils.$(elementOrSelector);
-        if (el) {
+        if (el && el.parentNode) {
             el.parentNode.removeChild(el);
         }
     },

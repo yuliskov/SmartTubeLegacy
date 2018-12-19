@@ -28,6 +28,7 @@ var UiManager = {
         // hide my btn when options is opened
         if (this.isMoreBtnToggled()) {
             UiHelpers.removeBtn(this.centerBtn);
+            UiWatcher.resetEvents();
             return;
         }
 

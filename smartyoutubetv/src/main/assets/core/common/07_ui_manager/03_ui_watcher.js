@@ -8,28 +8,29 @@ var UiWatcher = {
     TAG: 'UiWatcher',
     buttonsContainerSel: '#buttons-list',
 
-    resetEvents: function(buttonArr) {
-        if (!buttonArr) {
+    resetEvents: function() {
+        if (!this.buttonArr) {
             return;
         }
 
-        for (var i = 0; i < buttonArr.length; i++) {
-            this.unsetListener(buttonArr[i]);
+        for (var i = 0; i < this.buttonArr.length; i++) {
+            this.unsetListener(this.buttonArr[i]);
+            this.buttonArr[i].unfocus();
         }
     },
 
     unsetListener: function(btn) {
-        if (btn.getElem() && btn.onKeyDown) {
-            Log.d(this.TAG, "Resetting events to: " + EventUtils.toSelector(btn.getElem()));
-            EventUtils.removeListener(btn.getElem(), DefaultEvents.KEY_DOWN, btn.onKeyDown);
+        var el = btn.cachedElement || btn.getElem();
+
+        if (el && btn.onKeyDown) {
+            Log.d(this.TAG, "Resetting events to: " + EventUtils.toSelector(el));
+            EventUtils.removeListener(el, DefaultEvents.KEY_DOWN, btn.onKeyDown);
             btn.onKeyDown = null;
         }
     },
 
     handleMovements: function(buttonArr) {
-        if (this.buttonArr) {
-            this.resetEvents(this.buttonArr);
-        }
+        this.resetEvents();
 
         this.firstBtn = buttonArr[0];
         this.centerBtn = buttonArr[1];
@@ -80,7 +81,7 @@ var UiWatcher = {
 
         // override right key
         e.stopPropagation();
-        Log.d(this.TAG, "move selection to the center button, from: " + EventUtils.toSelector(e.target));
+        Log.d(this.TAG, "move selection from the first button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
@@ -117,7 +118,7 @@ var UiWatcher = {
 
         // override left key
         e.stopPropagation();
-        Log.d(this.TAG, "move selection to the center button, from: " + EventUtils.toSelector(e.target));
+        Log.d(this.TAG, "move selection from the last button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
@@ -137,14 +138,18 @@ var UiWatcher = {
         this.setupUiChangeIsDone = true;
 
         var $this = this;
-        var onUiChange = function(e) {
+        var onUiChange = function() {
             Log.d($this.TAG, "Running ui change listener");
             if ($this.listener) {
                 $this.listener.onUiUpdate();
             }
         };
 
-        EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, onUiChange);
-        EventUtils.addListener(YouTubeSelectors.PLAYER_MORE_BUTTON, DefaultEvents.KEY_DOWN, onUiChange);
+        EventUtils.addListener(YouTubeSelectors.PLAYER_BUTTONS, YouTubeEvents.COMPONENT_FOCUS_EVENT, onUiChange);
+        EventUtils.addListener(YouTubeSelectors.PLAYER_MORE_BUTTON, DefaultEvents.KEY_DOWN, function(e) {
+            if (e.keyCode == DefaultKeys.ENTER) { // trigger when user opens additional buttons
+                setTimeout(onUiChange, 500); // let button finish initialization
+            }
+        });
     }
 };

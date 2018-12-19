@@ -30,20 +30,20 @@ function UiDataButton(buttonData) {
      */
     this.getElem = function() {
         var $this = this;
-        if (this.elem == null) {
-            this.elem = UiHelpers.createElement(
+        if (this.cachedElement == null) {
+            this.cachedElement = UiHelpers.createElement(
                 this.markup
                     .replace('%TITLE%', this.data.getTitle())
                     .replace('%ICON_CLASS%', this.data.getIconClass())
             );
 
-            EventUtils.addListener(this.elem, DefaultEvents.ON_CLICK, function(e) {
+            EventUtils.addListener(this.cachedElement, DefaultEvents.ON_CLICK, function(e) {
                 if ($this.data.onClick) {
                     $this.data.onClick();
                 }
             });
         }
-        return this.elem;
+        return this.cachedElement;
     };
 
     this.getId = function() {
@@ -57,7 +57,8 @@ function UiSelectorButton(selector) {
     this.TAG = 'UiSelectorButton';
     this.selector = selector;
     this.getElem = function() {
-        return Utils.$(selector);
+        this.cachedElement = Utils.$(selector);
+        return this.cachedElement;
     }
 }
 
