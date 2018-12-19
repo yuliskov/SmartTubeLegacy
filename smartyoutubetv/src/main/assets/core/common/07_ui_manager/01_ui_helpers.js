@@ -5,6 +5,17 @@
 console.log("Scripts::Running script ui_helpers.js");
 
 var UiHelpers = {
+    BUTTON_OFFSET_IN_RAM: 5.5,
+
+    convertRemToPixels: function(rem) {
+        return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    },
+
+    getCssProperty: function(elementOrSelector, propName) {
+        var elem = Utils.$(elementOrSelector);
+        return getComputedStyle(elem, null).getPropertyValue(propName);
+    },
+
     append: function(container, elem) {
         container.appendChild(elem);
     },
@@ -32,6 +43,11 @@ var UiHelpers = {
         }
     },
 
+    setProperPosition: function(existingElem, newElem) {
+        var leftPx = this.getCssProperty(existingElem, 'left');
+        newElem.style.left = parseInt(leftPx) + this.convertRemToPixels(this.BUTTON_OFFSET_IN_RAM) + 'px';
+    },
+
     insertAfter: function(existingButton, newButton, fromListener) {
         var target = existingButton.getElem();
         var $this = this;
@@ -55,6 +71,7 @@ var UiHelpers = {
                 listener);
         }
 
+        this.setProperPosition(existingButton.getElem(), newButton.getElem());
         this.insertAfterDom(existingButton.getElem(), newButton.getElem());
     }
 };

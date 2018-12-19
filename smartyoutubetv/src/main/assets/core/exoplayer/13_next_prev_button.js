@@ -19,7 +19,7 @@ function NextPrevButton(selector) {
         console.log("NextPrevButton: setChecked " + this.selector + " " + doChecked);
 
         if (doChecked) {
-            if (ExoUtils.isDisabled(this.findToggle())) {
+            if (ExoUtils.isDisabled(this.findToggle())) { // close video if btn not active or not found
                 new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);
                 return;
             }
