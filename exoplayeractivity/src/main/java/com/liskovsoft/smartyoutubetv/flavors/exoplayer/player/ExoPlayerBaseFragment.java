@@ -24,6 +24,7 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
@@ -68,6 +69,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private PlayerButtonsManager buttonsManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
+    private PlayerStateManager2 stateManager;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -96,6 +98,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             playerInitializer.initVideoTitle();
 
             stateManager = new PlayerStateManager2(this, player, trackSelector);
+
+            player.addListener(new PlayerHangListener(getActivity(), stateManager));
         }
     }
 

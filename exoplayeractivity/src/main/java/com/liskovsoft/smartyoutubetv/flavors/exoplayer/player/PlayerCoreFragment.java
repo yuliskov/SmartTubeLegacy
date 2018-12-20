@@ -55,8 +55,6 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -110,8 +108,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     private TrackGroupArray lastSeenTrackGroupArray;
 
     protected TrackSelectionHelper trackSelectionHelper;
-
-    protected PlayerStateManager2 stateManager;
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -209,7 +205,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             player.addListener(this);
             player.addListener(eventLogger);
-            player.addListener(new PlayerHangListener(getActivity(), stateManager));
             player.setAudioDebugListener(eventLogger);
             player.setVideoDebugListener(eventLogger);
             player.setMetadataOutput(eventLogger);
