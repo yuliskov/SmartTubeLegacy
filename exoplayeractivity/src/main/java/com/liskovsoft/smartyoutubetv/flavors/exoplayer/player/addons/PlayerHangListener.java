@@ -71,7 +71,7 @@ public class PlayerHangListener extends AbstractPlayerEventListener {
 
     private void hangCheck() {
         if (mVideoLoading) { // still loading?
-            MessageHelpers.showMessage(mContext, R.string.video_hang_msg);
+            // MessageHelpers.showMessage(mContext, R.string.video_hang_msg);
             restoreTrackState(); // lets hope that this will help
         }
 
