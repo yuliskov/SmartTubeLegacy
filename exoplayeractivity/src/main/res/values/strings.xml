@@ -58,4 +58,5 @@
     <string name="select_preferred_codec">Select video preset</string>
     <string name="time_title">Now: %1$s</string>
     <string name="loading_view_message">LOADING...</string>
+    <string name="video_hang_msg">Video has been hanged... trying to fix...</string>
 </resources>

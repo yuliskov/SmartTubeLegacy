@@ -55,7 +55,13 @@ public class MessageHelpers {
         }
     }
 
-    public static void showMessage(Context ctx, int msg) {
-        showMessage(ctx, ctx.getResources().getString(msg));
+    /**
+     * Shows long toast message.<br/>
+     * Uses resource id as message.
+     * @param ctx context
+     * @param resId resource id
+     */
+    public static void showMessage(Context ctx, int resId) {
+        showMessage(ctx, ctx.getResources().getString(resId));
     }
 }

@@ -12,8 +12,13 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
 
+/**
+ * <a href="https://t.me/SmartYouTubeTV/1058">The hang issue</a>
+ */
 public class PlayerHangListener implements Player.EventListener {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final long VIDEO_CHECK_TIMEOUT_MS = 5_000;
@@ -23,10 +28,10 @@ public class PlayerHangListener implements Player.EventListener {
     private DefaultTrackSelector mSelector;
     private boolean mHandlerStarted;
     private boolean mVideoLoading;
-    private final Runnable mRunnable = new Runnable() {
+    private final Runnable mHangCheck = new Runnable() {
         @Override
         public void run() {
-            reloadPlayer();
+            hangCheck();
         }
     };
 
@@ -59,19 +64,15 @@ public class PlayerHangListener implements Player.EventListener {
             return;
 
         mHandlerStarted = true;
-        mHandler.postDelayed(mRunnable, VIDEO_CHECK_TIMEOUT_MS);
+        mHandler.postDelayed(mHangCheck, VIDEO_CHECK_TIMEOUT_MS);
     }
 
-    private void reloadPlayer() {
-        if (mVideoLoading) {
-            Toast.makeText(
-                    mPlayerCoreFragment.getActivity(),
-                    "Video has been hanged... trying to restore playback...",
-                    Toast.LENGTH_LONG)
-                    .show();
+    private void hangCheck() {
+        if (mVideoLoading) { // still loading?
+            MessageHelpers.showMessage(mPlayerCoreFragment.getActivity(), R.string.video_hang_msg);
 
-            // reloadSelectedTrack();
-            stopStartPlayer();
+            reloadSelectedTrack();
+            // stopStartPlayer();
         }
 
         mHandlerStarted = false;
