@@ -66,7 +66,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private boolean durationSet;
     private int interfaceVisibilityState = View.INVISIBLE;
     private PlayerButtonsManager buttonsManager;
-    private PlayerStateManager2 stateManager;
     private AutoFrameRateManager autoFrameRateManager;
     private PlayerInitializer playerInitializer;
 

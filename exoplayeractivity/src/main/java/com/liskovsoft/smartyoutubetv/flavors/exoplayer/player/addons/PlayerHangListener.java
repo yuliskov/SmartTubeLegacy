@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
+import android.content.Context;
 import android.os.Handler;
-import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -14,7 +14,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
 
 /**
  * <a href="https://t.me/SmartYouTubeTV/1058">The hang issue</a>
@@ -22,12 +21,14 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment
 public class PlayerHangListener implements Player.EventListener {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final long VIDEO_CHECK_TIMEOUT_MS = 5_000;
-    private final PlayerCoreFragment mPlayerCoreFragment;
+    private final Context mContext;
     private final Handler mHandler;
+    private PlayerStateManager2 mStateManager;
     private ExoPlayer mPlayer;
     private DefaultTrackSelector mSelector;
     private boolean mHandlerStarted;
     private boolean mVideoLoading;
+
     private final Runnable mHangCheck = new Runnable() {
         @Override
         public void run() {
@@ -35,19 +36,24 @@ public class PlayerHangListener implements Player.EventListener {
         }
     };
 
-    public PlayerHangListener(PlayerCoreFragment playerCoreFragment, DefaultTrackSelector selector) {
-        this(playerCoreFragment);
+    public PlayerHangListener(Context context, DefaultTrackSelector selector) {
+        this(context);
         mSelector = selector;
     }
 
-    public PlayerHangListener(PlayerCoreFragment playerCoreFragment, ExoPlayer player) {
-        this(playerCoreFragment);
+    public PlayerHangListener(Context context, ExoPlayer player) {
+        this(context);
         mPlayer = player;
     }
 
-    public PlayerHangListener(PlayerCoreFragment playerCoreFragment) {
-        mPlayerCoreFragment = playerCoreFragment;
-        mHandler = new Handler(mPlayerCoreFragment.getActivity().getMainLooper());
+    public PlayerHangListener(Context context, PlayerStateManager2 stateManager) {
+        this(context);
+        mStateManager = stateManager;
+    }
+
+    public PlayerHangListener(Context context) {
+        mContext = context;
+        mHandler = new Handler(mContext.getMainLooper());
     }
 
     @Override
@@ -69,27 +75,17 @@ public class PlayerHangListener implements Player.EventListener {
 
     private void hangCheck() {
         if (mVideoLoading) { // still loading?
-            MessageHelpers.showMessage(mPlayerCoreFragment.getActivity(), R.string.video_hang_msg);
-
-            reloadSelectedTrack();
-            // stopStartPlayer();
+            MessageHelpers.showMessage(mContext, R.string.video_hang_msg);
+            restoreTrackState(); // lets hope that this will help
         }
 
         mHandlerStarted = false;
     }
 
-    private void stopStartPlayer() {
-        if (mPlayer == null)
-            return;
-
-        mPlayer.setPlayWhenReady(false); // pause
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPlayer.setPlayWhenReady(true); // resume
-            }
-        }, 1_000);
+    private void restoreTrackState() {
+        if (mStateManager != null) {
+            mStateManager.restoreState();
+        }
     }
 
     private void reloadSelectedTrack() {
