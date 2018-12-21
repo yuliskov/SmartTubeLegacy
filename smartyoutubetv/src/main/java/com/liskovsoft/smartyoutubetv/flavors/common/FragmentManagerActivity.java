@@ -10,12 +10,14 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 
 public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
     private GenericFragment mPrevFragment;
+    private VoiceSearchBridge mVoiceBridge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         super.onCreate(savedInstanceState);
+
         setupFontSize();
+
+        setupVoiceSearch();
 
         hideTitleBar();
     }
@@ -132,6 +137,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        mVoiceBridge.onKeyEvent(event);
         return mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
     }
 
@@ -161,5 +167,15 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     private void setupLang() {
         new LangUpdater(this).update();
+    }
+
+    private void setupVoiceSearch() {
+        mVoiceBridge = new VoiceSearchBridge(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mVoiceBridge.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
