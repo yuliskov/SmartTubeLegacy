@@ -45,7 +45,8 @@ var YouTubeSelectors = {
     PLAYER_CHANNEL_BUTTON: '.transport-channel-button.transport-controls-button',
     PLAYER_PREV_BUTTON: '.material-icon-skip-previous',
     PLAYER_PLAY_BUTTON: ['.material-icon-play-arrow', '.icon-player-play'],
-    PLAYER_MORE_BUTTON: '#transport-more-button'
+    PLAYER_MORE_BUTTON: '#transport-more-button',
+    SEARCH_INPUT_FIELD: '#text-input input'
 };
 
 /**

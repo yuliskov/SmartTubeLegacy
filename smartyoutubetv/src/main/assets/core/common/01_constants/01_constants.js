@@ -22,5 +22,6 @@ var DefaultEvents = {
     KEY_DOWN: 'keydown',
     HASH_CHANGE: 'hashchange',
     FOCUS_IN: 'focusin',
-    ON_CLICK: 'click'
+    ON_CLICK: 'click',
+    ON_TEXT_TYPE: 'input'
 };

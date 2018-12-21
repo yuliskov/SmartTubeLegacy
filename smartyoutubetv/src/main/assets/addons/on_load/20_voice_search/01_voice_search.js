@@ -7,6 +7,8 @@ console.log("Scripts::Running script voice_search.js");
 
 var VoiceSearch = {
     TAG: 'VoiceSearch',
+    SEARCH_PAGE_URL: '/search?resume',
+    SEARCH_PAGE_TAG: 'search',
     open: function(searchText) {
         Log.d(this.TAG, "going to the search page");
 
@@ -16,15 +18,15 @@ var VoiceSearch = {
     },
 
     navigateToTheSearchPage: function() {
-        if (location.hash.indexOf('search') != -1) {
+        if (location.hash.indexOf(this.SEARCH_PAGE_TAG) != -1) {
             return;
         }
 
-        location.hash = '/search?resume';
+        location.hash = this.SEARCH_PAGE_URL;
     },
 
     typeSearchText: function(searchText) {
-        var input = Utils.$('#text-input input');
+        var input = Utils.$(YouTubeSelectors.SEARCH_INPUT_FIELD);
         if (!input) {
             return;
         }
@@ -33,6 +35,9 @@ var VoiceSearch = {
     },
 
     commitChanges: function() {
-        EventUtils.triggerEvent('#text-input input', 'input', DefaultKeys.ENTER);
+        EventUtils.triggerEvent(
+            YouTubeSelectors.SEARCH_INPUT_FIELD,
+            DefaultEvents.ON_TEXT_TYPE,
+            DefaultKeys.ENTER);
     }
 };

@@ -1,10 +1,13 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+
 import java.util.List;
 
 public class VoiceSearchBridge {
@@ -44,7 +47,12 @@ public class VoiceSearchBridge {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        mActivity.startActivityForResult(intent, SPEECH_REQUEST_CODE);
+        try {
+            mActivity.startActivityForResult(intent, SPEECH_REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            MessageHelpers.showMessage(mActivity, e.getLocalizedMessage());
+        }
     }
 
     private void openSearchPage(String searchText) {
