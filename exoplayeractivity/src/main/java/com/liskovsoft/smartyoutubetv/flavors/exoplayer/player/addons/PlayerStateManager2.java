@@ -61,6 +61,17 @@ public class PlayerStateManager2 {
     }
 
     /**
+     * Don't restore track position immediately!!<br/>
+     * Instead use this method inside {@link Player.EventListener#onPlayerStateChanged onPlayerStateChanged} event<br/>
+     * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
+     */
+    public void restoreStatePartially() {
+        waitCodecInit();
+
+        restoreTrackIndex();
+    }
+
+    /**
      * Some decoders might not have enough time for initialization<br/>
      * <a href="https://github.com/yuliskov/SmartYouTubeTV/issues/203">GitHub issue #203</a><br/>
      * <a href="https://github.com/yuliskov/SmartYouTubeTV/issues/205">GitHub issue #205</a><br/>

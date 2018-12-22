@@ -80,7 +80,7 @@ public class PlayerHangListener extends AbstractPlayerEventListener {
 
     private void restoreTrackState() {
         if (mStateManager != null) {
-            mStateManager.restoreState();
+            mStateManager.restoreStatePartially();
         }
     }
 
