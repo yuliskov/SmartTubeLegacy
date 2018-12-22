@@ -278,6 +278,11 @@ public class PlayerStateManager2 {
      */
     private boolean trackGroupIsEmpty() {
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+
+        if (info == null) {
+            return true;
+        }
+
         TrackGroupArray groupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
 
         return groupArray == null || groupArray.length == 0;

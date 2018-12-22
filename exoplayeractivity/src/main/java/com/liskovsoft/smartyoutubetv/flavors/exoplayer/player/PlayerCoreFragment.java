@@ -1,10 +1,12 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -460,12 +462,15 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        new Handler(getActivity().getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                updateButtonVisibilities();
-            }
-        });
+        Context context = getActivity();
+        if (context != null) {
+            new Handler(context.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    updateButtonVisibilities();
+                }
+            });
+        }
 
         if (trackGroups != lastSeenTrackGroupArray) {
             MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
