@@ -126,7 +126,7 @@ import java.util.Locale;
     }
 
     private static String buildLanguageString(Format format) {
-        return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? "" : format.language;
+        return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? "" : align(format.language, 9);
     }
 
     private static String buildBitrateString(Format format) {
