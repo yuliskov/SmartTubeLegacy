@@ -35,12 +35,12 @@ public class VoiceSearchBridge {
             return;
         }
 
-        // open voice search activity on mic key
-        if (event.getKeyCode() != KeyEvent.KEYCODE_VOICE_ASSIST) {
-            return;
+        // open voice search activity on mic/search key
+        int keyCode = event.getKeyCode();
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
+            keyCode == KeyEvent.KEYCODE_SEARCH) {
+            displaySpeechRecognizer();
         }
-
-        displaySpeechRecognizer();
     }
 
     private void displaySpeechRecognizer() {
@@ -51,7 +51,8 @@ public class VoiceSearchBridge {
             mActivity.startActivityForResult(intent, SPEECH_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            MessageHelpers.showMessage(mActivity, e.getLocalizedMessage());
+            // open alt voice input app
+            // MessageHelpers.showMessage(mActivity, e.getLocalizedMessage());
         }
     }
 
