@@ -27,16 +27,21 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = translateEscapeToBack(event);
+
         setDispatchEvent(event);
 
-        if (isVolumeEvent(event))
+        if (isVolumeEvent(event)) {
             return false;
-
-        if (isBackKey(event) && !isUiVisible() && event.getAction() == KeyEvent.ACTION_UP) {
-            onBackPressed();
         }
 
-        if (isBackKey(event) || isUpKey(event)) {
+        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
+
+        if (isUpAction && isBackKey(event) && !isUiVisible()) {
+            onBackPressed();
+            return true;
+        }
+
+        if (isBackKey(event) || isOutFakeKey(event)) {
             return hideUI(event);
         }
 
@@ -53,25 +58,25 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         return event.getKeyCode() == KeyEvent.KEYCODE_BACK;
     }
 
-    private boolean isUpKey(KeyEvent event) {
+    private boolean isOutFakeKey(KeyEvent event) {
         View root = getView();
-        if (root == null)
-            throw new IllegalStateException("Fragment's root view is null");
 
         boolean isUp = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP;
-        if (isUp) {
+
+        if (root != null && isUp && isUiVisible()) {
             View upBtn = root.findViewById(R.id.up_catch_button);
             return upBtn.isFocused();
         }
+
         return false;
     }
 
     private boolean hideUI(KeyEvent event) {
-        boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
+        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
         boolean isVisible = isUiVisible();
 
         if (isVisible) {
-            if (isUp) {
+            if (isUpAction) {
                 simpleExoPlayerView.hideController();
             }
             return true;
