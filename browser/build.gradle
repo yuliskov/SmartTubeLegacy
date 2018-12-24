@@ -70,4 +70,6 @@ dependencies {
 
     // gradle 4.6 migration
     implementation project(path: ':appupdatechecker')
+
+    compile project.properties.multiDexVersion
 }

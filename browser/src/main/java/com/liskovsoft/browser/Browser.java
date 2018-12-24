@@ -1,7 +1,7 @@
 package com.liskovsoft.browser;
 
-import android.app.Application;
 import android.content.res.AssetManager;
+import android.support.multidex.MultiDexApplication;
 import android.webkit.CookieSyncManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Browser extends Application {
+public class Browser extends MultiDexApplication { // crashlytics fix on Android 4.4
     // Set to true to enable verbose logging.
     final static boolean LOGV_ENABLED = false;
 
