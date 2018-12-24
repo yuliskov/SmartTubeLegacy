@@ -5,7 +5,7 @@
           package="com.liskovsoft.smartyoutubetv">
 
     <!-- NOTE: use older sdk -->
-    <uses-sdk tools:overrideLibrary="org.xwalk.core"/>
+    <uses-sdk tools:overrideLibrary="org.xwalk.core, com.algolia.instantsearch.voice"/>
 
     <!-- Leanback required fields -->
     <uses-feature
