@@ -1,19 +1,21 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build.VERSION;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-public class VoiceSearchBridge {
-    private final Activity mActivity;
-    private final VoiceSearchConnector mConnector;
-    private final SystemVoiceDialog mSystemDialog;
+import java.util.ArrayList;
 
-    public VoiceSearchBridge(Activity activity) {
-        mActivity = activity;
+public class VoiceSearchBridge implements SearchCallback {
+    private final VoiceSearchConnector mConnector;
+    private final ArrayList<VoiceDialog> mDialogs;
+
+    public VoiceSearchBridge(AppCompatActivity activity) {
         mConnector = new VoiceSearchConnector();
-        mSystemDialog = new SystemVoiceDialog(activity);
+        mDialogs = new ArrayList<>();
+        mDialogs.add(new SystemVoiceDialog(activity, this));
+        mDialogs.add(new VoiceOverlayDialog(activity, this));
     }
 
     public void onKeyEvent(KeyEvent event) {
@@ -22,23 +24,33 @@ public class VoiceSearchBridge {
         }
 
         // open voice search activity on mic/search key
-        int keyCode = event.getKeyCode();
-        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
-            keyCode == KeyEvent.KEYCODE_SEARCH) {
-            displaySpeechRecognizers();
-        }
+        //int keyCode = event.getKeyCode();
+        //if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
+        //    keyCode == KeyEvent.KEYCODE_SEARCH) {
+        //    displaySpeechRecognizers();
+        //}
+
+        displaySpeechRecognizers();
     }
 
     private void displaySpeechRecognizers() {
-        boolean result = mSystemDialog.displaySpeechRecognizer();
+        for (VoiceDialog dialog : mDialogs) {
+            if (dialog.displaySpeechRecognizer()) { // fist successful attempt is used
+                break;
+            }
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String spokenText = mSystemDialog.onSearchResult(requestCode, resultCode, data);
-        openSearchPage(spokenText);
+        for (VoiceDialog dialog : mDialogs) {
+            if (dialog instanceof ActivityListener) {
+                ((ActivityListener) dialog).onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
-    private void openSearchPage(String searchText) {
+    @Override
+    public void openSearchPage(String searchText) {
         mConnector.openSearchPage(searchText);
     }
 }

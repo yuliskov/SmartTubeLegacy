@@ -1,26 +1,29 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import com.algolia.instantsearch.voice.VoiceSpeechRecognizer;
 import com.algolia.instantsearch.voice.ui.Voice;
+import com.algolia.instantsearch.voice.ui.VoiceInputDialogFragment;
 import com.algolia.instantsearch.voice.ui.VoicePermissionDialogFragment;
 
 public class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.ResultsListener {
-    private final Activity mActivity;
+    private final AppCompatActivity mActivity;
+    private final SearchCallback mCallback;
 
     private enum Tag {
         Permission,
         Voice
     }
 
-    public VoiceOverlayDialog(Activity activity) {
+    public VoiceOverlayDialog(AppCompatActivity activity, SearchCallback callback) {
         mActivity = activity;
+        mCallback = callback;
     }
 
     @Override
     public boolean displaySpeechRecognizer() {
         if (!Voice.isRecordAudioPermissionGranted(mActivity)) {
-            new VoicePermissionDialogFragment().show(supportFragmentManager, Tag.Permission.name());
+            new VoicePermissionDialogFragment().show(mActivity.getSupportFragmentManager(), Tag.Permission.name());
         } else {
             showVoiceDialog();
         }
@@ -29,22 +32,33 @@ public class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.Re
     }
 
     private void showVoiceDialog() {
-        getPermissionDialog()?.dismiss()
-        (getVoiceDialog() ?: VoiceInputDialogFragment()).let {
-            it.setSuggestions(
-                    "Phone case",
-                    "Running shoes"
-            )
-            it.show(supportFragmentManager, Tag.Voice.name)
+        VoicePermissionDialogFragment dialog = getPermissionDialog();
+
+        if (dialog != null) {
+            dialog.dismiss();
         }
+
+        VoiceInputDialogFragment voiceDialog = getVoiceDialog();
+
+        if (voiceDialog == null) {
+            voiceDialog = new VoiceInputDialogFragment();
+        }
+
+        voiceDialog.show(mActivity.getSupportFragmentManager(), Tag.Voice.name());
     }
 
-    private boolean getPermissionDialog() {
-        return false;
+    private VoicePermissionDialogFragment getPermissionDialog() {
+        return (VoicePermissionDialogFragment) mActivity.getSupportFragmentManager().findFragmentByTag(Tag.Permission.name());
+    }
+
+    private VoiceInputDialogFragment getVoiceDialog() {
+        return (VoiceInputDialogFragment) mActivity.getSupportFragmentManager().findFragmentByTag(Tag.Voice.name());
     }
 
     @Override
     public void onResults(String[] strings) {
-
+        if (strings.length > 0) {
+            mCallback.openSearchPage(strings[0]);
+        }
     }
 }

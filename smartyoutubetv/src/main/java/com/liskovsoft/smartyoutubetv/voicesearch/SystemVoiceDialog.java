@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 import java.util.List;
 
-public class SystemVoiceDialog implements VoiceDialog {
+public class SystemVoiceDialog implements VoiceDialog, ActivityListener {
     private static final int SPEECH_REQUEST_CODE = 11;
     private final Activity mActivity;
+    private final SearchCallback mCallback;
 
-    public SystemVoiceDialog(Activity activity) {
+    public SystemVoiceDialog(Activity activity, SearchCallback callback) {
         mActivity = activity;
+        mCallback = callback;
     }
 
     public boolean displaySpeechRecognizer() {
@@ -30,15 +32,15 @@ public class SystemVoiceDialog implements VoiceDialog {
         return true;
     }
 
-    public String onSearchResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // got speech-to-text result, switch to the search page
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == -1) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
-            String spokenText = results.get(0);
-            return spokenText;
+            if (results != null && results.size() > 0) {
+                mCallback.openSearchPage(results.get(0));
+            }
         }
-
-        return null;
     }
 }
