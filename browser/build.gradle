@@ -26,6 +26,10 @@ android {
     defaultPublishConfig "liteDebug"
     publishNonDefault true
 
+    // gradle 4.6 migration: disable dimensions mechanism
+    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+    flavorDimensions "default"
+
     productFlavors {
         lite {}
         full {}
@@ -61,6 +65,9 @@ dependencies {
     })
 
     // AppUpdateChecker component
-    debugCompile project(path: ':appupdatechecker', configuration: "debug")
-    releaseCompile project(path: ':appupdatechecker', configuration: "release")
+    // debugCompile project(path: ':appupdatechecker', configuration: "debug")
+    // releaseCompile project(path: ':appupdatechecker', configuration: "release")
+
+    // gradle 4.6 migration
+    implementation project(path: ':appupdatechecker')
 }

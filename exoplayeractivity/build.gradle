@@ -16,11 +16,21 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // gradle 4.6 migration: disable dimensions mechanism
+    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+    flavorDimensions "default"
+
+    productFlavors {
+        lite {}
+        full {}
     }
 
     lintOptions {
@@ -39,8 +49,11 @@ dependencies {
     compile project(path: ':common')
 
     // Browser component (specially for BrowserApp)
-    debugCompile project(path: ':browser', configuration: "liteDebug")
-    releaseCompile project(path: ':browser', configuration: "liteRelease")
+    // debugCompile project(path: ':browser', configuration: "liteDebug")
+    // releaseCompile project(path: ':browser', configuration: "liteRelease")
+
+    // gradle 4.6 migration
+    implementation project(path: ':browser')
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project.properties.appCompatVersion

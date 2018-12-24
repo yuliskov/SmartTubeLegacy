@@ -53,19 +53,28 @@ android {
         }
     }
 
+    // gradle 4.6 migration: disable dimensions mechanism
+    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+    flavorDimensions "default"
+
     productFlavors {
         orig {
+            matchingFallbacks = ['lite']
         }
         V720 {
+            matchingFallbacks = ['lite']
             versionCode 999 // don't auto-update
         }
         V1080 {
+            matchingFallbacks = ['lite']
             versionCode 999 // don't auto-update
         }
         Vkids {
+            matchingFallbacks = ['lite']
             applicationIdSuffix ".kids"
         }
         Vlive {
+            matchingFallbacks = ['lite']
             applicationIdSuffix ".live"
         }
     }
@@ -81,7 +90,10 @@ android {
 
             def newApkName = sprintf("%s_%s_v%s_%s.apk", [project, flavor, version, buildType])
 
-            output.outputFile = new File(output.outputFile.parent, newApkName)
+            // old gradle 3.3:
+            // output.outputFile = new File(output.outputFile.parent, newApkName)
+            // gradle 4.6 migration
+            output.outputFileName = new File(newApkName)
         }
     }
 
@@ -110,16 +122,25 @@ dependencies {
     compile project(path: ':common')
 
     // Browser component
-    debugCompile project(path: ':browser', configuration: "liteDebug")
-    releaseCompile project(path: ':browser', configuration: "liteRelease")
+    // debugCompile project(path: ':browser', configuration: "liteDebug")
+    // releaseCompile project(path: ':browser', configuration: "liteRelease")
+
+    // gradle 4.6 migration
+    implementation project(path: ':browser')
 
     // Activity for ExoPlayer (taken for demo project)
-    debugCompile project(path: ':exoplayeractivity', configuration: "debug")
-    releaseCompile project(path: ':exoplayeractivity', configuration: "release")
+    // debugCompile project(path: ':exoplayeractivity', configuration: "debug")
+    // releaseCompile project(path: ':exoplayeractivity', configuration: "release")
+
+    // gradle 4.6 migration
+    implementation project(path: ':exoplayeractivity')
 
     // AppUpdateChecker component
-    debugCompile project(path: ':appupdatechecker', configuration: "debug")
-    releaseCompile project(path: ':appupdatechecker', configuration: "release")
+    // debugCompile project(path: ':appupdatechecker', configuration: "debug")
+    // releaseCompile project(path: ':appupdatechecker', configuration: "release")
+
+    // gradle 4.6 migration
+    implementation project(path: ':appupdatechecker')
 
     compile(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
