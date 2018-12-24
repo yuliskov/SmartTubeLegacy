@@ -23,7 +23,8 @@ public class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.Re
     @Override
     public boolean displaySpeechRecognizer() {
         if (!Voice.isRecordAudioPermissionGranted(mActivity)) {
-            new VoicePermissionDialogFragment().show(mActivity.getSupportFragmentManager(), Tag.Permission.name());
+            new VoicePermissionDialogFragment()
+                    .show(mActivity.getSupportFragmentManager(), Tag.Permission.name());
         } else {
             showVoiceDialog();
         }
@@ -42,6 +43,8 @@ public class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.Re
 
         if (voiceDialog == null) {
             voiceDialog = new VoiceInputDialogFragment();
+        } else {
+            voiceDialog.dismiss();
         }
 
         voiceDialog.show(mActivity.getSupportFragmentManager(), Tag.Voice.name());

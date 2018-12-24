@@ -19,16 +19,17 @@ public class VoiceSearchBridge implements SearchCallback {
     }
 
     public void onKeyEvent(KeyEvent event) {
-        if (VERSION.SDK_INT < 21) {
+        int action = event.getAction();
+        if (action == KeyEvent.ACTION_DOWN) {
             return;
         }
 
         // open voice search activity on mic/search key
-        //int keyCode = event.getKeyCode();
-        //if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
-        //    keyCode == KeyEvent.KEYCODE_SEARCH) {
-        //    displaySpeechRecognizers();
-        //}
+        int keyCode = event.getKeyCode();
+        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
+            keyCode == KeyEvent.KEYCODE_SEARCH) {
+            displaySpeechRecognizers();
+        }
 
         displaySpeechRecognizers();
     }

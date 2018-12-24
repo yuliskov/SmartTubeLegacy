@@ -7,6 +7,8 @@
     <!-- NOTE: use older sdk -->
     <uses-sdk tools:overrideLibrary="org.xwalk.core, com.algolia.instantsearch.voice"/>
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <!-- Leanback required fields -->
     <uses-feature
         android:name="android.software.leanback"
