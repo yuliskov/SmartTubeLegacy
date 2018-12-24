@@ -106,54 +106,41 @@ android {
 }
 
 dependencies {
-    androidTestCompile(project.properties.espressoCoreVersion, {
+    androidTestApi(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile project.properties.junitVersion
-    testCompile project.properties.robolectricVersion
-    testCompile project.properties.commonsIOVersion
+    testApi project.properties.junitVersion
+    testApi project.properties.robolectricVersion
+    testApi project.properties.commonsIOVersion
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    // uncomment if you want to use embeddable xwalk engine
-    // originalFlavorCompile project(path: ':browser', configuration: "liteFlavorDebug")
-    // betaFlavorCompile project(path: ':browser', configuration: "fullFlavorDebug")
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
-    compile project(path: ':common')
-
-    // Browser component
-    // debugCompile project(path: ':browser', configuration: "liteDebug")
-    // releaseCompile project(path: ':browser', configuration: "liteRelease")
+    implementation project(path: ':common')
 
     // gradle 4.6 migration
     implementation project(path: ':browser')
 
-    // Activity for ExoPlayer (taken for demo project)
-    // debugCompile project(path: ':exoplayeractivity', configuration: "debug")
-    // releaseCompile project(path: ':exoplayeractivity', configuration: "release")
-
     // gradle 4.6 migration
     implementation project(path: ':exoplayeractivity')
-
-    // AppUpdateChecker component
-    // debugCompile project(path: ':appupdatechecker', configuration: "debug")
-    // releaseCompile project(path: ':appupdatechecker', configuration: "release")
 
     // gradle 4.6 migration
     implementation project(path: ':appupdatechecker')
 
-    compile(project.properties.crashlyticsVersion) { // see top part of this file
+    api(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
     }
-    compile project.properties.appCompatVersion
-    compile project.properties.androidLoggerVersion
-    compile project.properties.constraintLayoutVersion
-    compile project.properties.butterKnifeVersion
+
+    api project.properties.appCompatVersion
+    api project.properties.constraintLayoutVersion
+
+    api project.properties.androidLoggerVersion
+
+    api project.properties.butterKnifeVersion
     annotationProcessor project.properties.butterKnifeCompilerVersion
 
-    compile project.properties.gsonVersion
-    compile project.properties.jsonPathVersion
+    api project.properties.gsonVersion
+    api project.properties.jsonPathVersion
 
     // view dependencies: gradlew -q smartyoutubetv:dependencies
     // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
@@ -163,6 +150,6 @@ dependencies {
         }
     }
 
-    compile project.properties.nanoHttpdVersion
-    compile project.properties.voiceOverlayVersion
+    api project.properties.nanoHttpdVersion
+    api project.properties.voiceOverlayVersion
 }

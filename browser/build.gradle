@@ -43,33 +43,29 @@ android {
 }
 
 dependencies {
-    androidTestCompile(project.properties.espressoCoreVersion, {
+    androidTestApi(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile project.properties.junitVersion
+    testApi project.properties.junitVersion
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project.properties.appCompatVersion
-    compile project.properties.androidLoggerVersion
+    api project.properties.appCompatVersion
+    api project.properties.androidLoggerVersion
     
-    compile project.properties.okhttpVersion
-    compile project.properties.dnsjavaVersion
+    api project.properties.okhttpVersion
+    api project.properties.dnsjavaVersion
 
-    compile project(path: ':common')
-
-    // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
-    liteCompile project.properties.xwalkSharedLibraryVersion
-    fullCompile(project.properties.xwalkCoreLibraryVersion, {
-        exclude group: 'com.android.support', module: 'support-v4'
-    })
-
-    // AppUpdateChecker component
-    // debugCompile project(path: ':appupdatechecker', configuration: "debug")
-    // releaseCompile project(path: ':appupdatechecker', configuration: "release")
+    implementation project(path: ':common')
 
     // gradle 4.6 migration
     implementation project(path: ':appupdatechecker')
 
-    compile project.properties.multiDexVersion
+    // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
+    liteApi project.properties.xwalkSharedLibraryVersion
+    fullApi(project.properties.xwalkCoreLibraryVersion, {
+        exclude group: 'com.android.support', module: 'support-v4'
+    })
+
+    api project.properties.multiDexVersion
 }
