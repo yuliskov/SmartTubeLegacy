@@ -25,13 +25,15 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api project.properties.appCompatVersion
-    api project.properties.ottoVersion
-    api project.properties.okhttpVersion
-    testApi project.properties.junitVersion
-    androidTestApi(project.properties.espressoCoreVersion, {
+    androidTestImplementation(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    testImplementation project.properties.junitVersion
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project.properties.appCompatVersion
+
+    implementation project.properties.ottoVersion
+    implementation project.properties.okhttpVersion
 }

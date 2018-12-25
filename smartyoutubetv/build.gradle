@@ -106,14 +106,14 @@ android {
 }
 
 dependencies {
-    androidTestApi(project.properties.espressoCoreVersion, {
+    androidTestImplementation(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testApi project.properties.junitVersion
-    testApi project.properties.robolectricVersion
-    testApi project.properties.commonsIOVersion
+    testImplementation project.properties.junitVersion
+    testImplementation project.properties.robolectricVersion
+    testImplementation project.properties.commonsIOVersion
 
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
     implementation project(path: ':common')
@@ -127,20 +127,20 @@ dependencies {
     // gradle 4.6 migration
     implementation project(path: ':appupdatechecker')
 
-    api(project.properties.crashlyticsVersion) { // see top part of this file
+    implementation(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
     }
 
-    api project.properties.appCompatVersion
-    api project.properties.constraintLayoutVersion
+    implementation project.properties.appCompatVersion
+    implementation project.properties.constraintLayoutVersion
 
-    api project.properties.androidLoggerVersion
+    implementation project.properties.androidLoggerVersion
 
-    api project.properties.butterKnifeVersion
+    implementation project.properties.butterKnifeVersion
     annotationProcessor project.properties.butterKnifeCompilerVersion
 
-    api project.properties.gsonVersion
-    api project.properties.jsonPathVersion
+    implementation project.properties.gsonVersion
+    implementation project.properties.jsonPathVersion
 
     // view dependencies: gradlew -q smartyoutubetv:dependencies
     // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
@@ -150,6 +150,11 @@ dependencies {
         }
     }
 
-    api project.properties.nanoHttpdVersion
-    api project.properties.voiceOverlayVersion
+    implementation project.properties.nanoHttpdVersion
+    implementation project.properties.voiceOverlayVersion
+
+    implementation project.properties.exoplayerVersion
+    
+    implementation project.properties.okhttpVersion
+    implementation project.properties.ottoVersion
 }

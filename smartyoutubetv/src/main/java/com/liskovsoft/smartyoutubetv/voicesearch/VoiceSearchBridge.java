@@ -30,8 +30,6 @@ public class VoiceSearchBridge implements SearchCallback {
             keyCode == KeyEvent.KEYCODE_SEARCH) {
             displaySpeechRecognizers();
         }
-
-        displaySpeechRecognizers();
     }
 
     private void displaySpeechRecognizers() {

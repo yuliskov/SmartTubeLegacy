@@ -32,16 +32,19 @@ android {
 }
 
 dependencies {
-    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testApi project.properties.junitVersion
+    testImplementation project.properties.junitVersion
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(path: ':common')
 
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api project.properties.appCompatVersion
-    api project.properties.androidLoggerVersion
+    implementation project.properties.appCompatVersion
+    implementation project.properties.androidLoggerVersion
 
-    api project.properties.dnsjavaVersion
+    implementation project.properties.dnsjavaVersion
+
+    implementation project.properties.okhttpVersion
 }

@@ -41,21 +41,23 @@ android {
 }
 
 dependencies {
-    androidTestApi(project.properties.espressoCoreVersion, {
+    androidTestImplementation(project.properties.espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testApi 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
     implementation project(path: ':common')
 
     // gradle 4.6 migration
     implementation project(path: ':browser')
 
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api project.properties.appCompatVersion
-    api project.properties.androidLoggerVersion
-    api project.properties.exoplayerVersion
-    //api project.properties.amazonExoplayerVersion
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project.properties.appCompatVersion
+    implementation project.properties.androidLoggerVersion
+    implementation project.properties.exoplayerVersion
+    //implementation project.properties.amazonExoplayerVersion
 
-    api project.properties.stethoVersion
+    implementation project.properties.stethoVersion
+
+    implementation project.properties.multiDexVersion
 }
