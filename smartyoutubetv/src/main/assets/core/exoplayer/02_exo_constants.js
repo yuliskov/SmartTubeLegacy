@@ -24,7 +24,7 @@ var PlayerActivityMapping = {
     // BUTTON_USER_PAGE: '.pivot-channel-tile',
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
-    BUTTON_NEXT: ['.new-skip-forward-button', '.icon-player-next.button'],
+    BUTTON_NEXT: ['.skip-forward-button', '.new-skip-forward-button', '.icon-player-next.button'],
     BUTTON_PREV: ['.material-icon-skip-previous.button', '.icon-player-prev.button'],
     BUTTON_SUGGESTIONS: 'button_suggestions', // fake button (use internal logic)
     TRACK_ENDED: 'track_ended', // fake button (use internal logic)
