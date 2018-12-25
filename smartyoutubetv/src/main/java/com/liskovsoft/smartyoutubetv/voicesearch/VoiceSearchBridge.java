@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -19,15 +20,24 @@ public class VoiceSearchBridge implements SearchCallback {
     }
 
     public void onKeyEvent(KeyEvent event) {
-        int action = event.getAction();
-        if (action == KeyEvent.ACTION_DOWN) {
+        // open voice search activity on mic/search key
+
+        boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
+
+        if (!isUp) {
             return;
         }
 
-        // open voice search activity on mic/search key
-        int keyCode = event.getKeyCode();
-        if (keyCode == KeyEvent.KEYCODE_VOICE_ASSIST ||
-            keyCode == KeyEvent.KEYCODE_SEARCH) {
+        boolean isVoiceAssistKey = false;
+
+        if (VERSION.SDK_INT >= 21) {
+            isVoiceAssistKey = event.getKeyCode() == KeyEvent.KEYCODE_VOICE_ASSIST;
+        }
+
+        boolean isSearchKey = event.getKeyCode() == KeyEvent.KEYCODE_SEARCH;
+        boolean isVoiceKey = isVoiceAssistKey || isSearchKey;
+
+        if (isVoiceKey) {
             displaySpeechRecognizers();
         }
     }
