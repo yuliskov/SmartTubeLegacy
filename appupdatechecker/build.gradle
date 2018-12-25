@@ -26,9 +26,7 @@ android {
 
     lintOptions {
         abortOnError true
-        disable 'MissingTranslation'
-        disable 'NewApi'
-        disable 'Deprecation'
+        lintConfig rootProject.file('lint.xml')
     }
 }
 

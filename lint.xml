@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Disable following warnings -->
+    <!-- Details: https://developer.android.com/studio/write/lint#pref -->
+    <!-- Issue IDs: https://stackoverflow.com/questions/31128770/how-to-find-gradle-lintoptions-document-for-android -->
+    <!-- Issue IDs (scroll down to the third comment): https://stackoverflow.com/questions/28591726/for-android-where-do-i-find-a-complete-list-of-suppresslint-valid-issue-ids -->
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="NewApi" severity="ignore" />
+    <issue id="Deprecated" severity="ignore" />
+</lint>
