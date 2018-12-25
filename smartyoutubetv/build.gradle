@@ -30,8 +30,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 411
-        versionName "6.15.51"
+        versionCode 412
+        versionName "6.15.52"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -154,7 +154,7 @@ dependencies {
     implementation project.properties.voiceOverlayVersion
 
     implementation project.properties.exoplayerVersion
-    
+
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion
 }
