@@ -102,6 +102,7 @@ android {
         abortOnError true
         disable 'MissingTranslation'
         disable 'NewApi'
+        disable 'Deprecation'
     }
 }
 

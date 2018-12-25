@@ -22,6 +22,12 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError true
+        disable 'MissingTranslation'
+        disable 'NewApi'
+        disable 'Deprecation'
+    }
 }
 
 dependencies {
