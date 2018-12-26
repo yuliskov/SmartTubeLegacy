@@ -36,7 +36,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
 
-        if (isUpAction && isBackKey(event) && !isUiVisible()) {
+        boolean uiVisible = isUiVisible();
+
+        if (isUpAction && isBackKey(event) && !uiVisible) {
             onBackPressed();
             return true;
         }
@@ -48,8 +50,26 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         // Show the controls on any key event.
         simpleExoPlayerView.showController();
 
+        if (!uiVisible) {
+            setFocusOnTimeBar(event);
+            // uncomment below to fix focus on the play/pause button
+            // return true;
+        }
+
         // If the event was not handled then see if the player view can handle it as a media key event.
         return simpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    private void setFocusOnTimeBar(KeyEvent event) {
+        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
+
+        // move selection to the timebar on left/right key events
+        if (isLeftRightKey) {
+            View timeBar = simpleExoPlayerView.findViewById(R.id.time_bar);
+            if (timeBar != null) {
+                timeBar.requestFocus();
+            }
+        }
     }
 
     // Activity input
