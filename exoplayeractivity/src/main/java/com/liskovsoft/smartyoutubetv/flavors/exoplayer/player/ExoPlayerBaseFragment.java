@@ -94,6 +94,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             // Do not move this code to another place!!! This statement must come after player initialization
             autoFrameRateManager = new AutoFrameRateManager(getActivity(), player);
+            autoFrameRateManager.saveOriginalState();
 
             playerInitializer.initVideoTitle();
 
@@ -206,6 +207,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private void doGracefulExit(Intent intent) {
         if (autoFrameRateManager != null) {
             intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
+            autoFrameRateManager.restoreOriginalState();
         }
 
         ((PlayerListener) getActivity()).onPlayerClosed(intent);

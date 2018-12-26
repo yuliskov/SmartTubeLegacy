@@ -42,4 +42,20 @@ public class AutoFrameRateManager {
     public int getCurrentModeId() {
         return mSyncHelper.getCurrentModeId();
     }
+
+    public void saveOriginalState() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.saveOriginalState();
+    }
+
+    public void restoreOriginalState() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.restoreOriginalState();
+    }
 }

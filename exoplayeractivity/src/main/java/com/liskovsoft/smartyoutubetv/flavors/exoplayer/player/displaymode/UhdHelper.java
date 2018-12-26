@@ -23,12 +23,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 // Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
 /**
- * UhdHelper is a convenience class to provide interfaces to query
- * 1) Supported Display modes.
- * 2) Get current display mode
+ * UhdHelper is a convenience class to provide interfaces to query<br/>
+ * 1) Supported Display modes.<br/>
+ * 2) Get current display mode<br/>
  * 3) Set preferred mode.
  */
-public class UhdHelper {
+class UhdHelper {
     Context mContext;
     private UhdHelperListener mListener;
     final public static String version = "v1.1";

@@ -1,14 +1,10 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.DisplaySyncHelper;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.UhdHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +45,7 @@ public class ActionsSender {
 
         Log.d(TAG, "Running SyncButtonsCommand");
 
-        applyAutoframerate(intent);
+        // applyAutoframerate(intent);
         Map<String, Boolean> buttonStates = extractButtonStates(intent);
         SyncButtonsCommand myCommand = new SyncButtonsCommand(buttonStates);
         mInterceptor.updateLastCommand(myCommand);
@@ -72,14 +68,15 @@ public class ActionsSender {
         return result;
     }
 
-    private void applyAutoframerate(Intent intent) {
-        boolean autoframerateChecked = ExoPreferences.instance(mContext).getAutoframerateChecked();
-        if (autoframerateChecked &&
-            new DisplaySyncHelper(mContext).supportsDisplayModeChange()) {
-            int displayModId = intent.getIntExtra(ExoPlayerFragment.DISPLAY_MODE_ID, 0);
-            new UhdHelper(mContext).setPreferredDisplayModeId(((Activity) mContext).getWindow(), displayModId, true);
-        }
-    }
+    // TODO: cleanup
+    //private void applyAutoframerate(Intent intent) {
+    //    boolean autoframerateChecked = ExoPreferences.instance(mContext).getAutoframerateChecked();
+    //    if (autoframerateChecked &&
+    //        new DisplaySyncHelper(mContext).supportsDisplayModeChange()) {
+    //        int displayModId = intent.getIntExtra(ExoPlayerFragment.DISPLAY_MODE_ID, 0);
+    //        new UhdHelper(mContext).setPreferredDisplayModeId(((Activity) mContext).getWindow(), displayModId, true);
+    //    }
+    //}
 
     /**
      * Actually, on old devices not possible to stop the video. So skip to the next one.

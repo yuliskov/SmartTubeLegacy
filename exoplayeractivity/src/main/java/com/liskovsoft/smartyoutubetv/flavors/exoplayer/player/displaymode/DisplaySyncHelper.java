@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -16,14 +17,15 @@ import java.util.Iterator;
 
 // Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
-public class DisplaySyncHelper implements UhdHelperListener {
+class DisplaySyncHelper implements UhdHelperListener {
     static final String TAG = "DisplaySyncHelper";
-    private final Context mContext;
+    private final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     private int mNewMode;
+    private int mOriginalModeId;
 
-    public DisplaySyncHelper(Context context) {
+    public DisplaySyncHelper(Activity context) {
         mContext = context;
     }
 
@@ -248,5 +250,41 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
     public int getCurrentModeId() {
         return mNewMode;
+    }
+
+    /**
+     * Lazy init of uhd helper.<br/>
+     * Convenient when user doesn't use a afr at all.
+     * @return helper
+     */
+    private UhdHelper getUhdHelper() {
+        if (mUhdHelper == null) {
+            mUhdHelper = new UhdHelper(mContext);
+        }
+
+        return mUhdHelper;
+    }
+
+    public void saveOriginalState() {
+        if (!getNeedDisplaySync()) {
+            return;
+        }
+
+        DisplayHolder.Mode mode = getUhdHelper().getMode();
+
+        if (mode != null) {
+            mOriginalModeId = mode.getModeId();
+        }
+    }
+
+    public void restoreOriginalState() {
+        if (!getNeedDisplaySync()) {
+            return;
+        }
+
+        getUhdHelper().setPreferredDisplayModeId(
+                        mContext.getWindow(),
+                        mOriginalModeId,
+                        true);
     }
 }

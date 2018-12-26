@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Convenience class to hold {@link DisplayHolder} Display object.
  *
  */
-public class DisplayHolder {
+class DisplayHolder {
 
     /**
      * Stub method to create the ModeInstance. In real world we need not to do it here.
@@ -16,17 +16,16 @@ public class DisplayHolder {
      * @param height Display mode's height
      * @param refreshRate Display mode's refresh rate
      *
-     * @return {@link com.amazon.firetvsample.uhdhelper.Display.Mode} Display.Mode instance object.
+     * @return {@link Mode} instance object.
      */
     public Mode getModeInstance(int modeId,int width,int height,float refreshRate){
         return new Mode(modeId,width,height,refreshRate);
     }
 
     /**
-     * Inner class {@link com.amazon.firetvsample.uhdhelper.Display.Mode} Display.Mode holds the
-     * mode information.
+     * Inner class {@link Mode} holds the mode information.
      */
-    public static class Mode  implements Parcelable {
+    public static class Mode implements Parcelable {
 
         private int mModeId;
         private int mHeight;
