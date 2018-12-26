@@ -53,7 +53,7 @@ The **Remember** tick box acts as a configuration saving for next app launches.
 
 ### Donation:
 If you want to support my developments you are welcome to buy me a cup of coffee :)
- * [__Donation Alerts (RU)__](https://www.donationalerts.ru/r/firsthash)
+ * [__Donation Alerts (RU, PayPal)__](https://www.donationalerts.ru/r/firsthash)
  * [__PrivatBank (UA)__](https://privatbank.ua/ru/sendmoney?payment=5fcdddf53e3d491d63fcb050e6e2e05f2f2678c2)
  * __BTC__: 1JAT5VVWarVBkpVbNDn8UA8HXNdrukuBSx
  
