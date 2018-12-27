@@ -19,14 +19,8 @@ public class VoiceSearchBridge implements SearchCallback {
         mDialogs.add(new VoiceOverlayDialog(activity, this));
     }
 
-    public void onKeyEvent(KeyEvent event) {
+    public boolean onKeyEvent(KeyEvent event) {
         // open voice search activity on mic/search key
-
-        boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
-
-        if (!isUp) {
-            return;
-        }
 
         boolean isVoiceAssistKey = false;
 
@@ -38,8 +32,14 @@ public class VoiceSearchBridge implements SearchCallback {
         boolean isVoiceKey = isVoiceAssistKey || isSearchKey;
 
         if (isVoiceKey) {
-            displaySpeechRecognizers();
+            boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
+            if (isUp) { // run on up action only
+                displaySpeechRecognizers();
+            }
+            return true;
         }
+
+        return false;
     }
 
     private void displaySpeechRecognizers() {

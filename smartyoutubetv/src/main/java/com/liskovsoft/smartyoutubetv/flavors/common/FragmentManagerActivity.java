@@ -137,8 +137,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        mVoiceBridge.onKeyEvent(event);
-        return mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
+        return mVoiceBridge.onKeyEvent(event) || mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
     }
 
     private KeyEvent modifyEvent(KeyEvent event) {
