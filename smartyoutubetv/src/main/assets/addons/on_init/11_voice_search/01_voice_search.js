@@ -11,9 +11,12 @@ var VoiceSearch = {
     SEARCH_PAGE_TAG: 'search',
 
     init: function() {
-        this.overrideVoiceCaps();
+        // this.overrideVoiceCaps();
     },
 
+    /**
+     * NOTE: App could hang after this
+     */
     overrideVoiceCaps: function() {
         if (window.SpeechRecognition || window.webkitSpeechRecognition) {
             return;

@@ -25,7 +25,7 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
-import com.liskovsoft.smartyoutubetv.misc.UAManager;
+import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import edu.mit.mobile.android.appupdater.addons.PermissionManager;
 import android.annotation.SuppressLint;
 
@@ -36,7 +36,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private KeysTranslator mTranslator;
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
     private final static String TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
-    private UAManager mUAManager;
+    private UserAgentManager mUAManager;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -77,7 +77,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void setupUA() {
-        mUAManager = new UAManager(getActivity());
+        mUAManager = new UserAgentManager(getActivity());
     }
 
     private void initPermissions() {
