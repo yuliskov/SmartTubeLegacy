@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More info: https://google.github.io/ExoPlayer/doc/reference/com/google/android/exoplayer2/ui/SimpleExoPlayerView.html -->
 <!-- More info: https://google.github.io/ExoPlayer/doc/reference/com/google/android/exoplayer2/ui/PlaybackControlView.html -->
+<!-- Zoom to fit video: https://stackoverflow.com/questions/33608746/in-android-using-exoplayer-how-to-fill-surfaceview-with-a-video-that-does-not -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <com.google.android.exoplayer2.ui.AspectRatioFrameLayout android:id="@id/exo_content_frame"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_gravity="center">
-
-    <!-- Video surface will be inserted as the first child of the content frame. -->
-
-    <View android:id="@id/exo_shutter"
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+        android:id="@id/exo_content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/youtube_background"/> <!-- bg of player when no video loaded -->
+        android:layout_gravity="center">
 
-    <ImageView android:id="@id/exo_artwork"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        <!-- Video surface will be inserted as the first child of the content frame. -->
 
-    <com.google.android.exoplayer2.ui.SubtitleView android:id="@id/exo_subtitles"
+        <View
+            android:id="@id/exo_shutter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"/> <!-- bg of player when no video loaded -->
+
+        <ImageView
+            android:id="@id/exo_artwork"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+
+        <com.google.android.exoplayer2.ui.SubtitleView
+            android:id="@id/exo_subtitles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
+
+    <View
+        android:id="@id/exo_controller_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-  </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
-
-  <View android:id="@id/exo_controller_placeholder"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
-
-  <FrameLayout android:id="@id/exo_overlay"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+    <FrameLayout
+        android:id="@id/exo_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </merge>

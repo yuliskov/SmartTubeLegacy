@@ -50,11 +50,14 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         // Show the controls on any key event.
         simpleExoPlayerView.showController();
 
-        if (!uiVisible) {
-            setFocusOnTimeBar(event);
+        // move selection to the timebar on left/right key events
+        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
+        if (!uiVisible && isLeftRightKey) {
+            setFocusOnTimeBar();
+            return true;
         }
 
-        // fix focus on the play/pause button
+        // fix focus on the play/pause button: don't move selection
         boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
         if (!uiVisible && isUpDownKey) {
             return true;
@@ -64,15 +67,10 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         return simpleExoPlayerView.dispatchMediaKeyEvent(event);
     }
 
-    private void setFocusOnTimeBar(KeyEvent event) {
-        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
-
-        // move selection to the timebar on left/right key events
-        if (isLeftRightKey) {
-            View timeBar = simpleExoPlayerView.findViewById(R.id.time_bar);
-            if (timeBar != null) {
-                timeBar.requestFocus();
-            }
+    private void setFocusOnTimeBar() {
+        View timeBar = simpleExoPlayerView.findViewById(R.id.time_bar);
+        if (timeBar != null) {
+            timeBar.requestFocus();
         }
     }
 

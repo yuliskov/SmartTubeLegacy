@@ -46,6 +46,7 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -149,7 +150,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         simpleExoPlayerView = root.findViewById(R.id.player_view);
         simpleExoPlayerView.setControllerVisibilityListener(this);
-        simpleExoPlayerView.requestFocus();
+        // simpleExoPlayerView.requestFocus();
+
+        // Zoom to fit video: https://stackoverflow.com/questions/33608746/in-android-using-exoplayer-how-to-fill-surfaceview-with-a-video-that-does-not
+        // simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
 
         // hide ui player by default
         simpleExoPlayerView.setControllerAutoShow(false);
