@@ -70,16 +70,16 @@ import java.util.Locale;
     TIME_FORMAT.setGroupingUsed(false);
   }
 
-  private final MappingTrackSelector trackSelector;
-  private final Timeline.Window window;
-  private final Timeline.Period period;
-  private final long startTimeMs;
+  private final MappingTrackSelector mTrackSelector;
+  private final Timeline.Window mWindow;
+  private final Timeline.Period mPeriod;
+  private final long mStartTimeMs;
 
   public EventLogger(MappingTrackSelector trackSelector) {
-    this.trackSelector = trackSelector;
-    window = new Timeline.Window();
-    period = new Timeline.Period();
-    startTimeMs = SystemClock.elapsedRealtime();
+    this.mTrackSelector = trackSelector;
+    mWindow = new Timeline.Window();
+    mPeriod = new Timeline.Period();
+    mStartTimeMs = SystemClock.elapsedRealtime();
   }
 
   // ExoPlayer.EventListener
@@ -117,16 +117,16 @@ import java.util.Locale;
     int windowCount = timeline.getWindowCount();
     Log.d(TAG, "sourceInfo [periodCount=" + periodCount + ", windowCount=" + windowCount);
     for (int i = 0; i < Math.min(periodCount, MAX_TIMELINE_ITEM_LINES); i++) {
-      timeline.getPeriod(i, period);
-      Log.d(TAG, "  " +  "period [" + getTimeString(period.getDurationMs()) + "]");
+      timeline.getPeriod(i, mPeriod);
+      Log.d(TAG, "  " +  "period [" + getTimeString(mPeriod.getDurationMs()) + "]");
     }
     if (periodCount > MAX_TIMELINE_ITEM_LINES) {
       Log.d(TAG, "  ...");
     }
     for (int i = 0; i < Math.min(windowCount, MAX_TIMELINE_ITEM_LINES); i++) {
-      timeline.getWindow(i, window);
-      Log.d(TAG, "  " +  "window [" + getTimeString(window.getDurationMs()) + ", "
-          + window.isSeekable + ", " + window.isDynamic + "]");
+      timeline.getWindow(i, mWindow);
+      Log.d(TAG, "  " +  "window [" + getTimeString(mWindow.getDurationMs()) + ", "
+          + mWindow.isSeekable + ", " + mWindow.isDynamic + "]");
     }
     if (windowCount > MAX_TIMELINE_ITEM_LINES) {
       Log.d(TAG, "  ...");
@@ -141,7 +141,7 @@ import java.util.Locale;
 
   @Override
   public void onTracksChanged(TrackGroupArray ignored, TrackSelectionArray trackSelections) {
-    MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+    MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
     if (mappedTrackInfo == null) {
       Log.d(TAG, "Tracks []");
       return;
@@ -403,7 +403,7 @@ import java.util.Locale;
   }
 
   private String getSessionTimeString() {
-    return getTimeString(SystemClock.elapsedRealtime() - startTimeMs);
+    return getTimeString(SystemClock.elapsedRealtime() - mStartTimeMs);
   }
 
   private static String getTimeString(long timeMs) {

@@ -55,25 +55,25 @@ import java.util.TreeSet;
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
     private static final int VIDEO_GROUP_INDEX = 0; // is video
 
-    private final MappingTrackSelector selector;
-    private final TrackSelection.Factory adaptiveTrackSelectionFactory;
+    private final MappingTrackSelector mSelector;
+    private final TrackSelection.Factory mAdaptiveTrackSelectionFactory;
 
-    private MappedTrackInfo trackInfo;
-    private int rendererIndex;
-    private TrackGroupArray trackGroups;
-    private boolean[] trackGroupsAdaptive;
-    private boolean isDisabled;
-    private SelectionOverride override;
+    private MappedTrackInfo mTrackInfo;
+    private int mRendererIndex;
+    private TrackGroupArray mTrackGroups;
+    private boolean[] mTrackGroupsAdaptive;
+    private boolean mIsDisabled;
+    private SelectionOverride mOverride;
 
-    private CheckedTextView disableView;
-    private CheckedTextView defaultView;
-    private CheckedTextView enableRandomAdaptationView;
-    private CheckedTextView autoframerateView;
-    private CheckedTextView hideErrorsView;
-    private CheckedTextView[][] trackViews;
-    private AlertDialog alertDialog;
-    private Context context;
-    private PlayerCoreFragment playerFragment;
+    private CheckedTextView mDisableView;
+    private CheckedTextView mDefaultView;
+    private CheckedTextView mEnableRandomAdaptationView;
+    private CheckedTextView mAutoframerateView;
+    private CheckedTextView mHideErrorsView;
+    private CheckedTextView[][] mTrackViews;
+    private AlertDialog mAlertDialog;
+    private Context mContext;
+    private PlayerCoreFragment mPlayerFragment;
 
     private class TrackViewComparator implements Comparator<CheckedTextView> {
         @Override
@@ -104,8 +104,8 @@ import java.util.TreeSet;
      *                                      if the selection helper should not support adaptive tracks.
      */
     public TrackSelectionHelper(MappingTrackSelector selector, TrackSelection.Factory adaptiveTrackSelectionFactory) {
-        this.selector = selector;
-        this.adaptiveTrackSelectionFactory = adaptiveTrackSelectionFactory;
+        this.mSelector = selector;
+        this.mAdaptiveTrackSelectionFactory = adaptiveTrackSelectionFactory;
     }
 
     /**
@@ -117,24 +117,24 @@ import java.util.TreeSet;
      * @param rendererIndex The index of the renderer.
      */
     public void showSelectionDialog(PlayerCoreFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
-        this.trackInfo = trackInfo;
-        this.rendererIndex = rendererIndex;
-        context = fragment.getActivity();
-        playerFragment = fragment;
+        this.mTrackInfo = trackInfo;
+        this.mRendererIndex = rendererIndex;
+        mContext = fragment.getActivity();
+        mPlayerFragment = fragment;
 
-        trackGroups = trackInfo.getTrackGroups(rendererIndex);
-        trackGroupsAdaptive = new boolean[trackGroups.length];
-        for (int i = 0; i < trackGroups.length; i++) {
-            trackGroupsAdaptive[i] = adaptiveTrackSelectionFactory != null && trackInfo.getAdaptiveSupport(rendererIndex, i, false) !=
-                    RendererCapabilities.ADAPTIVE_NOT_SUPPORTED && trackGroups.get(i).length > 1;
+        mTrackGroups = trackInfo.getTrackGroups(rendererIndex);
+        mTrackGroupsAdaptive = new boolean[mTrackGroups.length];
+        for (int i = 0; i < mTrackGroups.length; i++) {
+            mTrackGroupsAdaptive[i] = mAdaptiveTrackSelectionFactory != null && trackInfo.getAdaptiveSupport(rendererIndex, i, false) !=
+                    RendererCapabilities.ADAPTIVE_NOT_SUPPORTED && mTrackGroups.get(i).length > 1;
         }
-        isDisabled = selector.getRendererDisabled(rendererIndex);
-        override = selector.getSelectionOverride(rendererIndex, trackGroups);
+        mIsDisabled = mSelector.getRendererDisabled(rendererIndex);
+        mOverride = mSelector.getSelectionOverride(rendererIndex, mTrackGroups);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppDialog);
-        alertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppDialog);
+        mAlertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
                 .setView(buildView(builder.getContext())).create();
-        alertDialog.show();
+        mAlertDialog.show();
     }
 
     private View createCustomTitle(Context context, CharSequence title) {
@@ -156,48 +156,48 @@ import java.util.TreeSet;
         attributeArray.recycle();
 
         // View for Autoframerate checkbox.
-        hideErrorsView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-        hideErrorsView.setBackgroundResource(selectableItemBackgroundResourceId);
-        hideErrorsView.setText(R.string.hide_playback_errors);
-        hideErrorsView.setFocusable(true);
-        hideErrorsView.setOnClickListener(this);
-        hideErrorsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-        if (rendererIndex == VIDEO_GROUP_INDEX) { // is video
-            root.addView(hideErrorsView);
+        mHideErrorsView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+        mHideErrorsView.setBackgroundResource(selectableItemBackgroundResourceId);
+        mHideErrorsView.setText(R.string.hide_playback_errors);
+        mHideErrorsView.setFocusable(true);
+        mHideErrorsView.setOnClickListener(this);
+        mHideErrorsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
+            root.addView(mHideErrorsView);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
         }
 
         // View for Autoframerate checkbox.
-        autoframerateView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-        autoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
-        autoframerateView.setText(R.string.enable_autoframerate);
-        autoframerateView.setFocusable(true);
-        autoframerateView.setOnClickListener(this);
-        autoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-        if (rendererIndex == VIDEO_GROUP_INDEX) { // is video
-            root.addView(autoframerateView);
+        mAutoframerateView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+        mAutoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
+        mAutoframerateView.setText(R.string.enable_autoframerate);
+        mAutoframerateView.setFocusable(true);
+        mAutoframerateView.setOnClickListener(this);
+        mAutoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
+            root.addView(mAutoframerateView);
             root.addView(inflater.inflate(R.layout.list_divider, root, false));
         }
 
         // View for disabling the renderer.
-        disableView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-        disableView.setBackgroundResource(selectableItemBackgroundResourceId);
-        disableView.setText(R.string.selection_disabled);
-        disableView.setFocusable(true);
-        disableView.setOnClickListener(this);
-        disableView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-        disableView.setVisibility(View.GONE);
-        root.addView(disableView);
+        mDisableView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+        mDisableView.setBackgroundResource(selectableItemBackgroundResourceId);
+        mDisableView.setText(R.string.selection_disabled);
+        mDisableView.setFocusable(true);
+        mDisableView.setOnClickListener(this);
+        mDisableView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        mDisableView.setVisibility(View.GONE);
+        root.addView(mDisableView);
 
         // View for clearing the override to allow the selector to use its default selection logic.
-        defaultView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-        defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
-        defaultView.setText(R.string.selection_default);
-        defaultView.setFocusable(true);
-        defaultView.setOnClickListener(this);
-        defaultView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        mDefaultView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+        mDefaultView.setBackgroundResource(selectableItemBackgroundResourceId);
+        mDefaultView.setText(R.string.selection_default);
+        mDefaultView.setFocusable(true);
+        mDefaultView.setOnClickListener(this);
+        mDefaultView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
         root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        root.addView(defaultView); // Auto check box
+        root.addView(mDefaultView); // Auto check box
 
         //////////// MERGE TRACKS FROM DIFFERENT CODECS ////////////
 
@@ -207,14 +207,14 @@ import java.util.TreeSet;
         // Per-track views.
         boolean haveSupportedTracks = false;
         boolean haveAdaptiveTracks = false;
-        trackViews = new CheckedTextView[trackGroups.length][];
+        mTrackViews = new CheckedTextView[mTrackGroups.length][];
         Set<CheckedTextView> sortedViewList = new TreeSet<>(new TrackViewComparator());
-        for (int groupIndex = 0; groupIndex < trackGroups.length; groupIndex++) {
-            TrackGroup group = trackGroups.get(groupIndex);
-            trackViews[groupIndex] = new CheckedTextView[group.length];
+        for (int groupIndex = 0; groupIndex < mTrackGroups.length; groupIndex++) {
+            TrackGroup group = mTrackGroups.get(groupIndex);
+            mTrackViews[groupIndex] = new CheckedTextView[group.length];
 
             for (int trackIndex = 0; trackIndex < group.length; trackIndex++) {
-                boolean groupIsAdaptive = trackGroupsAdaptive[groupIndex];
+                boolean groupIsAdaptive = mTrackGroupsAdaptive[groupIndex];
                 haveAdaptiveTracks |= groupIsAdaptive;
                 haveSupportedTracks = true;
                 Format format = group.getFormat(trackIndex);
@@ -227,7 +227,7 @@ import java.util.TreeSet;
                 trackView.setTag(R.string.track_view_format, format);
                 trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
                 trackView.setOnClickListener(this);
-                trackViews[groupIndex][trackIndex] = trackView;
+                mTrackViews[groupIndex][trackIndex] = trackView;
                 if (PlayerUtil.isPreferredFormat(context, format)) {
                     sortedViewList.add(trackView);
                 }
@@ -242,22 +242,22 @@ import java.util.TreeSet;
 
         if (!haveSupportedTracks) {
             // Indicate that the default selection will be nothing.
-            defaultView.setText(R.string.selection_default_none);
+            mDefaultView.setText(R.string.selection_default_none);
         } else if (haveAdaptiveTracks) { // NOTE: adaptation is performed between selected tracks (you must select more than one)
             // View for using random adaptation.
-            enableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-            enableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
-            enableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            enableRandomAdaptationView.setOnClickListener(this);
-            enableRandomAdaptationView.setFocusable(true);
-            enableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+            mEnableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+            mEnableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
+            mEnableRandomAdaptationView.setText(R.string.enable_random_adaptation);
+            mEnableRandomAdaptationView.setOnClickListener(this);
+            mEnableRandomAdaptationView.setFocusable(true);
+            mEnableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
             View divider = inflater.inflate(R.layout.list_divider, root, false);
             root.addView(divider);
-            root.addView(enableRandomAdaptationView);
+            root.addView(mEnableRandomAdaptationView);
 
             // it's useless: user can't select more than one track at one time
             divider.setVisibility(View.GONE);
-            enableRandomAdaptationView.setVisibility(View.GONE);
+            mEnableRandomAdaptationView.setVisibility(View.GONE);
         }
 
         updateViews();
@@ -289,24 +289,24 @@ import java.util.TreeSet;
     }
 
     private void updateViews() {
-        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment)playerFragment).getAutoFrameRateManager();
-        autoframerateView.setChecked(autoFrameRateManager.getEnabled());
+        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) mPlayerFragment).getAutoFrameRateManager();
+        mAutoframerateView.setChecked(autoFrameRateManager.getEnabled());
 
-        hideErrorsView.setChecked(playerFragment.getHidePlaybackErrors());
+        mHideErrorsView.setChecked(mPlayerFragment.getHidePlaybackErrors());
 
-        disableView.setChecked(isDisabled);
-        defaultView.setChecked(!isDisabled && override == null);
-        for (int i = 0; i < trackViews.length; i++) {
-            for (int j = 0; j < trackViews[i].length; j++) {
-                trackViews[i][j].setChecked(override != null && override.groupIndex == i && override.containsTrack(j));
+        mDisableView.setChecked(mIsDisabled);
+        mDefaultView.setChecked(!mIsDisabled && mOverride == null);
+        for (int i = 0; i < mTrackViews.length; i++) {
+            for (int j = 0; j < mTrackViews[i].length; j++) {
+                mTrackViews[i][j].setChecked(mOverride != null && mOverride.groupIndex == i && mOverride.containsTrack(j));
             }
         }
-        if (enableRandomAdaptationView != null) {
-            boolean enableView = !isDisabled && override != null && override.length > 1;
-            enableRandomAdaptationView.setEnabled(enableView);
-            enableRandomAdaptationView.setFocusable(enableView);
+        if (mEnableRandomAdaptationView != null) {
+            boolean enableView = !mIsDisabled && mOverride != null && mOverride.length > 1;
+            mEnableRandomAdaptationView.setEnabled(enableView);
+            mEnableRandomAdaptationView.setFocusable(enableView);
             if (enableView) {
-                enableRandomAdaptationView.setChecked(!isDisabled && override.factory instanceof RandomTrackSelection.Factory);
+                mEnableRandomAdaptationView.setChecked(!mIsDisabled && mOverride.factory instanceof RandomTrackSelection.Factory);
             }
         }
     }
@@ -315,36 +315,36 @@ import java.util.TreeSet;
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        selector.setRendererDisabled(rendererIndex, isDisabled);
-        if (override != null) {
-            selector.setSelectionOverride(rendererIndex, trackGroups, override);
+        mSelector.setRendererDisabled(mRendererIndex, mIsDisabled);
+        if (mOverride != null) {
+            mSelector.setSelectionOverride(mRendererIndex, mTrackGroups, mOverride);
         } else {
-            selector.clearSelectionOverrides(rendererIndex); // Auto quality button selected
+            mSelector.clearSelectionOverrides(mRendererIndex); // Auto quality button selected
         }
-        ((ExoPlayerFragment)playerFragment).retryIfNeeded();
+        ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();
     }
 
     // View.OnClickListener
     @Override
     public void onClick(View view) {
-        if (view == disableView) {
-            isDisabled = true;
-            override = null;
-        } else if (view == defaultView) { // Auto quality button selected
-            isDisabled = false;
-            override = null;
-        } else if (view == enableRandomAdaptationView) {
-            setOverride(override.groupIndex, override.tracks, !enableRandomAdaptationView.isChecked());
-        } else if (view == autoframerateView) {
-            boolean checked = autoframerateView.isChecked();
-            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) playerFragment).getAutoFrameRateManager();
+        if (view == mDisableView) {
+            mIsDisabled = true;
+            mOverride = null;
+        } else if (view == mDefaultView) { // Auto quality button selected
+            mIsDisabled = false;
+            mOverride = null;
+        } else if (view == mEnableRandomAdaptationView) {
+            setOverride(mOverride.groupIndex, mOverride.tracks, !mEnableRandomAdaptationView.isChecked());
+        } else if (view == mAutoframerateView) {
+            boolean checked = mAutoframerateView.isChecked();
+            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) mPlayerFragment).getAutoFrameRateManager();
             autoFrameRateManager.setEnabled(!checked);
-        } else if (view == hideErrorsView) {
-            boolean checked = hideErrorsView.isChecked();
-            ExoPlayerFragment player = ((ExoPlayerFragment) playerFragment);
+        } else if (view == mHideErrorsView) {
+            boolean checked = mHideErrorsView.isChecked();
+            ExoPlayerFragment player = ((ExoPlayerFragment) mPlayerFragment);
             player.setHidePlaybackErrors(!checked);
         } else { // change quality
-            isDisabled = false;
+            mIsDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
             if (tag == null) {
                 return;
@@ -360,7 +360,7 @@ import java.util.TreeSet;
                 // item already checked - do nothing
                 return;
             } else {
-                override = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+                mOverride = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
             }
         }
         // Update the views with the new state.
@@ -371,9 +371,8 @@ import java.util.TreeSet;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
-        TrackSelection.Factory factory = tracks.length == 1 ? FIXED_FACTORY : (enableRandomAdaptation ? RANDOM_FACTORY :
-                adaptiveTrackSelectionFactory);
-        override = new SelectionOverride(factory, group, tracks);
+        TrackSelection.Factory factory = tracks.length == 1 ? FIXED_FACTORY : (enableRandomAdaptation ? RANDOM_FACTORY : mAdaptiveTrackSelectionFactory);
+        mOverride = new SelectionOverride(factory, group, tracks);
     }
 
     // Track array manipulation.

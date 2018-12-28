@@ -40,7 +40,6 @@ import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
 public class ExoPlayerBaseFragment extends PlayerCoreFragment {
-    public static final int REQUEST_CODE = 123;
     private static final String TAG = ExoPlayerBaseFragment.class.getName();
 
     public static final String BUTTON_USER_PAGE = "button_user_page";
@@ -62,14 +61,14 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 
-    private DetailDebugViewHelper debugViewHelper;
+    private DetailDebugViewHelper mDebugViewHelper;
 
-    private boolean durationSet;
-    private int interfaceVisibilityState = View.INVISIBLE;
-    private PlayerButtonsManager buttonsManager;
-    private AutoFrameRateManager autoFrameRateManager;
-    private PlayerInitializer playerInitializer;
-    private PlayerStateManager2 stateManager;
+    private boolean mIsDurationSet;
+    private int mInterfaceVisibilityState = View.INVISIBLE;
+    private PlayerButtonsManager mButtonsManager;
+    private AutoFrameRateManager mAutoFrameRateManager;
+    private PlayerInitializer mPlayerInitializer;
+    private PlayerStateManager2 mStateManager;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,8 +76,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         // NOTE: completely disable open/close animation for activity
         // overridePendingTransition(0, 0);
 
-        buttonsManager = new PlayerButtonsManager(this);
-        playerInitializer = new PlayerInitializer(this);
+        mButtonsManager = new PlayerButtonsManager(this);
+        mPlayerInitializer = new PlayerInitializer(this);
     }
 
     @Override
@@ -86,21 +85,21 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (getIntent() == null)
             return;
 
-        boolean needNewPlayer = player == null;
+        boolean needNewPlayer = mPlayer == null;
         super.initializePlayer();
 
         if (needNewPlayer) {
-            debugViewHelper = new DetailDebugViewHelper(player, debugViewGroup, getActivity());
+            mDebugViewHelper = new DetailDebugViewHelper(mPlayer, mDebugViewGroup, getActivity());
 
             // Do not move this code to another place!!! This statement must come after player initialization
-            autoFrameRateManager = new AutoFrameRateManager(getActivity(), player);
-            autoFrameRateManager.saveOriginalState();
+            mAutoFrameRateManager = new AutoFrameRateManager(getActivity(), mPlayer);
+            mAutoFrameRateManager.saveOriginalState();
 
-            playerInitializer.initVideoTitle();
+            mPlayerInitializer.initVideoTitle();
 
-            stateManager = new PlayerStateManager2(this, player, trackSelector);
+            mStateManager = new PlayerStateManager2(this, mPlayer, mTrackSelector);
 
-            player.addListener(new PlayerHangListener(getActivity(), stateManager));
+            mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
     }
 
@@ -113,13 +112,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         float scaledWidth = width * TEXT_SIZE_SMALL / SCREEN_WIDTH_SMALL;
 
-        loadingView.setTextSize(scaledWidth);
+        mLoadingView.setTextSize(scaledWidth);
     }
 
     protected void initializeTrackSelector() {
         TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
         
-        trackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
+        mTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
             @Override
             protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
 
@@ -160,12 +159,12 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         //if (Util.SDK_INT >= 21)
         //    trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
 
-        trackSelectionHelper = new TrackSelectionHelper(trackSelector, adaptiveTrackSelectionFactory);
-        eventLogger = new EventLogger(trackSelector);
+        mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, adaptiveTrackSelectionFactory);
+        mEventLogger = new EventLogger(mTrackSelector);
     }
 
     public void showDebugView(final boolean show) {
-        if (debugViewHelper == null) {
+        if (mDebugViewHelper == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -176,53 +175,53 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (show) {
-            debugViewGroup.setVisibility(View.VISIBLE);
-            debugViewHelper.start();
+            mDebugViewGroup.setVisibility(View.VISIBLE);
+            mDebugViewHelper.start();
         } else {
-            debugViewGroup.setVisibility(View.GONE);
-            debugViewHelper.stop();
+            mDebugViewGroup.setVisibility(View.GONE);
+            mDebugViewHelper.stop();
         }
     }
 
     public String getMainTitle() {
-        return playerInitializer.getMainTitle();
+        return mPlayerInitializer.getMainTitle();
     }
 
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
-        if (buttonsManager != null)
-            buttonsManager.onCheckedChanged(compoundButton, b);
+        if (mButtonsManager != null)
+            mButtonsManager.onCheckedChanged(compoundButton, b);
     }
 
     public void doGracefulExit() {
-        Intent intent = buttonsManager.createResultIntent();
+        Intent intent = mButtonsManager.createResultIntent();
         doGracefulExit(intent);
     }
 
     public void doGracefulExit(String action) {
-        Intent intent = buttonsManager.createResultIntent();
+        Intent intent = mButtonsManager.createResultIntent();
         intent.putExtra(action, true);
         doGracefulExit(intent);
     }
 
     private void doGracefulExit(Intent intent) {
-        if (autoFrameRateManager != null) {
-            intent.putExtra(DISPLAY_MODE_ID, autoFrameRateManager.getCurrentModeId());
-            autoFrameRateManager.restoreOriginalState();
+        if (mAutoFrameRateManager != null) {
+            intent.putExtra(DISPLAY_MODE_ID, mAutoFrameRateManager.getCurrentModeId());
+            mAutoFrameRateManager.restoreOriginalState();
         }
 
         ((PlayerListener) getActivity()).onPlayerClosed(intent);
     }
 
     protected void syncButtonStates() {
-        if (buttonsManager != null)
-            buttonsManager.syncButtonStates();
+        if (mButtonsManager != null)
+            mButtonsManager.syncButtonStates();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        if (stateManager != null)
-            stateManager.persistState(); // player about to crash
+        if (mStateManager != null)
+            mStateManager.persistState(); // player about to crash
     }
 
     @Override
@@ -255,16 +254,16 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         button.setId(R.id.restrict_codec_btn);
         button.setText(R.string.restrict);
         button.setOnClickListener(this);
-        debugRootView.addView(button, debugRootView.getChildCount() - 1);
+        mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
     }
 
     // PlaybackControlView.VisibilityListener implementation
 
     @Override
     public void onVisibilityChange(int visibility) {
-        interfaceVisibilityState = visibility;
+        mInterfaceVisibilityState = visibility;
 
-        playerTopBar.setVisibility(visibility);
+        mPlayerTopBar.setVisibility(visibility);
 
         // NOTE: don't set to GONE or you will get fathom events
         if (visibility == View.VISIBLE) {
@@ -290,11 +289,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (root == null)
             throw new IllegalStateException("Fragment's root view is null");
 
-        if (trackSelector == null)
+        if (mTrackSelector == null)
             return;
 
         TextView quality = root.findViewById(R.id.video_quality);
-        Format format = PlayerUtil.getCurrentlyPlayingTrack(trackSelector);
+        Format format = PlayerUtil.getCurrentlyPlayingTrack(mTrackSelector);
 
         if (format == null)
             return;
@@ -326,7 +325,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
         releasePlayer(); // dispose player
-        shouldAutoPlay = true; // force autoplay
+        mShouldAutoPlay = true; // force autoplay
         clearResumePosition(); // restore position will be done later from the app storage
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
@@ -338,31 +337,31 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * Used when exoplayer's fragment no longer visible (e.g. paused/resumed/stopped/started)
      */
     protected void releasePlayer() {
-        if (player != null) {
-            shouldAutoPlay = player.getPlayWhenReady(); // save paused state
+        if (mPlayer != null) {
+            mShouldAutoPlay = mPlayer.getPlayWhenReady(); // save paused state
             updateResumePosition(); // save position
-            player.release();
+            mPlayer.release();
         }
 
-        if (simpleExoPlayerView != null) {
-            simpleExoPlayerView.hideController();
+        if (mSimpleExoPlayerView != null) {
+            mSimpleExoPlayerView.hideController();
         }
 
-        if (stateManager != null) {
-            stateManager.persistState();
+        if (mStateManager != null) {
+            mStateManager.persistState();
         }
 
-        if (debugViewHelper != null) {
-            debugViewHelper.stop();
+        if (mDebugViewHelper != null) {
+            mDebugViewHelper.stop();
         }
 
-        player = null;
-        stateManager = null; // force restore state
-        debugViewHelper = null;
-        trackSelector = null;
-        trackSelectionHelper = null;
-        eventLogger = null;
-        durationSet = false;
+        mPlayer = null;
+        mStateManager = null; // force restore state
+        mDebugViewHelper = null;
+        mTrackSelector = null;
+        mTrackSelectionHelper = null;
+        mEventLogger = null;
+        mIsDurationSet = false;
     }
 
     // ExoPlayer.EventListener implementation
@@ -374,16 +373,16 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (playbackState == Player.STATE_READY && !durationSet) {
-            durationSet = true; // run once per video
-            if (stateManager != null) {
+        if (playbackState == Player.STATE_READY && !mIsDurationSet) {
+            mIsDurationSet = true; // run once per video
+            if (mStateManager != null) {
                 // stateManage should be initialized here
-                stateManager.restoreState();
+                mStateManager.restoreState();
                 updateQualityTitle();
             }
 
-            if (player != null) {
-                player.setPlayWhenReady(shouldAutoPlay);
+            if (mPlayer != null) {
+                mPlayer.setPlayWhenReady(mShouldAutoPlay);
             }
         }
 
@@ -393,8 +392,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (playbackState == Player.STATE_READY) {
-            autoFrameRateManager.apply();
-            playerInitializer.initTimeBar(player); // set proper time increments
+            mAutoFrameRateManager.apply();
+            mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
         }
 
         showLoadingMessage(playbackState);
@@ -405,11 +404,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private void showLoadingMessage(int playbackState) {
         int visibility = playbackState == Player.STATE_IDLE ||
                 playbackState == Player.STATE_BUFFERING ? View.VISIBLE : View.GONE;
-        loadingView.setVisibility(visibility);
+        mLoadingView.setVisibility(visibility);
     }
 
     public AutoFrameRateManager getAutoFrameRateManager() {
-        return autoFrameRateManager;
+        return mAutoFrameRateManager;
     }
 
     @Override
@@ -419,7 +418,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPositionDiscontinuity() {
-        if (needRetrySource) {
+        if (mNeedRetrySource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
             // which they seeked.
@@ -441,10 +440,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * At this point user've changed video quality
      */
     void retryIfNeeded() {
-        if (stateManager != null)
-            stateManager.persistState();
+        if (mStateManager != null)
+            mStateManager.persistState();
 
-        if (needRetrySource) {
+        if (mNeedRetrySource) {
             initializePlayer();
         }
 
@@ -462,7 +461,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void setRepeatEnabled(final boolean enabled) {
-        if (player == null) {
+        if (mPlayer == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -473,14 +472,14 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         int repeatMode = enabled ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF;
-        player.setRepeatMode(repeatMode);
+        mPlayer.setRepeatMode(repeatMode);
     }
 
     public void onSpeedClicked() {
-        GenericSelectorDialog.create(getActivity(), new SpeedDataSource(getActivity(), player));
+        GenericSelectorDialog.create(getActivity(), new SpeedDataSource(getActivity(), mPlayer));
     }
 
     protected boolean isUiVisible() {
-        return interfaceVisibilityState == View.VISIBLE;
+        return mInterfaceVisibilityState == View.VISIBLE;
     }
 }

@@ -49,19 +49,19 @@ public final class SampleHelpers {
 
     public abstract static class Sample {
 
-        public final String name;
-        public final boolean preferExtensionDecoders;
-        public final UUID drmSchemeUuid;
-        public final String drmLicenseUrl;
-        public final String[] drmKeyRequestProperties;
+        public final String mName;
+        public final boolean mPreferExtensionDecoders;
+        public final UUID mDrmSchemeUuid;
+        public final String mDrmLicenseUrl;
+        public final String[] mDrmKeyRequestProperties;
 
         public Sample(String name, UUID drmSchemeUuid, String drmLicenseUrl,
                       String[] drmKeyRequestProperties, boolean preferExtensionDecoders) {
-            this.name = name;
-            this.drmSchemeUuid = drmSchemeUuid;
-            this.drmLicenseUrl = drmLicenseUrl;
-            this.drmKeyRequestProperties = drmKeyRequestProperties;
-            this.preferExtensionDecoders = preferExtensionDecoders;
+            mName = name;
+            mDrmSchemeUuid = drmSchemeUuid;
+            mDrmLicenseUrl = drmLicenseUrl;
+            mDrmKeyRequestProperties = drmKeyRequestProperties;
+            mPreferExtensionDecoders = preferExtensionDecoders;
 
             // need to be cleared, see PlayerActivity for details
             // ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, null);
@@ -69,24 +69,24 @@ public final class SampleHelpers {
 
         public Intent buildIntent(Context context) {
             Intent intent = new Intent(context, ExoPlayerFragment.class);
-            intent.putExtra(ExoPlayerFragment.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
-            if (drmSchemeUuid != null) {
-                intent.putExtra(ExoPlayerFragment.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
-                intent.putExtra(ExoPlayerFragment.DRM_LICENSE_URL, drmLicenseUrl);
-                intent.putExtra(ExoPlayerFragment.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+            intent.putExtra(ExoPlayerFragment.PREFER_EXTENSION_DECODERS, mPreferExtensionDecoders);
+            if (mDrmSchemeUuid != null) {
+                intent.putExtra(ExoPlayerFragment.DRM_SCHEME_UUID_EXTRA, mDrmSchemeUuid.toString());
+                intent.putExtra(ExoPlayerFragment.DRM_LICENSE_URL, mDrmLicenseUrl);
+                intent.putExtra(ExoPlayerFragment.DRM_KEY_REQUEST_PROPERTIES, mDrmKeyRequestProperties);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
-            intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, this.name);
+            intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, this.mName);
             return intent;
         }
 
     }
 
     public static final class MPDSample extends Sample {
-        public final String uri;
-        public final String extension;
-        private final String mpdContent;
+        public final String mUri;
+        public final String mExtension;
+        private final String mMpdContent;
 
         public MPDSample(String name, String uri, InputStream mpdStream) {
             this(name, null, null, null, true, uri, "mpd", mpdStream);
@@ -97,20 +97,20 @@ public final class SampleHelpers {
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
             // this.mpdContent = null;
-            this.mpdContent = Helpers.toString(mpdStream);
+            this.mMpdContent = Helpers.toString(mpdStream);
             // fix TransactionTooLargeException (not actual, since we're passing intent between fragments)
             // ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, Helpers.toString(mpdStream));
 
-            this.extension = extension;
-            this.uri = uri;
+            mExtension = extension;
+            mUri = uri;
         }
 
         @Override
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
-                    .setData(Uri.parse(uri))
-                    .putExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA, mpdContent)
-                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, extension)
+                    .setData(Uri.parse(mUri))
+                    .putExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA, mMpdContent)
+                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, mExtension)
                     .setAction(ExoPlayerFragment.ACTION_VIEW);
         }
 
@@ -118,8 +118,8 @@ public final class SampleHelpers {
 
     public static final class UriSample extends Sample {
 
-        public final String uri;
-        public final String extension;
+        public final String mUri;
+        public final String mExtension;
 
         public UriSample(String name, String uri) {
             this(name, null, null, null, true, uri, null);
@@ -129,15 +129,15 @@ public final class SampleHelpers {
                          String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
                          String extension) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            this.uri = uri;
-            this.extension = extension;
+            mUri = uri;
+            mExtension = extension;
         }
 
         @Override
         public Intent buildIntent(Context context) {
             return super.buildIntent(context)
-                    .setData(Uri.parse(uri))
-                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, extension)
+                    .setData(Uri.parse(mUri))
+                    .putExtra(ExoPlayerFragment.EXTENSION_EXTRA, mExtension)
                     .setAction(ExoPlayerFragment.ACTION_VIEW);
         }
 
@@ -145,7 +145,7 @@ public final class SampleHelpers {
 
     public static final class PlaylistSample extends Sample {
 
-        public final UriSample[] children;
+        public final UriSample[] mChildren;
 
         public PlaylistSample(String name, UriSample... children) {
             this(name, null, null, null, true, children);
@@ -155,16 +155,16 @@ public final class SampleHelpers {
                               String[] drmKeyRequestProperties, boolean preferExtensionDecoders,
                               UriSample... children) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            this.children = children;
+            mChildren = children;
         }
 
         @Override
         public Intent buildIntent(Context context) {
-            String[] uris = new String[children.length];
-            String[] extensions = new String[children.length];
-            for (int i = 0; i < children.length; i++) {
-                uris[i] = children[i].uri;
-                extensions[i] = children[i].extension;
+            String[] uris = new String[mChildren.length];
+            String[] extensions = new String[mChildren.length];
+            for (int i = 0; i < mChildren.length; i++) {
+                uris[i] = mChildren[i].mUri;
+                extensions[i] = mChildren[i].mExtension;
             }
             return super.buildIntent(context)
                     .putExtra(ExoPlayerFragment.URI_LIST_EXTRA, uris)

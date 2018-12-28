@@ -46,7 +46,6 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -87,29 +86,29 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
     public static final String DELIMITER = "------";
 
-    protected EventLogger eventLogger;
+    protected EventLogger mEventLogger;
 
-    protected SimpleExoPlayer player;
-    protected DefaultTrackSelector trackSelector;
+    protected SimpleExoPlayer mPlayer;
+    protected DefaultTrackSelector mTrackSelector;
 
-    protected SimpleExoPlayerView simpleExoPlayerView;
-    protected LinearLayout debugRootView;
-    protected TextView loadingView;
-    protected FrameLayout debugViewGroup;
-    protected TextToggleButton retryButton;
+    protected SimpleExoPlayerView mSimpleExoPlayerView;
+    protected LinearLayout mDebugRootView;
+    protected TextView mLoadingView;
+    protected FrameLayout mDebugViewGroup;
+    protected TextToggleButton mRetryButton;
 
-    private DataSource.Factory mediaDataSourceFactory;
+    private DataSource.Factory mMediaDataSourceFactory;
 
-    protected boolean needRetrySource;
-    protected boolean shouldAutoPlay;
-    private int resumeWindow;
-    private long resumePosition;
-    protected LinearLayout playerTopBar;
+    protected boolean mNeedRetrySource;
+    protected boolean mShouldAutoPlay;
+    private int mResumeWindow;
+    private long mResumePosition;
+    protected LinearLayout mPlayerTopBar;
 
-    private Handler mainHandler;
-    private TrackGroupArray lastSeenTrackGroupArray;
+    private Handler mMainHandler;
+    private TrackGroupArray mLastSeenTrackGroupArray;
 
-    protected TrackSelectionHelper trackSelectionHelper;
+    protected TrackSelectionHelper mTrackSelectionHelper;
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -129,8 +128,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         // shouldAutoPlay = true;
         clearResumePosition();
-        mediaDataSourceFactory = buildDataSourceFactory(true);
-        mainHandler = new Handler();
+        mMediaDataSourceFactory = buildDataSourceFactory(true);
+        mMainHandler = new Handler();
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER);
         }
@@ -141,23 +140,23 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             throw new IllegalStateException("Fragment's root view is null");
         View rootView = root.findViewById(R.id.root);
         rootView.setOnClickListener(this);
-        debugRootView = root.findViewById(R.id.controls_root);
-        loadingView = root.findViewById(R.id.loading_view);
-        debugViewGroup = root.findViewById(R.id.debug_view_group);
-        playerTopBar = root.findViewById(R.id.player_top_bar);
-        retryButton = root.findViewById(R.id.retry_button);
-        retryButton.setOnClickListener(this);
+        mDebugRootView = root.findViewById(R.id.controls_root);
+        mLoadingView = root.findViewById(R.id.loading_view);
+        mDebugViewGroup = root.findViewById(R.id.debug_view_group);
+        mPlayerTopBar = root.findViewById(R.id.player_top_bar);
+        mRetryButton = root.findViewById(R.id.retry_button);
+        mRetryButton.setOnClickListener(this);
 
-        simpleExoPlayerView = root.findViewById(R.id.player_view);
-        simpleExoPlayerView.setControllerVisibilityListener(this);
+        mSimpleExoPlayerView = root.findViewById(R.id.player_view);
+        mSimpleExoPlayerView.setControllerVisibilityListener(this);
         // simpleExoPlayerView.requestFocus();
 
         // Zoom to fit video: https://stackoverflow.com/questions/33608746/in-android-using-exoplayer-how-to-fill-surfaceview-with-a-video-that-does-not
         // simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
 
         // hide ui player by default
-        simpleExoPlayerView.setControllerAutoShow(false);
-        playerTopBar.setVisibility(View.GONE);
+        mSimpleExoPlayerView.setControllerAutoShow(false);
+        mPlayerTopBar.setVisibility(View.GONE);
     }
 
     public void setIntent(Intent intent) {
@@ -170,11 +169,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     public void initializePlayer() {
         Intent intent = getIntent();
-        boolean needNewPlayer = player == null;
+        boolean needNewPlayer = mPlayer == null;
         if (needNewPlayer) {
             initializeTrackSelector();
 
-            lastSeenTrackGroupArray = null;
+            mLastSeenTrackGroupArray = null;
 
             UUID drmSchemeUuid = intent.hasExtra(DRM_SCHEME_UUID_EXTRA) ? UUID.fromString(intent.getStringExtra(DRM_SCHEME_UUID_EXTRA)) : null;
             DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
@@ -205,20 +204,20 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-            player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, mTrackSelector, loadControl);
             //player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
 
-            player.addListener(this);
-            player.addListener(eventLogger);
-            player.setAudioDebugListener(eventLogger);
-            player.setVideoDebugListener(eventLogger);
-            player.setMetadataOutput(eventLogger);
+            mPlayer.addListener(this);
+            mPlayer.addListener(mEventLogger);
+            mPlayer.setAudioDebugListener(mEventLogger);
+            mPlayer.setVideoDebugListener(mEventLogger);
+            mPlayer.setMetadataOutput(mEventLogger);
 
-            simpleExoPlayerView.setPlayer(player);
-            player.setPlayWhenReady(false);
+            mSimpleExoPlayerView.setPlayer(mPlayer);
+            mPlayer.setPlayWhenReady(false);
             // player.setPlayWhenReady(shouldAutoPlay);
         }
-        if (needNewPlayer || needRetrySource) {
+        if (needNewPlayer || mNeedRetrySource) {
             String action = intent.getAction();
             Uri[] uris;
             String[] extensions;
@@ -268,14 +267,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
 
-            boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
+            boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
             if (haveResumePosition) {
-                player.seekTo(resumeWindow, resumePosition);
+                mPlayer.seekTo(mResumeWindow, mResumePosition);
             }
             //player.prepare(mediaSource, !haveResumePosition, false);
-            player.prepare(mediaSource, !haveResumePosition, !haveResumePosition);
+            mPlayer.prepare(mediaSource, !haveResumePosition, !haveResumePosition);
 
-            needRetrySource = false;
+            mNeedRetrySource = false;
             updateButtonVisibilities();
         }
     }
@@ -286,15 +285,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         int type = TextUtils.isEmpty(overrideExtension) ? Util.inferContentType(uri) : Util.inferContentType("." + overrideExtension);
         switch (type) {
             case C.TYPE_SS:
-                return new SsMediaSource(uri, buildDataSourceFactory(false), new DefaultSsChunkSource.Factory(mediaDataSourceFactory), mainHandler,
-                        eventLogger);
+                return new SsMediaSource(uri, buildDataSourceFactory(false), new DefaultSsChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
             case C.TYPE_DASH:
-                return new DashMediaSource(uri, buildDataSourceFactory(false), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                        mainHandler, eventLogger);
+                return new DashMediaSource(uri, buildDataSourceFactory(false), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
             case C.TYPE_HLS:
-                return new HlsMediaSource(uri, mediaDataSourceFactory, mainHandler, eventLogger);
+                return new HlsMediaSource(uri, mMediaDataSourceFactory, mMainHandler, mEventLogger);
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(), mainHandler, eventLogger);
+                return new ExtractorMediaSource(uri, mMediaDataSourceFactory, new DefaultExtractorsFactory(), mMainHandler, mEventLogger);
             default: {
                 throw new IllegalStateException("Unsupported type: " + type);
             }
@@ -312,7 +309,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 drmCallback.setKeyRequestProperty(keyRequestPropertiesArray[i], keyRequestPropertiesArray[i + 1]);
             }
         }
-        return new DefaultDrmSessionManager<>(uuid, FrameworkMediaDrm.newInstance(uuid), drmCallback, null, mainHandler, eventLogger);
+        return new DefaultDrmSessionManager<>(uuid, FrameworkMediaDrm.newInstance(uuid), drmCallback, null, mMainHandler, mEventLogger);
     }
 
     /**
@@ -339,14 +336,12 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private MediaSource buildMPDMediaSource(Uri uri, InputStream mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                mainHandler, eventLogger);
+        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
     }
 
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
-                mainHandler, eventLogger);
+        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
     }
 
     private DashManifest getManifest(Uri uri, InputStream mpdContent) {
@@ -372,17 +367,17 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     protected void clearResumePosition() {
-        resumeWindow = C.INDEX_UNSET;
-        resumePosition = C.TIME_UNSET;
+        mResumeWindow = C.INDEX_UNSET;
+        mResumePosition = C.TIME_UNSET;
     }
 
     protected void updateResumePosition() {
-        if (player == null) {
+        if (mPlayer == null) {
             return;
         }
 
-        resumeWindow = player.getCurrentWindowIndex();
-        resumePosition = player.isCurrentWindowSeekable() ? Math.max(0, player.getCurrentPosition()) : C.TIME_UNSET;
+        mResumeWindow = mPlayer.getCurrentWindowIndex();
+        mResumePosition = mPlayer.isCurrentWindowSeekable() ? Math.max(0, mPlayer.getCurrentPosition()) : C.TIME_UNSET;
     }
 
     protected void showToast(int messageId) {
@@ -397,15 +392,15 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == retryButton) {
+        if (view == mRetryButton) {
             initializePlayer();
-        } else if (view.getParent() == debugRootView && view.getTag() != null) {
-            MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+        } else if (view.getParent() == mDebugRootView && view.getTag() != null) {
+            MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
-                trackSelectionHelper.showSelectionDialog(
+                mTrackSelectionHelper.showSelectionDialog(
                         this,
                         ((TextToggleButton) view).getText(),
-                        trackSelector.getCurrentMappedTrackInfo(),
+                        mTrackSelector.getCurrentMappedTrackInfo(),
                         (int) view.getTag()
                 );
             }
@@ -414,16 +409,16 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     // NOTE: dynamically create quality buttons
     private void updateButtonVisibilities() {
-        debugRootView.removeAllViews();
+        mDebugRootView.removeAllViews();
 
-        retryButton.setVisibility(needRetrySource ? View.VISIBLE : View.GONE);
-        debugRootView.addView(retryButton);
+        mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
+        mDebugRootView.addView(mRetryButton);
 
-        if (player == null) {
+        if (mPlayer == null) {
             return;
         }
 
-        MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+        MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
         if (mappedTrackInfo == null) {
             return;
         }
@@ -433,7 +428,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             if (trackGroups.length != 0) {
                 TextToggleButton button = new TextToggleButton(getActivity());
                 int label, id;
-                switch (player.getRendererType(i)) {
+                switch (mPlayer.getRendererType(i)) {
                     case C.TRACK_TYPE_AUDIO:
                         id = R.id.exo_audio;
                         label = R.string.audio;
@@ -453,7 +448,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 button.setText(label);
                 button.setTag(i);
                 button.setOnClickListener(this);
-                debugRootView.addView(button, debugRootView.getChildCount() - 1);
+                mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
             }
         }
 
@@ -475,8 +470,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             });
         }
 
-        if (trackGroups != lastSeenTrackGroupArray) {
-            MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+        if (trackGroups != mLastSeenTrackGroupArray) {
+            MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
                 if (mappedTrackInfo.getTrackTypeRendererSupport(C.TRACK_TYPE_VIDEO) == MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS) {
                     showToast(R.string.error_unsupported_video);
@@ -485,7 +480,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     showToast(R.string.error_unsupported_audio);
                 }
             }
-            lastSeenTrackGroupArray = trackGroups;
+            mLastSeenTrackGroupArray = trackGroups;
         }
     }
 
@@ -515,7 +510,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         if (errorString != null && !getHidePlaybackErrors()) {
             showToast(errorString);
         }
-        needRetrySource = true;
+        mNeedRetrySource = true;
         if (isBehindLiveWindow(e) || isFatal) {
             clearResumePosition();
             initializePlayer();
@@ -552,7 +547,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         if (root == null)
             throw new IllegalStateException("Fragment's root view is null");
         View pauseBtn = root.findViewById(R.id.exo_pause);
-        return needRetrySource && pauseBtn.isFocused();
+        return mNeedRetrySource && pauseBtn.isFocused();
     }
 
     @Override

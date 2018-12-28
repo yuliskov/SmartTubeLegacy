@@ -48,7 +48,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         // Show the controls on any key event.
-        simpleExoPlayerView.showController();
+        mSimpleExoPlayerView.showController();
 
         // move selection to the timebar on left/right key events
         boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
@@ -64,11 +64,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         // If the event was not handled then see if the player view can handle it as a media key event.
-        return simpleExoPlayerView.dispatchMediaKeyEvent(event);
+        return mSimpleExoPlayerView.dispatchMediaKeyEvent(event);
     }
 
     private void setFocusOnTimeBar() {
-        View timeBar = simpleExoPlayerView.findViewById(R.id.time_bar);
+        View timeBar = mSimpleExoPlayerView.findViewById(R.id.time_bar);
         if (timeBar != null) {
             timeBar.requestFocus();
         }
@@ -99,7 +99,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         if (isVisible) {
             if (isUpAction) {
-                simpleExoPlayerView.hideController();
+                mSimpleExoPlayerView.hideController();
             }
             return true;
         }
@@ -199,7 +199,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return;
         }
 
-        if ((Util.SDK_INT <= 23 || player == null)) {
+        if ((Util.SDK_INT <= 23 || mPlayer == null)) {
             performInitialization();
         }
     }
