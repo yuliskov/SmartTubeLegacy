@@ -74,7 +74,7 @@ var ExoUtils = {
         // player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
-        Utils.overrideProp2(player, 'volume', 0);
+        Utils.overrideProp(player, 'volume', 0);
 
         player.preparePlayerDone = true;
     },

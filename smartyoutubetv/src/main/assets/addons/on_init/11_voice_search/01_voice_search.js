@@ -9,6 +9,20 @@ var VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
+
+    init: function() {
+        this.overrideVoiceCaps();
+    },
+
+    overrideVoiceCaps: function() {
+        if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+            return;
+        }
+
+        Utils.overrideProp(window, "SpeechRecognition", true);
+        Utils.overrideProp(window, "webkitSpeechRecognition", true);
+    },
+
     open: function(searchText) {
         Log.d(this.TAG, "going to the search page");
 
@@ -41,3 +55,5 @@ var VoiceSearch = {
             DefaultKeys.ENTER);
     }
 };
+
+VoiceSearch.init();
