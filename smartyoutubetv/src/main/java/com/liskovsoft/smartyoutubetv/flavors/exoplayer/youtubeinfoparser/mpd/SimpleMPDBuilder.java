@@ -310,7 +310,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
 
         int maxNoDashITag = 50;
-        return mediaItem.getITag() == null || Integer.parseInt(mediaItem.getITag()) < maxNoDashITag;
+        int itag = Integer.parseInt(mediaItem.getITag());
+
+        return mediaItem.getITag() == null || itag < maxNoDashITag;
     }
 
     private String extractMimeType(MediaItem item) {

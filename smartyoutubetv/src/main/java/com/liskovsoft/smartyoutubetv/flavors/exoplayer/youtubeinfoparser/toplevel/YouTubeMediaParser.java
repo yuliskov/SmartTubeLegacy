@@ -3,21 +3,23 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplev
 import android.net.Uri;
 import android.util.Log;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDParser;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.WeirdUrl;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.squareup.otto.Subscribe;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -26,10 +28,13 @@ import java.util.Random;
 public class YouTubeMediaParser {
     private static final String DASH_MPD_URL = "dashmpd";
     private static final String HLS_URL = "hlsvp";
+    private static final String DASH_FORMATS_JSON = "player_response";
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
     private static final String TAG = YouTubeMediaParser.class.getSimpleName();
+    private static final String STREAM_DATA_JSON_KEY = "streamingData";
+    private static final String FORMATS_JSON_KEY = "formats";
     private final String mContent;
     private final int mId;
     private ParserListener mListener;
@@ -77,16 +82,80 @@ public class YouTubeMediaParser {
         return videoInfo.getQueryParameter(param);
     }
 
+    private List<MediaItem> extractUrlEncodedMediaItems(String content, String queryParam) {
+        List<MediaItem> list = new ArrayList<>();
+        List<String> items = new ArrayList<>();
+
+        Uri videoInfo = Uri.parse("http://example.com?" + content);
+        String formats = videoInfo.getQueryParameter(queryParam);
+
+        // stream may not contain formats
+        if (formats != null) {
+            String[] fmts = formats.split(FORMATS_DELIM);
+            items.addAll(Arrays.asList(fmts));
+        }
+
+        for (String item : items) {
+            list.add(createMediaItem(item));
+        }
+
+        return list;
+    }
+
+    private List<MediaItem> extractDashMediaItems(String content) {
+        return extractUrlEncodedMediaItems(content, DASH_FORMATS);
+    }
+
+    private List<MediaItem> extractSimpleMediaItems(String content) {
+        return extractUrlEncodedMediaItems(content, REGULAR_FORMATS);
+    }
+
+    /**
+     * player_response={streamingData: {formats: [{itag: 17, ...}]}
+     */
+    private List<MediaItem> extractJsonMediaItems(String content) {
+        List<MediaItem> list = new ArrayList<>();
+
+        Uri videoInfo = Uri.parse("http://example.com?" + content);
+        String formats = videoInfo.getQueryParameter(DASH_FORMATS_JSON);
+
+        if (formats != null) {
+            Map<String, Map<String, List<Map<String, Object>>>> objectMap = Helpers.convertToObj(formats);
+            Map<String, List<Map<String, Object>>> streamData = objectMap.get(STREAM_DATA_JSON_KEY);
+            List<Map<String, Object>> fmts = streamData.get(FORMATS_JSON_KEY);
+
+            for (Map<String, Object> fmt : fmts) {
+                list.add(createMediaItem(fmt));
+            }
+        }
+
+        return list;
+    }
+
     private void extractMediaItems() {
         if (mMediaItems != null) {
             return;
         }
-        List<MediaItem> list = new ArrayList<>();
-        List<String> items = splitContent(mContent);
-        for (String item : items) {
-            list.add(createMediaItem(item));
-        }
-        mMediaItems = list;
+
+        mMediaItems = new ArrayList<>();
+        mMediaItems.addAll(extractDashMediaItems(mContent));
+        mMediaItems.addAll(extractJsonMediaItems(mContent));
+        mMediaItems.addAll(extractSimpleMediaItems(mContent));
+    }
+
+    private MediaItem createMediaItem(Map<String, Object> content) {
+        SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
+        mediaItem.setBitrate(Helpers.toIntString(content.get(MediaItem.BITRATE)));
+        mediaItem.setUrl(String.valueOf(content.get(MediaItem.URL)));
+        mediaItem.setITag(Helpers.toIntString(content.get(MediaItem.ITAG)));
+        mediaItem.setType(String.valueOf(content.get(MediaItem.TYPE)));
+        mediaItem.setS(String.valueOf(content.get(MediaItem.S)));
+        mediaItem.setClen(String.valueOf(content.get(MediaItem.CLEN)));
+        mediaItem.setFps(String.valueOf(content.get(MediaItem.FPS)));
+        mediaItem.setIndex(String.valueOf(content.get(MediaItem.INDEX)));
+        mediaItem.setInit(String.valueOf(content.get(MediaItem.INIT)));
+        mediaItem.setSize(String.valueOf(content.get(MediaItem.SIZE)));
+        return mediaItem;
     }
 
     private MediaItem createMediaItem(String content) {

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -136,6 +137,9 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
+    /**
+     * For parsing details see {@link YouTubeMediaParser}
+     */
     private void parseAndOpenExoPlayer() {
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
         Log.d(TAG, "Video manifest received");

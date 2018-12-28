@@ -40,4 +40,6 @@ dependencies {
 
     implementation project.properties.ottoVersion
     implementation project.properties.okhttpVersion
+
+    implementation project.properties.gsonVersion
 }

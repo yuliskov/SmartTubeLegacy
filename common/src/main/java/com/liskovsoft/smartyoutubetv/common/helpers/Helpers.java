@@ -14,6 +14,8 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -33,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -384,5 +388,16 @@ public final class Helpers {
         wm.getDefaultDisplay().getMetrics(metrics);
         metrics.scaledDensity = configuration.fontScale * metrics.density;
         ctx.getBaseContext().getResources().updateConfiguration(configuration, metrics);
+    }
+
+    public static <T> Map<String, T> convertToObj(String jsonContent) {
+        Type type = new TypeToken<Map<String, T>>(){}.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(jsonContent, type);
+    }
+
+    public static String toIntString(Object floatOrIntString) {
+        float val = Float.parseFloat(String.valueOf(floatOrIntString));
+        return String.valueOf((int) val);
     }
 }
