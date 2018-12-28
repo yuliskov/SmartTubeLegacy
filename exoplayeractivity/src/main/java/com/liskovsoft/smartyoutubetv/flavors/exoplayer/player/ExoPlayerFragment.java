@@ -52,8 +52,12 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         if (!uiVisible) {
             setFocusOnTimeBar(event);
-            // uncomment below to fix focus on the play/pause button
-            // return true;
+        }
+
+        // fix focus on the play/pause button
+        boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
+        if (!uiVisible && isUpDownKey) {
+            return true;
         }
 
         // If the event was not handled then see if the player view can handle it as a media key event.
