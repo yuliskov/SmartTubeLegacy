@@ -149,60 +149,42 @@ import java.util.TreeSet;
     private View buildView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.track_selection_dialog, null);
-        ViewGroup root = (ViewGroup) view.findViewById(R.id.root);
+        ViewGroup root = view.findViewById(R.id.root);
 
-        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
-        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
-        attributeArray.recycle();
+        // Code error checkbox.
 
-        // View for Autoframerate checkbox.
-        mHideErrorsView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-        mHideErrorsView.setBackgroundResource(selectableItemBackgroundResourceId);
-        mHideErrorsView.setText(R.string.hide_playback_errors);
-        mHideErrorsView.setFocusable(true);
-        mHideErrorsView.setOnClickListener(this);
-        mHideErrorsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        mHideErrorsView = createCheckButton(context, R.string.hide_playback_errors, root);
+
         if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
-            root.addView(mHideErrorsView);
-            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+            append(mHideErrorsView, root);
+            append(createDivider(context, root), root);
         }
 
-        // View for Autoframerate checkbox.
-        mAutoframerateView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-        mAutoframerateView.setBackgroundResource(selectableItemBackgroundResourceId);
-        mAutoframerateView.setText(R.string.enable_autoframerate);
-        mAutoframerateView.setFocusable(true);
-        mAutoframerateView.setOnClickListener(this);
-        mAutoframerateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        // Autoframerate checkbox.
+
+        mAutoframerateView = createCheckButton(context, R.string.enable_autoframerate, root);
+
         if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
-            root.addView(mAutoframerateView);
-            root.addView(inflater.inflate(R.layout.list_divider, root, false));
+            append(mAutoframerateView, root);
+            append(createDivider(context, root), root);
         }
 
-        // View for disabling the renderer.
-        mDisableView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-        mDisableView.setBackgroundResource(selectableItemBackgroundResourceId);
-        mDisableView.setText(R.string.selection_disabled);
-        mDisableView.setFocusable(true);
-        mDisableView.setOnClickListener(this);
-        mDisableView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+        // Disable renderer checkbox.
+
+        mDisableView = createRadioButton(context, R.string.selection_disabled, root);
         mDisableView.setVisibility(View.GONE);
-        root.addView(mDisableView);
+        append(mDisableView, root);
+
 
         // View for clearing the override to allow the selector to use its default selection logic.
-        mDefaultView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-        mDefaultView.setBackgroundResource(selectableItemBackgroundResourceId);
-        mDefaultView.setText(R.string.selection_default);
-        mDefaultView.setFocusable(true);
-        mDefaultView.setOnClickListener(this);
-        mDefaultView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
-        root.addView(mDefaultView); // Auto check box
+
+        mDefaultView = createRadioButton(context, R.string.selection_default, root);
+        append(mDefaultView, root);
 
         //////////// MERGE TRACKS FROM DIFFERENT CODECS ////////////
 
         // divider
-        root.addView(inflater.inflate(R.layout.list_divider, root, false));
+        append(createDivider(context, root), root);
 
         // Per-track views.
         boolean haveSupportedTracks = false;
@@ -219,14 +201,10 @@ import java.util.TreeSet;
                 haveSupportedTracks = true;
                 Format format = group.getFormat(trackIndex);
 
-                CheckedTextView trackView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-                trackView.setBackgroundResource(selectableItemBackgroundResourceId);
-                trackView.setText(PlayerUtil.buildTrackNameShort(format));
-                trackView.setFocusable(true);
+                CheckedTextView trackView = createRadioButton(context, PlayerUtil.buildTrackNameShort(format), root);
                 trackView.setTag(Pair.create(groupIndex, trackIndex));
                 trackView.setTag(R.string.track_view_format, format);
-                trackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-                trackView.setOnClickListener(this);
+
                 mTrackViews[groupIndex][trackIndex] = trackView;
                 if (PlayerUtil.isPreferredFormat(context, format)) {
                     sortedViewList.add(trackView);
@@ -245,22 +223,20 @@ import java.util.TreeSet;
             mDefaultView.setText(R.string.selection_default_none);
         } else if (haveAdaptiveTracks) { // NOTE: adaptation is performed between selected tracks (you must select more than one)
             // View for using random adaptation.
-            mEnableRandomAdaptationView = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
-            mEnableRandomAdaptationView.setBackgroundResource(selectableItemBackgroundResourceId);
-            mEnableRandomAdaptationView.setText(R.string.enable_random_adaptation);
-            mEnableRandomAdaptationView.setOnClickListener(this);
-            mEnableRandomAdaptationView.setFocusable(true);
-            mEnableRandomAdaptationView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
-            View divider = inflater.inflate(R.layout.list_divider, root, false);
-            root.addView(divider);
-            root.addView(mEnableRandomAdaptationView);
+
+            mEnableRandomAdaptationView = createCheckButton(context, R.string.enable_random_adaptation, root);
+            append(mEnableRandomAdaptationView, root);
+
+            View divider = createDivider(context, root);
+            append(divider, root);
 
             // it's useless: user can't select more than one track at one time
-            divider.setVisibility(View.GONE);
             mEnableRandomAdaptationView.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
         }
 
         updateViews();
+
         return view;
     }
 
@@ -393,5 +369,49 @@ import java.util.TreeSet;
             }
         }
         return tracks;
+    }
+
+    private View createDivider(Context context, ViewGroup root) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        return inflater.inflate(R.layout.list_divider, root, false);
+    }
+
+    private void append(View view, ViewGroup root) {
+        root.addView(view);
+    }
+
+    private CheckedTextView createRadioButton(Context context, CharSequence title, ViewGroup root) {
+        return createDialogButton(context, R.layout.dialog_check_item_single, title, root);
+    }
+
+    private CheckedTextView createRadioButton(Context context, int titleResId, ViewGroup root) {
+        return createDialogButton(context, R.layout.dialog_check_item_single, titleResId, root);
+    }
+
+    private CheckedTextView createCheckButton(Context context, int titleResId, ViewGroup root) {
+        return createDialogButton(context, R.layout.dialog_check_item_multi, titleResId, root);
+    }
+
+    private CheckedTextView createDialogButton(Context context, int btnLayoutId, int titleResId, ViewGroup root) {
+        String title = context.getResources().getString(titleResId);
+        return createDialogButton(context, btnLayoutId, title, root);
+    }
+
+    private CheckedTextView createDialogButton(Context context, int btnLayoutId, CharSequence title, ViewGroup root) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
+        int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
+        attributeArray.recycle();
+
+        CheckedTextView view = (CheckedTextView) inflater.inflate(btnLayoutId, root, false);
+        view.setBackgroundResource(selectableItemBackgroundResourceId);
+        view.setText(title);
+        view.setFocusable(true);
+        view.setOnClickListener(this);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
+
+        return view;
     }
 }
