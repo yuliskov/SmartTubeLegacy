@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
@@ -69,6 +70,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private AutoFrameRateManager mAutoFrameRateManager;
     private PlayerInitializer mPlayerInitializer;
     private PlayerStateManager2 mStateManager;
+    private AspectRatioManager mAspectRatioManager;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         mButtonsManager = new PlayerButtonsManager(this);
         mPlayerInitializer = new PlayerInitializer(this);
+        mAspectRatioManager = new AspectRatioManager(getActivity(), mSimpleExoPlayerView);
     }
 
     @Override
@@ -409,6 +412,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     public AutoFrameRateManager getAutoFrameRateManager() {
         return mAutoFrameRateManager;
+    }
+
+    public AspectRatioManager getAspectRatioManager() {
+        return mAspectRatioManager;
     }
 
     @Override

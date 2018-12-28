@@ -17,6 +17,7 @@ public final class ExoPreferences {
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
     private static final String PREFERRED_CODEC = "preferredCodec";
+    private static final String VIDEO_ZOOM_ENABLED = "videoZoomEnabled";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -146,5 +147,16 @@ public final class ExoPreferences {
 
     public boolean getCheckedState(int id) {
         return mPrefs.getBoolean(String.valueOf(id), false);
+    }
+
+    public boolean getVideoZoomEnabled() {
+        boolean isChecked = mPrefs.getBoolean(VIDEO_ZOOM_ENABLED, false);
+        return isChecked;
+    }
+
+    public void setVideoZoomEnabled(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(VIDEO_ZOOM_ENABLED, isChecked)
+                .apply();
     }
 }

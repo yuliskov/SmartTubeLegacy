@@ -41,4 +41,5 @@
     <string name="time_title">Сейчас: %1$s</string>
     <string name="loading_view_message">ЗАГРУЗКА...</string>
     <string name="video_hang_msg">Видео зависло... пытаемся исправить...</string>
+    <string name="enable_video_zoom">Вписывать видео по ширине</string>
 </resources>

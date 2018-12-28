@@ -149,10 +149,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         mSimpleExoPlayerView = root.findViewById(R.id.player_view);
         mSimpleExoPlayerView.setControllerVisibilityListener(this);
-        // simpleExoPlayerView.requestFocus();
-
-        // Zoom to fit video: https://stackoverflow.com/questions/33608746/in-android-using-exoplayer-how-to-fill-surfaceview-with-a-video-that-does-not
-        // simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+        // mSimpleExoPlayerView.requestFocus();
 
         // hide ui player by default
         mSimpleExoPlayerView.setControllerAutoShow(false);
