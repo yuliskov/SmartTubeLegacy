@@ -236,4 +236,14 @@ public class WebViewJavaScriptInterface {
     public String getPreferredCodec() {
         return new CodecSelectorAddon(mContext, this).getPreferredCodec();
     }
+
+    /*
+     * This method can be called from Android. @JavascriptInterface
+     * required after SDK version 17.
+     */
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public void sendMessage(String message) {
+        // NOP
+    }
 }

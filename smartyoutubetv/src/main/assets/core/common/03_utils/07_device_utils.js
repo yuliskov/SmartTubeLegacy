@@ -189,6 +189,10 @@ var DeviceUtils = {
 
     getPreferredCodec: function() {
         return this.getApp().getPreferredCodec();
+    },
+
+    sendMessage: function(message) {
+        this.getApp().sendMessage(message);
     }
 };
 
