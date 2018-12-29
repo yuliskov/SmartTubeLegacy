@@ -26,15 +26,17 @@ import java.util.Random;
  * Parses input (get_video_info) to {@link MediaItem}
  */
 public class YouTubeMediaParser {
+    private static final String TAG = YouTubeMediaParser.class.getSimpleName();
     private static final String DASH_MPD_URL = "dashmpd";
     private static final String HLS_URL = "hlsvp";
     private static final String DASH_FORMATS_JSON = "player_response";
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
-    private static final String TAG = YouTubeMediaParser.class.getSimpleName();
     private static final String STREAM_DATA_JSON_KEY = "streamingData";
     private static final String FORMATS_JSON_KEY = "formats";
+    private int COMMON_SIGNATURE_LENGTH = 81;
+
     private final String mContent;
     private final int mId;
     private ParserListener mListener;
@@ -44,7 +46,6 @@ public class YouTubeMediaParser {
      */
     private WeirdUrl mDashMPDUrl;
     private List<MediaItem> mNewMediaItems;
-    private int COMMON_SIGNATURE_LENGTH = 81;
 
     public YouTubeMediaParser(String content) {
         mContent = content;
@@ -53,7 +54,7 @@ public class YouTubeMediaParser {
 
     public GenericInfo extractGenericInfo() {
         GenericInfo info = new SimpleYouTubeGenericInfo();
-        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        Uri videoInfo = parseUri(mContent);
         info.setLengthSeconds(videoInfo.getQueryParameter(GenericInfo.LENGTH_SECONDS));
         info.setTitle(videoInfo.getQueryParameter(GenericInfo.TITLE));
         info.setAuthor(videoInfo.getQueryParameter(GenericInfo.AUTHOR));
@@ -63,7 +64,7 @@ public class YouTubeMediaParser {
     }
 
     public Uri extractHLSUrl() {
-        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
+        Uri videoInfo = parseUri(mContent);
         String hlsUrl = videoInfo.getQueryParameter(HLS_URL);
         if (hlsUrl != null) {
             return Uri.parse(hlsUrl);
@@ -72,22 +73,27 @@ public class YouTubeMediaParser {
     }
 
     private void extractDashMPDUrl() {
-        String url = extractParam(DASH_MPD_URL);
+        String url = extractParam(mContent, DASH_MPD_URL);
         // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
         mDashMPDUrl = new WeirdUrl(url);
     }
 
-    private String extractParam(String param) {
-        Uri videoInfo = Uri.parse("http://example.com?" + mContent);
-        return videoInfo.getQueryParameter(param);
+    private String extractParam(String content, String queryParam) {
+        Uri videoInfo = parseUri(content);
+        String value = videoInfo.getQueryParameter(queryParam);
+
+        if (value != null && value.isEmpty()) {
+            return null;
+        }
+
+        return value;
     }
 
     private List<MediaItem> extractUrlEncodedMediaItems(String content, String queryParam) {
         List<MediaItem> list = new ArrayList<>();
         List<String> items = new ArrayList<>();
 
-        Uri videoInfo = Uri.parse("http://example.com?" + content);
-        String formats = videoInfo.getQueryParameter(queryParam);
+        String formats = extractParam(content, queryParam);
 
         // stream may not contain formats
         if (formats != null) {
@@ -116,16 +122,17 @@ public class YouTubeMediaParser {
     private List<MediaItem> extractJsonMediaItems(String content) {
         List<MediaItem> list = new ArrayList<>();
 
-        Uri videoInfo = Uri.parse("http://example.com?" + content);
-        String formats = videoInfo.getQueryParameter(DASH_FORMATS_JSON);
+        String formats = extractParam(content, DASH_FORMATS_JSON);
 
         if (formats != null) {
             Map<String, Map<String, List<Map<String, Object>>>> objectMap = Helpers.convertToObj(formats);
             Map<String, List<Map<String, Object>>> streamData = objectMap.get(STREAM_DATA_JSON_KEY);
-            List<Map<String, Object>> fmts = streamData.get(FORMATS_JSON_KEY);
+            if (streamData != null) {
+                List<Map<String, Object>> fmts = streamData.get(FORMATS_JSON_KEY);
 
-            for (Map<String, Object> fmt : fmts) {
-                list.add(createMediaItem(fmt));
+                for (Map<String, Object> fmt : fmts) {
+                    list.add(createMediaItem(fmt));
+                }
             }
         }
 
@@ -159,7 +166,7 @@ public class YouTubeMediaParser {
     }
 
     private MediaItem createMediaItem(String content) {
-        Uri mediaUrl = Uri.parse("http://example.com?" + content);
+        Uri mediaUrl = parseUri(content);
         SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
         mediaItem.setBitrate(mediaUrl.getQueryParameter(MediaItem.BITRATE));
         mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
@@ -172,24 +179,6 @@ public class YouTubeMediaParser {
         mediaItem.setInit(mediaUrl.getQueryParameter(MediaItem.INIT));
         mediaItem.setSize(mediaUrl.getQueryParameter(MediaItem.SIZE));
         return mediaItem;
-    }
-
-    private List<String> splitContent(String content) {
-        List<String> list = new ArrayList<>();
-        Uri videoInfo = Uri.parse("http://example.com?" + content);
-        String adaptiveFormats = videoInfo.getQueryParameter(DASH_FORMATS);
-        // stream may not contain dash formats
-        if (adaptiveFormats != null) {
-            String[] fmts = adaptiveFormats.split(FORMATS_DELIM);
-            list.addAll(Arrays.asList(fmts));
-        }
-
-        String regularFormats = videoInfo.getQueryParameter(REGULAR_FORMATS);
-        if (regularFormats != null) {
-            String[] fmts = regularFormats.split(",");
-            list.addAll(Arrays.asList(fmts));
-        }
-        return list;
     }
 
     private InputStream extractDashMPDContent() {
@@ -221,17 +210,14 @@ public class YouTubeMediaParser {
         return result;
     }
 
+    // NOTE: don't delete
     @Subscribe
     public void decipherSignaturesDone(DecipherOnlySignaturesDoneEvent doneEvent) {
         if (doneEvent.getId() != mId) {
             return;
         }
-        Browser.getBus().unregister(this);
 
-        // TODO: investigate purpose of code below
-        //if (mMediaItems.size() == 0) {
-        //    mListener.onExtractMediaItemsAndDecipher(mMediaItems);
-        //}
+        Browser.getBus().unregister(this);
 
         List<String> signatures = doneEvent.getSignatures();
         String lastSignature = signatures.get(signatures.size() - 1);
@@ -301,6 +287,10 @@ public class YouTubeMediaParser {
         extractMediaItems();
         extractDashMPDUrl();
         decipherSignatures();
+    }
+
+    private Uri parseUri(String content) {
+        return Uri.parse("http://example.com?" + content);
     }
 
     public interface ParserListener {

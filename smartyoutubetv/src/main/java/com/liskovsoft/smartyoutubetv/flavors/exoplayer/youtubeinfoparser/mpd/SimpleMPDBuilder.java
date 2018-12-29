@@ -305,6 +305,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private boolean notDASH(MediaItem mediaItem) {
+        if (mediaItem.getITag() == null) {
+            return true;
+        }
+
         if (mediaItem.getGlobalSegmentList() != null) {
             return false;
         }
@@ -312,7 +316,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         int maxNoDashITag = 50;
         int itag = Integer.parseInt(mediaItem.getITag());
 
-        return mediaItem.getITag() == null || itag < maxNoDashITag;
+        return itag < maxNoDashITag;
     }
 
     private String extractMimeType(MediaItem item) {
