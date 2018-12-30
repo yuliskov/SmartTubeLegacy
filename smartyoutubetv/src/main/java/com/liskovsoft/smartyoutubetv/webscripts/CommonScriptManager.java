@@ -25,6 +25,6 @@ public class CommonScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        return null;
+        return Helpers.getAssetCSSFilesMerged(mContext, CORE_COMMON_DIR);
     }
 }

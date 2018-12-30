@@ -6,7 +6,7 @@ console.log("Scripts::Running script player_ui_watcher.js");
 
 var PlayerUiWatcher = {
     TAG: 'PlayerUiWatcher',
-    buttonsContainerSel: '#buttons-list',
+    buttonsContainerSel: YouTubeSelectors.PLAYER_BUTTONS,
 
     resetEvents: function() {
         if (!this.buttonArr) {

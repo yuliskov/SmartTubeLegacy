@@ -6,7 +6,7 @@ console.log("Scripts::Running script search_page_ui_watcher.js");
 
 var SearchPageUiWatcher = {
     TAG: 'SearchPageUiWatcher',
-    buttonsContainerSel: '#buttons-list',
+    buttonsContainerSel: YouTubeSelectors.SEARCH_PAGE,
 
     resetEvents: function() {
         if (!this.buttonArr) {
