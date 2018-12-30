@@ -9,7 +9,6 @@ var VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
-    MIC_CLICKED_MESSAGE: 'mic_clicked_message',
 
     init: function() {
         // this.overrideVoiceCaps();
@@ -19,12 +18,6 @@ var VoiceSearch = {
     addMicListener: function() {
         var btn = new VoiceSearchButton();
         SearchPageUiManager.insertButton(btn);
-
-        // EventUtils.addListener(YouTubeSelectors.SEARCH_MIC_BUTTON, DefaultEvents.)
-    },
-
-    onMicClicked: function() {
-        DeviceUtils.sendMessage(this.MIC_CLICKED_MESSAGE);
     },
 
     /**
