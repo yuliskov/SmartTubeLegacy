@@ -15,7 +15,7 @@ var PlayerUiManager = {
      */
     insertButton: function(buttonDescription) {
         // create buttons
-        this.centerBtn = UiButton.fromData(buttonDescription);
+        this.centerBtn = UiButton.createPlayerButton(buttonDescription);
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 

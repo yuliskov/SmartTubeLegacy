@@ -18,7 +18,7 @@ var VoiceSearch = {
 
     addMicListener: function() {
         var btn = new VoiceSearchButton();
-        SearchUiManager.insertButton(btn);
+        SearchPageUiManager.insertButton(btn);
 
         // EventUtils.addListener(YouTubeSelectors.SEARCH_MIC_BUTTON, DefaultEvents.)
     },
