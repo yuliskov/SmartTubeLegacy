@@ -10,7 +10,7 @@ function CodecSelectorAddon() {
 
     this.run = function() {
         var btn = new CodecSelectorButton();
-        UiManager.insertButton(btn);
+        PlayerUiManager.insertButton(btn);
     }
 }
 

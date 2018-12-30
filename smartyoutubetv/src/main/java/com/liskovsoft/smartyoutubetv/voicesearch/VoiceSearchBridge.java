@@ -41,7 +41,7 @@ public class VoiceSearchBridge implements SearchCallback {
         return false;
     }
 
-    public void displaySpeechRecognizers() {
+    protected void displaySpeechRecognizers() {
         for (VoiceDialog dialog : mDialogs) {
             if (dialog.displaySpeechRecognizer()) { // fist successful attempt is used
                 break;

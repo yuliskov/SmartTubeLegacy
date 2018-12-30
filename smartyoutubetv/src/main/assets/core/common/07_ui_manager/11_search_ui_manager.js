@@ -2,10 +2,10 @@
  * Helps to add new buttons to the player's UI.
  */
 
-console.log("Scripts::Running script ui_manager.js");
+console.log("Scripts::Running script search_ui_manager.js");
 
-var UiManager = {
-    TAG: 'UiManager',
+var SearchUiManager = {
+    TAG: 'SearchUiManager',
     LEFT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_SUBS_BUTTON, YouTubeSelectors.PLAYER_CHANNEL_BUTTON],
     RIGHT_BUTTON_SELECTOR: [YouTubeSelectors.PLAYER_PREV_BUTTON, YouTubeSelectors.PLAYER_PLAY_BUTTON],
 
@@ -19,7 +19,7 @@ var UiManager = {
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 
-        UiWatcher.onUiUpdate(this);
+        PlayerUiWatcher.onUiUpdate(this);
     },
 
     onUiUpdate: function() {
@@ -28,12 +28,12 @@ var UiManager = {
         // hide my btn when options is opened
         if (this.isMoreBtnToggled()) {
             UiHelpers.removeBtn(this.centerBtn);
-            UiWatcher.resetEvents();
+            PlayerUiWatcher.resetEvents();
             return;
         }
 
         // begin to handle movements
-        UiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
+        PlayerUiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
         UiHelpers.insertAfter(this.leftBtn, this.centerBtn);

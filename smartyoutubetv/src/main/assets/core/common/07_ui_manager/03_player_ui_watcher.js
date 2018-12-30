@@ -2,10 +2,10 @@
  * Watches onto the controller's keys events.
  */
 
-console.log("Scripts::Running script ui_watcher.js");
+console.log("Scripts::Running script player_ui_watcher.js");
 
-var UiWatcher = {
-    TAG: 'UiWatcher',
+var PlayerUiWatcher = {
+    TAG: 'PlayerUiWatcher',
     buttonsContainerSel: '#buttons-list',
 
     resetEvents: function() {

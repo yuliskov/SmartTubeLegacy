@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
+import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
@@ -169,7 +170,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void setupVoiceSearch() {
-        mVoiceBridge = new VoiceSearchBridge(this);
+        mVoiceBridge = new VoiceSearchBusBridge(this);
     }
 
     @Override

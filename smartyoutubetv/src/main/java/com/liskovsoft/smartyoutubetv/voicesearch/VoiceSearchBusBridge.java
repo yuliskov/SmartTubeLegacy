@@ -1,0 +1,19 @@
+package com.liskovsoft.smartyoutubetv.voicesearch;
+
+import android.support.v7.app.AppCompatActivity;
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.injectors.MicClickedEvent;
+import com.squareup.otto.Subscribe;
+
+public final class VoiceSearchBusBridge extends VoiceSearchBridge {
+    public VoiceSearchBusBridge(AppCompatActivity activity) {
+        super(activity);
+
+        Browser.getBus().register(this);
+    }
+
+    @Subscribe
+    public void onMicClicked(MicClickedEvent event) {
+        displaySpeechRecognizers();
+    }
+}
