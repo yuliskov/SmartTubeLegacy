@@ -12,7 +12,9 @@ var VoiceSearch = {
 
     init: function() {
         // this.overrideVoiceCaps();
-        this.addMicListener();
+        if (DeviceUtils.isMicAvailable()) {
+            this.addMicListener();
+        }
     },
 
     addMicListener: function() {

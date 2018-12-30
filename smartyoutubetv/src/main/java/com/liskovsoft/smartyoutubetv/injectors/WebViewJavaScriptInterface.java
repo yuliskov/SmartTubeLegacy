@@ -21,6 +21,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injecto
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEventWithId;
 import com.liskovsoft.smartyoutubetv.misc.CodecSelectorAddon;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -192,5 +193,11 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public void sendMessage(String message) {
         mMessageHandler.handleMessage(message);
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean isMicAvailable() {
+        return VoiceSearchBridge.isMicAvailable(mContext);
     }
 }

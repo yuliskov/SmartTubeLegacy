@@ -193,6 +193,10 @@ var DeviceUtils = {
 
     sendMessage: function(message) {
         this.getApp().sendMessage(message);
+    },
+
+    isMicAvailable: function() {
+        return this.getApp().isMicAvailable();
     }
 };
 
