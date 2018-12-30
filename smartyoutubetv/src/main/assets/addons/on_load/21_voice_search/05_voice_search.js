@@ -12,7 +12,7 @@ var VoiceSearch = {
     MIC_CLICKED_MESSAGE: 'mic_clicked_message',
 
     init: function() {
-        this.overrideVoiceCaps();
+        // this.overrideVoiceCaps();
         this.addMicListener();
     },
 

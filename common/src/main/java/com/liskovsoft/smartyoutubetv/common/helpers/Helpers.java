@@ -400,4 +400,20 @@ public final class Helpers {
         float val = Float.parseFloat(String.valueOf(floatOrIntString));
         return String.valueOf((int) val);
     }
+
+    /**
+     * Return true to first matched string from the array
+     * @param fullStr full string
+     * @param nameArr array to match
+     * @return whether ended with arr
+     */
+    public static boolean endsWith(String fullStr, String[] nameArr) {
+        for (String name : nameArr) {
+            if (fullStr.endsWith(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

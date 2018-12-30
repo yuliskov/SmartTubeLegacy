@@ -47,7 +47,10 @@ var YouTubeSelectors = {
     PLAYER_PLAY_BUTTON: ['.material-icon-play-arrow', '.icon-player-play'],
     PLAYER_MORE_BUTTON: '#transport-more-button',
     SEARCH_INPUT_FIELD: '#text-input input',
-    SEARCH_MIC_BUTTON: '#microphone'
+    SEARCH_MIC_BUTTON: '#microphone',
+    SEARCH_SUGGESTIONS: '#search-suggestions',
+    SEARCH_KEYBOARD: '#search-keyboard',
+    SEARCH_PAGE: '#search'
 };
 
 /**
@@ -60,7 +63,8 @@ var YouTubeClasses = {
     PLAYER_CONTAINER: 'watch',
     MODEL_LOADED: 'loaded',
     WATCH_IDLE_CLASS: 'watch-idle',
-    BUTTON_TOGGLED: 'toggle-selected'
+    BUTTON_TOGGLED: 'toggle-selected',
+    NO_MODEL: 'no-model'
 };
 
 /**

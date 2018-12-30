@@ -6,11 +6,11 @@ console.log("Scripts::Running script search_page_ui_manager.js");
 
 var SearchPageUiManager = {
     TAG: 'SearchUiManager',
-    LEFT_BUTTON_SELECTOR: [],
-    RIGHT_BUTTON_SELECTOR: [],
+    LEFT_BUTTON_SELECTOR: YouTubeSelectors.SEARCH_SUGGESTIONS,
+    RIGHT_BUTTON_SELECTOR: YouTubeSelectors.SEARCH_KEYBOARD,
 
     /**
-     * Creates button from the supplied data and adds it to the player
+     * Search page: creates button from the supplied data and adds it
      * @param buttonDescription object with onClick method
      */
     insertButton: function(buttonDescription) {
@@ -19,16 +19,16 @@ var SearchPageUiManager = {
         this.leftBtn = UiButton.fromSelector(this.LEFT_BUTTON_SELECTOR);
         this.rightBtn = UiButton.fromSelector(this.RIGHT_BUTTON_SELECTOR);
 
-        PlayerUiWatcher.onUiUpdate(this);
+        SearchPageUiWatcher.onUiUpdate(this);
     },
 
     onUiUpdate: function() {
         Log.d(this.TAG, 'onUiUpdate');
 
         // begin to handle movements
-        PlayerUiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
+        SearchPageUiWatcher.handleMovements([this.leftBtn, this.centerBtn, this.rightBtn]);
 
         // add to player's ui
-        UiHelpers.insertAfter(this.leftBtn, this.centerBtn);
+        UiHelpers.replaceBtn(YouTubeSelectors.SEARCH_MIC_BUTTON, this.centerBtn);
     }
 };

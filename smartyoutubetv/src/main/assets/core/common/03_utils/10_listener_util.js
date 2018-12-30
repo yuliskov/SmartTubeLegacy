@@ -91,6 +91,15 @@ var ListenerUtil = {
 
         var $this = this;
         var surface = Utils.$(YouTubeConstants.SURFACE_CONTENT_SELECTOR);
+
+        if (!surface) { // running on early stage??
+            this.initDone = false;
+            setTimeout(function() {
+               $this.initModelChangeListener();
+            }, 1000);
+            return;
+        }
+
         var checkHandlers = function() {
             Log.d($this.TAG, "Running pending handlers... " + $this.handlers);
 

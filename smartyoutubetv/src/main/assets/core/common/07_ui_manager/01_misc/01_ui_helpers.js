@@ -73,5 +73,12 @@ var UiHelpers = {
 
         this.setProperPosition(existingButton.getElem(), newButton.getElem());
         this.insertAfterDom(existingButton.getElem(), newButton.getElem());
+    },
+
+    replaceBtn: function(elementOrSelector, newButton) {
+        var el = Utils.$(elementOrSelector);
+        if (el && el.parentNode) {
+            el.parentNode.replaceChild(newButton.getElem(), el);
+        }
     }
 };
