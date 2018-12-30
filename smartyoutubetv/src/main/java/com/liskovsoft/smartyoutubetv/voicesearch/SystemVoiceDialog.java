@@ -7,7 +7,7 @@ import android.os.Build.VERSION;
 import android.speech.RecognizerIntent;
 import java.util.List;
 
-public class SystemVoiceDialog implements VoiceDialog, ActivityListener {
+class SystemVoiceDialog implements VoiceDialog, ActivityListener {
     private static final int SPEECH_REQUEST_CODE = 11;
     private final Activity mActivity;
     private final SearchCallback mCallback;

@@ -6,7 +6,7 @@ import com.algolia.instantsearch.voice.ui.Voice;
 import com.algolia.instantsearch.voice.ui.VoiceInputDialogFragment;
 import com.algolia.instantsearch.voice.ui.VoicePermissionDialogFragment;
 
-public class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.ResultsListener {
+class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.ResultsListener {
     private final AppCompatActivity mActivity;
     private final SearchCallback mCallback;
 

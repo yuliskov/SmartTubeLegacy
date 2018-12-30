@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
@@ -22,45 +21,41 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injecto
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEventWithId;
 import com.liskovsoft.smartyoutubetv.misc.CodecSelectorAddon;
 import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
-/*
- * JavaScript Interface. Web code can access methods in here
- * (as long as they have the @JavascriptInterface annotation)
+/**
+ * JavaScript Interface. Web code can access methods in here <br/>
+ * (as long as they have the {@link JavascriptInterface} annotation)<br/>
+ * <br/>
+ *
+ * {@link JavascriptInterface} required after SDK version 17.
  */
 public class WebViewJavaScriptInterface {
+    private static final String TAG = WebViewJavaScriptInterface.class.getSimpleName();
     private Context mContext;
     private final Set<Tab> mTabs = new HashSet<>();
-    private static final Logger sLogger = LoggerFactory.getLogger(WebViewJavaScriptInterface.class);
-    private static final String TAG = WebViewJavaScriptInterface.class.getSimpleName();
+    private final JavaScriptMessageHandler mMessageHandler;
 
     public WebViewJavaScriptInterface(Context context) {
         this(context, null);
     }
 
-    /*
-     * Need a reference to the context in order to sent a post message
-     */
     public WebViewJavaScriptInterface(Context context, Tab tab) {
         mContext = context;
-        if (tab != null)
+        mMessageHandler = new JavaScriptMessageHandler();
+
+        if (tab != null) {
             mTabs.add(tab);
+        }
     }
 
     public void add(Tab tab) {
         if (tab != null)
             mTabs.add(tab);
     }
-
-    // TODO: not called in Android 8.0 (api 26)
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
+    
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void closeApp() {
@@ -73,41 +68,25 @@ public class WebViewJavaScriptInterface {
             });
         }
     }
-
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
+    
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getDeviceName() {
         return Helpers.getDeviceName();
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getAppVersion() {
         return BuildConfig.VERSION_NAME;
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getDeviceHardware() {
         return Build.HARDWARE;
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getDeviceResolution() {
@@ -118,10 +97,6 @@ public class WebViewJavaScriptInterface {
         return String.format("%sx%s", width, height);
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void switchResolution(String formatName) {
@@ -130,10 +105,6 @@ public class WebViewJavaScriptInterface {
         reloadTab();
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     private void reloadTab() {
@@ -160,35 +131,31 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void postDecipheredSignatures(String[] signatures, int id) {
-        sLogger.info("Just now received deciphered signatures from webview.");
+        Log.i(TAG, "Just now received deciphered signatures from webview.");
         Browser.getBus().post(new PostDecipheredSignaturesEvent(signatures, id));
     }
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void onGenericBooleanResult(boolean result, int id) {
-        sLogger.info("Received generic boolean result from webview.");
+        Log.i(TAG, "Received generic boolean result from webview.");
         Browser.getBus().post(new GenericBooleanResultEvent(result, id));
     }
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void onGenericStringResult(String result) {
-        sLogger.info("Received generic string result from webview.");
+        Log.i(TAG, "Received generic string result from webview.");
         Browser.getBus().post(new GenericStringResultEvent(result));
     }
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void onGenericStringResultWithId(String result, int id) {
-        sLogger.info("Received generic string result from webview.");
+        Log.i(TAG, "Received generic string result from webview.");
         Browser.getBus().post(new GenericStringResultEventWithId(result, id));
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void showExitMsg() {
@@ -197,53 +164,33 @@ public class WebViewJavaScriptInterface {
         }
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getEngineType() {
         return Browser.getEngineType().name();
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public boolean isExo() {
         return mContext instanceof TwoFragmentsManagerActivity;
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void openCodecSelector() {
         new CodecSelectorAddon(mContext, this).run();
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getPreferredCodec() {
         return new CodecSelectorAddon(mContext, this).getPreferredCodec();
     }
 
-    /*
-     * This method can be called from Android. @JavascriptInterface
-     * required after SDK version 17.
-     */
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public void sendMessage(String message) {
-        // NOP
+        mMessageHandler.handleMessage(message);
     }
 }

@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 
-public class VoiceSearchConnector extends GenericCommand {
+class VoiceSearchConnector extends GenericCommand {
     private static final String VOICE_SEARCH_PATTERN = "VoiceSearch && VoiceSearch.open('%s')";
     public void openSearchPage(String searchText) {
         if (searchText == null) {

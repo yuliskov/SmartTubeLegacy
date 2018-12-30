@@ -1,5 +1,5 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-public interface SearchCallback {
+interface SearchCallback {
     void openSearchPage(String searchText);
 }

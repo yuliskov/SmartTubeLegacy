@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -42,7 +41,7 @@ public class VoiceSearchBridge implements SearchCallback {
         return false;
     }
 
-    private void displaySpeechRecognizers() {
+    public void displaySpeechRecognizers() {
         for (VoiceDialog dialog : mDialogs) {
             if (dialog.displaySpeechRecognizer()) { // fist successful attempt is used
                 break;
