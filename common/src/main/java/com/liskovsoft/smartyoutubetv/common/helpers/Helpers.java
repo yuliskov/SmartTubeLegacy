@@ -397,6 +397,10 @@ public final class Helpers {
     }
 
     public static String toIntString(Object floatOrIntString) {
+        if (floatOrIntString == null) {
+            return null;
+        }
+
         float val = Float.parseFloat(String.valueOf(floatOrIntString));
         return String.valueOf((int) val);
     }

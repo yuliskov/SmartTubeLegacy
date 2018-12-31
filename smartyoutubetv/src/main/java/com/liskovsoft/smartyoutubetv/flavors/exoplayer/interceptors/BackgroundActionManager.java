@@ -7,6 +7,7 @@ public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
     private static final long NO_INTERACTION_TIMEOUT_MS = 500;
     private static final String VIDEO_ID_PARAM = "video_id";
+    private static final String MIRROR_PARAM = "ytr";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
@@ -81,5 +82,16 @@ public class BackgroundActionManager {
 
     public boolean isDone() {
         return mDone;
+    }
+
+    public boolean isMirroring(String url) {
+        String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(MIRROR_PARAM);
+
+        if (mirrorDeviceName != null && !mirrorDeviceName.isEmpty()) { // any response is good
+            Log.d(TAG, "The video is mirroring from the phone or tablet");
+            return true;
+        }
+
+        return false;
     }
 }

@@ -190,20 +190,22 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
+        final boolean pauseBrowser = !mManager.isMirroring(mCurrentUrl);
+
         if (playerIntent == null) {
-            Log.d(TAG, "Switching to the running player");
-            mFragmentsManager.openExoPlayer(null, true); // player is opened from suggestions
+            Log.d(TAG, "Switching to the running player from suggestions");
+            mFragmentsManager.openExoPlayer(null, pauseBrowser); // player is opened from suggestions
             return;
         }
 
-        mPlayerListener = new ActionsReceiver.Listener() {
+        mPlayerListener = new ActionsReceiver.Listener() { // player is opened from from get_video_info url
             @Override
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer fragment");
                 mManager.onDone();
                 // forcePlaybackCheck();
                 // mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
-                mFragmentsManager.openExoPlayer(playerIntent, true); // don't pause until playback is started
+                mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // don't pause until playback is started
             }
 
             @Override
