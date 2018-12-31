@@ -5,6 +5,7 @@
 console.log("Scripts::Running script main_utils.js");
 
 var Utils = {
+    TAG: 'Utils',
     checkIntervalMS: 3000,
     listeners: {},
 
@@ -306,9 +307,12 @@ var Utils = {
     },
 
     ytFocus: function(elem) {
+        Log.d(this.TAG, "Setting focus on element: " + EventUtils.toSelector(elem));
+
         this.addClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
         if (elem) {
-            elem.focus();
+            // focus sometimes doesn't work without setting a small delay (e.g. voice search button)
+            setTimeout(function() {elem.focus();}, 100);
         }
     },
 

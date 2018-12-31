@@ -7,7 +7,6 @@ console.log("Scripts::Running script ui_button.js");
 function UiButton() {
     this.focus = function() {
         Utils.ytFocus(this.getElem());
-        this.getElem().focus();
     };
 
     this.unfocus = function() {
