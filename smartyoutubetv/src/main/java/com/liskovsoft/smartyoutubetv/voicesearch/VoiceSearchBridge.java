@@ -66,25 +66,6 @@ public class VoiceSearchBridge implements SearchCallback {
         mConnector.openSearchPage(searchText);
     }
 
-    public static boolean isMicAvailable2(Context context) {
-        MediaRecorder recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile(new File(context.getCacheDir(), "MediaUtil#micAvailTestFile").getAbsolutePath());
-        boolean available = true;
-        try {
-            recorder.prepare();
-            recorder.start();
-
-        }
-        catch (Exception exception) {
-            available = false;
-        }
-        recorder.release();
-        return available;
-    }
-
     public static boolean isMicAvailable(Context context) {
         PackageManager pm = context.getPackageManager();
         return pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
