@@ -4,12 +4,11 @@
 
 console.log("Scripts::Running script ui_watcher.js");
 
-var UiWatcher = {
-    TAG: 'UiWatcher',
-    buttonsContainerSelector: 'selector_to_override',
-    uiUpdateSelector: 'selector_to_listen',
+function UiWatcher(buttonsContainerSelector) {
+    this.TAG = 'UiWatcher';
+    this.buttonsContainerSelector = buttonsContainerSelector;
 
-    resetEvents: function() {
+    this.resetEvents = function() {
         if (!this.buttonArr) {
             return;
         }
@@ -18,9 +17,9 @@ var UiWatcher = {
             this.unsetListener(this.buttonArr[i]);
             this.buttonArr[i].unfocus();
         }
-    },
+    };
 
-    unsetListener: function(btn) {
+    this.unsetListener = function(btn) {
         var el = btn.cachedElement || btn.getElem();
 
         if (el && btn.onKeyDown) {
@@ -28,9 +27,9 @@ var UiWatcher = {
             EventUtils.removeListener(el, DefaultEvents.KEY_DOWN, btn.onKeyDown);
             btn.onKeyDown = null;
         }
-    },
+    };
 
-    handleMovements: function(buttonArr) {
+    this.handleMovements = function(buttonArr) {
         this.resetEvents();
 
         this.firstBtn = buttonArr[0];
@@ -39,9 +38,9 @@ var UiWatcher = {
 
         this.buttonArr = buttonArr;
         this.disableButtonEvents();
-    },
+    };
 
-    disableButtonEvents: function() {
+    this.disableButtonEvents = function() {
         var $this = this;
 
         Log.d(this.TAG, "add listeners to buttons: " +
@@ -60,9 +59,9 @@ var UiWatcher = {
         this.addKeyDownListener(this.lastBtn, function(e) {
             $this.onLastButtonKey(e);
         });
-    },
+    };
 
-    addKeyDownListener: function(btn, handler) {
+    this.addKeyDownListener = function(btn, handler) {
         if (btn.onKeyDown) { // don't add listener twice
             Log.d(this.TAG, "Handler already added to: " + EventUtils.toSelector(btn.getElem()));
             return;
@@ -70,9 +69,9 @@ var UiWatcher = {
 
         btn.onKeyDown = handler;
         EventUtils.addListener(btn.getElem() || btn.selector, DefaultEvents.KEY_DOWN, btn.onKeyDown);
-    },
+    };
 
-    onFirstButtonKey: function(e) {
+    this.onFirstButtonKey = function(e) {
         if (e.keyCode != DefaultKeys.RIGHT) {
             return;
         }
@@ -86,9 +85,9 @@ var UiWatcher = {
 
         this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
-    },
+    };
 
-    onCenterButtonKey: function(e) {
+    this.onCenterButtonKey = function(e) {
         e.stopPropagation();
 
         var sameDirection = e.keyCode == this.direction;
@@ -107,9 +106,9 @@ var UiWatcher = {
         }
 
         this.centerBtn.unfocus();
-    },
+    };
 
-    onLastButtonKey: function(e) {
+    this.onLastButtonKey = function(e) {
         if (e.keyCode != DefaultKeys.LEFT) {
             return;
         }
@@ -123,33 +122,5 @@ var UiWatcher = {
 
         this.centerBtn.focus();
         Utils.ytUnfocus(e.target);
-    },
-
-    onUiUpdate: function(listener) {
-        this.listener = listener;
-        this.setupUiChangeListener();
-        Log.d(this.TAG, "Ui change listener has been added");
-    },
-
-    setupUiChangeListener: function() {
-        if (this.setupUiChangeIsDone) {
-            return;
-        }
-
-        this.setupUiChangeIsDone = true;
-
-        var $this = this;
-        var onUiChange = function() {
-            Log.d($this.TAG, "Running ui change listener");
-            if ($this.listener) {
-                $this.listener.onUiUpdate();
-            }
-        };
-
-        EventUtils.addListener(this.uiUpdateSelector, YouTubeEvents.MODEL_CHANGED_EVENT, function(e) {
-            if (!Utils.hasClass(e.target, YouTubeClasses.NO_MODEL)) { // initialized?
-                setTimeout(onUiChange, 500); // let button finish initialization
-            }
-        });
-    }
-};
+    };
+}
