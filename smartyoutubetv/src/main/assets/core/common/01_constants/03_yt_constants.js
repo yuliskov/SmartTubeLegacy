@@ -50,6 +50,8 @@ var YouTubeSelectors = {
     SEARCH_MIC_BUTTON: '#microphone',
     SEARCH_SUGGESTIONS: '#search-suggestions',
     SEARCH_KEYBOARD: '#search-keyboard',
+    SEARCH_KEYBOARD_GRID: '#keyboard-grid',
+    SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
     SEARCH_PAGE: '#search'
 };
 

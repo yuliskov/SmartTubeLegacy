@@ -7,7 +7,7 @@ console.log("Scripts::Running script search_page_ui_manager.js");
 var SearchPageUiManager = {
     TAG: 'SearchUiManager',
     LEFT_BUTTON_SELECTOR: YouTubeSelectors.SEARCH_SUGGESTIONS,
-    RIGHT_BUTTON_SELECTOR: YouTubeSelectors.SEARCH_KEYBOARD,
+    RIGHT_BUTTON_SELECTOR: YouTubeSelectors.SEARCH_KEYBOARD_GRID,
     uiWatcher: new UiWatcher(YouTubeSelectors.SEARCH_PAGE),
 
     /**
