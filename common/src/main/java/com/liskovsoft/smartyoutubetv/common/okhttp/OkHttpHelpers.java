@@ -1,8 +1,6 @@
 package com.liskovsoft.smartyoutubetv.common.okhttp;
 
-import android.content.Context;
 import android.util.Log;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Cookie;
@@ -20,15 +18,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpHelpers {
+    private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static final int NUM_TRIES = 10;
     private static final long CONNECT_TIMEOUT_S = 20;
-    private static final String TAG = OkHttpHelpers.class.getSimpleName();
     private static OkHttpClient mClient;
-    private static Context sContext;
-
-    public static void setContext(Context ctx) {
-        sContext = ctx;
-    }
 
     public static Response doOkHttpRequest(String url) {
         if (mClient == null) {
@@ -63,8 +56,9 @@ public class OkHttpHelpers {
             }
         }
 
-        if (lastEx != null && okHttpResponse == null) {
-            MessageHelpers.showLongMessage(sContext, TAG, lastEx.getMessage());
+        if (lastEx != null && okHttpResponse == null) { // request failed
+            lastEx.printStackTrace();
+            // MessageHelpers.showLongMessage(sContext, TAG, lastEx.getMessage());
         }
 
         return okHttpResponse;
