@@ -765,4 +765,8 @@ public class LocaleUtility {
             return context.getResources().getConfiguration().locale;
         }
     }
+
+    public static String getCurrentLanguage(Context context) {
+        return getCurrentLocale(context).getLanguage().toLowerCase();
+    }
 }

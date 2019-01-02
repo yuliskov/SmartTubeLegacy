@@ -113,11 +113,6 @@ public class LangUpdater {
         return result;
     }
 
-    public String getLocale() {
-        Configuration config = mContext.getResources().getConfiguration();
-        return config.locale.getLanguage();
-    }
-
     /**
      * Get locale as lang code (e.g. zh, ru_RU etc)
      * @return lang code

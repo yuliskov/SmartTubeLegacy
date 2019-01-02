@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.LocaleUtility;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
 import org.json.JSONArray;
@@ -63,6 +64,7 @@ import edu.mit.mobile.android.utils.StreamUtils;
  * "1.4.3": {
  * "versionCode": 6,
  * "changelog": ["New automatic update checker", "Improved template interactions"]
+ * "changelog_ru": ["Новая система проверки оьновлений", "Улучшенное взаимодействие шаблонов"]
  * },
  * "1.4.2": {
  * "versionCode": 5,
@@ -238,7 +240,13 @@ public class AppUpdateChecker {
         // construct the changelog. Newest entries are at the top.
         for (final Entry<Integer, JSONObject> version : versionMap.headMap(currentAppVersion).entrySet()) {
             final JSONObject versionInfo = version.getValue();
-            final JSONArray versionChangelog = versionInfo.optJSONArray("changelog");
+
+            JSONArray versionChangelog = versionInfo.optJSONArray("changelog_" + LocaleUtility.getCurrentLanguage(mContext));
+
+            if (versionChangelog == null) {
+                versionChangelog = versionInfo.optJSONArray("changelog");
+            }
+
             if (versionChangelog != null) {
                 final int len = versionChangelog.length();
                 for (int i = 0; i < len; i++) {
