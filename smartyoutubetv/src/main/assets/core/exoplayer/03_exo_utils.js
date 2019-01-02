@@ -146,8 +146,6 @@ var ExoUtils = {
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
-        ExoButton.resetCache(); // activity just started
-
         var states = {};
 
         // NOTE: we can't delay here so process in reverse order
@@ -198,7 +196,6 @@ var ExoUtils = {
 
         window.lastButtonName = null;
 
-        ExoButton.resetCache(); // activity just started
         console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
 
         for (var key in PlayerActivity) {

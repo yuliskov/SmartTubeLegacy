@@ -9,5 +9,10 @@ var Log = {
     e: function(tag, msg) {
         tag = tag ? tag : 'UNTAGGED';
         console.error(tag + ': ' + msg);
+    },
+
+    w: function(tag, msg) {
+        tag = tag ? tag : 'UNTAGGED';
+        console.warn(tag + ': ' + msg);
     }
 };

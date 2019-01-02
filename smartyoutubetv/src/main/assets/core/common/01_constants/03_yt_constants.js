@@ -62,6 +62,7 @@ var YouTubeClasses = {
     ELEMENT_FOCUSED: 'focused',
     ELEMENT_DISABLED: 'disabled',
     ELEMENT_SELECTED: 'selected',
+    ELEMENT_CHECKED: 'toggle-selected',
     PLAYER_CONTAINER: 'watch',
     MODEL_LOADED: 'loaded',
     WATCH_IDLE_CLASS: 'watch-idle',

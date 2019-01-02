@@ -1,6 +1,7 @@
 console.log("Scripts::Running core script exo_button.js");
 
 function ExoButton(selector) {
+    this.TAG = 'ExoButton';
     this.selector = selector;
 
     this.decorator = new ExoButtonDecorator(this);
@@ -20,25 +21,31 @@ function ExoButton(selector) {
             btn = Utils.$(this.selector);
         }
 
-        btn || console.warn("ExoButton: unable to find " + this.selector);
+        btn || Log.w(this.TAG, "unable to find " + this.selector);
 
         return btn;
     };
 
     this.getChecked = function() {
-        if (ExoUtils.playerIsClosed())
+        if (ExoUtils.playerIsClosed()) {
             return null; // element not exists (see ActionReceiver.java for details)
+        }
 
-        if (this.isChecked === undefined) {
-            var toggle = this.findToggle();
-            var isChecked = Utils.hasClass(toggle, ExoConstants.selectedClass);
-            var isDisabled = Utils.hasClass(toggle, ExoConstants.disabledClass);
+        var toggle = this.findToggle();
+
+        if (!toggle) {
+            this.isChecked = null;
+        } else {
+            var isChecked = Utils.hasClass(toggle, YouTubeClasses.ELEMENT_CHECKED);
+            var isDisabled = Utils.hasClass(toggle, YouTubeClasses.ELEMENT_DISABLED);
             this.isChecked = isDisabled ? null : isChecked;
         }
-        console.log("ExoButton: getChecked: " + this.selector + " " + this.isChecked);
+
+        Log.d(this.TAG, "getChecked: " + this.selector + " " + this.isChecked);
+
         return this.isChecked;
     };
-
+    
     this.setChecked = function(doChecked) {
         if (ExoUtils.playerIsClosed()) {
             console.log("ExoButton: setChecked: video is closed already... do nothing: " + this.selector);
@@ -84,17 +91,20 @@ ExoButton.fromSelector = function(selector) {
         }
     }
 
-    if (!this.btnMap)
-        this.btnMap = {};
-    if (!this.btnMap[selector]) {
-        this.btnMap[selector] = createButton(selector);
-    } else {
-        console.log("ExoButton: fromSelector: getting button from cache " + selector);
-    }
-    return this.btnMap[selector];
+    return createButton(selector);
+
+    // 'this' is reference to ExoButton
+    // if (!this.btnMap)
+    //     this.btnMap = {};
+    // if (!this.btnMap[selector]) {
+    //     this.btnMap[selector] = createButton(selector);
+    // } else {
+    //     console.log("ExoButton: fromSelector: getting button from cache " + selector);
+    // }
+    // return this.btnMap[selector];
 };
 
-ExoButton.resetCache = function() {
-    if (this.btnMap)
-        delete this.btnMap;
-};
+// ExoButton.resetCache = function() {
+//     if (this.btnMap)
+//         delete this.btnMap;
+// };
