@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.os.Handler;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DataSource;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
@@ -32,7 +33,14 @@ public class LanguageDataSource implements DataSource {
     @Override
     public void setSelected(String tag) {
         mLangUpdater.setPreferredLocale(tag);
-        mActivity.restart();
+
+        // give a time to settings to apply
+        new Handler(mActivity.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.restart();
+            }
+        }, 1_000);
     }
 
     @Override

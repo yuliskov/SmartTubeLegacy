@@ -35,9 +35,13 @@ public class LangUpdater {
 
     private void tryToRestoreLanguage() {
         String langCode = getPreferredLocale();
-        if (langCode != null) {
-            mLocale = langCode;
+
+        // not set or default language selected
+        if (langCode == null || langCode.isEmpty()) {
+            return;
         }
+
+        mLocale = langCode;
     }
 
     private void tryToForceEnglishOnDevices() {
