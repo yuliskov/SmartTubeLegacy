@@ -45,7 +45,7 @@ public class WebViewJavaScriptInterface {
 
     public WebViewJavaScriptInterface(Context context, Tab tab) {
         mContext = context;
-        mMessageHandler = new JavaScriptMessageHandler();
+        mMessageHandler = new JavaScriptMessageHandler(context);
 
         if (tab != null) {
             mTabs.add(tab);

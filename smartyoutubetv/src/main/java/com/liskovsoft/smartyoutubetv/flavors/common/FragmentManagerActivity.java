@@ -19,6 +19,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private GenericFragment mActiveFragment;
     private GenericFragment mPrevFragment;
     private VoiceSearchBridge mVoiceBridge;
+    private LoadingManager mLoadingManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         setupVoiceSearch();
 
         hideTitleBar();
+
+        mLoadingManager = new LoadingManager(this);
+    }
+
+    public LoadingManager getLoadingManager() {
+        return mLoadingManager;
     }
 
     private void hideTitleBar() {

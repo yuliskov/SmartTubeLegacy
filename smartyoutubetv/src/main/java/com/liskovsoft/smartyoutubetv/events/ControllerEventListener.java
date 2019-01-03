@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
@@ -35,7 +38,6 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private static final String JS_INTERFACE_NAME = "app";
     private final Context mContext;
     private final KeysTranslator mTranslator;
-    private final LoadingManager mLoadingManager;
     private final WebViewJavaScriptInterface mJSInterface;
     // private final VideoFormatInjector mFormatInjector;
     private final DecipherRoutineInjector mDecipherInjector;
@@ -51,7 +53,6 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         mController = controller;
         mTranslator = translator;
         mStateUpdater = new StateUpdater(null, context);
-        mLoadingManager = new LoadingManager(context);
         mApkUpdater = new MainApkUpdater(context);
 
         // mFormatInjector = new VideoFormatInjector(mContext);
@@ -68,8 +69,12 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     @Override
     public WebResourceResponse shouldInterceptRequest(Tab tab, WebResourceRequest request) {
-        String url = request.getUrl().toString();
-        return processRequest(url);
+        if (VERSION.SDK_INT >= 21) {
+            String url = request.getUrl().toString();
+            return processRequest(url);
+        }
+
+        return null;
     }
 
     @Override
@@ -118,7 +123,9 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     @Override
     public void onReceiveError(Tab tab, int errorCode) {
         logger.info("onReceiveError called: errorCode: " + errorCode);
-        mLoadingManager.setMessage(mErrorTranslator.translate(errorCode));
+        if (mContext instanceof FragmentManagerActivity) {
+            ((FragmentManagerActivity) mContext).getLoadingManager().setMessage(mErrorTranslator.translate(errorCode));
+        }
         tab.reload();
     }
 
@@ -126,9 +133,10 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     public void onLoadSuccess(Tab tab) {
         mTranslator.enable();
         mApkUpdater.start();
-        mLoadingManager.hide();
-        if (mContext instanceof  TwoFragmentsManager)
+
+        if (mContext instanceof  TwoFragmentsManager) {
             ((TwoFragmentsManager) mContext).onBrowserReady();
+        }
     }
 
     @Override
@@ -167,32 +175,5 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         WebView w = tab.getWebView();
         mDecipherInjector.add(w);
         mGenericInjector.add(w);
-    }
-
-    private class LoadingManager {
-        private final View mLoadingWidget;
-
-        public LoadingManager(Activity ctx) {
-            mLoadingWidget = ctx.findViewById(R.id.loading_main);
-        }
-
-        public void show() {
-            mLoadingWidget.setVisibility(View.VISIBLE);
-        }
-
-        public void hide() {
-            new Handler(mContext.getMainLooper())
-                    .postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mLoadingWidget.setVisibility(View.GONE);
-                        }
-                    }, 500);
-        }
-
-        public void setMessage(String message) {
-            TextView text = mLoadingWidget.findViewById(R.id.loading_message);
-            text.setText(message);
-        }
     }
 }
