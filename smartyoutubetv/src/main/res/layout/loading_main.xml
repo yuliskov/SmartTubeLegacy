@@ -6,14 +6,28 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/default_bg">
 
-    <ProgressBar
-        android:indeterminateDrawable="@drawable/progress_large_holo"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:gravity="center">
+
+        <include layout="@layout/boot_logo"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"/>
+
+
+        <ProgressBar
+            android:indeterminateDrawable="@drawable/progress_large_holo"
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"/>
+    </LinearLayout>
+
 
     <TextView android:id="@+id/loading_message"
               android:gravity="center_horizontal"
