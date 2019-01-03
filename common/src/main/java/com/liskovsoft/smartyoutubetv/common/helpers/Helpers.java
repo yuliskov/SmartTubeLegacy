@@ -430,7 +430,7 @@ public final class Helpers {
         boolean isLeanback = false;
 
         if (VERSION.SDK_INT >= 21) {
-            // Android TV devices usually has mic
+            // Android TV user likely have mics
             isLeanback = pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
         }
 

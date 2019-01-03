@@ -8,7 +8,7 @@
     <string name="starting_popup">Запуск из главного лаунчера</string>
     <string name="save_selection">Запомнить</string>
     <string name="bootstrap_bottom_title">Лаунчеры отличаются стабильностью работы на конкр. девайсе</string>
-    <string name="loading_bottom_msg">Нажмите Назад, чтобы вернуться к главному экрану</string>
+    <string name="tip_show_main_screen">Нажмите Назад, чтобы вернуться к главному экрану</string>
     <string name="app_name_720">1080 Основной</string>
     <string name="app_name_1080">1080 Дополнит.</string>
     <string name="app_name_4k">4K Основной</string>
@@ -38,4 +38,6 @@
     <string name="error_unknown">Ошибка соединения: %s</string>
     <string name="codec_selector_title">Выберите кодек</string>
     <string name="restart_app_msg">Перезапустите приложение, чтобы изменения вступили в силу</string>
+    <string name="tip_solve_problem">В случае проблем попробуйте сменить лаунчер</string>
+    <string name="tip_disable_updates">Обновления можно отключить на главном экране</string>
 </resources>

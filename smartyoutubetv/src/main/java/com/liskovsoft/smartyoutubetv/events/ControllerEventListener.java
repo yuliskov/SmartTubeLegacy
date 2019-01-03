@@ -4,20 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
@@ -124,7 +119,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     public void onReceiveError(Tab tab, int errorCode) {
         logger.info("onReceiveError called: errorCode: " + errorCode);
         if (mContext instanceof FragmentManagerActivity) {
-            ((FragmentManagerActivity) mContext).getLoadingManager().setMessage(mErrorTranslator.translate(errorCode));
+            ((FragmentManagerActivity) mContext).getLoadingManager().showMessage(mErrorTranslator.translate(errorCode));
         }
         tab.reload();
     }

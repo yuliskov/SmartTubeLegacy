@@ -9,7 +9,7 @@
     <string name="save_selection">Merken</string>
     <string name="bootstrap_bottom_title">Wenn Sie unsicher sind, testen Sie eine Version nach der anderen.</string>
     <string name="starting_popup_fmt">Die %s Version starten...</string>
-    <string name="loading_bottom_msg">Drücken Sie die Zurück-Taste, um zum Versions-Dialog zurückzukehren</string>
+    <string name="tip_show_main_screen">Drücken Sie die Zurück-Taste, um zum Versions-Dialog zurückzukehren</string>
     <string name="language_dialog_title">Sprache auswählen</string>
     <string name="language">Sprache</string>
     <string name="returning_to_the_video">Zurück zum geöffneten Video</string>

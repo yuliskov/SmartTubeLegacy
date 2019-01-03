@@ -6,11 +6,26 @@ import android.view.View;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
+import java.util.Random;
+
 public class LoadingManager {
     private final Activity mContext;
+    private final Random mRandom;
+
+    private final int[] mTips = {
+            R.string.tip_show_main_screen,
+            R.string.tip_solve_problem,
+            R.string.tip_disable_updates
+    };
 
     public LoadingManager(Activity context) {
         mContext = context;
+        mRandom = new Random(System.currentTimeMillis());
+    }
+
+    private void showRandomTip() {
+        int next = mRandom.nextInt(mTips.length) & Integer.MAX_VALUE; // only positive ints
+        showMessage(mTips[next]);
     }
 
     /**
@@ -21,7 +36,8 @@ public class LoadingManager {
         return mContext.findViewById(R.id.loading_main);
     }
 
-    private void show() {
+    public void show() {
+        showRandomTip();
         getRootView().setVisibility(View.VISIBLE);
     }
 
@@ -35,8 +51,13 @@ public class LoadingManager {
                 }, 500);
     }
 
-    public void setMessage(String message) {
-        TextView text = getRootView().findViewById(R.id.loading_message);
-        text.setText(message);
+    public void showMessage(int resId) {
+        String msg = mContext.getResources().getString(resId);
+        showMessage(msg);
+    }
+
+    public void showMessage(String message) {
+        TextView msgView = getRootView().findViewById(R.id.loading_message);
+        msgView.setText(message);
     }
 }

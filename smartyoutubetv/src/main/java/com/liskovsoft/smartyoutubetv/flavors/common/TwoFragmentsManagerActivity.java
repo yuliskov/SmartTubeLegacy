@@ -29,6 +29,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exo);
+        getLoadingManager().show();
 
         // all fragments should be initialized on start
         // or you will get different kinds of errors

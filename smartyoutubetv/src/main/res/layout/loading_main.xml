@@ -38,6 +38,5 @@
               android:layout_centerHorizontal="true"
               android:layout_alignParentBottom="true"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/loading_bottom_msg"/>
+              android:layout_height="wrap_content"/>
 </RelativeLayout>
