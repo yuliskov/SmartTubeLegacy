@@ -38,6 +38,6 @@
     <string name="error_unknown">Ошибка соединения: %s</string>
     <string name="codec_selector_title">Выберите кодек</string>
     <string name="restart_app_msg">Перезапустите приложение, чтобы изменения вступили в силу</string>
-    <string name="tip_solve_problem">В случае проблем попробуйте сменить лаунчер</string>
+    <string name="tip_solve_problem">В случае проблем попробуйте поменять лаунчер</string>
     <string name="tip_disable_updates">Обновления можно отключить на главном экране</string>
 </resources>
