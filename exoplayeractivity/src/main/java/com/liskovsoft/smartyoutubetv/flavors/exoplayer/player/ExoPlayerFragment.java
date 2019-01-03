@@ -57,9 +57,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             return true;
         }
 
-        // fix focus on the play/pause button: don't move selection
-        boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
-        if (!uiVisible && isUpDownKey) {
+        // fix focus on the play/pause button
+        // boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
+        if (!uiVisible) {
             return true;
         }
 
