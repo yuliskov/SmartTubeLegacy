@@ -65,9 +65,4 @@ public class VoiceSearchBridge implements SearchCallback {
     public void openSearchPage(String searchText) {
         mConnector.openSearchPage(searchText);
     }
-
-    public static boolean isMicAvailable(Context context) {
-        PackageManager pm = context.getPackageManager();
-        return pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
-    }
 }

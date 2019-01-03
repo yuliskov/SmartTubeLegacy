@@ -21,7 +21,7 @@ public class LoadingManager {
         return mContext.findViewById(R.id.loading_main);
     }
 
-    public void show() {
+    private void show() {
         getRootView().setVisibility(View.VISIBLE);
     }
 

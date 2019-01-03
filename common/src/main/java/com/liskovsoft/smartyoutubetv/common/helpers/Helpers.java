@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
@@ -419,5 +420,20 @@ public final class Helpers {
         }
 
         return false;
+    }
+
+    public static boolean isMicAvailable(Context context) {
+        PackageManager pm = context.getPackageManager();
+
+        boolean isMicAvail = pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
+
+        boolean isLeanback = false;
+
+        if (VERSION.SDK_INT >= 21) {
+            // Android TV devices usually has mic
+            isLeanback = pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+        }
+
+        return isMicAvail || isLeanback;
     }
 }

@@ -198,6 +198,6 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public boolean isMicAvailable() {
-        return VoiceSearchBridge.isMicAvailable(mContext);
+        return Helpers.isMicAvailable(mContext);
     }
 }
