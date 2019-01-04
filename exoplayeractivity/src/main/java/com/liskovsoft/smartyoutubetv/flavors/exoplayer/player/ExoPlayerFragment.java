@@ -50,21 +50,44 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         // Show the controls on any key event.
         mSimpleExoPlayerView.showController();
 
-        // move selection to the timebar on left/right key events
-        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
-        if (!uiVisible && isLeftRightKey) {
-            setFocusOnTimeBar();
-            return true;
-        }
-
-        // fix focus on the play/pause button
-        // boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
-        if (!uiVisible) {
+        if (isSeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
             return true;
         }
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return mSimpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    private boolean isNonOKAction(KeyEvent event, boolean uiVisible) {
+        boolean isOKKey = event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
+                          event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+                          event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
+
+        return !uiVisible && !isOKKey;
+    }
+
+    private boolean isSeekAction(KeyEvent event, boolean uiVisible) {
+        // move selection to the timebar on left/right key events
+        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
+
+        if (!uiVisible && isLeftRightKey) {
+            setFocusOnTimeBar();
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isAnyKeyAction(KeyEvent event, boolean uiVisible) {
+        // fix focus on the play/pause button: don't move selection
+        boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
+        boolean isMenuKey = event.getKeyCode() == KeyEvent.KEYCODE_MENU;
+
+        if (!uiVisible && (isUpDownKey || isMenuKey)) {
+            return true;
+        }
+
+        return false;
     }
 
     private void setFocusOnTimeBar() {
