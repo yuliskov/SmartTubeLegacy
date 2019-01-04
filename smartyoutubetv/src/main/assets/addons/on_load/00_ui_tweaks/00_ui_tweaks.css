@@ -5,12 +5,6 @@ div#legend > div.legend-item:not(.airstream-back) {
     display: none !important;
 }
 
-/* enable external keyboard (???) */
-input {
-    pointer-events: none;
-    tab-index: -1;
-}
-
 /* Hide Viewport from debug info. Since it shows unreal values on tv boxes: pixel density problem */
 .html5-video-info-panel-content > :nth-child(2) {
     display: none !important;
