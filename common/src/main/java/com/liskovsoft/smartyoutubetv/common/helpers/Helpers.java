@@ -3,7 +3,9 @@ package com.liskovsoft.smartyoutubetv.common.helpers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -435,5 +437,23 @@ public final class Helpers {
         }
 
         return isMicAvail || isLeanback;
+    }
+
+    public static String getActivityLabel(Context context) {
+        PackageManager pm = context.getPackageManager();
+
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+
+            try {
+                ActivityInfo info = pm.getActivityInfo(activity.getComponentName(), 0);
+                String label = context.getResources().getString(info.labelRes);
+                return label;
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 }
