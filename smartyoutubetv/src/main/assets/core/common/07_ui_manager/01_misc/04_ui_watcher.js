@@ -99,6 +99,8 @@ function UiWatcher(buttonsContainerSelector) {
 
         Log.d(this.TAG, "move selection to the youtube button");
 
+        var upOrDown = e.keyCode == DefaultKeys.UP || e.keyCode == DefaultKeys.DOWN;
+
         if (sameDirection) {
             EventUtils.triggerEvent(this.buttonsContainerSelector, DefaultEvents.KEY_DOWN, e.keyCode);
         } else {
