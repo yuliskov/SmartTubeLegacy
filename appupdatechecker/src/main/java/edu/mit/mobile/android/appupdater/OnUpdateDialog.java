@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
+import android.widget.Button;
 import edu.mit.mobile.android.appupdater.addons.UpdateApp;
 
 import java.util.List;
@@ -83,6 +84,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
                     try {
                         // TODO fix this so it'll pop up appropriately
                         mDialog.show();
+                        setupFocus();
                     } catch (final Exception e) {
                         e.printStackTrace();
                         // XXX ignore for the moment
@@ -90,6 +92,14 @@ public class OnUpdateDialog implements OnAppUpdateListener {
 
                     break;
             }
+        }
+    }
+
+    private void setupFocus() {
+        Button okBtn = mDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+
+        if (okBtn != null) {
+            okBtn.requestFocus();
         }
     }
 }

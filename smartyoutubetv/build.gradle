@@ -30,8 +30,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.firsthash.smartyoutubetv2"
-        versionCode 425
-        versionName "6.15.65"
+        versionCode 422
+        versionName "6.15.62"
         multiDexEnabled = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

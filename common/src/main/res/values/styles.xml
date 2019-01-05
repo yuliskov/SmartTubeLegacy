@@ -19,9 +19,24 @@
         <item name="android:textColorPrimary">@color/dialog_text_color</item>
         <!-- Unselected radio color -->
         <item name="android:textColorSecondary">@color/dialog_text_color</item>
+
+        <item name="buttonBarNegativeButtonStyle">@style/AppDialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppDialogButtonStyle</item>
     </style>
 
     <!-- style for old api < 21 -->
     <style name="AppDialog" parent="AppDialogBase">
+    </style>
+
+    <style name="AppDialogButtonStyle">
+        <item name="android:textColor">@color/dialog_text_color</item>
+        <item name="android:background">@drawable/dialog_item_background</item>
+        <item name="android:padding">10dp</item>
+
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
     </style>
 </resources>
