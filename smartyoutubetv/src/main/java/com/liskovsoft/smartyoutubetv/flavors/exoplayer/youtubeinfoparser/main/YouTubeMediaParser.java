@@ -250,7 +250,8 @@ public class YouTubeMediaParser {
         // Looking for qhd formats for live streams. They're here.
         InputStream dashContent = extractDashMPDContent();
 
-        // parser not working properly here, use raw format
+        // NOTE: parser not working properly here, use raw format
+        // NOTE: raw live format could exoplayer to crash
 
         // mListener.onRawDashContent(dashContent);
 
