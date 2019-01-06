@@ -33,11 +33,12 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
     public List<String> buildUriList() {
         List<String> list = new ArrayList<>();
 
-        // put hq items on top as ExoPlayer doesn't support adaptive streaming for url list
+        // put hq items on top
         for (MediaItem item : mVideos) {
             list.add(0, item.getUrl());
         }
 
-        return list;
+        // remain only first item as ExoPlayer doesn't support adaptive streaming for url list
+        return list.subList(0, 1);
     }
 }
