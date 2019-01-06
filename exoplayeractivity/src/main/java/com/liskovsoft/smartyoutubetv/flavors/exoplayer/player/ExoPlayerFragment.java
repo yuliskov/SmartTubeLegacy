@@ -48,7 +48,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         // Show the controls on any key event.
-        mSimpleExoPlayerView.showController();
+        if (!uiVisible) {
+            mSimpleExoPlayerView.showController();
+        }
 
         if (isSeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
             return true;
