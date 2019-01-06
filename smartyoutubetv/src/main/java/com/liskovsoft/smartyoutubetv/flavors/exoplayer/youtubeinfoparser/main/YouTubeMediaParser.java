@@ -252,10 +252,10 @@ public class YouTubeMediaParser {
 
         // parser not working properly here, use raw format
 
-        mListener.onRawDashContent(dashContent);
+        // mListener.onRawDashContent(dashContent);
 
-        // SimpleMPDParser parser = new SimpleMPDParser(dashContent);
-        // mNewMediaItems = parser.parse();
+        SimpleMPDParser parser = new SimpleMPDParser(dashContent);
+        mNewMediaItems = parser.parse();
     }
 
     private void applySignaturesToMediaItems(List<String> signatures) {
