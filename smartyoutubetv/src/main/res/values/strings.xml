@@ -14,7 +14,6 @@
     <string name="exo_desc">4K Main</string>
     <string name="exo_desc2">4K Alt</string>
     <string name="bootstrap_bottom_title">Launchers are differed by the stability of work on a concrete device</string>
-    <string name="tip_show_main_screen">Press Back button to return to the main screen</string>
     <string name="app_name_720">1080 Main</string>
     <string name="app_name_1080">1080 Alt</string>
     <string name="app_name_4k">4K Main</string>
@@ -54,6 +53,7 @@
     <string name="error_unknown">Connection error: %s</string>
     <string name="codec_selector_title">Select codec</string>
     <string name="restart_app_msg">You need to restart app in order the changes to apply</string>
-    <string name="tip_solve_problem">In case of problems try to witch to another launcher</string>
-    <string name="tip_disable_updates">Updates could be disabled on the main screen</string>
+    <string name="tip_show_main_screen">Press Back \u2B8C to return to the main screen</string>
+    <string name="tip_solve_problem">In case of problems try to select another launcher \u2B8C</string>
+    <string name="tip_disable_updates">Updates could be disabled on the main screen \u2B8C</string>
 </resources>

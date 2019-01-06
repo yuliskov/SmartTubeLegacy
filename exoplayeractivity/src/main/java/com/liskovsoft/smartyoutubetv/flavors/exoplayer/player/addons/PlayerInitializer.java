@@ -54,10 +54,6 @@ public class PlayerInitializer {
         }
     }
 
-    //private void makeActivityHorizontal() {
-    //    mPlayerFragment.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    //}
-
     public void initVideoTitle() {
         videoTitle = mRootView.findViewById(R.id.video_title);
         videoTitle.setText(getMainTitle());
