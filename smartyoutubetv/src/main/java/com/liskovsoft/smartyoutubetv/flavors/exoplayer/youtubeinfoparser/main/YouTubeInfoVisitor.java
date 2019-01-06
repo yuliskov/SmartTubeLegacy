@@ -11,5 +11,5 @@ public abstract class YouTubeInfoVisitor {
     public void onLiveItem(Uri hlsUrl) {}
     public void doneVisiting(){}
     public void onGenericInfo(GenericInfo info){}
-    public void onDashMPDItem(InputStream dash){}
+    public void onRawDashContent(InputStream dashContent) {}
 }

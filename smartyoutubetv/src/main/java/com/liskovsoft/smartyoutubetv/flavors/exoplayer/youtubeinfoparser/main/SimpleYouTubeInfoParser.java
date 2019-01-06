@@ -22,6 +22,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private int mCounter = 1;
         private GenericInfo mInfo;
         private Uri mHlsUrl;
+        private InputStream mDashContent;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
             mMediaFoundCallback = mediaFoundCallback;
@@ -58,6 +59,11 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         @Override
+        public void onRawDashContent(InputStream dashContent) {
+            mDashContent = dashContent;
+        }
+
+        @Override
         public void doneVisiting() {
             if (mCounter != mContent.length) {
                 mCounter++;
@@ -70,7 +76,9 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onInfoFound(mInfo);
             }
 
-            if (!mMPDBuilder.isEmpty()) {
+            if (mDashContent != null) { // raw dash contains more formats, e.g. for live streams
+                mMediaFoundCallback.onDashMPDFound(mDashContent);
+            } else if (!mMPDBuilder.isEmpty()) {
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
             } else if (mHlsUrl != null) { // no dash found, try to use hls
                 mMediaFoundCallback.onHLSFound(mHlsUrl);

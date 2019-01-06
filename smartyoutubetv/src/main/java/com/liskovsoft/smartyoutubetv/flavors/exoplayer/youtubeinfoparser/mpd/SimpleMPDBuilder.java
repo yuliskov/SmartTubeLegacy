@@ -29,6 +29,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String MIME_WEBM_VIDEO = "video/webm";
     private static final String MIME_MP4_AUDIO = "audio/mp4";
     private static final String MIME_MP4_VIDEO = "video/mp4";
+    private static final String NULL_INDEX_RANGE = "0-0";
+    private static final String NULL_CONTENT_LENGTH = "0";
     private final GenericInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
@@ -324,7 +326,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         startTag("", "BaseURL");
 
-        attribute("", "yt:contentLength", item.getClen());
+        if (!item.getClen().equals(NULL_CONTENT_LENGTH)) {
+            attribute("", "yt:contentLength", item.getClen());
+        }
+
         text(item.getUrl());
 
         endTag("", "BaseURL");
@@ -348,7 +353,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
             }
 
             endTag("", "SegmentList");
-        } else {
+        } else if (!item.getIndex().equals(NULL_INDEX_RANGE)) {
             // SegmentBase
             startTag("", "SegmentBase");
 

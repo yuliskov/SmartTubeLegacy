@@ -247,9 +247,15 @@ public class YouTubeMediaParser {
             Log.d(TAG, "Video signature is wrong: " + signature);
         }
 
-        InputStream inputStream = extractDashMPDContent();
-        SimpleMPDParser parser = new SimpleMPDParser(inputStream);
-        mNewMediaItems = parser.parse();
+        // Looking for qhd formats for live streams. They're here.
+        InputStream dashContent = extractDashMPDContent();
+
+        // parser not working properly here, use raw format
+
+        mListener.onRawDashContent(dashContent);
+
+        // SimpleMPDParser parser = new SimpleMPDParser(dashContent);
+        // mNewMediaItems = parser.parse();
     }
 
     private void applySignaturesToMediaItems(List<String> signatures) {
@@ -296,6 +302,7 @@ public class YouTubeMediaParser {
     }
 
     public interface ParserListener {
+        void onRawDashContent(InputStream dashContent);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 

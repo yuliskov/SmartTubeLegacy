@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
@@ -35,8 +36,8 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
             // NOTE: serious bug there
             // NOTE: exo can play live stream in hls only
             // NOTE: dash live isn't playable (infinite loading)
-            mVisitor.doneVisiting();
-            return;
+            // mVisitor.doneVisiting();
+            // return;
         }
 
         List<Subtitle> subs = mSubParser.getAllSubs();
@@ -47,6 +48,11 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
         }
 
         mMediaParser.extractMediaItemsAndDecipher(new YouTubeMediaParser.ParserListener() {
+            @Override
+            public void onRawDashContent(InputStream dashContent) {
+                mVisitor.onRawDashContent(dashContent);
+            }
+
             @Override
             public void onExtractMediaItemsAndDecipher(List<MediaItem> items) {
                 for (MediaItem item : items) {
