@@ -289,11 +289,14 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     private void updateQualityTitle() {
         View root = getView();
-        if (root == null)
-            throw new IllegalStateException("Fragment's root view is null");
 
-        if (mTrackSelector == null)
+        if (root == null) {
+            throw new IllegalStateException("Fragment's root view is null");
+        }
+
+        if (mTrackSelector == null) {
             return;
+        }
 
         TextView quality = root.findViewById(R.id.video_quality);
         Format format = PlayerUtil.getCurrentlyPlayingTrack(mTrackSelector);
@@ -302,11 +305,25 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             return;
 
         String separator = "/";
-        String qualityLabel = PlayerUtil.extractQualityLabel(format) + separator;
-        String fps = PlayerUtil.extractFps(format) + separator;
-        fps = fps.equals(0 + separator) ? "" : fps;
+
+        String qualityLabel = PlayerUtil.extractQualityLabel(format);
+
+        int fpsNum = PlayerUtil.extractFps(format);
+        String fps = fpsNum == 0 ? "" : String.valueOf(fpsNum);
+
         String codec = PlayerUtil.extractCodec(format);
-        String qualityString = qualityLabel + fps + codec;
+
+        String qualityString;
+
+        if (!fps.isEmpty()) {
+            fps = separator + fps;
+        }
+
+        if (!codec.isEmpty()) {
+            codec = separator + codec;
+        }
+
+        qualityString = String.format("%s%s%s", qualityLabel, fps, codec);
 
         quality.setText(qualityString);
     }

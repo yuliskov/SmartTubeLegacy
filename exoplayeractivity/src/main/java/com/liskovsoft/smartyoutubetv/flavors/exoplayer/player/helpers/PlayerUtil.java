@@ -109,6 +109,10 @@ import java.util.Locale;
     }
 
     private static String buildHDRString(Format format) {
+        if (format.codecs == null) {
+            return "";
+        }
+
         return format.codecs.equals("vp9.2") ? "HDR" : "";
     }
 
@@ -228,6 +232,10 @@ import java.util.Locale;
     }
 
     public static String extractCodec(Format format) {
+        if (format.codecs == null) {
+            return "";
+        }
+
         String codec = "";
 
         if (format.codecs.contains("vp9")) {

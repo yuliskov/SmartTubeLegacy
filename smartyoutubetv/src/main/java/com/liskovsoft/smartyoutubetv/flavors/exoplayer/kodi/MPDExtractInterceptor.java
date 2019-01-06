@@ -64,7 +64,7 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
                 mMpdContent = mpdContent;
             }
             @Override
-            public void onLiveUrlFound(final Uri hlsUrl) {
+            public void onHLSFound(final Uri hlsUrl) {
                 mHlsUrl = hlsUrl;
             }
 

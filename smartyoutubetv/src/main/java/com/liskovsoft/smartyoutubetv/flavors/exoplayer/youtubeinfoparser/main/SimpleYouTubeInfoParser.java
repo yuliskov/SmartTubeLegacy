@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.HlsBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.SimpleHlsBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.UrlListBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.SimpleUrlListBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
@@ -18,7 +18,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final OnMediaFoundCallback mMediaFoundCallback;
         private MPDBuilder mMPDBuilder;
-        private HlsBuilder mHlsBuilder;
+        private UrlListBuilder mUrlListBuilder;
         private int mCounter = 1;
         private GenericInfo mInfo;
         private Uri mHlsUrl;
@@ -33,8 +33,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMPDBuilder = new SimpleMPDBuilder(info);
             }
 
-            if (mHlsBuilder == null) {
-                mHlsBuilder = new SimpleHlsBuilder(info);
+            if (mUrlListBuilder == null) {
+                mUrlListBuilder = new SimpleUrlListBuilder(info);
             }
 
             mInfo = info;
@@ -44,7 +44,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         public void onMediaItem(MediaItem mediaItem) {
             mMPDBuilder.append(mediaItem);
 
-            mHlsBuilder.append(mediaItem);
+            mUrlListBuilder.append(mediaItem);
         }
 
         @Override
@@ -73,9 +73,9 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
             if (!mMPDBuilder.isEmpty()) {
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
             } else if (mHlsUrl != null) { // no dash found, try to use hls
-                mMediaFoundCallback.onLiveUrlFound(mHlsUrl);
-            } else if (!mHlsBuilder.isEmpty()) { // fallback to the simple formats
-                mMediaFoundCallback.onLiveUrlFound(mHlsBuilder.buildUri());
+                mMediaFoundCallback.onHLSFound(mHlsUrl);
+            } else if (!mUrlListBuilder.isEmpty()) { // fallback to the simple formats
+                mMediaFoundCallback.onUrlListFound(mUrlListBuilder.buildUriList());
             }
 
             mMediaFoundCallback.onDone();

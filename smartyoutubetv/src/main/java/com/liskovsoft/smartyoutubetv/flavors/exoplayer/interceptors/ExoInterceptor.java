@@ -27,6 +27,7 @@ import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
+import java.util.List;
 
 public class ExoInterceptor extends RequestInterceptor implements PlayerListener {
     private final Context mContext;
@@ -146,13 +147,20 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         dataParser.parse(new OnMediaFoundCallback() {
             private GenericInfo mInfo;
             private Sample mSample;
+
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
                 mSample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
             }
+
             @Override
-            public void onLiveUrlFound(final Uri hlsUrl) {
+            public void onHLSFound(final Uri hlsUrl) {
                 mSample = SampleHelpers.buildFromUri(hlsUrl);
+            }
+
+            @Override
+            public void onUrlListFound(final List<String> urlList) {
+                mSample = SampleHelpers.buildFromList(urlList);
             }
 
             @Override
