@@ -34,7 +34,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
             }
 
             if (mUrlListBuilder == null) {
-                mUrlListBuilder = new SimpleUrlListBuilder(info);
+                mUrlListBuilder = new SimpleUrlListBuilder();
             }
 
             mInfo = info;
