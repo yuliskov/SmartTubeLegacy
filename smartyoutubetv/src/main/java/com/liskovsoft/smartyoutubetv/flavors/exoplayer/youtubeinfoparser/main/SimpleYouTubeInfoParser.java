@@ -1,10 +1,13 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.HlsBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.SimpleHlsBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDBuilder;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser.GenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser.MediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeSubParser.Subtitle;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeSubParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 import java.io.InputStream;
@@ -14,7 +17,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final OnMediaFoundCallback mMediaFoundCallback;
-        private SimpleMPDBuilder mMPDBuilder;
+        private MPDBuilder mMPDBuilder;
+        private HlsBuilder mHlsBuilder;
         private int mCounter = 1;
         private GenericInfo mInfo;
         private Uri mHlsUrl;
@@ -25,8 +29,13 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onGenericInfo(GenericInfo info) {
-            if (mMPDBuilder == null)
+            if (mMPDBuilder == null) {
                 mMPDBuilder = new SimpleMPDBuilder(info);
+            }
+
+            if (mHlsBuilder == null) {
+                mHlsBuilder = new SimpleHlsBuilder(info);
+            }
 
             mInfo = info;
         }
@@ -34,6 +43,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         @Override
         public void onMediaItem(MediaItem mediaItem) {
             mMPDBuilder.append(mediaItem);
+
+            mHlsBuilder.append(mediaItem);
         }
 
         @Override
@@ -55,12 +66,17 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
             // callback on the last loop (resolve problems with async processing)
 
-            if (mInfo != null)
+            if (mInfo != null) {
                 mMediaFoundCallback.onInfoFound(mInfo);
-            if (mHlsUrl != null)
-                mMediaFoundCallback.onLiveUrlFound(mHlsUrl);
-            if (!mMPDBuilder.isEmpty())
+            }
+
+            if (!mMPDBuilder.isEmpty()) {
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+            } else if (mHlsUrl != null) { // no dash found, try to use hls
+                mMediaFoundCallback.onLiveUrlFound(mHlsUrl);
+            } else if (!mHlsBuilder.isEmpty()) { // fallback to the simple formats
+                mMediaFoundCallback.onLiveUrlFound(mHlsBuilder.buildUri());
+            }
 
             mMediaFoundCallback.onDone();
         }

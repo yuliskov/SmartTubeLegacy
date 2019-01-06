@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 
 import java.util.Random;
 

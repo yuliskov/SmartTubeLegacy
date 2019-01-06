@@ -2,9 +2,11 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd;
 
 import android.util.Xml;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeSubParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser.GenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeSubParser.Subtitle;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.MediaItemComparator;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.MediaItemUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import org.xmlpull.v1.XmlSerializer;
@@ -38,42 +40,13 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private Set<MediaItem> mWEBMVideos;
     private List<Subtitle> mSubs;
 
-    private class SimpleComparator implements Comparator<MediaItem> {
-        @Override
-        public int compare(MediaItem leftItem, MediaItem rightItem) {
-            if (leftItem.getGlobalSegmentList() != null ||
-                rightItem.getGlobalSegmentList() != null) {
-                return 1;
-            }
-
-            if (leftItem.getSize() == null || rightItem.getSize() == null) {
-                return 0;
-            }
-            if (leftItem.getBitrate() == null || rightItem.getBitrate() == null) {
-                return 0;
-            }
-
-            int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
-            int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
-
-            int leftItemHeight = Integer.parseInt(getHeight(leftItem));
-            int rightItemHeight = Integer.parseInt(getHeight(rightItem));
-
-            int delta = leftItemHeight - rightItemHeight;
-            if (delta == 0) {
-                delta = leftItemBitrate - rightItemBitrate;
-            }
-            return delta;
-        }
-    }
-
     public SimpleMPDBuilder() {
         this(new SimpleYouTubeGenericInfo());
     }
 
     public SimpleMPDBuilder(GenericInfo info) {
         mInfo = info;
-        SimpleComparator comp = new SimpleComparator();
+        MediaItemComparator comp = new MediaItemComparator();
         mMP4Audios = new TreeSet<>(comp);
         mMP4Videos = new TreeSet<>(comp);
         mWEBMAudios = new TreeSet<>(comp);
@@ -266,7 +239,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     @Override
     public void append(MediaItem mediaItem) {
-        if (notDASH(mediaItem)) {
+        if (MediaItemUtils.notDASH(mediaItem)) {
             return;
         }
 
@@ -302,21 +275,6 @@ public class SimpleMPDBuilder implements MPDBuilder {
     @Override
     public void append(Subtitle sub) {
         mSubs.add(sub);
-    }
-
-    private boolean notDASH(MediaItem mediaItem) {
-        if (mediaItem.getITag() == null) {
-            return true;
-        }
-
-        if (mediaItem.getGlobalSegmentList() != null) {
-            return false;
-        }
-
-        int maxNoDashITag = 50;
-        int itag = Integer.parseInt(mediaItem.getITag());
-
-        return itag < maxNoDashITag;
     }
 
     private String extractMimeType(MediaItem item) {
@@ -356,8 +314,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         if (isVideo(item)) {
             // video attrs
-            attribute("", "width", getWidth(item));
-            attribute("", "height", getHeight(item));
+            attribute("", "width", MediaItemUtils.getWidth(item));
+            attribute("", "height", MediaItemUtils.getHeight(item));
             attribute("", "maxPlayoutRate", "1");
             attribute("", "frameRate", item.getFps());
         } else {
@@ -442,22 +400,6 @@ public class SimpleMPDBuilder implements MPDBuilder {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    private String getHeight(MediaItem item) {
-        String size = item.getSize();
-        if (size == null) {
-            return "";
-        }
-        return size.split("x")[1];
-    }
-
-    private String getWidth(MediaItem item) {
-        String size = item.getSize();
-        if (size == null) {
-            return "";
-        }
-        return size.split("x")[0];
     }
 
     private String extractCodecs(MediaItem item) {

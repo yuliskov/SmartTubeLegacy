@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.toplevel;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
 
 import android.net.Uri;
 import android.util.Log;
