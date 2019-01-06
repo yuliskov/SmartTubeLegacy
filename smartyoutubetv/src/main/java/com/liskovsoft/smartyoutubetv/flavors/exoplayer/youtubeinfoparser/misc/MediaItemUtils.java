@@ -5,18 +5,34 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 public class MediaItemUtils {
     public static String getHeight(MediaItem item) {
         String size = item.getSize();
+
         if (size == null) {
             return "";
         }
-        return size.split("x")[1];
+
+        String[] widthHeight = size.split("x");
+
+        if (widthHeight.length != 2) {
+            return "";
+        }
+
+        return widthHeight[1];
     }
 
     public static String getWidth(MediaItem item) {
         String size = item.getSize();
+
         if (size == null) {
             return "";
         }
-        return size.split("x")[0];
+
+        String[] widthHeight = size.split("x");
+
+        if (widthHeight.length != 2) {
+            return "";
+        }
+
+        return widthHeight[0];
     }
 
     public static boolean notDASH(MediaItem mediaItem) {

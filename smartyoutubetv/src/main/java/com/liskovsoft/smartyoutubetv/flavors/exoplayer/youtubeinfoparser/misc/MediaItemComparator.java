@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
 import java.util.Comparator;
@@ -19,16 +20,24 @@ public class MediaItemComparator implements Comparator<MediaItem> {
             return 0;
         }
 
-        int leftItemBitrate = Integer.parseInt(leftItem.getBitrate());
-        int rightItemBitrate = Integer.parseInt(rightItem.getBitrate());
+        int leftItemBitrate = parseInt(leftItem.getBitrate());
+        int rightItemBitrate = parseInt(rightItem.getBitrate());
 
-        int leftItemHeight = Integer.parseInt(MediaItemUtils.getHeight(leftItem));
-        int rightItemHeight = Integer.parseInt(MediaItemUtils.getHeight(rightItem));
+        int leftItemHeight = parseInt(MediaItemUtils.getHeight(leftItem));
+        int rightItemHeight = parseInt(MediaItemUtils.getHeight(rightItem));
 
         int delta = leftItemHeight - rightItemHeight;
         if (delta == 0) {
             delta = leftItemBitrate - rightItemBitrate;
         }
         return delta;
+    }
+
+    private int parseInt(String num) {
+        if (Helpers.isNaN(num)) {
+            return 0;
+        }
+
+        return Integer.parseInt(num);
     }
 }
