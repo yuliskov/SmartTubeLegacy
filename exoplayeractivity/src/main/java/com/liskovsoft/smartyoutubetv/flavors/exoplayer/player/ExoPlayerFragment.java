@@ -38,8 +38,10 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         boolean uiVisible = isUiVisible();
 
-        if (isUpAction && isBackKey(event) && !uiVisible) {
-            onBackPressed();
+        if (isBackKey(event) && !uiVisible) {
+            if (isUpAction) {
+                onBackPressed();
+            }
             return true;
         }
 
