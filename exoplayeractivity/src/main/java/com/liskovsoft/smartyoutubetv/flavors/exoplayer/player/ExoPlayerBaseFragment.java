@@ -382,6 +382,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mTrackSelectionHelper = null;
         mEventLogger = null;
         mIsDurationSet = false;
+        mRetryCount = 0;
     }
 
     // ExoPlayer.EventListener implementation

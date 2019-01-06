@@ -99,11 +99,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private DataSource.Factory mMediaDataSourceFactory;
 
+    protected int mRetryCount;
     protected boolean mNeedRetrySource;
     protected boolean mShouldAutoPlay;
+    protected LinearLayout mPlayerTopBar;
+
     private int mResumeWindow;
     private long mResumePosition;
-    protected LinearLayout mPlayerTopBar;
 
     private Handler mMainHandler;
     private TrackGroupArray mLastSeenTrackGroupArray;
@@ -485,10 +487,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
         boolean isFatal = false;
+
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
             if (cause instanceof DecoderInitializationException) {
-                isFatal = true;
+                isFatal = mRetryCount++ < 5;
                 // Special case for decoder initialization failures.
                 DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
                 if (decoderInitializationException.decoderName == null) {
@@ -504,10 +507,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 }
             }
         }
+
         if (errorString != null && !getHidePlaybackErrors()) {
             showToast(errorString);
         }
+
         mNeedRetrySource = true;
+
         if (isBehindLiveWindow(e) || isFatal) {
             clearResumePosition();
             initializePlayer();
