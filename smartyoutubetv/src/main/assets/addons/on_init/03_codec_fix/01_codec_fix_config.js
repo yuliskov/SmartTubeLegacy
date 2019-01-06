@@ -11,6 +11,7 @@ console.log("Scripts::Running script codec_fix_config.js");
  * Config for the WebView browser's engine (1th launcher)
  */
 var CodecConfig_WebView = {
+    'MiBOX4 (oneday)': 'mp4', // disqus: MiBox S
     'MiBOX3_PRO (once)': 'mp4', // mt8173 (disqus), fix hangs on video loads
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
     'Hi3798CV100 (Hi3798CV100)': 'mp4', // github issue #176
