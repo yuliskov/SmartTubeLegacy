@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
 import java.util.List;
