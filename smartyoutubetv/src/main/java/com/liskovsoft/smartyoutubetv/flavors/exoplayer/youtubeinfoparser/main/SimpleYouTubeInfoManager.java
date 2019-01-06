@@ -29,7 +29,12 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
 
         if (hlsUri != null) {
             mVisitor.onLiveItem(hlsUri);
-            // this is live so other items is useless
+
+            // stop here, since other items are useless, the reason is below
+
+            // NOTE: serious bug there
+            // NOTE: exo can play live stream in hls only
+            // NOTE: dash live isn't playable (infinite loading)
             mVisitor.doneVisiting();
             return;
         }

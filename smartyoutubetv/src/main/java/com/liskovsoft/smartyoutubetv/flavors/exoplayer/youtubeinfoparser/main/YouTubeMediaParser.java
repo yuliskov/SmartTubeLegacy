@@ -130,8 +130,10 @@ public class YouTubeMediaParser {
             if (streamData != null) {
                 List<Map<String, Object>> fmts = streamData.get(FORMATS_JSON_KEY);
 
-                for (Map<String, Object> fmt : fmts) {
-                    list.add(createMediaItem(fmt));
+                if (fmts != null) {
+                    for (Map<String, Object> fmt : fmts) {
+                        list.add(createMediaItem(fmt));
+                    }
                 }
             }
         }
