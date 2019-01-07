@@ -52,7 +52,8 @@ var YouTubeSelectors = {
     SEARCH_KEYBOARD: '#search-keyboard',
     SEARCH_KEYBOARD_GRID: '#keyboard-grid',
     SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
-    SEARCH_PAGE: '#search'
+    SEARCH_PAGE: '#search',
+    SURFACE_AREA: '#surface'
 };
 
 /**

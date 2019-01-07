@@ -93,7 +93,7 @@ var ListenerUtil = {
         this.initDone = true;
 
         var $this = this;
-        var surface = Utils.$(YouTubeConstants.SURFACE_CONTENT_SELECTOR);
+        var surface = Utils.$(YouTubeSelectors.SURFACE_AREA);
 
         if (!surface) { // running on early stage??
             this.initDone = false;
