@@ -44,10 +44,10 @@ var ListenerUtil = {
         });
     },
 
-    addRemoveListener: function(listenerSpec) {
+    addRemoveListener: function(listenerSpec, fromHandler) {
         if (!EventUtils.toSelector(listenerSpec.selectorOrElement)) {
             Log.e(this.TAG, "can't " + listenerSpec.type + ": selector or element is: " + listenerSpec.selectorOrElement);
-            return;
+            return false;
         }
 
         Log.d(this.TAG, "Trying to " + listenerSpec.type + " to the " + EventUtils.toSelector(listenerSpec.selectorOrElement));
@@ -56,7 +56,8 @@ var ListenerUtil = {
 
         if (!container || !container.children || !container.children.length) {
             Log.d(this.TAG, "Can't " + listenerSpec.type + ": element " + EventUtils.toSelector(listenerSpec.selectorOrElement) + " not initialized... waiting...");
-            this.addPendingHandler(listenerSpec);
+            !fromHandler && this.addPendingHandler(listenerSpec);
+            return false;
         } else if (listenerSpec.type == this.ADD_HANDLER) {
             Log.d(this.TAG, "Element initialized... add listener to it " + EventUtils.toSelector(container));
             container.addEventListener(listenerSpec.event, listenerSpec.handler, false);
@@ -64,6 +65,8 @@ var ListenerUtil = {
             Log.d(this.TAG, "Element initialized... remove listener from it " + EventUtils.toSelector(container));
             container.removeEventListener(listenerSpec.event, listenerSpec.handler, false);
         }
+
+        return true;
     },
 
     getContainer: function(selectorOrElement) {
@@ -101,13 +104,20 @@ var ListenerUtil = {
         }
 
         var checkHandlers = function() {
-            Log.d($this.TAG, "Running pending handlers... " + $this.handlers);
+            Log.d($this.TAG, "Running pending handlers... " + $this.handlers.length);
+
+            var leftoverHandlers = [];
 
             for (var i = 0; i < $this.handlers.length; i++) {
-                $this.addRemoveListener($this.handlers[i]);
-                $this.handlers.splice(i, 1); // remove this handler
+                if (!$this.addRemoveListener($this.handlers[i], true)) {
+                    // don't remove handlers in place or you'll get incorrect behavior
+                    leftoverHandlers.push($this.handlers[i]);
+                }
             }
+
+            $this.handlers = leftoverHandlers;
         };
+
         var onModelChanged = function() {
             if ($this.handlers.length == 0) {
                 surface.removeEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
@@ -117,6 +127,7 @@ var ListenerUtil = {
 
             checkHandlers();
         };
+
         surface.addEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
     }
 };
