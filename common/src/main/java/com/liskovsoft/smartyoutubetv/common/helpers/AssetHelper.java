@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
+import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

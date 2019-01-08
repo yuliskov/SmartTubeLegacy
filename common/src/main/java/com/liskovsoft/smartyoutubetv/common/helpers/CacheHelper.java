@@ -10,9 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class CacheHelper {
+    private static InputStream sDebugStream;
+
     public static InputStream getFile(Context context, String id) {
+        // don't use cache while in debug mode
         if (BuildConfig.DEBUG) {
-            return null;
+            InputStream debugStream = sDebugStream;
+            sDebugStream = null;
+            return debugStream;
         }
 
         FileInputStream fis = null;
@@ -33,7 +38,9 @@ public class CacheHelper {
     }
 
     public static void putFile(Context context, InputStream asset, String id) {
+        // don't use cache while in debug mode
         if (BuildConfig.DEBUG) {
+            sDebugStream = asset;
             return;
         }
 
