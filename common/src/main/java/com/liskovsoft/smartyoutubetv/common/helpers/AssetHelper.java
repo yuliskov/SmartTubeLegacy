@@ -49,33 +49,35 @@ public class AssetHelper {
     }
 
     public static InputStream getAssetCSSFilesMerged(Context ctx, String dir) {
-        //String fileId = dir + "CSS";
-        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
-        //if (cachedStream != null) {
-        //    return cachedStream;
-        //}
+        String fileId = dir + "CSS";
+        InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
+
+        if (cachedStream != null) {
+            return cachedStream;
+        }
 
         List<String> assetFiles = getAssetCSSFiles(ctx, dir);
         InputStream assetMerged = getAssetMerged(ctx, assetFiles);
 
-        //CacheHelper.putFile(ctx, assetMerged, fileId);
+        CacheHelper.putFile(ctx, assetMerged, fileId);
 
-        return assetMerged;
+        return CacheHelper.getFile(ctx, fileId);
     }
 
     public static InputStream getAssetJSFilesMerged(Context ctx, String dir) {
-        //String fileId = dir + "JS";
-        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
-        //if (cachedStream != null) {
-        //    return cachedStream;
-        //}
+        String fileId = dir + "JS";
+        InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
+
+        if (cachedStream != null) {
+            return cachedStream;
+        }
 
         List<String> assetFiles = getAssetJSFiles(ctx, dir);
         InputStream assetMerged = getAssetMerged(ctx, assetFiles);
 
-        //CacheHelper.putFile(ctx, assetMerged, fileId);
+        CacheHelper.putFile(ctx, assetMerged, fileId);
 
-        return assetMerged;
+        return CacheHelper.getFile(ctx, fileId);
     }
 
     private static List<String> getAssetJSFiles(Context ctx, String dir) {
