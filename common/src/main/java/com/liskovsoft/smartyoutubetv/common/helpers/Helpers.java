@@ -34,12 +34,15 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -394,5 +397,38 @@ public final class Helpers {
             Helpers.closeStream(fos);
             Helpers.closeStream(is);
         }
+    }
+
+    public static Collection<File> listFileTree(File dir) {
+        Set<File> fileTree = new HashSet<File>();
+
+        if (dir == null || dir.listFiles() == null){
+            return fileTree;
+        }
+
+        for (File entry : dir.listFiles()) {
+            if (entry.isFile()) {
+                fileTree.add(entry);
+            } else {
+                fileTree.addAll(listFileTree(entry));
+            }
+        }
+
+        return fileTree;
+    }
+
+    public static String getAppVersion(Context context) {
+        String versionName = null;
+
+        try {
+            versionName = context
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0)
+                    .versionName;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return versionName;
     }
 }

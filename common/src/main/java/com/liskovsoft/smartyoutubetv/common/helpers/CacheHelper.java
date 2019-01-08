@@ -1,16 +1,18 @@
 package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collection;
 
 public class CacheHelper {
+    private static final String PREFIX = CacheHelper.class.getSimpleName();
     private static InputStream sDebugStream;
+    private static boolean sCleanupDone;
 
     public static InputStream getFile(Context context, String id) {
         // don't use cache while in debug mode
@@ -19,6 +21,8 @@ public class CacheHelper {
             sDebugStream = null;
             return debugStream;
         }
+
+        performCleanup(context);
 
         FileInputStream fis = null;
 
@@ -56,20 +60,14 @@ public class CacheHelper {
     private static File getCachedFile(Context context, String id) {
         File cacheDir = Helpers.getCacheDir(context);
 
-        String versionName;
-
-        try {
-            versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-
         if (cacheDir == null) {
             return null;
         }
 
-        String cachedFileName = mangleSpecialChars(id) + versionName;
+        String versionName = Helpers.getAppVersion(context);
+
+        String cachedFileName = String.format("%s_%s_%s", PREFIX, mangleSpecialChars(id), versionName);
+
         return new File(cacheDir, cachedFileName);
     }
 
@@ -77,5 +75,33 @@ public class CacheHelper {
         return id
                 .replace("/", "_")
                 .replace("\\", "_");
+    }
+
+    private static void performCleanup(Context context) {
+        if (sCleanupDone) {
+            return;
+        }
+
+        Collection<File> files = Helpers.listFileTree(Helpers.getCacheDir(context));
+
+        for (File file : files) {
+            String name = file.getName();
+
+            boolean hasPrefix = name.contains(PREFIX);
+
+            if (!hasPrefix) {
+                continue;
+            }
+
+            boolean hasActualVersion = name.contains(Helpers.getAppVersion(context));
+
+            if (hasActualVersion) {
+                continue;
+            }
+
+            file.delete();
+        }
+
+        sCleanupDone = true;
     }
 }
