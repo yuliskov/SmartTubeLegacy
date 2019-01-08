@@ -44,10 +44,22 @@ var VoiceSearch = {
 
     navigateToTheSearchPage: function() {
         if (location.hash.indexOf(this.SEARCH_PAGE_TAG) != -1) {
+            // this.moveSelectionFromResultRow();
             return;
         }
 
         location.hash = this.SEARCH_PAGE_URL;
+    },
+
+    /**
+     * Trying to hide pop-up keyboard
+     */
+    moveSelectionFromResultRow: function() {
+        if (Utils.hasClass(
+            Utils.$(YouTubeSelectors.SEARCH_RESULTS_ROW),
+            YouTubeClasses.ELEMENT_FOCUSED)) {
+            EventUtils.triggerEvent(YouTubeSelectors.SEARCH_RESULTS_ROW, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
+        }
     },
 
     typeSearchText: function(searchText) {

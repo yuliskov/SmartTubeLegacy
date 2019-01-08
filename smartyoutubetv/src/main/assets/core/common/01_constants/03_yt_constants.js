@@ -46,6 +46,7 @@ var YouTubeSelectors = {
     PLAYER_PREV_BUTTON: '.material-icon-skip-previous',
     PLAYER_PLAY_BUTTON: ['.material-icon-play-arrow', '.icon-player-play'],
     PLAYER_MORE_BUTTON: '#transport-more-button',
+    SEARCH_PAGE: '#search',
     SEARCH_INPUT_FIELD: '#text-input input',
     SEARCH_MIC_BUTTON: '#microphone',
     SEARCH_SUGGESTIONS: '#search-suggestions',
@@ -54,7 +55,7 @@ var YouTubeSelectors = {
     SEARCH_START_BUTTON: '#keyboard-search',
     SEARCH_KEYBOARD_GRID: '#keyboard-grid',
     SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
-    SEARCH_PAGE: '#search',
+    SEARCH_RESULTS_ROW: '#search-results',
     SURFACE_AREA: '#surface'
 };
 
