@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Build.VERSION;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -22,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
@@ -32,8 +34,6 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,121 +83,6 @@ public final class Helpers {
         }
 
         return new SequenceInputStream(first, second);
-    }
-
-    private static InputStream appendNewLine(InputStream textStream) {
-        InputStream newLineStream = new ByteArrayInputStream("\n".getBytes());
-        return appendStream(textStream, newLineStream);
-    }
-
-    /**
-     * Merge string assets. Silently add new line after each asset.
-     */
-    private static InputStream getAssetMerged(Context ctx, List<String> paths) {
-        return getAssetMerged(ctx, paths, true);
-    }
-
-    private static InputStream getAssetMerged(Context ctx, List<String> paths, boolean newLine) {
-        if (paths == null) {
-            return null;
-        }
-
-        InputStream is = null;
-
-        for (String path : paths) {
-            InputStream asset = Helpers.getAsset(ctx, path);
-            if (newLine)
-                asset = appendNewLine(asset);
-            is = appendStream(is, asset);
-        }
-        return is;
-    }
-
-    private static InputStream getAsset(Context ctx, String fileName) {
-        InputStream is = null;
-        try {
-            is = ctx.getAssets().open(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return is;
-    }
-
-    public static InputStream getAssetCSSFilesMerged(Context ctx, String dir) {
-        //String fileId = dir + "CSS";
-        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
-        //if (cachedStream != null) {
-        //    return cachedStream;
-        //}
-
-        List<String> assetFiles = getAssetCSSFiles(ctx, dir);
-        InputStream assetMerged = Helpers.getAssetMerged(ctx, assetFiles);
-
-        //CacheHelper.putFile(ctx, assetMerged, fileId);
-
-        return assetMerged;
-    }
-
-    public static InputStream getAssetJSFilesMerged(Context ctx, String dir) {
-        //String fileId = dir + "JS";
-        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
-        //if (cachedStream != null) {
-        //    return cachedStream;
-        //}
-
-        List<String> assetFiles = getAssetJSFiles(ctx, dir);
-        InputStream assetMerged = Helpers.getAssetMerged(ctx, assetFiles);
-
-        //CacheHelper.putFile(ctx, assetMerged, fileId);
-
-        return assetMerged;
-    }
-
-    private static List<String> getAssetJSFiles(Context ctx, String dir) {
-        return getAssetFiles(ctx, dir, ".js");
-    }
-
-    private static List<String> getAssetCSSFiles(Context ctx, String dir) {
-        return getAssetFiles(ctx, dir, ".css");
-    }
-
-    public static List<String> getAssetFiles(Context ctx, String dir) {
-        return getAssetFiles(ctx, dir, null);
-    }
-
-    //public static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
-    //    String key = dir + endsWith;
-    //    List<String> cached = sCache.get(key);
-    //    if (cached != null)
-    //        return cached;
-    //    List<String> newFiles = getAssetFiles_(ctx, dir, endsWith);
-    //    sCache.put(key, newFiles);
-    //    return newFiles;
-    //}
-
-    private static List<String> getAssetFiles(Context ctx, String dir, String endsWith) {
-        String [] list;
-        List<String> result = new ArrayList<>();
-        try {
-            list = ctx.getAssets().list(dir);
-            if (list.length > 0) {
-                // This is a folder
-                for (String file : list) {
-                    List<String> nestedList = getAssetFiles(ctx, dir + "/" + file, endsWith); // folder???
-                    if (!nestedList.isEmpty()) // folder???
-                        result.addAll(nestedList);
-                    else {
-                        // This is a file
-                        if (endsWith == null || file.endsWith(endsWith))
-                            result.add(dir + "/" + file);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        return result;
     }
 
     public static String encodeURI(byte[] data) {
@@ -474,5 +359,40 @@ public final class Helpers {
         }
 
         return null;
+    }
+
+    public static File getCacheDir(Context context) {
+        // NOTE: Android 6.0 fix
+        File cacheDir = context.getExternalCacheDir();
+        if (!PermissionManager.checkStoragePermissions((Activity) context)) {
+            MessageHelpers.showMessage(context, "Storage permission not granted!");
+            return null;
+        }
+
+        if (cacheDir == null) { // no storage, try to use SDCard
+            cacheDir = Environment.getExternalStorageDirectory();
+            MessageHelpers.showMessage(context, "Please, make sure that SDCard is mounted");
+        }
+
+        return cacheDir;
+    }
+
+    public static void streamToFile(InputStream is, File destination) {
+        FileOutputStream fos = null;
+
+        try {
+            fos = new FileOutputStream(destination);
+
+            byte[] buffer = new byte[1024];
+            int len1;
+            while ((len1 = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len1);
+            }
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        } finally {
+            Helpers.closeStream(fos);
+            Helpers.closeStream(is);
+        }
     }
 }

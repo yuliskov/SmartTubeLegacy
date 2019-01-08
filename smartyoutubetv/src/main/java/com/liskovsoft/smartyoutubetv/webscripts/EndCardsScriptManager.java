@@ -1,11 +1,10 @@
 package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.AssetHelper;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class EndCardsScriptManager implements ScriptManager {
     private final Context mContext;
@@ -32,6 +31,6 @@ public class EndCardsScriptManager implements ScriptManager {
         if (!isEnabled) {
             return null;
         }
-        return Helpers.getAssetCSSFilesMerged(mContext, CORE_ENDCARDS_DIR);
+        return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_ENDCARDS_DIR);
     }
 }

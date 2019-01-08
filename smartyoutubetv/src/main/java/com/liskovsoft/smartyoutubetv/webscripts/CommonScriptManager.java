@@ -1,10 +1,9 @@
 package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.AssetHelper;
 
 import java.io.InputStream;
-import java.util.List;
 
 public class CommonScriptManager implements ScriptManager {
     private final Context mContext;
@@ -15,7 +14,7 @@ public class CommonScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnInitScripts() {
-        return Helpers.getAssetJSFilesMerged(mContext, CORE_COMMON_DIR);
+        return AssetHelper.getAssetJSFilesMerged(mContext, CORE_COMMON_DIR);
     }
 
     @Override
@@ -25,6 +24,6 @@ public class CommonScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        return Helpers.getAssetCSSFilesMerged(mContext, CORE_COMMON_DIR);
+        return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_COMMON_DIR);
     }
 }
