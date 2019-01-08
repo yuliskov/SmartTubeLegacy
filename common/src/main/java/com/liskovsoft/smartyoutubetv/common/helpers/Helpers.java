@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
@@ -125,13 +124,33 @@ public final class Helpers {
     }
 
     public static InputStream getAssetCSSFilesMerged(Context ctx, String dir) {
+        //String fileId = dir + "CSS";
+        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
+        //if (cachedStream != null) {
+        //    return cachedStream;
+        //}
+
         List<String> assetFiles = getAssetCSSFiles(ctx, dir);
-        return Helpers.getAssetMerged(ctx, assetFiles);
+        InputStream assetMerged = Helpers.getAssetMerged(ctx, assetFiles);
+
+        //CacheHelper.putFile(ctx, assetMerged, fileId);
+
+        return assetMerged;
     }
 
     public static InputStream getAssetJSFilesMerged(Context ctx, String dir) {
+        //String fileId = dir + "JS";
+        //InputStream cachedStream = CacheHelper.getFile(ctx, fileId);
+        //if (cachedStream != null) {
+        //    return cachedStream;
+        //}
+
         List<String> assetFiles = getAssetJSFiles(ctx, dir);
-        return Helpers.getAssetMerged(ctx, assetFiles);
+        InputStream assetMerged = Helpers.getAssetMerged(ctx, assetFiles);
+
+        //CacheHelper.putFile(ctx, assetMerged, fileId);
+
+        return assetMerged;
     }
 
     private static List<String> getAssetJSFiles(Context ctx, String dir) {

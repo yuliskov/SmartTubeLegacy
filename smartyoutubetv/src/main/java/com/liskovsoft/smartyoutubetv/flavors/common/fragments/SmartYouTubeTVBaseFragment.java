@@ -26,7 +26,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import edu.mit.mobile.android.appupdater.addons.PermissionManager;
+import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
 import android.annotation.SuppressLint;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {

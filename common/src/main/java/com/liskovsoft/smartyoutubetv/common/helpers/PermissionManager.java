@@ -1,4 +1,4 @@
-package edu.mit.mobile.android.appupdater.addons;
+package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.Manifest;
 import android.annotation.TargetApi;
