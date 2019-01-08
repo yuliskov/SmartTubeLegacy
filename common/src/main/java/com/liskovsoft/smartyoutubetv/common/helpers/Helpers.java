@@ -94,11 +94,11 @@ public final class Helpers {
     /**
      * Merge string assets. Silently add new line after each asset.
      */
-    public static InputStream getAssetMerged(Context ctx, List<String> paths) {
+    private static InputStream getAssetMerged(Context ctx, List<String> paths) {
         return getAssetMerged(ctx, paths, true);
     }
 
-    public static InputStream getAssetMerged(Context ctx, List<String> paths, boolean newLine) {
+    private static InputStream getAssetMerged(Context ctx, List<String> paths, boolean newLine) {
         if (paths == null) {
             return null;
         }
@@ -114,7 +114,7 @@ public final class Helpers {
         return is;
     }
 
-    public static InputStream getAsset(Context ctx, String fileName) {
+    private static InputStream getAsset(Context ctx, String fileName) {
         InputStream is = null;
         try {
             is = ctx.getAssets().open(fileName);
@@ -134,11 +134,11 @@ public final class Helpers {
         return Helpers.getAssetMerged(ctx, assetFiles);
     }
 
-    public static List<String> getAssetJSFiles(Context ctx, String dir) {
+    private static List<String> getAssetJSFiles(Context ctx, String dir) {
         return getAssetFiles(ctx, dir, ".js");
     }
 
-    public static List<String> getAssetCSSFiles(Context ctx, String dir) {
+    private static List<String> getAssetCSSFiles(Context ctx, String dir) {
         return getAssetFiles(ctx, dir, ".css");
     }
 
