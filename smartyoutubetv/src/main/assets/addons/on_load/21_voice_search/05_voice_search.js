@@ -39,6 +39,7 @@ var VoiceSearch = {
         this.navigateToTheSearchPage();
         this.typeSearchText(searchText);
         this.commitChanges();
+        this.selectResultsRow();
     },
 
     navigateToTheSearchPage: function() {
@@ -63,6 +64,13 @@ var VoiceSearch = {
             YouTubeSelectors.SEARCH_INPUT_FIELD,
             DefaultEvents.ON_TEXT_TYPE,
             DefaultKeys.ENTER);
+    },
+
+    selectResultsRow: function() {
+        // wait till search complete
+        setTimeout(function() {
+            EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
+        }, 1000);
     }
 };
 
