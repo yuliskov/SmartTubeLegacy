@@ -158,6 +158,13 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
                     fakeHorizontalScroll(event);
                     fakeVerticalScroll(event);
                     return false;
+                // Disable events below completely.
+                // This should fix hide off keyboard using air-mouse.
+                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_HOVER_EXIT:
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    return true;
             }
         }
         return false;

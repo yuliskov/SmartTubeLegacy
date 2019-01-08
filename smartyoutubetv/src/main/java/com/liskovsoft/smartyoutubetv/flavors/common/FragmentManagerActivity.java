@@ -148,13 +148,18 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         return mVoiceBridge.onKeyEvent(event) || mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
     }
 
-    private KeyEvent modifyEvent(KeyEvent event) {
-        return mEvent != null ? mEvent : event;
-    }
-
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
         return mActiveFragment.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private KeyEvent modifyEvent(KeyEvent event) {
+        return mEvent != null ? mEvent : event;
     }
 
     @Override
