@@ -56,4 +56,10 @@
     <string name="tip_show_main_screen">Press Back to return to the main screen</string>
     <string name="tip_solve_problem">In case of problems try to select another launcher</string>
     <string name="tip_disable_updates">Updates could be disabled on the main screen</string>
+    <string name="large_btn_title_main">Main</string>
+    <string name="large_btn_title_alt">Alt</string>
+    <string name="title_exo_main">PRO Main</string>
+    <string name="title_exo_alt">PRO Alt</string>
+    <string name="title_webview">LITE Main</string>
+    <string name="title_xwalk">LITE Alt</string>
 </resources>

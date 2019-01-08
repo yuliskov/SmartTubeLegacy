@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/default_bg">
 
@@ -8,18 +8,18 @@
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_centerVertical="true" android:layout_centerHorizontal="true">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/webview_desc" app:tipText="@string/webview_tip"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_xwalk" app:titleText="@string/xwalk_desc" app:tipText="@string/xwalk_tip"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc" app:tipText="@string/exo_tip"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_main" app:tipText="@string/exo_tip"/>
             <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
                                                                         android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_exo" app:titleText="@string/exo_desc2" app:tipText="@string/exo_alt_tip"/>
+                                                                        app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_alt" app:tipText="@string/exo_alt_tip"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_webview" app:tipText="@string/webview_tip"/>
+            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
+                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                        app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_xwalk" app:tipText="@string/xwalk_tip"/>
         </LinearLayout>
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">
             <!-- WARN: TO HIDE ITEM DON'T COMMENT CODE. INSTEAD SET VISIBILITY ATTRIBUTE. -->
