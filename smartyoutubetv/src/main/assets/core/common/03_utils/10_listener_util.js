@@ -44,10 +44,10 @@ var ListenerUtil = {
         });
     },
 
-    addRemoveListener: function(listenerSpec, fromHandler) {
+    addRemoveListener: function(listenerSpec) {
         if (!EventUtils.toSelector(listenerSpec.selectorOrElement)) {
             Log.e(this.TAG, "can't " + listenerSpec.type + ": selector or element is: " + listenerSpec.selectorOrElement);
-            return false;
+            return;
         }
 
         Log.d(this.TAG, "Trying to " + listenerSpec.type + " to the " + EventUtils.toSelector(listenerSpec.selectorOrElement));
@@ -56,8 +56,7 @@ var ListenerUtil = {
 
         if (!container || !container.children || !container.children.length) {
             Log.d(this.TAG, "Can't " + listenerSpec.type + ": element " + EventUtils.toSelector(listenerSpec.selectorOrElement) + " not initialized... waiting...");
-            !fromHandler && this.addPendingHandler(listenerSpec);
-            return false;
+            this.addPendingHandler(listenerSpec);
         } else if (listenerSpec.type == this.ADD_HANDLER) {
             Log.d(this.TAG, "Element initialized... add listener to it " + EventUtils.toSelector(container));
             container.addEventListener(listenerSpec.event, listenerSpec.handler, false);
@@ -65,8 +64,6 @@ var ListenerUtil = {
             Log.d(this.TAG, "Element initialized... remove listener from it " + EventUtils.toSelector(container));
             container.removeEventListener(listenerSpec.event, listenerSpec.handler, false);
         }
-
-        return true;
     },
 
     getContainer: function(selectorOrElement) {
@@ -106,16 +103,12 @@ var ListenerUtil = {
         var checkHandlers = function() {
             Log.d($this.TAG, "Running pending handlers... " + $this.handlers.length);
 
-            var leftoverHandlers = [];
+            var tmpHandlers = $this.handlers;
+            $this.handlers = [];
 
-            for (var i = 0; i < $this.handlers.length; i++) {
-                if (!$this.addRemoveListener($this.handlers[i], true)) {
-                    // don't remove handlers in place or you'll get incorrect behavior
-                    leftoverHandlers.push($this.handlers[i]);
-                }
+            for (var i = 0; i < tmpHandlers.length; i++) {
+                $this.addRemoveListener(tmpHandlers[i]);
             }
-
-            $this.handlers = leftoverHandlers;
         };
 
         var onModelChanged = function() {
