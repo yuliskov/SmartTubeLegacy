@@ -93,6 +93,9 @@ function UiWatcher(buttonsContainerSelector) {
 
         e.stopPropagation();
 
+        // fix bug where mic button loses focus on up key
+        e.preventDefault();
+
         var sameDirection = e.keyCode == this.direction;
         var leftOrRight = e.keyCode == DefaultKeys.LEFT || e.keyCode == DefaultKeys.RIGHT;
 

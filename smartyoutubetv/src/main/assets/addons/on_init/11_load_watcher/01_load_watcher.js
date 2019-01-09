@@ -10,20 +10,11 @@ function LoadWatcherAddon() {
     this.APP_LOADED_MESSAGE = 'app_loaded_message';
 
     this.run = function() {
-        this.startLoadNotify();
-    };
-
-    this.startLoadNotify = function() {
-        if (!Utils.$('#loader')) {
-            Log.d(this.TAG, 'app has been loaded');
-            DeviceUtils.sendMessage(this.APP_LOADED_MESSAGE);
-            return;
-        }
-
         var $this = this;
-        setTimeout(function() {
-           $this.startLoadNotify();
-        }, 500);
+
+        EventUtils.onLoad(function() {
+            DeviceUtils.sendMessage($this.APP_LOADED_MESSAGE);
+        });
     };
 }
 

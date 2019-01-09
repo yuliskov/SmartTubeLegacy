@@ -157,6 +157,19 @@ var EventUtils = {
 
     removeListener: function(selectorOrElement, event, handler) {
         ListenerUtil.removeListener(selectorOrElement, event, handler);
+    },
+
+    onLoad: function(callback) {
+        if (!Utils.$(YouTubeSelectors.MAIN_LOADER)) {
+            Log.d(this.TAG, 'app has been loaded');
+            callback && callback();
+            return;
+        }
+
+        var $this = this;
+        setTimeout(function() {
+            $this.onLoad(callback);
+        }, 500);
     }
 };
 

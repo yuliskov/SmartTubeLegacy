@@ -51,5 +51,13 @@ var SearchPageUiManager = {
                 setTimeout(onUiChange, 500); // let button finish initialization
             }
         });
+
+        EventUtils.onLoad(function() {
+            setTimeout(function() {
+                if (Utils.$(YouTubeSelectors.SEARCH_PAGE)) {
+                    onUiChange();
+                }
+            }, 3000);
+        });
     }
 };
