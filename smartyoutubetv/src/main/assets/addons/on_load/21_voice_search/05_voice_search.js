@@ -44,7 +44,7 @@ var VoiceSearch = {
 
     navigateToTheSearchPage: function() {
         if (location.hash.indexOf(this.SEARCH_PAGE_TAG) != -1) {
-            // this.moveSelectionFromResultRow();
+            this.moveSelectionFromResultRow();
             return;
         }
 
@@ -58,7 +58,8 @@ var VoiceSearch = {
         if (Utils.hasClass(
             Utils.$(YouTubeSelectors.SEARCH_RESULTS_ROW),
             YouTubeClasses.ELEMENT_FOCUSED)) {
-            EventUtils.triggerEvent(YouTubeSelectors.SEARCH_RESULTS_ROW, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
+            // triggerEvent($('#search'), 'keydown', 38)
+            EventUtils.triggerEvent(YouTubeSelectors.SEARCH_PAGE, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
         }
     },
 
