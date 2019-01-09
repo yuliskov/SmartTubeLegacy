@@ -13,4 +13,11 @@ function VoiceSearchButton() {
         Log.d(this.TAG, "user have clicked on the voice search button");
         DeviceUtils.sendMessage(this.MIC_CLICKED_MESSAGE);
     };
+
+    this.unfocus = function() {
+        // remove focus
+        if (this.wrapper) {
+            this.wrapper.unfocus();
+        }
+    };
 }

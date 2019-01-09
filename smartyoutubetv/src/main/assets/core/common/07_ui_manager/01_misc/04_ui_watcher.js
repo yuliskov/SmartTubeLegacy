@@ -81,6 +81,7 @@ function UiWatcher(buttonsContainerSelector) {
 
         // override right key
         e.stopPropagation();
+
         Log.d(this.TAG, "move selection from the first button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();
@@ -88,6 +89,8 @@ function UiWatcher(buttonsContainerSelector) {
     };
 
     this.onCenterButtonKey = function(e) {
+        Log.d(this.TAG, "On center button key " + e.keyCode);
+
         e.stopPropagation();
 
         var sameDirection = e.keyCode == this.direction;
@@ -98,8 +101,6 @@ function UiWatcher(buttonsContainerSelector) {
         }
 
         Log.d(this.TAG, "move selection to the youtube button");
-
-        var upOrDown = e.keyCode == DefaultKeys.UP || e.keyCode == DefaultKeys.DOWN;
 
         if (sameDirection) {
             EventUtils.triggerEvent(this.buttonsContainerSelector, DefaultEvents.KEY_DOWN, e.keyCode);
@@ -120,6 +121,7 @@ function UiWatcher(buttonsContainerSelector) {
 
         // override left key
         e.stopPropagation();
+
         Log.d(this.TAG, "move selection from the last button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();

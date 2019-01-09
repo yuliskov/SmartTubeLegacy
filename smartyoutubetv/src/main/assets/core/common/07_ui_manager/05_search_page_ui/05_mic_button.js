@@ -7,6 +7,7 @@ console.log("Scripts::Running script mic_button.js");
 function MicDataButton(buttonData) {
     this.TAG = 'MicDataButton';
     this.data = buttonData;
+    this.data.wrapper = this;
     this.markup =
         '<div role="button" id="microphone" class="mic-button icon-button" tabindex="-1" aria-label="Microphone">' +
         '<span class="icon icon-mic"></span>' +

@@ -21,8 +21,8 @@ var VoiceSearch = {
     },
 
     addMicListener: function() {
-        var btn = new VoiceSearchButton();
-        SearchPageUiManager.insertButton(btn);
+        this.micButton = new VoiceSearchButton();
+        SearchPageUiManager.insertButton(this.micButton);
     },
 
     /**
@@ -43,6 +43,7 @@ var VoiceSearch = {
         this.typeSearchText(searchText);
         this.commitChanges();
         this.selectResultsRow();
+        this.unfocusMicButton();
     },
 
     navigateToTheSearchPage: function() {
@@ -87,6 +88,12 @@ var VoiceSearch = {
         setTimeout(function() {
             EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
         }, 1000);
+    },
+
+    unfocusMicButton: function() {
+        if (this.micButton) {
+            this.micButton.unfocus();
+        }
     }
 };
 
