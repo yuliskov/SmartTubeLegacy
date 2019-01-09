@@ -22,8 +22,6 @@ public class CacheHelper {
             return debugStream;
         }
 
-        performCleanup(context);
-
         FileInputStream fis = null;
 
         File cachedFile = getCachedFile(context, id);
@@ -47,6 +45,9 @@ public class CacheHelper {
             sDebugStream = asset;
             return;
         }
+
+        // do cleanup on put so this minimize overall calls
+        performCleanup(context);
 
         File cachedFile = getCachedFile(context, id);
 
