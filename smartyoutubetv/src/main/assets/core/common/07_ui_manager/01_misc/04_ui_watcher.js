@@ -89,21 +89,23 @@ function UiWatcher(buttonsContainerSelector) {
     };
 
     this.onCenterButtonKey = function(e) {
-        Log.d(this.TAG, "On center button key " + e.keyCode);
-
         e.stopPropagation();
 
-        // fix bug where mic button loses focus on up key
-        e.preventDefault();
-
-        var sameDirection = e.keyCode == this.direction;
         var leftOrRight = e.keyCode == DefaultKeys.LEFT || e.keyCode == DefaultKeys.RIGHT;
+        var upOrDown = e.keyCode == DefaultKeys.UP || e.keyCode == DefaultKeys.DOWN;
+
+        // fix bug where mic button loses focus on up key
+        if (upOrDown || leftOrRight) {
+            e.preventDefault();
+        }
 
         if (!leftOrRight) {
             return;
         }
 
         Log.d(this.TAG, "move selection to the youtube button");
+
+        var sameDirection = e.keyCode == this.direction;
 
         if (sameDirection) {
             EventUtils.triggerEvent(this.buttonsContainerSelector, DefaultEvents.KEY_DOWN, e.keyCode);

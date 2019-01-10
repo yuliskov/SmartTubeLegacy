@@ -25,6 +25,8 @@ function MicDataButton(buttonData) {
             );
 
             EventUtils.addListener(this.cachedElement, DefaultEvents.ON_CLICK, function(e) {
+                Log.d($this.TAG, "mic button clicked");
+
                 if ($this.data.onClick) {
                     $this.data.onClick();
                 }
