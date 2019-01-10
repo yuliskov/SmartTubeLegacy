@@ -28,8 +28,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButto
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDataSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDataSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
@@ -243,7 +243,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.restrict_codec_btn) {
-            GenericSelectorDialog.create(getActivity(), new RestrictCodecDataSource(getActivity()));
+            GenericSelectorDialog.create(getActivity(), new RestrictCodecDialogSource(getActivity()));
         }
     }
 
@@ -501,7 +501,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        GenericSelectorDialog.create(getActivity(), new SpeedDataSource(getActivity(), mPlayer));
+        GenericSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
     }
 
     protected boolean isUiVisible() {

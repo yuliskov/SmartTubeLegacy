@@ -12,37 +12,73 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.common.R;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 public class GenericSelectorDialog implements OnClickListener {
     private final Context mActivity;
     private AlertDialog alertDialog;
     private ArrayList<CheckedTextView> mDialogItems;
-    private final DataSource mDataSource;
+    private final SingleDialogSource mDataSource;
 
-    public interface DataSource {
+    public interface DialogSourceBase {
+        class DialogItem {
+            private final String itemName;
+            private final Object itemTag;
+
+            private DialogItem(String itemName, Object itemTag) {
+                this.itemName = itemName;
+                this.itemTag = itemTag;
+            }
+
+            public static DialogItem create(String itemName, Object itemTag) {
+                return new DialogItem(itemName, itemTag);
+            }
+        }
+
         /**
          * Your data
          * @return pairs that consist of item text and tag
          */
-        Map<String, String> getDialogItems();
+        List<DialogItem> getItems();
+
+        /**
+         * Set selected tag
+         * @param itemTag selected tag
+         */
+        void setSelectedItemTag(Object itemTag);
+
+        /**
+         * Get dialog main title
+         * @return dialog title
+         */
+        String getTitle();
+    }
+
+    public interface SingleDialogSource extends DialogSourceBase {
         /**
          * Get selected tag
          * @return selected tag
          */
-        String getSelected();
-        void setSelected(String tag);
-        String getTitle();
+        Object getSelectedItemTag();
     }
 
-    public static void create(Context ctx, DataSource dataSource) {
+    public interface MultiDialogSource extends DialogSourceBase {
+        /**
+         * Get selected tag
+         * @return selected tags
+         */
+        List<Object> getSelectedItemTags();
+    }
+
+    public static void create(Context ctx, SingleDialogSource dataSource) {
         GenericSelectorDialog dialog = new GenericSelectorDialog(ctx, dataSource);
         dialog.run();
     }
 
-    public GenericSelectorDialog(Context activity, DataSource dataSource) {
+    public GenericSelectorDialog(Context activity, SingleDialogSource dataSource) {
         mActivity = activity;
         mDataSource = dataSource;
     }
@@ -79,13 +115,13 @@ public class GenericSelectorDialog implements OnClickListener {
 
         mDialogItems = new ArrayList<>();
 
-        for (Map.Entry<String, String> entry : mDataSource.getDialogItems().entrySet()) {
+        for (DialogItem item : mDataSource.getItems()) {
             CheckedTextView dialogItem = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
             dialogItem.setBackgroundResource(selectableItemBackgroundResourceId);
-            dialogItem.setText(entry.getKey());
+            dialogItem.setText(item.itemName);
 
             dialogItem.setFocusable(true);
-            dialogItem.setTag(entry.getValue());
+            dialogItem.setTag(item.itemTag);
             dialogItem.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActivity.getResources().getDimension(R.dimen.dialog_text_size));
             dialogItem.setOnClickListener(this);
             mDialogItems.add(dialogItem);
@@ -99,7 +135,7 @@ public class GenericSelectorDialog implements OnClickListener {
 
     private void updateViews() {
         for (CheckedTextView view : mDialogItems) {
-            if (view.getTag().equals(mDataSource.getSelected())) {
+            if (view.getTag().equals(mDataSource.getSelectedItemTag())) {
                 view.setChecked(true);
                 break;
             }
@@ -108,9 +144,9 @@ public class GenericSelectorDialog implements OnClickListener {
 
     @Override
     public void onClick(View view) {
-        String tag = (String) view.getTag();
-        if (!tag.equals(mDataSource.getSelected())) {
-            mDataSource.setSelected(tag);
+        Object tag = view.getTag();
+        if (!tag.equals(mDataSource.getSelectedItemTag())) {
+            mDataSource.setSelectedItemTag(tag);
 
             // close dialog
             alertDialog.dismiss();

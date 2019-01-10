@@ -5,48 +5,45 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DataSource;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CodecSelectorAddon {
     private static final String MP4 = "mp4";
     private static final String WEBM = "webm";
     private final Context mContext;
     private final WebViewJavaScriptInterface mJavaScriptInterface;
-    private final Map<String, String> mCodecs;
+    private final List<DialogItem> mCodecs;
 
     public CodecSelectorAddon(Context context, WebViewJavaScriptInterface javaScriptInterface) {
         mContext = context;
         mJavaScriptInterface = javaScriptInterface;
-        mCodecs = new LinkedHashMap<>();
-        mCodecs.put("Auto", "");
-        mCodecs.put("AVC", MP4);
-        mCodecs.put("VP9", WEBM);
+        mCodecs = new ArrayList<>();
+        mCodecs.add(DialogItem.create("Auto", ""));
+        mCodecs.add(DialogItem.create("AVC", MP4));
+        mCodecs.add(DialogItem.create("VP9", WEBM));
     }
 
-    private class CodecSelectorDataSource implements DataSource {
-
-        public CodecSelectorDataSource() {
-        }
-
+    private class CodecSelectorDialogSource implements SingleDialogSource {
         @Override
-        public Map<String, String> getDialogItems() {
+        public List<DialogItem> getItems() {
             return mCodecs;
         }
 
         @Override
-        public String getSelected() {
+        public Object getSelectedItemTag() {
             // get codec from the settings
             return SmartPreferences.instance(mContext).getPreferredCodec();
         }
 
         @Override
-        public void setSelected(String tag) {
+        public void setSelectedItemTag(Object tag) {
             // update settings
-            SmartPreferences.instance(mContext).setPreferredCodec(tag);
+            SmartPreferences.instance(mContext).setPreferredCodec((String) tag);
             // restart app
             MessageHelpers.showMessage(mContext, R.string.restart_app_msg);
         }
@@ -58,7 +55,7 @@ public class CodecSelectorAddon {
     }
 
     public void run() {
-        GenericSelectorDialog.create(mContext, new CodecSelectorDataSource());
+        GenericSelectorDialog.create(mContext, new CodecSelectorDialogSource());
     }
 
     public String getPreferredCodec() {
