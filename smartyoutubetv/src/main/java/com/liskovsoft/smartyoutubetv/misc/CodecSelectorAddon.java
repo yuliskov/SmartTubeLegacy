@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
+import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CodecSelectorAddon {
         }
 
         @Override
-        public void setSelectedItemTag(Object tag) {
+        public void setSelectedItemByTag(Object tag) {
             // update settings
             SmartPreferences.instance(mContext).setPreferredCodec((String) tag);
             // restart app
@@ -55,7 +56,7 @@ public class CodecSelectorAddon {
     }
 
     public void run() {
-        GenericSelectorDialog.create(mContext, new CodecSelectorDialogSource());
+        SingleChoiceSelectorDialog.create(mContext, new CodecSelectorDialogSource());
     }
 
     public String getPreferredCodec() {

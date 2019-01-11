@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
@@ -243,7 +244,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.restrict_codec_btn) {
-            GenericSelectorDialog.create(getActivity(), new RestrictCodecDialogSource(getActivity()));
+            SingleChoiceSelectorDialog.create(getActivity(), new RestrictCodecDialogSource(getActivity()));
         }
     }
 
@@ -501,7 +502,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        GenericSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
+        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
     }
 
     protected boolean isUiVisible() {

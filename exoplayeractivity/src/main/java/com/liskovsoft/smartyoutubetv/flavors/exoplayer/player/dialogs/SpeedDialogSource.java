@@ -46,7 +46,7 @@ public class SpeedDialogSource implements SingleDialogSource {
     }
 
     @Override
-    public void setSelectedItemTag(Object speed) {
+    public void setSelectedItemByTag(Object speed) {
         if (mPlayer == null)
             return;
         mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat((String) speed), 1.0f));

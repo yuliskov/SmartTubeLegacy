@@ -39,7 +39,7 @@ public class RestrictCodecDialogSource implements SingleDialogSource {
     }
 
     @Override
-    public void setSelectedItemTag(Object codec) {
+    public void setSelectedItemByTag(Object codec) {
         mPrefs.setPreferredCodec((String) codec);
     }
 

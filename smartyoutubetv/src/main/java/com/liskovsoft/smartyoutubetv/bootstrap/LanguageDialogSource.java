@@ -42,7 +42,7 @@ public class LanguageDialogSource implements SingleDialogSource {
     }
 
     @Override
-    public void setSelectedItemTag(Object tag) {
+    public void setSelectedItemByTag(Object tag) {
         mLangUpdater.setPreferredLocale((String) tag);
 
         // give a time to settings to apply

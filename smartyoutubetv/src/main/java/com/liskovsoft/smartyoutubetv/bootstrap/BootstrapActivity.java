@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
@@ -64,13 +65,13 @@ public class BootstrapActivity extends ActivityBase {
     public void onClick(View button) {
         switch (button.getId()) {
             case R.id.btn_select_lang:
-                GenericSelectorDialog.create(this, new LanguageDialogSource(this));
+                SingleChoiceSelectorDialog.create(this, new LanguageDialogSource(this));
                 break;
             case R.id.btn_send_crash_report:
                 Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_preferred_codec:
-                GenericSelectorDialog.create(this, new RestrictCodecDialogSource(this));
+                SingleChoiceSelectorDialog.create(this, new RestrictCodecDialogSource(this));
                 break;
         }
     }

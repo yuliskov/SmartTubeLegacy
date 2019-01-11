@@ -17,11 +17,11 @@ import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceB
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericSelectorDialog implements OnClickListener {
+public abstract class GenericSelectorDialog implements OnClickListener {
     private final Context mActivity;
-    private AlertDialog alertDialog;
+    protected AlertDialog mAlertDialog;
+    private final DialogSourceBase mDialogSource;
     private ArrayList<CheckedTextView> mDialogItems;
-    private final SingleDialogSource mDataSource;
 
     public interface DialogSourceBase {
         class DialogItem {
@@ -45,10 +45,10 @@ public class GenericSelectorDialog implements OnClickListener {
         List<DialogItem> getItems();
 
         /**
-         * Set selected tag
-         * @param itemTag selected tag
+         * Notify about that item has been selected
+         * @param itemTag selected item's tag
          */
-        void setSelectedItemTag(Object itemTag);
+        void setSelectedItemByTag(Object itemTag);
 
         /**
          * Get dialog main title
@@ -67,20 +67,21 @@ public class GenericSelectorDialog implements OnClickListener {
 
     public interface MultiDialogSource extends DialogSourceBase {
         /**
-         * Get selected tag
+         * Get selected tags
          * @return selected tags
          */
-        List<Object> getSelectedItemTags();
+        List<Object> getSelectedItemsTags();
+
+        /**
+         * Notify about that item has been unselected
+         * @param itemTag unselected item's tag
+         */
+        void setUnselectedItemByTag(Object itemTag);
     }
 
-    public static void create(Context ctx, SingleDialogSource dataSource) {
-        GenericSelectorDialog dialog = new GenericSelectorDialog(ctx, dataSource);
-        dialog.run();
-    }
-
-    public GenericSelectorDialog(Context activity, SingleDialogSource dataSource) {
+    public GenericSelectorDialog(Context activity, DialogSourceBase dialogSource) {
         mActivity = activity;
-        mDataSource = dataSource;
+        mDialogSource = dialogSource;
     }
 
     public void run() {
@@ -90,12 +91,13 @@ public class GenericSelectorDialog implements OnClickListener {
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.AppDialog);
         View title = createCustomTitle(builder.getContext());
-        alertDialog = builder.setCustomTitle(title).setView(buildView(builder.getContext())).create();
-        alertDialog.show();
+        mAlertDialog = builder.setCustomTitle(title).setView(buildView(builder.getContext())).create();
+        mAlertDialog.show();
+        updateViews(mAlertDialog.findViewById(R.id.root));
     }
 
     private View createCustomTitle(Context context) {
-        String title = mDataSource.getTitle();
+        String title = mDialogSource.getTitle();
         LayoutInflater inflater = LayoutInflater.from(context);
         View titleView = inflater.inflate(R.layout.dialog_custom_title, null);
         TextView textView = titleView.findViewById(R.id.title);
@@ -115,8 +117,8 @@ public class GenericSelectorDialog implements OnClickListener {
 
         mDialogItems = new ArrayList<>();
 
-        for (DialogItem item : mDataSource.getItems()) {
-            CheckedTextView dialogItem = (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+        for (DialogItem item : mDialogSource.getItems()) {
+            CheckedTextView dialogItem = createDialogItem(inflater, root);
             dialogItem.setBackgroundResource(selectableItemBackgroundResourceId);
             dialogItem.setText(item.itemName);
 
@@ -128,29 +130,10 @@ public class GenericSelectorDialog implements OnClickListener {
             root.addView(dialogItem);
         }
 
-        updateViews();
-
         return view;
     }
 
-    private void updateViews() {
-        for (CheckedTextView view : mDialogItems) {
-            if (view.getTag().equals(mDataSource.getSelectedItemTag())) {
-                view.setChecked(true);
-                break;
-            }
-        }
-    }
+    protected abstract void updateViews(View root);
 
-    @Override
-    public void onClick(View view) {
-        Object tag = view.getTag();
-        if (!tag.equals(mDataSource.getSelectedItemTag())) {
-            mDataSource.setSelectedItemTag(tag);
-
-            // close dialog
-            alertDialog.dismiss();
-            alertDialog = null;
-        }
-    }
+    protected abstract CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root);
 }
