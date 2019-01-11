@@ -189,10 +189,17 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 }
             }
 
-            boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false);
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getActivity().getApplication()).useExtensionRenderers()
-                    ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER : DefaultRenderersFactory
-                    .EXTENSION_RENDERER_MODE_ON) : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+            boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false); // prefer soft decoders
+
+            //@DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getActivity().getApplication()).useExtensionRenderers()
+            //        ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER : DefaultRenderersFactory
+            //        .EXTENSION_RENDERER_MODE_ON) : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
+            //DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, extensionRendererMode);
+
+            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = preferExtensionDecoders ?
+                    DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER :
+                    DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON;
+
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, extensionRendererMode);
 
 
