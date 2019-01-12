@@ -74,9 +74,7 @@ public class AssetHelper {
         List<String> assetFiles = getAssetJSFiles(ctx, dir);
         InputStream assetMerged = getAssetMerged(ctx, assetFiles);
 
-        CacheHelper.putFile(ctx, assetMerged, fileId);
-
-        return CacheHelper.getFile(ctx, fileId);
+        return CacheHelper.putFile(ctx, assetMerged, fileId);
     }
 
     private static List<String> getAssetJSFiles(Context ctx, String dir) {

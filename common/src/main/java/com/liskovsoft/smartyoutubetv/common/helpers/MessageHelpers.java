@@ -49,6 +49,12 @@ public class MessageHelpers {
         }
     }
 
+    public static void showLongMessage(Context ctx, String msg) {
+        for (int i = 0; i < 3; i++) {
+            showMessage(ctx, msg);
+        }
+    }
+
     public static void showLongMessage(Context ctx, String TAG, String msg) {
         for (int i = 0; i < 3; i++) {
             showMessage(ctx, TAG, msg);

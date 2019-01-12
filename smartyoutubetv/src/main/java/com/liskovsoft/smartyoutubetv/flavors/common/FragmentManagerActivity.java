@@ -1,13 +1,21 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
@@ -23,6 +31,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // fix lang in case activity has been destroyed and then restored
         setupLang();
 
         if (savedInstanceState != null) {
@@ -33,6 +42,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         super.onCreate(savedInstanceState);
 
+        initPermissions();
+
         setupFontSize();
 
         setupVoiceSearch();
@@ -40,6 +51,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         hideTitleBar();
 
         mLoadingManager = new LoadingManager(this);
+
+        makeActivityFullscreen();
+        makeActivityHorizontal();
     }
 
     public LoadingManager getLoadingManager() {
@@ -189,5 +203,37 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mVoiceBridge.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionManager.REQUEST_EXTERNAL_STORAGE) {
+            // Check if the only required permission has been granted
+            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Camera permission has been granted, preview can be displayed
+                MessageHelpers.showMessage(this, "REQUEST_EXTERNAL_STORAGE permission has been granted");
+            } else {
+                MessageHelpers.showLongMessage(this, "Unable to grant REQUEST_EXTERNAL_STORAGE permission");
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private void initPermissions() {
+        PermissionManager.verifyStoragePermissions(this);
+    }
+
+    private void makeActivityFullscreen() {
+        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+
+        if (VERSION.SDK_INT >= 19) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    private void makeActivityHorizontal() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 }

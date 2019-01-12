@@ -43,19 +43,13 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     public void onActivityCreated(Bundle icicle) {
         Log.i(TAG, "SmartYouTubeTVActivityBase::init");
 
-        // fix lang in case activity has been destroyed and then restored
-        setupLang();
         setupUA();
         super.onActivityCreated(icicle);
 
         initRemoteUrl();
         initKeys();
-        initPermissions();
 
         createController(icicle);
-
-        makeActivityFullscreen();
-        makeActivityHorizontal();
     }
 
     private String getLocalizedTitle() {
@@ -81,20 +75,12 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mUAManager = new UserAgentManager(getActivity());
     }
 
-    private void initPermissions() {
-        PermissionManager.verifyStoragePermissions(getActivity());
-    }
-
     private void initKeys() {
         mTranslator = new KeysTranslator();
     }
 
     private void initRemoteUrl() {
         mServiceUrl = getString(R.string.service_url);
-    }
-
-    private void setupLang() {
-        new LangUpdater(getActivity()).update();
     }
 
     @Override
@@ -112,19 +98,6 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         Intent intent = (icicle == null) ? transformIntentData(getActivity().getIntent()) : null;
         mController.start(intent);
         setController(mController);
-    }
-
-    private void makeActivityFullscreen() {
-        getActivity().getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
-
-        if (VERSION.SDK_INT >= 19) {
-            View decorView = getActivity().getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
-    private void makeActivityHorizontal() {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -221,21 +194,6 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
         if (activityExists) {
             startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PermissionManager.REQUEST_EXTERNAL_STORAGE) {
-            // Check if the only required permission has been granted
-            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Camera permission has been granted, preview can be displayed
-                MessageHelpers.showMessage(getActivity(), "REQUEST_EXTERNAL_STORAGE permission has been granted");
-            } else {
-                MessageHelpers.showMessage(getActivity(), "Unable to grant REQUEST_EXTERNAL_STORAGE permission");
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
