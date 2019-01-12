@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
@@ -229,9 +230,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
             // Check if the only required permission has been granted
             if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Camera permission has been granted, preview can be displayed
-                Toast.makeText(getActivity(), "REQUEST_EXTERNAL_STORAGE permission has been granted", Toast.LENGTH_LONG).show();
+                MessageHelpers.showMessage(getActivity(), "REQUEST_EXTERNAL_STORAGE permission has been granted");
             } else {
-                Toast.makeText(getActivity(), "Unable to grant REQUEST_EXTERNAL_STORAGE permission", Toast.LENGTH_LONG).show();
+                MessageHelpers.showMessage(getActivity(), "Unable to grant REQUEST_EXTERNAL_STORAGE permission");
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

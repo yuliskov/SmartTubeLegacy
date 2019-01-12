@@ -20,7 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Interceptor;
@@ -159,8 +159,8 @@ public final class MyDownloadManager {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         } finally {
-            Helpers.closeStream(fos);
-            Helpers.closeStream(is);
+            FileHelpers.closeStream(fos);
+            FileHelpers.closeStream(is);
         }
 
         return destination;

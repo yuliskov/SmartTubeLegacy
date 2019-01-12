@@ -65,7 +65,7 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private File getCacheDir() {
         // NOTE: Android 6.0 fix
         File cacheDir = mContext.getExternalCacheDir();
-        if (!PermissionManager.checkStoragePermissions((Activity) mContext)) {
+        if (!PermissionManager.hasStoragePermissions((Activity) mContext)) {
             showMessage("Storage permission not granted!");
             return null;
         }

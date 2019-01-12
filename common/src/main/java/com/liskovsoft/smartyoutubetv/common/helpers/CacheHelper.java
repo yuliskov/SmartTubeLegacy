@@ -55,11 +55,11 @@ public class CacheHelper {
             return;
         }
 
-        Helpers.streamToFile(asset, cachedFile);
+        FileHelpers.streamToFile(asset, cachedFile);
     }
 
     private static File getCachedFile(Context context, String id) {
-        File cacheDir = Helpers.getCacheDir(context);
+        File cacheDir = FileHelpers.getCacheDir(context);
 
         if (cacheDir == null) {
             return null;
@@ -83,7 +83,7 @@ public class CacheHelper {
             return;
         }
 
-        Collection<File> files = Helpers.listFileTree(Helpers.getCacheDir(context));
+        Collection<File> files = FileHelpers.listFileTree(FileHelpers.getCacheDir(context));
 
         for (File file : files) {
             String name = file.getName();

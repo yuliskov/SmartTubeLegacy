@@ -135,23 +135,6 @@ public final class Helpers {
         return result;
     }
 
-    public static InputStream toStream(String content) {
-        if (content == null) {
-            return null;
-        }
-
-        return new ByteArrayInputStream(content.getBytes(Charset.forName("UTF8")));
-    }
-
-    public static void closeStream(Closeable fos) {
-        try {
-            if (fos != null)
-                fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void postOnUiThread(Runnable runnable) {
         new Handler(Looper.getMainLooper()).post(runnable);
     }
@@ -253,36 +236,6 @@ public final class Helpers {
     }
 
     /**
-     * Deletes cache of app that belongs to the given context
-     * @param context app activity or context
-     */
-    public static void deleteCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            deleteDir(dir);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String child : children) {
-                boolean success = deleteDir(new File(dir, child));
-                if (!success) {
-                    return false;
-                }
-            }
-            return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Force normal font size regardless of the system settings
      * @param configuration app config
      * @param ctx activity
@@ -362,59 +315,6 @@ public final class Helpers {
         }
 
         return null;
-    }
-
-    public static File getCacheDir(Context context) {
-        // NOTE: Android 6.0 fix
-        File cacheDir = context.getExternalCacheDir();
-        if (!PermissionManager.checkStoragePermissions((Activity) context)) {
-            MessageHelpers.showMessage(context, "Storage permission not granted!");
-            return null;
-        }
-
-        if (cacheDir == null) { // no storage, try to use SDCard
-            cacheDir = Environment.getExternalStorageDirectory();
-            MessageHelpers.showMessage(context, "Please, make sure that SDCard is mounted");
-        }
-
-        return cacheDir;
-    }
-
-    public static void streamToFile(InputStream is, File destination) {
-        FileOutputStream fos = null;
-
-        try {
-            fos = new FileOutputStream(destination);
-
-            byte[] buffer = new byte[1024];
-            int len1;
-            while ((len1 = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len1);
-            }
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        } finally {
-            Helpers.closeStream(fos);
-            Helpers.closeStream(is);
-        }
-    }
-
-    public static Collection<File> listFileTree(File dir) {
-        Set<File> fileTree = new HashSet<File>();
-
-        if (dir == null || dir.listFiles() == null){
-            return fileTree;
-        }
-
-        for (File entry : dir.listFiles()) {
-            if (entry.isFile()) {
-                fileTree.add(entry);
-            } else {
-                fileTree.addAll(listFileTree(entry));
-            }
-        }
-
-        return fileTree;
     }
 
     public static String getAppVersion(Context context) {
