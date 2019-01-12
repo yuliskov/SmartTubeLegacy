@@ -40,7 +40,8 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
             // return;
         }
 
-        List<Subtitle> subs = mSubParser.getAllSubs();
+        List<Subtitle> subs = mSubParser.extractAllSubs();
+
         if (subs != null) {
             for (Subtitle sub : subs) {
                 mVisitor.onSubItem(sub);
@@ -48,6 +49,14 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
         }
 
         mMediaParser.extractMediaItemsAndDecipher(new YouTubeMediaParser.ParserListener() {
+            @Override
+            public void onHlsUrl(Uri url) {
+                // NOTE: serious bug there
+                // NOTE: exo can play live stream in hls only
+                // NOTE: dash live isn't playable (infinite loading)
+                mVisitor.onLiveItem(url);
+            }
+
             @Override
             public void onRawDashContent(InputStream dashContent) {
                 mVisitor.onRawDashContent(dashContent);

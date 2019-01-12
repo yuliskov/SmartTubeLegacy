@@ -55,9 +55,10 @@ public class YouTubeSubParser {
 
     }
 
-    public List<Subtitle> getAllSubs() {
-        if (mParser == null)
+    public List<Subtitle> extractAllSubs() {
+        if (mParser == null) {
             return null;
+        }
 
         TypeRef<List<Subtitle>> typeRef = new TypeRef<List<Subtitle>>() {};
         try {

@@ -1,24 +1,36 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
+import com.google.gson.annotations.SerializedName;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
 import java.util.List;
 
 public class SimpleYouTubeMediaItem implements MediaItem {
+    @SerializedName("itag")
     private String mITag;
+    @SerializedName("url")
     private String mUrl;
     private String mSignature;
+    @SerializedName("mimeType")
     private String mType;
     private String mClen;
+    @SerializedName("bitrate")
     private String mBitrate;
     private String mProjectionType;
     private String mXtags;
+    @SerializedName("width")
+    private String mWidth;
+    @SerializedName("height")
+    private String mHeight;
     private String mSize;
     private String mIndex;
     private String mInit;
+    @SerializedName("fps")
     private String mFps;
     private String mLmt;
+    @SerializedName("qualityLabel")
     private String mQualityLabel;
+    @SerializedName("quality")
     private String mQuality;
     private String mRealSignature;
     private String mAudioSamplingRate;
@@ -129,6 +141,10 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getSize() {
+        if (mSize == null && mWidth != null && mHeight != null) {
+            return String.format("%sx%s", mWidth, mHeight);
+        }
+
         return mSize;
     }
 

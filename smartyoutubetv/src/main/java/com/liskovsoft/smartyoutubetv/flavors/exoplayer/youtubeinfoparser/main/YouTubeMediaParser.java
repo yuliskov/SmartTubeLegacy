@@ -2,6 +2,13 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
 
 import android.net.Uri;
 import android.util.Log;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
+import com.jayway.jsonpath.TypeRef;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
@@ -10,7 +17,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.WeirdUrl;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
@@ -29,12 +35,14 @@ public class YouTubeMediaParser {
     private static final String TAG = YouTubeMediaParser.class.getSimpleName();
     private static final String DASH_MPD_URL = "dashmpd";
     private static final String HLS_URL = "hlsvp";
-    private static final String DASH_FORMATS_JSON = "player_response";
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
-    private static final String STREAM_DATA_JSON_KEY = "streamingData";
-    private static final String FORMATS_JSON_KEY = "formats";
+    private static final String JSON_INFO = "player_response";
+    private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.formats";
+    private static final String JSON_INFO_DASH_FORMATS2 = "$.streamingData.adaptiveFormats";
+    private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
+    private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
     private int COMMON_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
@@ -45,11 +53,33 @@ public class YouTubeMediaParser {
      * Path to *.mpd playlist
      */
     private WeirdUrl mDashMPDUrl;
+    private WeirdUrl mHlsUrl;
     private List<MediaItem> mNewMediaItems;
+    private DocumentContext mParser;
 
     public YouTubeMediaParser(String content) {
         mContent = content;
         mId = new Random().nextInt();
+
+        initJsonParser();
+    }
+
+    private void initJsonParser() {
+        String jsonInfo = extractParam(mContent, JSON_INFO);
+
+        if (jsonInfo == null) {
+            return;
+        }
+
+        Configuration conf = Configuration
+                .builder()
+                .mappingProvider(new GsonMappingProvider())
+                .jsonProvider(new GsonJsonProvider())
+                .build();
+
+        mParser = JsonPath
+                .using(conf)
+                .parse(jsonInfo);
     }
 
     public GenericInfo extractGenericInfo() {
@@ -64,29 +94,29 @@ public class YouTubeMediaParser {
     }
 
     public Uri extractHLSUrl() {
-        Uri videoInfo = parseUri(mContent);
-        String hlsUrl = videoInfo.getQueryParameter(HLS_URL);
+        String hlsUrl = extractParam(mContent, HLS_URL);
         if (hlsUrl != null) {
             return Uri.parse(hlsUrl);
         }
         return null;
     }
 
-    private void extractDashMPDUrl() {
-        String url = extractParam(mContent, DASH_MPD_URL);
-        // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mDashMPDUrl = new WeirdUrl(url);
+    private void extractHlsUrlFromJson() {
+        String url = extractJson(mParser, JSON_INFO_HLS_URL);
+
+        // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
+        mHlsUrl = new WeirdUrl(url);
     }
 
-    private String extractParam(String content, String queryParam) {
-        Uri videoInfo = parseUri(content);
-        String value = videoInfo.getQueryParameter(queryParam);
+    private void extractDashMPDUrl() {
+        String url = extractParam(mContent, DASH_MPD_URL);
 
-        if (value != null && value.isEmpty()) {
-            return null;
+        if (url == null) {
+            url = extractJson(mParser, JSON_INFO_DASH_URL);
         }
 
-        return value;
+        // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
+        mDashMPDUrl = new WeirdUrl(url);
     }
 
     private List<MediaItem> extractUrlEncodedMediaItems(String content, String queryParam) {
@@ -119,22 +149,14 @@ public class YouTubeMediaParser {
     /**
      * player_response={streamingData: {formats: [{itag: 17, ...}]}
      */
-    private List<MediaItem> extractJsonMediaItems(String content) {
+    private List<MediaItem> extractJsonMediaItems() {
         List<MediaItem> list = new ArrayList<>();
 
-        String formats = extractParam(content, DASH_FORMATS_JSON);
+        if (mParser != null) {
+            list.addAll(extractJsonList(mParser, JSON_INFO_DASH_FORMATS));
 
-        if (formats != null) {
-            Map<String, Map<String, List<Map<String, Object>>>> objectMap = Helpers.convertToObj(formats);
-            Map<String, List<Map<String, Object>>> streamData = objectMap.get(STREAM_DATA_JSON_KEY);
-            if (streamData != null) {
-                List<Map<String, Object>> fmts = streamData.get(FORMATS_JSON_KEY);
-
-                if (fmts != null) {
-                    for (Map<String, Object> fmt : fmts) {
-                        list.add(createMediaItem(fmt));
-                    }
-                }
+            if (list.size() == 0) {
+                list.addAll(extractJsonList(mParser, JSON_INFO_DASH_FORMATS2));
             }
         }
 
@@ -148,7 +170,7 @@ public class YouTubeMediaParser {
 
         mMediaItems = new ArrayList<>();
         mMediaItems.addAll(extractDashMediaItems(mContent));
-        mMediaItems.addAll(extractJsonMediaItems(mContent));
+        mMediaItems.addAll(extractJsonMediaItems());
         mMediaItems.addAll(extractSimpleMediaItems(mContent));
     }
 
@@ -185,11 +207,13 @@ public class YouTubeMediaParser {
 
     private InputStream extractDashMPDContent() {
         String dashmpdUrl = mDashMPDUrl.toString();
+
         if (dashmpdUrl != null) {
             // handle null response: 403 (Auth error)
             Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
             return response == null ? null : response.body().byteStream();
         }
+
         return null;
     }
 
@@ -204,11 +228,15 @@ public class YouTubeMediaParser {
 
     private List<String> extractSignatures() {
         List<String> result = new ArrayList<>();
+
         for (MediaItem item : mMediaItems) {
             result.add(item.getS());
         }
-        String rawSignature = mDashMPDUrl.getParam(MediaItem.S);
-        result.add(rawSignature);
+
+        // if signature not ciphered S will be null
+        result.add(mDashMPDUrl.getParam(MediaItem.S));
+        result.add(mHlsUrl.getParam(MediaItem.S));
+
         return result;
     }
 
@@ -252,6 +280,10 @@ public class YouTubeMediaParser {
 
         mListener.onRawDashContent(dashContent);
 
+        if (!mHlsUrl.isEmpty()) {
+            mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
+        }
+
         // NOTE: parser not working properly here, use raw format
         // NOTE: raw live format could crash exoplayer
 
@@ -292,18 +324,17 @@ public class YouTubeMediaParser {
         if (parserListener == null) {
             throw new IllegalStateException("You must supply a parser listener");
         }
+
         mListener = parserListener;
 
         extractMediaItems();
         extractDashMPDUrl();
+        extractHlsUrlFromJson();
         decipherSignatures();
     }
 
-    private Uri parseUri(String content) {
-        return Uri.parse("http://example.com?" + content);
-    }
-
     public interface ParserListener {
+        void onHlsUrl(Uri url);
         void onRawDashContent(InputStream dashContent);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
@@ -398,5 +429,56 @@ public class YouTubeMediaParser {
         void setViewCount(String viewCount);
         String getTimestamp();
         void setTimestamp(String timestamp);
+    }
+
+    // Utils
+
+    private static List<MediaItem> extractJsonList(DocumentContext parser, String jsonPath) {
+        TypeRef<List<SimpleYouTubeMediaItem>> typeRef = new TypeRef<List<SimpleYouTubeMediaItem>>() {};
+
+        List<MediaItem> list = new ArrayList<>();
+
+        try {
+            list.addAll(parser.read(jsonPath, typeRef));
+        } catch (PathNotFoundException e) {
+            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
+            Log.d(TAG, msg);
+        }
+
+        return list;
+    }
+
+    private static String extractJson(DocumentContext parser, String jsonPath) {
+        TypeRef<String> typeRef = new TypeRef<String>() {};
+
+        String result = null;
+
+        try {
+            result = parser.read(jsonPath, typeRef);
+        } catch (PathNotFoundException e) {
+            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
+            Log.d(TAG, msg);
+        }
+
+        return result;
+    }
+
+    private static String extractParam(String content, String queryParam) {
+        Uri videoInfo = parseUri(content);
+        String value = videoInfo.getQueryParameter(queryParam);
+
+        if (value != null && value.isEmpty()) {
+            return null;
+        }
+
+        return value;
+    }
+
+    private static Uri parseUri(String content) {
+        if (content.startsWith("http")) {
+            return Uri.parse(content);
+        }
+
+        return Uri.parse("http://example.com?" + content);
     }
 }
