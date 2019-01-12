@@ -77,12 +77,30 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "xmlns:yt", "http://youtube.com/yt/2012/10/10");
         attribute("", "xsi:schemaLocation", "urn:mpeg:DASH:schema:MPD:2011 DASH-MPD.xsd");
         attribute("", "minBufferTime", "PT1.500S");
-        attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
-        attribute("", "type", "static");
-        attribute("", "mediaPresentationDuration", durationParam);
+
+        if (isLive()) {
+            attribute("", "profiles", "urn:mpeg:dash:profile:isoff-main:2011");
+            attribute("", "type", "dynamic");
+
+            attribute("", "minBufferTime", "PT1.500S");
+            attribute("", "timeShiftBufferDepth", "PT14400.000S");
+            attribute("", "minimumUpdatePeriod", "PT5.000S");
+            // availabilityStartTime="2019-01-06T17:04:49"
+        } else {
+            attribute("", "profiles", "urn:mpeg:dash:profile:isoff-on-demand:2011");
+            attribute("", "type", "static");
+            attribute("", "mediaPresentationDuration", durationParam);
+        }
+
 
         startTag("", "Period");
-        attribute("", "duration", durationParam);
+
+        if (isLive()) {
+            // yt:segmentIngestTime="2019-01-06T17:55:24.836"
+            attribute("", "start", "PT3050.000S");
+        } else {
+            attribute("", "duration", durationParam);
+        }
     }
 
     private void writeEpilogue() {
@@ -92,11 +110,37 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private void writeMediaTags() {
+        if (isLive()) {
+            writeLiveHeaderSegmentList();
+        }
+
         writeMediaTagsForGroup(mMP4Audios);
         writeMediaTagsForGroup(mMP4Videos);
         writeMediaTagsForGroup(mWEBMAudios);
         writeMediaTagsForGroup(mWEBMVideos);
         writeMediaTagsForGroup(mSubs);
+    }
+
+    private void writeLiveHeaderSegmentList() {
+        startTag("", "SegmentList");
+
+        attribute("", "presentationTimeOffset", "3050000");
+        attribute("", "startNumber", "610");
+        attribute("", "timescale", "1000");
+
+        startTag("", "SegmentTimeline");
+
+        for (int i = 0; i < 3; i++) {
+            startTag("", "S");
+
+            attribute("", "d", "5000");
+
+            endTag("", "S");
+        }
+
+        endTag("", "SegmentTimeline");
+
+        endTag("", "SegmentList");
     }
 
     private void writeMediaTagsForGroup(List<Subtitle> subs) {
@@ -335,43 +379,70 @@ public class SimpleMPDBuilder implements MPDBuilder {
         endTag("", "BaseURL");
 
         // SegmentList tag
-        if (item.getSegmentUrlList() != null) {
-            startTag("", "SegmentList");
-
-            // Initialization tag
-            if (item.getSourceURL() != null) {
-                startTag("", "Initialization");
-                attribute("", "sourceURL", item.getSourceURL());
-                endTag("", "Initialization");
-            }
-
-            // SegmentURL tag
-            for (String url : item.getSegmentUrlList()) {
-                startTag("", "SegmentURL");
-                attribute("", "media", url);
-                endTag("", "SegmentURL");
-            }
-
-            endTag("", "SegmentList");
+        if (isLive()) {
+            writeLiveMediaSegmentList();
+        } else if (item.getSegmentUrlList() != null) {
+            writeSegmentList(item);
         } else if (!item.getIndex().equals(NULL_INDEX_RANGE)) {
-            // SegmentBase
-            startTag("", "SegmentBase");
-
-            if (item.getIndex() != null) {
-                attribute("", "indexRange", item.getIndex());
-                attribute("", "indexRangeExact", "true");
-            }
-
-            startTag("", "Initialization");
-
-            attribute("", "range", item.getInit());
-
-            endTag("", "Initialization");
-
-            endTag("", "SegmentBase");
+            writeSegmentBase(item);
         }
 
         endTag("", "Representation");
+    }
+
+    private void writeSegmentBase(MediaItem item) {
+        // SegmentBase
+        startTag("", "SegmentBase");
+
+        if (item.getIndex() != null) {
+            attribute("", "indexRange", item.getIndex());
+            attribute("", "indexRangeExact", "true");
+        }
+
+        startTag("", "Initialization");
+
+        attribute("", "range", item.getInit());
+
+        endTag("", "Initialization");
+
+        endTag("", "SegmentBase");
+    }
+
+    private void writeSegmentList(MediaItem item) {
+        startTag("", "SegmentList");
+
+        // Initialization tag
+        if (item.getSourceURL() != null) {
+            startTag("", "Initialization");
+            attribute("", "sourceURL", item.getSourceURL());
+            endTag("", "Initialization");
+        }
+
+        // SegmentURL tag
+        for (String url : item.getSegmentUrlList()) {
+            startTag("", "SegmentURL");
+            attribute("", "media", url);
+            endTag("", "SegmentURL");
+        }
+
+        endTag("", "SegmentList");
+    }
+
+    private void writeLiveMediaSegmentList() {
+        startTag("", "SegmentList");
+
+        for (String mediaDesc : new String[]{
+                "sq/610/lmt/1546797364563137",
+                "sq/611/lmt/1546797365000899",
+                "sq/612/lmt/1546797369574434"}) {
+            startTag("", "SegmentURL");
+
+            attribute("", "media", mediaDesc);
+
+            endTag("", "SegmentURL");
+        }
+
+        endTag("", "SegmentList");
     }
 
     private void writeMediaItemTag(Subtitle sub) {
@@ -485,4 +556,20 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 && mMP4Audios.size() == 0 && mWEBMAudios.size() == 0;
     }
 
+    private boolean isLive() {
+        for (MediaItem item : mMP4Videos) {
+            return isLiveMedia(item);
+        }
+
+        for (MediaItem item : mWEBMVideos) {
+            return isLiveMedia(item);
+        }
+
+        return false;
+    }
+
+    private boolean isLiveMedia(MediaItem item) {
+        return item.getUrl().contains("live=1") ||
+                item.getUrl().contains("yt_live_broadcast");
+    }
 }
