@@ -19,9 +19,9 @@ public class PermissionManager {
     };
 
     /**
-     * Checks if the app has permission to write to device storage
-     *
-     * If the app does not has permission then the user will be prompted to grant permissions
+     * Checks if the app has permission to write to device storage<br/>
+     * If the app does not has permission then the user will be prompted to grant permissions<br/>
+     * NOTE: runs async
      *
      * @param activity to apply permissions to
      */

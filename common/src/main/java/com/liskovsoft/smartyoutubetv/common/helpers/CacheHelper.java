@@ -11,15 +11,12 @@ import java.util.Collection;
 
 public class CacheHelper {
     private static final String PREFIX = CacheHelper.class.getSimpleName();
-    private static InputStream sDebugStream;
     private static boolean sCleanupDone;
 
     public static InputStream getFile(Context context, String id) {
         // don't use cache while in debug mode
         if (BuildConfig.DEBUG) {
-            InputStream debugStream = sDebugStream;
-            sDebugStream = null;
-            return debugStream;
+            return null;
         }
 
         FileInputStream fis = null;
@@ -39,11 +36,10 @@ public class CacheHelper {
         return fis;
     }
 
-    public static void putFile(Context context, InputStream asset, String id) {
+    public static InputStream putFile(Context context, InputStream asset, String id) {
         // don't use cache while in debug mode
         if (BuildConfig.DEBUG) {
-            sDebugStream = asset;
-            return;
+            return asset;
         }
 
         // do cleanup on put so this minimize overall calls
@@ -52,10 +48,12 @@ public class CacheHelper {
         File cachedFile = getCachedFile(context, id);
 
         if (asset == null || cachedFile == null || cachedFile.exists()) {
-            return;
+            return asset;
         }
 
         FileHelpers.streamToFile(asset, cachedFile);
+
+        return getFile(context, id); // recreate saved stream
     }
 
     private static File getCachedFile(Context context, String id) {

@@ -60,9 +60,7 @@ public class AssetHelper {
         List<String> assetFiles = getAssetCSSFiles(ctx, dir);
         InputStream assetMerged = getAssetMerged(ctx, assetFiles);
 
-        CacheHelper.putFile(ctx, assetMerged, fileId);
-
-        return CacheHelper.getFile(ctx, fileId);
+        return CacheHelper.putFile(ctx, assetMerged, fileId);
     }
 
     public static InputStream getAssetJSFilesMerged(Context ctx, String dir) {
