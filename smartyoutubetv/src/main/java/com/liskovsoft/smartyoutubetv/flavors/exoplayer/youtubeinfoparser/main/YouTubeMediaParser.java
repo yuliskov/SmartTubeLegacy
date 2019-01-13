@@ -18,6 +18,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.Si
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
 
@@ -52,8 +53,8 @@ public class YouTubeMediaParser {
     /**
      * Path to *.mpd playlist
      */
-    private MyPathQueryString mDashMPDUrl;
-    private MyPathQueryString mHlsUrl;
+    private MyQueryString mDashMPDUrl;
+    private MyQueryString mHlsUrl;
     private List<MediaItem> mNewMediaItems;
     private DocumentContext mParser;
 
@@ -93,16 +94,12 @@ public class YouTubeMediaParser {
         return info;
     }
 
-    public Uri extractHLSUrl() {
-        String hlsUrl = extractParam(mContent, HLS_URL);
-        if (hlsUrl != null) {
-            return Uri.parse(hlsUrl);
-        }
-        return null;
-    }
+    private void extractHlsUrl() {
+        String url = extractParam(mContent, HLS_URL);
 
-    private void extractHlsUrlFromJson() {
-        String url = extractJson(mParser, JSON_INFO_HLS_URL);
+        if (url == null) {
+            url = extractJson(mParser, JSON_INFO_HLS_URL);
+        }
 
         // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
         mHlsUrl = new MyPathQueryString(url);
@@ -329,7 +326,7 @@ public class YouTubeMediaParser {
 
         extractMediaItems();
         extractDashMPDUrl();
-        extractHlsUrlFromJson();
+        extractHlsUrl();
         decipherSignatures();
     }
 

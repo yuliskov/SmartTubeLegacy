@@ -77,8 +77,9 @@ public class MyPathQueryString implements MyQueryString {
         return mUrl;
     }
 
+    @Override
     public boolean isEmpty() {
-        return toString() == null;
+        return mUrl == null || mUrl.isEmpty();
     }
 
     public static MyPathQueryString parse(String url) {

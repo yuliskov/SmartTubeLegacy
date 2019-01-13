@@ -73,4 +73,9 @@ public class MyUrlEncodedQueryString implements MyQueryString {
 
         return Helpers.matchAll(mUrl, "[^\\/?&]+=[^\\/&]+");
     }
+
+    @Override
+    public boolean isEmpty() {
+        return mUrl == null || mUrl.isEmpty();
+    }
 }
