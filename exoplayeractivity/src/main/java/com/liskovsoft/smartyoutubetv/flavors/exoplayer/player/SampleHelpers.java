@@ -96,9 +96,10 @@ public final class SampleHelpers {
                          String[] drmKeyRequestProperties, boolean preferExtensionDecoders, String uri,
                          String extension, InputStream mpdStream) {
             super(name, drmSchemeUuid, drmLicenseUrl, drmKeyRequestProperties, preferExtensionDecoders);
-            // this.mpdContent = null;
+
             this.mMpdContent = Helpers.toString(mpdStream);
-            // fix TransactionTooLargeException (not actual, since we're passing intent between fragments)
+
+            // NOTE: fix TransactionTooLargeException (not actual, since we're passing intent between fragments)
             // ExtendedDataHolder.getInstance().putExtra(PlayerActivity.MPD_CONTENT_EXTRA, Helpers.toString(mpdStream));
 
             mExtension = extension;

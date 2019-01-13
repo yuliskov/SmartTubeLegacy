@@ -227,6 +227,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             String action = intent.getAction();
             Uri[] uris;
             String[] extensions;
+
             if (ACTION_VIEW.equals(action)) {
                 uris = new Uri[]{intent.getData()};
 
@@ -245,11 +246,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 showToast(getString(R.string.unexpected_intent_action, action));
                 return;
             }
+
             if (Util.maybeRequestReadExternalStoragePermission(getActivity(), uris)) {
                 // The player will be reinitialized if the permission is granted.
                 return;
             }
+
             MediaSource[] mediaSources = new MediaSource[uris.length];
+
             for (int i = 0; i < uris.length; i++) {
                 // NOTE: supply audio and video tracks in one field
                 String[] split = uris[i].toString().split(DELIMITER);
@@ -258,7 +262,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                             null));
                     continue;
                 }
-                // NOTE: supply audio and video tracks in one field
+
                 String smallExtra = intent.getStringExtra(MPD_CONTENT_EXTRA);
                 String bigExtra = (String) ExtendedDataHolder.getInstance().getExtra(MPD_CONTENT_EXTRA);
                 if (smallExtra != null) {
