@@ -331,4 +331,16 @@ public final class Helpers {
 
         return versionName;
     }
+
+    public static boolean matchAll(String input, String... regex) {
+        for (String reg : regex) {
+            Pattern pattern = Pattern.compile(reg);
+            Matcher matcher = pattern.matcher(input);
+            if (!matcher.find()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -125,7 +125,7 @@ import java.util.StringTokenizer;
  * @version 1.2
  */
 
-public class UrlEncodedQueryString {
+class UrlEncodedQueryStringBase {
 
 	//
 	// Public statics
@@ -198,9 +198,9 @@ public class UrlEncodedQueryString {
 	 * Calling <code>toString()</code> on the created instance will return an empty String.
 	 */
 
-	public static UrlEncodedQueryString create() {
+	public static UrlEncodedQueryStringBase create() {
 
-		return new UrlEncodedQueryString();
+		return new UrlEncodedQueryStringBase();
 	}
 
 	/**
@@ -212,9 +212,9 @@ public class UrlEncodedQueryString {
 	 *            <code>Map</code> containing parameter names and values.
 	 */
 
-	public static UrlEncodedQueryString create( Map<String, List<String>> parameterMap ) {
+	public static UrlEncodedQueryStringBase create(Map<String, List<String>> parameterMap ) {
 
-		UrlEncodedQueryString queryString = new UrlEncodedQueryString();
+		UrlEncodedQueryStringBase queryString = new UrlEncodedQueryStringBase();
 
 		// Defensively copy the List<String>'s
 
@@ -240,9 +240,9 @@ public class UrlEncodedQueryString {
 	 *            query string to be parsed
 	 */
 
-	public static UrlEncodedQueryString parse( final CharSequence query ) {
+	public static UrlEncodedQueryStringBase parse(final CharSequence query ) {
 
-		UrlEncodedQueryString queryString = new UrlEncodedQueryString();
+		UrlEncodedQueryStringBase queryString = new UrlEncodedQueryStringBase();
 
 		// Note: import to call appendOrSet with 'true', in
 		// case the given query contains multi-valued parameters
@@ -266,7 +266,7 @@ public class UrlEncodedQueryString {
 	 *            URI to be parsed
 	 */
 
-	public static UrlEncodedQueryString parse( final URI uri ) {
+	public static UrlEncodedQueryStringBase parse(final URI uri ) {
 
 		// Note: use uri.getRawQuery, not uri.getQuery, in case the
 		// query parameters contain encoded ampersands (%26)
@@ -414,7 +414,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString set( final String name, final String value ) {
+	public UrlEncodedQueryStringBase set(final String name, final String value ) {
 
 		appendOrSet( name, value, false );
 		return this;
@@ -440,7 +440,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString set( final String name, final Number value ) {
+	public UrlEncodedQueryStringBase set(final String name, final Number value ) {
 
 		if ( value == null ) {
 			remove( name );
@@ -469,7 +469,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString set( final String query ) {
+	public UrlEncodedQueryStringBase set(final String query ) {
 
 		appendOrSet( query, false );
 		return this;
@@ -489,7 +489,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString append( final String name, final String value ) {
+	public UrlEncodedQueryStringBase append(final String name, final String value ) {
 
 		appendOrSet( name, value, true );
 		return this;
@@ -516,7 +516,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString append( final String name, final Number value ) {
+	public UrlEncodedQueryStringBase append(final String name, final Number value ) {
 
 		appendOrSet( name, value.toString(), true );
 		return this;
@@ -539,7 +539,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString append( final String query ) {
+	public UrlEncodedQueryStringBase append(final String query ) {
 
 		appendOrSet( query, true );
 		return this;
@@ -566,7 +566,7 @@ public class UrlEncodedQueryString {
 	 * @return a reference to this object
 	 */
 
-	public UrlEncodedQueryString remove( final String name ) {
+	public UrlEncodedQueryStringBase remove(final String name ) {
 
 		appendOrSet( name, null, false );
 		return this;
@@ -682,12 +682,12 @@ public class UrlEncodedQueryString {
 			return true;
 		}
 
-		if ( !( obj instanceof UrlEncodedQueryString ) ) {
+		if ( !( obj instanceof UrlEncodedQueryStringBase) ) {
 			return false;
 		}
 
 		String query = toString();
-		String thatQuery = ( (UrlEncodedQueryString) obj ).toString();
+		String thatQuery = ( (UrlEncodedQueryStringBase) obj ).toString();
 
 		return query.equals( thatQuery );
 	}
@@ -792,7 +792,7 @@ public class UrlEncodedQueryString {
 	 * <code>UrlEncodedQueryString</code>.
 	 */
 
-	private UrlEncodedQueryString() {
+	private UrlEncodedQueryStringBase() {
 
 		// Can never be called
 	}

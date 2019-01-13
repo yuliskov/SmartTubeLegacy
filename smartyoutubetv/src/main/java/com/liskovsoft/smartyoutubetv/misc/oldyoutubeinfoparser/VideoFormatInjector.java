@@ -1,9 +1,9 @@
-package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
+package com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser;
 
 import android.content.Context;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.injectors.ResourceInjectorBase;
 import com.squareup.otto.Subscribe;
 

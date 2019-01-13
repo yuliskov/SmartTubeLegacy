@@ -1,11 +1,11 @@
-package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser;
+package com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.SwitchResolutionEvent;
-import com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events.VideoFormatEvent;
+import com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser.events.SwitchResolutionEvent;
+import com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser.events.VideoFormatEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.squareup.otto.Subscribe;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.oldyoutubeinfoparser.events;
+package com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser.events;
 
 public class SwitchResolutionEvent {
     private String mFormatName;

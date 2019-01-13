@@ -16,7 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.WeirdUrl;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.squareup.otto.Subscribe;
 import okhttp3.Response;
@@ -52,8 +52,8 @@ public class YouTubeMediaParser {
     /**
      * Path to *.mpd playlist
      */
-    private WeirdUrl mDashMPDUrl;
-    private WeirdUrl mHlsUrl;
+    private MyPathQueryString mDashMPDUrl;
+    private MyPathQueryString mHlsUrl;
     private List<MediaItem> mNewMediaItems;
     private DocumentContext mParser;
 
@@ -105,7 +105,7 @@ public class YouTubeMediaParser {
         String url = extractJson(mParser, JSON_INFO_HLS_URL);
 
         // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mHlsUrl = new WeirdUrl(url);
+        mHlsUrl = new MyPathQueryString(url);
     }
 
     private void extractDashMPDUrl() {
@@ -116,7 +116,7 @@ public class YouTubeMediaParser {
         }
 
         // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mDashMPDUrl = new WeirdUrl(url);
+        mDashMPDUrl = new MyPathQueryString(url);
     }
 
     private List<MediaItem> extractUrlEncodedMediaItems(String content, String queryParam) {
@@ -234,8 +234,8 @@ public class YouTubeMediaParser {
         }
 
         // if signature not ciphered S will be null
-        result.add(mDashMPDUrl.getParam(MediaItem.S));
-        result.add(mHlsUrl.getParam(MediaItem.S));
+        result.add(mDashMPDUrl.get(MediaItem.S));
+        result.add(mHlsUrl.get(MediaItem.S));
 
         return result;
     }
@@ -269,8 +269,8 @@ public class YouTubeMediaParser {
         }
 
         if (signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
-            mDashMPDUrl.removeParam(MediaItem.S);
-            mDashMPDUrl.setParam(MediaItem.SIGNATURE, signature);
+            mDashMPDUrl.remove(MediaItem.S);
+            mDashMPDUrl.set(MediaItem.SIGNATURE, signature);
         } else {
             Log.d(TAG, "Video signature is wrong: " + signature);
         }
