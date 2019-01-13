@@ -22,7 +22,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private int mCounter = 1;
         private GenericInfo mInfo;
         private Uri mHlsUrl;
-        private InputStream mDashContent;
+        private Uri mDashUrl;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
             mMediaFoundCallback = mediaFoundCallback;
@@ -54,13 +54,13 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         @Override
-        public void onLiveItem(Uri hlsUrl) {
+        public void onHlsUrl(Uri hlsUrl) {
             mHlsUrl = hlsUrl;
         }
 
         @Override
-        public void onRawDashContent(InputStream dashContent) {
-            mDashContent = dashContent;
+        public void onDashUrl(Uri dashUrl) {
+            mDashUrl = dashUrl;
         }
 
         @Override
@@ -76,10 +76,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onInfoFound(mInfo);
             }
 
-            if (mHlsUrl != null) { // live stream usually
+            if (mDashUrl != null) { // dash live stream, contains more formats
+                mMediaFoundCallback.onDashUrlFound(mDashUrl);
+            } else if (mHlsUrl != null) { // live stream usually
                 mMediaFoundCallback.onHLSFound(mHlsUrl);
-            } else if (mDashContent != null) { // raw dash, contains more formats, e.g. for live streams
-                mMediaFoundCallback.onDashMPDFound(mDashContent);
             } else if (!mMPDBuilder.isEmpty()) {
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
             } else if (!mUrlListBuilder.isEmpty()) { // fallback to the simple formats

@@ -10,6 +10,7 @@ public abstract class OnMediaFoundCallback {
     public void onDashMPDFound(InputStream mpdContent){}
     public void onHLSFound(Uri hlsUrl){}
     public void onUrlListFound(List<String> uriList) {}
+    public void onDashUrlFound(Uri dashUrl) {}
     public void onInfoFound(GenericInfo info){}
     public abstract void onDone();
 }

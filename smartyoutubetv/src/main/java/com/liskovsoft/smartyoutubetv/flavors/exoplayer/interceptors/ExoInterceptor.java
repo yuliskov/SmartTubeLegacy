@@ -149,13 +149,18 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             private Sample mSample;
 
             @Override
-            public void onDashMPDFound(final InputStream mpdContent) {
-                mSample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
+            public void onDashUrlFound(Uri dashUrl) {
+                mSample = SampleHelpers.buildFromUri(dashUrl);
             }
 
             @Override
             public void onHLSFound(final Uri hlsUrl) {
                 mSample = SampleHelpers.buildFromUri(hlsUrl);
+            }
+
+            @Override
+            public void onDashMPDFound(final InputStream mpdContent) {
+                mSample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
             }
 
             @Override

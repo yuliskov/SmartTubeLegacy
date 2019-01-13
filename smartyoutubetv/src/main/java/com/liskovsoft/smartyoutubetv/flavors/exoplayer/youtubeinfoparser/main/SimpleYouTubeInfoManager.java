@@ -40,12 +40,12 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
                 // NOTE: serious bug there
                 // NOTE: exo can play live stream in hls only
                 // NOTE: dash live isn't playable (infinite loading)
-                mVisitor.onLiveItem(url);
+                mVisitor.onHlsUrl(url);
             }
 
             @Override
-            public void onRawDashContent(InputStream dashContent) {
-                mVisitor.onRawDashContent(dashContent);
+            public void onDashUrl(Uri url) {
+                mVisitor.onDashUrl(url);
             }
 
             @Override

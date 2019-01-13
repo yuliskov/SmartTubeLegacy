@@ -202,18 +202,6 @@ public class YouTubeMediaParser {
         return mediaItem;
     }
 
-    private InputStream extractDashMPDContent() {
-        String dashmpdUrl = mDashMPDUrl.toString();
-
-        if (dashmpdUrl != null) {
-            // handle null response: 403 (Auth error)
-            Response response = OkHttpHelpers.doOkHttpRequest(dashmpdUrl);
-            return response == null ? null : response.body().byteStream();
-        }
-
-        return null;
-    }
-
     private void decipherSignatures() {
         if (mMediaItems == null) {
             throw new IllegalStateException("No media items found!");
@@ -273,15 +261,15 @@ public class YouTubeMediaParser {
         }
 
         // Looking for qhd formats for live streams. They're here.
-        InputStream dashContent = extractDashMPDContent();
-
-        mListener.onRawDashContent(dashContent);
+        if (!mDashMPDUrl.isEmpty()) {
+            mListener.onDashUrl(Uri.parse(mDashMPDUrl.toString()));
+        }
 
         if (!mHlsUrl.isEmpty()) {
             mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
         }
 
-        // NOTE: parser not working properly here, use raw format
+        // NOTE: parser not working properly here, use url
         // NOTE: raw live format could crash exoplayer
 
         // parser don't work as expected on this moment
@@ -332,7 +320,7 @@ public class YouTubeMediaParser {
 
     public interface ParserListener {
         void onHlsUrl(Uri url);
-        void onRawDashContent(InputStream dashContent);
+        void onDashUrl(Uri url);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 

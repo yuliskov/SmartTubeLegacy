@@ -570,7 +570,14 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private boolean isLiveMedia(MediaItem item) {
-        return item.getUrl().contains("live=1") ||
+        boolean isLive =
+                item.getUrl().contains("live=1") ||
                 item.getUrl().contains("yt_live_broadcast");
+
+        if (isLive) {
+            throw new IllegalStateException("Live item shouldn't be there");
+        }
+
+        return isLive;
     }
 }
