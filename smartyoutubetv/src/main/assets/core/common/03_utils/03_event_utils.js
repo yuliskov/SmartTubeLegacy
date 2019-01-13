@@ -125,11 +125,17 @@ var EventUtils = {
 
         console.log("EventUtils::triggerEvent: " + el + ' ' + elSelector + ' ' + type + ' ' + keyCode);
 
+        this._triggerEvent(el, type, keyCode);
+    },
+
+    _triggerEvent: function(el, type, keyCode) {
         if ('createEvent' in document) {
-            // modern browsers, IE9+
+            // modern browsers: Chrome, IE9+
+            // HTMLEvents, KeyboardEvent
+            // https://developer.mozilla.org/en-US/docs/Web/API/Document/createEvent#Notes
             var e = document.createEvent('HTMLEvents');
             e.keyCode = keyCode;
-            e.initEvent(type, false, true);
+            e.initEvent(type, true, true);
             el.dispatchEvent(e);
         } else {
             // IE 8

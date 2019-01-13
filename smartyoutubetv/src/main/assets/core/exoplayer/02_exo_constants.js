@@ -42,7 +42,6 @@ var ExoConstants = {
     backBtnSelector: '#legend .back',
     playerControlsSelector: '#transport-controls',
     controlsBarSelector: '#buttons-list',
-    playButtonSelector: '.icon-player-play.toggle-button',
     // mainControlsSelector: '.fresh-transport-controls.transport-controls',
     mainTitleSelector: '.title-card.watch-title-tray',
     playerUiSelector: '#watch.watch', // div that receives keys events
