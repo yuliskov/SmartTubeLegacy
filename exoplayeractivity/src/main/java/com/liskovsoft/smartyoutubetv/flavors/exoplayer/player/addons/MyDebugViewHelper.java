@@ -53,7 +53,7 @@ import java.util.Locale;
  * A helper class for periodically updating a {@link TextView} with debug information obtained from
  * a {@link SimpleExoPlayer}.
  */
-public final class DetailDebugViewHelper implements Runnable, Player.EventListener {
+public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private static final int REFRESH_INTERVAL_MS = 1000;
     private static final float TEXT_SIZE_SP = 10;
 
@@ -70,7 +70,7 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
      * @param player   The {@link SimpleExoPlayer} from which debug information should be obtained.
      * @param viewGroup The {@link TextView} that should be updated to display the information.
      */
-    public DetailDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
+    public MyDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
         this.player = player;
         this.viewGroup = viewGroup;
         this.context = ctx;
@@ -185,9 +185,10 @@ public final class DetailDebugViewHelper implements Runnable, Player.EventListen
         }
 
         String videoRes = getVideoResolution(video);
-        String displayRes = getDisplayResolution();
 
-        appendRow("Video/Display Resolution", videoRes + "/" + displayRes);
+        // String displayRes = getDisplayResolution();
+
+        appendRow("Video Resolution", videoRes);
         appendRow("Video/Audio Codecs", String.format(
                 "%s%s/%s%s",
                 video.sampleMimeType.replace("video/", ""),

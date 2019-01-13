@@ -21,10 +21,9 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.DetailDebugViewHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
@@ -63,7 +62,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 
-    private DetailDebugViewHelper mDebugViewHelper;
+    private MyDebugViewHelper mDebugViewHelper;
 
     private boolean mIsDurationSet;
     private int mInterfaceVisibilityState = View.INVISIBLE;
@@ -93,7 +92,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         super.initializePlayer();
 
         if (needNewPlayer) {
-            mDebugViewHelper = new DetailDebugViewHelper(mPlayer, mDebugViewGroup, getActivity());
+            mDebugViewHelper = new MyDebugViewHelper(mPlayer, mDebugViewGroup, getActivity());
 
             // Do not move this code to another place!!! This statement must come after player initialization
             mAutoFrameRateManager = new AutoFrameRateManager(getActivity(), mPlayer);

@@ -1,11 +1,11 @@
+/* Hide Viewport from debug info. Since it shows unreal values on tv boxes: pixel density problem */
+.html5-video-info-panel-content > :nth-child(2) {
+    display: none !important;
+}
+
 /* hide 'includes payed promotions' msg */
 #video-message-overlay,
 /* hide all icons from the bottom-right corner, except back icon */
 div#legend > div.legend-item:not(.airstream-back) {
-    display: none !important;
-}
-
-/* Hide Viewport from debug info. Since it shows unreal values on tv boxes: pixel density problem */
-.html5-video-info-panel-content > :nth-child(2) {
     display: none !important;
 }
