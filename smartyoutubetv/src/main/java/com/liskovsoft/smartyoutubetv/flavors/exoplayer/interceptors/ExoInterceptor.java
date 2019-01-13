@@ -150,12 +150,12 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
             @Override
             public void onDashUrlFound(Uri dashUrl) {
-                mSample = SampleHelpers.buildFromUri(dashUrl);
+                mSample = SampleHelpers.buildFromMpdUri(dashUrl);
             }
 
             @Override
             public void onHLSFound(final Uri hlsUrl) {
-                mSample = SampleHelpers.buildFromUri(hlsUrl);
+                mSample = SampleHelpers.buildFromHlsUri(hlsUrl);
             }
 
             @Override

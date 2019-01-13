@@ -76,10 +76,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onInfoFound(mInfo);
             }
 
-            if (mDashUrl != null) { // dash live stream, contains more formats
-                mMediaFoundCallback.onDashUrlFound(mDashUrl);
-            } else if (mHlsUrl != null) { // live stream usually
+            if (mHlsUrl != null) { // live stream usually
                 mMediaFoundCallback.onHLSFound(mHlsUrl);
+            } else if (mDashUrl != null) { // dash live stream, contains more formats
+                mMediaFoundCallback.onDashUrlFound(mDashUrl);
             } else if (!mMPDBuilder.isEmpty()) {
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
             } else if (!mUrlListBuilder.isEmpty()) { // fallback to the simple formats

@@ -13,38 +13,25 @@ import java.util.UUID;
 public final class SampleHelpers {
     public static Sample buildFromList(List<String> uris) {
         UriSample[] samples = new UriSample[uris.size()];
+
         for (int i = 0; i < uris.size(); i++) {
             samples[i] = new UriSample("Sample Video", uris.get(i));
         }
+
         return new PlaylistSample("Sample Playlist", samples);
     }
 
-    public static Sample buildFromUri(Uri contentUrl) {
-        return buildFromUri(contentUrl, "Sample Video");
-    }
-
-    public static Sample buildFromUri(Uri contentUrl, String title) {
-        return buildFromUri(contentUrl, title, "");
-    }
-
-    public static Sample buildFromUri(Uri contentUrl, String title, String title2) {
-        return new UriSample(mergeTitles(title, title2), contentUrl.toString());
-    }
-
     public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist) {
-        return buildFromMPDPlaylist(mpdPlaylist, "Sample Video");
+        // NOTE: real title will be set later
+        return new MPDSample("Sample Video", "https://example.com/test.mpd", mpdPlaylist);
     }
 
-    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title) {
-        return buildFromMPDPlaylist(mpdPlaylist, title, "");
+    public static Sample buildFromHlsUri(Uri hlsUrl) {
+        return new UriSample("Sample Video", hlsUrl.toString(), "m3u8");
     }
 
-    public static Sample buildFromMPDPlaylist(InputStream mpdPlaylist, String title, String title2) {
-        return new MPDSample(mergeTitles(title, title2), "https://example.com/test.mpd", mpdPlaylist);
-    }
-
-    private static String mergeTitles(String title, String title2) {
-        return title + ExoPlayerFragment.DELIMITER + title2;
+    public static Sample buildFromMpdUri(Uri dashUrl) {
+        return new UriSample("Sample Video", dashUrl.toString(), "mpd");
     }
 
     public abstract static class Sample {
@@ -77,7 +64,7 @@ public final class SampleHelpers {
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
-            intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, this.mName);
+            intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, this.mName); // title param will be changed later
             return intent;
         }
 
@@ -124,6 +111,10 @@ public final class SampleHelpers {
 
         public UriSample(String name, String uri) {
             this(name, null, null, null, true, uri, null);
+        }
+
+        public UriSample(String name, String uri, String extension) {
+            this(name, null, null, null, true, uri, extension);
         }
 
         public UriSample(String name, UUID drmSchemeUuid, String drmLicenseUrl,
