@@ -102,7 +102,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             mStateManager = new PlayerStateManager2(this, mPlayer, mTrackSelector);
 
-            mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
+            // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
     }
 
