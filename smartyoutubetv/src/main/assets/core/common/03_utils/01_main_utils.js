@@ -286,17 +286,34 @@ var Utils = {
 
     show: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
-        el.style.display = 'initial';
+
+        if (el) {
+            el.style.display = 'initial';
+        }
     },
 
     hide: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
-        el.style.display = 'none';
+
+        if (el) {
+            el.style.display = 'none';
+        }
+    },
+
+    ytShow: function(elementOrSelector) {
+        var el = this.$(elementOrSelector);
+
+        if (el) {
+            this.removeClass(el, YouTubeClasses.HIDDEN);
+        }
     },
 
     ytHide: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
-        this.addClass(el, YouTubeClasses.HIDDEN);
+
+        if (el) {
+            this.addClass(el, YouTubeClasses.HIDDEN);
+        }
     },
     
     content: function(elem, newContent) {
