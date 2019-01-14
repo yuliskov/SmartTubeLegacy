@@ -21,7 +21,7 @@ function PlayerHangFixAddon() {
         var $this = this;
         var plBtn = Utils.$(YouTubeSelectors.PLAYER_PLAY_BUTTON);
         if (plBtn && this.isPaused()) {
-            EventUtils.triggerEnter(plBtn);
+            // EventUtils.triggerEnter(plBtn);
             setTimeout(function() {
                 $this.isPaused() && EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
             }, this.QUIT_VIDEO_TIMEOUT);
@@ -35,6 +35,6 @@ function PlayerHangFixAddon() {
     };
 }
 
-// if (DeviceUtils.isWebView() && !DeviceUtils.isExo()) {
-//     new PlayerHangFixAddon().run();
-// }
+if (DeviceUtils.isWebView() && !DeviceUtils.isExo()) {
+    new PlayerHangFixAddon().run();
+}
