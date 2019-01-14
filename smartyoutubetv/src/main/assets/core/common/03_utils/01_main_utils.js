@@ -284,14 +284,19 @@ var Utils = {
         };
     },
 
-    show: function(selector) {
-        var el = this.$(selector);
+    show: function(elementOrSelector) {
+        var el = this.$(elementOrSelector);
         el.style.display = 'initial';
     },
 
-    hide: function(selector) {
-        var el = this.$(selector);
+    hide: function(elementOrSelector) {
+        var el = this.$(elementOrSelector);
         el.style.display = 'none';
+    },
+
+    ytHide: function(elementOrSelector) {
+        var el = this.$(elementOrSelector);
+        this.addClass(el, YouTubeClasses.HIDDEN);
     },
     
     content: function(elem, newContent) {

@@ -58,7 +58,9 @@ var YouTubeSelectors = {
     SEARCH_RESULTS_ROW: '#search-results',
     SURFACE_AREA: '#surface',
     MAIN_LOADER: '#loader',
-    BUTTON_BACK: '#legend .back'
+    BUTTON_BACK: '#legend .back',
+    OVERLAY_PANEL_CONTAINER: '#overlay-stage',
+    OVERLAY_PANEL: '.overlay-action-panel'
 };
 
 /**
@@ -73,7 +75,8 @@ var YouTubeClasses = {
     MODEL_LOADED: 'loaded',
     WATCH_IDLE_CLASS: 'watch-idle',
     BUTTON_TOGGLED: 'toggle-selected',
-    NO_MODEL: 'no-model'
+    NO_MODEL: 'no-model',
+    HIDDEN: 'hidden'
 };
 
 /**
