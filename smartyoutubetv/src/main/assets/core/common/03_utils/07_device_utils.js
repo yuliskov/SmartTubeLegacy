@@ -191,8 +191,8 @@ var DeviceUtils = {
         return this.getApp().getPreferredCodec();
     },
 
-    sendMessage: function(message) {
-        this.getApp().sendMessage(message);
+    sendMessage: function(message, content) {
+        this.getApp().sendMessage(message, content);
     },
 
     isMicAvailable: function() {

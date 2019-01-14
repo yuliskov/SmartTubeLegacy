@@ -1,13 +1,11 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
 import android.os.Handler;
-import android.support.v4.util.Pair;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +36,31 @@ public class LanguageDialogSource implements SingleDialogSource {
 
     @Override
     public Object getSelectedItemTag() {
-        return mLangUpdater.getPreferredLocale();
+        String langCode = mLangUpdater.getPreferredLocale();
+
+        // short lang code fix, like ru instead of ru_RU
+        return getCorrectTag(langCode);
+    }
+
+    /**
+     * Short lang code fix, like ru instead of ru_RU
+     * @param langCode lang code
+     * @return real code from resources
+     */
+    private String getCorrectTag(String langCode) {
+        if (langCode == null || langCode.isEmpty()) {
+            return "";
+        }
+
+        Map<String, String> locales = mLangUpdater.getSupportedLocales();
+
+        for (String tag : locales.values()) {
+            if (tag.startsWith(langCode)) {
+                return tag;
+            }
+        }
+
+        return "";
     }
 
     @Override

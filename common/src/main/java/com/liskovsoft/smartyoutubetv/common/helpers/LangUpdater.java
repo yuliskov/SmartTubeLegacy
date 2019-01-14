@@ -125,6 +125,10 @@ public class LangUpdater {
         return SmartPreferences.instance(mContext).getPreferredLanguage();
     }
 
+    /**
+     * E.g. ru, uk, en
+     * @param langCode lang
+     */
     public void setPreferredLocale(String langCode) {
         SmartPreferences.instance(mContext).setPreferredLanguage(langCode);
     }

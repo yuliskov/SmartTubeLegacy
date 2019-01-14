@@ -191,8 +191,8 @@ public class WebViewJavaScriptInterface {
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
-    public void sendMessage(String message) {
-        mMessageHandler.handleMessage(message);
+    public void sendMessage(String message, String content) {
+        mMessageHandler.handleMessage(message, content);
     }
 
     @JavascriptInterface
