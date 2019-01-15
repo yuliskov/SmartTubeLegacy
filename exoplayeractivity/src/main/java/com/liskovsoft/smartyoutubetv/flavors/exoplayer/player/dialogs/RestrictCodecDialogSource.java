@@ -21,26 +21,16 @@ public class RestrictCodecDialogSource implements SingleDialogSource {
     @Override
     public List<DialogItem> getItems() {
         List<DialogItem> map = new ArrayList<>();
-        map.add(DialogItem.create(mContext.getString(R.string.no_restrictions), ""));
-        map.add(DialogItem.create("4K     60fps    vp9", "2160|60|vp9"));
-        map.add(DialogItem.create("4K     30fps    vp9", "2160|30|vp9"));
-        map.add(DialogItem.create("FHD    60fps    avc", "1080|60|avc"));
-        map.add(DialogItem.create("FHD    60fps    vp9", "1080|60|vp9"));
-        map.add(DialogItem.create("FHD    30fps    avc", "1080|30|avc"));
-        map.add(DialogItem.create("FHD    30fps    vp9", "1080|30|vp9"));
-        map.add(DialogItem.create("FHD    60fps    avc+vp9", "1080|60|"));
-        map.add(DialogItem.create("FHD    30fps    avc+vp9", "1080|30|"));
+        map.add(new RestrictCodecDialogItem(mContext.getString(R.string.no_restrictions), "", mPrefs));
+        map.add(new RestrictCodecDialogItem("4K     60fps    vp9", "2160|60|vp9", mPrefs));
+        map.add(new RestrictCodecDialogItem("4K     30fps    vp9", "2160|30|vp9", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    60fps    avc", "1080|60|avc", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    60fps    vp9", "1080|60|vp9", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    30fps    avc", "1080|30|avc", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    30fps    vp9", "1080|30|vp9", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    60fps    avc+vp9", "1080|60|", mPrefs));
+        map.add(new RestrictCodecDialogItem("FHD    30fps    avc+vp9", "1080|30|", mPrefs));
         return map;
-    }
-
-    @Override
-    public Object getSelectedItemTag() {
-        return mPrefs.getPreferredCodec();
-    }
-
-    @Override
-    public void setSelectedItemByTag(Object codec) {
-        mPrefs.setPreferredCodec((String) codec);
     }
 
     @Override

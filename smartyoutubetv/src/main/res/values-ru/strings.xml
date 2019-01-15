@@ -25,10 +25,10 @@
     <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
     <string name="no_restrictions">Без ограничений</string>
     <string name="old_ui">Old UI</string>
-    <string name="save_selection_tip">Не показывать этот экран в следующий раз</string>
-    <string name="endcards_tip">Подсказки перед окончанием видео (только 1080)</string>
-    <string name="language_tip">Язык приложения</string>
-    <string name="update_check_tip">Сообщать о выходе новых версий</string>
+    <string name="tip_save_selection">Не показывать этот экран в следующий раз</string>
+    <string name="tip_endcards">Подсказки перед окончанием видео (только 1080)</string>
+    <string name="tip_language">Язык приложения</string>
+    <string name="tip_update_check">Сообщать о выходе новых версий</string>
     <string name="webview_tip">До 1080р, остановитесь на нем, если все работает</string>
     <string name="xwalk_tip">До 1080р, выберите его в случае проблем</string>
     <string name="exo_tip">До 4К, остановитесь на нем, если все работает</string>
@@ -46,4 +46,8 @@
     <string name="title_exo_alt">PRO Дополнит.</string>
     <string name="title_webview">LITE Основной</string>
     <string name="title_xwalk">LITE Дополнит.</string>
+    <string name="tweaks">Твики</string>
+    <string name="tip_tweaks">Различные мелкие настройки</string>
+    <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
+    <string name="tweak_ok_button_fix">Не ставить на паузу при нажатии на OK</string>
 </resources>

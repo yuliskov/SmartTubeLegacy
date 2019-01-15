@@ -40,10 +40,10 @@
     <string name="no_restrictions">No restrictions</string>
     <string name="old_ui">Old UI</string>
     <string name="endcards">End Cards</string>
-    <string name="save_selection_tip">Don\'t show this screen next time</string>
-    <string name="endcards_tip">Enable tips before the end of the video (1080 only)</string>
-    <string name="language_tip">Change language</string>
-    <string name="update_check_tip">Check for the updates</string>
+    <string name="tip_save_selection">Don\'t show this screen next time</string>
+    <string name="tip_endcards">Enable tips before the end of the video (1080 only)</string>
+    <string name="tip_language">Change language</string>
+    <string name="tip_update_check">Check for the updates</string>
     <string name="webview_tip">Up to 1080p on most of the devices</string>
     <string name="xwalk_tip">Up to 1080p and more stable work</string>
     <string name="exo_tip">Up to 4K on most of the devices</string>
@@ -62,4 +62,8 @@
     <string name="title_exo_alt">PRO Alt</string>
     <string name="title_webview">LITE Main</string>
     <string name="title_xwalk">LITE Alt</string>
+    <string name="tweaks">Tweaks</string>
+    <string name="tip_tweaks">Various app tweaks here</string>
+    <string name="tweak_remember_launcher">Remember selected launcher</string>
+    <string name="tweak_ok_button_fix">Don\'t pause on OK button</string>
 </resources>

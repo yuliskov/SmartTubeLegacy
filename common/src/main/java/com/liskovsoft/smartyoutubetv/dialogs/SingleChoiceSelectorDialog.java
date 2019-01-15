@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import com.liskovsoft.smartyoutubetv.common.R;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+
+import java.util.List;
 
 public class SingleChoiceSelectorDialog extends GenericSelectorDialog {
     private final SingleDialogSource mDialogSource;
@@ -27,23 +30,16 @@ public class SingleChoiceSelectorDialog extends GenericSelectorDialog {
     }
 
     @Override
-    protected void updateViews(View root) {
-        CheckedTextView view = root.findViewWithTag(mDialogSource.getSelectedItemTag());
-
-        if (view != null) {
-            view.setChecked(true);
-        }
-    }
-
-    @Override
     public void onClick(View view) {
-        Object tag = view.getTag();
-        if (!tag.equals(mDialogSource.getSelectedItemTag())) {
-            mDialogSource.setSelectedItemByTag(tag);
+        DialogItem item = (DialogItem) view.getTag();
+        CheckedTextView textView = (CheckedTextView) view;
 
-            // close dialog
-            mAlertDialog.dismiss();
-            mAlertDialog = null;
+        textView.setChecked(true);
+
+        if (item.getChecked() != textView.isChecked()) { // prevent user for click on same item twice
+            item.setChecked(textView.isChecked());
+
+            updateViews(getRoot());
         }
     }
 }

@@ -25,16 +25,28 @@ public abstract class GenericSelectorDialog implements OnClickListener {
 
     public interface DialogSourceBase {
         class DialogItem {
-            private final String itemName;
-            private final Object itemTag;
+            private final String mTitle;
+            private boolean mChecked;
 
-            private DialogItem(String itemName, Object itemTag) {
-                this.itemName = itemName;
-                this.itemTag = itemTag;
+            public DialogItem(String title, boolean checked) {
+                mTitle = title;
+                mChecked = checked;
             }
 
-            public static DialogItem create(String itemName, Object itemTag) {
-                return new DialogItem(itemName, itemTag);
+            public static DialogItem create(String title, boolean checked) {
+                return new DialogItem(title, checked);
+            }
+
+            public String getTitle() {
+                return mTitle;
+            }
+
+            public boolean getChecked() {
+                return mChecked;
+            }
+
+            public void setChecked(boolean checked) {
+                mChecked = checked;
             }
         }
 
@@ -45,12 +57,6 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         List<DialogItem> getItems();
 
         /**
-         * Notify about that item has been selected
-         * @param itemTag selected item's tag
-         */
-        void setSelectedItemByTag(Object itemTag);
-
-        /**
          * Get dialog main title
          * @return dialog title
          */
@@ -58,25 +64,9 @@ public abstract class GenericSelectorDialog implements OnClickListener {
     }
 
     public interface SingleDialogSource extends DialogSourceBase {
-        /**
-         * Get selected tag
-         * @return selected tag
-         */
-        Object getSelectedItemTag();
     }
 
     public interface MultiDialogSource extends DialogSourceBase {
-        /**
-         * Get selected tags
-         * @return selected tags
-         */
-        List<Object> getSelectedItemsTags();
-
-        /**
-         * Notify about that item has been unselected
-         * @param itemTag unselected item's tag
-         */
-        void setUnselectedItemByTag(Object itemTag);
     }
 
     public GenericSelectorDialog(Context activity, DialogSourceBase dialogSource) {
@@ -93,7 +83,11 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         View title = createCustomTitle(builder.getContext());
         mAlertDialog = builder.setCustomTitle(title).setView(buildView(builder.getContext())).create();
         mAlertDialog.show();
-        updateViews(mAlertDialog.findViewById(R.id.root));
+        updateViews(getRoot());
+    }
+
+    protected View getRoot() {
+        return mAlertDialog.findViewById(R.id.root);
     }
 
     private View createCustomTitle(Context context) {
@@ -120,10 +114,10 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         for (DialogItem item : mDialogSource.getItems()) {
             CheckedTextView dialogItem = createDialogItem(inflater, root);
             dialogItem.setBackgroundResource(selectableItemBackgroundResourceId);
-            dialogItem.setText(item.itemName);
+            dialogItem.setText(item.getTitle());
 
             dialogItem.setFocusable(true);
-            dialogItem.setTag(item.itemTag);
+            dialogItem.setTag(item);
             dialogItem.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActivity.getResources().getDimension(R.dimen.dialog_text_size));
             dialogItem.setOnClickListener(this);
             mDialogItems.add(dialogItem);
@@ -133,7 +127,16 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         return view;
     }
 
-    protected abstract void updateViews(View root);
+    protected void updateViews(View root) {
+        List<DialogItem> items = mDialogSource.getItems();
+        for (DialogItem item : items) {
+            CheckedTextView view = root.findViewWithTag(item);
+
+            if (view != null) {
+                view.setChecked(item.getChecked());
+            }
+        }
+    }
 
     protected abstract CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root);
 }

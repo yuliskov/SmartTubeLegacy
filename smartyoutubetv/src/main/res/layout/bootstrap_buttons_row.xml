@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:orientation="horizontal" android:layout_gravity="center" tools:showIn="@layout/activity_bootstrap">
+    <!-- WARN: TO HIDE ITEM DON'T COMMENT CODE. INSTEAD SET VISIBILITY ATTRIBUTE. -->
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+        app:titleText="@string/language"
+        app:tipText="@string/tip_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:id="@+id/btn_select_lang"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+        app:titleText="@string/tweaks"
+        app:tipText="@string/tip_tweaks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:id="@+id/btn_tweaks"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        android:visibility="gone"
+        app:titleText="@string/save_selection"
+        app:tipText="@string/tip_save_selection"
+        app:onCheckedChanged="onCheckedChanged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_save_selection"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        app:titleText="@string/endcards"
+        app:tipText="@string/tip_endcards"
+        app:onCheckedChanged="onCheckedChanged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_endcards"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        android:visibility="gone"
+        app:titleText="@string/autoframerate"
+        app:onCheckedChanged="onCheckedChanged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_autoframerate"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        android:visibility="gone"
+        app:titleText="@string/old_ui"
+        app:onCheckedChanged="onCheckedChanged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_old_ui"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        app:titleText="@string/update_check"
+        app:tipText="@string/tip_update_check"
+        app:onCheckedChanged="onCheckedChanged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chk_update_check"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+        android:visibility="gone"
+        app:titleText="@string/preferred_codec"
+        android:onClick="onClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_preferred_codec"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
+        android:visibility="gone"
+        app:titleText="@string/send_crash_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:id="@+id/btn_send_crash_report"/>
+</LinearLayout>

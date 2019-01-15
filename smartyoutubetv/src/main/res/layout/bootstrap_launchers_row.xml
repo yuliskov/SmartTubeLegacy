@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:orientation="horizontal" tools:showIn="@layout/activity_bootstrap">
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo" android:onClick="selectFlavour"
+                                                                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_main"
+                                                                app:tipText="@string/exo_tip"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
+                                                                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_alt"
+                                                                app:tipText="@string/exo_alt_tip"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
+                                                                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_webview"
+                                                                app:tipText="@string/webview_tip"/>
+    <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
+                                                                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                                                                app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_xwalk"
+                                                                app:tipText="@string/xwalk_tip"/>
+</LinearLayout>

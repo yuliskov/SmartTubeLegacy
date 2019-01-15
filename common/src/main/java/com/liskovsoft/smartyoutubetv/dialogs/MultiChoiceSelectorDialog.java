@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import com.liskovsoft.smartyoutubetv.common.R;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 import java.util.List;
 
@@ -28,26 +29,14 @@ public class MultiChoiceSelectorDialog extends GenericSelectorDialog {
     }
 
     @Override
-    protected void updateViews(View root) {
-        List<Object> tags = mDialogSource.getSelectedItemsTags();
-        for (Object tag : tags) {
-            CheckedTextView view = root.findViewWithTag(tag);
-
-            if (view != null) {
-                view.setChecked(true);
-            }
-        }
-    }
-
-    @Override
     public void onClick(View view) {
-        Object tag = view.getTag();
+        DialogItem item = (DialogItem) view.getTag();
         CheckedTextView textView = (CheckedTextView) view;
 
-        if (textView.isChecked()) {
-            mDialogSource.setUnselectedItemByTag(tag);
-        } else {
-            mDialogSource.setSelectedItemByTag(tag);
+        textView.setChecked(!textView.isChecked());
+
+        if (item.getChecked() != textView.isChecked()) {
+            item.setChecked(textView.isChecked());
         }
     }
 }

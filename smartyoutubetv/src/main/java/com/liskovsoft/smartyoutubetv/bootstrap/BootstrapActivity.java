@@ -10,10 +10,12 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage.LanguageDialogSource;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.TweaksDialogSource;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
+import com.liskovsoft.smartyoutubetv.dialogs.MultiChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
@@ -72,6 +74,9 @@ public class BootstrapActivity extends ActivityBase {
                 break;
             case R.id.btn_preferred_codec:
                 SingleChoiceSelectorDialog.create(this, new RestrictCodecDialogSource(this));
+                break;
+            case R.id.btn_tweaks:
+                MultiChoiceSelectorDialog.create(this, new TweaksDialogSource(this));
                 break;
         }
     }

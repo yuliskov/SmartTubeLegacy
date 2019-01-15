@@ -1,85 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/default_bg">
 
     <TextView android:id="@+id/bootstrap_title_message" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginTop="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_centerVertical="true" android:layout_centerHorizontal="true">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_main" app:tipText="@string/exo_tip"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo2" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_pro" app:titleText="@string/title_exo_alt" app:tipText="@string/exo_alt_tip"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_webview" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_webview" app:tipText="@string/webview_tip"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_xwalk" android:onClick="selectFlavour"
-                                                                        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                                        app:mainIcon="@drawable/bootstrap_icon_lite" app:titleText="@string/title_xwalk" app:tipText="@string/xwalk_tip"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">
-            <!-- WARN: TO HIDE ITEM DON'T COMMENT CODE. INSTEAD SET VISIBILITY ATTRIBUTE. -->
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
-                app:titleText="@string/language"
-                app:tipText="@string/language_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClick"
-                android:id="@+id/btn_select_lang"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
-                app:titleText="@string/save_selection"
-                app:tipText="@string/save_selection_tip"
-                app:onCheckedChanged="onCheckedChanged"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chk_save_selection"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
-                app:titleText="@string/endcards"
-                app:tipText="@string/endcards_tip"
-                app:onCheckedChanged="onCheckedChanged"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chk_endcards"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
-                android:visibility="gone"
-                app:titleText="@string/autoframerate"
-                app:onCheckedChanged="onCheckedChanged"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chk_autoframerate"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
-                android:visibility="gone"
-                app:titleText="@string/old_ui"
-                app:onCheckedChanged="onCheckedChanged"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chk_old_ui"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
-                app:titleText="@string/update_check"
-                app:tipText="@string/update_check_tip"
-                app:onCheckedChanged="onCheckedChanged"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chk_update_check"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
-                android:visibility="gone"
-                app:titleText="@string/preferred_codec"
-                android:onClick="onClick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_preferred_codec"/>
-            <com.liskovsoft.smartyoutubetv.widgets.BootstrapTextButton
-                android:visibility="gone"
-                app:titleText="@string/send_crash_report"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClick"
-                android:id="@+id/btn_send_crash_report"/>
-        </LinearLayout>
+        <include layout="@layout/bootstrap_launchers_row"/>
+
+        <include layout="@layout/bootstrap_buttons_row"/>
     </LinearLayout>
     <TextView android:id="@+id/tip_text" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
 </RelativeLayout>

@@ -4,7 +4,6 @@ import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
@@ -18,35 +17,53 @@ public class CodecSelectorAddon {
     private static final String WEBM = "webm";
     private final Context mContext;
     private final WebViewJavaScriptInterface mJavaScriptInterface;
-    private final List<DialogItem> mCodecs;
 
     public CodecSelectorAddon(Context context, WebViewJavaScriptInterface javaScriptInterface) {
         mContext = context;
         mJavaScriptInterface = javaScriptInterface;
-        mCodecs = new ArrayList<>();
-        mCodecs.add(DialogItem.create("Auto", ""));
-        mCodecs.add(DialogItem.create("AVC", MP4));
-        mCodecs.add(DialogItem.create("VP9", WEBM));
     }
 
+    private class CodecSelectorDialogItem extends DialogItem {
+        private final SmartPreferences mPrefs;
+        private final String mTag;
+
+        public CodecSelectorDialogItem(String title, String tag, SmartPreferences prefs) {
+            super(title, false);
+
+            mTag = tag;
+            mPrefs = prefs;
+        }
+
+        @Override
+        public boolean getChecked() {
+            return mTag.equals(mPrefs.getPreferredCodec());
+        }
+
+        @Override
+        public void setChecked(boolean checked) {
+            mPrefs.setPreferredCodec(mTag);
+
+            // restart app
+            MessageHelpers.showMessage(mContext, R.string.restart_app_msg);
+        }
+    }
+
+
     private class CodecSelectorDialogSource implements SingleDialogSource {
+        private final SmartPreferences mPrefs;
+        private final List<DialogItem> mCodecs;
+
+        public CodecSelectorDialogSource() {
+            mPrefs = SmartPreferences.instance(mContext);
+            mCodecs = new ArrayList<>();
+            mCodecs.add(new CodecSelectorDialogItem("Auto", "", mPrefs));
+            mCodecs.add(new CodecSelectorDialogItem("AVC", MP4, mPrefs));
+            mCodecs.add(new CodecSelectorDialogItem("VP9", WEBM, mPrefs));
+        }
+
         @Override
         public List<DialogItem> getItems() {
             return mCodecs;
-        }
-
-        @Override
-        public Object getSelectedItemTag() {
-            // get codec from the settings
-            return SmartPreferences.instance(mContext).getPreferredCodec();
-        }
-
-        @Override
-        public void setSelectedItemByTag(Object tag) {
-            // update settings
-            SmartPreferences.instance(mContext).setPreferredCodec((String) tag);
-            // restart app
-            MessageHelpers.showMessage(mContext, R.string.restart_app_msg);
         }
 
         @Override
