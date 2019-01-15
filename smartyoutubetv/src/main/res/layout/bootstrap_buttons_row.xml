@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/chk_save_selection"/>
     <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        android:visibility="gone"
         app:titleText="@string/endcards"
         app:tipText="@string/tip_endcards"
         app:onCheckedChanged="onCheckedChanged"
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/chk_old_ui"/>
     <com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton
+        android:visibility="gone"
         app:titleText="@string/update_check"
         app:tipText="@string/tip_update_check"
         app:onCheckedChanged="onCheckedChanged"

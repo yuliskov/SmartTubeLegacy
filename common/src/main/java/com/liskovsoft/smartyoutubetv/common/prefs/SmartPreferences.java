@@ -15,6 +15,7 @@ public final class SmartPreferences {
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static final String BOOTSTRAP_ENDCARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
+    private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -133,7 +134,7 @@ public final class SmartPreferences {
         return cookie;
     }
 
-    public void setEndCards(boolean isChecked) {
+    public void setEnableEndCards(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_ENDCARDS, isChecked)
                 .apply();
@@ -141,5 +142,15 @@ public final class SmartPreferences {
 
     public boolean getEnableEndCards() {
         return mPrefs.getBoolean(BOOTSTRAP_ENDCARDS, true);
+    }
+
+    public void setEnableOKPause(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_OK_PAUSE, isChecked)
+                .apply();
+    }
+
+    public boolean getEnableOKPause() {
+        return mPrefs.getBoolean(BOOTSTRAP_OK_PAUSE, true);
     }
 }

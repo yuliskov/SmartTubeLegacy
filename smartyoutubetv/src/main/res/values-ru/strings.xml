@@ -49,5 +49,7 @@
     <string name="tweaks">Твики</string>
     <string name="tip_tweaks">Различные мелкие настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
-    <string name="tweak_ok_button_fix">Не ставить на паузу при нажатии на OK</string>
+    <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
+    <string name="tweak_update_check">Периодически проверять обновления</string>
+    <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
 </resources>

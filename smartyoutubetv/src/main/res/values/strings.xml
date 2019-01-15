@@ -65,5 +65,7 @@
     <string name="tweaks">Tweaks</string>
     <string name="tip_tweaks">Various app tweaks here</string>
     <string name="tweak_remember_launcher">Remember selected launcher</string>
-    <string name="tweak_ok_button_fix">Don\'t pause on OK button</string>
+    <string name="tweak_ok_button_fix">OK pauses video immediately</string>
+    <string name="tweak_update_check">Check for the updates</string>
+    <string name="tweak_end_cards">Show end video captions</string>
 </resources>

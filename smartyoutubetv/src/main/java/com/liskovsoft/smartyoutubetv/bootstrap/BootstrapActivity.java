@@ -104,7 +104,7 @@ public class BootstrapActivity extends ActivityBase {
                 mPrefs.setBootstrapOldUI(b);
                 break;
             case R.id.chk_endcards:
-                mPrefs.setEndCards(b);
+                mPrefs.setEnableEndCards(b);
                 break;
         }
     }

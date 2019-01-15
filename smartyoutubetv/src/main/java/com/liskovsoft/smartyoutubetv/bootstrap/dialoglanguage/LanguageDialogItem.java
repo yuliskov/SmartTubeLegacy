@@ -30,6 +30,10 @@ public class LanguageDialogItem extends DialogItem {
 
     @Override
     public void setChecked(boolean checked) {
+        if (!checked) {
+            return;
+        }
+
         mUpdater.setPreferredLocale(mLangCode);
 
         // give a time to settings to apply

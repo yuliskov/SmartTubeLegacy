@@ -17,10 +17,13 @@ public class TweaksDialogSource implements MultiDialogSource {
         mContext = context;
 
         Resources res = mContext.getResources();
+        SmartPreferences prefs = SmartPreferences.instance(mContext);
 
         mItems = new ArrayList<>();
-        mItems.add(new SaveSelectionDialogItem(res.getString(R.string.tweak_remember_launcher), SmartPreferences.instance(mContext)));
-        mItems.add(new OkButtonDialogItem(res.getString(R.string.tweak_ok_button_fix), SmartPreferences.instance(mContext)));
+        mItems.add(new SaveSelectionDialogItem(res.getString(R.string.tweak_remember_launcher), prefs));
+        mItems.add(new UpdateCheckDialogItem(res.getString(R.string.tweak_update_check), prefs));
+        mItems.add(new OkButtonDialogItem(res.getString(R.string.tweak_ok_button_fix), prefs));
+        mItems.add(new EndCardsDialogItem(res.getString(R.string.tweak_end_cards), prefs));
     }
 
     @Override
