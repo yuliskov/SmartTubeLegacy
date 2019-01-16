@@ -5,12 +5,12 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
     this.retryCount = 10;
     this.checkTimeoutMS = 1000;
-    this.WAY_AHEAD_TIME = 1000000000;
 
     this.playerJumpToEnd2 = function() {
-        Log.d(this.TAG, "Forcing video to end");
+        Log.d(this.TAG, "Forcing end of the video");
 
-        var player = Utils.$('video');
+        var player = this.getPlayer();
+
         if (player) {
             if (isNaN(player.duration)) {
                 this.pressNextButton();
@@ -19,7 +19,25 @@ function TrackEndFakeButton(selector) {
 
             player.currentTime = Math.floor(player.duration);
             player.play();
+
+            this.checkPlayerState();
         }
+    };
+
+    this.checkPlayerState = function() {
+        var $this = this;
+        
+        setTimeout(function() {
+            var player = $this.getPlayer();
+
+            if (player && player.currentTime && player.currentTime < 10) {
+                $this.playerJumpToEnd();
+            }
+        }, this.checkTimeoutMS);
+    };
+
+    this.getPlayer = function() {
+        return Utils.$('video');
     };
 
     this.playerJumpToEnd = function() {
