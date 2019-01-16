@@ -175,7 +175,7 @@ import java.util.Locale;
         String codec = split[2];
         return format.height <= Integer.parseInt(height) &&
                format.frameRate <= Integer.parseInt(fps) &&
-               format.codecs.contains(codec);
+               format.codecs == null || format.codecs.contains(codec);
 
     }
 

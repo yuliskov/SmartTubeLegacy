@@ -6,6 +6,7 @@ import android.os.Environment;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,6 +85,9 @@ public class FileHelpers {
         FileOutputStream fos = null;
 
         try {
+            destination.getParentFile().mkdirs();
+            destination.createNewFile();
+
             fos = new FileOutputStream(destination);
 
             byte[] buffer = new byte[1024];
@@ -91,6 +95,8 @@ public class FileHelpers {
             while ((len1 = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len1);
             }
+        } catch (FileNotFoundException ex) { // fix: open failed: EACCES (Permission denied)
+            ex.printStackTrace();
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         } finally {
