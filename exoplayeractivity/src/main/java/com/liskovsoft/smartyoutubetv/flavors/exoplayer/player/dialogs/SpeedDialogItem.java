@@ -1,14 +1,13 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 
 public class SpeedDialogItem extends DialogItem {
-    private final ExoPlayer mPlayer;
+    private final ExoPlayerBaseFragment mPlayer;
     private final String mTag;
 
-    public SpeedDialogItem(String title, String tag, ExoPlayer player) {
+    public SpeedDialogItem(String title, String tag, ExoPlayerBaseFragment player) {
         super(title, false);
 
         mTag = tag;
@@ -17,15 +16,7 @@ public class SpeedDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        String speed;
-
-        if (mPlayer == null) {
-            speed = "1.0";
-        } else {
-            speed = String.valueOf(mPlayer.getPlaybackParameters().speed);
-        }
-
-        return mTag.equals(speed);
+        return mTag.equals(mPlayer.getPreferredSpeed());
     }
 
     @Override
@@ -34,6 +25,6 @@ public class SpeedDialogItem extends DialogItem {
             return;
         }
 
-        mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(mTag), 1.0f));
+        mPlayer.setSpeed(mTag);
     }
 }

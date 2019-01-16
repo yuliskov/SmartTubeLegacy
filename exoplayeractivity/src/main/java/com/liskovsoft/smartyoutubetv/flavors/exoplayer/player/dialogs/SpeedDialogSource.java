@@ -4,16 +4,17 @@ import android.content.Context;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpeedDialogSource implements SingleDialogSource {
     private final Context mContext;
-    private final ExoPlayer mPlayer;
+    private final ExoPlayerBaseFragment mPlayer;
     private final ArrayList<DialogItem> mItems;
 
-    public SpeedDialogSource(Context context, ExoPlayer player) {
+    public SpeedDialogSource(Context context, ExoPlayerBaseFragment player) {
         mContext = context;
         mPlayer = player;
         mItems = new ArrayList<>();

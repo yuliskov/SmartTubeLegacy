@@ -71,6 +71,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private PlayerStateManager2 mStateManager;
     private AspectRatioManager mAspectRatioManager;
     protected PlayerInitializer mPlayerInitializer;
+    private String mSpeed = "1.0";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -101,6 +102,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mPlayerInitializer.initVideoTitle();
 
             mStateManager = new PlayerStateManager2(this, mPlayer, mTrackSelector);
+
+            setSpeed(getPreferredSpeed());
 
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
@@ -501,10 +504,20 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
+        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), this));
     }
 
     protected boolean isUiVisible() {
         return mInterfaceVisibilityState == View.VISIBLE;
+    }
+
+    public void setSpeed(String speed) {
+        mSpeed = speed;
+
+        mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(speed), 1.0f));
+    }
+
+    public String getPreferredSpeed() {
+        return mSpeed;
     }
 }
