@@ -1,9 +1,26 @@
 console.log("Scripts::Running core script track_end_button.js");
 
 function TrackEndFakeButton(selector) {
+    this.TAG = 'TrackEndFakeButton';
     this.selector = selector;
     this.retryCount = 10;
     this.checkTimeoutMS = 1000;
+    this.WAY_AHEAD_TIME = 1000000000;
+
+    this.playerJumpToEnd2 = function() {
+        Log.d(this.TAG, "Forcing video to end");
+
+        var player = Utils.$('video');
+        if (player) {
+            if (isNaN(player.duration)) {
+                this.pressNextButton();
+                return;
+            }
+
+            player.currentTime = Math.floor(player.duration);
+            player.play();
+        }
+    };
 
     this.playerJumpToEnd = function() {
         console.log("TrackEndFakeButton: I'm about to start off!");
@@ -35,7 +52,7 @@ function TrackEndFakeButton(selector) {
     };
 
     this.pressNextButton = function() {
-        console.log("TrackEndFakeButton: something wrong, do workaround: switch to the next track");
+        Log.d(this.TAG, "Something is wrong, do workaround: switch to the next track");
         var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
         btn.setChecked(true);
     };
@@ -59,7 +76,7 @@ function TrackEndFakeButton(selector) {
         if (doChecked && !ExoUtils.playerIsClosed()) {
             ExoUtils.enablePlayerUi();
             ExoUtils.showPlayerBg();
-            this.playerJumpToEnd();
+            this.playerJumpToEnd2();
         }
     };
 }
