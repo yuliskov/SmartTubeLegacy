@@ -68,9 +68,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private PlayerButtonsManager mButtonsManager;
     private AutoFrameRateManager mAutoFrameRateManager;
-    private PlayerInitializer mPlayerInitializer;
     private PlayerStateManager2 mStateManager;
     private AspectRatioManager mAspectRatioManager;
+    protected PlayerInitializer mPlayerInitializer;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

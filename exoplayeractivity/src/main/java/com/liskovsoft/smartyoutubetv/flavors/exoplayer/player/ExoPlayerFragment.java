@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
@@ -63,9 +64,14 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     private boolean isNonOKAction(KeyEvent event, boolean uiVisible) {
-        boolean isOKKey = event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
-                          event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
-                          event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
+        boolean isOKKey = false;
+
+        if (mPlayerInitializer.getEnableOKPause()) {
+            isOKKey = event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
+                    event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
+        }
+
 
         return !uiVisible && !isOKKey;
     }
