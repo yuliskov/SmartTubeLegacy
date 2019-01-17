@@ -66,6 +66,4 @@ dependencies {
     fullApi(project.properties.xwalkCoreLibraryVersion, {
         exclude group: 'com.android.support', module: 'support-v4'
     })
-
-    implementation project.properties.multiDexVersion
 }

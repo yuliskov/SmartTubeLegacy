@@ -1,8 +1,8 @@
 package com.liskovsoft.browser;
 
 import android.content.res.AssetManager;
-import android.support.multidex.MultiDexApplication;
 import android.webkit.CookieSyncManager;
+import com.liskovsoft.smartyoutubetv.ApplicationCommon;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Browser extends MultiDexApplication { // crashlytics fix on Android 4.4
+public class Browser extends ApplicationCommon {
     // Set to true to enable verbose logging.
     final static boolean LOGV_ENABLED = false;
 
@@ -42,7 +42,7 @@ public class Browser extends MultiDexApplication { // crashlytics fix on Android
         }
         try {
             sProperties = new Properties();
-            AssetManager assetManager = this.getAssets();
+            AssetManager assetManager = getAssets();
             InputStream inputStream = assetManager.open("browser.properties");
             sProperties.load(inputStream);
         } catch (IOException ex) {

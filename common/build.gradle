@@ -42,4 +42,6 @@ dependencies {
     implementation project.properties.okhttpVersion
 
     implementation project.properties.gsonVersion
+
+    implementation project.properties.multiDexVersion
 }
