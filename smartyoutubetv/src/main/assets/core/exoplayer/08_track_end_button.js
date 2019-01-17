@@ -5,6 +5,7 @@ function TrackEndFakeButton(selector) {
     this.selector = selector;
     this.retryCount = 10;
     this.checkTimeoutMS = 1000;
+    this.numTries = 3;
 
     this.playerJumpToEnd2 = function() {
         Log.d(this.TAG, "Forcing end of the video");
@@ -13,13 +14,15 @@ function TrackEndFakeButton(selector) {
 
         if (player) {
             if (isNaN(player.duration)) {
-                this.pressNextButton();
-                return;
+                if (this.numTries-- <= 0) {
+                    this.pressNextButton();
+                    return;
+                }
+            } else {
+                player.currentTime = Math.floor(player.duration);
             }
 
-            player.currentTime = Math.floor(player.duration);
             player.play();
-
             this.checkPlayerState();
         }
     };
@@ -31,7 +34,7 @@ function TrackEndFakeButton(selector) {
             var player = $this.getPlayer();
 
             if (player && player.currentTime && player.currentTime < 10) {
-                $this.playerJumpToEnd();
+                $this.playerJumpToEnd2();
             }
         }, this.checkTimeoutMS);
     };
@@ -40,51 +43,51 @@ function TrackEndFakeButton(selector) {
         return Utils.$('video');
     };
 
-    this.playerJumpToEnd = function() {
-        console.log("TrackEndFakeButton: I'm about to start off!");
-        window.lastButtonName = PlayerActivity.TRACK_ENDED;
-
-        var $this = this;
-        var player = Utils.$('video');
-        if (player) {
-            player.play();
-            console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
-
-            if (this.retryCount <= 0 || ExoUtils.playerIsClosed()) {
-                this.pressNextButton();
-                return;
-            }
-
-            this.retryCount--;
-
-            if (isNaN(player.duration)) {
-                setTimeout(function() { // do retry
-                    $this.playerJumpToEnd();
-                }, this.checkTimeoutMS);
-            } else {
-                player.currentTime = player.duration - 1; // seek to the end (minus one second!)
-                this.startPlaybackCheck(player);
-                console.log("TrackEndFakeButton: after jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
-            }
-        }
-    };
-
     this.pressNextButton = function() {
         Log.d(this.TAG, "Something is wrong, do workaround: switch to the next track");
         var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
         btn.setChecked(true);
     };
 
-    this.startPlaybackCheck = function(player) {
-        var position = player.currentTime;
-        var $this = this;
-        setTimeout(function() {
-            var positionNotChanged = position == player.currentTime;
-            if (positionNotChanged) {
-                $this.playerJumpToEnd();
-           }
-        }, this.checkTimeoutMS);
-    };
+    // this.playerJumpToEnd = function() {
+    //     console.log("TrackEndFakeButton: I'm about to start off!");
+    //     window.lastButtonName = PlayerActivity.TRACK_ENDED;
+    //
+    //     var $this = this;
+    //     var player = Utils.$('video');
+    //     if (player) {
+    //         player.play();
+    //         console.log("TrackEndFakeButton: before jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
+    //
+    //         if (this.retryCount <= 0 || ExoUtils.playerIsClosed()) {
+    //             this.pressNextButton();
+    //             return;
+    //         }
+    //
+    //         this.retryCount--;
+    //
+    //         if (isNaN(player.duration)) {
+    //             setTimeout(function() { // do retry
+    //                 $this.playerJumpToEnd();
+    //             }, this.checkTimeoutMS);
+    //         } else {
+    //             player.currentTime = player.duration - 1; // seek to the end (minus one second!)
+    //             this.startPlaybackCheck(player);
+    //             console.log("TrackEndFakeButton: after jumping to the end: current time: " + player.currentTime + ", duration: " + player.duration);
+    //         }
+    //     }
+    // };
+
+    // this.startPlaybackCheck = function(player) {
+    //     var position = player.currentTime;
+    //     var $this = this;
+    //     setTimeout(function() {
+    //         var positionNotChanged = position == player.currentTime;
+    //         if (positionNotChanged) {
+    //             $this.playerJumpToEnd();
+    //        }
+    //     }, this.checkTimeoutMS);
+    // };
 
     this.getChecked = function() {
         return null; // not exists
