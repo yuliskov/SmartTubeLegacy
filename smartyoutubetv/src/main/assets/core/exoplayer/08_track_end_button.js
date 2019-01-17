@@ -33,8 +33,12 @@ function TrackEndFakeButton(selector) {
         setTimeout(function() {
             var player = $this.getPlayer();
 
-            if (player && player.currentTime && player.currentTime < 10) {
-                $this.playerJumpToEnd2();
+            if (player) {
+                Log.d($this.TAG, "Checking player position and duration: " + player.currentTime + " " + player.duration);
+
+                if (player.src && player.currentTime < 10) {
+                    $this.playerJumpToEnd2();
+                }
             }
         }, this.checkTimeoutMS);
     };
