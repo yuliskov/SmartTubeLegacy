@@ -21,6 +21,10 @@ public class RestrictCodecDialogItem extends DialogItem {
 
     @Override
     public void setChecked(boolean checked) {
+        if (!checked) {
+            return;
+        }
+
         mPrefs.setPreferredCodec(mTag);
     }
 }
