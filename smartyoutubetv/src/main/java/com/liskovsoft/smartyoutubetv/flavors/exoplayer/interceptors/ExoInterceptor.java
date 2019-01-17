@@ -214,7 +214,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mPlayerListener = new ActionsReceiver.Listener() { // player is opened from from get_video_info url
             @Override
             public void onDone() {
-                Log.d(TAG, "About to start ExoPlayer fragment");
+                Log.d(TAG, "About to start ExoPlayer fragment: " + playerIntent.getExtras());
                 mManager.onDone();
                 // forcePlaybackCheck();
                 // mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started

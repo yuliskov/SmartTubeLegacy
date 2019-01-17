@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.common.mylogger;
 
-import com.liskovsoft.smartyoutubetv.ApplicationCommon;
+import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 
 import java.io.BufferedWriter;
@@ -9,7 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 class FileLogger extends MyLogger {
+    private final Context mContext;
     private BufferedWriter mWriter;
+
+    public FileLogger(Context context) {
+        mContext = context;
+    }
 
     @Override
     public void d(String tag, String msg) {
@@ -35,7 +40,7 @@ class FileLogger extends MyLogger {
 
     private BufferedWriter getWriter() {
         if (mWriter == null) {
-            File logFile = new File(FileHelpers.getCacheDir(ApplicationCommon.sAppContext), "log.txt");
+            File logFile = new File(FileHelpers.getCacheDir(mContext), "log.txt");
 
             if (!logFile.exists()) {
                 try {
@@ -73,27 +78,4 @@ class FileLogger extends MyLogger {
             }
         }
     }
-
-    //private void appendLog2(String text) {
-    //    File logFile = new File(FileHelpers.getCacheDir(ApplicationCommon.sAppContext), "log.txt");
-    //
-    //    if (!logFile.exists()) {
-    //        try {
-    //            logFile.createNewFile();
-    //        } catch (IOException e) {
-    //            // TODO Auto-generated catch block
-    //            e.printStackTrace();
-    //        }
-    //    }
-    //
-    //    try {
-    //        //BufferedWriter for performance, true to set append to file flag
-    //        BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
-    //        buf.append(text);
-    //        buf.newLine();
-    //        buf.close();
-    //    } catch (IOException e) {
-    //        e.printStackTrace();
-    //    }
-    //}
 }

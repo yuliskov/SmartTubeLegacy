@@ -1,25 +1,10 @@
 package com.liskovsoft.smartyoutubetv.common.mylogger;
 
+import android.content.Context;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+
 public class Log {
-    private static final int LOG_TYPE = LogTypes.FILE;
-    private static MyLogger sLogger;
-
-    private class LogTypes {
-        private static final int FILE = 1;
-        private static final int SYSTEM = 2;
-        private static final int BOTH = 3;
-    }
-
-    static {
-        switch (LOG_TYPE) {
-            case LogTypes.FILE:
-                sLogger = new FileLogger();
-                break;
-            case LogTypes.SYSTEM:
-                sLogger = new SystemLogger();
-                break;
-        }
-    }
+    private static MyLogger sLogger = new SystemLogger();
 
     public static void d(String tag, String msg) {
         sLogger.d(tag, msg);
@@ -34,5 +19,13 @@ public class Log {
      */
     public static void flush() {
         sLogger.flush();
+    }
+
+    public static void init(Context context) {
+        SmartPreferences prefs = SmartPreferences.instance(context);
+
+        if (prefs.getEnableLogToFile()) {
+            sLogger = new FileLogger(context);
+        }
     }
 }

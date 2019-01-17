@@ -47,6 +47,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         hideTitleBar();
 
         mLoadingManager = new LoadingManager(this);
+
+        Log.init(this);
     }
 
     public LoadingManager getLoadingManager() {

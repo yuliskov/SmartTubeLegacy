@@ -5,15 +5,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 public class ApplicationCommon extends Application {
-    public static Context sAppContext;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        sAppContext = getApplicationContext();
-    }
-
     /**
      * Use MultiDexApplication: crashlytics fix on Android 4.4<br/>
      * Don't extent this class, use initializer instead<br/>

@@ -24,6 +24,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new UpdateCheckDialogItem(res.getString(R.string.tweak_update_check), prefs));
         mItems.add(new OkButtonDialogItem(res.getString(R.string.tweak_ok_button_fix), prefs));
         mItems.add(new EndCardsDialogItem(res.getString(R.string.tweak_end_cards), prefs));
+        mItems.add(new LogToFileDialogItem(res.getString(R.string.tweak_log_to_file), prefs));
     }
 
     @Override

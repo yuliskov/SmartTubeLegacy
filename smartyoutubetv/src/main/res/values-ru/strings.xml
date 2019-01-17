@@ -52,4 +52,5 @@
     <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
     <string name="tweak_update_check">Периодически проверять обновления</string>
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
+    <string name="tweak_log_to_file">Сохранять лог в файл</string>
 </resources>
