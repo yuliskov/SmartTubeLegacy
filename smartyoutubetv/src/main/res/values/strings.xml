@@ -69,4 +69,5 @@
     <string name="tweak_update_check">Check for the updates</string>
     <string name="tweak_end_cards">Show end video captions</string>
     <string name="tweak_log_to_file">Save log to file</string>
+    <string name="log_stored_in_path"><![CDATA[Log path: <storage>/Android/data/com.firsthash.smartyoutubetv2/cache/log.txt]]></string>
 </resources>

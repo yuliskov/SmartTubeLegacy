@@ -1,15 +1,19 @@
 package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
+import android.content.Context;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 public class OkButtonDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
+    private final Context mContext;
 
-    public OkButtonDialogItem(String title, SmartPreferences prefs) {
-        super(title, false);
+    public OkButtonDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_ok_button_fix), false);
 
-        mPrefs = prefs;
+        mContext = context;
+        mPrefs = SmartPreferences.instance(context);
     }
 
     @Override

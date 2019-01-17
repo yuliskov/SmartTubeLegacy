@@ -49,6 +49,16 @@ public class MessageHelpers {
         }
     }
 
+    /**
+     * Shows long toast message.<br/>
+     * Uses resource id as message.
+     * @param ctx context
+     * @param resId resource id
+     */
+    public static void showLongMessage(Context ctx, int resId) {
+        showLongMessage(ctx, ctx.getResources().getString(resId));
+    }
+
     public static void showLongMessage(Context ctx, String msg) {
         for (int i = 0; i < 3; i++) {
             showMessage(ctx, msg);
@@ -62,7 +72,7 @@ public class MessageHelpers {
     }
 
     /**
-     * Shows long toast message.<br/>
+     * Shows toast message.<br/>
      * Uses resource id as message.
      * @param ctx context
      * @param resId resource id
