@@ -32,7 +32,7 @@ function BackButton(selector) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            ExoUtils.showPlayerBg();
+            ExoUtils.showPlayerBackground();
             var $this = this;
             // 'likes not saved' fix
             setTimeout(function() {

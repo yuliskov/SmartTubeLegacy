@@ -107,7 +107,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.openSuggestions = function() {
-        ExoUtils.enablePlayerUi();
+        ExoUtils.enablePlayerSuggestions();
         this.tryToOpenSuggestions();
 
         // start point
@@ -164,8 +164,8 @@ function SuggestionsFakeButton(selector) {
     this.setChecked = function(doChecked) {
         if (doChecked && !ExoUtils.playerIsClosed()) { // fake btn can only be checked
             Log.d(this.TAG, "opening suggestions");
-            ExoUtils.enablePlayerUi();
-            ExoUtils.hidePlayerBg();
+            ExoUtils.enablePlayerSuggestions();
+            ExoUtils.hidePlayerBackground();
             this.openSuggestions();
         }
     };

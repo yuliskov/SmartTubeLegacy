@@ -99,8 +99,8 @@ function TrackEndFakeButton(selector) {
 
     this.setChecked = function(doChecked) {
         if (doChecked && !ExoUtils.playerIsClosed()) {
-            ExoUtils.enablePlayerUi();
-            ExoUtils.showPlayerBg();
+            ExoUtils.enablePlayerSuggestions();
+            ExoUtils.showPlayerBackground();
             this.playerJumpToEnd2();
         }
     };

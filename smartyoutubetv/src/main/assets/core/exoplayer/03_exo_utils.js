@@ -121,19 +121,31 @@ var ExoUtils = {
         return window.innerWidth;
     },
 
-    hidePlayerBg: function() {
+    /**
+     * For other hidden ui parts see exoplayer.css
+     */
+    hidePlayerBackground: function() {
         Utils.$('body').style.backgroundImage = 'initial';
     },
 
-    showPlayerBg: function() {
+    /**
+     * For other hidden ui parts see exoplayer.css
+     */
+    showPlayerBackground: function() {
         Utils.$('body').style.backgroundImage = '';
     },
 
-    enablePlayerUi: function() {
+    /**
+     * For other hidden ui parts see exoplayer.css
+     */
+    enablePlayerSuggestions: function() {
         Utils.show(ExoConstants.bottomUiSelector);
     },
 
-    disablePlayerUi: function() {
+    /**
+     * For other hidden ui parts see exoplayer.css
+     */
+    disablePlayerSuggestions: function() {
         Utils.hide(ExoConstants.bottomUiSelector);
     },
 
@@ -141,8 +153,8 @@ var ExoUtils = {
      * Used when calling through app boundaries.
      */
     getButtonStates: function() {
-        this.hidePlayerBg();
-        this.disablePlayerUi();
+        this.hidePlayerBackground();
+        this.disablePlayerSuggestions();
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
@@ -172,7 +184,7 @@ var ExoUtils = {
         }
 
         if (this.playerIsClosed()) {
-            this.showPlayerBg();
+            this.showPlayerBackground();
         }
 
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));

@@ -132,9 +132,11 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         for (DialogItem item : items) {
             CheckedTextView view = root.findViewWithTag(item);
 
-            if (view != null) {
-                view.setChecked(item.getChecked());
+            if (view == null) {
+                throw new IllegalStateException("Please, don't create 'DialogItems' in the 'getItems' method. For such purposed use constructor.");
             }
+
+            view.setChecked(item.getChecked());
         }
     }
 
