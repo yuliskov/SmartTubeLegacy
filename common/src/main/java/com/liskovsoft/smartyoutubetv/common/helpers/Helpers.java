@@ -16,7 +16,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -342,5 +344,18 @@ public final class Helpers {
         }
 
         return true;
+    }
+
+    public static void makeActivityFullscreen(Activity activity) {
+        activity.getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
+
+        if (VERSION.SDK_INT >= 19) {
+            View decorView = activity.getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    public static void makeActivityHorizontal(Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 }

@@ -1,16 +1,12 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
@@ -51,9 +47,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         hideTitleBar();
 
         mLoadingManager = new LoadingManager(this);
-
-        makeActivityFullscreen();
-        makeActivityHorizontal();
     }
 
     public LoadingManager getLoadingManager() {
@@ -224,23 +217,18 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         PermissionManager.verifyStoragePermissions(this);
     }
 
-    private void makeActivityFullscreen() {
-        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
-
-        if (VERSION.SDK_INT >= 19) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
-    private void makeActivityHorizontal() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
 
         Log.flush();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Helpers.makeActivityFullscreen(this);
+        Helpers.makeActivityHorizontal(this);
     }
 }
