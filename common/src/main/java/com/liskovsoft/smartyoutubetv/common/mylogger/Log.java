@@ -28,4 +28,8 @@ public class Log {
             sLogger = new FileLogger(context);
         }
     }
+
+    public static String getLogPath(Context context) {
+        return FileLogger.getLogPath(context);
+    }
 }

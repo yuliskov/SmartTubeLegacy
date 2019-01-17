@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
@@ -25,7 +26,9 @@ public class LogToFileDialogItem extends DialogItem {
     @Override
     public void setChecked(boolean checked) {
         if (checked) {
-            MessageHelpers.showLongMessage(mContext, R.string.log_stored_in_path);
+            MessageHelpers.showLongMessage(
+                    mContext,
+                    mContext.getResources().getString(R.string.log_stored_in_path, Log.getLogPath(mContext)));
         }
 
         mPrefs.setEnableLogToFile(checked);

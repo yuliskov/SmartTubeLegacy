@@ -53,5 +53,5 @@
     <string name="tweak_update_check">Периодически проверять обновления</string>
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
     <string name="tweak_log_to_file">Сохранять лог в файл</string>
-    <string name="log_stored_in_path"><![CDATA[Путь: <внутренняя память>/Android/data/com.firsthash.smartyoutubetv2/cache/log.txt]]></string>
+    <string name="log_stored_in_path">Путь: %s</string>
 </resources>

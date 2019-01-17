@@ -40,7 +40,7 @@ class FileLogger extends MyLogger {
 
     private BufferedWriter getWriter() {
         if (mWriter == null) {
-            File logFile = new File(FileHelpers.getCacheDir(mContext), "log.txt");
+            File logFile = getLogFile(mContext);
 
             if (!logFile.exists()) {
                 try {
@@ -60,6 +60,14 @@ class FileLogger extends MyLogger {
         }
 
         return mWriter;
+    }
+
+    public static String getLogPath(Context context) {
+        return getLogFile(context).toString();
+    }
+
+    private static File getLogFile(Context context) {
+        return new File(FileHelpers.getCacheDir(context), "log.txt");
     }
 
     private void writeLogHeader() {
