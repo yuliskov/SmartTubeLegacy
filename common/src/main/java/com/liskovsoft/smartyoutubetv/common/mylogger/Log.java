@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.common.mylogger;
 
 public class Log {
-    private static final int LOG_TYPE = LogTypes.SYSTEM;
+    private static final int LOG_TYPE = LogTypes.FILE;
     private static MyLogger sLogger;
 
     private class LogTypes {
