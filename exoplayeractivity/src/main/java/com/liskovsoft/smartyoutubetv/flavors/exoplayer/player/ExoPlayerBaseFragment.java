@@ -520,4 +520,18 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public String getPreferredSpeed() {
         return mSpeed;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mAutoFrameRateManager.restoreOriginalState();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAutoFrameRateManager.apply();
+    }
 }

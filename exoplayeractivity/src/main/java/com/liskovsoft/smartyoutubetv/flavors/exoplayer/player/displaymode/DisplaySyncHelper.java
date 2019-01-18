@@ -174,19 +174,14 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
     }
 
-    public void setNeedDisplaySync(boolean enabled) {
-        ExoPreferences prefs = ExoPreferences.instance(mContext);
-        prefs.setAutoframerateChecked(enabled);
+    // switch frame rate only
+    private boolean getNeedDisplaySync() {
+        return true;
     }
 
-    public boolean getNeedDisplaySync() {
-        ExoPreferences prefs = ExoPreferences.instance(mContext);
-        return prefs.getAutoframerateChecked();
-    }
-
-    // NOTE: switch not only framerate but resolution too
+    // switch not only framerate but resolution too
     private boolean getSwitchToUHD() {
-        return getNeedDisplaySync();
+        return true;
     }
 
     /**
@@ -209,6 +204,7 @@ class DisplaySyncHelper implements UhdHelperListener {
             DisplayHolder.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
+            // switch not only framerate but resolution too
             if (getSwitchToUHD()) {
                 if (videoWidth > 1920) {
                     resultModes = filterUHDModes(modes);
@@ -266,10 +262,6 @@ class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public void saveOriginalState() {
-        if (!getNeedDisplaySync()) {
-            return;
-        }
-
         DisplayHolder.Mode mode = getUhdHelper().getMode();
 
         if (mode != null) {
@@ -278,10 +270,6 @@ class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public void restoreOriginalState() {
-        if (!getNeedDisplaySync()) {
-            return;
-        }
-
         getUhdHelper().setPreferredDisplayModeId(
                         mContext.getWindow(),
                         mOriginalModeId,
