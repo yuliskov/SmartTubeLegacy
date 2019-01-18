@@ -5,9 +5,9 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
-    private static final long NO_INTERACTION_TIMEOUT_MS = 500;
-    private static final String VIDEO_ID_PARAM = "video_id";
-    private static final String MIRROR_PARAM = "ytr";
+    private static final long NO_INTERACTION_TIMEOUT_MS = 2_000;
+    private static final String PARAM_VIDEO_ID = "video_id";
+    private static final String PARAM_MIRROR = "ytr";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
@@ -22,10 +22,11 @@ public class BackgroundActionManager {
         if (!url.contains(ExoInterceptor.URL_VIDEO_DATA))
             return true;
 
-        Log.d(TAG, "Video closed ms ago: " + (System.currentTimeMillis() - mExitTime));
+        long elapsedTimeAfterClose = System.currentTimeMillis() - mExitTime;
+        Log.d(TAG, "Video closed ms ago: " + elapsedTimeAfterClose);
 
         // Search screen and XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = System.currentTimeMillis() - mExitTime < NO_INTERACTION_TIMEOUT_MS;
+        boolean videoClosedRecently = elapsedTimeAfterClose < NO_INTERACTION_TIMEOUT_MS;
         if (videoClosedRecently) {
             Log.d(TAG, "Video is closed recently");
             mPrevCallTime = System.currentTimeMillis();
@@ -41,7 +42,7 @@ public class BackgroundActionManager {
         }
 
         // the same video could opened multiple times
-        String videoId = MyUrlEncodedQueryString.parse(url).get(VIDEO_ID_PARAM);
+        String videoId = MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
         if (videoId == null) {
             Log.d(TAG, "Supplied url doesn't contain video info");
             mPrevCallTime = System.currentTimeMillis();
@@ -85,7 +86,7 @@ public class BackgroundActionManager {
     }
 
     public boolean isMirroring(String url) {
-        String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(MIRROR_PARAM);
+        String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR);
 
         if (mirrorDeviceName != null && !mirrorDeviceName.isEmpty()) { // any response is good
             Log.d(TAG, "The video is mirroring from the phone or tablet");
