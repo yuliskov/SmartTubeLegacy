@@ -10,7 +10,7 @@ public class SaveSelectionDialogItem extends DialogItem {
     private final Context mContext;
 
     public SaveSelectionDialogItem(Context context) {
-        super(context.getResources().getString(R.string.save_selection), false);
+        super(context.getResources().getString(R.string.tweak_remember_launcher), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
