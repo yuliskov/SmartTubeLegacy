@@ -39,15 +39,16 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final BackgroundActionManager mManager;
     private final TwoFragmentsManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
-    private static final String CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private static final String PLAYBACK_STARTED = "playback_started";
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
-    public static final String VIDEO_DATA_URL = "get_video_info";
-    private static final String VIDEO_ID_PARAM = "video_id";
     private boolean mPlaybackStarted;
     private Listener mPlayerListener;
+    private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private static final String ACTION_PLAYBACK_STARTED = "playback_started";
+    public static final String URL_VIDEO_DATA = "get_video_info";
+    private static final String PARAM_VIDEO_ID = "video_id";
+    private static final String PARAM_ACCESS_TOKEN = "access_token";
     private static final long FORCE_PLAYBACK_TIMEOUT_MS = 10_000;
 
     private class SuggestionsWatcher {
@@ -58,9 +59,9 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         @Subscribe
         public void onGenericStringResult(GenericStringResultEvent event) {
             String action = event.getResult();
-            if (action.equals(CLOSE_SUGGESTIONS)) {
+            if (action.equals(ACTION_CLOSE_SUGGESTIONS)) {
                 returnToPlayer();
-            } else if (action.equals(PLAYBACK_STARTED)) {
+            } else if (action.equals(ACTION_PLAYBACK_STARTED)) {
                 // playbackStarted();
             }
         }
@@ -131,9 +132,15 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         return null;
     }
 
+    /**
+     * Fix severe signature bug on non-guest account (not mine case though).<br/>
+     * <a href="https://smartyoutubetv.github.io/#comment-4292180604">Thread with details</a>
+     * @param url input
+     * @return transformed
+     */
     private String cleanupUrl(String url) {
         MyQueryString myQuery = MyQueryStringFactory.parse(url);
-        myQuery.remove("access_token");
+        myQuery.remove(PARAM_ACCESS_TOKEN);
 
         return myQuery.toString();
     }
@@ -210,7 +217,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
     private String extractVideoId() {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(mCurrentUrl);
-        return query.get(VIDEO_ID_PARAM);
+        return query.get(PARAM_VIDEO_ID);
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {

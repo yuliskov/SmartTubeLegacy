@@ -19,7 +19,7 @@ public class BackgroundActionManager {
     private boolean mDone;
 
     public boolean cancelPlayback(String url) {
-        if (!url.contains(ExoInterceptor.VIDEO_DATA_URL))
+        if (!url.contains(ExoInterceptor.URL_VIDEO_DATA))
             return true;
 
         Log.d(TAG, "Video closed ms ago: " + (System.currentTimeMillis() - mExitTime));

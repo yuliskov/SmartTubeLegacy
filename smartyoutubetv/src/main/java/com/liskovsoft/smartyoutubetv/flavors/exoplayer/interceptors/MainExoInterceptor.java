@@ -20,7 +20,7 @@ public class MainExoInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (url.contains(ExoInterceptor.VIDEO_DATA_URL)) {
+        if (url.contains(ExoInterceptor.URL_VIDEO_DATA)) {
             mCurrentInterceptor = mExoInterceptor;
             return true;
         }
