@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
@@ -55,12 +54,20 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
             mSimpleExoPlayerView.showController();
         }
 
-        if (isSeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
+        if (uiVisible && isMenuKey(event)) {
+            mSimpleExoPlayerView.hideController();
+        }
+
+        if (applySeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
             return true;
         }
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return mSimpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    private boolean isMenuKey(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.KEYCODE_MENU;
     }
 
     private boolean isNonOKAction(KeyEvent event, boolean uiVisible) {
@@ -76,7 +83,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         return !uiVisible && !isOKKey;
     }
 
-    private boolean isSeekAction(KeyEvent event, boolean uiVisible) {
+    private boolean applySeekAction(KeyEvent event, boolean uiVisible) {
         // move selection to the timebar on left/right key events
         boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
 
