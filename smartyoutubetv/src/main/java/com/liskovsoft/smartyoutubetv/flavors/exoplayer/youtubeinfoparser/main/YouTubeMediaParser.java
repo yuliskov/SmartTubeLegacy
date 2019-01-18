@@ -18,6 +18,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.Si
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -226,7 +227,8 @@ public class YouTubeMediaParser {
     }
 
     private String getStrangeSignature(MediaItem item) {
-        return getStrangeSignature(item.getS(), item.getSignature());
+        MyQueryString query = MyQueryStringFactory.parse(item.getUrl());
+        return getStrangeSignature(item.getS(), item.getSignature(), query.get(MediaItem.S), query.get(MediaItem.SIGNATURE));
     }
 
     // NOTE: don't delete
@@ -292,8 +294,9 @@ public class YouTubeMediaParser {
                 continue;
             }
             MediaItem item = mMediaItems.get(i);
-            String url = item.getUrl();
-            item.setUrl(String.format("%s&signature=%s", url, signature));
+            MyQueryString url = MyQueryStringFactory.parse(item.getUrl());
+            url.set(MediaItem.SIGNATURE, signature);
+            item.setUrl(url.toString());
             item.setSignature(signature);
             item.setS(null);
         }

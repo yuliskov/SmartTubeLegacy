@@ -14,6 +14,6 @@ public class MyQueryStringFactory {
             return queryString;
         }
 
-        return null;
+        return MyNullQueryString.parse(url);
     }
 }
