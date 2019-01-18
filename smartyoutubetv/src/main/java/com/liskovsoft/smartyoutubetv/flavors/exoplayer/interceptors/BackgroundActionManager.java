@@ -6,6 +6,7 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
     private static final long NO_INTERACTION_TIMEOUT_MS = 500;
+    private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 2_000;
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_MIRROR = "ytr";
     /**
@@ -50,7 +51,8 @@ public class BackgroundActionManager {
         }
 
         boolean sameVideo = videoId.equals(mPrevVideoId);
-        if (sameVideo) {
+        boolean sameVideoClosedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        if (sameVideo && sameVideoClosedRecently) {
             Log.d(TAG, "The same video encountered");
             mPrevCallTime = System.currentTimeMillis();
             return true;
@@ -66,13 +68,13 @@ public class BackgroundActionManager {
     public void onClose() {
         Log.d(TAG, "Video is closed");
         mExitTime = System.currentTimeMillis();
-        mPrevVideoId = null;
+        //mPrevVideoId = null;
         mDone = false;
     }
 
     public void onCancel() {
         Log.d(TAG, "Video is canceled");
-        mPrevVideoId = null;
+        //mPrevVideoId = null;
         mDone = false;
     }
 
