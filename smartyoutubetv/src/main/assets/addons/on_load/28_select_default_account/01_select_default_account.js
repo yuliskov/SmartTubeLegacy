@@ -11,20 +11,42 @@ function SelectDefaultAccountAddon() {
         var $this = this;
 
         EventUtils.onLoad(function() {
-            $this.hidePanel();
+            var v = Utils.$('video');
 
-            setTimeout(function() { // panel pop-ups with delay
-                $this.closePanel();
-                $this.showPanel();
-            }, 3000);
+            if (v && v.src) { // dialog not shown yet, because the video is resumed
+                var handler = function() {
+                    $this.selectDefaultAccount();
+                    EventUtils.removeListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
+                };
+
+                EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
+            } else {
+                $this.selectDefaultAccount();
+            }
         });
     };
 
-    this.hidePanel = function() {
+    this.selectDefaultAccount = function() {
+        this.hidePanelContainer();
+
+        var $this = this;
+        setTimeout(function() { // panel pop-ups with delay
+            $this.closePanel();
+            $this.showPanelContainer();
+        }, 3000);
+    };
+
+    /**
+     * May contain other useful elements like exit dialog
+     */
+    this.hidePanelContainer = function() {
         Utils.hide(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
     };
 
-    this.showPanel = function() {
+    /**
+     * May contain other useful elements like exit dialog
+     */
+    this.showPanelContainer = function() {
         Utils.show(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
     };
 
