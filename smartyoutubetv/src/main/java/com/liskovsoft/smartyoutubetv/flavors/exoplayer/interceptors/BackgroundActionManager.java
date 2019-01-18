@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
-    private static final long NO_INTERACTION_TIMEOUT_MS = 2_000;
+    private static final long NO_INTERACTION_TIMEOUT_MS = 500;
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_MIRROR = "ytr";
     /**
