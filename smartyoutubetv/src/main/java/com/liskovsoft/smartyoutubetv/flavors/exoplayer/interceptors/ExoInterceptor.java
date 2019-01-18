@@ -21,6 +21,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
@@ -111,6 +113,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
+        url = cleanupUrl(url);
+
         mCurrentUrl = url;
 
         if (mManager.cancelPlayback(url)) {
@@ -125,6 +129,13 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
         return null;
+    }
+
+    private String cleanupUrl(String url) {
+        MyQueryString myQuery = MyQueryStringFactory.parse(url);
+        myQuery.remove("access_token");
+
+        return myQuery.toString();
     }
 
     // We also try looking in get_video_info since it may contain different dashmpd
