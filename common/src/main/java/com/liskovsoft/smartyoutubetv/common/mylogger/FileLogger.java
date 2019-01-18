@@ -26,6 +26,11 @@ class FileLogger extends MyLogger {
         append(String.format("INFO: %s: %s", tag, msg));
     }
 
+    @Override
+    public void w(String tag, String msg) {
+        append(String.format("WARN: %s: %s", tag, msg));
+    }
+
     private void append(String text)
     {
         try {

@@ -14,6 +14,10 @@ public class Log {
         sLogger.i(tag, msg);
     }
 
+    public static void w(String tag, String msg) {
+        sLogger.w(tag, msg);
+    }
+
     /**
      * In case of file, flushes all data to disk
      */

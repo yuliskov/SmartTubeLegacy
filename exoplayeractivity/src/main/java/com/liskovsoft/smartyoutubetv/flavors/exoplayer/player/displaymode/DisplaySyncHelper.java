@@ -1,24 +1,24 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 // Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
 class DisplaySyncHelper implements UhdHelperListener {
-    static final String TAG = "DisplaySyncHelper";
+    private static final String TAG = "DisplaySyncHelper";
+    // switch not only framerate but resolution too
+    private static final boolean SWITCH_TO_UHD = true;
     private final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
@@ -179,11 +179,6 @@ class DisplaySyncHelper implements UhdHelperListener {
         return true;
     }
 
-    // switch not only framerate but resolution too
-    private boolean getSwitchToUHD() {
-        return true;
-    }
-
     /**
      * Tries to find best suited display params for the video
      * @param window window object
@@ -192,10 +187,6 @@ class DisplaySyncHelper implements UhdHelperListener {
      * @return
      */
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
-        if (!getNeedDisplaySync() && !getSwitchToUHD()) { // none of the vars is set to true
-            return false;
-        }
-
         if (supportsDisplayModeChange() && videoWidth >= 10) {
             if (mUhdHelper == null) {
                 mUhdHelper = new UhdHelper(mContext);
@@ -204,8 +195,8 @@ class DisplaySyncHelper implements UhdHelperListener {
             DisplayHolder.Mode[] modes = mUhdHelper.getSupportedModes();
             boolean isUHD = false;
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
-            // switch not only framerate but resolution too
-            if (getSwitchToUHD()) {
+
+            if (SWITCH_TO_UHD) { // switch not only framerate but resolution too
                 if (videoWidth > 1920) {
                     resultModes = filterUHDModes(modes);
                     if (!resultModes.isEmpty()) {
@@ -214,31 +205,30 @@ class DisplaySyncHelper implements UhdHelperListener {
                 }
             }
 
-            if (getNeedDisplaySync() || isUHD) {
-                Log.i("DisplaySyncHelper", "Need refresh rate adapt: " + getNeedDisplaySync() + " Need UHD switch: " + isUHD);
-                DisplayHolder.Mode mode = mUhdHelper.getMode();
-                if (!isUHD) {
-                    resultModes = filterSameResolutionModes(modes, mode);
-                }
+            Log.i("DisplaySyncHelper", "Need resolution switch: " + isUHD);
 
-                DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
-                if (closerMode == null) {
-                    Log.i("DisplaySyncHelper", "Could not find closer refresh rate for " + videoFramerate + "fps");
-                    return false;
-                }
-
-                Log.i("DisplaySyncHelper", "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
-                if (closerMode.equals(mode)) {
-                    Log.i("DisplaySyncHelper", "Do not need to change mode.");
-                    return false;
-                }
-
-                mUhdHelper.registerModeChangeListener(this);
-                mNewMode = closerMode.getModeId();
-                mUhdHelper.setPreferredDisplayModeId(window, mNewMode, true);
-                mDisplaySyncInProgress = true;
-                return true;
+            DisplayHolder.Mode mode = mUhdHelper.getMode();
+            if (!isUHD) {
+                resultModes = filterSameResolutionModes(modes, mode);
             }
+
+            DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
+            if (closerMode == null) {
+                Log.i("DisplaySyncHelper", "Could not find closer refresh rate for " + videoFramerate + "fps");
+                return false;
+            }
+
+            Log.i("DisplaySyncHelper", "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
+            if (closerMode.equals(mode)) {
+                Log.i("DisplaySyncHelper", "Do not need to change mode.");
+                return false;
+            }
+
+            mUhdHelper.registerModeChangeListener(this);
+            mNewMode = closerMode.getModeId();
+            mUhdHelper.setPreferredDisplayModeId(window, mNewMode, true);
+            mDisplaySyncInProgress = true;
+            return true;
         }
 
         return false;
