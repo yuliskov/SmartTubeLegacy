@@ -35,6 +35,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
+        boolean isDownAction = event.getAction() == KeyEvent.ACTION_DOWN;
 
         boolean uiVisible = isUiVisible();
 
@@ -50,11 +51,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         // Show the controls on any key event.
-        if (!uiVisible) {
+        if (!uiVisible && isDownAction) {
             mSimpleExoPlayerView.showController();
         }
 
-        if (uiVisible && isMenuKey(event)) {
+        if (uiVisible && isMenuKey(event) && isDownAction) {
             mSimpleExoPlayerView.hideController();
         }
 
