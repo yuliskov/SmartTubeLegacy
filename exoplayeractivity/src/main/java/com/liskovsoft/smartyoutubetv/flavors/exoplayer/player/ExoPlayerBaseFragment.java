@@ -361,6 +361,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * Used when exoplayer's fragment no longer visible (e.g. paused/resumed/stopped/started)
      */
     protected void releasePlayer() {
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.restoreOriginalState();
+        }
+
         if (mPlayer != null) {
             mShouldAutoPlay = mPlayer.getPlayWhenReady(); // save paused state
             updateResumePosition(); // save position
@@ -379,6 +383,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mDebugViewHelper.stop();
         }
 
+        mAutoFrameRateManager = null;
         mPlayer = null;
         mStateManager = null; // force restore state
         mDebugViewHelper = null;
@@ -520,23 +525,5 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     public String getPreferredSpeed() {
         return mSpeed;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.restoreOriginalState();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.apply();
-        }
     }
 }
