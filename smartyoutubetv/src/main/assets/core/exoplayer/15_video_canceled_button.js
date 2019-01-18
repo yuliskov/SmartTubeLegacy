@@ -6,11 +6,10 @@ console.log("Scripts::Running core script video_canceled_button.js");
  */
 function VideoCanceledButton(selector) {
     this.selector = selector;
+    this.OPENED_VIDEO_SIGN = '#/watch/video';
 
     this.getChecked = function() {
-        var v = Utils.$('video');
-
-        return !v || !v.src;
+        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) == -1;
     };
 
     this.setChecked = function(doChecked) {
