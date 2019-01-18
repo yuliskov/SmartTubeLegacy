@@ -11,7 +11,6 @@ import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
@@ -20,9 +19,7 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.squareup.otto.Subscribe;
-import okhttp3.Response;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -215,14 +212,21 @@ public class YouTubeMediaParser {
         List<String> result = new ArrayList<>();
 
         for (MediaItem item : mMediaItems) {
-            result.add(item.getS());
+            result.add(getStrangeSignature(item));
         }
 
-        // if signature not ciphered S will be null
-        result.add(mDashMPDUrl.get(MediaItem.S));
-        result.add(mHlsUrl.get(MediaItem.S));
+        result.add(getStrangeSignature(mDashMPDUrl));
+        result.add(getStrangeSignature(mHlsUrl));
 
         return result;
+    }
+
+    private String getStrangeSignature(MyQueryString query) {
+        return getStrangeSignature(query.get(MediaItem.S), query.get(MediaItem.SIGNATURE));
+    }
+
+    private String getStrangeSignature(MediaItem item) {
+        return getStrangeSignature(item.getS(), item.getSignature());
     }
 
     // NOTE: don't delete
@@ -465,5 +469,24 @@ public class YouTubeMediaParser {
         }
 
         return Uri.parse("http://example.com?" + content);
+    }
+
+    /**
+     * Returns first non-normal signature
+     * @param signatures list
+     * @return first non-normal signature or null
+     */
+    private String getStrangeSignature(String... signatures) {
+        for (String signature : signatures) {
+            if (signature == null) {
+                continue;
+            }
+
+            if (signature.length() != COMMON_SIGNATURE_LENGTH) {
+                return signature;
+            }
+        }
+
+        return null;
     }
 }
