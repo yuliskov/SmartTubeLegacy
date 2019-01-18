@@ -98,7 +98,8 @@ public class FileHelpers {
         } catch (FileNotFoundException ex) { // fix: open failed: EACCES (Permission denied)
             ex.printStackTrace();
         } catch (IOException ex) {
-            throw new IllegalStateException(ex);
+            ex.printStackTrace();
+            // throw new IllegalStateException(ex);
         } finally {
             closeStream(fos);
             closeStream(is);
