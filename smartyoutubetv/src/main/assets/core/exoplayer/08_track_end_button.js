@@ -4,11 +4,13 @@ function TrackEndFakeButton(selector) {
     this.TAG = 'TrackEndFakeButton';
     this.selector = selector;
     this.retryCount = 10;
-    this.checkTimeoutMS = 1000;
+    this.checkTimeoutMS = 500;
     this.numTries = 3;
 
     this.playerJumpToEnd2 = function() {
         Log.d(this.TAG, "Forcing end of the video");
+
+        var $this = this;
 
         var player = this.getPlayer();
 
@@ -22,8 +24,10 @@ function TrackEndFakeButton(selector) {
                 player.currentTime = Math.floor(player.duration);
             }
 
-            player.play();
-            this.checkPlayerState();
+            setTimeout(function() {
+                player.play();
+                $this.checkPlayerState();
+            }, this.checkTimeoutMS);
         }
     };
 
@@ -36,7 +40,7 @@ function TrackEndFakeButton(selector) {
             if (player) {
                 Log.d($this.TAG, "Checking player position and duration: " + player.currentTime + " " + player.duration);
 
-                if (player.src && player.currentTime < 10) {
+                if (player.src && (player.duration - player.currentTime) > 1) {
                     $this.playerJumpToEnd2();
                 }
             }
