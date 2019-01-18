@@ -114,7 +114,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        url = cleanupUrl(url);
+        // url = cleanupUrl(url);
 
         mCurrentUrl = url;
 

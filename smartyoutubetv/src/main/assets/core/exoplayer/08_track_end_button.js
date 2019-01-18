@@ -17,6 +17,7 @@ function TrackEndFakeButton(selector) {
         if (player) {
             if (isNaN(player.duration)) {
                 if (this.numTries-- <= 0) {
+                    Log.d(this.TAG, "Can't unfreeze video... Pressing next button...");
                     this.pressNextButton();
                     return;
                 }
@@ -26,6 +27,10 @@ function TrackEndFakeButton(selector) {
 
             setTimeout(function() {
                 player.play();
+                $this.checkPlayerState();
+            }, this.checkTimeoutMS);
+        } else {
+            setTimeout(function() {
                 $this.checkPlayerState();
             }, this.checkTimeoutMS);
         }
@@ -41,8 +46,12 @@ function TrackEndFakeButton(selector) {
                 Log.d($this.TAG, "Checking player position and duration: " + player.currentTime + " " + player.duration);
 
                 if (player.src && (player.duration - player.currentTime) > 1) {
+                    Log.d($this.TAG, "Retrying unfreeze video...");
                     $this.playerJumpToEnd2();
                 }
+            } else {
+                Log.d($this.TAG, "Player is null. Retrying unfreeze video...");
+                $this.playerJumpToEnd2();
             }
         }, this.checkTimeoutMS);
     };
