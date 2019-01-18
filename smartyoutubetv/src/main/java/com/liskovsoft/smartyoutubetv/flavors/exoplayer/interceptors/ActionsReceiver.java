@@ -43,14 +43,12 @@ public class ActionsReceiver implements Runnable {
      * @return true if user didn't tapped back key
      */
     private boolean checkIntent() {
-        if (mIntent.hasExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE) ||
-            mIntent.hasExtra(ExoPlayerFragment.BUTTON_DISLIKE) ||
-            mIntent.hasExtra(ExoPlayerFragment.BUTTON_LIKE))
-            return true;
+        if (mIntent.getBooleanExtra(ExoPlayerFragment.VIDEO_CANCELED, false)) {
+            Log.d(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... " + mIntent.getExtras());
+            return false;
+        }
 
-        Log.d(TAG, "Action is cancelled. User tapped back key. Disable subsequent start of the player activity... ");
-        // Uncomment next section to debug
-        return false;
+        return true;
     }
 
     /**

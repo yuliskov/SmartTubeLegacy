@@ -85,6 +85,8 @@ ExoButton.fromSelector = function(selector) {
             case PlayerActivityMapping.BUTTON_PREV:
             case PlayerActivityMapping.BUTTON_NEXT:
                 return new NextPrevButton(selector);
+            case PlayerActivityMapping.VIDEO_CANCELED:
+                return new VideoCanceledButton(selector);
             default:
                 // all other buttons is processed here
                 return new ExoButton(selector);

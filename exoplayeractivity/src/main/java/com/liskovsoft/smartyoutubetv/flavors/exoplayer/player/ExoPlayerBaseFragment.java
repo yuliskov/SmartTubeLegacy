@@ -59,6 +59,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String VIDEO_ID = "video_id";
     public static final String TRACK_ENDED = "track_ended";
     public static final String DISPLAY_MODE_ID = "display_mode_id";
+    public static final String VIDEO_CANCELED = "video_canceled";
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 

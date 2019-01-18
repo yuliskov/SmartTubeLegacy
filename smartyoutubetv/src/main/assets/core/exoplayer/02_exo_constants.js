@@ -2,6 +2,7 @@ console.log("Scripts::Running core script exo_constants.js");
 
 // java constants
 var PlayerActivity = {
+    VIDEO_CANCELED: 'video_canceled',
     VIDEO_VIEW_COUNT: 'video_views',
     SCREEN_WIDTH: 'screen_width',
     VIDEO_DATE: 'video_date',
@@ -18,6 +19,7 @@ var PlayerActivity = {
 
 // java constants in js code
 var PlayerActivityMapping = {
+    VIDEO_CANCELED: 'video_canceled',
     BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
     BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
     BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
