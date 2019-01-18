@@ -29,10 +29,6 @@ function TrackEndFakeButton(selector) {
                 player.play();
                 $this.checkPlayerState();
             }, this.checkTimeoutMS);
-        } else {
-            setTimeout(function() {
-                $this.checkPlayerState();
-            }, this.checkTimeoutMS);
         }
     };
 
@@ -45,13 +41,13 @@ function TrackEndFakeButton(selector) {
             if (player) {
                 Log.d($this.TAG, "Checking player position and duration: " + player.currentTime + " " + player.duration);
 
-                if (player.src && (player.duration - player.currentTime) > 1) {
+                var hasNaN = isNaN(player.currentTime) || isNaN(player.duration);
+                var needSeek = (player.duration - player.currentTime) > 1;
+
+                if (player.src && (hasNaN || needSeek)) {
                     Log.d($this.TAG, "Retrying unfreeze video...");
                     $this.playerJumpToEnd2();
                 }
-            } else {
-                Log.d($this.TAG, "Player is null. Retrying unfreeze video...");
-                $this.playerJumpToEnd2();
             }
         }, this.checkTimeoutMS);
     };

@@ -104,8 +104,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             mStateManager = new PlayerStateManager2(this, mPlayer, mTrackSelector);
 
-            setSpeed(getPreferredSpeed());
-
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
     }
@@ -510,20 +508,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), this));
+        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
     }
 
     protected boolean isUiVisible() {
         return mInterfaceVisibilityState == View.VISIBLE;
-    }
-
-    public void setSpeed(String speed) {
-        mSpeed = speed;
-
-        mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(speed), 1.0f));
-    }
-
-    public String getPreferredSpeed() {
-        return mSpeed;
     }
 }
