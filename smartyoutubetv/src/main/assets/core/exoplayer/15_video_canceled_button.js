@@ -6,10 +6,9 @@ console.log("Scripts::Running core script video_canceled_button.js");
  */
 function VideoCanceledButton(selector) {
     this.selector = selector;
-    this.OPENED_VIDEO_SIGN = '#/watch/video';
 
     this.getChecked = function() {
-        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) == -1;
+        return ExoUtils.playerIsClosed();
     };
 
     this.setChecked = function(doChecked) {

@@ -44,7 +44,7 @@ function TrackEndFakeButton(selector) {
                 var hasNaN = isNaN(player.currentTime) || isNaN(player.duration);
                 var needSeek = (player.duration - player.currentTime) > 1;
 
-                if (player.src && (hasNaN || needSeek)) {
+                if (!ExoUtils.playerIsClosed() && (hasNaN || needSeek)) {
                     Log.d($this.TAG, "Retrying unfreeze video...");
                     $this.playerJumpToEnd2();
                 }

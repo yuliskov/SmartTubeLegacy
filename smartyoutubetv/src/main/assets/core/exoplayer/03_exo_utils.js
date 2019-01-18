@@ -15,6 +15,7 @@ var ExoUtils = {
     TAG: 'ExoUtils',
     FIRST_REVISION: 'first_revision',
     SECOND_REVISION: 'second_revision',
+    OPENED_VIDEO_SIGN: '#/watch/video',
 
     isComponentDisabled: function(element) {
         var el = element;
@@ -233,6 +234,10 @@ var ExoUtils = {
 
     playerIsClosed: function() {
         return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.noModelClass);
+    },
+
+    playerIsClosed2: function() {
+        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) == -1;
     },
 
     isDisabled: function(elem) {
