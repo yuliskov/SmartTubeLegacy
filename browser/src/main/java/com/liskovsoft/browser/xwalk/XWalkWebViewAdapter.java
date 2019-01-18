@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.addons.xwalk;
+package com.liskovsoft.browser.xwalk;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     private final XWalkView mXWalkView;
+    private final XWalkUIClientAdapter mXWalkUiClient;
     private XWalkResourceClientAdapter mResourceClient;
 
     public XWalkWebViewAdapter(Context context) {
@@ -46,6 +47,8 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         mXWalkView = new XWalkView(context, attrs);
         mResourceClient = new XWalkResourceClientAdapter(this, mXWalkView);
         mXWalkView.setResourceClient(mResourceClient);
+        mXWalkUiClient = new XWalkUIClientAdapter(mXWalkView);
+        mXWalkView.setUIClient(mXWalkUiClient);
     }
 
     @Override
@@ -137,6 +140,7 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     @Override
     public void setWebChromeClient(WebChromeClient client) {
         mResourceClient.setWebChromeClient(client);
+        mXWalkUiClient.setWebChromeClient(client);
     }
 
     @Override

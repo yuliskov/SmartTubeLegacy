@@ -17,4 +17,9 @@ class SystemLogger extends MyLogger {
     public void w(String tag, String msg) {
         Log.w(tag, msg);
     }
+
+    @Override
+    public void e(String tag, String msg) {
+        Log.e(tag, msg);
+    }
 }

@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import com.liskovsoft.browser.addons.xwalk.XWalkWebViewAdapter;
+import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
 
 import java.util.List;
 

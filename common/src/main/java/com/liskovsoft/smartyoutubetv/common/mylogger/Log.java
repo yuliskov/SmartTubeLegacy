@@ -18,6 +18,10 @@ public class Log {
         sLogger.w(tag, msg);
     }
 
+    public static void e(String tag, String msg) {
+        sLogger.e(tag, msg);
+    }
+
     /**
      * In case of file, flushes all data to disk
      */

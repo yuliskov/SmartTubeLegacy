@@ -7,7 +7,7 @@ import android.view.View;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
-import com.liskovsoft.browser.addons.xwalk.XWalkWebViewAdapter;
+import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
 
 import java.util.Map;
 

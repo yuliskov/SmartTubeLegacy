@@ -1,4 +1,4 @@
-package com.liskovsoft.browser.addons.xwalk;
+package com.liskovsoft.browser.xwalk;
 
 import android.os.Bundle;
 import com.liskovsoft.browser.Browser;

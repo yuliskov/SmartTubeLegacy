@@ -33,14 +33,30 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
-import android.webkit.*;
+import android.webkit.ClientCertRequest;
+import android.webkit.ConsoleMessage;
+import android.webkit.DownloadListener;
+import android.webkit.GeolocationPermissions;
+import android.webkit.HttpAuthHandler;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.PermissionRequest;
+import android.webkit.SslErrorHandler;
+import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebStorage;
+import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
-import com.liskovsoft.browser.addons.xwalk.XWalkResourceClientAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import android.webkit.WebViewClient;
+import com.liskovsoft.browser.xwalk.XWalkResourceClientAdapter;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -50,7 +66,7 @@ import java.util.Vector;
  * Essentially this is an WebView holder.
  */
 public class Tab implements PictureListener {
-    private static final Logger sLogger = LoggerFactory.getLogger(Tab.class);
+    private static final String TAG = Tab.class.getSimpleName();
     private static Bitmap sDefaultFavicon;
     protected WebViewController mWebViewController;
     private final Context mContext;
@@ -245,7 +261,7 @@ public class Tab implements PictureListener {
                 WebBackForwardList restoredState
                         = mMainView.restoreState(mSavedState);
                 if (restoredState == null || restoredState.getSize() == 0) {
-                    sLogger.warn("Failed to restore WebView state!");
+                    Log.w(TAG, "Failed to restore WebView state!");
                     loadUrl(mCurrentState.mOriginalUrl, null);
                 }
                 mSavedState = null;
@@ -522,7 +538,7 @@ public class Tab implements PictureListener {
         mSavedState = new Bundle();
         WebBackForwardList savedList = mMainView.saveState(mSavedState);
         if (savedList == null || savedList.getSize() == 0) {
-            sLogger.warn("Failed to save back/forward list for "
+            Log.w(TAG, "Failed to save back/forward list for "
                     + mCurrentState.mUrl);
         }
 
@@ -746,7 +762,7 @@ public class Tab implements PictureListener {
             try {
                 mCapture.copyPixelsFromBuffer(buffer);
             } catch (RuntimeException rex) {
-                sLogger.error("Load capture has mismatched sizes; buffer: "
+                Log.e(TAG, "Load capture has mismatched sizes; buffer: "
                         + buffer.capacity() + " blob: " + blob.length
                         + "capture: " + mCapture.getByteCount());
                 throw rex;
@@ -991,9 +1007,11 @@ public class Tab implements PictureListener {
                 return;
 
             mDisableOverrideUrlLoading = false;
+
             if (!isPrivateBrowsingEnabled()) {
-                sLogger.info("logPageFinishedLoading: ", url, SystemClock.uptimeMillis() - mLoadStartTime);
+                Log.i(TAG, "logPageFinishedLoading: " + url + " " + (SystemClock.uptimeMillis() - mLoadStartTime));
             }
+
             syncCurrentState(view, url);
             if (mListener != null)
                 mListener.onPageFinished(Tab.this, url);
@@ -1335,19 +1353,19 @@ public class Tab implements PictureListener {
 
             switch (consoleMessage.messageLevel()) {
                 case TIP:
-                    sLogger.debug(message);
+                    Log.d(TAG, message);
                     break;
                 case LOG:
-                    sLogger.info(message);
+                    Log.i(TAG, message);
                     break;
                 case WARNING:
-                    sLogger.warn(message);
+                    Log.w(TAG, message);
                     break;
                 case ERROR:
-                    sLogger.error(message);
+                    Log.e(TAG, message);
                     break;
                 case DEBUG:
-                    sLogger.debug(message);
+                    Log.d(TAG, message);
                     break;
             }
 
@@ -1492,7 +1510,7 @@ public class Tab implements PictureListener {
         @Override
         public void onCloseWindow(WebView window) {
             if (window != mSubView) {
-                sLogger.error("Can't close the window");
+                Log.e(TAG, "Can't close the window");
             }
             mWebViewController.dismissSubWindow(Tab.this);
         }

@@ -1,7 +1,7 @@
 package com.liskovsoft.browser.addons;
 
 import com.liskovsoft.browser.R;
-import com.liskovsoft.browser.addons.xwalk.XWalkBrowserFragment;
+import com.liskovsoft.browser.xwalk.XWalkBrowserFragment;
 
 public abstract class MainBrowserFragment extends XWalkBrowserFragment {
     // NOTE: don't use this here or you'll get crash on some firmwares
