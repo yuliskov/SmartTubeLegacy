@@ -31,11 +31,7 @@ public class AutoFrameRateManager {
         Format videoFormat = mPlayer.getVideoFormat();
         float frameRate = videoFormat.frameRate;
         int width = videoFormat.width;
-        boolean result = mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
-
-        if (!result) {
-            MessageHelpers.showMessage(mContext, "Display mode switch unsuccessful. See log for details.");
-        }
+        mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
     }
 
     public boolean getEnabled() {

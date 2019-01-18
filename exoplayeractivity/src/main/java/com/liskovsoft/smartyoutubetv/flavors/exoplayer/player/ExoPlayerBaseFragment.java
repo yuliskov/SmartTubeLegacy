@@ -525,13 +525,17 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onPause() {
         super.onPause();
 
-        mAutoFrameRateManager.restoreOriginalState();
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.restoreOriginalState();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        mAutoFrameRateManager.apply();
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.apply();
+        }
     }
 }
