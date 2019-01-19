@@ -54,4 +54,5 @@
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
     <string name="tweak_log_to_file">Сохранять лог в файл</string>
     <string name="log_stored_in_path">Путь: %s</string>
+    <string name="tweak_unplayable_video_fix">Исправлять непроигрываемые видео</string>
 </resources>

@@ -70,4 +70,5 @@
     <string name="tweak_end_cards">Show end video captions</string>
     <string name="tweak_log_to_file">Save log to file</string>
     <string name="log_stored_in_path">Log path: %s</string>
+    <string name="tweak_unplayable_video_fix">Unplayable video fix</string>
 </resources>

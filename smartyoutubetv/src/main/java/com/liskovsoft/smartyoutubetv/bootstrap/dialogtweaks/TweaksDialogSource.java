@@ -22,6 +22,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OkButtonDialogItem(mContext));
         mItems.add(new EndCardsDialogItem(mContext));
         mItems.add(new LogToFileDialogItem(mContext));
+        mItems.add(new UnplayableVideoFixDialogItem(mContext));
     }
 
     @Override

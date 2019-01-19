@@ -13,10 +13,11 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
-    private static final String BOOTSTRAP_ENDCARDS = "bootstrapEndCards";
+    private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
     private static final String BOOTSTRAP_LOG_TO_FILE = "logToFile";
+    private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -137,12 +138,12 @@ public final class SmartPreferences {
 
     public void setEnableEndCards(boolean isChecked) {
         mPrefs.edit()
-                .putBoolean(BOOTSTRAP_ENDCARDS, isChecked)
+                .putBoolean(BOOTSTRAP_END_CARDS, isChecked)
                 .apply();
     }
 
     public boolean getEnableEndCards() {
-        return mPrefs.getBoolean(BOOTSTRAP_ENDCARDS, true);
+        return mPrefs.getBoolean(BOOTSTRAP_END_CARDS, true);
     }
 
     public void setEnableOKPause(boolean isChecked) {
@@ -163,5 +164,15 @@ public final class SmartPreferences {
 
     public boolean getEnableLogToFile() {
         return mPrefs.getBoolean(BOOTSTRAP_LOG_TO_FILE, false);
+    }
+
+    public void setUnplayableVideoFix(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(UNPLAYABLE_VIDEO_FIX, isChecked)
+                .apply();
+    }
+
+    public boolean getUnplayableVideoFix() {
+        return mPrefs.getBoolean(UNPLAYABLE_VIDEO_FIX, false);
     }
 }

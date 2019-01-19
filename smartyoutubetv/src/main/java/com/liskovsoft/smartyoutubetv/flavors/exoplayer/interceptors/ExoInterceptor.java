@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
@@ -43,6 +44,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private Intent mCachedIntent;
     private String mCurrentUrl;
     private boolean mPlaybackStarted;
+    private final boolean mUnplayableVideoFix;
     private Listener mPlayerListener;
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_PLAYBACK_STARTED = "playback_started";
@@ -103,6 +105,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mManager = new BackgroundActionManager();
 
         mFragmentsManager.setPlayerListener(this);
+        mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
     }
 
     @Override
@@ -114,7 +117,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        // url = cleanupUrl(url);
+        url = unplayableVideoFix(url);
 
         mCurrentUrl = url;
 
@@ -138,7 +141,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
      * @param url input
      * @return transformed
      */
-    private String cleanupUrl(String url) {
+    private String unplayableVideoFix(String url) {
+        if (!mUnplayableVideoFix) {
+            return url;
+        }
+
         MyQueryString myQuery = MyQueryStringFactory.parse(url);
         myQuery.remove(PARAM_ACCESS_TOKEN);
 
