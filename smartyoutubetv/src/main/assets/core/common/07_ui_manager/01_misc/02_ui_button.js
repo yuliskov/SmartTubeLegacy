@@ -6,11 +6,11 @@ console.log("Scripts::Running script ui_button.js");
 
 function UiButton() {
     this.focus = function() {
-        Utils.ytFocus(this.getElem());
+        YouTubeUtils.focus(this.getElem());
     };
 
     this.unfocus = function() {
-        Utils.ytUnfocus(this.getElem());
+        YouTubeUtils.unfocus(this.getElem());
     };
 }
 

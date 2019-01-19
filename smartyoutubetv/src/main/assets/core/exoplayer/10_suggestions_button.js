@@ -107,7 +107,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.openSuggestions = function() {
-        ExoUtils.enablePlayerSuggestions();
+        YouTubeUtils.enablePlayerSuggestions();
         this.tryToOpenSuggestions();
 
         // start point
@@ -162,10 +162,10 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !ExoUtils.playerIsClosed()) { // fake btn can only be checked
+        if (doChecked && !YouTubeUtils.playerIsClosed()) { // fake btn can only be checked
             Log.d(this.TAG, "opening suggestions");
-            ExoUtils.enablePlayerSuggestions();
-            ExoUtils.hidePlayerBackground();
+            YouTubeUtils.enablePlayerSuggestions();
+            YouTubeUtils.hidePlayerBackground();
             this.openSuggestions();
         }
     };

@@ -12,14 +12,14 @@ function NextPrevButton(selector) {
     this.getChecked = function() {
         console.log("NextPrevButton: getChecked " + this.selector);
 
-        return ExoUtils.isDisabled(this.findToggle()) ? null : false;
+        return YouTubeUtils.isDisabled(this.findToggle()) ? null : false;
     };
 
     this.setChecked = function(doChecked) {
         console.log("NextPrevButton: setChecked " + this.selector + " " + doChecked);
 
         if (doChecked) {
-            if (ExoUtils.isDisabled(this.findToggle())) { // close video if btn not active or not found
+            if (YouTubeUtils.isDisabled(this.findToggle())) { // close video if btn not active or not found
                 new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);
                 return;
             }

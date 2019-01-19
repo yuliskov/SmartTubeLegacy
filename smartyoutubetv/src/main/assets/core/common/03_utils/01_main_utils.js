@@ -299,22 +299,6 @@ var Utils = {
             el.style.display = 'none';
         }
     },
-
-    ytShow: function(elementOrSelector) {
-        var el = this.$(elementOrSelector);
-
-        if (el) {
-            this.removeClass(el, YouTubeClasses.HIDDEN);
-        }
-    },
-
-    ytHide: function(elementOrSelector) {
-        var el = this.$(elementOrSelector);
-
-        if (el) {
-            this.addClass(el, YouTubeClasses.HIDDEN);
-        }
-    },
     
     content: function(elem, newContent) {
         if (!elem)
@@ -326,20 +310,6 @@ var Utils = {
         }
 
         return elem.innerHTML;
-    },
-
-    ytFocus: function(elem) {
-        Log.d(this.TAG, "Setting focus on element: " + EventUtils.toSelector(elem));
-
-        this.addClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
-        if (elem) {
-            // focus sometimes doesn't work without setting a small delay (e.g. voice search button)
-            setTimeout(function() {elem.focus();}, 100);
-        }
-    },
-
-    ytUnfocus: function(elem) {
-        this.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
     }
 };
 

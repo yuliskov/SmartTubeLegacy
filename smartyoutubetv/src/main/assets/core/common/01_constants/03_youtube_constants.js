@@ -2,7 +2,7 @@
  * YouTube constants
  */
 
-console.log("Scripts::Running script yt_constants.js");
+console.log("Scripts::Running script youtube_constants.js");
 
 var YouTubeConstants = {
     // CSS Selectors
@@ -57,6 +57,7 @@ var YouTubeSelectors = {
     SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
     SEARCH_RESULTS_ROW: '#search-results',
     SURFACE_AREA: '#surface',
+    SURFACE_AREA_CONTENT: '#surface-content',
     MAIN_LOADER: '#loader',
     BUTTON_BACK: '#legend .back',
     OVERLAY_PANEL_CONTAINER: '#overlay-stage',

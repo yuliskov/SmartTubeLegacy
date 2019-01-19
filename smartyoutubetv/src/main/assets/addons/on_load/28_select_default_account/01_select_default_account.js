@@ -11,15 +11,14 @@ function SelectDefaultAccountAddon() {
         var $this = this;
 
         EventUtils.onLoad(function() {
-            var v = Utils.$('video');
-
-            if (v && v.src) { // dialog not shown yet, because the video is resumed
+            if (!YouTubeUtils.playerIsClosed2()) { // dialog not shown yet, because the video is resumed
                 var handler = function() {
+                    Log.d($this.TAG, "Hiding multi-account panel");
                     $this.selectDefaultAccount();
-                    EventUtils.removeListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
+                    EventUtils.removeListener(YouTubeSelectors.SURFACE_AREA, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
                 };
 
-                EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
+                EventUtils.addListener(YouTubeSelectors.SURFACE_AREA, YouTubeEvents.MODEL_CHANGED_EVENT, handler);
             } else {
                 $this.selectDefaultAccount();
             }

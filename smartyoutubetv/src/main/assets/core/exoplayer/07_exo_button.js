@@ -14,7 +14,7 @@ function ExoButton(selector) {
         var btn = null;
 
         if (Utils.isArray(this.selector)) {
-            var revision = ExoUtils.getPlayerRevision();
+            var revision = YouTubeUtils.getPlayerRevision();
             var idx = revision == ExoUtils.SECOND_REVISION ? 0 : 1;
             btn = Utils.$(this.selector[idx]);
         } else {
@@ -27,7 +27,7 @@ function ExoButton(selector) {
     };
 
     this.getChecked = function() {
-        if (ExoUtils.playerIsClosed()) {
+        if (YouTubeUtils.playerIsClosed()) {
             return null; // element not exists (see ActionReceiver.java for details)
         }
 
@@ -47,7 +47,7 @@ function ExoButton(selector) {
     };
     
     this.setChecked = function(doChecked) {
-        if (ExoUtils.playerIsClosed()) {
+        if (YouTubeUtils.playerIsClosed()) {
             console.log("ExoButton: setChecked: video is closed already... do nothing: " + this.selector);
             return;
         }

@@ -85,7 +85,7 @@ function UiWatcher(buttonsContainerSelector) {
         Log.d(this.TAG, "move selection from the first button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();
-        Utils.ytUnfocus(e.target);
+        YouTubeUtils.unfocus(e.target);
     };
 
     this.onCenterButtonKey = function(e) {
@@ -110,7 +110,7 @@ function UiWatcher(buttonsContainerSelector) {
         if (sameDirection) {
             EventUtils.triggerEvent(this.buttonsContainerSelector, DefaultEvents.KEY_DOWN, e.keyCode);
         } else {
-            Utils.ytFocus(this.ytButton);
+            YouTubeUtils.focus(this.ytButton);
         }
 
         this.centerBtn.unfocus();
@@ -130,6 +130,6 @@ function UiWatcher(buttonsContainerSelector) {
         Log.d(this.TAG, "move selection from the last button to the center button, from: " + EventUtils.toSelector(e.target));
 
         this.centerBtn.focus();
-        Utils.ytUnfocus(e.target);
+        YouTubeUtils.unfocus(e.target);
     };
 }

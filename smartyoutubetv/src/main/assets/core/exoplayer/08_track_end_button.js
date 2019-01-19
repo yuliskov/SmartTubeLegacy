@@ -44,7 +44,7 @@ function TrackEndFakeButton(selector) {
                 var hasNaN = isNaN(player.currentTime) || isNaN(player.duration);
                 var needSeek = (player.duration - player.currentTime) > 1;
 
-                if (!ExoUtils.playerIsClosed() && (hasNaN || needSeek)) {
+                if (player.src && (hasNaN || needSeek)) {
                     Log.d($this.TAG, "Retrying unfreeze video...");
                     $this.playerJumpToEnd2();
                 }
@@ -107,9 +107,9 @@ function TrackEndFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !ExoUtils.playerIsClosed()) {
-            ExoUtils.enablePlayerSuggestions();
-            ExoUtils.showPlayerBackground();
+        if (doChecked && !YouTubeUtils.playerIsClosed()) {
+            YouTubeUtils.enablePlayerSuggestions();
+            YouTubeUtils.showPlayerBackground();
             this.playerJumpToEnd2();
         }
     };

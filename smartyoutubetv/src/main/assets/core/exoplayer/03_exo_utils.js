@@ -13,29 +13,6 @@ console.log("Scripts::Running core script exo_utils.js");
  */
 var ExoUtils = {
     TAG: 'ExoUtils',
-    FIRST_REVISION: 'first_revision',
-    SECOND_REVISION: 'second_revision',
-    OPENED_VIDEO_SIGN: '#/watch/video',
-
-    isComponentDisabled: function(element) {
-        var el = element;
-        if (Utils.isSelector(element)) {
-            el = Utils.$(element);
-        }
-        var hasClass = Utils.hasClass(el, ExoConstants.disabledClass);
-        console.log("ExoUtils.isDisabled: " + element + " " + hasClass);
-        return hasClass;
-    },
-
-    isComponentHidden: function(element) {
-        var el = element;
-        if (Utils.isSelector(element)) {
-            el = Utils.$(element);
-        }
-        var hasClass = Utils.hasClass(el, ExoConstants.hiddenClass);
-        console.log("ExoUtils.isHidden: " + element + " " + hasClass);
-        return hasClass;
-    },
 
     // events order:
     // emptied
@@ -80,82 +57,12 @@ var ExoUtils = {
         player.preparePlayerDone = true;
     },
 
-    getViewCount: function() {
-        var element = Utils.$(ExoConstants.viewCountSelector);
-        if (element != null) {
-            // don't rely on , symbol parsing here! because it depends on localization
-            return element.innerHTML;
-        }
-
-        // new player ui
-        element = Utils.$(ExoConstants.videoDetailsSelector);
-        if (element != null) {
-            var parts = element.innerHTML.split('•');
-            if (parts.length >= 2) {
-                return parts[1].trim();
-            }
-        }
-
-        return "";
-    },
-
-    getVideoDate: function() {
-        var element = Utils.$(ExoConstants.uploadDateSelector);
-        if (element != null) {
-            // don't rely on : symbol parsing here! because it depends on localization
-            return element.innerHTML;
-        }
-
-        // new player ui
-        element = Utils.$(ExoConstants.videoDetailsSelector);
-        if (element != null) {
-            var parts = element.innerHTML.split('•');
-            if (parts.length >= 3) {
-                return parts[2].trim();
-            }
-        }
-
-        return "";
-    },
-
-    getScreenWidth: function() {
-        return window.innerWidth;
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    hidePlayerBackground: function() {
-        Utils.$('body').style.backgroundImage = 'initial';
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    showPlayerBackground: function() {
-        Utils.$('body').style.backgroundImage = '';
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    enablePlayerSuggestions: function() {
-        Utils.show(ExoConstants.bottomUiSelector);
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    disablePlayerSuggestions: function() {
-        Utils.hide(ExoConstants.bottomUiSelector);
-    },
-
     /**
      * Used when calling through app boundaries.
      */
     getButtonStates: function() {
-        this.hidePlayerBackground();
-        this.disablePlayerSuggestions();
+        YouTubeUtils.hidePlayerBackground();
+        YouTubeUtils.disablePlayerSuggestions();
         this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
@@ -175,17 +82,17 @@ var ExoUtils = {
             states[newName] = isChecked;
         }
 
-        states[PlayerActivity.VIDEO_DATE] = this.getVideoDate();
-        states[PlayerActivity.VIDEO_VIEW_COUNT] = this.getViewCount();
-        states[PlayerActivity.SCREEN_WIDTH] = this.getScreenWidth();
+        states[PlayerActivity.VIDEO_DATE] = YouTubeUtils.getVideoDate();
+        states[PlayerActivity.VIDEO_VIEW_COUNT] = YouTubeUtils.getViewCount();
+        states[PlayerActivity.SCREEN_WIDTH] = DeviceUtils.getScreenWidth();
 
         // don't let app to close video player (see ActionsReceiver.java)
         if (window.lastButtonName && window.lastButtonName == PlayerActivity.TRACK_ENDED) {
             states[PlayerActivity.BUTTON_NEXT] = null;
         }
 
-        if (this.playerIsClosed()) {
-            this.showPlayerBackground();
+        if (YouTubeUtils.playerIsClosed()) {
+            YouTubeUtils.showPlayerBackground();
         }
 
         console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
@@ -230,27 +137,5 @@ var ExoUtils = {
         } else {
             console.log('ExoUtils: app not found');
         }
-    },
-
-    playerIsClosed: function() {
-        return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.noModelClass);
-    },
-
-    playerIsClosed2: function() {
-        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) == -1;
-    },
-
-    isDisabled: function(elem) {
-        var hasClass = Utils.hasClass(elem, ExoConstants.disabledClass);
-        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
-        return hasClass;
-    },
-
-    getPlayerRevision: function() {
-        var title = Utils.$(ExoConstants.newPlayerTitleSelector);
-        if (title)
-            return this.SECOND_REVISION;
-
-        return this.FIRST_REVISION;
     }
 };

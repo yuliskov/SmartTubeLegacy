@@ -8,7 +8,7 @@ function VideoCanceledButton(selector) {
     this.selector = selector;
 
     this.getChecked = function() {
-        return ExoUtils.playerIsClosed();
+        return YouTubeUtils.playerIsClosed();
     };
 
     this.setChecked = function(doChecked) {

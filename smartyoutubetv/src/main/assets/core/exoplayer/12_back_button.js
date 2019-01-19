@@ -10,7 +10,7 @@ function BackButton(selector) {
     this.checkDelayMS = 1000;
 
     this.retryOnFail = function() {
-        if (this.retryTimes <= 0 || ExoUtils.playerIsClosed()) {
+        if (this.retryTimes <= 0 || YouTubeUtils.playerIsClosed()) {
             return;
         }
         this.retryTimes--;
@@ -32,7 +32,7 @@ function BackButton(selector) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            ExoUtils.showPlayerBackground();
+            YouTubeUtils.showPlayerBackground();
             var $this = this;
             // 'likes not saved' fix
             setTimeout(function() {

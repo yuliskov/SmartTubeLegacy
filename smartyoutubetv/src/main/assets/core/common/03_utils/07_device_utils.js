@@ -202,6 +202,10 @@ var DeviceUtils = {
     isMicAvailable2: function() {
         var jsMicAvailable = window.SpeechRecognition || window.webkitSpeechRecognition;
         return jsMicAvailable || this.getApp().isMicAvailable();
+    },
+
+    getScreenWidth: function() {
+        return window.innerWidth;
     }
 };
 
