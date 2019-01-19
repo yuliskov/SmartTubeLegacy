@@ -82,7 +82,7 @@ var YouTubeUtils = {
         return this.FIRST_REVISION;
     },
 
-    showElem: function(elementOrSelector) {
+    show: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
 
         if (el) {
@@ -90,7 +90,7 @@ var YouTubeUtils = {
         }
     },
 
-    hideElem: function(elementOrSelector) {
+    hide: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
 
         if (el) {
