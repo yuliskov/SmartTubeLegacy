@@ -17,13 +17,13 @@ import java.util.List;
 
 class DisplaySyncHelper implements UhdHelperListener {
     private static final String TAG = "DisplaySyncHelper";
-    // switch not only framerate but resolution too
-    private static final boolean SWITCH_TO_UHD = true;
     private final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     private int mNewMode;
     private int mOriginalModeId;
+    // switch not only framerate but resolution too
+    private static final boolean SWITCH_TO_UHD = false;
 
     public DisplaySyncHelper(Activity context) {
         mContext = context;
