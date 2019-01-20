@@ -15,7 +15,7 @@ function ExoButton(selector) {
 
         if (Utils.isArray(this.selector)) {
             var revision = YouTubeUtils.getPlayerRevision();
-            var idx = revision == ExoUtils.SECOND_REVISION ? 0 : 1;
+            var idx = revision == YouTubeUtils.SECOND_REVISION ? 0 : 1;
             btn = Utils.$(this.selector[idx]);
         } else {
             btn = Utils.$(this.selector);
@@ -48,23 +48,23 @@ function ExoButton(selector) {
     
     this.setChecked = function(doChecked) {
         if (YouTubeUtils.playerIsClosed()) {
-            console.log("ExoButton: setChecked: video is closed already... do nothing: " + this.selector);
+            Log.d(this.TAG, "setChecked: video is closed already... do nothing: " + this.selector);
             return;
         }
 
         var isChecked = this.getChecked();
 
         if (isChecked == null) {
-            console.log("ExoButton: button is disabled or not exists: exiting: " + this.selector);
+            Log.d(this.TAG, "button is disabled or not exists: exiting: " + this.selector);
             return;
         }
 
         if (isChecked == doChecked) {
-            console.log("ExoButton: setChecked: already checked... do nothing: " + this.selector + ' ' + isChecked);
+            Log.d(this.TAG, "setChecked: already checked... do nothing: " + this.selector + ' ' + isChecked);
             return;
         }
 
-        console.log("ExoButton: setChecked: " + this.selector + ' ' + doChecked + ' ' + this.findToggle());
+        Log.d(this.TAG, "setChecked: " + this.selector + ' ' + doChecked + ' ' + this.findToggle());
         EventUtils.triggerEnter(this.findToggle());
         this.isChecked = doChecked;
     };
@@ -74,7 +74,7 @@ function ExoButton(selector) {
 
 ExoButton.fromSelector = function(selector) {
     function createButton(selector) {
-        console.log("ExoButton: fromSelector: create button " + selector);
+        Log.d(this.TAG, "fromSelector: create button " + selector);
         switch (selector) {
             case PlayerActivityMapping.TRACK_ENDED:
                 return new TrackEndFakeButton(selector);
@@ -105,8 +105,3 @@ ExoButton.fromSelector = function(selector) {
     // }
     // return this.btnMap[selector];
 };
-
-// ExoButton.resetCache = function() {
-//     if (this.btnMap)
-//         delete this.btnMap;
-// };
