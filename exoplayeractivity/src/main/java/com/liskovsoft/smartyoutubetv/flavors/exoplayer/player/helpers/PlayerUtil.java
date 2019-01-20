@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
@@ -201,7 +203,7 @@ import java.util.Locale;
         context.startActivity(chooserIntent);
     }
 
-    public static Format getCurrentlyPlayingTrack(DefaultTrackSelector trackSelector) {
+    public static Format getCurrentVideoTrack(DefaultTrackSelector trackSelector) {
         MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
         if (trackInfo == null) {
             return null;
@@ -211,6 +213,14 @@ import java.util.Locale;
         if (override == null || override.tracks.length == 0)
             return null;
         return groups.get(override.groupIndex).getFormat(override.tracks[0]);
+    }
+
+    public static Format getCurrentVideoTrack(SimpleExoPlayer player) {
+        if (player == null) {
+            return null;
+        }
+
+        return player.getVideoFormat();
     }
 
     public static String extractQualityLabel(Format format) {

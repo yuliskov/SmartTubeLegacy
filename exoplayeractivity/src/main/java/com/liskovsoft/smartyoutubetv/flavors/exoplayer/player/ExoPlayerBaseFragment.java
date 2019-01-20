@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
@@ -276,10 +277,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         TextView quality = root.findViewById(R.id.video_quality);
-        Format format = PlayerUtil.getCurrentlyPlayingTrack(mTrackSelector);
+        Format format = PlayerUtil.getCurrentVideoTrack(mPlayer);
 
-        if (format == null)
+        if (format == null) {
             return;
+        }
 
         String separator = "/";
 
@@ -381,7 +383,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             if (mStateManager != null) {
                 // stateManage should be initialized here
                 mStateManager.restoreState();
-                updateQualityTitle();
             }
 
             if (mPlayer != null) {
@@ -390,13 +391,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (playbackState == Player.STATE_ENDED) {
-            // doGracefulExit(PlayerActivity.BUTTON_NEXT); // force next track
             doGracefulExit(ExoPlayerBaseFragment.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {
             mAutoFrameRateManager.apply();
             mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
+            updateQualityTitle();
         }
 
         showLoadingMessage(playbackState);
@@ -453,8 +454,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (mNeedRetrySource) {
             initializePlayer();
         }
-
-        updateQualityTitle();
     }
 
     public void setHidePlaybackErrors(boolean hideErrors) {
