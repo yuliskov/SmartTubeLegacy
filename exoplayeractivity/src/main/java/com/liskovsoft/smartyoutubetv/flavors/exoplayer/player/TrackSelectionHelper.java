@@ -286,7 +286,8 @@ import java.util.TreeSet;
 
         mDisableView.setChecked(mIsDisabled);
 
-        mDefaultView.setChecked(!mIsDisabled && mOverride == null);
+        boolean defaultSelected = !mIsDisabled && mOverride == null;
+        mDefaultView.setChecked(defaultSelected);
 
         for (int i = 0; i < mTrackViews.length; i++) {
             for (int j = 0; j < mTrackViews[i].length; j++) {

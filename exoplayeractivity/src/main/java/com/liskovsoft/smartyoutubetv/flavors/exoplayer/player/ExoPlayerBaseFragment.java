@@ -9,25 +9,19 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerHangListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
@@ -265,22 +259,22 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         clock.setText(currentTime);
     }
 
-    private void updateQualityTitle() {
+    private void updateTitleQualityInfo() {
         View root = getView();
 
         if (root == null) {
             throw new IllegalStateException("Fragment's root view is null");
         }
 
-        if (mTrackSelector == null) {
-            return;
-        }
-
         TextView quality = root.findViewById(R.id.video_quality);
+        quality.setText(getTitleQualityInfo());
+    }
+
+    private String getTitleQualityInfo() {
         Format format = PlayerUtil.getCurrentVideoTrack(mPlayer);
 
         if (format == null) {
-            return;
+            return "none";
         }
 
         String separator = "/";
@@ -304,7 +298,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         qualityString = String.format("%s%s%s", qualityLabel, fps, codec);
 
-        quality.setText(qualityString);
+        return qualityString;
     }
 
     private void resetStateOfLayoutToggleButtons() {
@@ -397,7 +391,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (playbackState == Player.STATE_READY) {
             mAutoFrameRateManager.apply();
             mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
-            updateQualityTitle();
+            updateTitleQualityInfo();
         }
 
         showLoadingMessage(playbackState);
