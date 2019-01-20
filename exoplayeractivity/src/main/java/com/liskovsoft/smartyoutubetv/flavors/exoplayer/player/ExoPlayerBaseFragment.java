@@ -122,8 +122,15 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     protected void initializeTrackSelector() {
-        TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
-        
+        TrackSelection.Factory adaptiveTrackSelectionFactory =
+                new AdaptiveTrackSelection.Factory(
+                        BANDWIDTH_METER,
+                        Integer.MAX_VALUE,
+                        AdaptiveTrackSelection.DEFAULT_MIN_DURATION_FOR_QUALITY_INCREASE_MS,
+                        AdaptiveTrackSelection.DEFAULT_MAX_DURATION_FOR_QUALITY_DECREASE_MS,
+                        AdaptiveTrackSelection.DEFAULT_MIN_DURATION_TO_RETAIN_AFTER_DISCARD_MS,
+                        AdaptiveTrackSelection.DEFAULT_BANDWIDTH_FRACTION);
+
         mTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
         // Commented out because of bug: can't instantiate OMX decoder...
