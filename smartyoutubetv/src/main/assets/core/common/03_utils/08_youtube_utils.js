@@ -15,7 +15,7 @@ var YouTubeUtils = {
         if (Utils.isSelector(element)) {
             el = Utils.$(element);
         }
-        var hasClass = Utils.hasClass(el, ExoConstants.disabledClass);
+        var hasClass = Utils.hasClass(el, YouTubeClasses.ELEMENT_DISABLED);
         console.log("ExoUtils.isDisabled: " + element + " " + hasClass);
         return hasClass;
     },
@@ -25,7 +25,7 @@ var YouTubeUtils = {
         if (Utils.isSelector(element)) {
             el = Utils.$(element);
         }
-        var hasClass = Utils.hasClass(el, ExoConstants.hiddenClass);
+        var hasClass = Utils.hasClass(el, YouTubeClasses.HIDDEN);
         console.log("ExoUtils.isHidden: " + element + " " + hasClass);
         return hasClass;
     },
@@ -48,18 +48,18 @@ var YouTubeUtils = {
      * For other hidden ui parts see exoplayer.css
      */
     enablePlayerSuggestions: function() {
-        Utils.show(ExoConstants.bottomUiSelector);
+        Utils.show(YouTubeSelectors.PLAYER_SUGGESTIONS);
     },
 
     /**
      * For other hidden ui parts see exoplayer.css
      */
     disablePlayerSuggestions: function() {
-        Utils.hide(ExoConstants.bottomUiSelector);
+        Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS);
     },
 
     playerIsClosed: function() {
-        return Utils.hasClass(Utils.$(ExoConstants.playerUiSelector), ExoConstants.noModelClass);
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
     },
 
     playerIsClosed2: function() {
@@ -67,13 +67,13 @@ var YouTubeUtils = {
     },
 
     isDisabled: function(elem) {
-        var hasClass = Utils.hasClass(elem, ExoConstants.disabledClass);
+        var hasClass = Utils.hasClass(elem, YouTubeClasses.ELEMENT_DISABLED);
         console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
         return hasClass;
     },
 
     getPlayerRevision: function() {
-        var title = Utils.$(ExoConstants.newPlayerTitleSelector);
+        var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
 
         if (title) {
             return this.SECOND_REVISION;
@@ -86,7 +86,7 @@ var YouTubeUtils = {
         var el = this.$(elementOrSelector);
 
         if (el) {
-            this.removeClass(el, YouTubeClasses.HIDDEN);
+            Utils.removeClass(el, YouTubeClasses.HIDDEN);
         }
     },
 
@@ -94,14 +94,14 @@ var YouTubeUtils = {
         var el = this.$(elementOrSelector);
 
         if (el) {
-            this.addClass(el, YouTubeClasses.HIDDEN);
+            Utils.addClass(el, YouTubeClasses.HIDDEN);
         }
     },
 
     focus: function(elem) {
         Log.d(this.TAG, "Setting focus on element: " + EventUtils.toSelector(elem));
 
-        this.addClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
+        Utils.addClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
         if (elem) {
             // focus sometimes doesn't work without setting a small delay (e.g. voice search button)
             setTimeout(function() {elem.focus();}, 100);
@@ -109,18 +109,18 @@ var YouTubeUtils = {
     },
 
     unfocus: function(elem) {
-        this.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
+        Utils.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
     },
 
     getViewCount: function() {
-        var element = Utils.$(ExoConstants.viewCountSelector);
+        var element = Utils.$(YouTubeSelectors.PLAYER_VIEW_COUNT);
         if (element != null) {
             // don't rely on , symbol parsing here! because it depends on localization
             return element.innerHTML;
         }
 
         // new player ui
-        element = Utils.$(ExoConstants.videoDetailsSelector);
+        element = Utils.$(YouTubeSelectors.PLAYER_VIDEO_DETAILS);
         if (element != null) {
             var parts = element.innerHTML.split('•');
             if (parts.length >= 2) {
@@ -132,14 +132,14 @@ var YouTubeUtils = {
     },
 
     getVideoDate: function() {
-        var element = Utils.$(ExoConstants.uploadDateSelector);
+        var element = Utils.$(YouTubeSelectors.PLAYER_UPLOAD_DATE);
         if (element != null) {
             // don't rely on : symbol parsing here! because it depends on localization
             return element.innerHTML;
         }
 
         // new player ui
-        element = Utils.$(ExoConstants.videoDetailsSelector);
+        element = Utils.$(YouTubeSelectors.PLAYER_VIDEO_DETAILS);
         if (element != null) {
             var parts = element.innerHTML.split('•');
             if (parts.length >= 3) {

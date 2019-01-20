@@ -32,33 +32,3 @@ var PlayerActivityMapping = {
     TRACK_ENDED: 'track_ended', // fake button (use internal logic)
     BUTTON_BACK: '#legend .back' // should be the last
 };
-
-var ExoConstants = {
-    bottomUiSelector: '#bottom-half.bottom-half',
-    cornerButtonsSelector: '#legend.legend',
-    focusedClass: 'focused',
-    hiddenClass: 'hidden',
-    disabledClass: 'disabled',
-    selectedClass: 'toggle-selected',
-    optionsBtnSelector: '#transport-more-button',
-    backBtnSelector: '#legend .back',
-    playerControlsSelector: '#transport-controls',
-    controlsBarSelector: '#buttons-list',
-    // mainControlsSelector: '.fresh-transport-controls.transport-controls',
-    mainTitleSelector: '.title-card.watch-title-tray',
-    playerUiSelector: '#watch.watch', // div that receives keys events
-    uploadDateSelector: '.uploaded-date',
-    viewCountSelector: '.view-count-label',
-    videoDetailsSelector: '.player-video-details',
-    suggestionsListSelector: 'div.pivot-shelf-list',
-    componentFocusEvent: 'component-focus',
-    channelScreenSelector: '#channel.channel', // empty on boot because of lazy initialization behavior
-    searchScreenSelector: '#search.search', // empty on boot because of lazy initialization behavior
-    componentBlurEvent: 'component-blur',
-    modelChangedEvent: 'model:changed',
-    noModelClass: 'no-model',
-    transportShowingClass: 'transport-showing',
-    watchIdleClass: 'watch-idle',
-    toggleButtonClass: 'toggle-button',
-    newPlayerTitleSelector: '.watch-title-tray'
-};

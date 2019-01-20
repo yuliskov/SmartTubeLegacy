@@ -13,7 +13,7 @@ function ExoButtonDecorator(btn) {
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
-        EventUtils.triggerEnter(ExoConstants.optionsBtnSelector);
+        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
     };
 
     this.doCallbackIfReady = function(callback) {

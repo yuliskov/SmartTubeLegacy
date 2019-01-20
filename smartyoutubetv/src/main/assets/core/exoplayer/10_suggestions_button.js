@@ -16,9 +16,9 @@ function SuggestionsWatcher(host) {
                 return;
             }
 
-            var playerControls = Utils.$(ExoConstants.playerControlsSelector);
+            var playerControls = Utils.$(YouTubeSelectors.PLAYER_UI_CONTAINER);
 
-            if (Utils.hasClass(playerControls, ExoConstants.hiddenClass)) {
+            if (Utils.hasClass(playerControls, YouTubeClasses.HIDDEN)) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -41,8 +41,8 @@ function SuggestionsWatcher(host) {
         };
 
         var onModelChangeHandler = function(e) {
-            var backToPlayer = Utils.hasClass(e.target, ExoConstants.hiddenClass) &&
-                Utils.hasClass(e.target, ExoConstants.transportShowingClass);
+            var backToPlayer = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
+                Utils.hasClass(e.target, YouTubeClasses.PLAYER_UI_SHOWING);
             if (backToPlayer) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 closeSuggestions();
@@ -52,8 +52,8 @@ function SuggestionsWatcher(host) {
             modelChangeTimeStampMS = Utils.getCurrentTimeMs();
         };
 
-        EventUtils.addListener(ExoConstants.suggestionsListSelector, ExoConstants.componentBlurEvent, onBlurHandler);
-        EventUtils.addListener(ExoConstants.playerUiSelector, ExoConstants.modelChangedEvent, onModelChangeHandler);
+        EventUtils.addListener(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST, YouTubeEvents.COMPONENT_BLUR_EVENT, onBlurHandler);
+        EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, onModelChangeHandler);
 
         this.setHost = function(host) {
             this.host = host;
@@ -81,7 +81,7 @@ function SuggestionsFakeButton(selector) {
     this.callDelayMS = 500;
 
     this.tryToOpenSuggestions = function() {
-        var suggestionsShown = Utils.hasClass(Utils.$(ExoConstants.suggestionsListSelector), ExoConstants.focusedClass);
+        var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
         if (suggestionsShown) {
             Log.d(this.TAG, "Success. Suggestions has been showed!");
             return;
@@ -98,7 +98,7 @@ function SuggestionsFakeButton(selector) {
 
         // we assume that no interface currently shown
         // press multiple times util suggestion will have focus
-        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
 
         var $this = this;
         setTimeout(function() {
@@ -135,7 +135,7 @@ function SuggestionsFakeButton(selector) {
 
         Log.d(this.TAG, "closeSuggestions");
         
-        EventUtils.triggerEvent(ExoConstants.playerUiSelector, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;
     };
