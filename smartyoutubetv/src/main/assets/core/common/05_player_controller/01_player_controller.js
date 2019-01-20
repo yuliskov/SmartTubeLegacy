@@ -10,6 +10,7 @@ var PlayerController = {
     POSITION_ONE_SEC: 1,
     checkTimeoutMS: 500,
     numTries: 3,
+    advanceTimeSec: 20,
 
     getPlayer: function() {
         return Utils.$('video');
@@ -49,7 +50,7 @@ var PlayerController = {
                         break;
                     case this.POSITION_ONE_SEC:
                         Log.d(this.TAG, "Advance position by one second");
-                        player.currentTime += 1;
+                        player.currentTime = this.advanceTimeSec;
                         break;
                 }
             }
@@ -78,6 +79,7 @@ var PlayerController = {
                         needSeek = (player.duration - player.currentTime) > 1;
                         break;
                     case $this.POSITION_ONE_SEC:
+                        needSeek = player.currentTime < $this.advanceTimeSec;
                         break;
                 }
 
