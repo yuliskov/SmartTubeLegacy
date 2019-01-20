@@ -73,8 +73,10 @@ function ExoButton(selector) {
 }
 
 ExoButton.fromSelector = function(selector) {
+    var TAG = 'ExoButton'; // 'this' is reference to ExoButton
+
     function createButton(selector) {
-        Log.d(this.TAG, "fromSelector: create button " + selector);
+        Log.d(TAG, "fromSelector: create button " + selector);
         switch (selector) {
             case PlayerActivityMapping.TRACK_ENDED:
                 return new TrackEndFakeButton(selector);
@@ -94,14 +96,4 @@ ExoButton.fromSelector = function(selector) {
     }
 
     return createButton(selector);
-
-    // 'this' is reference to ExoButton
-    // if (!this.btnMap)
-    //     this.btnMap = {};
-    // if (!this.btnMap[selector]) {
-    //     this.btnMap[selector] = createButton(selector);
-    // } else {
-    //     console.log("ExoButton: fromSelector: getting button from cache " + selector);
-    // }
-    // return this.btnMap[selector];
 };

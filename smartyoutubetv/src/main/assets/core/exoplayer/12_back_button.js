@@ -13,6 +13,7 @@ function BackButton(selector) {
         if (this.retryTimes <= 0 || YouTubeUtils.playerIsClosed()) {
             return;
         }
+
         this.retryTimes--;
 
         EventUtils.triggerEnter(this.findToggle());
@@ -32,8 +33,12 @@ function BackButton(selector) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            YouTubeUtils.showPlayerBackground();
             var $this = this;
+
+            YouTubeUtils.showPlayerBackground();
+
+            PlayerController.advance();
+
             // 'likes not saved' fix
             setTimeout(function() {
                 $this.retryOnFail();
