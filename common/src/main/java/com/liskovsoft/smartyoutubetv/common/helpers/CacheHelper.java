@@ -63,7 +63,7 @@ public class CacheHelper {
             return null;
         }
 
-        String versionName = Helpers.getAppVersion(context);
+        String versionName = AppInfoHelpers.getAppVersionNum(context);
 
         String cachedFileName = String.format("%s_%s_%s", PREFIX, mangleSpecialChars(id), versionName);
 
@@ -92,7 +92,7 @@ public class CacheHelper {
                 continue;
             }
 
-            boolean hasActualVersion = name.contains(Helpers.getAppVersion(context));
+            boolean hasActualVersion = name.contains(AppInfoHelpers.getAppVersionNum(context));
 
             if (hasActualVersion) {
                 continue;

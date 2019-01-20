@@ -9,8 +9,8 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.events.AssetFileInjectEvent;
@@ -78,8 +78,7 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getAppVersion() {
-        String versionName = String.format("%s (%s)", BuildConfig.VERSION_NAME, Helpers.getActivityLabel(mContext));
-        return versionName;
+        return AppInfoHelpers.getAppVersion(mContext);
     }
 
     @JavascriptInterface

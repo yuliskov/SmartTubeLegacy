@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Build.VERSION;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
@@ -22,29 +20,20 @@ import android.view.WindowManager.LayoutParams;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.ByteArrayInputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -299,39 +288,6 @@ public final class Helpers {
         }
 
         return isMicAvail || isLeanback;
-    }
-
-    public static String getActivityLabel(Context context) {
-        PackageManager pm = context.getPackageManager();
-
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-
-            try {
-                ActivityInfo info = pm.getActivityInfo(activity.getComponentName(), 0);
-                String label = context.getResources().getString(info.labelRes);
-                return label;
-            } catch (NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    public static String getAppVersion(Context context) {
-        String versionName = null;
-
-        try {
-            versionName = context
-                    .getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0)
-                    .versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return versionName;
     }
 
     public static boolean matchAll(String input, String... regex) {

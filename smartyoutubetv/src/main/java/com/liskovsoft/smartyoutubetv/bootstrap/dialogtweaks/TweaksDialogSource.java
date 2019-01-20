@@ -1,9 +1,7 @@
 package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
-import android.content.res.Resources;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.MultiDialogSource;
 
 import java.util.ArrayList;
@@ -23,6 +21,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new EndCardsDialogItem(mContext));
         mItems.add(new LogToFileDialogItem(mContext));
         mItems.add(new UnplayableVideoFixDialogItem(mContext));
+        mItems.add(new LockLastLauncherDialogItem(mContext));
     }
 
     @Override

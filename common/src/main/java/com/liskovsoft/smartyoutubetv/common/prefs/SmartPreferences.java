@@ -18,6 +18,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
     private static final String BOOTSTRAP_LOG_TO_FILE = "logToFile";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
+    private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -174,5 +175,15 @@ public final class SmartPreferences {
 
     public boolean getUnplayableVideoFix() {
         return mPrefs.getBoolean(UNPLAYABLE_VIDEO_FIX, false);
+    }
+
+    public void setLockLastLauncher(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(LOCK_LAST_LAUNCHER, isChecked)
+                .apply();
+    }
+
+    public boolean getLockLastLauncher() {
+        return mPrefs.getBoolean(LOCK_LAST_LAUNCHER, false);
     }
 }

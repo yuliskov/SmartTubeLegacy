@@ -153,8 +153,12 @@ public class BootstrapActivity extends ActivityBase {
                 break;
         }
 
-        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
-        startActivity(this, clazz);
+        if (mPrefs.getLockLastLauncher() && mPrefs.getBootstrapActivityName() != null) {
+            startActivity(this, mPrefs.getBootstrapActivityName());
+        } else {
+            mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+            startActivity(this, clazz);
+        }
     }
 
     private void startActivity(Context ctx, String clazz) {
