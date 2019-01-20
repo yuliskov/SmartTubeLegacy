@@ -75,11 +75,11 @@ var YouTubeUtils = {
     getPlayerRevision: function() {
         var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
 
-        if (title) {
-            return this.SECOND_REVISION;
+        if (!title) {
+            return this.FIRST_REVISION;
         }
 
-        return this.FIRST_REVISION;
+        return this.SECOND_REVISION;
     },
 
     show: function(elementOrSelector) {
