@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
@@ -153,9 +154,11 @@ public class PlayerStateManager2 {
     private Pair<Integer, Integer> findProperTrack() {
         Set<MyFormat> fmts = findCandidates();
         MyFormat fmt = findClosestTrack(fmts);
+
         if (fmt == null) {
             return null;
         }
+
         mDefaultTrackId = fmt.id;
         return fmt.pair;
     }
@@ -345,8 +348,10 @@ public class PlayerStateManager2 {
         String trackId = extractCurrentTrackId();
         int height = extractCurrentTrackHeight();
         String codecs = extractCurrentTrackCodecs(); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
+
         // mDefaultTrackId: usually this happens when video does not contain preferred format
-        boolean isTrackChanged = codecs != null && trackId != null && !trackId.equals(mDefaultTrackId);
+        boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
+
         if (isTrackChanged) {
             mPrefs.setSelectedTrackId(trackId);
             mPrefs.setSelectedTrackHeight(height);
@@ -355,27 +360,67 @@ public class PlayerStateManager2 {
     }
 
     private String extractCurrentTrackId() {
+        if (isDefaultQualitySelected()) {
+            return null;
+        }
+
         Format videoFormat = mPlayer.getVideoFormat();
+
         if (videoFormat == null) {
             return null;
         }
+
         return videoFormat.id;
     }
 
-    private String extractCurrentTrackCodecs() {
-        Format videoFormat = mPlayer.getVideoFormat();
-        if (videoFormat == null) {
-            return null;
-        }
-        return videoFormat.codecs;
-    }
-
     private int extractCurrentTrackHeight() {
+        if (isDefaultQualitySelected()) {
+            return 0;
+        }
+
         Format videoFormat = mPlayer.getVideoFormat();
+
         if (videoFormat == null) {
             return 0;
         }
+
         return videoFormat.height;
+    }
+
+    private String extractCurrentTrackCodecs() {
+        if (isDefaultQualitySelected()) {
+            return null;
+        }
+
+        Format videoFormat = mPlayer.getVideoFormat();
+
+        if (videoFormat == null) {
+            return null;
+        }
+
+        return videoFormat.codecs;
+    }
+
+    private boolean isDefaultQualitySelected() {
+        if (mSelector == null) {
+            return false;
+        }
+
+        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+
+        if (info == null) {
+            return false;
+        }
+
+        TrackGroupArray groups = info.getTrackGroups(VIDEO_RENDERER_INDEX);
+
+        if (groups == null) {
+            return false;
+        }
+
+        SelectionOverride override = mSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
+
+        return override == null;
     }
 
     /**

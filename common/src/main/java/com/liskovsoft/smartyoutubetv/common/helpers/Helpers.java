@@ -358,4 +358,16 @@ public final class Helpers {
     public static void makeActivityHorizontal(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
+
+    public static boolean equals(String first, String second) {
+        if (first == null && second == null) {
+            return true;
+        }
+
+        if (first == null || second == null) {
+            return false;
+        }
+
+        return first.equals(second);
+    }
 }
