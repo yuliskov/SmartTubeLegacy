@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
@@ -123,40 +124,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     protected void initializeTrackSelector() {
         TrackSelection.Factory adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
         
-        mTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory) {
-            @Override
-            protected TrackSelection[] selectTracks(RendererCapabilities[] rendererCapabilities, TrackGroupArray[] rendererTrackGroupArrays, int[][][] rendererFormatSupports) throws ExoPlaybackException {
-
-                // forceAllFormatsSupport(rendererFormatSupports);
-
-                return super.selectTracks(rendererCapabilities, rendererTrackGroupArrays, rendererFormatSupports);
-            }
-
-            private void forceAllFormatsSupport(int[][][] rendererFormatSupports) {
-                if (rendererFormatSupports == null) {
-                    return;
-                }
-
-                for (int i = 0; i < rendererFormatSupports.length; i++) {
-                    if (rendererFormatSupports[i] == null) {
-                        continue;
-                    }
-                    for (int j = 0; j < rendererFormatSupports[i].length; j++) {
-                        if (rendererFormatSupports[i][j] == null) {
-                            continue;
-                        }
-                        for (int k = 0; k < rendererFormatSupports[i][j].length; k++) {
-                            int supportLevel = rendererFormatSupports[i][j][k];
-                            int notSupported = 6;
-                            int formatSupported = 7;
-                            if (supportLevel == notSupported) {
-                                rendererFormatSupports[i][j][k] = formatSupported;
-                            }
-                        }
-                    }
-                }
-            }
-        };
+        mTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
