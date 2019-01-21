@@ -57,6 +57,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         if (uiVisible && isMenuKey(event) && isDownAction) {
             mSimpleExoPlayerView.hideController();
+            return true;
         }
 
         if (applySeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
@@ -141,6 +142,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         if (isVisible) {
             if (isUpAction) {
                 mSimpleExoPlayerView.hideController();
+
+                // fix control lost over the player ui
+                getView().requestFocus();
             }
             return true;
         }

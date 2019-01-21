@@ -2,7 +2,8 @@
 <!-- This custom layout is used by ExoPlayer upon creation of the main player's view -->
 <!-- More info: https://google.github.io/ExoPlayer/doc/reference/com/google/android/exoplayer2/ui/SimpleExoPlayerView.html -->
 <!-- More info: https://google.github.io/ExoPlayer/doc/reference/com/google/android/exoplayer2/ui/PlaybackControlView.html -->
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:id="@+id/exo_controller_view"
+              xmlns:tools="http://schemas.android.com/tools"
               xmlns:android="http://schemas.android.com/apk/res/android"
               tools:targetApi="17"
               android:layout_width="match_parent"
