@@ -22,13 +22,18 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
+import com.liskovsoft.smartyoutubetv.widgets.BootstrapButtonBase;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton;
 import io.fabric.sdk.android.Fabric;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class BootstrapActivity extends ActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
+    private HashMap<Integer, Class> mLauncherMapping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,9 @@ public class BootstrapActivity extends ActivityBase {
         setupFonSize();
         setContentView(R.layout.activity_bootstrap);
         initButtons();
+        initLauncherMapping();
         initVersion();
+        lockOtherLaunchers();
 
         setupCrashLogs();
     }
@@ -136,29 +143,23 @@ public class BootstrapActivity extends ActivityBase {
         new LangUpdater(this).update();
     }
 
+    private void initLauncherMapping() {
+        mLauncherMapping = new HashMap<>();
+        mLauncherMapping.put(R.id.button_exo, SmartYouTubeTV4K.class);
+        mLauncherMapping.put(R.id.button_exo2, SmartYouTubeTV4KAlt.class);
+        mLauncherMapping.put(R.id.button_webview, SmartYouTubeTV1080Activity.class);
+        mLauncherMapping.put(R.id.button_xwalk, SmartYouTubeTV1080AltActivity.class);
+    }
+
     public void selectFlavour(View view) {
-        Class clazz = SmartYouTubeTV1080Activity.class;
-        switch (view.getId()) {
-            case R.id.button_webview:
-                clazz = SmartYouTubeTV1080Activity.class;
-                break;
-            case R.id.button_xwalk:
-                clazz = SmartYouTubeTV1080AltActivity.class;
-                break;
-            case R.id.button_exo:
-                clazz = SmartYouTubeTV4K.class;
-                break;
-            case R.id.button_exo2:
-                clazz = SmartYouTubeTV4KAlt.class;
-                break;
+        Class clazz = mLauncherMapping.get(view.getId());
+
+        if (clazz == null) {
+            clazz = SmartYouTubeTV1080Activity.class;
         }
 
-        if (mPrefs.getLockLastLauncher() && mPrefs.getBootstrapActivityName() != null) {
-            startActivity(this, mPrefs.getBootstrapActivityName());
-        } else {
-            mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
-            startActivity(this, clazz);
-        }
+        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+        startActivity(this, clazz);
     }
 
     private void startActivity(Context ctx, String clazz) {
@@ -181,11 +182,39 @@ public class BootstrapActivity extends ActivityBase {
         // NOTE: make activity transparent (non-reachable from launcher or from resent list)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
-        
+
         startActivity(intent);
     }
 
     private void setupFonSize() {
         Helpers.adjustFontScale(getResources().getConfiguration(), this);
+    }
+
+    public void lockOtherLaunchers() {
+        String activeLauncherClass = mPrefs.getBootstrapActivityName();
+
+        if (activeLauncherClass == null) {
+            return;
+        }
+
+        boolean doLock = mPrefs.getLockLastLauncher();
+
+        for (Entry<Integer, Class> entry : mLauncherMapping.entrySet()) {
+            Class clazz = entry.getValue();
+            boolean isActiveClass = clazz.getCanonicalName().equals(activeLauncherClass);
+            BootstrapButtonBase view = findViewById(entry.getKey());
+
+            if (doLock && !isActiveClass) {
+                view.disable();
+            }
+
+            if (doLock && isActiveClass) {
+                view.enable();
+            }
+
+            if (!doLock) {
+                view.enable();
+            }
+        }
     }
 }

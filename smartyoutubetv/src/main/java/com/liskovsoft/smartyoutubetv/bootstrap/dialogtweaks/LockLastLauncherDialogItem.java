@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
@@ -25,5 +26,9 @@ public class LockLastLauncherDialogItem extends DialogItem {
     @Override
     public void setChecked(boolean checked) {
         mPrefs.setLockLastLauncher(checked);
+
+        if (mContext instanceof BootstrapActivity) {
+            ((BootstrapActivity) mContext).lockOtherLaunchers();
+        }
     }
 }

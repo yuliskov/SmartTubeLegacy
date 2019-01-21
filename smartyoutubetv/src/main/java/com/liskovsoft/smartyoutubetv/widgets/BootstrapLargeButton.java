@@ -17,10 +17,10 @@ import com.liskovsoft.smartyoutubetv.R;
 public class BootstrapLargeButton extends BootstrapButtonBase {
     private Drawable mMainIcon;
     private String mTitleText;
-    private LinearLayout wrapper;
-    private LinearLayout content;
-    private ImageView image;
-    private TextView text;
+    private LinearLayout mWrapper;
+    private LinearLayout mContent;
+    private ImageView mImage;
+    private TextView mText;
     private final int PADDING = Utils.convertDpToPixel(15, getContext());
     private float mNormalTextSize;
     private float mZoomedTextSize;
@@ -68,7 +68,7 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
     }
 
     private void calculateTextSize() {
-        mNormalTextSize = Utils.convertPixelsToDp(text.getTextSize(), this.getContext());
+        mNormalTextSize = Utils.convertPixelsToDp(mText.getTextSize(), this.getContext());
         mZoomedTextSize = mNormalTextSize * 1.3f;
     }
 
@@ -78,17 +78,17 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
 
     private void applyDefaultAttributes() {
         if (mMainIcon != null) {
-            image.setImageDrawable(mMainIcon);
+            mImage.setImageDrawable(mMainIcon);
         }
         if (mTitleText != null) {
-            text.setText(mTitleText);
+            mText.setText(mTitleText);
         }
         setFocusable(false);
         setClickable(false);
     }
 
     private void setOnFocus() {
-        wrapper.setOnFocusChangeListener(new OnFocusChangeListener() {
+        mWrapper.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -103,45 +103,45 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
     protected void makeUnfocused() {
         super.makeUnfocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
-        text.setTextColor(Color.DKGRAY);
-        text.setTextSize(mNormalTextSize);
+        mText.setTextColor(Color.DKGRAY);
+        mText.setTextSize(mNormalTextSize);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
-        content.setBackgroundColor(semitransparentBlack);
-        wrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
+        mContent.setBackgroundColor(semitransparentBlack);
+        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
         setImageColor();
     }
 
     protected void makeFocused() {
         super.makeFocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextFocused);
-        text.setTextColor(Color.BLACK);
-        text.setTextSize(mZoomedTextSize);
-        content.setBackgroundColor(Color.WHITE);
-        wrapper.setPadding(0, 0, 0, 0);
+        mText.setTextColor(Color.BLACK);
+        mText.setTextSize(mZoomedTextSize);
+        mContent.setBackgroundColor(Color.WHITE);
+        mWrapper.setPadding(0, 0, 0, 0);
         resetImageColor();
     }
 
     private void resetImageColor() {
-        image.setColorFilter(null); // reset Tint
+        mImage.setColorFilter(null); // reset Tint
     }
 
     private void setImageColor() {
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        image.setColorFilter(filter); // greyscale
+        mImage.setColorFilter(filter); // greyscale
     }
 
     private void inflate() {
         inflate(getContext(), R.layout.bootstrap_large_button, this);
-        wrapper = findViewById(R.id.bootstrap_button_wrapper);
-        content = findViewById(R.id.bootstrap_button_content);
-        image = findViewById(R.id.bootstrap_button_image);
-        text = findViewById(R.id.bootstrap_button_text);
+        mWrapper = findViewById(R.id.bootstrap_button_wrapper);
+        mContent = findViewById(R.id.bootstrap_button_content);
+        mImage = findViewById(R.id.bootstrap_button_image);
+        mText = findViewById(R.id.bootstrap_button_text);
     }
 
     private void transferClicks() {
-        wrapper.setOnClickListener(new OnClickListener() {
+        mWrapper.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (VERSION.SDK_INT >= 15) {
@@ -153,4 +153,8 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
         });
     }
 
+    @Override
+    protected View getWrapper() {
+        return mWrapper;
+    }
 }

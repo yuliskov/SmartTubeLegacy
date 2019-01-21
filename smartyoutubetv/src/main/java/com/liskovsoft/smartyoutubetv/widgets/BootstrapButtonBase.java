@@ -1,14 +1,16 @@
 package com.liskovsoft.smartyoutubetv.widgets;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
 
-public class BootstrapButtonBase extends LinearLayout {
+public abstract class BootstrapButtonBase extends LinearLayout {
     private TextView mTipTextView;
     private String mTipText;
     private String mOldTipText;
@@ -36,6 +38,7 @@ public class BootstrapButtonBase extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @TargetApi(21)
     public BootstrapButtonBase(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -70,5 +73,20 @@ public class BootstrapButtonBase extends LinearLayout {
         }
 
         mTipTextView.setText(mOldTipText);
+    }
+
+    protected abstract View getWrapper();
+
+    public void enable() {
+        View view = getWrapper();
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+    }
+
+    public void disable() {
+        View view = getWrapper();
+        view.setFocusable(false);
+        view.setFocusableInTouchMode(false);
+        makeUnfocused();
     }
 }

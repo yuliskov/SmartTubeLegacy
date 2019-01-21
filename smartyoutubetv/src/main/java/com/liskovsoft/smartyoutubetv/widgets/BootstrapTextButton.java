@@ -175,6 +175,11 @@ public class BootstrapTextButton extends BootstrapButtonBase {
         mCheckedListeners.add(listener);
     }
 
+    @Override
+    protected View getWrapper() {
+        return mWrapper;
+    }
+
     public interface OnCheckedChangeListener {
         void onCheckedChanged(BootstrapTextButton button, boolean isChecked);
     }
