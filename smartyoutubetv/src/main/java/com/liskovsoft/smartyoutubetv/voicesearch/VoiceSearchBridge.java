@@ -1,14 +1,9 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.MediaRecorder;
-import android.os.Build.VERSION;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class VoiceSearchBridge implements SearchCallback {
@@ -22,19 +17,16 @@ public class VoiceSearchBridge implements SearchCallback {
         mDialogs.add(new VoiceOverlayDialog(activity, this));
     }
 
+    /**
+     * Try to remap {@link KeyEvent#KEYCODE_VOICE_ASSIST} and {@link KeyEvent#KEYCODE_SEARCH}
+     * @param event event
+     * @return handled
+     */
     public boolean onKeyEvent(KeyEvent event) {
         // open voice search activity on mic/search key
-
-        boolean isVoiceAssistKey = false;
-
-        if (VERSION.SDK_INT >= 21) {
-            isVoiceAssistKey = event.getKeyCode() == KeyEvent.KEYCODE_VOICE_ASSIST;
-        }
-
         boolean isSearchKey = event.getKeyCode() == KeyEvent.KEYCODE_SEARCH;
-        boolean isVoiceKey = isVoiceAssistKey || isSearchKey;
 
-        if (isVoiceKey) {
+        if (isSearchKey) {
             boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
             if (isUp) { // run on up action only
                 displaySpeechRecognizers();
