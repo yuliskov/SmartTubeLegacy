@@ -270,7 +270,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         quality.setText(getTitleQualityInfo());
     }
 
-    private String getTitleQualityInfo() {
+    public String getTitleQualityInfo() {
         Format format = PlayerUtil.getCurrentVideoTrack(mPlayer);
 
         if (format == null) {

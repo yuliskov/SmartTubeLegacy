@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -286,8 +287,9 @@ import java.util.TreeSet;
 
         mDisableView.setChecked(mIsDisabled);
 
-        boolean defaultSelected = !mIsDisabled && mOverride == null;
-        mDefaultView.setChecked(defaultSelected);
+        boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
+        mDefaultView.setChecked(defaultQualitySelected);
+        updateDefaultView();
 
         for (int i = 0; i < mTrackViews.length; i++) {
             for (int j = 0; j < mTrackViews[i].length; j++) {
@@ -303,6 +305,20 @@ import java.util.TreeSet;
                 mEnableRandomAdaptationView.setChecked(!mIsDisabled && mOverride.factory instanceof RandomTrackSelection.Factory);
             }
         }
+    }
+
+    private void updateDefaultView() {
+        new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
+
+                String title = mContext.getResources().getString(R.string.selection_default);
+                String newTitle = String.format("%s %s", title, ((ExoPlayerFragment) mPlayerFragment).getTitleQualityInfo());
+
+                mDefaultView.setText(defaultQualitySelected ? newTitle : title);
+            }
+        }, 1_000);
     }
 
     // DialogInterface.OnClickListener
@@ -361,6 +377,7 @@ import java.util.TreeSet;
                 mOverride = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
             }
         }
+
         // Update the views with the new state.
         updateViews();
 
