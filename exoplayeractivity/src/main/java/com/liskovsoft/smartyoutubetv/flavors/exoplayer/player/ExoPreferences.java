@@ -18,6 +18,7 @@ public final class ExoPreferences {
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String VIDEO_ZOOM_ENABLED = "videoZoomEnabled";
+    private static final String SELECTED_TRACK_FPS = "selectedTrackFps";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -62,6 +63,16 @@ public final class ExoPreferences {
     public void setSelectedTrackCodecs(String codec) {
         mPrefs.edit()
                 .putString(SELECTED_TRACK_CODEC, codec)
+                .apply();
+    }
+
+    public float getSelectedTrackFps() {
+        return mPrefs.getFloat(SELECTED_TRACK_FPS, 30); // select 30fps track by default
+    }
+
+    public void setSelectedTrackFps(float fps) {
+        mPrefs.edit()
+                .putFloat(SELECTED_TRACK_FPS, fps)
                 .apply();
     }
 

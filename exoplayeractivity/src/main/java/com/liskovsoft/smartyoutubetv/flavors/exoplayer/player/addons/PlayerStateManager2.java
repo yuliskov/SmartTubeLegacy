@@ -153,7 +153,7 @@ public class PlayerStateManager2 {
      */
     private Pair<Integer, Integer> findProperTrack() {
         Set<MyFormat> fmts = findCandidates();
-        MyFormat fmt = findClosestTrack(fmts);
+        MyFormat fmt = filterHighestTrack(fmts);
 
         if (fmt == null) {
             return null;
@@ -170,12 +170,14 @@ public class PlayerStateManager2 {
     private Set<MyFormat> findCandidates() {
         String trackId = mPrefs.getSelectedTrackId();
         int trackHeight = mPrefs.getSelectedTrackHeight();
+        float trackFps = mPrefs.getSelectedTrackFps();
+        String trackCodecs = mPrefs.getSelectedTrackCodecs();
 
         Set<MyFormat> result = new HashSet<>();
+        Set<MyFormat> backed = new HashSet<>();
 
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
         TrackGroupArray groupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
-        Set<MyFormat> backedList = new HashSet<>();
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -185,23 +187,30 @@ public class PlayerStateManager2 {
 
                 if (PlayerUtil.isPreferredFormat(mPlayerFragment.getActivity(), format)) {
                     MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
-                    if (tracksEquals(format.id, trackId)) {
+
+                    if (tracksEquals(format.id, trackId)) { // strict match found, stop search
                         result.clear();
                         result.add(myFormat);
                         break;
                     }
 
-                    if (heightEquals(format.height, trackHeight)) {
+                    boolean codecMatch = trackCodecs == null || codecEquals(format.codecs, trackCodecs);
+                    boolean heightMatch = heightEquals(format.height, trackHeight) || format.height <= trackHeight;
+                    boolean fpsMatch = format.frameRate <= trackFps;
+
+                    if (codecMatch && heightMatch && fpsMatch) {
                         result.add(myFormat);
+                        continue;
                     }
 
-                    if (myFormat.height <= trackHeight)
-                        backedList.add(myFormat);
+                    if (heightMatch) {
+                        backed.add(myFormat);
+                    }
                 }
             }
         }
 
-        return result.isEmpty() ? backedList : result;
+        return result.isEmpty() ? backed : result;
     }
 
     /**
@@ -209,17 +218,10 @@ public class PlayerStateManager2 {
      * @param fmts source (cannot be null)
      * @return best format (cannot be null)
      */
-    private MyFormat findClosestTrack(Set<MyFormat> fmts) {
-        String codecName = mPrefs.getSelectedTrackCodecs() == null ? "" : mPrefs.getSelectedTrackCodecs();
-
-        // simplify codec name: use avc instead of avc.111333
-        if (codecName.contains(AVC_CODEC)) {
-            codecName = AVC_CODEC;
-        } else if (codecName.contains(VP9_CODEC)) {
-            codecName = VP9_CODEC;
-        }
-
+    private MyFormat filterHighestTrack(Set<MyFormat> fmts) {
+        //String codecName = AVC_CODEC;
         MyFormat result = null;
+
         // select format with same codec and highest bitrate
         for (MyFormat fmt : fmts) {
             if (result == null) {
@@ -228,17 +230,17 @@ public class PlayerStateManager2 {
             }
 
             // there is two levels of preference
-            // 1) by codec (e.g. avc)
-            // 2) by bitrate
+            // by codec (e.g. avc), height, fps, bitrate
 
-            if (!result.codecs.contains(codecName) && fmt.codecs.contains(codecName)) {
-                result = fmt;
-                continue;
-            }
-
-            if (result.codecs.contains(codecName) && !fmt.codecs.contains(codecName)) {
-                continue;
-            }
+            //if (!codecEquals(result.codecs, codecName) && codecEquals(fmt.codecs, codecName)) {
+            //    result = fmt;
+            //    continue;
+            //}
+            //
+            //// non-avc
+            //if (codecEquals(result.codecs, codecName) && !codecEquals(fmt.codecs, codecName)) {
+            //    continue;
+            //}
 
             // don't relay on bitrate, since some video have improper bitrate measurement
             // because of this, I've add frameRate comparision
@@ -348,6 +350,7 @@ public class PlayerStateManager2 {
         String trackId = extractCurrentTrackId();
         int height = extractCurrentTrackHeight();
         String codecs = extractCurrentTrackCodecs(); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
+        float fps = extractCurrentTrackFps();
 
         // mDefaultTrackId: usually this happens when video does not contain preferred format
         boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
@@ -356,6 +359,7 @@ public class PlayerStateManager2 {
             mPrefs.setSelectedTrackId(trackId);
             mPrefs.setSelectedTrackHeight(height);
             mPrefs.setSelectedTrackCodecs(codecs);
+            mPrefs.setSelectedTrackFps(fps);
         }
     }
 
@@ -401,6 +405,20 @@ public class PlayerStateManager2 {
         return videoFormat.codecs;
     }
 
+    private float extractCurrentTrackFps() {
+        if (isDefaultQualitySelected()) {
+            return 0;
+        }
+
+        Format videoFormat = mPlayer.getVideoFormat();
+
+        if (videoFormat == null) {
+            return 0;
+        }
+
+        return videoFormat.frameRate;
+    }
+
     private boolean isDefaultQualitySelected() {
         if (mSelector == null) {
             return false;
@@ -421,6 +439,21 @@ public class PlayerStateManager2 {
         SelectionOverride override = mSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
 
         return override == null;
+    }
+
+    private boolean codecEquals(String codec1, String codec2) {
+        return Helpers.equals(codecShort(codec1), codecShort(codec2));
+    }
+
+    private String codecShort(String codecName) {
+        // simplify codec name: use avc instead of avc.111333
+        if (codecName.contains(AVC_CODEC)) {
+            codecName = AVC_CODEC;
+        } else if (codecName.contains(VP9_CODEC)) {
+            codecName = VP9_CODEC;
+        }
+
+        return codecName;
     }
 
     /**
