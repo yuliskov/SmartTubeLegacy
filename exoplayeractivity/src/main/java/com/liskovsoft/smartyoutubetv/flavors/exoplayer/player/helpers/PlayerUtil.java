@@ -75,12 +75,12 @@ import java.util.Locale;
         String trackName;
         if (MimeTypes.isVideo(format.sampleMimeType)) {
             trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildResolutionString(format),
-                    buildFPSString(format)), buildBitrateString(format)), buildCodecTypeStringShort(format)), buildHDRString(format));
+                    buildFPSString(format)), buildBitrateString(format)), extractCodec(format)), buildHDRString(format));
         } else if (MimeTypes.isAudio(format.sampleMimeType)) {
             trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
-                    buildAudioPropertyString(format)), buildBitrateString(format)), buildCodecTypeStringShort(format));
+                    buildAudioPropertyString(format)), buildBitrateString(format)), extractCodec(format));
         } else {
-            trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), buildCodecTypeStringShort(format));
+            trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), extractCodec(format));
         }
         return trackName.length() == 0 ? "unknown" : trackName;
     }
@@ -91,23 +91,6 @@ import java.util.Locale;
             return "";
         String prefix = format.sampleMimeType.split(MIME_SEPARATOR)[0];
         return String.format("%s/%s", prefix, format.codecs);
-    }
-
-    private static String buildCodecTypeStringShort(Format format) {
-        String codecs = format.codecs;
-
-        if (codecs == null)
-            return "";
-
-        String[] codecNames = {"avc", "vp9", "mp4a", "vorbis"};
-
-        for (String codecName : codecNames) {
-            if (codecs.contains(codecName)) {
-                return codecName;
-            }
-        }
-
-        return codecs;
     }
 
     private static String buildHDRString(Format format) {
@@ -223,6 +206,14 @@ import java.util.Locale;
         return player.getVideoFormat();
     }
 
+    public static Format getCurrentAudioTrack(SimpleExoPlayer player) {
+        if (player == null) {
+            return null;
+        }
+
+        return player.getAudioFormat();
+    }
+
     public static String extractQualityLabel(Format format) {
         String qualityLabel = "";
 
@@ -246,15 +237,17 @@ import java.util.Locale;
             return "";
         }
 
-        String codec = "";
+        String codec = format.codecs.toLowerCase();
 
-        if (format.codecs.contains("vp9")) {
-            codec = "VP9";
-        } else if (format.codecs.contains("avc")) {
-            codec = "AVC";
+        String[] codecNames = {"avc", "vp9", "mp4a", "vorbis"};
+
+        for (String codecName : codecNames) {
+            if (codec.contains(codecName)) {
+                return codecName;
+            }
         }
 
-        return codec.toLowerCase();
+        return codec;
     }
 
     public static int extractFps(Format format) {

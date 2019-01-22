@@ -118,8 +118,8 @@ import java.util.TreeSet;
      * @param rendererIndex The index of the renderer.
      */
     public void showSelectionDialog(PlayerCoreFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
-        this.mTrackInfo = trackInfo;
-        this.mRendererIndex = rendererIndex;
+        mTrackInfo = trackInfo;
+        mRendererIndex = rendererIndex;
         mContext = fragment.getActivity();
         mPlayerFragment = fragment;
 
@@ -300,7 +300,7 @@ import java.util.TreeSet;
                 boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
 
                 String title = mContext.getResources().getString(R.string.selection_default);
-                String newTitle = String.format("%s %s", title, ((ExoPlayerFragment) mPlayerFragment).getTitleQualityInfo());
+                String newTitle = String.format("%s %s", title, ((ExoPlayerFragment) mPlayerFragment).getTitleQualityInfo(mRendererIndex));
 
                 mDefaultView.setText(defaultQualitySelected ? newTitle : title);
             }

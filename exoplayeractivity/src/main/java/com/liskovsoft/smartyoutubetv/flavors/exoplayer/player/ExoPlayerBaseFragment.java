@@ -9,6 +9,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -283,7 +284,28 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         quality.setText(getTitleQualityInfo());
     }
 
-    public String getTitleQualityInfo() {
+    public String getTitleQualityInfo(int rendererIndex) {
+        switch (mPlayer.getRendererType(rendererIndex)) {
+            case C.TRACK_TYPE_VIDEO:
+                return getTitleQualityInfo();
+            case C.TRACK_TYPE_AUDIO:
+                return getAudioQualityInfo();
+        }
+
+        return "";
+    }
+
+    private String getAudioQualityInfo() {
+        Format format = PlayerUtil.getCurrentAudioTrack(mPlayer);
+
+        if (format == null) {
+            return "none";
+        }
+
+        return PlayerUtil.extractCodec(format);
+    }
+
+    private String getTitleQualityInfo() {
         Format format = PlayerUtil.getCurrentVideoTrack(mPlayer);
 
         if (format == null) {
