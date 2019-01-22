@@ -203,7 +203,9 @@ public class PlayerStateManager2 {
                         continue;
                     }
 
-                    backed.add(myFormat);
+                    if (heightMatch) {
+                        backed.add(myFormat);
+                    }
                 }
             }
         }

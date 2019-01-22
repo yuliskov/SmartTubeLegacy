@@ -311,16 +311,11 @@ import java.util.TreeSet;
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        mSelector.setRendererDisabled(mRendererIndex, mIsDisabled);
-        if (mOverride != null) {
-            mSelector.setSelectionOverride(mRendererIndex, mTrackGroups, mOverride);
-        } else {
-            mSelector.clearSelectionOverrides(mRendererIndex); // Auto quality button selected
-        }
-        ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();
+        applySelection();
     }
 
     // View.OnClickListener
+
     @Override
     public void onClick(View view) {
         if (view == mDisableView) {
@@ -364,7 +359,19 @@ import java.util.TreeSet;
         updateViews();
 
         // save immediately
-        onClick(null, 0);
+        applySelection();
+    }
+
+    private void applySelection() {
+        mSelector.setRendererDisabled(mRendererIndex, mIsDisabled);
+
+        if (mOverride != null) {
+            mSelector.setSelectionOverride(mRendererIndex, mTrackGroups, mOverride);
+        } else {
+            mSelector.clearSelectionOverrides(mRendererIndex); // Auto quality button selected
+        }
+
+        ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
