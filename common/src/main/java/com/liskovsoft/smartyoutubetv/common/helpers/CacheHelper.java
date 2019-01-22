@@ -51,7 +51,12 @@ public class CacheHelper {
             return asset;
         }
 
-        FileHelpers.streamToFile(asset, cachedFile);
+        try {
+            FileHelpers.streamToFile(asset, cachedFile);
+        } catch (IllegalStateException e) { // oops, can't write to the system
+            e.printStackTrace();
+            return asset;
+        }
 
         return getFile(context, id); // recreate saved stream
     }

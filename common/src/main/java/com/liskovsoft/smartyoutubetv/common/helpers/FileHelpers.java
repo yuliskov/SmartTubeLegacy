@@ -99,7 +99,7 @@ public class FileHelpers {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
-            // throw new IllegalStateException(ex);
+            throw new IllegalStateException(ex);
         } finally {
             closeStream(fos);
             closeStream(is);
