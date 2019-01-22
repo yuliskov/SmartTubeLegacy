@@ -35,11 +35,15 @@
     <string name="select_video_speed">Скорость видео</string>
     <string name="normal">Нормальная</string>
     <string name="go_back">Назад</string>
-    <string name="restrict">Пресет</string>
+    <string name="btn_restrict_codec">Пресет</string>
     <string name="no_restrictions">Без ограничений</string>
     <string name="select_preferred_codec">Выбрать видео пресет</string>
     <string name="time_title">Сейчас: %1$s</string>
     <string name="loading_view_message">ЗАГРУЗКА...</string>
     <string name="video_hang_msg">Видео зависло... пытаемся исправить...</string>
-    <string name="enable_video_zoom">Вписывать видео по ширине</string>
+    <string name="option_zoom_default">По умолчанию</string>
+    <string name="option_zoom_fit_width">По ширине</string>
+    <string name="option_zoom_fit_height">По высоте</string>
+    <string name="dialog_video_zoom">Видео зум</string>
+    <string name="btn_video_zoom">Зум</string>
 </resources>

@@ -39,7 +39,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
@@ -72,7 +71,6 @@ import java.util.TreeSet;
     private CheckedTextView mEnableRandomAdaptationView;
     private CheckedTextView mAutoframerateView;
     private CheckedTextView mHideErrorsView;
-    private CheckedTextView mVideoZoomView;
     private CheckedTextView[][] mTrackViews;
     private AlertDialog mAlertDialog;
     private Context mContext;
@@ -169,15 +167,6 @@ import java.util.TreeSet;
 
         if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
             append(mAutoframerateView, root);
-            append(createDivider(context, root), root);
-        }
-
-        // Aspect ratio checkbox.
-
-        mVideoZoomView = createCheckButton(context, R.string.enable_video_zoom, root);
-
-        if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
-            append(mVideoZoomView, root);
             append(createDivider(context, root), root);
         }
 
@@ -282,9 +271,6 @@ import java.util.TreeSet;
 
         mHideErrorsView.setChecked(mPlayerFragment.getHidePlaybackErrors());
 
-        AspectRatioManager aspectRatioManager = ((ExoPlayerFragment) mPlayerFragment).getAspectRatioManager();
-        mVideoZoomView.setChecked(aspectRatioManager.getZoomEnabled());
-
         mDisableView.setChecked(mIsDisabled);
 
         boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
@@ -353,10 +339,6 @@ import java.util.TreeSet;
             boolean checked = mHideErrorsView.isChecked();
             ExoPlayerFragment player = ((ExoPlayerFragment) mPlayerFragment);
             player.setHidePlaybackErrors(!checked);
-        } else if (view == mVideoZoomView) {
-            boolean checked = mVideoZoomView.isChecked();
-            AspectRatioManager aspectRatioManager = ((ExoPlayerFragment) mPlayerFragment).getAspectRatioManager();
-            aspectRatioManager.setZoomEnabled(!checked);
         } else { // change quality
             mIsDisabled = false;
             @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();

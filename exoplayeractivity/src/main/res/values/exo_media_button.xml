@@ -149,8 +149,8 @@
     </style>
 
     <style name="ExoMediaButton2.Restrict">
-        <item name="textOff">@string/restrict</item>
-        <item name="textOn">@string/restrict</item>
+        <item name="textOff">@string/btn_restrict_codec</item>
+        <item name="textOn">@string/btn_restrict_codec</item>
     </style>
 
     <style name="ExoMediaButton2.Suggestions">

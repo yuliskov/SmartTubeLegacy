@@ -53,11 +53,16 @@
     <string name="select_video_speed">Select video speed</string>
     <string name="normal">Normal</string>
     <string name="go_back">Go back</string>
-    <string name="restrict">Preset</string>
+    <string name="btn_restrict_codec">Preset</string>
     <string name="no_restrictions">No restrictions</string>
     <string name="select_preferred_codec">Select video preset</string>
     <string name="time_title">Now: %1$s</string>
     <string name="loading_view_message">LOADING...</string>
     <string name="video_hang_msg">Video has been hanged... trying to fix...</string>
     <string name="enable_video_zoom">Fit video by width</string>
+    <string name="option_zoom_fit_width">Fit width</string>
+    <string name="dialog_video_zoom">Video zoom</string>
+    <string name="option_zoom_default">Default</string>
+    <string name="option_zoom_fit_height">Fit height</string>
+    <string name="btn_video_zoom">Zoom</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 
 public final class ExoPreferences {
     private static ExoPreferences sInstance;
@@ -17,7 +18,7 @@ public final class ExoPreferences {
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
     private static final String PREFERRED_CODEC = "preferredCodec";
-    private static final String VIDEO_ZOOM_ENABLED = "videoZoomEnabled";
+    private static final String VIDEO_ZOOM_MODE = "videoZoomMode";
     private static final String SELECTED_TRACK_FPS = "selectedTrackFps";
 
     public static ExoPreferences instance(Context ctx) {
@@ -160,14 +161,18 @@ public final class ExoPreferences {
         return mPrefs.getBoolean(String.valueOf(id), false);
     }
 
-    public boolean getVideoZoomEnabled() {
-        boolean isChecked = mPrefs.getBoolean(VIDEO_ZOOM_ENABLED, false);
-        return isChecked;
+    /**
+     * By default (first run or user never opened track dialog)<br/>
+     * select no more than 1080p format for legacy devices support
+     * @return track height
+     */
+    public int getVideoZoomMode() {
+        return mPrefs.getInt(VIDEO_ZOOM_MODE, VideoZoomManager.MODE_DEFAULT); // select fhd track by default
     }
 
-    public void setVideoZoomEnabled(boolean isChecked) {
+    public void setVideoZoomMode(int mode) {
         mPrefs.edit()
-                .putBoolean(VIDEO_ZOOM_ENABLED, isChecked)
+                .putInt(VIDEO_ZOOM_MODE, mode)
                 .apply();
     }
 }

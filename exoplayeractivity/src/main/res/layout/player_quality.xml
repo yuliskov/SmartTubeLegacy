@@ -24,8 +24,4 @@
     <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
         android:id="@+id/retry_button"
         style="@style/ExoMediaButton2.Retry"/>
-
-    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-        android:id="@+id/restrict_codec_btn"
-        style="@style/ExoMediaButton2.Restrict"/>
 </LinearLayout>

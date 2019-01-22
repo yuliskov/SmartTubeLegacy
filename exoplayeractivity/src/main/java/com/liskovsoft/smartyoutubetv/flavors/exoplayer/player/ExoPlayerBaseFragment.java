@@ -19,13 +19,14 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.AspectRatioManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.VideoZoomDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
@@ -66,7 +67,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private PlayerButtonsManager mButtonsManager;
     private AutoFrameRateManager mAutoFrameRateManager;
     private PlayerStateManager2 mStateManager;
-    private AspectRatioManager mAspectRatioManager;
+    private VideoZoomManager mVideoZoomManager;
     protected PlayerInitializer mPlayerInitializer;
     private String mSpeed = "1.0";
 
@@ -78,7 +79,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         mButtonsManager = new PlayerButtonsManager(this);
         mPlayerInitializer = new PlayerInitializer(this);
-        mAspectRatioManager = new AspectRatioManager(getActivity(), mSimpleExoPlayerView);
+        mVideoZoomManager = new VideoZoomManager(getActivity(), mSimpleExoPlayerView);
     }
 
     @Override
@@ -214,20 +215,32 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        if (view.getId() == R.id.restrict_codec_btn) {
+
+        if (view.getId() == R.id.btn_restrict_codec) {
             SingleChoiceSelectorDialog.create(getActivity(), new RestrictCodecDialogSource(getActivity()));
+        } else if (view.getId() == R.id.btn_video_zoom) {
+            SingleChoiceSelectorDialog.create(getActivity(), new VideoZoomDialogSource(getActivity(), mVideoZoomManager));
         }
     }
 
     @Override
     void addCustomButtonToQualitySection() {
         addRestrictCodecButton();
+        addVideoZoomButton();
     }
 
     private void addRestrictCodecButton() {
         TextToggleButton button = new TextToggleButton(getActivity());
-        button.setId(R.id.restrict_codec_btn);
-        button.setText(R.string.restrict);
+        button.setId(R.id.btn_restrict_codec);
+        button.setText(R.string.btn_restrict_codec);
+        button.setOnClickListener(this);
+        mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
+    }
+
+    private void addVideoZoomButton() {
+        TextToggleButton button = new TextToggleButton(getActivity());
+        button.setId(R.id.btn_video_zoom);
+        button.setText(R.string.btn_video_zoom);
         button.setOnClickListener(this);
         mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
     }
@@ -407,10 +420,6 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     public AutoFrameRateManager getAutoFrameRateManager() {
         return mAutoFrameRateManager;
-    }
-
-    public AspectRatioManager getAspectRatioManager() {
-        return mAspectRatioManager;
     }
 
     @Override

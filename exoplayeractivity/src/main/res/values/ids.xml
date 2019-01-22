@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btn_restrict_codec" type="id"/>
+    <item name="btn_video_zoom" type="id"/>
+</resources>
