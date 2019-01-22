@@ -44,6 +44,8 @@
     <string name="option_zoom_default">По умолчанию</string>
     <string name="option_zoom_fit_width">По ширине</string>
     <string name="option_zoom_fit_height">По высоте</string>
+    <string name="option_zoom_fit_both">По ширине или высоте</string>
+    <string name="option_zoom_stretch">Растянуть</string>
     <string name="dialog_video_zoom">Видео зум</string>
     <string name="btn_video_zoom">Зум</string>
 </resources>

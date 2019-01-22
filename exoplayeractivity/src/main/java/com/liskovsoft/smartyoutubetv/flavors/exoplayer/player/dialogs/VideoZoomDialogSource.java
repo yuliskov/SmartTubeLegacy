@@ -21,6 +21,8 @@ public class VideoZoomDialogSource implements SingleDialogSource {
         mItems.add(new VideoZoomDialogItem(mContext.getString(R.string.option_zoom_default), VideoZoomManager.MODE_DEFAULT, mManager));
         mItems.add(new VideoZoomDialogItem(mContext.getString(R.string.option_zoom_fit_width), VideoZoomManager.MODE_FIT_WIDTH, mManager));
         mItems.add(new VideoZoomDialogItem(mContext.getString(R.string.option_zoom_fit_height), VideoZoomManager.MODE_FIT_HEIGHT, mManager));
+        mItems.add(new VideoZoomDialogItem(mContext.getString(R.string.option_zoom_fit_both), VideoZoomManager.MODE_FIT_BOTH, mManager));
+        mItems.add(new VideoZoomDialogItem(mContext.getString(R.string.option_zoom_stretch), VideoZoomManager.MODE_STRETCH, mManager));
     }
 
     @Override

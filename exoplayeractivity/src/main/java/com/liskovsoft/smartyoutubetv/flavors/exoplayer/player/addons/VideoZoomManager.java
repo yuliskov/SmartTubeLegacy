@@ -12,6 +12,8 @@ public class VideoZoomManager {
     public static final int MODE_DEFAULT = AspectRatioFrameLayout.RESIZE_MODE_FIT;
     public static final int MODE_FIT_WIDTH = AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH;
     public static final int MODE_FIT_HEIGHT = AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT;
+    public static final int MODE_FIT_BOTH = AspectRatioFrameLayout.RESIZE_MODE_ZOOM;
+    public static final int MODE_STRETCH = AspectRatioFrameLayout.RESIZE_MODE_FILL;
     private final Context mContext;
     private final SimpleExoPlayerView mPlayerView;
     private final ExoPreferences mPrefs;
