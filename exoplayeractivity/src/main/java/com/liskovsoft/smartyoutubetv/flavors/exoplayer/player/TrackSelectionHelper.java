@@ -57,7 +57,7 @@ import java.util.TreeSet;
     private static final int VIDEO_GROUP_INDEX = 0; // is video
 
     private final MappingTrackSelector mSelector;
-    private final TrackSelection.Factory mAdaptiveTrackSelectionFactory;
+    private final TrackSelection.Factory mTrackSelectionFactory;
 
     private MappedTrackInfo mTrackInfo;
     private int mRendererIndex;
@@ -101,12 +101,12 @@ import java.util.TreeSet;
 
     /**
      * @param selector                      The track selector.
-     * @param adaptiveTrackSelectionFactory A factory for adaptive {@link TrackSelection}s, or null
+     * @param trackSelectionFactory A factory for adaptive {@link TrackSelection}s, or null
      *                                      if the selection helper should not support adaptive tracks.
      */
-    public TrackSelectionHelper(MappingTrackSelector selector, TrackSelection.Factory adaptiveTrackSelectionFactory) {
+    public TrackSelectionHelper(MappingTrackSelector selector, TrackSelection.Factory trackSelectionFactory) {
         this.mSelector = selector;
-        this.mAdaptiveTrackSelectionFactory = adaptiveTrackSelectionFactory;
+        this.mTrackSelectionFactory = trackSelectionFactory;
     }
 
     /**
@@ -126,7 +126,7 @@ import java.util.TreeSet;
         mTrackGroups = trackInfo.getTrackGroups(rendererIndex);
         mTrackGroupsAdaptive = new boolean[mTrackGroups.length];
         for (int i = 0; i < mTrackGroups.length; i++) {
-            mTrackGroupsAdaptive[i] = mAdaptiveTrackSelectionFactory != null && trackInfo.getAdaptiveSupport(rendererIndex, i, false) !=
+            mTrackGroupsAdaptive[i] = mTrackSelectionFactory != null && trackInfo.getAdaptiveSupport(rendererIndex, i, false) !=
                     RendererCapabilities.ADAPTIVE_NOT_SUPPORTED && mTrackGroups.get(i).length > 1;
         }
         mIsDisabled = mSelector.getRendererDisabled(rendererIndex);
@@ -368,7 +368,7 @@ import java.util.TreeSet;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
-        TrackSelection.Factory factory = tracks.length == 1 ? FIXED_FACTORY : (enableRandomAdaptation ? RANDOM_FACTORY : mAdaptiveTrackSelectionFactory);
+        TrackSelection.Factory factory = tracks.length == 1 ? FIXED_FACTORY : (enableRandomAdaptation ? RANDOM_FACTORY : mTrackSelectionFactory);
         mOverride = new SelectionOverride(factory, group, tracks);
     }
 

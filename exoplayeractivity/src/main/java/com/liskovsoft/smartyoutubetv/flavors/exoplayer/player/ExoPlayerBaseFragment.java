@@ -17,15 +17,15 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
+import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.VideoZoomDialogSource;
@@ -120,16 +120,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     protected void initializeTrackSelector() {
-        TrackSelection.Factory adaptiveTrackSelectionFactory =
+        TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(
-                        BANDWIDTH_METER,
-                        Integer.MAX_VALUE,
-                        AdaptiveTrackSelection.DEFAULT_MIN_DURATION_FOR_QUALITY_INCREASE_MS,
-                        AdaptiveTrackSelection.DEFAULT_MAX_DURATION_FOR_QUALITY_DECREASE_MS,
-                        AdaptiveTrackSelection.DEFAULT_MIN_DURATION_TO_RETAIN_AFTER_DISCARD_MS,
-                        AdaptiveTrackSelection.DEFAULT_BANDWIDTH_FRACTION);
+                        BANDWIDTH_METER
+                );
 
-        mTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
+        mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
+
         mTrackSelector.setParameters(
                 mTrackSelector.getParameters()
                 .withMaxVideoBitrate(Integer.MAX_VALUE)
@@ -141,7 +138,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         //if (Util.SDK_INT >= 21)
         //    trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
 
-        mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, adaptiveTrackSelectionFactory);
+        mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, trackSelectionFactory);
         mEventLogger = new EventLogger(mTrackSelector);
     }
 
