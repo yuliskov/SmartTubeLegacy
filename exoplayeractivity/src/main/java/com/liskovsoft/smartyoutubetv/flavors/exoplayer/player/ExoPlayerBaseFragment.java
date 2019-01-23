@@ -105,7 +105,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
     }
 
-    private void initializeUiScale() {
+    protected void initializeUiScale() {
         int width = getIntent().getIntExtra(SCREEN_WIDTH, 0);
 
         if (getIntent() == null || width == 0) {
@@ -145,19 +145,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ExoPlayerBaseFragment.this.showDebugView(show);
+                    showDebugView(show);
                 }
             }, 1000);
             return;
         }
 
-        if (show) {
-            mDebugViewGroup.setVisibility(View.VISIBLE);
-            mDebugViewHelper.start();
-        } else {
-            mDebugViewGroup.setVisibility(View.GONE);
-            mDebugViewHelper.stop();
-        }
+        mDebugViewHelper.show(show);
     }
 
     public String getMainTitle() {
@@ -190,8 +184,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     protected void syncButtonStates() {
-        if (mButtonsManager != null)
+        if (mButtonsManager != null) {
             mButtonsManager.syncButtonStates();
+        }
     }
 
     @Override

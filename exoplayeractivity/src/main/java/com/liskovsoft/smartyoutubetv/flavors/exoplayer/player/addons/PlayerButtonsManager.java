@@ -22,12 +22,15 @@ import java.util.Map;
 
 public class PlayerButtonsManager {
     private static final String TAG = PlayerButtonsManager.class.getSimpleName();
+    private static final int LISTENER_ADDED = 0;
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
     private final SimpleExoPlayerView mExoPlayerView;
     private final ExoPreferences mPrefs;
     private final View mRootView;
+    private boolean mListenerAdded;
+    private Intent mCachedIntent;
 
     public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -44,16 +47,26 @@ public class PlayerButtonsManager {
     public void syncButtonStates() {
         initWebButtons();
         initNextButton(); // force enable next button
-        initStatsButton();
+        initDebugButton();
         initRepeatButton();
+        mListenerAdded = true;
     }
 
     private void initWebButtons() {
         Intent intent = mPlayerFragment.getIntent();
+
+        if (intent == null || intent.equals(mCachedIntent)) {
+            return;
+        }
+
+        mCachedIntent = intent;
+
         Bundle extras = intent.getExtras();
+
         if (extras == null) {
             return;
         }
+
         for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !extras.containsKey(entry.getValue()); // no such button in data
             // NOTE: fix phantom subscribe/unsubscribe
@@ -178,27 +191,39 @@ public class PlayerButtonsManager {
         mButtonStates.put(R.id.exo_prev, false);
     }
 
-    private void initStatsButton() {
-        ToggleButtonBase statsButton = (ToggleButtonBase) mRootView.findViewById(R.id.exo_stats);
-        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener()
-        {
+    private void initDebugButton() {
+        ToggleButtonBase statsButton = mRootView.findViewById(R.id.exo_stats);
+
+        initDebugListener(statsButton);
+
+        statsButton.setChecked(mPrefs.getCheckedState(statsButton.getId()));
+    }
+
+    private void initDebugListener(ToggleButtonBase statsButton) {
+        if (mListenerAdded) {
+            return;
+        }
+
+        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
                 mPlayerFragment.showDebugView(isChecked);
                 mPrefs.setCheckedState(button.getId(), isChecked);
             }
         });
-        statsButton.setChecked(mPrefs.getCheckedState(statsButton.getId()));
     }
 
-
     private void initRepeatButton() {
-        ToggleButtonBase btn = (ToggleButtonBase) mRootView.findViewById(R.id.exo_repeat);
+        ToggleButtonBase btn = mRootView.findViewById(R.id.exo_repeat);
         btn.setChecked(mPrefs.getCheckedState(btn.getId()));
     }
 
     // NOTE: example of visibility change listener
     private void initNextButton() {
+        if (mListenerAdded) {
+            return;
+        }
+
         final View nextButton = mExoPlayerView.findViewById(R.id.exo_next2);
         nextButton.getViewTreeObserver().addOnGlobalLayoutListener(obtainSetButtonEnabledListener(nextButton));
     }

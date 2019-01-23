@@ -26,6 +26,7 @@ import android.view.Display;
 import android.view.Display.Mode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -45,7 +46,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 import java.util.Locale;
 
@@ -60,9 +60,9 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private static final int REFRESH_INTERVAL_MS = 1000;
     private static final float TEXT_SIZE_SP = 10;
 
-    private final SimpleExoPlayer player;
-    private final ViewGroup viewGroup;
-    private final Activity context;
+    private final SimpleExoPlayer mPlayer;
+    private final ViewGroup mDebugViewGroup;
+    private final Activity mContext;
 
     private boolean started;
     private LinearLayout column1;
@@ -74,18 +74,28 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
      * @param viewGroup The {@link TextView} that should be updated to display the information.
      */
     public MyDebugViewHelper(SimpleExoPlayer player, ViewGroup viewGroup, Activity ctx) {
-        this.player = player;
-        this.viewGroup = viewGroup;
-        this.context = ctx;
+        mPlayer = player;
+        mDebugViewGroup = viewGroup;
+        mContext = ctx;
         inflate();
     }
 
     private void inflate() {
-        viewGroup.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.debug_view, viewGroup, true);
-        column1 = (LinearLayout) viewGroup.findViewById(R.id.debug_view_column1);
-        column2 = (LinearLayout) viewGroup.findViewById(R.id.debug_view_column2);
+        mDebugViewGroup.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        inflater.inflate(R.layout.debug_view, mDebugViewGroup, true);
+        column1 = (LinearLayout) mDebugViewGroup.findViewById(R.id.debug_view_column1);
+        column2 = (LinearLayout) mDebugViewGroup.findViewById(R.id.debug_view_column2);
+    }
+
+    public void show(boolean show) {
+        if (show) {
+            mDebugViewGroup.setVisibility(View.VISIBLE);
+            start();
+        } else {
+            mDebugViewGroup.setVisibility(View.GONE);
+            stop();
+        }
     }
 
     /**
@@ -96,8 +106,9 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         if (started) {
             return;
         }
+
         started = true;
-        player.addListener(this);
+        mPlayer.addListener(this);
         updateAndPost();
     }
 
@@ -109,9 +120,10 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         if (!started) {
             return;
         }
+
         started = false;
-        player.removeListener(this);
-        viewGroup.removeCallbacks(this);
+        mPlayer.removeListener(this);
+        mDebugViewGroup.removeCallbacks(this);
     }
 
     // Player.EventListener implementation.
@@ -176,13 +188,13 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         // appendPlayerWindowIndex();
         appendPreferredDisplayModeId();
 
-        viewGroup.removeCallbacks(this);
-        viewGroup.postDelayed(this, REFRESH_INTERVAL_MS);
+        mDebugViewGroup.removeCallbacks(this);
+        mDebugViewGroup.postDelayed(this, REFRESH_INTERVAL_MS);
     }
 
     private void appendVideoInfo() {
-        Format video = player.getVideoFormat();
-        Format audio = player.getAudioFormat();
+        Format video = mPlayer.getVideoFormat();
+        Format audio = mPlayer.getAudioFormat();
         if (video == null || audio == null) {
             return;
         }
@@ -238,7 +250,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     private void appendOtherInfo() {
-        DecoderCounters counters = player.getVideoDecoderCounters();
+        DecoderCounters counters = mPlayer.getVideoDecoderCounters();
         if (counters == null)
             return;
 
@@ -250,10 +262,10 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     private void appendPlayerState() {
-        appendRow("Player Paused", !player.getPlayWhenReady());
+        appendRow("Player Paused", !mPlayer.getPlayWhenReady());
 
         String text;
-        switch (player.getPlaybackState()) {
+        switch (mPlayer.getPlaybackState()) {
             case Player.STATE_BUFFERING:
                 text = "buffering";
                 break;
@@ -278,7 +290,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         if (Util.SDK_INT < 23) {
             appendRow(title, NOT_AVAILABLE);
         } else {
-            Activity ctx = this.context;
+            Activity ctx = this.mContext;
             if (ctx == null) {
                 // ctx = (ExoPlayerFragment) viewGroup.getContext();
                 return;
@@ -290,7 +302,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     private void appendPlayerWindowIndex() {
-        appendRow("Window Index", player.getCurrentWindowIndex());
+        appendRow("Window Index", mPlayer.getCurrentWindowIndex());
     }
 
     private void appendRow(String name, boolean val) {
@@ -318,21 +330,21 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     private TextView createTextView(String name) {
-        TextView textView = new TextView(context);
+        TextView textView = new TextView(mContext);
         textView.setText(name);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
         return textView;
     }
 
     private TextView createTextView(boolean val) {
-        TextView textView = new TextView(context);
+        TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
         return textView;
     }
 
     private TextView createTextView(int val) {
-        TextView textView = new TextView(context);
+        TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
         return textView;
@@ -365,7 +377,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
 
     private String getDisplayResolution() {
         if (Util.SDK_INT < 23) {
-            WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+            WindowManager wm = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
             Display display = wm.getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -388,7 +400,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
 
     @TargetApi(17)
     private android.view.Display getCurrentDisplay() {
-        DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        DisplayManager displayManager = (DisplayManager) mContext.getSystemService(Context.DISPLAY_SERVICE);
         if (displayManager == null)
             return null;
         android.view.Display[] displays = displayManager.getDisplays();

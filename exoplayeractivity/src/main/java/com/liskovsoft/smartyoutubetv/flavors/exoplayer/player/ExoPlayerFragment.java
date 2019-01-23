@@ -330,16 +330,18 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
      * Bugfix: {@link #getActivity} is null inside {@link #openVideo} and {@link #onResumeFragment()} routines
      */
     public void performInitialization() {
-        if (!mIsAttached)
+        if (!mIsAttached) {
             return;
+        }
 
         if (mPendingIntent != null) {
             Log.d(TAG, "Open video from pending intent");
             openVideoFromIntent(mPendingIntent);
             mPendingIntent = null;
-            return;
+        } else if (getIntent() != null) {
+            syncButtonStates(); // onCheckedChanged depends on this
+            initializePlayer();
+            initializeUiScale();
         }
-
-        initializePlayer();
     }
 }
