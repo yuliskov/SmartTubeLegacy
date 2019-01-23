@@ -9,6 +9,8 @@ var YouTubeUtils = {
     FIRST_REVISION: 'first_revision',
     SECOND_REVISION: 'second_revision',
     OPENED_VIDEO_SIGN: '#/watch/video',
+    SEARCH_SIGN: '#/search',
+    CHANNEL_SIGN: '#/channel',
 
     isComponentDisabled: function(element) {
         var el = element;
@@ -62,8 +64,16 @@ var YouTubeUtils = {
         return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
     },
 
-    playerIsClosed2: function() {
-        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) == -1;
+    playerIsOpened: function() {
+        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) != -1;
+    },
+
+    searchIsOpened: function() {
+        return location.hash.indexOf(this.SEARCH_SIGN) != -1;
+    },
+
+    channelIsOpened: function() {
+        return location.hash.indexOf(this.CHANNEL_SIGN) != -1;
     },
 
     isDisabled: function(elem) {
