@@ -37,6 +37,9 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
+import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;
+import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
+import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
@@ -205,7 +208,33 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
                 video.pixelWidthHeightRatio == 1f ?
                 NOT_AVAILABLE : String.format(Locale.US, "%.02f", video.pixelWidthHeightRatio);
         appendRow("Aspect Ratio", par);
-        appendRow("Hardware Accelerated", true);
+        appendRow("Hardware Accelerated", isHardwareAccelerated(video));
+    }
+
+    /**
+     * <a href="https://github.com/google/ExoPlayer/issues/4757">More info</a>
+     * @param format format
+     * @return is accelerated
+     */
+    private boolean isHardwareAccelerated(Format format) {
+        if (format == null) {
+            return false;
+        }
+
+        try {
+            MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false);
+
+            for (String name : new String[]{"omx.google.", "c2.android."}) {
+                if (info.name.toLowerCase().startsWith(name)) {
+                    return false;
+                }
+            }
+        } catch (DecoderQueryException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     private void appendOtherInfo() {
