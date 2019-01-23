@@ -53,10 +53,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project.properties.appCompatVersion
     implementation project.properties.androidLoggerVersion
+
     implementation project.properties.exoplayerVersion
     //implementation project.properties.amazonExoplayerVersion
 
     implementation project.properties.stethoVersion
 
     implementation project.properties.multiDexVersion
+
+    implementation (project(path: ':exoplayer-extension-vp9'), {
+        transitive = false
+    })
 }
