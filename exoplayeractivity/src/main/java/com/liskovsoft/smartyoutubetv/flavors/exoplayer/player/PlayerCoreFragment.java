@@ -86,6 +86,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
     public static final String DELIMITER = "------";
 
+    public static final int RENDERER_INDEX_VIDEO = 0;
+    public static final int RENDERER_INDEX_AUDIO = 1;
+    public static final int RENDERER_INDEX_SUBTITLE = 2;
+
     protected EventLogger mEventLogger;
 
     protected SimpleExoPlayer mPlayer;

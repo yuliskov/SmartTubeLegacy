@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.google.android.exoplayer2.Player;
 
@@ -23,25 +24,25 @@ import java.util.Set;
 /**
  * Restores saved position, quality and subtitles of the video
  */
-public class PlayerStateManager2 {
+public class PlayerStateManager {
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
-    private static final String AVC_CODEC = "avc";
-    private static final String VP9_CODEC = "vp9";
-    private static final String VP9_HDR_CODEC = "vp9.2";
-    private static final int VIDEO_RENDERER_INDEX = 0;
-    private static final int SUBTITLE_RENDERER_INDEX = 2;
+    private static final String CODEC_AVC = "avc";
+    private static final String CODEC_VP9 = "vp9";
+    private static final String CODEC_VP9_HDR = "vp9.2";
+    private static final int RENDERER_INDEX_VIDEO = PlayerCoreFragment.RENDERER_INDEX_VIDEO;
+    private static final int RENDERER_INDEX_SUBTITLE = PlayerCoreFragment.RENDERER_INDEX_SUBTITLE;
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
+    private static final long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min (most of songs)
+    private static final long MAX_TRAIL_DURATION_MILLIS = 3 * 1000; // don't save if 3 sec of unseen video remains
+    private static final long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
     private ExoPreferences mPrefs;
-    private long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min (most of songs)
-    private long MAX_TRAIL_DURATION_MILLIS = 3 * 1000; // don't save if 3 sec of unseen video remains
-    private long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
     private String mDefaultTrackId;
     private String mDefaultSubtitleLang;
 
-    public PlayerStateManager2(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
+    public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
@@ -56,7 +57,7 @@ public class PlayerStateManager2 {
     public void restoreState() {
         waitCodecInit();
 
-        restoreTrackIndex();
+        restoreVideoTrack();
         restoreSubtitleTrack();
         restoreTrackPosition();
     }
@@ -69,7 +70,7 @@ public class PlayerStateManager2 {
     public void restoreStatePartially() {
         waitCodecInit();
 
-        restoreTrackIndex();
+        restoreVideoTrack();
     }
 
     /**
@@ -87,14 +88,8 @@ public class PlayerStateManager2 {
 
     private void restoreSubtitleTrack() {
         Pair<Integer, Integer> trackGroupAndIndex = findProperSubtitleTrack();
-        if (trackGroupAndIndex == null) {
-            return;
-        }
 
-        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray trackGroupArray = info.getTrackGroups(SUBTITLE_RENDERER_INDEX);
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
-        mSelector.setSelectionOverride(SUBTITLE_RENDERER_INDEX, trackGroupArray, override);
+        restoreTrackGroupAndIndex(trackGroupAndIndex, RENDERER_INDEX_SUBTITLE);
     }
 
     private Pair<Integer, Integer> findProperSubtitleTrack() {
@@ -105,7 +100,7 @@ public class PlayerStateManager2 {
         }
 
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray groupArray = info.getTrackGroups(SUBTITLE_RENDERER_INDEX);
+        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_SUBTITLE);
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -126,36 +121,35 @@ public class PlayerStateManager2 {
     private void restoreTrackPosition() {
         String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
         long pos = mPrefs.getPosition(title);
-        if (pos != C.TIME_UNSET)
+
+        if (pos != C.TIME_UNSET){
             mPlayer.seekTo(pos);
+        }
     }
 
     /**
      * Restore track from prefs
      */
-    private void restoreTrackIndex() {
+    private void restoreVideoTrack() {
         if (trackGroupIsEmpty()) {
             return;
         }
-        Pair<Integer, Integer> trackGroupAndIndex = findProperTrack();
-        if (trackGroupAndIndex == null) {
-            return;
-        }
-        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray trackGroupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
-        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
-        mSelector.setSelectionOverride(VIDEO_RENDERER_INDEX, trackGroupArray, override);
+
+        Pair<Integer, Integer> trackGroupAndIndex = findProperVideoTrack();
+
+        restoreTrackGroupAndIndex(trackGroupAndIndex, RENDERER_INDEX_VIDEO);
     }
 
     /**
      * Searches for the track by id and height.
      * @return pair consisted from track group index and track number
      */
-    private Pair<Integer, Integer> findProperTrack() {
-        Set<MyFormat> fmts = findCandidates();
-        MyFormat fmt = filterHighestTrack(fmts);
+    private Pair<Integer, Integer> findProperVideoTrack() {
+        Set<MyFormat> fmts = findProperVideos();
+        MyFormat fmt = filterHighestVideo(fmts);
 
         if (fmt == null) {
+            mDefaultTrackId = null;
             return null;
         }
 
@@ -167,7 +161,7 @@ public class PlayerStateManager2 {
      * Try to find a candidate(s) that match preferred settings
      * @return one or more matched video tracks as {@link MyFormat}
      */
-    private Set<MyFormat> findCandidates() {
+    private Set<MyFormat> findProperVideos() {
         String trackId = mPrefs.getSelectedTrackId();
         int trackHeight = mPrefs.getSelectedTrackHeight();
         float trackFps = mPrefs.getSelectedTrackFps();
@@ -177,7 +171,7 @@ public class PlayerStateManager2 {
         Set<MyFormat> backed = new HashSet<>();
 
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray groupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
+        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -218,7 +212,7 @@ public class PlayerStateManager2 {
      * @param fmts source (cannot be null)
      * @return best format (cannot be null)
      */
-    private MyFormat filterHighestTrack(Set<MyFormat> fmts) {
+    private MyFormat filterHighestVideo(Set<MyFormat> fmts) {
         //String codecName = AVC_CODEC;
         MyFormat result = null;
 
@@ -288,7 +282,7 @@ public class PlayerStateManager2 {
             return true;
         }
 
-        TrackGroupArray groupArray = info.getTrackGroups(VIDEO_RENDERER_INDEX);
+        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
         return groupArray == null || groupArray.length == 0;
     }
@@ -308,8 +302,8 @@ public class PlayerStateManager2 {
         if (trackInfo == null) {
             return;
         }
-        TrackGroupArray groups = trackInfo.getTrackGroups(SUBTITLE_RENDERER_INDEX);
-        SelectionOverride override = mSelector.getSelectionOverride(SUBTITLE_RENDERER_INDEX, groups);
+        TrackGroupArray groups = trackInfo.getTrackGroups(RENDERER_INDEX_SUBTITLE);
+        SelectionOverride override = mSelector.getSelectionOverride(RENDERER_INDEX_SUBTITLE, groups);
         if (override == null && mDefaultSubtitleLang != null) { // user switched the track to auto mode
             mPrefs.setSubtitleLang(null);
             return;
@@ -430,13 +424,13 @@ public class PlayerStateManager2 {
             return false;
         }
 
-        TrackGroupArray groups = info.getTrackGroups(VIDEO_RENDERER_INDEX);
+        TrackGroupArray groups = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
         if (groups == null) {
             return false;
         }
 
-        SelectionOverride override = mSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
+        SelectionOverride override = mSelector.getSelectionOverride(RENDERER_INDEX_VIDEO, groups);
 
         return override == null;
     }
@@ -447,13 +441,24 @@ public class PlayerStateManager2 {
 
     private String codecShort(String codecName) {
         // simplify codec name: use avc instead of avc.111333
-        if (codecName.contains(AVC_CODEC)) {
-            codecName = AVC_CODEC;
-        } else if (codecName.contains(VP9_CODEC)) {
-            codecName = VP9_CODEC;
+        if (codecName.contains(CODEC_AVC)) {
+            codecName = CODEC_AVC;
+        } else if (codecName.contains(CODEC_VP9)) {
+            codecName = CODEC_VP9;
         }
 
         return codecName;
+    }
+
+    private void restoreTrackGroupAndIndex(Pair<Integer, Integer> trackGroupAndIndex, int rendererIndex) {
+        if (trackGroupAndIndex == null) {
+            return;
+        }
+
+        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+        TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
+        SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
+        mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
     }
 
     /**

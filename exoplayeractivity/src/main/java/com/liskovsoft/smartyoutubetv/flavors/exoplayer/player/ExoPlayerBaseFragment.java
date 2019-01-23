@@ -9,7 +9,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -17,14 +16,13 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager2;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDialogSource;
@@ -68,7 +66,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private PlayerButtonsManager mButtonsManager;
     private AutoFrameRateManager mAutoFrameRateManager;
-    private PlayerStateManager2 mStateManager;
+    private PlayerStateManager mStateManager;
     private VideoZoomManager mVideoZoomManager;
     protected PlayerInitializer mPlayerInitializer;
     private String mSpeed = "1.0";
@@ -101,7 +99,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             mPlayerInitializer.initVideoTitle();
 
-            mStateManager = new PlayerStateManager2(this, mPlayer, mTrackSelector);
+            mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
 
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
@@ -287,10 +285,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public String getTitleQualityInfo(int rendererIndex) {
-        switch (mPlayer.getRendererType(rendererIndex)) {
-            case C.TRACK_TYPE_VIDEO:
+        switch (rendererIndex) {
+            case RENDERER_INDEX_VIDEO:
                 return getTitleQualityInfo();
-            case C.TRACK_TYPE_AUDIO:
+            case RENDERER_INDEX_AUDIO:
                 return getAudioQualityInfo();
         }
 

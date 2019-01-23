@@ -9,8 +9,6 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
-import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 
 /**
  * <a href="https://t.me/SmartYouTubeTV/1058">The hang issue</a>
@@ -20,7 +18,7 @@ public class PlayerHangListener extends AbstractPlayerEventListener {
     private static final long VIDEO_CHECK_TIMEOUT_MS = 10_000;
     private final Context mContext;
     private final Handler mHandler;
-    private PlayerStateManager2 mStateManager;
+    private PlayerStateManager mStateManager;
     private ExoPlayer mPlayer;
     private DefaultTrackSelector mSelector;
     private boolean mHandlerStarted;
@@ -44,7 +42,7 @@ public class PlayerHangListener extends AbstractPlayerEventListener {
         mPlayer = player;
     }
 
-    public PlayerHangListener(Context context, PlayerStateManager2 stateManager) {
+    public PlayerHangListener(Context context, PlayerStateManager stateManager) {
         this(context);
         mStateManager = stateManager;
     }
