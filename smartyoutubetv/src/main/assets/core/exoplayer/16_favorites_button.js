@@ -4,6 +4,11 @@ function FavoritesButton(selector) {
     this.TAG = "FavoritesButton";
     this.selector = selector;
 
+    this.getChecked = function() {
+        Log.d(this.TAG, "getChecked " + this.selector);
+        return false;
+    };
+
     this.setChecked = function(doChecked) {
         Log.d(this.TAG, "setChecked " + this.selector + " " + doChecked);
 
