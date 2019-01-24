@@ -20,6 +20,7 @@ public class ActionsSender {
             ExoPlayerFragment.BUTTON_LIKE,
             ExoPlayerFragment.BUTTON_DISLIKE,
             ExoPlayerFragment.BUTTON_SUBSCRIBE,
+            ExoPlayerFragment.BUTTON_FAVORITES,
             // ExoPlayerFragment.BUTTON_USER_PAGE,
             ExoPlayerFragment.BUTTON_PREV,
             ExoPlayerFragment.BUTTON_NEXT,

@@ -4,13 +4,25 @@ function FavoritesButton(selector) {
     this.TAG = "FavoritesButton";
     this.selector = selector;
 
+    this.getChecked = function() {
+        Log.d(this.TAG, "getChecked " + this.selector);
+        return false;
+    };
+
     this.setChecked = function(doChecked) {
         Log.d(this.TAG, "setChecked " + this.selector + " " + doChecked);
 
         if (doChecked) {
             var $this = this;
 
-            EventUtils.triggerEnter(this.findToggle());
+            var el = this.findToggle();
+
+            if (!el) {
+                Log.d(this.TAG, "Oops, not found... closing");
+                ExoUtils.sendAction($this.CLOSE_SUGGESTIONS);
+            }
+
+            EventUtils.triggerEnter(el);
         }
     };
 }
