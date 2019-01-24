@@ -76,7 +76,6 @@ SuggestionsWatcher.disable = function() {
 function SuggestionsFakeButton(selector) {
     this.TAG = "SuggestionsFakeButton";
     this.selector = selector;
-    this.CLOSE_SUGGESTIONS = "action_close_suggestions";
     this.retryTimes = 10;
     this.callDelayMS = 500;
 
@@ -122,7 +121,7 @@ function SuggestionsFakeButton(selector) {
         var $this = this;
         // immediate close not working here, so take delay
         setTimeout(function() {
-            ExoUtils.sendAction($this.CLOSE_SUGGESTIONS);
+            ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
         }, 100);
 
         this.alreadySent = true;

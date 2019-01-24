@@ -13,6 +13,7 @@ console.log("Scripts::Running core script exo_utils.js");
  */
 var ExoUtils = {
     TAG: 'ExoUtils',
+    CLOSE_SUGGESTIONS: "action_close_suggestions",
 
     // events order:
     // emptied
