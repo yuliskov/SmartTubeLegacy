@@ -349,7 +349,7 @@ public class PlayerStateManager {
         // mDefaultTrackId: usually this happens when video does not contain preferred format
         boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
 
-        if (isTrackChanged) {
+        if (isTrackChanged && validateTrackId(trackId)) {
             mPrefs.setSelectedTrackId(trackId);
             mPrefs.setSelectedTrackHeight(height);
             mPrefs.setSelectedTrackCodecs(codecs);
@@ -459,6 +459,19 @@ public class PlayerStateManager {
         TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(FIXED_FACTORY, trackGroupAndIndex.first, trackGroupAndIndex.second);
         mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+    }
+
+    /**
+     * There is a bug (null codecs) on some Live formats (strange id == "1/27")
+     * @param trackId id
+     * @return is proper id
+     */
+    private boolean validateTrackId(String trackId) {
+        if (trackId == null || trackId.isEmpty()) {
+            return false;
+        }
+
+        return !trackId.contains("/");
     }
 
     /**

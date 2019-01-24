@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
@@ -56,6 +57,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDefaultRenderersFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -209,13 +211,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             // increase player's min/max buffer size to 60 secs
             // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
+
             DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
                     DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
                     DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
+
             mPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, mTrackSelector, loadControl);
-            //player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector);
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);
