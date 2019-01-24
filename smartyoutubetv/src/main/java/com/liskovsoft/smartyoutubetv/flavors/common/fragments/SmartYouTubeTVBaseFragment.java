@@ -1,43 +1,35 @@
 package com.liskovsoft.smartyoutubetv.flavors.common.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
-import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.IntentTranslator;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
-import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
-import android.annotation.SuppressLint;
+import com.liskovsoft.smartyoutubetv.misc.YouTubeIntentTranslator;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
     private String mServiceUrl; // youtube url here
     private KeysTranslator mTranslator;
-    private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
-    private final static String TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
     private UserAgentManager mUAManager;
+    private IntentTranslator mIntentTranslator;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -81,6 +73,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     private void initRemoteUrl() {
         mServiceUrl = getString(R.string.service_url);
+        mIntentTranslator = new YouTubeIntentTranslator(mServiceUrl);
     }
 
     @Override
@@ -95,7 +88,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceUrl));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
-        Intent intent = (icicle == null) ? transformIntentData(getActivity().getIntent()) : null;
+        Intent intent = (icicle == null) ? mIntentTranslator.translate(getActivity().getIntent()) : null;
         mController.start(intent);
         setController(mController);
     }
@@ -170,7 +163,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onNewIntent(Intent intent) {
-        super.onNewIntent(transformIntentData(intent));
+        super.onNewIntent(mIntentTranslator.translate(intent));
     }
 
     @Override
@@ -196,79 +189,4 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
             startActivity(intent);
         }
     }
-
-    ///////////////////////// Begin Youtube filter /////////////////////
-
-
-    private Intent transformIntentData(Intent intent) {
-        if (intent == null)
-            return null;
-
-        transformRegularIntentData(intent);
-        transformAmazonIntentData(intent);
-
-        return intent;
-    }
-
-    private void transformRegularIntentData(Intent intent) {
-        Uri data = intent.getData();
-        if (data == null) {
-            return;
-        }
-
-        intent.setData(transformUri(data));
-    }
-
-    // see Amazon's youtube apk: "org.chromium.youtube_apk.YouTubeActivity.loadStartPage(dialParam)"
-    private void transformAmazonIntentData(Intent intent) {
-        String dialParam = intent.getStringExtra(DIAL_EXTRA);
-        if (dialParam == null) {
-            return;
-        }
-
-        String uriString = String.format(TEMPLATE_URL, dialParam);
-        intent.setData(Uri.parse(uriString));
-    }
-
-    /**
-     * Extracts video params e.g. <code>v=xtx33RuFCik</code> from url
-     * <br/>
-     * Examples of the input/output url:
-     * <pre>
-     * origin video: https://www.youtube.com/watch?v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv?gl=us&hl=en-us&v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv?v=xtx33RuFCik
-     *
-     * origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
-     * needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
-     * </pre>
-     * @param url desktop url (see manifest file for the patterns)
-     * @return video params
-     */
-    private String extractVideoIdParamFromUrl(String url) {
-        String[] patterns = {"list=[^&\\s]*", "v=[^&\\s]*", "youtu.be/[^&\\s]*"};
-        String res = Helpers.runMultiMatcher(url, patterns);
-        if (res == null) {
-            Log.w(TAG, "Url not supported: " + url);
-            // Uncomment next section to debug
-            // Toast.makeText(this, "Url not supported: " + url, Toast.LENGTH_LONG).show();
-            return null;
-        }
-        return res.replace("youtu.be/", "v=");
-    }
-
-    private Uri transformUri(final Uri uri) {
-        if (uri == null)
-            return null;
-        String url = uri.toString();
-        String videoParam = extractVideoIdParamFromUrl(url);
-        if (videoParam == null) {
-            return Uri.parse(mServiceUrl);
-        }
-        String fullUrl = String.format(TEMPLATE_URL, videoParam);
-        return Uri.parse(fullUrl);
-    }
-
-    ///////////////////////// End Youtube filter /////////////////////
 }
