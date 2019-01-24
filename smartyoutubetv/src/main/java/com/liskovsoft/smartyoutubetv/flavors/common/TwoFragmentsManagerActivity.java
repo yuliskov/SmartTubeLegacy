@@ -157,8 +157,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void onPlayerClosed(Intent intent) {
         Log.d(TAG, "player is closed with intent=" + intent);
-        boolean suggestionsClicked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false);
-        setActiveFragment(mBrowserFragment, !suggestionsClicked);
+
+        boolean doNotPause =
+                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
+                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
+        setActiveFragment(mBrowserFragment, !doNotPause);
+
         mPlayerListener.onPlayerClosed(intent);
     }
 

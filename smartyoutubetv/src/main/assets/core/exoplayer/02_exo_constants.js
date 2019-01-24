@@ -13,6 +13,7 @@ var PlayerActivity = {
     BUTTON_PREV: 'button_prev',
     BUTTON_NEXT: 'button_next',
     BUTTON_SUGGESTIONS: 'button_suggestions',
+    BUTTON_FAVORITES: 'button_favorites',
     TRACK_ENDED: 'track_ended',
     BUTTON_BACK: 'button_back' // should be the last
 };
@@ -29,6 +30,7 @@ var PlayerActivityMapping = {
     BUTTON_NEXT: ['.skip-forward-button', '.new-skip-forward-button', '.icon-player-next.button'],
     BUTTON_PREV: ['.material-icon-skip-previous.button', '.icon-player-prev.button'],
     BUTTON_SUGGESTIONS: 'button_suggestions', // fake button (use internal logic)
+    BUTTON_FAVORITES: '.material-icon-playlist-add',
     TRACK_ENDED: 'track_ended', // fake button (use internal logic)
     BUTTON_BACK: '#legend .back' // should be the last
 };

@@ -96,6 +96,7 @@ public class PlayerButtonsManager {
         mIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
         mIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
         mIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
+        mIdTagMapping.put(R.id.exo_favorites, ExoPlayerFragment.BUTTON_FAVORITES);
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
@@ -114,6 +115,7 @@ public class PlayerButtonsManager {
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
         boolean isBackButton = id == R.id.exo_back;
+        boolean isFavorites = id == R.id.exo_favorites && isChecked;
 
         // TODO: move towards object oriented solution
         if (isSpeedButton) {
@@ -133,10 +135,11 @@ public class PlayerButtonsManager {
         } else if (isUserPageButton    ||
                    isNextButton        ||
                    isPrevButton        ||
-                   isSuggestions) {
-            mPlayerFragment.doGracefulExit();
+                   isSuggestions       ||
+                   isFavorites) {
+            mPlayerFragment.moveToBackground();
         } else if (isBackButton) {
-            mPlayerFragment.doGracefulExit(ExoPlayerFragment.BUTTON_BACK);
+            mPlayerFragment.moveToBackground(ExoPlayerFragment.BUTTON_BACK);
         }
     }
 

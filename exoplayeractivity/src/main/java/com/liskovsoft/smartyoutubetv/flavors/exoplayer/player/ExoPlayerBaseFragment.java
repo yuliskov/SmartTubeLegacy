@@ -40,6 +40,7 @@ import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private static final String TAG = ExoPlayerBaseFragment.class.getName();
 
+    public static final String BUTTON_FAVORITES = "button_favorites";
     public static final String BUTTON_USER_PAGE = "button_user_page";
     public static final String BUTTON_LIKE = "button_like";
     public static final String BUTTON_DISLIKE = "button_dislike";
@@ -163,24 +164,24 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mButtonsManager.onCheckedChanged(compoundButton, b);
     }
 
-    public void doGracefulExit() {
+    public void moveToBackground() {
         Intent intent = mButtonsManager.createResultIntent();
-        doGracefulExit(intent);
+        moveToBackground(intent);
     }
 
-    public void doGracefulExit(String action) {
+    public void moveToBackground(String action) {
         Intent intent = mButtonsManager.createResultIntent();
         intent.putExtra(action, true);
-        doGracefulExit(intent);
+        moveToBackground(intent);
     }
 
-    private void doGracefulExit(Intent intent) {
+    private void moveToBackground(Intent result) {
         if (mAutoFrameRateManager != null) {
-            intent.putExtra(DISPLAY_MODE_ID, mAutoFrameRateManager.getCurrentModeId());
+            result.putExtra(DISPLAY_MODE_ID, mAutoFrameRateManager.getCurrentModeId());
             mAutoFrameRateManager.restoreOriginalState();
         }
 
-        ((PlayerListener) getActivity()).onPlayerClosed(intent);
+        ((PlayerListener) getActivity()).onPlayerClosed(result);
     }
 
     protected void syncButtonStates() {
@@ -415,7 +416,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (playbackState == Player.STATE_ENDED) {
-            doGracefulExit(ExoPlayerBaseFragment.TRACK_ENDED);
+            moveToBackground(ExoPlayerBaseFragment.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {
