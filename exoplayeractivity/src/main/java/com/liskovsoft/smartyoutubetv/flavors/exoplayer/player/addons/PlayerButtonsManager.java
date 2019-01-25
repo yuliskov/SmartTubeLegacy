@@ -188,6 +188,7 @@ public class PlayerButtonsManager {
     }
 
     private void resetState() {
+        mButtonStates.put(R.id.exo_favorites, false);
         mButtonStates.put(R.id.exo_suggestions, false);
         mButtonStates.put(R.id.exo_back, false);
         mButtonStates.put(R.id.exo_next2, false);
