@@ -42,7 +42,7 @@ public class YouTubeMediaParser {
     private static final String JSON_INFO_DASH_FORMATS2 = "$.streamingData.adaptiveFormats";
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
-    private int COMMON_SIGNATURE_LENGTH = 81;
+    private static final int COMMON_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
     private final int mId;
@@ -290,10 +290,16 @@ public class YouTubeMediaParser {
 
         for (int i = 0; i < mMediaItems.size(); i++) {
             String signature = signatures.get(i);
+            MediaItem item = mMediaItems.get(i);
+
+            if (signature == null && isValidSignature(item.getS())) {
+                signature = item.getS();
+            }
+
             if (signature == null) {
                 continue;
             }
-            MediaItem item = mMediaItems.get(i);
+            
             MyQueryString url = MyQueryStringFactory.parse(item.getUrl());
             url.set(MediaItem.SIGNATURE, signature);
             item.setUrl(url.toString());
@@ -485,11 +491,19 @@ public class YouTubeMediaParser {
                 continue;
             }
 
-            if (signature.length() != COMMON_SIGNATURE_LENGTH) {
+            if (!isValidSignature(signature)) {
                 return signature;
             }
         }
 
         return null;
+    }
+
+    private static boolean isValidSignature(String signature) {
+        if (signature == null) {
+            return false;
+        }
+
+        return signature.length() == COMMON_SIGNATURE_LENGTH;
     }
 }
