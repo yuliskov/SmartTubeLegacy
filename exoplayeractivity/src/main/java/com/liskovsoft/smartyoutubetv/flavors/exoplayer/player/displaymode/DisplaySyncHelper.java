@@ -144,6 +144,7 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
 
         if (!supportedDevice) {
+            Log.i(TAG, "Device doesn't support display mode change");
             Toast.makeText(mContext, R.string.autoframerate_not_supported, Toast.LENGTH_LONG).show();
         }
 
