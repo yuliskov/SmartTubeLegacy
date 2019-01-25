@@ -3,7 +3,7 @@
 
 [![MPLv2 License](http://img.shields.io/badge/license-MPLv2-blue.svg?style=flat-square)](https://www.mozilla.org/MPL/2.0/)
 
-__SmartYouTubeTV: An YouTube client for set-top boxes and Android-based TVs:__
+__SmartYouTubeTV: A YouTube client for set-top boxes and Android-based TVs:__
 
  * <a href="https://t.me/SmartYouTubeTV">Telegram group</a>
  * <a href="https://smartyoutubetv.github.io/#comment-3432484129" target="_blank">Visit discussion on the official page</a>
