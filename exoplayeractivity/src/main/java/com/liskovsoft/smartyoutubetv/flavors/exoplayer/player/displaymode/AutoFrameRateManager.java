@@ -39,7 +39,9 @@ public class AutoFrameRateManager {
     }
 
     public boolean getEnabled() {
-        return mPrefs.getAutoframerateChecked();
+        boolean enabled = mPrefs.getAutoframerateChecked();
+        Log.d(TAG, "getEnabled: " + enabled);
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
