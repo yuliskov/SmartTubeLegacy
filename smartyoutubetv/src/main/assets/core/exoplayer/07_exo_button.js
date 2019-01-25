@@ -3,7 +3,6 @@ console.log("Scripts::Running core script exo_button.js");
 function ExoButton(selector) {
     this.TAG = 'ExoButton';
     this.selector = selector;
-
     this.decorator = new ExoButtonDecorator(this);
 
     /**

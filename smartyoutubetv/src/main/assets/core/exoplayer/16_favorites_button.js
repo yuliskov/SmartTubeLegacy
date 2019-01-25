@@ -20,6 +20,7 @@ function FavoritesButton(selector) {
             if (!el) {
                 Log.d(this.TAG, "Oops, suggestions button not found... return to the player");
                 ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
+                return;
             }
 
             EventUtils.triggerEnter(el);
@@ -30,6 +31,8 @@ function FavoritesButton(selector) {
             });
         }
     };
+
+    this.decorator.apply();
 }
 
 FavoritesButton.prototype = new ExoButton();
