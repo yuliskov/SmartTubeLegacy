@@ -22,6 +22,10 @@ public class Log {
         sLogger.e(tag, msg);
     }
 
+    public static void e(String tag, String msg, Exception ex) {
+        e(tag, msg + " " + ex.getMessage());
+    }
+
     /**
      * In case of file, flushes all data to disk
      */

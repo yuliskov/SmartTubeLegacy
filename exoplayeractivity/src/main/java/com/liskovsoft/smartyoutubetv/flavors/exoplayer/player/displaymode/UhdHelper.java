@@ -11,10 +11,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

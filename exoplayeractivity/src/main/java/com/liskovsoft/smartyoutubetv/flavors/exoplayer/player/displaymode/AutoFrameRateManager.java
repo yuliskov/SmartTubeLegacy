@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
 import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 public class AutoFrameRateManager {
