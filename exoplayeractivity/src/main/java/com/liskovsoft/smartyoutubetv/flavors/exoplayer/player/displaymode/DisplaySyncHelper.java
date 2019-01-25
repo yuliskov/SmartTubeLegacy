@@ -57,15 +57,15 @@ class DisplaySyncHelper implements UhdHelperListener {
 
         for (int i = 0; i < modesNum; ++i) {
             DisplayHolder.Mode mode = oldModes[i];
-            Log.i("DisplaySyncHelper", "Check fo UHD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
+            Log.i(TAG, "Check fo UHD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
             if (mode.getPhysicalHeight() >= 2160) {
-                Log.i("DisplaySyncHelper", "Found! UHD");
+                Log.i(TAG, "Found! UHD");
                 newModes.add(mode);
             }
         }
 
         if (newModes.isEmpty()) {
-            Log.i("DisplaySyncHelper", "NO UHD MODES FOUND!!");
+            Log.i(TAG, "NO UHD MODES FOUND!!");
         }
 
         return newModes;
@@ -205,7 +205,7 @@ class DisplaySyncHelper implements UhdHelperListener {
                 }
             }
 
-            Log.i("DisplaySyncHelper", "Need resolution switch: " + isUHD);
+            Log.i(TAG, "Need resolution switch: " + isUHD);
 
             DisplayHolder.Mode mode = mUhdHelper.getMode();
             if (!isUHD) {
@@ -214,13 +214,13 @@ class DisplaySyncHelper implements UhdHelperListener {
 
             DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
             if (closerMode == null) {
-                Log.i("DisplaySyncHelper", "Could not find closer refresh rate for " + videoFramerate + "fps");
+                Log.i(TAG, "Could not find closer refresh rate for " + videoFramerate + "fps");
                 return false;
             }
 
-            Log.i("DisplaySyncHelper", "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
+            Log.i(TAG, "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
             if (closerMode.equals(mode)) {
-                Log.i("DisplaySyncHelper", "Do not need to change mode.");
+                Log.i(TAG, "Do not need to change mode.");
                 return false;
             }
 
