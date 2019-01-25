@@ -96,7 +96,7 @@
 
     <style name="ExoMediaButton2.Favorites">
         <item name="onCheckedChanged">onCheckedChanged</item>
-        <item name="desc">@string/share_video</item>
+        <item name="desc">@string/btn_favorites</item>
         <item name="imageOff">@mipmap/btn_favorites</item>
         <item name="imageOn">@mipmap/btn_favorites</item>
     </style>

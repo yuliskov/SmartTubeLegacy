@@ -65,6 +65,7 @@
     <string name="option_zoom_default">Default</string>
     <string name="option_zoom_fit_height">Fit height</string>
     <string name="btn_video_zoom">Zoom</string>
+    <string name="btn_favorites">Save</string>
     <string name="option_zoom_fit_both">Fit either width or height</string>
     <string name="option_zoom_stretch">Stretch</string>
 </resources>

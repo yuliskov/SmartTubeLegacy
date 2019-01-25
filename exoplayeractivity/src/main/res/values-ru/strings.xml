@@ -48,4 +48,5 @@
     <string name="option_zoom_stretch">Растянуть</string>
     <string name="dialog_video_zoom">Видео зум</string>
     <string name="btn_video_zoom">Зум</string>
+    <string name="btn_favorites">Сохран</string>
 </resources>

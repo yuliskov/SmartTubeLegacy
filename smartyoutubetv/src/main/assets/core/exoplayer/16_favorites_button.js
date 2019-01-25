@@ -24,7 +24,7 @@ function FavoritesButton(selector) {
 
             EventUtils.triggerEnter(el);
 
-            EventUtils.addListenerOnce(YouTubeSelectors.OVERLAY_PANEL_CONTAINER, YouTubeEvents.MODEL_CHANGED_EVENT, function() {
+            EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
                 Log.d($this.TAG, "User has closed the suggestions... return to the player");
                 ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
             });
