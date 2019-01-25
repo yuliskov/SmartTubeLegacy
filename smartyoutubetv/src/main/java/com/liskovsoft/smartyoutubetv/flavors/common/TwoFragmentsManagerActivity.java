@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -155,15 +154,15 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void onPlayerClosed(Intent intent) {
-        Log.d(TAG, "player is closed with intent=" + intent);
+    public void onPlayerAction(Intent action) {
+        Log.d(TAG, "on receive player action: " + action);
 
         boolean doNotPause =
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
         setActiveFragment(mBrowserFragment, !doNotPause);
 
-        mPlayerListener.onPlayerClosed(intent);
+        mPlayerListener.onPlayerAction(action);
     }
 
     private void initBrowserTransparency() {

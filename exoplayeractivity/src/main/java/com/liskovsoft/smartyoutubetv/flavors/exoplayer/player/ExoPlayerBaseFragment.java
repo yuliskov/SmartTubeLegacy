@@ -164,24 +164,19 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mButtonsManager.onCheckedChanged(compoundButton, b);
     }
 
-    public void moveToBackground() {
+    public void onPlayerAction() {
         Intent intent = mButtonsManager.createResultIntent();
-        moveToBackground(intent);
+        onPlayerAction(intent);
     }
 
-    public void moveToBackground(String action) {
+    public void onPlayerAction(String action) {
         Intent intent = mButtonsManager.createResultIntent();
         intent.putExtra(action, true);
-        moveToBackground(intent);
+        onPlayerAction(intent);
     }
 
-    private void moveToBackground(Intent result) {
-        if (mAutoFrameRateManager != null) {
-            result.putExtra(DISPLAY_MODE_ID, mAutoFrameRateManager.getCurrentModeId());
-            mAutoFrameRateManager.restoreOriginalState();
-        }
-
-        ((PlayerListener) getActivity()).onPlayerClosed(result);
+    private void onPlayerAction(Intent result) {
+        ((PlayerListener) getActivity()).onPlayerAction(result);
     }
 
     protected void syncButtonStates() {
@@ -416,7 +411,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (playbackState == Player.STATE_ENDED) {
-            moveToBackground(ExoPlayerBaseFragment.TRACK_ENDED);
+            onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
         }
 
         if (playbackState == Player.STATE_READY) {

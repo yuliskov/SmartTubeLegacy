@@ -181,7 +181,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
     @Override
     public void onBackPressed() {
-        moveToBackground(ExoPlayerBaseFragment.BUTTON_BACK);
+        onPlayerAction(ExoPlayerBaseFragment.BUTTON_BACK);
     }
 
     @Override

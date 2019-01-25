@@ -137,9 +137,9 @@ public class PlayerButtonsManager {
                    isPrevButton        ||
                    isSuggestions       ||
                    isFavorites) {
-            mPlayerFragment.moveToBackground();
+            mPlayerFragment.onPlayerAction();
         } else if (isBackButton) {
-            mPlayerFragment.moveToBackground(ExoPlayerFragment.BUTTON_BACK);
+            mPlayerFragment.onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
         }
     }
 

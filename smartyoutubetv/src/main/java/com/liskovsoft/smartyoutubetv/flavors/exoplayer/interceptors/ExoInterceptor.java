@@ -269,7 +269,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         }, FORCE_PLAYBACK_TIMEOUT_MS);
     }
 
-    public void onPlayerClosed(Intent intent) {
+    public void onPlayerAction(Intent intent) {
         boolean doNotClose =
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);

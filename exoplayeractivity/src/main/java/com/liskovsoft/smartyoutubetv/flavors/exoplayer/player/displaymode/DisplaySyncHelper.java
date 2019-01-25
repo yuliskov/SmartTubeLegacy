@@ -16,7 +16,7 @@ import java.util.List;
 // Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
 class DisplaySyncHelper implements UhdHelperListener {
-    private static final String TAG = "DisplaySyncHelper";
+    private static final String TAG = DisplaySyncHelper.class.getSimpleName();
     private final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
@@ -165,7 +165,7 @@ class DisplaySyncHelper implements UhdHelperListener {
         } else if (mUhdHelper.getMode().getModeId() != mNewMode) {
             // Once onDisplayChangedListener sends proper callback, the above if condition
             // need to changed to mode.getModeId() != modeId
-            String msg = "Mode changed Failure, Current mode id is " + mUhdHelper.getMode().getModeId();
+            String msg = String.format("Mode changed Failure, Current mode id is %s, Expected mode id is %s", mUhdHelper.getMode().getModeId(), mNewMode);
             Log.w(TAG, msg);
             Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
         }
@@ -224,8 +224,8 @@ class DisplaySyncHelper implements UhdHelperListener {
                 return false;
             }
 
-            mUhdHelper.registerModeChangeListener(this);
             mNewMode = closerMode.getModeId();
+            mUhdHelper.registerModeChangeListener(this);
             mUhdHelper.setPreferredDisplayModeId(window, mNewMode, true);
             mDisplaySyncInProgress = true;
             return true;
