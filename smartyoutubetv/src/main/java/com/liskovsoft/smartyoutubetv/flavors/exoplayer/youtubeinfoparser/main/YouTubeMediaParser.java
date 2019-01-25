@@ -38,8 +38,8 @@ public class YouTubeMediaParser {
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
     private static final String JSON_INFO = "player_response";
-    private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.formats";
-    private static final String JSON_INFO_DASH_FORMATS2 = "$.streamingData.adaptiveFormats";
+    private static final String JSON_INFO_REGULAR_FORMATS = "$.streamingData.formats";
+    private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.adaptiveFormats";
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
     private static final int COMMON_SIGNATURE_LENGTH = 81;
@@ -137,7 +137,7 @@ public class YouTubeMediaParser {
         return extractUrlEncodedMediaItems(content, DASH_FORMATS);
     }
 
-    private List<MediaItem> extractSimpleMediaItems(String content) {
+    private List<MediaItem> extractRegularMediaItems(String content) {
         return extractUrlEncodedMediaItems(content, REGULAR_FORMATS);
     }
 
@@ -148,11 +148,8 @@ public class YouTubeMediaParser {
         List<MediaItem> list = new ArrayList<>();
 
         if (mParser != null) {
+            // list.addAll(extractJsonList(mParser, JSON_INFO_REGULAR_FORMATS));
             list.addAll(extractJsonList(mParser, JSON_INFO_DASH_FORMATS));
-
-            if (list.size() == 0) {
-                list.addAll(extractJsonList(mParser, JSON_INFO_DASH_FORMATS2));
-            }
         }
 
         return list;
@@ -164,9 +161,15 @@ public class YouTubeMediaParser {
         }
 
         mMediaItems = new ArrayList<>();
-        mMediaItems.addAll(extractDashMediaItems(mContent));
+
         mMediaItems.addAll(extractJsonMediaItems());
-        mMediaItems.addAll(extractSimpleMediaItems(mContent));
+
+        // TODO: signature bug on the VEVO videos
+        if (mMediaItems.isEmpty()) {
+            mMediaItems.addAll(extractDashMediaItems(mContent));
+        }
+
+        mMediaItems.addAll(extractRegularMediaItems(mContent));
     }
 
     private MediaItem createMediaItem(Map<String, Object> content) {
@@ -290,16 +293,12 @@ public class YouTubeMediaParser {
 
         for (int i = 0; i < mMediaItems.size(); i++) {
             String signature = signatures.get(i);
-            MediaItem item = mMediaItems.get(i);
-
-            if (signature == null && isValidSignature(item.getS())) {
-                signature = item.getS();
-            }
 
             if (signature == null) {
                 continue;
             }
-            
+
+            MediaItem item = mMediaItems.get(i);
             MyQueryString url = MyQueryStringFactory.parse(item.getUrl());
             url.set(MediaItem.SIGNATURE, signature);
             item.setUrl(url.toString());

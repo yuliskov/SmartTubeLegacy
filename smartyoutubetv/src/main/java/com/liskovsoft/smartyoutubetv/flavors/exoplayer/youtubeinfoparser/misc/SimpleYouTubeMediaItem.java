@@ -2,10 +2,27 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
 import com.google.gson.annotations.SerializedName;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class SimpleYouTubeMediaItem implements MediaItem {
+    private class Range {
+        @SerializedName("start")
+        String start;
+        @SerializedName("end")
+        String end;
+
+        @NotNull
+        @Override
+        public String toString() {
+            if (start == null || end == null) {
+                return "";
+            }
+
+            return String.format("%s-%s", start, end);
+        }
+    }
     @SerializedName("itag")
     private String mITag;
     @SerializedName("url")
@@ -13,6 +30,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     private String mSignature;
     @SerializedName("mimeType")
     private String mType;
+    @SerializedName("contentLength")
     private String mClen;
     @SerializedName("bitrate")
     private String mBitrate;
@@ -23,6 +41,10 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @SerializedName("height")
     private String mHeight;
     private String mSize;
+    @SerializedName("indexRange")
+    private Range mIndexRange;
+    @SerializedName("initRange")
+    private Range mInitRange;
     private String mIndex;
     private String mInit;
     @SerializedName("fps")
@@ -33,6 +55,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @SerializedName("quality")
     private String mQuality;
     private String mRealSignature;
+    @SerializedName("audioSampleRate")
     private String mAudioSamplingRate;
     private String mSourceURL;
     private List<String> mSegmentUrlList;
@@ -155,6 +178,10 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getIndex() {
+        if (mIndex == null && mIndexRange != null) {
+            mIndex = mIndexRange.toString();
+        }
+
         return mIndex;
     }
 
@@ -165,6 +192,10 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getInit() {
+        if (mInit == null && mInitRange != null) {
+            mInit = mInitRange.toString();
+        }
+
         return mInit;
     }
 

@@ -384,7 +384,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
             writeLiveMediaSegmentList();
         } else if (item.getSegmentUrlList() != null) {
             writeSegmentList(item);
-        } else if (!item.getIndex().equals(NULL_INDEX_RANGE)) {
+        } else if (item.getIndex() != null &&
+                   !item.getIndex().equals(NULL_INDEX_RANGE)) { // json format fix: index is null
             writeSegmentBase(item);
         }
 
