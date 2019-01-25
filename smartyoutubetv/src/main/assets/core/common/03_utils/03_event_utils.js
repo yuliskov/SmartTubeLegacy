@@ -161,6 +161,25 @@ var EventUtils = {
         ListenerUtil.addListener(selectorOrElement, event, handler);
     },
 
+    /**
+     * Adds lister or waits till element be initialized<br/>
+     * Removes handler after first call.
+     * @param selectorOrElement desired element as selector
+     * @param event desired event
+     * @param handler callback
+     */
+    addListenerOnce: function(selectorOrElement, event, handler) {
+        var $this = this;
+
+        var callback = function() {
+            handler();
+
+            $this.removeListener(selectorOrElement, event, callback);
+        };
+
+        ListenerUtil.addListener(selectorOrElement, event, callback);
+    },
+
     removeListener: function(selectorOrElement, event, handler) {
         ListenerUtil.removeListener(selectorOrElement, event, handler);
     },
