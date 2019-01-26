@@ -8,6 +8,7 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -194,6 +195,10 @@ class DisplaySyncHelper implements UhdHelperListener {
             }
 
             DisplayHolder.Mode[] modes = mUhdHelper.getSupportedModes();
+
+            Log.d(TAG, "Modes supported by device:");
+            Log.d(TAG, Arrays.asList(modes));
+
             boolean isUHD = false;
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
 

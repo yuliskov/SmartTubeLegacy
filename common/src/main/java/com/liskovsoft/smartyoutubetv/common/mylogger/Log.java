@@ -6,23 +6,23 @@ import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 public class Log {
     private static MyLogger sLogger = new SystemLogger();
 
-    public static void d(String tag, String msg) {
-        sLogger.d(tag, msg);
+    public static void d(String tag, Object msg) {
+        sLogger.d(tag, msg.toString());
     }
 
-    public static void i(String tag, String msg) {
-        sLogger.i(tag, msg);
+    public static void i(String tag, Object msg) {
+        sLogger.i(tag, msg.toString());
     }
 
-    public static void w(String tag, String msg) {
-        sLogger.w(tag, msg);
+    public static void w(String tag, Object msg) {
+        sLogger.w(tag, msg.toString());
     }
 
-    public static void e(String tag, String msg) {
-        sLogger.e(tag, msg);
+    public static void e(String tag, Object msg) {
+        sLogger.e(tag, msg.toString());
     }
 
-    public static void e(String tag, String msg, Exception ex) {
+    public static void e(String tag, Object msg, Exception ex) {
         e(tag, msg + " " + ex.getMessage());
     }
 

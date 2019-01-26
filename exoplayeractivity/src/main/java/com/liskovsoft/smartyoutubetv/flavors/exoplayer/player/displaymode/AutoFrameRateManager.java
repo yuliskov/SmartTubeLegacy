@@ -22,7 +22,7 @@ public class AutoFrameRateManager {
 
     public void apply() {
         if (!getEnabled()) {
-            Log.d(TAG, "AutoFrameRate not enabled... exiting...");
+            Log.d(TAG, "apply: autoframerate not enabled... exiting...");
             return;
         }
 
@@ -68,9 +68,11 @@ public class AutoFrameRateManager {
 
     public void restoreOriginalState() {
         if (!getEnabled()) {
+            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
             return;
         }
 
+        Log.d(TAG, "Restoring original mode...");
         mSyncHelper.restoreOriginalState();
     }
 }
