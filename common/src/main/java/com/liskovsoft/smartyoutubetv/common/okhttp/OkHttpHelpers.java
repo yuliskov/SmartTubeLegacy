@@ -31,16 +31,39 @@ public class OkHttpHelpers {
         return doOkHttpRequest(url, mClient);
     }
 
-    public static Response doOkHttpRequest(String url, OkHttpClient client) {
-        if (client == null)
-            client = createOkHttpClient();
+    public static Response doHeadOkHttpRequest(String url) {
+        if (mClient == null) {
+            mClient = createOkHttpClient();
+        }
 
+        return doHeadOkHttpRequest(url, mClient);
+    }
+
+    public static Response doOkHttpRequest(String url, OkHttpClient client) {
         Request okHttpRequest = new Request.Builder()
                 .url(url)
                 .build();
 
+        return doOkHttpRequest(client, okHttpRequest);
+    }
+
+    private static Response doHeadOkHttpRequest(String url, OkHttpClient client) {
+        Request okHttpRequest = new Request.Builder()
+                .url(url)
+                .head()
+                .build();
+
+        return doOkHttpRequest(client, okHttpRequest);
+    }
+
+    private static Response doOkHttpRequest(OkHttpClient client, Request okHttpRequest) {
+        if (client == null) {
+            client = createOkHttpClient();
+        }
+
         Response okHttpResponse = null;
         Exception lastEx = null;
+
         for (int tries = NUM_TRIES; tries > 0; tries--) {
             try {
                 okHttpResponse = client.newCall(okHttpRequest).execute();
