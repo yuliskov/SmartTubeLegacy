@@ -390,13 +390,13 @@ class UhdHelper {
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, null));
             return;
         }
-        //DisplayHolder.Mode currentMode = getMode();
-        //if (currentMode == null || currentMode.getModeId() == modeId) {
-        //    Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
-        //    //send and cleanup receivers/callback listeners
-        //    mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, 1, 1, currentMode));
-        //    return;
-        //}
+        DisplayHolder.Mode currentMode = getMode();
+        if (currentMode == null || currentMode.getModeId() == modeId) {
+            Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
+            //send and cleanup receivers/callback listeners
+            mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, 1, 1, currentMode));
+            return;
+        }
         //Check if the modeId given is even supported by the system.
         DisplayHolder.Mode[] supportedModes = getSupportedModes();
         boolean isRequestedModeSupported = false;
