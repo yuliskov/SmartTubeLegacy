@@ -504,12 +504,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
-        boolean isFatal = false;
 
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
             if (cause instanceof DecoderInitializationException) {
-                isFatal = mRetryCount++ < 5;
                 // Special case for decoder initialization failures.
                 DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
                 if (decoderInitializationException.decoderName == null) {
@@ -532,22 +530,19 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         mNeedRetrySource = true;
 
-        if (isBehindLiveWindow(e) || isFatal) {
+        if (isBehindLiveWindow(e)) {
             clearResumePosition();
-            initializePlayer();
         } else {
             updateResumePosition();
             updateButtonVisibilities();
-            showControls();
+        }
+
+        if (mRetryCount++ < 5) { // try to restore playback without user interaction
+            initializePlayer();
         }
     }
 
     public abstract boolean getHidePlaybackErrors();
-
-    // User controls
-    private void showControls() {
-        // user must choose another track
-    }
 
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
