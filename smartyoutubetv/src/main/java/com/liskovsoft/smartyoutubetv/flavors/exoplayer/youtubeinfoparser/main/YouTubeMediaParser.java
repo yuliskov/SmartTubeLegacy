@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
 
 import android.net.Uri;
-import android.util.Log;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -11,6 +10,7 @@ import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
@@ -42,6 +42,7 @@ public class YouTubeMediaParser {
     private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.adaptiveFormats";
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
+    private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsPlaybackUrl.baseUrl";
     private static final int COMMON_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
@@ -53,6 +54,7 @@ public class YouTubeMediaParser {
      */
     private MyQueryString mDashMPDUrl;
     private MyQueryString mHlsUrl;
+    private MyQueryString mTrackingUrl;
     private List<MediaItem> mNewMediaItems;
     private DocumentContext mParser;
 
@@ -100,7 +102,14 @@ public class YouTubeMediaParser {
         }
 
         // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mHlsUrl = new MyPathQueryString(url);
+        mHlsUrl = MyQueryStringFactory.parse(url);
+    }
+
+    private void extractTrackingUrl() {
+        String url = extractJson(mParser, JSON_INFO_TRACKING_URL);
+
+        // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
+        mTrackingUrl = MyQueryStringFactory.parse(url);
     }
 
     private void extractDashMPDUrl() {
@@ -258,11 +267,7 @@ public class YouTubeMediaParser {
     }
 
     private void applySignatureAndParseDashMPDUrl(String signature) {
-        if (mDashMPDUrl.isEmpty()) {
-            return;
-        }
-
-        if (signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
+        if (!mDashMPDUrl.isEmpty() && signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
             mDashMPDUrl.remove(MediaItem.S);
             mDashMPDUrl.set(MediaItem.SIGNATURE, signature);
         } else {
@@ -276,6 +281,10 @@ public class YouTubeMediaParser {
 
         if (!mHlsUrl.isEmpty()) {
             mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
+        }
+
+        if (!mTrackingUrl.isEmpty()) {
+            mListener.onTrackingUrl(Uri.parse(mTrackingUrl.toString()));
         }
 
         // NOTE: parser not working properly here, use url
@@ -327,12 +336,14 @@ public class YouTubeMediaParser {
         extractMediaItems();
         extractDashMPDUrl();
         extractHlsUrl();
+        extractTrackingUrl();
         decipherSignatures();
     }
 
     public interface ParserListener {
         void onHlsUrl(Uri url);
         void onDashUrl(Uri url);
+        void onTrackingUrl(Uri url);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 

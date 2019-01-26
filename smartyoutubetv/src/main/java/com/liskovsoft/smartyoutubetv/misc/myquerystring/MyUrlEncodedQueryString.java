@@ -8,11 +8,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class MyUrlEncodedQueryString implements MyQueryString {
-    private final String mUrl;
-    private final Uri mParsedUri;
-    private final UrlEncodedQueryStringBase mQueryString;
+    private String mUrl;
+    private Uri mParsedUri;
+    private UrlEncodedQueryStringBase mQueryString;
 
     private MyUrlEncodedQueryString(String url) {
+        if (url == null) {
+            return;
+        }
+
         mParsedUri = Uri.parse(url);
 
         if (mParsedUri.getHost() == null) { // not full url

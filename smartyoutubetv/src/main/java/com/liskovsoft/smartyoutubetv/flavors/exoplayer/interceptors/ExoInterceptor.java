@@ -194,6 +194,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             }
 
             @Override
+            public void onTrackingUrlFound(Uri url) {
+                OkHttpHelpers.doOkHttpRequest(url.toString());
+            }
+
+            @Override
             public void onInfoFound(GenericInfo info) {
                 mInfo = info;
             }

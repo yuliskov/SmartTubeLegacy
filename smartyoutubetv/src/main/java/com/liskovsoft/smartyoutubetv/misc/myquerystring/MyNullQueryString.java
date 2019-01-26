@@ -30,7 +30,7 @@ public class MyNullQueryString implements MyQueryString {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return true;
     }
 
     @Override

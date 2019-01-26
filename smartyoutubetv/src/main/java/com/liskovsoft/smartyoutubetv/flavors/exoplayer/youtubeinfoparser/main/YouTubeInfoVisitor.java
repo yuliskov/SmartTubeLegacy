@@ -8,8 +8,9 @@ import java.io.InputStream;
 public abstract class YouTubeInfoVisitor {
     public void onMediaItem(YouTubeMediaParser.MediaItem mediaItem){}
     public void onSubItem(YouTubeSubParser.Subtitle mediaItem){}
-    public void onHlsUrl(Uri hlsUrl) {}
+    public void onHlsUrl(Uri url) {}
     public void doneVisiting(){}
     public void onGenericInfo(GenericInfo info){}
-    public void onDashUrl(Uri dashUrl) {}
+    public void onDashUrl(Uri url) {}
+    public void onTrackingUrl(Uri url) {}
 }

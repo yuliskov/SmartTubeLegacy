@@ -5,7 +5,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
@@ -46,6 +45,11 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
             @Override
             public void onDashUrl(Uri url) {
                 mVisitor.onDashUrl(url);
+            }
+
+            @Override
+            public void onTrackingUrl(Uri url) {
+                mVisitor.onTrackingUrl(url);
             }
 
             @Override
