@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv.common.mylogger;
 
 import android.content.Context;
+import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -85,9 +87,11 @@ class FileLogger extends MyLogger {
 
     private void writeLogHeader() {
         String time = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US).format(new Date());
+        String version = AppInfoHelpers.getAppVersionRobust(mContext);
         append("---------------------------------------");
         append("----------- STARTING LOG --------------");
         append("-------- " +    time     + " ----------");
+        append("------- "  +   version   +   " --------");
         append("---------------------------------------");
     }
 
