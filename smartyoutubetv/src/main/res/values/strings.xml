@@ -2,6 +2,7 @@
     <string name="service_url">https://youtube.com/tv</string>
     <string name="update_url_gdrive">https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc</string>
     <string name="update_url_github">https://github.com/yuliskov/SmartYouTubeTV/releases/download/stable/smartyoutubetv.json</string>
+    <string name="beta_update_url_github">https://github.com/yuliskov/SmartYouTubeTV/releases/download/beta/smartyoutubetv.json</string>
     <string name="app_name" translatable="false">Smart YouTube TV</string>
     <string name="next_clicked">Next button clicked!</string>
     <string name="prev_clicked">Prev button clicked!</string>
@@ -67,6 +68,7 @@
     <string name="tweak_remember_launcher">Remember selected launcher</string>
     <string name="tweak_ok_button_fix">OK pauses video immediately</string>
     <string name="tweak_update_check">Check for the updates</string>
+    <string name="tweak_beta_update_check">Check for the BETA updates</string>
     <string name="tweak_end_cards">Show end video captions</string>
     <string name="tweak_log_to_file">Save log to file</string>
     <string name="log_stored_in_path">Log path: %s</string>

@@ -11,6 +11,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
+    private static final String BOOTSTRAP_UPDATE_BETA_CHECKED = "bootstrapUpdateBetaChecked";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
@@ -112,6 +113,17 @@ public final class SmartPreferences {
     public void setBootstrapUpdateCheck(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_UPDATE_CHECKED, isChecked)
+                .apply();
+    }
+
+    public boolean getBootstrapBetaUpdateCheck() {
+        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_UPDATE_BETA_CHECKED, false);
+        return isChecked;
+    }
+
+    public void setBootstrapBetaUpdateCheck(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(BOOTSTRAP_UPDATE_BETA_CHECKED, isChecked)
                 .apply();
     }
 
