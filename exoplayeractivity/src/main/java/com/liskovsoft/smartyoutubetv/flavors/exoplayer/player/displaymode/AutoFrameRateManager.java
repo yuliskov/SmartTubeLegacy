@@ -22,6 +22,7 @@ public class AutoFrameRateManager {
 
     public void apply() {
         if (!getEnabled()) {
+            Log.d(TAG, "AutoFrameRate not enabled... exiting...");
             return;
         }
 
@@ -39,9 +40,7 @@ public class AutoFrameRateManager {
     }
 
     public boolean getEnabled() {
-        boolean enabled = mPrefs.getAutoframerateChecked();
-        Log.d(TAG, "getEnabled: " + enabled);
-        return enabled;
+        return mPrefs.getAutoframerateChecked();
     }
 
     public void setEnabled(boolean enabled) {

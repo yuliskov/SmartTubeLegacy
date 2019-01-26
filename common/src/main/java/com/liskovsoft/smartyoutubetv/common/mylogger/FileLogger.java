@@ -7,6 +7,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 class FileLogger extends MyLogger {
     private final Context mContext;
@@ -81,8 +84,10 @@ class FileLogger extends MyLogger {
     }
 
     private void writeLogHeader() {
+        String time = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US).format(new Date());
         append("---------------------------------------");
         append("----------- STARTING LOG --------------");
+        append("-------- " +    time     + " ----------");
         append("---------------------------------------");
     }
 
