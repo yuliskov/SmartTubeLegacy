@@ -15,10 +15,11 @@ function Enable4KAddon() {
     // This approach solves zoomed video problem.
     // So, we must calculate how much each prop called on the init stage.
     // Below values is calculated by me through the logging mechanism.
-    this.INIT_WIDTH_CALLS = 26;
-    this.INIT_HEIGHT_CALLS = 31;
+    this.INIT_WIDTH_CALLS = 33;
+    this.INIT_HEIGHT_CALLS = 38;
 
     this.run = function() {
+        // this.saveOriginalValues();
         this.increaseResolution();
         // this.awaitVideoElement();
     };
@@ -59,6 +60,25 @@ function Enable4KAddon() {
 
         Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
         Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
+
+        // Utils.overrideProp(window, "innerWidth", w);
+        // Utils.overrideProp(window,"innerHeight", h);
+    };
+
+    this.saveOriginalValues = function() {
+        if (this.originWidth || this.originHeight) {
+            return;
+        }
+
+        this.originWidth = window.innerWidth;
+        this.originHeight = window.innerHeight;
+
+        var $this = this;
+
+        EventUtils.onLoad(function() {
+            Utils.overrideProp(window, "innerWidth", $this.originWidth);
+            Utils.overrideProp(window,"innerHeight", $this.originHeight);
+        });
     };
 }
 
