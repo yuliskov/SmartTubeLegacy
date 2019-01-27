@@ -1,16 +1,16 @@
-package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
+package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class SaveSelectionDialogItem extends DialogItem {
+public class BetaUpdateCheckDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public SaveSelectionDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_remember_launcher), false);
+    public BetaUpdateCheckDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_beta_update_check), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class SaveSelectionDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getBootstrapSaveSelection();
+        return mPrefs.getBootstrapBetaUpdateCheck();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setBootstrapSaveSelection(checked);
+        mPrefs.setBootstrapBetaUpdateCheck(checked);
     }
 }

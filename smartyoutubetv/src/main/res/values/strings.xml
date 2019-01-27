@@ -1,5 +1,6 @@
 <resources>
-    <string name="service_url">https://youtube.com/tv</string>
+    <string name="youtube_main_page">https://youtube.com/tv</string>
+    <string name="youtube_music_page">https://www.youtube.com/tv#/surface?c=FEtopics&amp;params=-gIFbXVzaWM%253D&amp;resume</string>
     <string name="update_url_gdrive">https://drive.google.com/uc?id=0ByORA7yiJiQXSGFqUURSUTlmVWc</string>
     <string name="update_url_github">https://github.com/yuliskov/SmartYouTubeTV/releases/download/stable/smartyoutubetv.json</string>
     <string name="beta_update_url_github">https://github.com/yuliskov/SmartYouTubeTV/releases/download/beta/smartyoutubetv.json</string>
@@ -74,4 +75,5 @@
     <string name="log_stored_in_path">Log path: %s</string>
     <string name="tweak_unplayable_video_fix">Unplayable video fix</string>
     <string name="tweak_lock_last_launcher">Lock %s</string>
+    <string name="tweak_open_music">Boot strict to the Music page</string>
 </resources>

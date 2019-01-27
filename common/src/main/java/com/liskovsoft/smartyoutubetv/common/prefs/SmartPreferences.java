@@ -20,6 +20,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_LOG_TO_FILE = "logToFile";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
+    private static final String OPEN_MUSIC = "openMusic";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -197,5 +198,15 @@ public final class SmartPreferences {
 
     public boolean getLockLastLauncher() {
         return mPrefs.getBoolean(LOCK_LAST_LAUNCHER, false);
+    }
+
+    public void setOpenMusic(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(OPEN_MUSIC, isChecked)
+                .apply();
+    }
+
+    public boolean getOpenMusic() {
+        return mPrefs.getBoolean(OPEN_MUSIC, false);
     }
 }

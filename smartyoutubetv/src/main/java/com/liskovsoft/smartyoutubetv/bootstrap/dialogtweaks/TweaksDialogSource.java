@@ -2,6 +2,15 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EndCardsDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OkButtonDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UnplayableVideoFixDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.MultiDialogSource;
 
 import java.util.ArrayList;
@@ -23,6 +32,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new LogToFileDialogItem(mContext));
         mItems.add(new UnplayableVideoFixDialogItem(mContext));
         mItems.add(new LockLastLauncherDialogItem(mContext));
+        mItems.add(new OpenMusicDialogItem(mContext));
     }
 
     @Override

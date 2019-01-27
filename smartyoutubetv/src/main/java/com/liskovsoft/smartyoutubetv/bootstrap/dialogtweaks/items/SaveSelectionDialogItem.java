@@ -1,16 +1,16 @@
-package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
+package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class EndCardsDialogItem extends DialogItem {
+public class SaveSelectionDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public EndCardsDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_end_cards), false);
+    public SaveSelectionDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_remember_launcher), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class EndCardsDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getEnableEndCards();
+        return mPrefs.getBootstrapSaveSelection();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setEnableEndCards(checked);
+        mPrefs.setBootstrapSaveSelection(checked);
     }
 }

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
+package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
@@ -7,12 +7,12 @@ import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class UnplayableVideoFixDialogItem extends DialogItem {
+public class LogToFileDialogItem extends DialogItem {
     private final Context mContext;
     private final SmartPreferences mPrefs;
 
-    public UnplayableVideoFixDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_unplayable_video_fix), false);
+    public LogToFileDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_log_to_file), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -20,11 +20,17 @@ public class UnplayableVideoFixDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getUnplayableVideoFix();
+        return mPrefs.getEnableLogToFile();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setUnplayableVideoFix(checked);
+        if (checked) {
+            MessageHelpers.showLongMessage(
+                    mContext,
+                    mContext.getResources().getString(R.string.log_stored_in_path, Log.getLogPath(mContext)));
+        }
+
+        mPrefs.setEnableLogToFile(checked);
     }
 }

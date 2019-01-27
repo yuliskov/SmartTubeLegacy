@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
+package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;

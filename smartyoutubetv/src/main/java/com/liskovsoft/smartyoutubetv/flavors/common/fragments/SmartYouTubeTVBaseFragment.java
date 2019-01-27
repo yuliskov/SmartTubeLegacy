@@ -20,16 +20,18 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.IntentTranslator;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.YouTubeIntentTranslator;
+import com.liskovsoft.smartyoutubetv.misc.YouTubeServiceFinder;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
-    private String mServiceUrl; // youtube url here
     private KeysTranslator mTranslator;
     private UserAgentManager mUAManager;
     private IntentTranslator mIntentTranslator;
+    private ServiceFinder mServiceFinder;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -38,7 +40,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         setupUA();
         super.onActivityCreated(icicle);
 
-        initRemoteUrl();
+        initYouTubeServices();
         initKeys();
 
         createController(icicle);
@@ -71,9 +73,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mTranslator = new KeysTranslator();
     }
 
-    private void initRemoteUrl() {
-        mServiceUrl = getString(R.string.service_url);
-        mIntentTranslator = new YouTubeIntentTranslator(mServiceUrl);
+    private void initYouTubeServices() {
+        mServiceFinder = new YouTubeServiceFinder(getActivity());
+        mIntentTranslator = new YouTubeIntentTranslator(mServiceFinder.getUrl());
     }
 
     @Override
@@ -86,7 +88,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
         mController = new SimpleUIController(this);
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
-        mController.setDefaultUrl(Uri.parse(mServiceUrl));
+        mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
         Intent intent = (icicle == null) ? mIntentTranslator.translate(getActivity().getIntent()) : null;
         mController.start(intent);
