@@ -58,12 +58,27 @@ function Enable4KAddon() {
         // imitate 4K resolution
         var w = 3840, h = 2160;
 
+        // Where to find proper values for INIT_WIDTH_CALLS and INIT_HEIGHT_CALLS:
+        // 1) use logged version of overrideProp (see below)
+        // 2) measure calls needed to boot into the initial page of the app
         Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
         Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
 
         // Utils.overrideProp(window, "innerWidth", w);
         // Utils.overrideProp(window,"innerHeight", h);
     };
+
+    // function overrideProp(obj, propName, value) { // pure function
+    //
+    //     // logging: see call nums in the window.overrideinnerWidth and window.overrideinnerHeight
+    //     window['override' + propName] = 0;
+    //
+    //     obj[propName] = value;
+    //
+    //     Object.defineProperty(obj, propName, { get: function(){window['override' + propName]++;
+    //             return value;}, set: function(val){}, configurable: true, enumerable: true });
+    //
+    // }
 
     this.saveOriginalValues = function() {
         if (this.originWidth || this.originHeight) {
