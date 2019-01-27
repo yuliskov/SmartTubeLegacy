@@ -1,19 +1,19 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.misc.youtubeurls;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
-public class YouTubeIntentTranslator implements IntentTranslator {
+class YouTubeIntentTranslator implements IntentTranslator {
     private static final String TAG = YouTubeIntentTranslator.class.getSimpleName();
     private final static String DIAL_EXTRA = "com.amazon.extra.DIAL_PARAM";
     private final static String VIDEO_TEMPLATE_URL = "https://www.youtube.com/tv#?%s";
     private final static String CHANNEL_TEMPLATE_URL = "https://www.youtube.com/tv#/channel?c=%s&resume";
-    private final String mServiceUrl;
+    private final String mDefaultUrl;
 
-    public YouTubeIntentTranslator(String serviceUrl) {
-        mServiceUrl = serviceUrl;
+    public YouTubeIntentTranslator(String defaultUrl) {
+        mDefaultUrl = defaultUrl;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class YouTubeIntentTranslator implements IntentTranslator {
         }
 
         if (videoParam == null) {
-            return Uri.parse(mServiceUrl);
+            return Uri.parse(mDefaultUrl);
         }
 
         String fullUrl = String.format(template, videoParam);

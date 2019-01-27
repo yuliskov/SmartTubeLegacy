@@ -13,24 +13,20 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.IntentTranslator;
 import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
-import com.liskovsoft.smartyoutubetv.misc.ServiceFinder;
+import com.liskovsoft.smartyoutubetv.misc.youtubeurls.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import com.liskovsoft.smartyoutubetv.misc.YouTubeIntentTranslator;
-import com.liskovsoft.smartyoutubetv.misc.YouTubeServiceFinder;
+import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
     private KeysTranslator mTranslator;
     private UserAgentManager mUAManager;
-    private IntentTranslator mIntentTranslator;
     private ServiceFinder mServiceFinder;
 
     @Override
@@ -75,7 +71,6 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     private void initYouTubeServices() {
         mServiceFinder = new YouTubeServiceFinder(getActivity());
-        mIntentTranslator = new YouTubeIntentTranslator(mServiceFinder.getUrl());
     }
 
     @Override
@@ -90,7 +85,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
-        Intent intent = (icicle == null) ? mIntentTranslator.translate(getActivity().getIntent()) : null;
+
+        boolean restoreState = icicle != null && !mServiceFinder.isPersistent();
+        Intent intent = restoreState ? null : mServiceFinder.getIntent(getActivity().getIntent());
         mController.start(intent);
         setController(mController);
     }
@@ -165,7 +162,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onNewIntent(Intent intent) {
-        super.onNewIntent(mIntentTranslator.translate(intent));
+        super.onNewIntent(mServiceFinder.getIntent(intent));
     }
 
     @Override
