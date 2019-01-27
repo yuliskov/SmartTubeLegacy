@@ -109,9 +109,21 @@ var Utils = {
         Object.defineProperty(eval(firstVal), lastVal, { get: function(){return value}, configurable: true, enumerable: true });
     },
 
-    overrideProp: function(obj, propName, value) { // pure function
+    overrideProp: function(obj, propName, value, callback) { // pure function
+        var originVal = obj[propName];
         obj[propName] = value;
-        Object.defineProperty(obj, propName, { get: function(){return value}, set: function(val){}, configurable: true, enumerable: true });
+        Object.defineProperty(obj, propName, {
+            get: function() {
+                if (callback && callback()) { // give a chance to decide whether to use original value
+                    return originVal;
+                }
+
+                return value;
+            },
+            set: function(val){},
+            configurable: true,
+            enumerable: true
+        });
     },
 
     /**

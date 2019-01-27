@@ -61,11 +61,14 @@ function Enable4KAddon() {
         // Where to find proper values for INIT_WIDTH_CALLS and INIT_HEIGHT_CALLS:
         // 1) use logged version of overrideProp (see below)
         // 2) measure calls needed to boot into the initial page of the app
-        Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
-        Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
+        // Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
+        // Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
 
-        // Utils.overrideProp(window, "innerWidth", w);
-        // Utils.overrideProp(window,"innerHeight", h);
+        // same as above but robust one because doesn't rely on call nums
+        // override until video element will be initialized or you will get zoomed video
+        var $this = this;
+        Utils.overrideProp(window, "innerWidth", w, function() {return $this.isVideoInitialized()});
+        Utils.overrideProp(window,"innerHeight", h, function() {return $this.isVideoInitialized()});
     };
 
     // function overrideProp(obj, propName, value) { // pure function
@@ -94,6 +97,16 @@ function Enable4KAddon() {
             Utils.overrideProp(window, "innerWidth", $this.originWidth);
             Utils.overrideProp(window,"innerHeight", $this.originHeight);
         });
+    };
+
+    this.isVideoInitialized = function() {
+        if (this.cachedVideo) {
+            return true;
+        }
+
+        this.cachedVideo = Utils.$('video') != null;
+
+        return this.cachedVideo;
     };
 }
 
