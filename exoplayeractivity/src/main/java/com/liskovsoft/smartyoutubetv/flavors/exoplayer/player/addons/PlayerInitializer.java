@@ -107,7 +107,7 @@ public class PlayerInitializer {
             return null;
         }
         
-        if (Helpers.isNaN(num)) {
+        if (!Helpers.isNumeric(num)) {
             return Html.fromHtml(num).toString();
         }
 

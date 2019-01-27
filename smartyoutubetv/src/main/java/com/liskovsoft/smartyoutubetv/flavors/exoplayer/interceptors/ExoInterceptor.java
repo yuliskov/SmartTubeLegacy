@@ -69,7 +69,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         }
 
         private void playbackStarted() {
-            if (mPlaybackStarted || !mManager.isDone()) {
+            if (mPlaybackStarted || !mManager.isOpened()) {
                 return;
             }
 
@@ -123,7 +123,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
         if (mManager.cancelPlayback(url)) {
             Log.d(TAG, "Video canceled: " + url);
-            //if (mManager.isDone()) // player is doing playback
+            //if (mManager.isOpened()) // player is doing playback
             //    mReceiver.returnToPlayer();
             return null;
         }
@@ -245,7 +245,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             @Override
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer fragment: " + playerIntent.getExtras());
-                mManager.onDone();
+                mManager.onOpen();
                 // forcePlaybackCheck();
                 // mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
                 mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // don't pause until playback is started

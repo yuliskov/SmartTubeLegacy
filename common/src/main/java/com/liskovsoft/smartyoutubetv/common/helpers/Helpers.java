@@ -169,10 +169,6 @@ public final class Helpers {
         return list.size() > 0;
     }
 
-    public static boolean isNumeric(String s) {
-        return s != null && s.matches("[-+]?\\d*\\.?\\d+");
-    }
-
     /**
      * Format float and remove unneeded zeroes after dot
      */
@@ -213,7 +209,7 @@ public final class Helpers {
         return val.intValue();
     }
 
-    public static boolean isNaN(String num) {
+    private static boolean isNaN(String num) {
         return num == null                                      ||
                num.isEmpty()                                    ||
                num.contains(" ")                                ||
@@ -222,8 +218,14 @@ public final class Helpers {
                num.contains(",")                                ||
                num.contains(".")                                ||
                num.contains(":")                                ||
+               num.contains("/")                                ||
+               num.contains("\\")                               ||
                !Character.isDigit(num.charAt(num.length() - 1)) ||
                !Character.isDigit(num.charAt(0));
+    }
+
+    public static boolean isNumeric(String s) {
+        return s != null && s.matches("[-+]?\\d*\\.?\\d+");
     }
 
     /**
@@ -325,5 +327,16 @@ public final class Helpers {
         }
 
         return first.equals(second);
+    }
+
+    public static boolean isDash(String id) {
+        if (!Helpers.isNumeric(id)) {
+            return false;
+        }
+
+        int maxRegularITag = 50;
+        int itag = Integer.parseInt(id);
+
+        return itag > maxRegularITag;
     }
 }

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 
 public class MediaItemUtils {
@@ -35,18 +36,17 @@ public class MediaItemUtils {
         return widthHeight[0];
     }
 
-    public static boolean notDASH(MediaItem mediaItem) {
+    public static boolean isDash(MediaItem mediaItem) {
         if (mediaItem.getITag() == null) {
-            return true;
-        }
-
-        if (mediaItem.getGlobalSegmentList() != null) {
             return false;
         }
 
-        int maxNoDashITag = 50;
-        int itag = Integer.parseInt(mediaItem.getITag());
+        if (mediaItem.getGlobalSegmentList() != null) {
+            return true;
+        }
 
-        return itag < maxNoDashITag;
+        String id = mediaItem.getITag();
+
+        return Helpers.isDash(id);
     }
 }

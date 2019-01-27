@@ -34,7 +34,7 @@ public class MediaItemComparator implements Comparator<MediaItem> {
     }
 
     private int parseInt(String num) {
-        if (Helpers.isNaN(num)) {
+        if (!Helpers.isNumeric(num)) {
             return 0;
         }
 

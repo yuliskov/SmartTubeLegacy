@@ -96,7 +96,7 @@ var ExoUtils = {
             YouTubeUtils.showPlayerBackground();
         }
 
-        console.log("ExoUtils.getButtonStates: " + JSON.stringify(states));
+        Log.d(this.TAG, "getButtonStates: " + JSON.stringify(states));
         return states;
     },
 
@@ -117,7 +117,7 @@ var ExoUtils = {
 
         window.lastButtonName = null;
 
-        console.log("ExoUtils.syncButtons: " + JSON.stringify(states));
+        Log.d(this.TAG, "syncButtons: " + JSON.stringify(states));
 
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
@@ -133,10 +133,10 @@ var ExoUtils = {
     sendAction: function(action) {
         // code that sends string constant to activity
         if (app && app.onGenericStringResult) {
-            console.log("ExoUtils: sending action to the main app: " + action);
+            Log.d(this.TAG, "sending action to the main app: " + action);
             app.onGenericStringResult(action);
         } else {
-            console.log('ExoUtils: app not found');
+            Log.d(this.TAG,"app not found");
         }
     }
 };

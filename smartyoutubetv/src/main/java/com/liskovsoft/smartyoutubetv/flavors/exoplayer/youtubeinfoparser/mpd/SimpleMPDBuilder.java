@@ -285,7 +285,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     @Override
     public void append(MediaItem mediaItem) {
-        if (MediaItemUtils.notDASH(mediaItem)) {
+        if (!MediaItemUtils.isDash(mediaItem)) {
             return;
         }
 

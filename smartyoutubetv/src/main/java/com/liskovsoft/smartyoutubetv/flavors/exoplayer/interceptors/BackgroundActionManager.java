@@ -17,7 +17,7 @@ public class BackgroundActionManager {
     private long mExitTime;
     private long mPrevCallTime;
     private String mPrevVideoId;
-    private boolean mDone;
+    private boolean mIsOpened;
 
     public boolean cancelPlayback(String url) {
         if (!url.contains(ExoInterceptor.URL_VIDEO_DATA))
@@ -52,7 +52,7 @@ public class BackgroundActionManager {
 
         boolean sameVideo = videoId.equals(mPrevVideoId);
         boolean sameVideoClosedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-        if (sameVideo && sameVideoClosedRecently) {
+        if (sameVideo && (sameVideoClosedRecently || mIsOpened)) {
             Log.d(TAG, "The same video encountered");
             mPrevCallTime = System.currentTimeMillis();
             return true;
@@ -60,7 +60,7 @@ public class BackgroundActionManager {
 
         mPrevVideoId = videoId;
         mPrevCallTime = System.currentTimeMillis();
-        mDone = false;
+        mIsOpened = false;
 
         return false;
     }
@@ -69,22 +69,22 @@ public class BackgroundActionManager {
         Log.d(TAG, "Video is closed");
         mExitTime = System.currentTimeMillis();
         //mPrevVideoId = null;
-        mDone = false;
+        mIsOpened = false;
     }
 
     public void onCancel() {
         Log.d(TAG, "Video is canceled");
         //mPrevVideoId = null;
-        mDone = false;
+        mIsOpened = false;
     }
 
-    public void onDone() {
+    public void onOpen() {
         Log.d(TAG, "Video has been opened");
-        mDone = true;
+        mIsOpened = true;
     }
 
-    public boolean isDone() {
-        return mDone;
+    public boolean isOpened() {
+        return mIsOpened;
     }
 
     public boolean isMirroring(String url) {
