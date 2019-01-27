@@ -275,15 +275,15 @@ public class YouTubeMediaParser {
         }
 
         // Looking for qhd formats for live streams. They're here.
-        if (!mDashMPDUrl.isEmpty()) {
+        if (!isEmpty(mDashMPDUrl)) {
             mListener.onDashUrl(Uri.parse(mDashMPDUrl.toString()));
         }
 
-        if (!mHlsUrl.isEmpty()) {
+        if (!isEmpty(mHlsUrl)) {
             mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
         }
 
-        if (!mTrackingUrl.isEmpty()) {
+        if (!isEmpty(mTrackingUrl)) {
             mListener.onTrackingUrl(Uri.parse(mTrackingUrl.toString()));
         }
 
@@ -336,7 +336,7 @@ public class YouTubeMediaParser {
         extractMediaItems();
         extractDashMPDUrl();
         extractHlsUrl();
-        extractTrackingUrl();
+        // extractTrackingUrl();
         decipherSignatures();
     }
 
@@ -515,5 +515,13 @@ public class YouTubeMediaParser {
         }
 
         return signature.length() == COMMON_SIGNATURE_LENGTH;
+    }
+
+    private static boolean isEmpty(MyQueryString queryString) {
+        if (queryString == null) {
+            return true;
+        }
+
+        return queryString.isEmpty();
     }
 }

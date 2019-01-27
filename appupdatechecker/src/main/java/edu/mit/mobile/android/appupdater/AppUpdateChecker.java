@@ -222,8 +222,16 @@ public class AppUpdateChecker {
         }
         final int latestVersionNumber = versionMap.firstKey();
         final String latestVersionName = versionMap.get(latestVersionNumber).getString("versionName");
-        JSONArray urls = pkgInfo.getJSONArray("downloadUrlList");
-        final Uri[] downloadUrls = parse(urls);
+
+        final Uri[] downloadUrls;
+
+        if (pkgInfo.has("downloadUrlList")) {
+            JSONArray urls = pkgInfo.getJSONArray("downloadUrlList");
+            downloadUrls = parse(urls);
+        } else {
+            String url = pkgInfo.getString("downloadUrl");
+            downloadUrls = new Uri[]{Uri.parse(url)};
+        }
 
         if (currentAppVersion > latestVersionNumber) {
             Log.d(TAG, "We're newer than the latest published version (" + latestVersionName + "). Living in the future...");
