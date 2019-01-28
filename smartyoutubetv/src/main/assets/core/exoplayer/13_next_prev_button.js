@@ -26,7 +26,7 @@ function NextPrevButton(selector) {
         }
     };
 
-    this.decorator.apply();
+    this.decorator.apply(this);
 }
 
 NextPrevButton.prototype = new ExoButton();

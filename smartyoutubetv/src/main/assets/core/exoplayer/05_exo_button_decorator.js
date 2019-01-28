@@ -55,9 +55,13 @@ function ExoButtonDecorator(btn) {
         return callback();
     };
 
-    this.apply = function() {
+    this.apply = function(btn) {
+        if (btn) {
+            this.btn = btn;
+        }
+
         if (!this.btn.selector) {
-            Log.d(this.TAG, "Button selector not found. Exiting...");
+            Log.d(this.TAG, "Button selector not found: " + this.btn.constructor.name + " Exiting...");
             return;
         }
 

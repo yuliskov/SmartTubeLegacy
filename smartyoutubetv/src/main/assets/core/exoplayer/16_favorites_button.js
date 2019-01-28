@@ -32,7 +32,7 @@ function FavoritesButton(selector) {
         }
     };
 
-    this.decorator.apply();
+    this.decorator.apply(this);
 }
 
 FavoritesButton.prototype = new ExoButton();
