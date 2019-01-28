@@ -87,9 +87,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
 
-        boolean restoreState = icicle != null && origin.getData() == null;
-        Intent intent = restoreState ? null : mServiceFinder.getIntent(origin);
-        mController.start(intent);
+        Intent intent = mServiceFinder.getIntent(origin);
+        boolean restoreState = icicle != null && intent.getData() == null;
+        mController.start(restoreState ? null : intent);
         setController(mController);
     }
 
