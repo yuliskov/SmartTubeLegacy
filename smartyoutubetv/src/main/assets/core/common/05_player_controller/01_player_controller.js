@@ -69,11 +69,12 @@ var PlayerController = {
             var player = $this.getPlayer();
 
             if (player) {
-                Log.d($this.TAG, "Checking player position and duration: " + player.currentTime + " " + player.duration);
+                Log.d($this.TAG, "Checking player src, position and duration: " + player.src + " " + player.currentTime + " " + player.duration);
 
                 var hasNaN = isNaN(player.currentTime) || isNaN(player.duration);
 
                 var needSeek = false;
+
                 switch (position) {
                     case $this.POSITION_END:
                         needSeek = (player.duration - player.currentTime) > 1;
@@ -83,8 +84,8 @@ var PlayerController = {
                         break;
                 }
 
-                if (player.src && (hasNaN || needSeek)) {
-                    Log.d($this.TAG, "Retrying unfreeze video...");
+                if (YouTubeUtils.isPlayerVisible() && (hasNaN || needSeek)) {
+                    Log.d($this.TAG, "Trying to unfreeze the video...");
                     $this.setPosition(position, onFail);
                 }
             }

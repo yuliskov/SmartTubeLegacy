@@ -210,6 +210,6 @@ public final class SmartPreferences {
     }
 
     public String getBootPage() {
-        return mPrefs.getString(BOOT_PAGE, null);
+        return mPrefs.getString(BOOT_PAGE, DEFAULT_PAGE);
     }
 }

@@ -311,6 +311,16 @@ var Utils = {
             el.style.display = 'none';
         }
     },
+
+    isVisible: function(elementOrSelector) {
+        var el = this.$(elementOrSelector);
+
+        if (el) {
+            return el.style.display != 'none';
+        }
+
+        return false;
+    },
     
     content: function(elem, newContent) {
         if (!elem)

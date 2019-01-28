@@ -37,6 +37,8 @@ public class MultiChoiceSelectorDialog extends GenericSelectorDialog {
 
         if (item.getChecked() != textView.isChecked()) {
             item.setChecked(textView.isChecked());
+
+            updateViews(getRoot());
         }
     }
 }

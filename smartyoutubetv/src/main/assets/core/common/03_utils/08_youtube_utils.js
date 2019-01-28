@@ -158,5 +158,9 @@ var YouTubeUtils = {
         }
 
         return "";
+    },
+
+    isPlayerVisible: function() {
+        return Utils.isVisible('video');
     }
 };
