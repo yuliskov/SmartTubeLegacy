@@ -20,7 +20,10 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_LOG_TO_FILE = "logToFile";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
-    private static final String OPEN_MUSIC = "openMusic";
+    private static final String BOOT_PAGE = "bootPage";
+    public static final String MUSIC_PAGE = "music_page";
+    public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
+    public static final String DEFAULT_PAGE = "default_page";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -200,13 +203,13 @@ public final class SmartPreferences {
         return mPrefs.getBoolean(LOCK_LAST_LAUNCHER, false);
     }
 
-    public void setOpenMusic(boolean isChecked) {
+    public void setBootPage(String name) {
         mPrefs.edit()
-                .putBoolean(OPEN_MUSIC, isChecked)
+                .putString(BOOT_PAGE, name)
                 .apply();
     }
 
-    public boolean getOpenMusic() {
-        return mPrefs.getBoolean(OPEN_MUSIC, false);
+    public String getBootPage() {
+        return mPrefs.getString(BOOT_PAGE, null);
     }
 }

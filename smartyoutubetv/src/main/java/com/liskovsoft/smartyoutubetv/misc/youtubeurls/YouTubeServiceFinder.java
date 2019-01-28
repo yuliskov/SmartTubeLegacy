@@ -9,25 +9,27 @@ import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 public class YouTubeServiceFinder implements ServiceFinder {
     private final Context mContext;
     private final IntentTranslator mTranslator;
-    private final String mMainPageUrl;
-    private final String mMusicPageUrl;
     private String mDefaultUrl;
     private boolean mIsPersistent;
 
     public YouTubeServiceFinder(Context context) {
         mContext = context;
 
-        mMainPageUrl = mContext.getString(R.string.youtube_main_page);
-        mMusicPageUrl = mContext.getString(R.string.youtube_music_page);
-
         SmartPreferences prefs = SmartPreferences.instance(mContext);
 
-        if (prefs.getOpenMusic()) {
-            mIsPersistent = true;
-            mDefaultUrl = mMusicPageUrl;
-        } else {
-            mIsPersistent = false;
-            mDefaultUrl = mMainPageUrl;
+        switch (prefs.getBootPage()) {
+            case SmartPreferences.MUSIC_PAGE:
+                mIsPersistent = true;
+                mDefaultUrl = mContext.getString(R.string.youtube_music_page);
+                break;
+            case SmartPreferences.SUBSCRIPTIONS_PAGE:
+                mIsPersistent = true;
+                mDefaultUrl = mContext.getString(R.string.youtube_subscriptions_page);
+                break;
+            case SmartPreferences.DEFAULT_PAGE:
+                mIsPersistent = false;
+                mDefaultUrl = mContext.getString(R.string.youtube_main_page);
+                break;
         }
 
         mTranslator = new YouTubeIntentTranslator(mDefaultUrl);

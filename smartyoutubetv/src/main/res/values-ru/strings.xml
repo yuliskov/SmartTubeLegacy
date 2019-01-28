@@ -58,4 +58,5 @@
     <string name="tweak_unplayable_video_fix">Исправлять непроигрываемые видео</string>
     <string name="tweak_lock_last_launcher">Заблокировать %s</string>
     <string name="tweak_open_music">Загружаться в раздел Музыка</string>
+    <string name="tweak_open_subscriptions">Загружаться в раздел Подписки</string>
 </resources>
