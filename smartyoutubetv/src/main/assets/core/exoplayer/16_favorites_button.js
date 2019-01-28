@@ -3,7 +3,6 @@ console.log("Scripts::Running core script favorites_button.js");
 function FavoritesButton(selector) {
     this.TAG = "FavoritesButton";
     this.selector = selector;
-    this.decorator = new ExoButtonDecorator(this);
 
     this.getChecked = function() {
         Log.d(this.TAG, "getChecked " + this.selector);

@@ -4,6 +4,7 @@ import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -72,6 +73,8 @@ class FileLogger extends MyLogger {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            MessageHelpers.showLongMessage(mContext, "Starting log to file: " + getLogPath(mContext));
         }
 
         return mWriter;
