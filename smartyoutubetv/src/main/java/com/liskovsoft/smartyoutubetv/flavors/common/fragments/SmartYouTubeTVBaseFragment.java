@@ -79,15 +79,16 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void createController(Bundle icicle) {
-        Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + getActivity().getIntent());
+        Intent origin = getActivity().getIntent();
+        Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + origin);
 
         mController = new SimpleUIController(this);
         mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
 
-        boolean restoreState = icicle != null && !mServiceFinder.isPersistent();
-        Intent intent = restoreState ? null : mServiceFinder.getIntent(getActivity().getIntent());
+        boolean restoreState = icicle != null && origin.getData() == null;
+        Intent intent = restoreState ? null : mServiceFinder.getIntent(origin);
         mController.start(intent);
         setController(mController);
     }

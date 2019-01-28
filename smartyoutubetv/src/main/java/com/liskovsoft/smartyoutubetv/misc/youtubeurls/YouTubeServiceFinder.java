@@ -41,11 +41,6 @@ public class YouTubeServiceFinder implements ServiceFinder {
     }
 
     @Override
-    public boolean isPersistent() {
-        return mIsPersistent;
-    }
-
-    @Override
     public Intent getIntent(Intent origin) {
         if (mIsPersistent) {
             return new Intent(Intent.ACTION_VIEW, Uri.parse(mDefaultUrl));
