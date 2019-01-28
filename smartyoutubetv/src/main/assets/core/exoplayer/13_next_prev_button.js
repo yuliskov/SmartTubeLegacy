@@ -6,7 +6,7 @@ console.log("Scripts::Running core script next_prev_button.js");
  */
 function NextPrevButton(selector) {
     this.selector = selector;
-    this.checkDelayMS = 500;
+    this.decorator = new ExoButtonDecorator(this);
 
     this.getChecked = function() {
         console.log("NextPrevButton: getChecked " + this.selector);
@@ -23,11 +23,7 @@ function NextPrevButton(selector) {
                 return;
             }
 
-            var $this = this;
-            // let other addons to do its work
-            setTimeout(function() {
-                EventUtils.triggerEnter($this.findToggle());
-            }, this.checkDelayMS);
+            EventUtils.triggerEnter(this.findToggle());
         }
     };
 

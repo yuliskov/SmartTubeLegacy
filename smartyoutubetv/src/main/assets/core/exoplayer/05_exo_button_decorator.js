@@ -37,6 +37,8 @@ function ExoButtonDecorator(btn) {
             this.doCallbackIfReady(callback);
             return;
         }
+
+        Log.d(this.TAG, 'set checked: btn found: ' + this.btn.selector);
         callback();
         ExoButtonDecorator.callbackStack.shift(); // remove this callback
         if (ExoButtonDecorator.callbackStack[0]) { // call previous callback

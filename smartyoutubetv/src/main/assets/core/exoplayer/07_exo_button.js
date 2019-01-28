@@ -13,9 +13,12 @@ function ExoButton(selector) {
         var btn = null;
 
         if (Utils.isArray(this.selector)) {
-            var revision = YouTubeUtils.getPlayerRevision();
-            var idx = revision == YouTubeUtils.SECOND_REVISION ? 0 : 1;
-            btn = Utils.$(this.selector[idx]);
+            for (var i = 0; i < this.selector.length; i++) {
+                btn = Utils.$(this.selector[i]);
+                if (btn) {
+                    break;
+                }
+            }
         } else {
             btn = Utils.$(this.selector);
         }

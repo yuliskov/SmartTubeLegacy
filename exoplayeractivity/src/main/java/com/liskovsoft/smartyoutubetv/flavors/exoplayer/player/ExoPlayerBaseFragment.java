@@ -415,7 +415,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (playbackState == Player.STATE_READY) {
-            mAutoFrameRateManager.apply();
+            if (mAutoFrameRateManager != null) {
+                mAutoFrameRateManager.apply();
+            }
+
             mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
             updateTitleQualityInfo();
         }

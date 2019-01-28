@@ -6,8 +6,8 @@ console.log("Scripts::Running script youtube_utils.js");
 
 var YouTubeUtils = {
     TAG: 'YouTubeUtils',
-    FIRST_REVISION: 'first_revision',
-    SECOND_REVISION: 'second_revision',
+    LATEST_REVISION: 0,
+    FIRST_REVISION: 1,
     OPENED_VIDEO_SIGN: '#/watch/video',
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: '#/channel',
@@ -85,11 +85,11 @@ var YouTubeUtils = {
     getPlayerRevision: function() {
         var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
 
-        if (!title) {
-            return this.FIRST_REVISION;
+        if (title) {
+            return this.LATEST_REVISION;
         }
 
-        return this.SECOND_REVISION;
+        return this.FIRST_REVISION;
     },
 
     show: function(elementOrSelector) {

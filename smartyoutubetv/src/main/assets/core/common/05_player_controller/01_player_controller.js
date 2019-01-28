@@ -9,7 +9,7 @@ var PlayerController = {
     POSITION_END: 0,
     POSITION_ONE_SEC: 1,
     checkTimeoutMS: 500,
-    numTries: 3,
+    numTries: 10,
     advanceTimeSec: 20,
 
     getPlayer: function() {

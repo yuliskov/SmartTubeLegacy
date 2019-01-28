@@ -314,7 +314,8 @@ public class PlayerStateManager {
         }
 
         Format fmt = getFormatFromOverride(groups, override);
-        if (!fmt.language.equals(mDefaultSubtitleLang)) {
+
+        if (!Helpers.equals(fmt.language, mDefaultSubtitleLang)) {
             mPrefs.setSubtitleLang(fmt.language);
         }
     }
@@ -441,6 +442,10 @@ public class PlayerStateManager {
     }
 
     private String codecShort(String codecName) {
+        if (codecName == null) {
+            return null;
+        }
+
         // simplify codec name: use avc instead of avc.111333
         if (codecName.contains(CODEC_AVC)) {
             codecName = CODEC_AVC;
