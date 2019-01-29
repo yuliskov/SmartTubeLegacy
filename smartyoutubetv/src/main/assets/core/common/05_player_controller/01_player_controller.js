@@ -46,7 +46,8 @@ var PlayerController = {
                 switch (position) {
                     case this.POSITION_END:
                         Log.d(this.TAG, "Forcing end of the video");
-                        player.currentTime = player.duration;
+                        // HACK: use floor because currentTime sometimes can't be set
+                        player.currentTime = Math.floor(player.duration);
                         break;
                     case this.POSITION_ONE_SEC:
                         Log.d(this.TAG, "Advance position by one second");
