@@ -207,7 +207,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER :
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON;
 
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+            DefaultRenderersFactory renderersFactory = new MyDefaultRenderersFactory(getActivity(), drmSessionManager, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
 
 
             // increase player's min/max buffer size to 60 secs

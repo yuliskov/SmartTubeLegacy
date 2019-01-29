@@ -26,6 +26,7 @@ public class MyDefaultRenderersFactory extends DefaultRenderersFactory {
                                        VideoRendererEventListener eventListener,
                                        int extensionRendererMode,
                                        ArrayList<Renderer> out) {
+
         super.buildVideoRenderers(context, drmSessionManager, allowedVideoJoiningTimeMs, eventHandler, eventListener, extensionRendererMode, out);
 
         out.add(0, new LibvpxVideoRenderer(true, 10_000));
