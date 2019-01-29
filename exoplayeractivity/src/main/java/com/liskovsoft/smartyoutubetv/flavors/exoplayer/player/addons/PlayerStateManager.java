@@ -12,6 +12,8 @@ import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
@@ -25,6 +27,7 @@ import java.util.Set;
  * Restores saved position, quality and subtitles of the video
  */
 public class PlayerStateManager {
+    private static final String TAG = PlayerStateManager.class.getSimpleName();
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final String CODEC_AVC = "avc";
     private static final String CODEC_VP9 = "vp9";
@@ -35,6 +38,7 @@ public class PlayerStateManager {
     private static final long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min (most of songs)
     private static final long MAX_TRAIL_DURATION_MILLIS = 3 * 1000; // don't save if 3 sec of unseen video remains
     private static final long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
+    private static final long DECODER_INIT_TIME_MS = 1_000;
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -80,7 +84,7 @@ public class PlayerStateManager {
      */
     private void waitCodecInit() {
         try {
-            Thread.sleep(1_000);
+            Thread.sleep(DECODER_INIT_TIME_MS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
