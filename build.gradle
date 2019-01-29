@@ -47,7 +47,7 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
         amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:3ed246771f3ab5a67be105650b4630162d66f0c1' // NOTE: 'exoplayer' is a needed module
-        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:r2.5.3' // https://bintray.com/google/exoplayer/exoplayer
+        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
     }
@@ -56,6 +56,7 @@ buildscript {
 allprojects {
     repositories {
         // browse: https://bintray.com/bintray/jcenter
+        google()
         jcenter()
 
         // crosswalk
