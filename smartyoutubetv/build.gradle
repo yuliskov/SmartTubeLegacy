@@ -33,7 +33,6 @@ android {
         versionCode 492
         versionName "6.16.12"
         multiDexEnabled = true
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
