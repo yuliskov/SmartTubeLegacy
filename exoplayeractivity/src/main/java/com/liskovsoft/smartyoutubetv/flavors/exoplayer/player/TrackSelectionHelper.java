@@ -32,10 +32,10 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
@@ -56,7 +56,7 @@ import java.util.TreeSet;
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
     private static final int VIDEO_GROUP_INDEX = 0; // is video
 
-    private final MappingTrackSelector mSelector;
+    private final DefaultTrackSelector mSelector;
     private final TrackSelection.Factory mTrackSelectionFactory;
 
     private MappedTrackInfo mTrackInfo;
@@ -104,7 +104,7 @@ import java.util.TreeSet;
      * @param trackSelectionFactory A factory for adaptive {@link TrackSelection}s, or null
      *                                      if the selection helper should not support adaptive tracks.
      */
-    public TrackSelectionHelper(MappingTrackSelector selector, TrackSelection.Factory trackSelectionFactory) {
+    public TrackSelectionHelper(DefaultTrackSelector selector, TrackSelection.Factory trackSelectionFactory) {
         this.mSelector = selector;
         this.mTrackSelectionFactory = trackSelectionFactory;
     }
@@ -288,7 +288,9 @@ import java.util.TreeSet;
             mEnableRandomAdaptationView.setEnabled(enableView);
             mEnableRandomAdaptationView.setFocusable(enableView);
             if (enableView) {
-                mEnableRandomAdaptationView.setChecked(!mIsDisabled && mOverride.factory instanceof RandomTrackSelection.Factory);
+                // TODO: could be a problems here
+                //mEnableRandomAdaptationView.setChecked(!mIsDisabled && mOverride.factory instanceof RandomTrackSelection.Factory);
+                mEnableRandomAdaptationView.setChecked(!mIsDisabled && mTrackSelectionFactory instanceof RandomTrackSelection.Factory);
             }
         }
     }
@@ -351,7 +353,7 @@ import java.util.TreeSet;
                 // item already checked - do nothing
                 return;
             } else {
-                mOverride = new SelectionOverride(FIXED_FACTORY, groupIndex, trackIndex);
+                mOverride = new SelectionOverride(groupIndex, trackIndex);
             }
         }
 
@@ -376,7 +378,7 @@ import java.util.TreeSet;
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
         TrackSelection.Factory factory = tracks.length == 1 ? FIXED_FACTORY : (enableRandomAdaptation ? RANDOM_FACTORY : mTrackSelectionFactory);
-        mOverride = new SelectionOverride(factory, group, tracks);
+        mOverride = new SelectionOverride(group, tracks);
     }
 
     // Track array manipulation.

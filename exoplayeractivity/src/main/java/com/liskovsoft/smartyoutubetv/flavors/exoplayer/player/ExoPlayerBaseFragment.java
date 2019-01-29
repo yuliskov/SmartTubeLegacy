@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.TextView;
@@ -126,10 +127,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
 
-        mTrackSelector.setParameters(
-                mTrackSelector.getParameters()
-                .withMaxVideoBitrate(Integer.MAX_VALUE)
-        );
+        //mTrackSelector.setParameters(
+        //        mTrackSelector.getParameters()
+        //        .withMaxVideoBitrate(Integer.MAX_VALUE)
+        //);
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
@@ -444,7 +445,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int reason) {
         if (mNeedRetrySource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
@@ -459,8 +460,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-        // Do nothing.
+    public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+        // NOP
     }
 
     /**

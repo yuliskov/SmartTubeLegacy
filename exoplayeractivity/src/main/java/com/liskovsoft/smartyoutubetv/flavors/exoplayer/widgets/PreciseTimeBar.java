@@ -200,11 +200,6 @@ public class PreciseTimeBar extends View implements TimeBar {
     }
 
     @Override
-    public void setListener(OnScrubListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
     public void setKeyTimeIncrement(long time) {
         Assertions.checkArgument(time > 0);
         keyCountIncrement = C.INDEX_UNSET;
@@ -630,6 +625,16 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     private static int getDefaultPlayedAdMarkerColor(int adMarkerColor) {
         return 0x33000000 | (adMarkerColor & 0x00FFFFFF);
+    }
+
+    @Override
+    public void addListener(OnScrubListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void removeListener(OnScrubListener listener) {
+
     }
 
 }

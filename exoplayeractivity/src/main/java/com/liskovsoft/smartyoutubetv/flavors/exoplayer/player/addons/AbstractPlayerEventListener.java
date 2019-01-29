@@ -9,7 +9,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 
 public class AbstractPlayerEventListener implements Player.EventListener {
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
         
     }
 
@@ -39,7 +39,7 @@ public class AbstractPlayerEventListener implements Player.EventListener {
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int reason) {
 
     }
 

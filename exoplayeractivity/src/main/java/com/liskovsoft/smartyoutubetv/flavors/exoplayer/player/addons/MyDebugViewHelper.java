@@ -144,7 +144,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int reason) {
         updateAndPost();
     }
 
@@ -154,7 +154,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
         // Do nothing.
     }
 
@@ -256,7 +256,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
 
         counters.ensureUpdated();
         appendRow("Dropped/Rendered Frames",
-                counters.droppedOutputBufferCount + counters.skippedOutputBufferCount
+                counters.droppedBufferCount + counters.skippedOutputBufferCount
                     + "/" +
                     counters.renderedOutputBufferCount);
     }
