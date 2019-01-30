@@ -18,15 +18,16 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.SpeedDialogSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.VideoZoomDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictCodecDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
@@ -101,6 +102,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mPlayerInitializer.initVideoTitle();
 
             mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
+
+            restoreSpeed();
 
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
         }
@@ -435,12 +438,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     public void setRepeatEnabled(final boolean enabled) {
         if (mPlayer == null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ExoPlayerBaseFragment.this.setRepeatEnabled(enabled);
-                }
-            }, 1000);
+            new Handler().postDelayed(() -> ExoPlayerBaseFragment.this.setRepeatEnabled(enabled), 1000);
             return;
         }
 
@@ -449,10 +447,18 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        SingleChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer));
+        CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource((ExoPlayerFragment) this));
     }
 
     protected boolean isUiVisible() {
         return mInterfaceVisibilityState == View.VISIBLE;
+    }
+
+    private void restoreSpeed() {
+        ExoPreferences prefs = ExoPreferences.instance(getActivity());
+
+        if (prefs.getRestoreSpeed()) {
+            mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(prefs.getCurrentSpeed()), 1.0f));
+        }
     }
 }

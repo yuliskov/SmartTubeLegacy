@@ -68,4 +68,5 @@
     <string name="btn_favorites">Save</string>
     <string name="option_zoom_fit_both">Fit either width or height</string>
     <string name="option_zoom_stretch">Stretch</string>
+    <string name="checkbox_save_speed">Remember speed</string>
 </resources>

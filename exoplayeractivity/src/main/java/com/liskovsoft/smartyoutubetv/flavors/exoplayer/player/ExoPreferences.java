@@ -20,6 +20,8 @@ public final class ExoPreferences {
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String VIDEO_ZOOM_MODE = "videoZoomMode";
     private static final String SELECTED_TRACK_FPS = "selectedTrackFps";
+    private static final String CURRENT_SPEED = "currentSpeed";
+    private static final String RESTORE_SPEED = "restoreSpeed";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -173,6 +175,26 @@ public final class ExoPreferences {
     public void setVideoZoomMode(int mode) {
         mPrefs.edit()
                 .putInt(VIDEO_ZOOM_MODE, mode)
+                .apply();
+    }
+
+    public void setCurrentSpeed(String speed) {
+        mPrefs.edit()
+                .putString(CURRENT_SPEED, speed)
+                .apply();
+    }
+    
+    public String getCurrentSpeed() {
+        return mPrefs.getString(CURRENT_SPEED, "1.0");
+    }
+
+    public boolean getRestoreSpeed() {
+        return mPrefs.getBoolean(RESTORE_SPEED, false);
+    }
+
+    public void setRestoreSpeed(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(RESTORE_SPEED, isChecked)
                 .apply();
     }
 }

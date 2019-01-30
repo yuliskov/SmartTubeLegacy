@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec;
 
 import android.content.Context;
 import com.liskovsoft.exoplayeractivity.R;

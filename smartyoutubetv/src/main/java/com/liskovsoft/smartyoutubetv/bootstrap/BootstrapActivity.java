@@ -19,7 +19,7 @@ import com.liskovsoft.smartyoutubetv.dialogs.MultiChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.RestrictCodecDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictCodecDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapButtonBase;
