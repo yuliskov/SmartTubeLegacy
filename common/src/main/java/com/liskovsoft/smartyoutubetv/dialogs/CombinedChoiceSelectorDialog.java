@@ -23,8 +23,15 @@ public class CombinedChoiceSelectorDialog extends GenericSelectorDialog {
     }
 
     @Override
-    protected CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root) {
-        return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+    protected CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root, DialogItem item) {
+        switch (getItemType(item)) {
+            case SINGLE_CHOICE:
+                return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+            case MULTI_CHOICE:
+                return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+        }
+
+        throw new IllegalStateException("Incorrect DialogItem supplied");
     }
 
     @Override

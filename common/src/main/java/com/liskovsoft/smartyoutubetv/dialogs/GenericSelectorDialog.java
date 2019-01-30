@@ -131,7 +131,7 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         mDialogItems = new ArrayList<>();
 
         for (DialogItem item : mDialogSource.getItems()) {
-            CheckedTextView dialogItem = createDialogItem(inflater, root);
+            CheckedTextView dialogItem = createDialogItem(inflater, root, item);
             dialogItem.setBackgroundResource(selectableItemBackgroundResourceId);
             dialogItem.setText(item.getTitle());
 
@@ -171,5 +171,5 @@ public abstract class GenericSelectorDialog implements OnClickListener {
         throw new IllegalStateException("Incorrect DialogItem supplied");
     }
 
-    protected abstract CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root);
+    protected abstract CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root, DialogItem item);
 }

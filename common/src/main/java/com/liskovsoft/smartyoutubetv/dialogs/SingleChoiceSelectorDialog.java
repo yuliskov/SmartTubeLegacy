@@ -8,8 +8,6 @@ import android.widget.CheckedTextView;
 import com.liskovsoft.smartyoutubetv.common.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-import java.util.List;
-
 public class SingleChoiceSelectorDialog extends GenericSelectorDialog {
     private final SingleDialogSource mDialogSource;
 
@@ -25,7 +23,7 @@ public class SingleChoiceSelectorDialog extends GenericSelectorDialog {
     }
 
     @Override
-    protected CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root) {
+    protected CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root, DialogItem item) {
         return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
     }
 
