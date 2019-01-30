@@ -57,6 +57,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDefaultRenderersFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
@@ -205,7 +206,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER :
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON;
 
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+            DefaultRenderersFactory renderersFactory = new MyDefaultRenderersFactory(getActivity(), drmSessionManager, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
 
 
             // increase player's min/max buffer size to 60 secs
