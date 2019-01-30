@@ -120,7 +120,6 @@ class FileLogger extends MyLogger {
             String line;
             while ((line = bufferedReader.readLine()) != null){
                 append(line);
-                append("\n");
             }
 
             Helpers.exec("logcat", "-c"); // clear logcat
@@ -135,7 +134,7 @@ class FileLogger extends MyLogger {
     public void flush() {
         if (mWriter != null) {
             try {
-                dumpLogcat();
+                // dumpLogcat();
                 mWriter.flush();
             } catch (IOException e) {
                 e.printStackTrace();
