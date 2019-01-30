@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedT
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 /**
@@ -210,7 +211,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
         return player.getAudioFormat();
     }
 
-    public static String extractQualityLabel(Format format) {
+    public static String extractResolutionLabel(Format format) {
         String qualityLabel = "";
 
         if (format.height <= 480) {
@@ -247,7 +248,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
     }
 
     public static int extractFps(Format format) {
-        return format.frameRate == -1 ? 0 : Math.round(format.frameRate);
+        return format.frameRate == Format.NO_VALUE ? 0 : Math.round(format.frameRate);
     }
 
     /**
@@ -263,5 +264,57 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
      */
     private static String color(String input, String color) {
         return String.format("<font color=\"%s\">%s</font>", color, input);
+    }
+
+    public static String getVideoQualityLabel(SimpleExoPlayer player) {
+        Format format = PlayerUtil.getCurrentVideoTrack(player);
+
+        if (format == null) {
+            return "none";
+        }
+
+        String separator = "/";
+
+        String resolution = PlayerUtil.extractResolutionLabel(format);
+
+        int fpsNum = PlayerUtil.extractFps(format);
+        String fps = fpsNum == 0 ? "" : String.valueOf(fpsNum);
+
+        String codec = PlayerUtil.extractCodec(format);
+
+        String qualityString;
+
+        if (!fps.isEmpty()) {
+            fps = separator + fps;
+        }
+
+        if (!codec.isEmpty()) {
+            codec = separator + codec;
+        }
+
+        qualityString = String.format("%s%s%s", resolution, fps, codec);
+
+        return qualityString;
+    }
+
+    public static String getAudioQualityLabel(SimpleExoPlayer player) {
+        Format format = PlayerUtil.getCurrentAudioTrack(player);
+
+        if (format == null) {
+            return "none";
+        }
+
+        return PlayerUtil.extractCodec(format);
+    }
+
+    public static String getTrackQualityLabel(SimpleExoPlayer player, int rendererIndex) {
+        switch (rendererIndex) {
+            case ExoPlayerFragment.RENDERER_INDEX_VIDEO:
+                return PlayerUtil.getVideoQualityLabel(player);
+            case ExoPlayerFragment.RENDERER_INDEX_AUDIO:
+                return PlayerUtil.getAudioQualityLabel(player);
+        }
+
+        return "";
     }
 }

@@ -74,7 +74,7 @@ import java.util.TreeSet;
     private CheckedTextView[][] mTrackViews;
     private AlertDialog mAlertDialog;
     private Context mContext;
-    private PlayerCoreFragment mPlayerFragment;
+    private ExoPlayerFragment mPlayerFragment;
 
     private class TrackViewComparator implements Comparator<CheckedTextView> {
         @Override
@@ -117,7 +117,7 @@ import java.util.TreeSet;
      * @param trackInfo     The current track information.
      * @param rendererIndex The index of the renderer.
      */
-    public void showSelectionDialog(PlayerCoreFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
+    public void showSelectionDialog(ExoPlayerFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
         mTrackInfo = trackInfo;
         mRendererIndex = rendererIndex;
         mContext = fragment.getActivity();
@@ -266,7 +266,7 @@ import java.util.TreeSet;
     }
 
     private void updateViews() {
-        AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) mPlayerFragment).getAutoFrameRateManager();
+        AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
         mAutoframerateView.setChecked(autoFrameRateManager.getEnabled());
 
         mHideErrorsView.setChecked(mPlayerFragment.getHidePlaybackErrors());
@@ -296,16 +296,13 @@ import java.util.TreeSet;
     }
 
     private void updateDefaultView() {
-        new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
+        new Handler(mContext.getMainLooper()).postDelayed(() -> {
+            boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
 
-                String title = mContext.getResources().getString(R.string.selection_default);
-                String newTitle = String.format("%s %s", title, ((ExoPlayerFragment) mPlayerFragment).getTitleQualityInfo(mRendererIndex));
+            String title = mContext.getResources().getString(R.string.selection_default);
+            String newTitle = String.format("%s %s", title, PlayerUtil.getTrackQualityLabel(mPlayerFragment.getPlayer(), mRendererIndex));
 
-                mDefaultView.setText(defaultQualitySelected ? newTitle : title);
-            }
+            mDefaultView.setText(defaultQualitySelected ? newTitle : title);
         }, 1_000);
     }
 

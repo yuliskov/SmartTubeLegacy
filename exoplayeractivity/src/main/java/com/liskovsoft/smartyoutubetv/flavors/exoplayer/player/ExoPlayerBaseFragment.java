@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.TextView;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -273,59 +272,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         TextView quality = root.findViewById(R.id.video_quality);
-        quality.setText(getTitleQualityInfo());
-    }
-
-    public String getTitleQualityInfo(int rendererIndex) {
-        switch (rendererIndex) {
-            case RENDERER_INDEX_VIDEO:
-                return getTitleQualityInfo();
-            case RENDERER_INDEX_AUDIO:
-                return getAudioQualityInfo();
-        }
-
-        return "";
-    }
-
-    private String getAudioQualityInfo() {
-        Format format = PlayerUtil.getCurrentAudioTrack(mPlayer);
-
-        if (format == null) {
-            return "none";
-        }
-
-        return PlayerUtil.extractCodec(format);
-    }
-
-    private String getTitleQualityInfo() {
-        Format format = PlayerUtil.getCurrentVideoTrack(mPlayer);
-
-        if (format == null) {
-            return "none";
-        }
-
-        String separator = "/";
-
-        String qualityLabel = PlayerUtil.extractQualityLabel(format);
-
-        int fpsNum = PlayerUtil.extractFps(format);
-        String fps = fpsNum == 0 ? "" : String.valueOf(fpsNum);
-
-        String codec = PlayerUtil.extractCodec(format);
-
-        String qualityString;
-
-        if (!fps.isEmpty()) {
-            fps = separator + fps;
-        }
-
-        if (!codec.isEmpty()) {
-            codec = separator + codec;
-        }
-
-        qualityString = String.format("%s%s%s", qualityLabel, fps, codec);
-
-        return qualityString;
+        quality.setText(PlayerUtil.getVideoQualityLabel(mPlayer));
     }
 
     private void resetStateOfLayoutToggleButtons() {

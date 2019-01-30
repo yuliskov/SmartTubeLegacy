@@ -416,7 +416,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
                 mTrackSelectionHelper.showSelectionDialog(
-                        this,
+                        (ExoPlayerFragment) this,
                         ((TextToggleButton) view).getText(),
                         mTrackSelector.getCurrentMappedTrackInfo(),
                         (int) view.getTag()
@@ -586,5 +586,9 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         //}
 
         updateButtonVisibilities();
+    }
+
+    public SimpleExoPlayer getPlayer() {
+        return mPlayer;
     }
 }
