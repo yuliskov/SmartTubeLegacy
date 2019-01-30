@@ -13,6 +13,8 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.common.R;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.MultiDialogItem;
+import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.SingleDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ public abstract class GenericSelectorDialog implements OnClickListener {
     protected AlertDialog mAlertDialog;
     private final DialogSourceBase mDialogSource;
     private ArrayList<CheckedTextView> mDialogItems;
+    protected static final int SINGLE_CHOICE = 0;
+    protected static final int MULTI_CHOICE = 1;
 
     public interface DialogSourceBase {
         class DialogItem {
@@ -50,6 +54,18 @@ public abstract class GenericSelectorDialog implements OnClickListener {
             }
         }
 
+        class SingleDialogItem extends DialogItem {
+            public SingleDialogItem(String title, boolean checked) {
+                super(title, checked);
+            }
+        }
+
+        class MultiDialogItem extends DialogItem {
+            public MultiDialogItem(String title, boolean checked) {
+                super(title, checked);
+            }
+        }
+
         /**
          * Your data
          * @return pairs that consist of item text and tag
@@ -61,6 +77,9 @@ public abstract class GenericSelectorDialog implements OnClickListener {
          * @return dialog title
          */
         String getTitle();
+    }
+
+    public interface CombinedDialogSource extends DialogSourceBase {
     }
 
     public interface SingleDialogSource extends DialogSourceBase {
@@ -138,6 +157,18 @@ public abstract class GenericSelectorDialog implements OnClickListener {
 
             view.setChecked(item.getChecked());
         }
+    }
+
+    protected int getItemType(DialogItem item) {
+        if (item instanceof SingleDialogItem) {
+            return SINGLE_CHOICE;
+        }
+
+        if (item instanceof MultiDialogItem) {
+            return MULTI_CHOICE;
+        }
+
+        throw new IllegalStateException("Incorrect DialogItem supplied");
     }
 
     protected abstract CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root);
