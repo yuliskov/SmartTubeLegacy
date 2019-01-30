@@ -6,6 +6,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -98,10 +99,43 @@ class FileLogger extends MyLogger {
         append("---------------------------------------");
     }
 
+    private void writeLogcatHeader() {
+        append("---------------------------------------");
+        append("------- STARTING LOGCAT DUMP ----------");
+        append("---------------------------------------");
+    }
+
+    private void writeLogcatFooter() {
+        append("---------------------------------------");
+        append("-------- ENDING LOGCAT DUMP -----------");
+        append("---------------------------------------");
+    }
+
+    private void dumpLogcat() {
+        writeLogcatHeader();
+
+        try {
+            BufferedReader bufferedReader = Helpers.exec("logcat", "-d"); // dump logcat content
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                append(line);
+                append("\n");
+            }
+
+            Helpers.exec("logcat", "-c"); // clear logcat
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        writeLogcatFooter();
+    }
+
     @Override
     public void flush() {
         if (mWriter != null) {
             try {
+                dumpLogcat();
                 mWriter.flush();
             } catch (IOException e) {
                 e.printStackTrace();

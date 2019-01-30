@@ -20,7 +20,10 @@ import android.view.WindowManager.LayoutParams;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.SequenceInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -338,5 +341,10 @@ public final class Helpers {
         int itag = Integer.parseInt(id);
 
         return itag > maxRegularITag;
+    }
+
+    public static BufferedReader exec(String... params) throws IOException {
+        Process process = Runtime.getRuntime().exec(params);
+        return new BufferedReader(new InputStreamReader(process.getInputStream()));
     }
 }
