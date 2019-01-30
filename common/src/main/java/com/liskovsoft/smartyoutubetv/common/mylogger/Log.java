@@ -22,8 +22,21 @@ public class Log {
         sLogger.e(tag, msg.toString());
     }
 
-    public static void e(String tag, Object msg, Exception ex) {
+    public static void i(String tag, Object msg, Throwable ex) {
+        i(tag, msg + " " + ex.getMessage());
+    }
+
+
+    public static void e(String tag, Object msg, Throwable ex) {
         e(tag, msg + " " + ex.getMessage());
+    }
+
+    public static void d(String tag, Object msg, Throwable ex) {
+        d(tag, msg + " " + ex.getMessage());
+    }
+
+    public static void w(String tag, Object msg, Throwable ex) {
+        w(tag, msg + " " + ex.getMessage());
     }
 
     /**

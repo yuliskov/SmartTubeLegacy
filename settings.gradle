@@ -1,6 +1,6 @@
 include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common'
 
 // include vp9 extension
-gradle.ext.exoplayerRoot = '../ExoPlayer-r2.9.4'
-gradle.ext.exoplayerModulePrefix = 'exoplayer-'
-apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')
+//gradle.ext.exoplayerRoot = '../ExoPlayer-r2.9.4'
+//gradle.ext.exoplayerModulePrefix = 'exoplayer-'
+//apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')
