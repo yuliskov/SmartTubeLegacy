@@ -68,7 +68,7 @@ dependencies {
     implementation project.properties.multiDexVersion
 
     // include vp9 extensions
-    //implementation (project(path: ':exoplayer-extension-vp9'), {
-    //    transitive = false
-    //})
+    implementation (project(path: ':exoplayer-extension-vp9'), {
+        transitive = false
+    })
 }
