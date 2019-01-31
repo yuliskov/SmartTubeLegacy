@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
@@ -33,12 +34,9 @@ public class MainApkUpdater {
     }
 
     private void checkForUpdatesAfterDelay() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkForStableUpdates();
-                checkForBetaUpdates();
-            }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            checkForStableUpdates();
+            checkForBetaUpdates();
         }, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
     }
 
