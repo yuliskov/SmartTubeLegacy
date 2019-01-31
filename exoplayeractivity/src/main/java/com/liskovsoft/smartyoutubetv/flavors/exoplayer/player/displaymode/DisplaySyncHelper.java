@@ -141,6 +141,13 @@ class DisplaySyncHelper implements UhdHelperListener {
                         supportedDevice = false;
                     }
                     break;
+                default:
+                    DisplayHolder.Mode[] modes = getUhdHelper().getSupportedModes();
+                    if (modes == null || modes.length == 1) {
+                        Log.i(TAG, "Device doesn't contain enough modes to switch");
+                        supportedDevice = false;
+                    }
+                    break;
             }
         }
 

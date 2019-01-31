@@ -44,10 +44,8 @@ public class AutoFrameRateManager {
     }
 
     public void setEnabled(boolean enabled) {
-        boolean alreadyDone = enabled == getEnabled();
-
-        if (alreadyDone) {
-            return;
+        if (!mSyncHelper.supportsDisplayModeChange()) {
+            enabled = false;
         }
 
         mPrefs.setAutoframerateChecked(enabled);
