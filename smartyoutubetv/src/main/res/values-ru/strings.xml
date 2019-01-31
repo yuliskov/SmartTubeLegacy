@@ -50,8 +50,8 @@
     <string name="tip_tweaks">Различные мелкие настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
     <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
-    <string name="tweak_update_check">Периодически проверять обновления</string>
-    <string name="tweak_beta_update_check">Периодически проверять обновления Бета-версий</string>
+    <string name="tweak_update_check">Проверять обновление стабильных версий</string>
+    <string name="tweak_beta_update_check">Проверять обновление бета версий</string>
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
     <string name="tweak_log_to_file">Сохранять лог в файл</string>
     <string name="log_stored_in_path">Путь: %s</string>
