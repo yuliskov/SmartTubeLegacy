@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Handler;
@@ -347,5 +348,10 @@ public final class Helpers {
     public static BufferedReader exec(String... params) throws IOException {
         Process process = Runtime.getRuntime().exec(params);
         return new BufferedReader(new InputStreamReader(process.getInputStream()));
+    }
+
+    public static void enableButtonSounds(Context context, boolean enable) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, !enable);
     }
 }
