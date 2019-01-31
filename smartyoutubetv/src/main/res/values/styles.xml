@@ -8,6 +8,9 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
         <item name="android:windowBackground">@drawable/default_bg</item>
         <!--<item name="android:alertDialogTheme">@style/AppDialog</item>-->
+
+        <!-- completely disable button sounds -->
+        <item name="android:soundEffectsEnabled">false</item>
     </style>
     <style name="buttonStyle">
         <item name="android:layout_marginLeft">10dip</item>
