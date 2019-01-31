@@ -12,7 +12,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        //classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -48,7 +48,7 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
         amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:3ed246771f3ab5a67be105650b4630162d66f0c1' // NOTE: 'exoplayer' is a needed module
-        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
+        //exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
     }
@@ -86,12 +86,12 @@ allprojects {
 //    delete rootProject.buildDir
 //}
 
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'java'
-
-// Configuring Filtering for Relocation
-shadowJar {
-    relocate('com.google.android.exoplayer2.util', 'com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers') {
-        include 'com.google.android.exoplayer2.util.Log'
-    }
-}
+//apply plugin: 'com.github.johnrengelman.shadow'
+//apply plugin: 'java'
+//
+//// Configuring Filtering for Relocation
+//shadowJar {
+//    relocate('com.google.android.exoplayer2.util', 'com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers') {
+//        include 'com.google.android.exoplayer2.util.Log'
+//    }
+//}

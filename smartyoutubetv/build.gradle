@@ -157,7 +157,8 @@ dependencies {
     implementation project.properties.nanoHttpdVersion
     implementation project.properties.voiceOverlayVersion
 
-    implementation project.properties.exoplayerVersion
+    //implementation project.properties.exoplayerVersion
+    implementation project(path: ':exoplayer-library')
 
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion
