@@ -10,15 +10,22 @@ import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 public class MainApkUpdater {
     private final Context mContext;
     private static final long UPDATE_CHECK_DELAY_MS = 3000;
-    private final boolean mIsStableChecked;
-    private final boolean mIsBetaChecked;
+    private boolean mIsStableChecked;
+    private boolean mIsBetaChecked;
 
     public MainApkUpdater(Context context) {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
-        mIsStableChecked = prefs.getBootstrapUpdateCheck();
-        mIsBetaChecked = prefs.getBootstrapBetaUpdateCheck();
+
+        switch (prefs.getBootstrapUpdateCheck()) {
+            case SmartPreferences.UPDATE_CHECK_STABLE:
+                mIsStableChecked = true;
+                break;
+            case SmartPreferences.UPDATE_CHECK_BETA:
+                mIsBetaChecked = true;
+                break;
+        }
     }
 
     public void start() {
@@ -36,7 +43,7 @@ public class MainApkUpdater {
     }
 
     private void checkForStableUpdates() {
-        if (mIsStableChecked && !mIsBetaChecked) {
+        if (mIsStableChecked) {
             String updateUrlGDrive = mContext.getString(R.string.update_url_gdrive);
             String updateUrlGitHub = mContext.getString(R.string.update_url_github);
 

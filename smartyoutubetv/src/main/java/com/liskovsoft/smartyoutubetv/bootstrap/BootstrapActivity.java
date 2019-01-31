@@ -45,7 +45,6 @@ public class BootstrapActivity extends ActivityBase {
         super.onCreate(savedInstanceState);
         setupFonSize();
         setContentView(R.layout.activity_bootstrap);
-        initButtons();
         initLauncherMapping();
         initVersion();
         lockOtherLaunchers();
@@ -84,34 +83,6 @@ public class BootstrapActivity extends ActivityBase {
                 break;
             case R.id.btn_tweaks:
                 MultiChoiceSelectorDialog.create(this, new TweaksDialogSource(this));
-                break;
-        }
-    }
-
-    private void initButtons() {
-        initCheckbox(R.id.chk_save_selection, mPrefs.getBootstrapSaveSelection());
-        initCheckbox(R.id.chk_autoframerate, mPrefs.getBootstrapAutoframerate());
-        initCheckbox(R.id.chk_old_ui, mPrefs.getBootstrapOldUI());
-        initCheckbox(R.id.chk_update_check, mPrefs.getBootstrapUpdateCheck());
-        initCheckbox(R.id.chk_endcards, mPrefs.getEnableEndCards());
-    }
-
-    public void onCheckedChanged(BootstrapCheckButton checkBox, boolean b) {
-        switch (checkBox.getId()) {
-            case R.id.chk_save_selection:
-                mPrefs.setBootstrapSaveSelection(b);
-                break;
-            case R.id.chk_autoframerate:
-                mPrefs.setBootstrapAutoframerate(b);
-                break;
-            case R.id.chk_update_check:
-                mPrefs.setBootstrapUpdateCheck(b);
-                break;
-            case R.id.chk_old_ui:
-                mPrefs.setBootstrapOldUI(b);
-                break;
-            case R.id.chk_endcards:
-                mPrefs.setEnableEndCards(b);
                 break;
         }
     }

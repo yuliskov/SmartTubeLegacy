@@ -10,8 +10,7 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
     private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
-    private static final String BOOTSTRAP_UPDATE_CHECKED = "bootstrapUpdateChecked";
-    private static final String BOOTSTRAP_UPDATE_BETA_CHECKED = "bootstrapUpdateBetaChecked";
+    private static final String BOOTSTRAP_UPDATE_CHECK = "bootstrapUpdateCheck";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
@@ -24,6 +23,9 @@ public final class SmartPreferences {
     public static final String MUSIC_PAGE = "music_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
     public static final String DEFAULT_PAGE = "default_page";
+    public static final String UPDATE_CHECK_STABLE = "update_check_stable";
+    public static final String UPDATE_CHECK_BETA = "update_check_beta";
+    public static final String UPDATE_CHECK_DISABLED = "update_check_disabled";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -105,29 +107,16 @@ public final class SmartPreferences {
     }
 
     public String getPreferredCodec() {
-        String name = mPrefs.getString(PREFERRED_CODEC, "");
-        return name;
+        return mPrefs.getString(PREFERRED_CODEC, "");
     }
 
-    public boolean getBootstrapUpdateCheck() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_UPDATE_CHECKED, true);
-        return isChecked;
+    public String getBootstrapUpdateCheck() {
+        return mPrefs.getString(BOOTSTRAP_UPDATE_CHECK, UPDATE_CHECK_STABLE);
     }
 
-    public void setBootstrapUpdateCheck(boolean isChecked) {
+    public void setBootstrapUpdateCheck(String releaseType) {
         mPrefs.edit()
-                .putBoolean(BOOTSTRAP_UPDATE_CHECKED, isChecked)
-                .apply();
-    }
-
-    public boolean getBootstrapBetaUpdateCheck() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_UPDATE_BETA_CHECKED, false);
-        return isChecked;
-    }
-
-    public void setBootstrapBetaUpdateCheck(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_UPDATE_BETA_CHECKED, isChecked)
+                .putString(BOOTSTRAP_UPDATE_CHECK, releaseType)
                 .apply();
     }
 

@@ -18,11 +18,15 @@ public class BetaUpdateCheckDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getBootstrapBetaUpdateCheck();
+        return SmartPreferences.UPDATE_CHECK_BETA.equals(mPrefs.getBootstrapUpdateCheck());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setBootstrapBetaUpdateCheck(checked);
+        if (checked) {
+            mPrefs.setBootstrapUpdateCheck(SmartPreferences.UPDATE_CHECK_BETA);
+        } else {
+            mPrefs.setBootstrapUpdateCheck(SmartPreferences.UPDATE_CHECK_DISABLED);
+        }
     }
 }

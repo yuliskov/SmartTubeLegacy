@@ -18,11 +18,15 @@ public class UpdateCheckDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getBootstrapUpdateCheck();
+        return SmartPreferences.UPDATE_CHECK_STABLE.equals(mPrefs.getBootstrapUpdateCheck());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setBootstrapUpdateCheck(checked);
+        if (checked) {
+            mPrefs.setBootstrapUpdateCheck(SmartPreferences.UPDATE_CHECK_STABLE);
+        } else {
+            mPrefs.setBootstrapUpdateCheck(SmartPreferences.UPDATE_CHECK_DISABLED);
+        }
     }
 }
