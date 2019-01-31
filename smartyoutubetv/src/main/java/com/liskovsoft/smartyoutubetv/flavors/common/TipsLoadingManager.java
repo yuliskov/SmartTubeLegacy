@@ -5,10 +5,11 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
 
 import java.util.Random;
 
-public class LoadingManager {
+public class TipsLoadingManager implements LoadingManager {
     private final Activity mContext;
     private final Random mRandom;
 
@@ -18,12 +19,13 @@ public class LoadingManager {
             R.string.tip_disable_updates
     };
 
-    public LoadingManager(Activity context) {
+    public TipsLoadingManager(Activity context) {
         mContext = context;
         mRandom = new Random(System.currentTimeMillis());
     }
 
-    private void showRandomTip() {
+    @Override
+    public void showRandomTip() {
         int next = mRandom.nextInt(mTips.length) & Integer.MAX_VALUE; // only positive ints
         showMessage(mTips[next]);
     }
@@ -36,11 +38,13 @@ public class LoadingManager {
         return mContext.findViewById(R.id.loading_main);
     }
 
+    @Override
     public void show() {
         showRandomTip();
         getRootView().setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void hide() {
         new Handler(mContext.getMainLooper())
                 .postDelayed(new Runnable() {
@@ -51,11 +55,13 @@ public class LoadingManager {
                 }, 500);
     }
 
+    @Override
     public void showMessage(int resId) {
         String msg = mContext.getResources().getString(resId);
         showMessage(msg);
     }
 
+    @Override
     public void showMessage(String message) {
         TextView msgView = getRootView().findViewById(R.id.loading_message);
         msgView.setText(message);

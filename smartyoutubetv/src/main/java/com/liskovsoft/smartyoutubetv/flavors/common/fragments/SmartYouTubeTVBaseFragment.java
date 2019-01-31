@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.common.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,11 +12,10 @@ import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
-import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
+import com.liskovsoft.smartyoutubetv.misc.BrowserKeysTranslator;
 import com.liskovsoft.smartyoutubetv.misc.youtubeurls.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
@@ -25,7 +23,7 @@ import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
-    private KeysTranslator mTranslator;
+    private BrowserKeysTranslator mTranslator;
     private UserAgentManager mUAManager;
     private ServiceFinder mServiceFinder;
 
@@ -66,7 +64,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void initKeys() {
-        mTranslator = new KeysTranslator();
+        mTranslator = new BrowserKeysTranslator();
     }
 
     private void initYouTubeServices() {
@@ -83,7 +81,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + origin);
 
         mController = new SimpleUIController(this);
-        mController.setListener(new ControllerEventListener(getActivity(), mController, mTranslator));
+        mController.setListener(new ControllerEventListener(getActivity(), mController));
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
 
@@ -97,12 +95,6 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     public boolean dispatchKeyEvent(KeyEvent event) {
         event = mTranslator.doTranslateKeys(event);
         setDispatchEvent(event);
-
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) { // remember real back remapped in translator
-            onBackPressed();
-            return true;
-        }
-
 
         return false;
     }
@@ -173,20 +165,6 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onBackPressed() {
-        returnToLaunchersDialog();
-        super.onBackPressed();
-    }
-
-    @SuppressLint("WrongConstant")
-    private void returnToLaunchersDialog() {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), BootstrapActivity.class);
-        intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
-
-        boolean activityExists = intent.resolveActivityInfo(getActivity().getPackageManager(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) != null;
-
-        if (activityExists) {
-            startActivity(intent);
-        }
+        // NOP
     }
 }

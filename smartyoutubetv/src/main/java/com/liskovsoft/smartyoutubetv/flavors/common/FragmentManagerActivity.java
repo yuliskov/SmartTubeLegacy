@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.SearchEvent;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
@@ -15,6 +14,9 @@ import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
+import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
+import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
@@ -25,6 +27,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private GenericFragment mPrevFragment;
     private VoiceSearchBridge mVoiceBridge;
     private LoadingManager mLoadingManager;
+    private boolean mLoadingDone;
+    private MainApkUpdater mApkUpdater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +51,13 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         hideTitleBar();
 
-        mLoadingManager = new LoadingManager(this);
+        mLoadingManager = new TipsLoadingManager(this);
+        mApkUpdater = new MainApkUpdater(this);
 
         Log.init(this);
     }
 
+    @Override
     public LoadingManager getLoadingManager() {
         return mLoadingManager;
     }
@@ -155,21 +161,23 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        return mVoiceBridge.onKeyEvent(event) || mActiveFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(modifyEvent(event));
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
+            SmartUtils.returnToLaunchersDialog(this);
+            return true;
+        }
+
+        mEvent = event; // give a choice to modify this event in the middle of the pipeline
+        return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
     }
 
     @Override
-    public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-        return mActiveFragment.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
+    public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        return mActiveFragment.dispatchGenericMotionEvent(event) || super.dispatchGenericMotionEvent(event);
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
-    }
-
-    private KeyEvent modifyEvent(KeyEvent event) {
-        return mEvent != null ? mEvent : event;
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        return super.dispatchTouchEvent(event);
     }
 
     @Override
@@ -233,5 +241,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         Helpers.makeActivityFullscreen(this);
         Helpers.makeActivityHorizontal(this);
+    }
+
+    @Override
+    public void onLoadingDone() {
+        mLoadingDone = true;
+        mLoadingManager.hide();
+        mApkUpdater.start();
     }
 }

@@ -2,10 +2,9 @@ package com.liskovsoft.smartyoutubetv.misc;
 
 import android.view.KeyEvent;
 
-public class KeysTranslator {
+public class BrowserKeysTranslator {
     private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
     private int mDownFired = 0;
-    private boolean mDisable = true;
 
     /**
      * Ignore non-paired key up events
@@ -30,12 +29,6 @@ public class KeysTranslator {
     }
 
     public KeyEvent doTranslateKeys(KeyEvent event) {
-        if (mDisable) {
-            // exit from loading by pressing escape or back keys
-            event = translate(event, KeyEvent.KEYCODE_ESCAPE, KeyEvent.KEYCODE_BACK);
-            return event;
-        }
-
         if (isEventIgnored(event)) {
             return EMPTY_EVENT;
         }
@@ -45,6 +38,7 @@ public class KeysTranslator {
         event = translate(event, KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_G); // menu to guide
         event = translate(event, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_ENTER);
         event = translate(event, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_ENTER);
+
         return event;
     }
 
@@ -59,13 +53,5 @@ public class KeysTranslator {
             origin = new KeyEvent(origin.getAction(), toKeyCode);
         }
         return origin;
-    }
-
-    public void disable() {
-        mDisable = true;
-    }
-
-    public void enable() {
-        mDisable = false;
     }
 }

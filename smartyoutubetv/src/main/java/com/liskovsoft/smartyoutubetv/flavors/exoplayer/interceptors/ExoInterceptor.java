@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
-import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
@@ -38,7 +38,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final DelayedCommandCallInterceptor mInterceptor;
     private final ActionsSender mActionSender;
     private final BackgroundActionManager mManager;
-    private final TwoFragmentsManager mFragmentsManager;
+    private final TwoFragmentManager mFragmentsManager;
     private InputStream mResponseStreamSimple;
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
@@ -98,7 +98,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor interceptor) {
         mContext = context;
-        mFragmentsManager = (TwoFragmentsManager) context;
+        mFragmentsManager = (TwoFragmentManager) context;
         mInterceptor = interceptor;
         mActionSender = new ActionsSender(context, this);
         mReceiver = new SuggestionsWatcher();

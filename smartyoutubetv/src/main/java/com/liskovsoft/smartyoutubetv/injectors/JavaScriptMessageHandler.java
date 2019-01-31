@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 import android.content.Context;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
-import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 public class JavaScriptMessageHandler {
     private final static String MIC_CLICKED_MESSAGE = "mic_clicked_message";
@@ -21,7 +21,7 @@ public class JavaScriptMessageHandler {
                 Browser.getBus().post(new MicClickedEvent());
                 break;
             case APP_LOADED_MESSAGE:
-                ((FragmentManagerActivity) mContext).getLoadingManager().hide();
+                ((FragmentManager) mContext).onLoadingDone();
                 break;
             case SYNC_LANG_MESSAGE:
                 LangUpdater updater = new LangUpdater(mContext);

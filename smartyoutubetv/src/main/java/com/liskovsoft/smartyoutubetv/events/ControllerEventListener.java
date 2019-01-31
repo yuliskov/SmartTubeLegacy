@@ -13,16 +13,13 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
-import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.ErrorTranslator;
-import com.liskovsoft.smartyoutubetv.misc.KeysTranslator;
-import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
 import org.slf4j.Logger;
@@ -32,23 +29,19 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
     private static final String JS_INTERFACE_NAME = "app";
     private final Context mContext;
-    private final KeysTranslator mTranslator;
     private final WebViewJavaScriptInterface mJSInterface;
     // private final VideoFormatInjector mFormatInjector;
     private final DecipherRoutineInjector mDecipherInjector;
     private final GenericEventResourceInjector mGenericInjector;
     private final StateUpdater mStateUpdater;
-    private final MainApkUpdater mApkUpdater;
     private final Controller mController;
     private final RequestInterceptor mInterceptor;
     private final ErrorTranslator mErrorTranslator;
 
-    public ControllerEventListener(Activity context, Controller controller, KeysTranslator translator) {
+    public ControllerEventListener(Activity context, Controller controller) {
         mContext = context;
         mController = controller;
-        mTranslator = translator;
         mStateUpdater = new StateUpdater(null, context);
-        mApkUpdater = new MainApkUpdater(context);
 
         // mFormatInjector = new VideoFormatInjector(mContext);
         mDecipherInjector = new DecipherRoutineInjector(mContext);
@@ -118,20 +111,13 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     @Override
     public void onReceiveError(Tab tab, int errorCode) {
         logger.info("onReceiveError called: errorCode: " + errorCode);
-        if (mContext instanceof FragmentManagerActivity) {
-            ((FragmentManagerActivity) mContext).getLoadingManager().showMessage(mErrorTranslator.translate(errorCode));
-        }
+        ((FragmentManager) mContext).getLoadingManager().showMessage(mErrorTranslator.translate(errorCode));
         tab.reload();
     }
 
     @Override
     public void onLoadSuccess(Tab tab) {
-        mTranslator.enable();
-        mApkUpdater.start();
-
-        if (mContext instanceof  TwoFragmentsManager) {
-            ((TwoFragmentsManager) mContext).onBrowserReady();
-        }
+        // onLoadingDone is called inside JavaScriptMessageHandler class
     }
 
     @Override

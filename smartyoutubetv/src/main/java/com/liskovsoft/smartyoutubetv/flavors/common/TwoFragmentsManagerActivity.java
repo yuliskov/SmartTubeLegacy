@@ -13,11 +13,11 @@ import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
-import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentsManager;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
-public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentsManager {
+public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
@@ -204,7 +204,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void onBrowserReady() {
+    public void onLoadingDone() {
+        super.onLoadingDone();
+
         Log.d(TAG, "Browser content started to load");
         initBrowserTransparency();
     }

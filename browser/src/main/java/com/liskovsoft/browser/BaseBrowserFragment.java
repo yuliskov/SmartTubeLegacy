@@ -77,12 +77,6 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     }
 
     @Override
-    public void onBackPressed() {
-        // super.onBackPressed();
-        getActivity().finish();
-    }
-
-    @Override
     public void finish() {
         // NOTE: fix state saving when finishing activity
         saveBrowserState(null);
