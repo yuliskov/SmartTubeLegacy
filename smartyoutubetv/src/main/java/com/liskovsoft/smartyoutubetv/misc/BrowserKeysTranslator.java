@@ -1,9 +1,12 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 public class BrowserKeysTranslator {
+    private static final String TAG = BrowserKeysTranslator.class.getSimpleName();
     private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
+    private static final int UNDEFINED = 0;
     private int mDownFired = 0;
 
     /**
@@ -30,28 +33,50 @@ public class BrowserKeysTranslator {
 
     public KeyEvent doTranslateKeys(KeyEvent event) {
         if (isEventIgnored(event)) {
+            Log.d(TAG, "Event is ignored: " + event);
             return EMPTY_EVENT;
         }
 
-        event = translate(event, KeyEvent.KEYCODE_BUTTON_B, KeyEvent.KEYCODE_ESCAPE);
-        event = translate(event, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_ESCAPE);
-        event = translate(event, KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_G); // menu to guide
-        event = translate(event, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_ENTER);
-        event = translate(event, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_ENTER);
+        int toKeyCode = UNDEFINED;
 
-        return event;
-    }
-
-    private KeyEvent createNewEvent(KeyEvent event, int keyCode) {
-        return new KeyEvent(event.getDownTime(), event.getEventTime(), event.getAction(), keyCode, event.getRepeatCount(), event.getMetaState(),
-                event.getDeviceId(), event.getScanCode(), event.getFlags(), event.getSource());
-    }
-
-    private static KeyEvent translate(KeyEvent origin, int fromKeyCode, int toKeyCode) {
-        if (origin.getKeyCode() == fromKeyCode) {
-            // pay attention, you must pass action_up instead of action_down
-            origin = new KeyEvent(origin.getAction(), toKeyCode);
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_BUTTON_B:
+            case KeyEvent.KEYCODE_BACK:
+                toKeyCode = KeyEvent.KEYCODE_ESCAPE;
+                break;
+            case KeyEvent.KEYCODE_MENU:
+                toKeyCode = KeyEvent.KEYCODE_G; // menu to guide
+                break;
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+            case KeyEvent.KEYCODE_BUTTON_A:
+                toKeyCode = KeyEvent.KEYCODE_ENTER;
+                break;
+            case KeyEvent.KEYCODE_BUTTON_Y:
+                toKeyCode = KeyEvent.KEYCODE_SEARCH;
+                break;
         }
-        return origin;
+
+        return translate(event, toKeyCode);
+    }
+
+    private KeyEvent translate(KeyEvent origin, int toKeyCode) {
+        if (toKeyCode == UNDEFINED) {
+            return origin;
+        }
+
+        Log.d(TAG, "Translating from " + origin.getKeyCode() + " to " + toKeyCode);
+
+        return new KeyEvent(
+                origin.getDownTime(),
+                origin.getEventTime(),
+                origin.getAction(),
+                toKeyCode,
+                origin.getRepeatCount(),
+                origin.getMetaState(),
+                origin.getDeviceId(),
+                origin.getScanCode(),
+                origin.getFlags(),
+                origin.getSource()
+        );
     }
 }
