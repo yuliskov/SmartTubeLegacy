@@ -60,10 +60,8 @@ dependencies {
     implementation project.properties.appCompatVersion
     implementation project.properties.androidLoggerVersion
 
-    //implementation project.properties.exoplayerVersion
-    implementation project.properties.amazonExoplayerVersion
-    // include from sources
-    //implementation project(path: ':exoplayer-library')
+    implementation project.properties.exoplayerVersion
+    //implementation project.properties.amazonExoplayerVersion
 
     implementation project.properties.stethoVersion
 

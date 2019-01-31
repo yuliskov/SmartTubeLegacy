@@ -48,7 +48,7 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
         amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
-        //exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
+        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
     }
@@ -83,9 +83,9 @@ allprojects {
     }
 }
 
-//task clean(type: Delete) {
-//    delete rootProject.buildDir
-//}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
 
 //apply plugin: 'com.github.johnrengelman.shadow'
 //apply plugin: 'java'
