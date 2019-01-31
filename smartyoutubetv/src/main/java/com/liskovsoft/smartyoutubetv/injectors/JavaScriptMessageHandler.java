@@ -21,7 +21,7 @@ public class JavaScriptMessageHandler {
                 Browser.getBus().post(new MicClickedEvent());
                 break;
             case APP_LOADED_MESSAGE:
-                ((FragmentManager) mContext).onLoadingDone();
+                ((FragmentManager) mContext).onAppLoaded();
                 break;
             case SYNC_LANG_MESSAGE:
                 LangUpdater updater = new LangUpdater(mContext);

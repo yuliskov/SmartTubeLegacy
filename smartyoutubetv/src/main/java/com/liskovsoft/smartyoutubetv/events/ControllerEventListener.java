@@ -16,6 +16,7 @@ import com.liskovsoft.browser.Tab;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -117,7 +118,10 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     @Override
     public void onLoadSuccess(Tab tab) {
-        // onLoadingDone is called inside JavaScriptMessageHandler class
+        // onAppLoaded also called inside JavaScriptMessageHandler class
+        if (mContext instanceof TwoFragmentManager) {
+            ((TwoFragmentManager) mContext).onBrowserLoaded();
+        }
     }
 
     @Override

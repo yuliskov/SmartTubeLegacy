@@ -5,6 +5,6 @@ import android.widget.FrameLayout;
 
 public interface FragmentManager {
     void setDispatchEvent(KeyEvent event);
-    void onLoadingDone();
+    void onAppLoaded();
     LoadingManager getLoadingManager();
 }
