@@ -61,15 +61,16 @@ dependencies {
     implementation project.properties.androidLoggerVersion
 
     //implementation project.properties.exoplayerVersion
-    //implementation project.properties.amazonExoplayerVersion
-    implementation project(path: ':exoplayer-library')
+    implementation project.properties.amazonExoplayerVersion
+    // include from sources
+    //implementation project(path: ':exoplayer-library')
 
     implementation project.properties.stethoVersion
 
     implementation project.properties.multiDexVersion
 
     // include vp9 extensions
-    implementation (project(path: ':exoplayer-extension-vp9'), {
-        transitive = false
-    })
+    //implementation (project(path: ':exoplayer-extension-vp9'), {
+    //    transitive = false
+    //})
 }

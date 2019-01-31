@@ -158,7 +158,9 @@ dependencies {
     implementation project.properties.voiceOverlayVersion
 
     //implementation project.properties.exoplayerVersion
-    implementation project(path: ':exoplayer-library')
+    implementation project.properties.amazonExoplayerVersion
+    // include from sources
+    //implementation project(path: ':exoplayer-library')
 
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion
