@@ -8,7 +8,8 @@ var YouTubeUtils = {
     TAG: 'YouTubeUtils',
     LATEST_REVISION: 0,
     FIRST_REVISION: 1,
-    OPENED_VIDEO_SIGN: '#/watch/video',
+    VIDEO_SIGN: '#/watch/video',
+    VIDEO_LIST_SIGN: '#/watch/loading?list',
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: '#/channel',
 
@@ -65,15 +66,23 @@ var YouTubeUtils = {
     },
 
     playerIsOpened: function() {
-        return location.hash.indexOf(this.OPENED_VIDEO_SIGN) != -1;
+        var isOpened =
+            location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
+            location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
+        Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
     },
 
     searchIsOpened: function() {
-        return location.hash.indexOf(this.SEARCH_SIGN) != -1;
+        var isOpened = location.hash.indexOf(this.SEARCH_SIGN) != -1;
+        Log.d(this.TAG, "Search is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
     },
 
     channelIsOpened: function() {
-        return location.hash.indexOf(this.CHANNEL_SIGN) != -1;
+        var isOpened = location.hash.indexOf(this.CHANNEL_SIGN) != -1;
+        Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
     },
 
     isDisabled: function(elem) {
