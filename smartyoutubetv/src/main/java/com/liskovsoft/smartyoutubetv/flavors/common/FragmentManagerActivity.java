@@ -161,6 +161,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.d(TAG, "Dispatching event: " + event);
+
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
             SmartUtils.returnToLaunchersDialog(this);
             return true;
