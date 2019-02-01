@@ -9,18 +9,16 @@ var PlayerController = {
     POSITION_END: 0,
     POSITION_ONE_SEC: 1,
     checkTimeoutMS: 500,
-    numTries: 10,
+    numTries: 0,
     advanceTimeSec: 20,
 
-    getPlayer: function() {
-        return Utils.$('video');
-    },
-
     jumpToEnd: function(onFail) {
+        this.numTries = 10;
         this.setPosition(this.POSITION_END, onFail);
     },
 
     advance: function(onFail) {
+        this.numTries = 10;
         this.setPosition(this.POSITION_ONE_SEC, onFail);
     },
 
@@ -29,7 +27,7 @@ var PlayerController = {
 
         var $this = this;
 
-        var player = this.getPlayer();
+        var player = YouTubeUtils.getPlayer();
 
         if (player) {
             if (isNaN(player.duration)) {
@@ -57,7 +55,7 @@ var PlayerController = {
             }
 
             setTimeout(function() {
-                player.play();
+                YouTubeUtils.playerPlay();
                 $this.checkPlayerState(position, onFail);
             }, this.checkTimeoutMS);
         }
@@ -67,7 +65,7 @@ var PlayerController = {
         var $this = this;
 
         setTimeout(function() {
-            var player = $this.getPlayer();
+            var player = YouTubeUtils.getPlayer();
 
             if (player) {
                 Log.d($this.TAG, "Checking player src, position and duration: " + player.src + " " + player.currentTime + " " + player.duration);

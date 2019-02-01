@@ -11,9 +11,9 @@ function SelectDefaultAccountAddon() {
         var $this = this;
 
         EventUtils.onLoad(function() {
-            if (YouTubeUtils.playerIsOpened() ||
-                YouTubeUtils.searchIsOpened() ||
-                YouTubeUtils.channelIsOpened()) { // dialog not shown yet, because the video is running
+            if (YouTubeUtils.isPlayerOpened() ||
+                YouTubeUtils.isSearchOpened() ||
+                YouTubeUtils.isChannelOpened()) { // dialog not shown yet, because the video is running
                 var handler = function() {
                     $this.selectDefaultAccount();
                     EventUtils.removeListener(YouTubeSelectors.SURFACE_AREA, YouTubeEvents.MODEL_CHANGED_EVENT, handler);

@@ -10,7 +10,7 @@ function BackButton(selector) {
     this.checkDelayMS = 1000;
 
     this.retryOnFail = function() {
-        if (this.retryTimes <= 0 || YouTubeUtils.playerIsClosed()) {
+        if (this.retryTimes <= 0 || YouTubeUtils.isPlayerClosed()) {
             return;
         }
 

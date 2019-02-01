@@ -15,7 +15,7 @@ function TrackEndFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !YouTubeUtils.playerIsClosed()) {
+        if (doChecked && !YouTubeUtils.isPlayerClosed()) {
             YouTubeUtils.enablePlayerSuggestions();
             YouTubeUtils.showPlayerBackground();
 

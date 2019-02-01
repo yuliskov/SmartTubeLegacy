@@ -161,7 +161,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !YouTubeUtils.playerIsClosed()) { // fake btn can only be checked
+        if (doChecked && !YouTubeUtils.isPlayerClosed()) { // fake btn can only be checked
             Log.d(this.TAG, "opening suggestions");
             YouTubeUtils.enablePlayerSuggestions();
             YouTubeUtils.hidePlayerBackground();

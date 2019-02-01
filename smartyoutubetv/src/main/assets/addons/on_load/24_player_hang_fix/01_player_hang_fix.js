@@ -18,20 +18,12 @@ function PlayerHangFixAddon() {
     };
 
     this.pressOnPlayButton = function() {
-        var $this = this;
-        var plBtn = Utils.$(YouTubeSelectors.PLAYER_PLAY_BUTTON);
-        if (plBtn && this.isPaused()) {
-            // EventUtils.triggerEnter(plBtn);
+        if (YouTubeUtils.isPlayerVisible() && YouTubeUtils.isPlayerPaused()) {
+            YouTubeUtils.playerPlay();
             setTimeout(function() {
-                $this.isPaused() && EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
+                YouTubeUtils.isPlayerPaused() && EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
             }, this.QUIT_VIDEO_TIMEOUT);
         }
-    };
-
-    this.isPaused = function() {
-        var v = Utils.$('video');
-
-        return v && v.paused;
     };
 }
 

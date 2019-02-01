@@ -61,36 +61,6 @@ var YouTubeUtils = {
         Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS);
     },
 
-    playerIsClosed: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
-    },
-
-    playerIsOpened: function() {
-        var isOpened =
-            location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
-            location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
-        Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
-        return isOpened;
-    },
-
-    searchIsOpened: function() {
-        var isOpened = location.hash.indexOf(this.SEARCH_SIGN) != -1;
-        Log.d(this.TAG, "Search is opened: " + isOpened + ", hash: " + location.hash);
-        return isOpened;
-    },
-
-    channelIsOpened: function() {
-        var isOpened = location.hash.indexOf(this.CHANNEL_SIGN) != -1;
-        Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
-        return isOpened;
-    },
-
-    isDisabled: function(elem) {
-        var hasClass = Utils.hasClass(elem, YouTubeClasses.ELEMENT_DISABLED);
-        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
-        return hasClass;
-    },
-
     getPlayerRevision: function() {
         var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
 
@@ -169,7 +139,52 @@ var YouTubeUtils = {
         return "";
     },
 
+    isPlayerClosed: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
+    },
+
+    isPlayerOpened: function() {
+        var isOpened =
+            location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
+            location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
+        Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
+    },
+
+    isSearchOpened: function() {
+        var isOpened = location.hash.indexOf(this.SEARCH_SIGN) != -1;
+        Log.d(this.TAG, "Search is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
+    },
+
+    isChannelOpened: function() {
+        var isOpened = location.hash.indexOf(this.CHANNEL_SIGN) != -1;
+        Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
+        return isOpened;
+    },
+
+    isDisabled: function(elem) {
+        var hasClass = Utils.hasClass(elem, YouTubeClasses.ELEMENT_DISABLED);
+        console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
+        return hasClass;
+    },
+
     isPlayerVisible: function() {
         return Utils.isVisible('video');
+    },
+
+    isPlayerPaused: function() {
+        var v = Utils.$('video');
+        return v && v.paused;
+    },
+
+    playerPlay: function() {
+        var v = Utils.$('video');
+        v && v.pause();
+        v && v.play();
+    },
+
+    getPlayer: function() {
+        return Utils.$('video');
     }
 };

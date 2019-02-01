@@ -92,7 +92,7 @@ var ExoUtils = {
             states[PlayerActivity.BUTTON_NEXT] = null;
         }
 
-        if (YouTubeUtils.playerIsClosed()) {
+        if (YouTubeUtils.isPlayerClosed()) {
             YouTubeUtils.showPlayerBackground();
         }
 
