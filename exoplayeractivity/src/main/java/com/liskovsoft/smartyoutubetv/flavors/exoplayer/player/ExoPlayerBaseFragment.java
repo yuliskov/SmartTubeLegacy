@@ -308,7 +308,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      */
     protected void releasePlayer() {
         if (mAutoFrameRateManager != null) {
-            // mAutoFrameRateManager.restoreOriginalState();
+            mAutoFrameRateManager.restoreOriginalState();
         }
 
         if (mPlayer != null) {
