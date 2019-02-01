@@ -6,9 +6,9 @@ import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 public class JavaScriptMessageHandler {
-    private final static String MIC_CLICKED_MESSAGE = "mic_clicked_message";
-    private final static String APP_LOADED_MESSAGE = "app_loaded_message";
-    private final static String SYNC_LANG_MESSAGE = "sync_lang_message";
+    private final static String MESSAGE_APP_LOADED = "message_app_loaded";
+    private final static String MESSAGE_MIC_CLICKED = "message_mic_clicked";
+    private final static String MESSAGE_SYNC_LANG = "message_sync_lang";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -17,13 +17,13 @@ public class JavaScriptMessageHandler {
 
     public void handleMessage(String message, String content) {
         switch (message) {
-            case MIC_CLICKED_MESSAGE:
+            case MESSAGE_MIC_CLICKED:
                 Browser.getBus().post(new MicClickedEvent());
                 break;
-            case APP_LOADED_MESSAGE:
+            case MESSAGE_APP_LOADED:
                 ((FragmentManager) mContext).onAppLoaded();
                 break;
-            case SYNC_LANG_MESSAGE:
+            case MESSAGE_SYNC_LANG:
                 LangUpdater updater = new LangUpdater(mContext);
                 updater.setPreferredLocale(content);
                 updater.update();

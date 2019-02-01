@@ -18,11 +18,11 @@ public class OpenSubscriptionsDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.SUBSCRIPTIONS_PAGE.endsWith(mPrefs.getBootPage());
+        return SmartPreferences.SUBSCRIPTIONS_PAGE.equals(mPrefs.getBootPage());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setBootPage(checked ? SmartPreferences.SUBSCRIPTIONS_PAGE: SmartPreferences.DEFAULT_PAGE);
+        mPrefs.setBootPage(checked ? SmartPreferences.SUBSCRIPTIONS_PAGE : SmartPreferences.DEFAULT_PAGE);
     }
 }

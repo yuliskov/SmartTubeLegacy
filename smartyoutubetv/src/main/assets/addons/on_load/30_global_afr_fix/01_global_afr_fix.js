@@ -12,7 +12,7 @@ function GlobalAfrFixAddon() {
 
     this.overrideVideoSrc = function() {
         var $this = this;
-        var v = Utils.$('video');
+        var v = YouTubeUtils.getPlayer();
 
         if (!v) {
             setTimeout(function() {
@@ -26,6 +26,6 @@ function GlobalAfrFixAddon() {
     };
 }
 
-// if (DeviceUtils.isExo()) {
-//     new GlobalAfrFixAddon().run();
-// }
+if (DeviceUtils.isExo() && DeviceUtils.isAfrFixEnabled()) {
+    new GlobalAfrFixAddon().run();
+}

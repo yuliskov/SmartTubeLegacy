@@ -78,4 +78,5 @@
     <string name="tweak_lock_last_launcher">Lock %s</string>
     <string name="tweak_open_music">Boot strict to the Music page</string>
     <string name="tweak_open_subscriptions">Boot to subscriptions</string>
+    <string name="tweak_global_afx_fix">Global afr fix</string>
 </resources>

@@ -13,6 +13,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.events.AssetFileInjectEvent;
 import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.PostDecipheredSignaturesEvent;
@@ -60,12 +61,7 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public void closeApp() {
         if (mContext instanceof Activity) {
-            Helpers.postOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((Activity) mContext).finish();
-                }
-            });
+            Helpers.postOnUiThread(() -> ((Activity) mContext).finish());
         }
     }
     
@@ -109,12 +105,9 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     private void reloadTab() {
         Handler handler = new Handler(mContext.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                for (Tab tab : mTabs) {
-                    tab.reload();
-                }
+        handler.post(() -> {
+            for (Tab tab : mTabs) {
+                tab.reload();
             }
         });
     }
@@ -198,5 +191,12 @@ public class WebViewJavaScriptInterface {
     @org.xwalk.core.JavascriptInterface
     public boolean isMicAvailable() {
         return Helpers.isMicAvailable(mContext);
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean isAfrFixEnabled() {
+        SmartPreferences prefs = SmartPreferences.instance(mContext);
+        return SmartPreferences.AFR_FIX_STATE_ENABLED.equals(prefs.getAfrFixState());
     }
 }

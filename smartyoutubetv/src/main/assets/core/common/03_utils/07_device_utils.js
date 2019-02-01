@@ -9,6 +9,9 @@ var DeviceUtils = {
     MP4: 'mp4',
     WEBVIEW: 'WebView',
     XWALK: 'XWalk',
+    MESSAGE_APP_LOADED: 'message_app_loaded',
+    MESSAGE_MIC_CLICKED: 'message_mic_clicked',
+    MESSAGE_SYNC_LANG: 'message_sync_lang',
 
     init: function() {
         // do init here
@@ -187,12 +190,16 @@ var DeviceUtils = {
         return false;
     },
 
-    getPreferredCodec: function() {
-        return this.getApp().getPreferredCodec();
+    getScreenWidth: function() {
+        return window.innerWidth;
     },
 
     sendMessage: function(message, content) {
-        this.getApp().sendMessage(message, content);
+        return this.getApp().sendMessage(message, content);
+    },
+
+    getPreferredCodec: function() {
+        return this.getApp().getPreferredCodec();
     },
 
     isMicAvailable: function() {
@@ -204,8 +211,8 @@ var DeviceUtils = {
         return jsMicAvailable || this.getApp().isMicAvailable();
     },
 
-    getScreenWidth: function() {
-        return window.innerWidth;
+    isAfrFixEnabled: function() {
+        return this.getApp().isAfrFixEnabled();
     }
 };
 

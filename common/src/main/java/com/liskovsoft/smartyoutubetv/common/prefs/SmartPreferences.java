@@ -26,6 +26,9 @@ public final class SmartPreferences {
     public static final String UPDATE_CHECK_STABLE = "update_check_stable";
     public static final String UPDATE_CHECK_BETA = "update_check_beta";
     public static final String UPDATE_CHECK_DISABLED = "update_check_disabled";
+    private static final String AFR_FIX_STATE = "afrFixState";
+    public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
+    public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -200,5 +203,15 @@ public final class SmartPreferences {
 
     public String getBootPage() {
         return mPrefs.getString(BOOT_PAGE, DEFAULT_PAGE);
+    }
+
+    public void setAfrFixState(String state) {
+        mPrefs.edit()
+                .putString(AFR_FIX_STATE, state)
+                .apply();
+    }
+
+    public String getAfrFixState() {
+        return mPrefs.getString(AFR_FIX_STATE, AFR_FIX_STATE_DISABLED);
     }
 }

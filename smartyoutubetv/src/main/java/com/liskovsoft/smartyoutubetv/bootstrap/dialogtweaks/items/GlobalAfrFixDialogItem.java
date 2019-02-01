@@ -5,12 +5,12 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class OpenMusicDialogItem extends DialogItem {
+public class GlobalAfrFixDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public OpenMusicDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_music), false);
+    public GlobalAfrFixDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_global_afx_fix), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class OpenMusicDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.MUSIC_PAGE.equals(mPrefs.getBootPage());
+        return SmartPreferences.AFR_FIX_STATE_ENABLED.equals(mPrefs.getAfrFixState());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setBootPage(checked ? SmartPreferences.MUSIC_PAGE : SmartPreferences.DEFAULT_PAGE);
+        mPrefs.setAfrFixState(checked ? SmartPreferences.AFR_FIX_STATE_ENABLED : SmartPreferences.AFR_FIX_STATE_DISABLED);
     }
 }
