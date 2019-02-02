@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
 import android.content.Context;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
 /**
@@ -15,11 +15,11 @@ public class VideoZoomManager {
     public static final int MODE_FIT_BOTH = AspectRatioFrameLayout.RESIZE_MODE_ZOOM;
     public static final int MODE_STRETCH = AspectRatioFrameLayout.RESIZE_MODE_FILL;
     private final Context mContext;
-    private final SimpleExoPlayerView mPlayerView;
+    private final PlayerView mPlayerView;
     private final ExoPreferences mPrefs;
     private int mMode = MODE_DEFAULT;
 
-    public VideoZoomManager(Context context, SimpleExoPlayerView playerView) {
+    public VideoZoomManager(Context context, PlayerView playerView) {
         mContext = context;
         mPlayerView = playerView;
         mPrefs = ExoPreferences.instance(mContext);

@@ -47,8 +47,8 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -67,7 +67,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.UUID;
 
-public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlaybackControlView.VisibilityListener {
+public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlayerControlView.VisibilityListener {
     private static final String TAG = PlayerCoreFragment.class.getName();
     protected static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
@@ -96,7 +96,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     protected SimpleExoPlayer mPlayer;
     protected DefaultTrackSelector mTrackSelector;
 
-    protected SimpleExoPlayerView mSimpleExoPlayerView;
+    protected PlayerView mSimpleExoPlayerView;
     protected LinearLayout mDebugRootView;
     protected TextView mLoadingView;
     protected FrameLayout mDebugViewGroup;

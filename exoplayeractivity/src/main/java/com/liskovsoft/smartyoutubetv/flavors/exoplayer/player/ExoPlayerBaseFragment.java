@@ -15,6 +15,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
@@ -129,10 +131,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
 
-        //mTrackSelector.setParameters(
-        //        mTrackSelector.getParameters()
-        //        .withMaxVideoBitrate(Integer.MAX_VALUE)
-        //);
+        mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)

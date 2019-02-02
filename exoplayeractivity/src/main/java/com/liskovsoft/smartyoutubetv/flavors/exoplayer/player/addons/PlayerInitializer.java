@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
 import android.text.Html;
 import android.view.SurfaceView;
@@ -10,7 +9,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
@@ -18,13 +17,11 @@ import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Locale;
 
 public class PlayerInitializer {
     private final ExoPlayerBaseFragment mPlayerFragment;
-    private final SimpleExoPlayerView mExoPlayerView;
+    private final PlayerView mExoPlayerView;
     private final View mRootView;
     private TextView videoTitle;
     private TextView videoTitle2;

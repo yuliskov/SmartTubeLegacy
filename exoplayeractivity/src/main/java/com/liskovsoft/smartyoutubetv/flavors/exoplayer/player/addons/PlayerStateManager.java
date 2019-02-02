@@ -28,7 +28,6 @@ import java.util.Set;
  */
 public class PlayerStateManager {
     private static final String TAG = PlayerStateManager.class.getSimpleName();
-    private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final String CODEC_AVC = "avc";
     private static final String CODEC_VP9 = "vp9";
     private static final String CODEC_VP9_HDR = "vp9.2";
@@ -441,7 +440,7 @@ public class PlayerStateManager {
             return false;
         }
 
-        SelectionOverride override = mSelector.getSelectionOverride(RENDERER_INDEX_VIDEO, groups);
+        SelectionOverride override = mSelector.getParameters().getSelectionOverride(RENDERER_INDEX_VIDEO, groups);
 
         return override == null;
     }

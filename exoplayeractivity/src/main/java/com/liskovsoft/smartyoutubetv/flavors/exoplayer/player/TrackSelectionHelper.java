@@ -129,8 +129,8 @@ import java.util.TreeSet;
             mTrackGroupsAdaptive[i] = mTrackSelectionFactory != null && trackInfo.getAdaptiveSupport(rendererIndex, i, false) !=
                     RendererCapabilities.ADAPTIVE_NOT_SUPPORTED && mTrackGroups.get(i).length > 1;
         }
-        mIsDisabled = mSelector.getRendererDisabled(rendererIndex);
-        mOverride = mSelector.getSelectionOverride(rendererIndex, mTrackGroups);
+        mIsDisabled = mSelector.getParameters().getRendererDisabled(rendererIndex);
+        mOverride = mSelector.getParameters().getSelectionOverride(rendererIndex, mTrackGroups);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppDialog);
         mAlertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
@@ -362,12 +362,12 @@ import java.util.TreeSet;
     }
 
     private void applySelection() {
-        mSelector.setRendererDisabled(mRendererIndex, mIsDisabled);
+        mSelector.setParameters(mSelector.buildUponParameters().setRendererDisabled(mRendererIndex, mIsDisabled));
 
         if (mOverride != null) {
-            mSelector.setSelectionOverride(mRendererIndex, mTrackGroups, mOverride);
+            mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(mRendererIndex, mTrackGroups, mOverride));
         } else {
-            mSelector.clearSelectionOverrides(mRendererIndex); // Auto quality button selected
+            mSelector.setParameters(mSelector.buildUponParameters().clearSelectionOverrides(mRendererIndex)); // Auto quality button selected
         }
 
         ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();

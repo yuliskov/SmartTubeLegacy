@@ -189,7 +189,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
             return null;
         }
         TrackGroupArray groups = trackInfo.getTrackGroups(VIDEO_RENDERER_INDEX);
-        SelectionOverride override = trackSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
+        SelectionOverride override = trackSelector.getParameters().getSelectionOverride(VIDEO_RENDERER_INDEX, groups);
         if (override == null || override.tracks.length == 0)
             return null;
         return groups.get(override.groupIndex).getFormat(override.tracks[0]);

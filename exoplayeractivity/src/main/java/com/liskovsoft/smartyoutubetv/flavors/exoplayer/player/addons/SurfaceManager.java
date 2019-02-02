@@ -18,7 +18,7 @@ public final class SurfaceManager implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         player.setVideoSurface(holder.getSurface());
-        trackSelector.setRendererDisabled(getVideoRendererIndex(), false);
+        trackSelector.setParameters(trackSelector.buildUponParameters().setRendererDisabled(getVideoRendererIndex(), false));
     }
 
     @Override

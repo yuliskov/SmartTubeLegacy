@@ -95,8 +95,8 @@ public class PlayerHangListener extends AbstractPlayerEventListener {
             return;
 
         TrackGroupArray trackGroups = trackInfo.getTrackGroups(VIDEO_RENDERER_INDEX);
-        SelectionOverride override = mSelector.getSelectionOverride(VIDEO_RENDERER_INDEX, trackGroups);
-        mSelector.setSelectionOverride(VIDEO_RENDERER_INDEX, trackGroups, override);
+        SelectionOverride override = mSelector.getParameters().getSelectionOverride(VIDEO_RENDERER_INDEX, trackGroups);
+        mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(VIDEO_RENDERER_INDEX, trackGroups, override));
     }
 
     @Override

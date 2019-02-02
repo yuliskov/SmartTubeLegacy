@@ -8,12 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
@@ -26,7 +26,7 @@ public class PlayerButtonsManager {
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final Map<Integer, Boolean> mButtonStates;
     private final Map<Integer, String> mIdTagMapping;
-    private final SimpleExoPlayerView mExoPlayerView;
+    private final PlayerView mExoPlayerView;
     private final ExoPreferences mPrefs;
     private final View mRootView;
     private boolean mListenerAdded;
