@@ -29,7 +29,7 @@ public final class SurfaceManager implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         player.setVideoSurface(null);
-        trackSelector.setRendererDisabled(getVideoRendererIndex(), true);
+        trackSelector.setParameters(trackSelector.buildUponParameters().setRendererDisabled(getVideoRendererIndex(), true));
     }
 
     private int getVideoRendererIndex() {

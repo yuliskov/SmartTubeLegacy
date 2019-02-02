@@ -219,7 +219,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     DefaultLoadControl.DEFAULT_TARGET_BUFFER_BYTES,
                     DefaultLoadControl.DEFAULT_PRIORITIZE_TIME_OVER_SIZE_THRESHOLDS);
 
-            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), renderersFactory, mTrackSelector, loadControl);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), renderersFactory, mTrackSelector, loadControl, null, BANDWIDTH_METER);
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);
@@ -228,8 +228,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             mPlayer.setMetadataOutput(mEventLogger);
 
             mSimpleExoPlayerView.setPlayer(mPlayer);
-            mPlayer.setPlayWhenReady(false);
-            // player.setPlayWhenReady(shouldAutoPlay);
+            mPlayer.setPlayWhenReady(false); // give a chance to switch/restore track before play
         }
         if (needNewPlayer || mNeedRetrySource) {
             String action = intent.getAction();
@@ -491,10 +490,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         if (trackGroups != mLastSeenTrackGroupArray) {
             MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
-                if (mappedTrackInfo.getTrackTypeRendererSupport(C.TRACK_TYPE_VIDEO) == MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS) {
+                if (mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_VIDEO) == MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS) {
                     showToast(R.string.error_unsupported_video);
                 }
-                if (mappedTrackInfo.getTrackTypeRendererSupport(C.TRACK_TYPE_AUDIO) == MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS) {
+                if (mappedTrackInfo.getTypeSupport(C.TRACK_TYPE_AUDIO) == MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS) {
                     showToast(R.string.error_unsupported_audio);
                 }
             }

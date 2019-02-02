@@ -311,7 +311,7 @@ public class PlayerStateManager {
             return;
         }
         TrackGroupArray groups = trackInfo.getTrackGroups(RENDERER_INDEX_SUBTITLE);
-        SelectionOverride override = mSelector.getSelectionOverride(RENDERER_INDEX_SUBTITLE, groups);
+        SelectionOverride override = mSelector.getParameters().getSelectionOverride(RENDERER_INDEX_SUBTITLE, groups);
         if (override == null && mDefaultSubtitleLang != null) { // user switched the track to auto mode
             mPrefs.setSubtitleLang(null);
             return;

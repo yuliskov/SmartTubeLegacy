@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
@@ -48,8 +49,8 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -150,7 +151,7 @@ import java.util.Locale;
     }
     Log.d(TAG, "Tracks [");
     // Log tracks associated to renderers.
-    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.length; rendererIndex++) {
+    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
       TrackGroupArray rendererTrackGroups = mappedTrackInfo.getTrackGroups(rendererIndex);
       TrackSelection trackSelection = trackSelections.get(rendererIndex);
       if (rendererTrackGroups.length > 0) {
@@ -186,7 +187,7 @@ import java.util.Locale;
       }
     }
     // Log tracks not associated with a renderer.
-    TrackGroupArray unassociatedTrackGroups = mappedTrackInfo.getUnassociatedTrackGroups();
+    TrackGroupArray unassociatedTrackGroups = mappedTrackInfo.getUnmappedTrackGroups();
     if (unassociatedTrackGroups.length > 0) {
       Log.d(TAG, "  Renderer:None [");
       for (int groupIndex = 0; groupIndex < unassociatedTrackGroups.length; groupIndex++) {
@@ -372,13 +373,13 @@ import java.util.Locale;
 
   private static String getStateString(int state) {
     switch (state) {
-      case ExoPlayer.STATE_BUFFERING:
+      case Player.STATE_BUFFERING:
         return "B";
-      case ExoPlayer.STATE_ENDED:
+      case Player.STATE_ENDED:
         return "E";
-      case ExoPlayer.STATE_IDLE:
+      case Player.STATE_IDLE:
         return "I";
-      case ExoPlayer.STATE_READY:
+      case Player.STATE_READY:
         return "R";
       default:
         return "?";

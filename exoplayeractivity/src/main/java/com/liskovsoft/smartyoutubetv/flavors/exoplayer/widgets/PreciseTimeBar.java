@@ -386,16 +386,22 @@ public class PreciseTimeBar extends View implements TimeBar {
         super.onInitializeAccessibilityNodeInfo(info);
         info.setClassName(PreciseTimeBar.class.getCanonicalName());
         info.setContentDescription(getProgressText());
+
         if (duration <= 0) {
             return;
         }
-        if (Util.SDK_INT >= 21) {
-            info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
-            info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
-        } else if (Util.SDK_INT >= 16) {
-            info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
-            info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
-        }
+
+        info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
+        info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
+
+        //TODO: cleanup
+        //if (Util.SDK_INT >= 21) {
+        //    info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
+        //    info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
+        //} else if (Util.SDK_INT >= 16) {
+        //    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
+        //    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
+        //}
     }
 
     @TargetApi(16)
