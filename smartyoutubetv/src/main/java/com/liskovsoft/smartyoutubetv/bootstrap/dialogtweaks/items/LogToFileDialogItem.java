@@ -25,12 +25,6 @@ public class LogToFileDialogItem extends DialogItem {
 
     @Override
     public void setChecked(boolean checked) {
-        if (checked) {
-            MessageHelpers.showLongMessage(
-                    mContext,
-                    mContext.getResources().getString(R.string.log_stored_in_path, Log.getLogPath(mContext)));
-        }
-
         mPrefs.setEnableLogToFile(checked);
         Log.init(mContext.getApplicationContext());
     }

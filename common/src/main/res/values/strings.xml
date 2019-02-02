@@ -1,3 +1,4 @@
 <resources>
     <string name="system_lang">Default</string>
+    <string name="log_stored_in_path">Log path: %s</string>
 </resources>

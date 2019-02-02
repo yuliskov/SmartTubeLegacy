@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="system_lang">По-умолчанию</string>
+    <string name="log_stored_in_path">Путь: %s</string>
 </resources>

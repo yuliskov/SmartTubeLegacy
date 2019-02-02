@@ -55,8 +55,4 @@ public class Log {
             sLogger = new SystemLogger();
         }
     }
-
-    public static String getLogPath(Context context) {
-        return FileLogger.getLogPath(context);
-    }
 }

@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.common.mylogger;
 
 import android.content.Context;
+import com.liskovsoft.smartyoutubetv.common.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
@@ -21,6 +22,10 @@ class FileLogger extends MyLogger {
 
     public FileLogger(Context context) {
         mContext = context;
+
+        MessageHelpers.showLongMessage(
+                mContext,
+                mContext.getResources().getString(R.string.log_stored_in_path, getLogPath(mContext)));
     }
 
     @Override
@@ -80,7 +85,7 @@ class FileLogger extends MyLogger {
         return mWriter;
     }
 
-    public static String getLogPath(Context context) {
+    private static String getLogPath(Context context) {
         return getLogFile(context).toString();
     }
 
