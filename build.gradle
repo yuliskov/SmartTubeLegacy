@@ -45,7 +45,8 @@ buildscript {
         espressoCoreVersion = 'com.android.support.test.espresso:espresso-core:2.2.2'
         crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.9.8@aar'
         asmVersion = 'org.ow2.asm:asm:5.0.4'
-        stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
+        //stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
+        stethoVersion = 'com.github.facebook.stetho:stetho:6d148f20b96ecb29320cced6617830eda8af0426' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
         amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
