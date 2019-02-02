@@ -1,8 +1,6 @@
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
-        jcenter()
-        google()
     }
 
     dependencies {
@@ -12,8 +10,6 @@ buildscript {
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
         classpath 'io.fabric.tools:gradle:1.+'
-
-        classpath project.properties.resGuardVersion
     }
 }
 
@@ -21,8 +17,6 @@ apply plugin: 'com.android.application'
 
 // Put Fabric plugin after Android plugin
 apply plugin: 'io.fabric'
-
-apply plugin: 'AndResGuard'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -126,52 +120,6 @@ android {
         abortOnError true
         lintConfig rootProject.file('lint.xml')
     }
-}
-
-andResGuard {
-    // mappingFile = file("./resource_mapping.txt")
-    mappingFile = null
-    use7zip = true
-    useSign = true
-    // it will keep the origin path of your resources when it's true
-    keepRoot = false
-
-    whiteList = [
-            // your icon
-            "R.drawable.icon",
-            // for fabric
-            "R.string.com.crashlytics.*",
-            // for google-services
-            "R.string.google_app_id",
-            "R.string.gcm_defaultSenderId",
-            "R.string.default_web_client_id",
-            "R.string.ga_trackingId",
-            "R.string.firebase_database_url",
-            "R.string.google_api_key",
-            "R.string.google_crash_reporting_api_key"
-    ]
-    compressFilePattern = [
-            "*.png",
-            "*.jpg",
-            "*.jpeg",
-            "*.gif",
-    ]
-    sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.2.15'
-        //path = "/usr/local/bin/7za"
-    }
-
-    /**
-     * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
-     * to the path which assemble[Task] write to
-     **/
-    // finalApkBackupPath = "${project.rootDir}/final.apk"
-
-    /**
-     * Optional: Specifies the name of the message digest algorithm to user when digesting the entries of JAR file
-     * Only works in V1signing, default value is "SHA-1"
-     **/
-    // digestalg = "SHA-256"
 }
 
 dependencies {
