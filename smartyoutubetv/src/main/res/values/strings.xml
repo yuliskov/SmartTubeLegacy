@@ -74,7 +74,7 @@
     <string name="tweak_end_cards">Show end video captions</string>
     <string name="tweak_log_to_file">Save log to file</string>
     <string name="tweak_unplayable_video_fix">Unplayable video fix</string>
-    <string name="tweak_lock_last_launcher">Lock %s</string>
+    <string name="tweak_lock_last_launcher">Lock %s launcher</string>
     <string name="tweak_open_music">Boot strict to the Music page</string>
     <string name="tweak_open_subscriptions">Boot to subscriptions</string>
     <string name="tweak_global_afx_fix">Global afr fix</string>

@@ -55,8 +55,8 @@
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
     <string name="tweak_log_to_file">Сохранять лог в файл</string>
     <string name="tweak_unplayable_video_fix">Исправлять непроигрываемые видео</string>
-    <string name="tweak_lock_last_launcher">Заблокировать %s</string>
+    <string name="tweak_lock_last_launcher">Заблокировать %s лаунчер</string>
     <string name="tweak_open_music">Загружаться в раздел Музыка</string>
     <string name="tweak_open_subscriptions">Загружаться в раздел Подписки</string>
-    <string name="tweak_global_afx_fix">Глобальный афр фикс</string>
+    <string name="tweak_global_afx_fix">Исправление глобального автофреймрейта</string>
 </resources>
