@@ -3,6 +3,18 @@ package com.liskovsoft.smartyoutubetv.common.mylogger;
 import android.util.Log;
 
 class SystemLogger extends MyLogger {
+    private static MyLogger sLogger;
+
+    private SystemLogger() {}
+
+    public static MyLogger instance() {
+        if (sLogger == null) {
+            sLogger = new SystemLogger();
+        }
+
+        return sLogger;
+    }
+
     @Override
     public void d(String tag, String msg) {
         Log.d(tag, msg);
