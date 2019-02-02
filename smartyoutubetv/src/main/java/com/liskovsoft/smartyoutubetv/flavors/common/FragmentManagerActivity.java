@@ -232,7 +232,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     protected void onPause() {
         super.onPause();
 
-        int a = 1/0;
+        // int a = 1/0;
 
         Log.flush();
     }
