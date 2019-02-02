@@ -1,3 +1,5 @@
+gradle.properties
+android.keystore
 build.log
 notes.txt
 deps.txt

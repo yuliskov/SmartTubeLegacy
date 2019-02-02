@@ -51,14 +51,15 @@ buildscript {
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
+        resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
     }
 }
 
 allprojects {
     repositories {
         // browse: https://bintray.com/bintray/jcenter
-        google()
         jcenter()
+        google()
 
         // crosswalk
         maven {
