@@ -28,17 +28,15 @@ import android.os.Handler;
 import android.os.Message;
 import com.liskovsoft.browser.helpers.BrowserContract;
 import com.liskovsoft.browser.helpers.BrowserContract.History;
-
 import com.liskovsoft.browser.provider.BrowserProvider2.Thumbnails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class DataController {
-    private static final Logger sLogger = LoggerFactory.getLogger(DataController.class);
+    private static final String TAG = DataController.class.getSimpleName();
     // Message IDs
     private static final int HISTORY_UPDATE_VISITED = 100;
     private static final int HISTORY_UPDATE_TITLE = 101;
@@ -282,10 +280,10 @@ public class DataController {
                 if (cursor != null) // fix NPE on Android 5.1
                     isBookmark = cursor.moveToFirst();
             } catch (SQLiteException e) {
-                sLogger.error("Error checking for bookmark: " + e);
+                Log.e(TAG, "Error checking for bookmark: " + e);
             } catch (SecurityException e) {
                 // TODO: Permission Denial: opening provider that is not exported from uid
-                sLogger.error("Bookmark provider error: " + e);
+                Log.e(TAG, "Bookmark provider error: " + e);
             } finally {
                 if (cursor != null) cursor.close();
             }

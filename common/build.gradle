@@ -44,4 +44,6 @@ dependencies {
     implementation project.properties.gsonVersion
 
     implementation project.properties.multiDexVersion
+
+    implementation project.properties.stethoVersion
 }

@@ -2,14 +2,11 @@ package com.liskovsoft.browser;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcel;
 import android.util.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,8 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CrashRecoveryHandler {
-    private static final Logger logger = LoggerFactory.getLogger(CrashRecoveryHandler.class);
-
+    private static final String TAG = CrashRecoveryHandler.class.getSimpleName();
     private static final boolean LOGV_ENABLED = Browser.LOGV_ENABLED;
     private static final String LOGTAG = "BrowserCrashRecovery";
     private static final String STATE_FILE = "browser_state.parcel";
@@ -187,9 +183,9 @@ public class CrashRecoveryHandler {
             }
         } catch (FileNotFoundException e) {
             // No state to recover
-            logger.info("No state to recover");
+            Log.i(TAG, "No state to recover");
         } catch (Throwable e) {
-            logger.warn("Failed to recover state!", e);
+            Log.w(TAG, "Failed to recover state!", e);
         } finally {
             parcel.recycle();
             if (fin != null) {
@@ -238,7 +234,7 @@ public class CrashRecoveryHandler {
         if (mIsPaused) {
             return;
         }
-        logger.debug("Saving crash recovery state");
+        Log.d(TAG, "Saving crash recovery state");
         Parcel p = Parcel.obtain();
         try {
             state.writeToParcel(p, 0);
@@ -256,7 +252,7 @@ public class CrashRecoveryHandler {
                 stateJournal.renameTo(stateFile);
             }
         } catch (Throwable e) {
-            logger.error("Failed to save persistent state", e);
+            Log.e(TAG, "Failed to save persistent state", e);
         } finally {
             p.recycle();
         }

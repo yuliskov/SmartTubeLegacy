@@ -138,8 +138,6 @@ dependencies {
     implementation project.properties.appCompatVersion
     implementation project.properties.constraintLayoutVersion
 
-    implementation project.properties.androidLoggerVersion
-
     implementation project.properties.butterKnifeVersion
     annotationProcessor project.properties.butterKnifeCompilerVersion
 

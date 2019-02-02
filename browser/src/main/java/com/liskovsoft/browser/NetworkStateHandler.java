@@ -8,14 +8,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.webkit.WebView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 /**
  * Handle network state changes
  */
 public class NetworkStateHandler {
-    private static final Logger logger = LoggerFactory.getLogger(BaseBrowserFragment.class);
+    private static final String TAG = NetworkStateHandler.class.getSimpleName();
     private Activity mActivity;
     private Controller mController;
 
@@ -49,7 +48,7 @@ public class NetworkStateHandler {
                         String subtypeName = info.getSubtypeName();
                         sendNetworkType(typeName.toLowerCase(), (subtypeName != null ? subtypeName.toLowerCase() : ""));
                     } else {
-                        logger.warn("Intent doesn't contain EXTRA_NETWORK_INFO");
+                        Log.w(TAG, "Intent doesn't contain EXTRA_NETWORK_INFO");
                     }
 
                     BrowserSettings.getInstance().updateConnectionType();

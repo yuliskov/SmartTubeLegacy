@@ -3,9 +3,21 @@ package com.liskovsoft.smartyoutubetv;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import com.facebook.stetho.Stetho;
+import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 
 public class ApplicationCommon extends Application {
     private static final String TAG = ApplicationCommon.class.getSimpleName();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // A WebView debug bridge, enables access to Chrome Dev Tools
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
+    }
 
     /**
      * Use MultiDexApplication: crashlytics fix on Android 4.4<br/>

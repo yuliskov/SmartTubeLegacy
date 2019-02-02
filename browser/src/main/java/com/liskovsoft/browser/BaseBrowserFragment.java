@@ -12,16 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.liskovsoft.browser.addons.SimpleUIController;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseBrowserFragment extends Fragment implements BrowserFragment {
-    private static final Logger logger = LoggerFactory.getLogger(BaseBrowserFragment.class);
+    private static final String TAG = BaseBrowserFragment.class.getSimpleName();
     private Controller mController;
     private final String mDefaultHomeUrl = "https://google.com";
     private final String mDefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
@@ -70,9 +69,11 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
     }
 
     private void saveBrowserState(Bundle outState) {
-        if (mController == null)
+        if (mController == null) {
             return;
-        logger.info("BrowserActivity.onSaveInstanceState: this=", this);
+        }
+
+        Log.i(TAG, "BrowserActivity.onSaveInstanceState: this=" + this);
         mController.onSaveInstanceState(outState);
     }
 
@@ -141,7 +142,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
             return;
         }
 
-        logger.info("BrowserActivity.onPause: this=" + this);
+        Log.i(TAG, "BrowserActivity.onPause: this=" + this);
         mController.onPause();
     }
 
@@ -149,7 +150,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         if (mController == null) {
             return;
         }
-        logger.info("BrowserActivity.onResume: this=" + this);
+        Log.i(TAG, "BrowserActivity.onResume: this=" + this);
         mController.onResume();
     }
 
@@ -225,7 +226,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         }
         boolean ignore = !mPowerManager.isScreenOn();
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
-        logger.info("ignore intents: {}", ignore);
+        Log.i(TAG, "ignore intents: " + ignore);
         return ignore;
     }
 

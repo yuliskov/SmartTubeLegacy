@@ -3,18 +3,17 @@ package com.liskovsoft.browser;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 public class PhoneUi extends TitleBarBaseUi {
+    private static final String TAG = PhoneUi.class.getSimpleName();
     private final int mActionBarHeight;
-    private final Logger logger = LoggerFactory.getLogger(PhoneUi.class);
     private NavigationBarPhone mNavigationBar;
 
     public PhoneUi(Fragment browser, UiController controller) {
         super(browser, controller);
 
-        logger.info("About to load phone interface");
+        Log.i(TAG, "About to load phone interface");
 
         setUseQuickControls(BrowserSettings.getInstance().useQuickControls());
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();

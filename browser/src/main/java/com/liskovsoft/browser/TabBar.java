@@ -6,16 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class TabBar extends LinearLayout implements View.OnClickListener {
-    private static final Logger logger = LoggerFactory.getLogger(TabBar.class);
+    private static final String TAG = TabBar.class.getSimpleName();
     private final TabScrollView mTabs;
     private final ImageButton mNewTab;
     private Map<Tab, TabView> mTabMap;
@@ -44,7 +42,7 @@ public class TabBar extends LinearLayout implements View.OnClickListener {
 
     void updateTabs(List<Tab> tabs) {
         if (tabs == null) {
-            logger.error("Tab list is empty");
+            Log.e(TAG, "Tab list is empty");
             return;
         }
         mTabs.clearTabs();

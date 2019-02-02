@@ -24,13 +24,12 @@ import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.util.*;
 
 public class Controller implements UiController, WebViewController, ActivityController {
-    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
+    private static final String TAG = Controller.class.getSimpleName();
     protected final Activity mActivity;
     private final WebViewFactory mFactory;
     private final BrowserSettings mSettings;
@@ -155,10 +154,10 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
         long currentTabId = mTabControl.canRestoreState(icicle, false);
         if (currentTabId == -1) { // no saved state
-            logger.info("Browser state not found. Opening home page...");
+            Log.i(TAG, "Browser state not found. Opening home page...");
             openTabToHomePage();
         } else {
-            logger.info("Restoring browser state...");
+            Log.d(TAG, "Restoring browser state...");
             boolean needsRestoreAllTabs = mUi.needsRestoreAllTabs();
             // TODO: restore incognito tabs not implemented
             mTabControl.restoreState(icicle, currentTabId, false, needsRestoreAllTabs);
@@ -445,7 +444,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void showAutoLogin(Tab tab) {
-        if (!tab.inForeground()) logger.error("Tab not in foreground");
+        if (!tab.inForeground()) Log.e(TAG, "Tab not in foreground");
 
         // Update the title bar to show the auto-login request.
         mUi.showAutoLogin(tab);
@@ -696,7 +695,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
     @Override
     public void hideAutoLogin(Tab tab) {
-        if (!tab.inForeground()) logger.error("Tab not in foreground");
+        if (!tab.inForeground()) Log.e(TAG, "Tab not in foreground");
 
         mUi.hideAutoLogin(tab);
     }
@@ -987,7 +986,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
             hideCustomView();
         }
         if (mActivityPaused) {
-            logger.error("BrowserActivity is already paused.");
+            Log.e(TAG, "BrowserActivity is already paused.");
             return;
         }
         mActivityPaused = true;
@@ -1008,7 +1007,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
     @Override
     public void onResume() {
         if (!mActivityPaused) {
-            logger.error("BrowserActivity is already resumed.");
+            Log.e(TAG, "BrowserActivity is already resumed.");
             return;
         }
         mSettings.setLastRunPaused(false);

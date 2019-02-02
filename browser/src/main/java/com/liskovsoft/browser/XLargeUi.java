@@ -6,13 +6,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.util.List;
 
 public class XLargeUi extends TitleBarBaseUi {
-    private static final Logger logger = LoggerFactory.getLogger(XLargeUi.class);
+    private static final String TAG = XLargeUi.class.getSimpleName();
     private final Handler mHandler;
     private final TabBar mTabBar;
     //private final ActionBar mActionBar;
@@ -22,7 +21,7 @@ public class XLargeUi extends TitleBarBaseUi {
     public XLargeUi(Fragment browser, UiController controller) {
         super(browser, controller);
 
-        logger.info("About to load tablet interface");
+        Log.i(TAG, "About to load tablet interface");
 
         mHandler = new Handler();
         mNavBar = (NavigationBarTablet) mTitleBar.getNavigationBar();
@@ -46,7 +45,7 @@ public class XLargeUi extends TitleBarBaseUi {
 
     private void setupActionBar() {
         if (mActionBar == null) {
-            logger.error("Activity does not have support action bar");
+            Log.e(TAG, "Activity does not have support action bar");
             return;
         }
         mActionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
