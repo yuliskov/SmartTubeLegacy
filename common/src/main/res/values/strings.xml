@@ -1,4 +1,5 @@
 <resources>
     <string name="system_lang">Default</string>
     <string name="log_stored_in_path">Log path: %s</string>
+    <string name="log_to_file_started">Starting log to file: %s</string>
 </resources>

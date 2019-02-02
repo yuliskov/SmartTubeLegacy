@@ -4,7 +4,7 @@ import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 
 public class Log {
-    private static MyLogger sLogger = SystemLogger.instance();
+    private static MyLogger sLogger = new SystemLogger();
 
     public static void d(String tag, Object msg) {
         sLogger.d(tag, msg.toString());
@@ -50,9 +50,9 @@ public class Log {
         SmartPreferences prefs = SmartPreferences.instance(context);
 
         if (prefs.getEnableLogToFile()) {
-            sLogger = FileLogger.instance(context);
+            sLogger = new FileLogger(context);
         } else {
-            sLogger = SystemLogger.instance();
+            sLogger = new SystemLogger();
         }
     }
 }

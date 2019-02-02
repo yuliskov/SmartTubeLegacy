@@ -18,23 +18,14 @@ import java.util.Locale;
 
 class FileLogger extends MyLogger {
     private final Context mContext;
-    private static MyLogger sLogger;
     private BufferedWriter mWriter;
 
-    private FileLogger(Context context) {
+    public FileLogger(Context context) {
         mContext = context;
 
         MessageHelpers.showLongMessage(
                 mContext,
-                mContext.getResources().getString(R.string.log_stored_in_path, getLogPath(mContext)));
-    }
-
-    public static MyLogger instance(Context context) {
-        if (sLogger == null) {
-            sLogger = new FileLogger(context);
-        }
-
-        return sLogger;
+                mContext.getString(R.string.log_stored_in_path, getLogPath(mContext)));
     }
 
     @Override
@@ -88,7 +79,7 @@ class FileLogger extends MyLogger {
                 e.printStackTrace();
             }
 
-            MessageHelpers.showLongMessage(mContext, "Starting log to file: " + getLogPath(mContext));
+            MessageHelpers.showLongMessage(mContext, mContext.getString(R.string.log_to_file_started, getLogPath(mContext)));
         }
 
         return mWriter;
