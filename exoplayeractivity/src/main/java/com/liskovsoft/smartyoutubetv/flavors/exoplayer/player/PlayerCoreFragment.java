@@ -69,7 +69,7 @@ import java.util.UUID;
 
 public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlayerControlView.VisibilityListener {
     private static final String TAG = PlayerCoreFragment.class.getName();
-    protected static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     
     public static final String DRM_SCHEME_UUID_EXTRA = "drm_scheme_uuid";
@@ -85,7 +85,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final String EXTENSION_LIST_EXTRA = "extension_list";
 
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
-    public static final String DELIMITER = "------";
+    private static final String DELIMITER = "------";
 
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
@@ -100,7 +100,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     protected LinearLayout mDebugRootView;
     protected TextView mLoadingView;
     protected FrameLayout mDebugViewGroup;
-    protected TextToggleButton mRetryButton;
+    private TextToggleButton mRetryButton;
 
     private DataSource.Factory mMediaDataSourceFactory;
 
@@ -180,6 +180,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             mLastSeenTrackGroupArray = null;
 
             UUID drmSchemeUuid = intent.hasExtra(DRM_SCHEME_UUID_EXTRA) ? UUID.fromString(intent.getStringExtra(DRM_SCHEME_UUID_EXTRA)) : null;
+
             DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
             if (drmSchemeUuid != null) {
                 String drmLicenseUrl = intent.getStringExtra(DRM_LICENSE_URL);
@@ -196,30 +197,27 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false); // prefer soft decoders
 
-            //@DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = ((ExoApplication) getActivity().getApplication()).useExtensionRenderers()
-            //        ? (preferExtensionDecoders ? DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER : DefaultRenderersFactory
-            //        .EXTENSION_RENDERER_MODE_ON) : DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-            //DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, extensionRendererMode);
-
             @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = preferExtensionDecoders ?
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER :
                     DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON;
 
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), drmSessionManager, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
 
 
             // increase player's min/max buffer size to 60 secs
             // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
 
-            DefaultLoadControl loadControl = new DefaultLoadControl(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE),
-                    DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS,
-                    DefaultLoadControl.DEFAULT_TARGET_BUFFER_BYTES,
-                    DefaultLoadControl.DEFAULT_PRIORITIZE_TIME_OVER_SIZE_THRESHOLDS);
+            DefaultLoadControl loadControl = new DefaultLoadControl.Builder()
+                    .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
+                    .setBufferDurationsMs(
+            DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
+            DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                    )
+                    .createDefaultLoadControl();
 
-            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), renderersFactory, mTrackSelector, loadControl, null, BANDWIDTH_METER);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), renderersFactory, mTrackSelector, loadControl, drmSessionManager, BANDWIDTH_METER);
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);
@@ -285,9 +283,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
 
             boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+
             if (haveResumePosition) {
                 mPlayer.seekTo(mResumeWindow, mResumePosition);
             }
+
             //player.prepare(mediaSource, !haveResumePosition, false);
             mPlayer.prepare(mediaSource, !haveResumePosition, !haveResumePosition);
 
@@ -302,13 +302,33 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         int type = TextUtils.isEmpty(overrideExtension) ? Util.inferContentType(uri) : Util.inferContentType("." + overrideExtension);
         switch (type) {
             case C.TYPE_SS:
-                return new SsMediaSource(uri, buildDataSourceFactory(false), new DefaultSsChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
+                SsMediaSource ssSource =
+                        new SsMediaSource.Factory(
+                                new DefaultSsChunkSource.Factory(mMediaDataSourceFactory),
+                                buildDataSourceFactory(false)
+                        )
+                        .createMediaSource(uri);
+                ssSource.addEventListener(mMainHandler, mEventLogger);
+                return ssSource;
             case C.TYPE_DASH:
-                return new DashMediaSource(uri, buildDataSourceFactory(false), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
+                DashMediaSource dashSource =
+                        new DashMediaSource.Factory(
+                                new DefaultDashChunkSource.Factory(mMediaDataSourceFactory),
+                                buildDataSourceFactory(false)
+                        )
+                        .createMediaSource(uri);
+                dashSource.addEventListener(mMainHandler, mEventLogger);
+                return dashSource;
             case C.TYPE_HLS:
-                return new HlsMediaSource(uri, mMediaDataSourceFactory, mMainHandler, mEventLogger);
+                HlsMediaSource hlsSource = new HlsMediaSource.Factory(mMediaDataSourceFactory).createMediaSource(uri);
+                hlsSource.addEventListener(mMainHandler, mEventLogger);
+                return hlsSource;
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource(uri, mMediaDataSourceFactory, new DefaultExtractorsFactory(), mMainHandler, mEventLogger);
+                ExtractorMediaSource extractorSource = new ExtractorMediaSource.Factory(mMediaDataSourceFactory)
+                        .setExtractorsFactory(new DefaultExtractorsFactory())
+                        .createMediaSource(uri);
+                extractorSource.addEventListener(mMainHandler, mEventLogger);
+                return extractorSource;
             default: {
                 throw new IllegalStateException("Unsupported type: " + type);
             }
@@ -317,16 +337,30 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private DrmSessionManager<FrameworkMediaCrypto> buildDrmSessionManager(UUID uuid, String licenseUrl, String[] keyRequestPropertiesArray) throws
             UnsupportedDrmException {
+
         if (Util.SDK_INT < 18) {
             return null;
         }
+
         HttpMediaDrmCallback drmCallback = new HttpMediaDrmCallback(licenseUrl, buildHttpDataSourceFactory(false));
+
         if (keyRequestPropertiesArray != null) {
             for (int i = 0; i < keyRequestPropertiesArray.length - 1; i += 2) {
                 drmCallback.setKeyRequestProperty(keyRequestPropertiesArray[i], keyRequestPropertiesArray[i + 1]);
             }
         }
-        return new DefaultDrmSessionManager<>(uuid, FrameworkMediaDrm.newInstance(uuid), drmCallback, null, mMainHandler, mEventLogger);
+
+        DefaultDrmSessionManager<FrameworkMediaCrypto> manager =
+                new DefaultDrmSessionManager<>(
+                        uuid,
+                        FrameworkMediaDrm.newInstance(uuid),
+                        drmCallback,
+                        null
+                );
+
+        manager.addListener(mMainHandler, mEventLogger);
+
+        return manager;
     }
 
     /**
@@ -353,12 +387,24 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private MediaSource buildMPDMediaSource(Uri uri, InputStream mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
+        DashMediaSource dashSource = new DashMediaSource.Factory(
+                new DefaultDashChunkSource.Factory(mMediaDataSourceFactory),
+                null
+            )
+            .createMediaSource(getManifest(uri, mpdContent));
+        dashSource.addEventListener(mMainHandler, mEventLogger);
+        return dashSource;
     }
 
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        return new DashMediaSource(getManifest(uri, mpdContent), new DefaultDashChunkSource.Factory(mMediaDataSourceFactory), mMainHandler, mEventLogger);
+        DashMediaSource dashSource = new DashMediaSource.Factory(
+                new DefaultDashChunkSource.Factory(mMediaDataSourceFactory),
+                null
+            )
+            .createMediaSource(getManifest(uri, mpdContent));
+        dashSource.addEventListener(mMainHandler, mEventLogger);
+        return dashSource;
     }
 
     private DashManifest getManifest(Uri uri, InputStream mpdContent) {
@@ -401,7 +447,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         showToast(getString(messageId));
     }
 
-    protected void showToast(String message) {
+    private void showToast(String message) {
         MessageHelpers.showMessageThrottled(getActivity().getApplicationContext(), message);
     }
 

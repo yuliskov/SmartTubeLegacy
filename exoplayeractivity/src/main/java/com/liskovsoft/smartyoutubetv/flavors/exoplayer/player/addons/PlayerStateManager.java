@@ -472,7 +472,7 @@ public class PlayerStateManager {
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
         TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(trackGroupAndIndex.first, trackGroupAndIndex.second);
-        mSelector.setSelectionOverride(rendererIndex, trackGroupArray, override);
+        mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(rendererIndex, trackGroupArray, override));
     }
 
     /**
