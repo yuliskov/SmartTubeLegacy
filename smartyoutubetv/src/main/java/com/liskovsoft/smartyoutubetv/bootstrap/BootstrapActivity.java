@@ -69,12 +69,6 @@ public class BootstrapActivity extends BootstrapActivityBase {
             case R.id.btn_select_lang:
                 SingleChoiceSelectorDialog.create(this, new LanguageDialogSource(this));
                 break;
-            case R.id.btn_send_crash_report:
-                Toast.makeText(this, "Dummy crash report message", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.btn_preferred_codec:
-                SingleChoiceSelectorDialog.create(this, new RestrictCodecDialogSource(this));
-                break;
             case R.id.btn_tweaks:
                 MultiChoiceSelectorDialog.create(this, new TweaksDialogSource(this));
                 break;

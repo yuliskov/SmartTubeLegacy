@@ -32,5 +32,6 @@ public class LogToFileDialogItem extends DialogItem {
         }
 
         mPrefs.setEnableLogToFile(checked);
+        Log.init(mContext.getApplicationContext());
     }
 }

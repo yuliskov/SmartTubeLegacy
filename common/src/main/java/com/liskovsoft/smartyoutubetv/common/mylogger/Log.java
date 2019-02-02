@@ -51,6 +51,8 @@ public class Log {
 
         if (prefs.getEnableLogToFile()) {
             sLogger = new FileLogger(context);
+        } else {
+            sLogger = new SystemLogger();
         }
     }
 

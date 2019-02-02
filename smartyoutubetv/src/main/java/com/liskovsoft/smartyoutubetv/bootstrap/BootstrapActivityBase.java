@@ -37,7 +37,7 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
     }
 
     private void initLogger() {
-        Log.init(this.getApplication());
+        Log.init(this.getApplicationContext());
     }
 
     private void makeActivityHorizontal() {
