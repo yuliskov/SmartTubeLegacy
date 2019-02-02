@@ -43,8 +43,7 @@ class FileLogger extends MyLogger {
         append(String.format("ERROR: %s: %s", tag, msg));
     }
 
-    private void append(String text)
-    {
+    private void append(String text) {
         try {
             //BufferedWriter for performance, true to set append to file flag
             BufferedWriter buf = getWriter();
@@ -134,7 +133,7 @@ class FileLogger extends MyLogger {
     public void flush() {
         if (mWriter != null) {
             try {
-                // dumpLogcat();
+                dumpLogcat();
                 mWriter.flush();
             } catch (IOException e) {
                 e.printStackTrace();

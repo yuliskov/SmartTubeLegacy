@@ -29,7 +29,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private LoadingManager mLoadingManager;
     private boolean mLoadingDone;
     private MainApkUpdater mApkUpdater;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // fix lang in case activity has been destroyed and then restored
@@ -53,8 +53,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mLoadingManager = new TipsLoadingManager(this);
         mApkUpdater = new MainApkUpdater(this);
-
-        Log.init(this);
     }
 
     @Override
@@ -233,6 +231,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     @Override
     protected void onPause() {
         super.onPause();
+
+        int a = 1/0;
 
         Log.flush();
     }

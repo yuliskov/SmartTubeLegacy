@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 public abstract class ActivityBase extends AppCompatActivity {
     @Override
@@ -15,6 +16,11 @@ public abstract class ActivityBase extends AppCompatActivity {
         makeActivityFullscreen();
         hideTitleBar();
         makeActivityHorizontal();
+        initLogger();
+    }
+
+    private void initLogger() {
+        Log.init(this.getApplication());
     }
 
     private void makeActivityHorizontal() {
