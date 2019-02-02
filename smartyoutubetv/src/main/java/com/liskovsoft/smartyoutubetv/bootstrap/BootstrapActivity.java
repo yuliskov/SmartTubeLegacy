@@ -7,13 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.crashlytics.android.Crashlytics;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage.LanguageDialogSource;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.TweaksDialogSource;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.dialogs.MultiChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
@@ -24,12 +21,11 @@ import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapButtonBase;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton;
-import io.fabric.sdk.android.Fabric;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-public class BootstrapActivity extends ActivityBase {
+public class BootstrapActivity extends BootstrapActivityBase {
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
@@ -39,17 +35,15 @@ public class BootstrapActivity extends ActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         // do it before view instantiation
         initPrefs();
-        setupLang();
         tryToRestoreLastActivity();
 
         super.onCreate(savedInstanceState);
-        setupFonSize();
+
         setContentView(R.layout.activity_bootstrap);
+
         initLauncherMapping();
         initVersion();
         lockOtherLaunchers();
-
-        setupCrashLogs();
     }
 
     private void initVersion() {
@@ -101,19 +95,6 @@ public class BootstrapActivity extends ActivityBase {
         }
     }
 
-    /**
-     * Detect {@link Crashlytics} from the property file. See <em>build.gradle</em>. <a href="https://docs.fabric.io/android/crashlytics/build-tools.html">More info</a>
-     */
-    private void setupCrashLogs() {
-        if (BuildConfig.CRASHLYTICS_ENABLED) {
-            Fabric.with(this, new Crashlytics());
-        }
-    }
-
-    private void setupLang() {
-        new LangUpdater(this).update();
-    }
-
     private void initLauncherMapping() {
         mLauncherMapping = new HashMap<>();
         mLauncherMapping.put(R.id.button_exo, SmartYouTubeTV4K.class);
@@ -155,10 +136,6 @@ public class BootstrapActivity extends ActivityBase {
         intent.setClass(ctx, clazz);
 
         startActivity(intent);
-    }
-
-    private void setupFonSize() {
-        Helpers.adjustFontScale(getResources().getConfiguration(), this);
     }
 
     public void lockOtherLaunchers() {
