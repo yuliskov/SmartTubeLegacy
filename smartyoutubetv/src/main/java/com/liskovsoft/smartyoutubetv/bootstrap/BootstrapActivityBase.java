@@ -28,12 +28,12 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
 
         super.onCreate(icicle);
 
+        initLogger();
+        setupCrashLogs();
+        setupFonSize();
         makeActivityFullscreen();
         makeActivityHorizontal();
         hideTitleBar();
-        setupFonSize();
-        initLogger();
-        setupCrashLogs();
     }
 
     private void initLogger() {
