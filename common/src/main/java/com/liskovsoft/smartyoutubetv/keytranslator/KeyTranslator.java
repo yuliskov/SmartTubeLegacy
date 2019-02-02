@@ -1,10 +1,12 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.keytranslator;
 
 import android.view.KeyEvent;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
-public class BrowserKeysTranslator {
-    private static final String TAG = BrowserKeysTranslator.class.getSimpleName();
+import java.util.Map;
+
+public abstract class KeyTranslator {
+    private static final String TAG = KeyTranslator.class.getSimpleName();
     private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
     private static final int UNDEFINED = 0;
     private int mDownFired = 0;
@@ -39,21 +41,11 @@ public class BrowserKeysTranslator {
 
         int toKeyCode = UNDEFINED;
 
-        switch (event.getKeyCode()) {
-            case KeyEvent.KEYCODE_BUTTON_B:
-            case KeyEvent.KEYCODE_BACK:
-                toKeyCode = KeyEvent.KEYCODE_ESCAPE;
-                break;
-            case KeyEvent.KEYCODE_MENU:
-                toKeyCode = KeyEvent.KEYCODE_G; // menu to guide
-                break;
-            case KeyEvent.KEYCODE_NUMPAD_ENTER:
-            case KeyEvent.KEYCODE_BUTTON_A:
-                toKeyCode = KeyEvent.KEYCODE_ENTER;
-                break;
-            case KeyEvent.KEYCODE_BUTTON_Y:
-                toKeyCode = KeyEvent.KEYCODE_SEARCH;
-                break;
+        Map<Integer, Integer> keyMapping = getKeyMapping();
+        Integer outKey = keyMapping.get(event.getKeyCode());
+
+        if (outKey != null) {
+            toKeyCode = outKey;
         }
 
         return translate(event, toKeyCode);
@@ -80,4 +72,6 @@ public class BrowserKeysTranslator {
                 origin.getSource()
         );
     }
+
+    protected abstract Map<Integer, Integer> getKeyMapping();
 }

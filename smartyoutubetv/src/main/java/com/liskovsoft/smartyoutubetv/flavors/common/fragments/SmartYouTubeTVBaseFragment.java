@@ -15,7 +15,8 @@ import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.BrowserKeysTranslator;
+import com.liskovsoft.smartyoutubetv.keytranslator.BrowserKeyTranslator;
+import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 import com.liskovsoft.smartyoutubetv.misc.youtubeurls.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
@@ -23,7 +24,7 @@ import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
     private Controller mController;
-    private BrowserKeysTranslator mTranslator;
+    private KeyTranslator mTranslator;
     private UserAgentManager mUAManager;
     private ServiceFinder mServiceFinder;
 
@@ -64,7 +65,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void initKeys() {
-        mTranslator = new BrowserKeysTranslator();
+        mTranslator = new BrowserKeyTranslator();
     }
 
     private void initYouTubeServices() {

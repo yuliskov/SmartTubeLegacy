@@ -12,6 +12,8 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
+import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
+import com.liskovsoft.smartyoutubetv.keytranslator.PlayerKeyTranslator;
 
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
@@ -22,12 +24,12 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
+    private KeyTranslator mTranslator;
 
     // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        event = translateEscapeToBack(event);
-
+        event = getKeyTranslator().doTranslateKeys(event);
         setDispatchEvent(event);
 
         if (isVolumeEvent(event)) {
@@ -66,6 +68,14 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return mSimpleExoPlayerView.dispatchMediaKeyEvent(event);
+    }
+
+    private KeyTranslator getKeyTranslator() {
+        if (mTranslator == null) {
+            mTranslator = new PlayerKeyTranslator();
+        }
+
+        return mTranslator;
     }
 
     private boolean isMenuKey(KeyEvent event) {
@@ -150,19 +160,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         return false;
-    }
-
-    /**
-     * Fix for the unknown usb remote controller (see <a href="https://smartyoutubetv.github.io/#comment-3742343397">disqus</a> for details).
-     * @param event event
-     * @return new event
-     */
-    private KeyEvent translateEscapeToBack(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
-            // pay attention, you must pass action_up instead of action_down
-            event = new KeyEvent(event.getAction(), KeyEvent.KEYCODE_BACK);
-        }
-        return event;
     }
 
     private boolean isVolumeEvent(KeyEvent event) {
