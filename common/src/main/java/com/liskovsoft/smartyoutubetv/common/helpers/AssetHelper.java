@@ -39,7 +39,7 @@ public class AssetHelper {
         return is;
     }
 
-    private static InputStream getAsset(Context ctx, String fileName) {
+    public static InputStream getAsset(Context ctx, String fileName) {
         InputStream is = null;
         try {
             is = ctx.getAssets().open(fileName);
