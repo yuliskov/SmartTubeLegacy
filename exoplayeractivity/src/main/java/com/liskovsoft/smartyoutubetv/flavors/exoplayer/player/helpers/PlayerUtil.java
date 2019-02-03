@@ -91,11 +91,11 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
     }
 
     private static String buildHDRString(Format format) {
-        if (format.codecs == null) {
+        if (format == null) {
             return "";
         }
 
-        return format.codecs.equals("vp9.2") ? "HDR" : "";
+        return isHdrCodec(format.codecs) ? "HDR" : "";
     }
 
     private static String buildFPSString(Format format) {
@@ -316,5 +316,13 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
         }
 
         return "";
+    }
+
+    public static boolean isHdrCodec(String codec) {
+        if (codec == null) {
+            return false;
+        }
+
+        return codec.equals("vp9.2");
     }
 }
