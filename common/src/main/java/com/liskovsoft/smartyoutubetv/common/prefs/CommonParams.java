@@ -19,7 +19,7 @@ public final class CommonParams {
 
     private CommonParams(Context context) {
         mContext = context;
-        mParser = new AssetPropertyParser2(context, "ads.properties", "service.properties");
+        mParser = new AssetPropertyParser2(context, "ads.properties", "service.properties", "common.properties");
     }
 
     public String[] getAdsUrls() {
@@ -44,5 +44,9 @@ public final class CommonParams {
 
     public String[] getBetaUpdateUrls() {
         return mParser.getArray("beta_urls");
+    }
+
+    public String[] getOldPackageNames() {
+        return mParser.getArray("old_packages");
     }
 }

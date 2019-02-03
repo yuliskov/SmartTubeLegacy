@@ -33,7 +33,7 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     }
 
     /**
-     * Forces command to run is case when 'intercept' hasn't been called <br/>
+     * Forces command to remove is case when 'intercept' hasn't been called <br/>
      * Force call command without adding to the history (in case WebView).
      */
     public void forceRun(boolean doNotDelay) {

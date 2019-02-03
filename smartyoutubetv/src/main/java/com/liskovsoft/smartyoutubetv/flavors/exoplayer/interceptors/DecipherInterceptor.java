@@ -30,7 +30,7 @@ public class DecipherInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        if (mJSDecipherCode != null) { // run once
+        if (mJSDecipherCode != null) { // remove once
             return null;
         }
 

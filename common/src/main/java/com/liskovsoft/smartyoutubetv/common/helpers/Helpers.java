@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Handler;
@@ -353,5 +355,25 @@ public final class Helpers {
     public static void enableButtonSounds(Context context, boolean enable) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, !enable);
+    }
+
+    public static boolean isPackageExists(Context context, String pkgName) {
+        final PackageManager pm = context.getPackageManager();
+        //get a list of installed apps.
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo info : packages) {
+            if (pkgName.equals(info.packageName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void removePackage(Context context, String pkgName) {
+        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+        intent.setData(Uri.parse("package:" + pkgName));
+        context.startActivity(intent);
     }
 }

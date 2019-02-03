@@ -120,7 +120,7 @@ public class ActionsReceiver implements Runnable {
         new Handler(mContext.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mDone) // don't run this method if doneResult() already executed
+                if (mDone) // don't remove this method if doneResult() already executed
                     return;
 
                 if (mRetryCount <= 0)

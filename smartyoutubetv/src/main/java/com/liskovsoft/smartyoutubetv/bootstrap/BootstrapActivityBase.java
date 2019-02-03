@@ -13,6 +13,7 @@ import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.misc.OldPackageRemover;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.InitializationCallback;
 
@@ -34,6 +35,7 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
         makeActivityFullscreen();
         makeActivityHorizontal();
         hideTitleBar();
+        uninstallOldVersions();
     }
 
     private void initLogger() {
@@ -123,5 +125,10 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
 
     private void setupLang() {
         new LangUpdater(this).update();
+    }
+
+    private void uninstallOldVersions() {
+        OldPackageRemover remover = new OldPackageRemover(this);
+        remover.remove();
     }
 }

@@ -72,4 +72,5 @@
     <string name="tweak_open_music">Boot strict to the Music page</string>
     <string name="tweak_open_subscriptions">Boot to subscriptions</string>
     <string name="tweak_global_afx_fix">Global afr fix</string>
+    <string name="toast_remove_old_package">Please remove old app versions</string>
 </resources>

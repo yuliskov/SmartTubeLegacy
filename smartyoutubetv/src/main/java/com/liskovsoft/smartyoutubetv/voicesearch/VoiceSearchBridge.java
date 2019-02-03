@@ -30,7 +30,7 @@ public class VoiceSearchBridge implements SearchCallback {
 
         if (isSearchKey) {
             boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
-            if (isUp) { // run on up action only
+            if (isUp) { // remove on up action only
                 displaySpeechRecognizers();
             }
             return true;
