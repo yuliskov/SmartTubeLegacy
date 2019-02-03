@@ -10,6 +10,7 @@ import java.util.Properties;
 
 public class AssetPropertyParser2 implements ConfigParser {
     private static final String TAG = AssetPropertyParser2.class.getSimpleName();
+    private static final String ARRAY_DELIM_REGEX = " +";
     private final Context mContext;
     private final InputStream mAssetStream;
     private Properties mProperties;
@@ -54,6 +55,6 @@ public class AssetPropertyParser2 implements ConfigParser {
         }
 
         String arrProp = mProperties.getProperty(key);
-        return arrProp.split(" +");
+        return arrProp.split(ARRAY_DELIM_REGEX);
     }
 }
