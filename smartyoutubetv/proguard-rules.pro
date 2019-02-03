@@ -16,7 +16,16 @@
 #   public *;
 #}
 
-# obfuscate only app code and not libs
--keep class !com.liskovsoft.** {*;}
--keep interface !com.liskovsoft.** {*;}
+## obfuscate only app code and not libs
+#-keep class !com.liskovsoft.**
+#-keep interface !com.liskovsoft.**
+#-keep enum !com.liskovsoft.**
+#-keepclassmembers class !com.liskovsoft.**
+#-keepclassmembers interface !com.liskovsoft.**
+#-keepclassmembers enum !com.liskovsoft.**
+
+#-keep class org.codehaus.**
+#-keep interface org.codehaus.**
+
+#-dontwarn !com.liskovsoft.**,**
 

@@ -35,9 +35,9 @@ android {
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
-        applicationId "com.liskovsoft.smartyoutubetv"
-        versionCode 509
-        versionName "6.16.29"
+        applicationId "com.firsthash.smartyoutubetv2"
+        versionCode 510
+        versionName "6.16.30"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -64,8 +64,8 @@ android {
             ext.enableCrashlytics = crashEnabled
 
             debuggable false
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.release
