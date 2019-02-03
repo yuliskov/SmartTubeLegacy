@@ -19,7 +19,7 @@ public class AssetHelper {
     /**
      * Merge string assets. Silently add new line after each asset.
      */
-    private static InputStream getAssetMerged(Context ctx, List<String> paths) {
+    public static InputStream getAssetMerged(Context ctx, List<String> paths) {
         return getAssetMerged(ctx, paths, true);
     }
 

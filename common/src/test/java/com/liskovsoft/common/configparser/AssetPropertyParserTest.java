@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class AssetPropertyParserTest {
-    private AssetPropertyParser mParser;
+    private AssetPropertyParser2 mParser;
 
     @Before
     public void setUp() throws Exception {
-        mParser = new AssetPropertyParser(RuntimeEnvironment.application, TestHelpers.openResource("test.properties"));
+        mParser = new AssetPropertyParser2(RuntimeEnvironment.application, TestHelpers.openResource("test.properties"));
     }
 
     @Test

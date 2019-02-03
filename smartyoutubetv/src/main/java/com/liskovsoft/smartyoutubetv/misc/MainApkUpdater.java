@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
@@ -42,18 +43,17 @@ public class MainApkUpdater {
 
     private void checkForStableUpdates() {
         if (mIsStableChecked) {
-            String updateUrlGDrive = mContext.getString(R.string.update_url_gdrive);
-            String updateUrlGitHub = mContext.getString(R.string.update_url_github);
+            CommonParams params = CommonParams.instance(mContext);
 
-            runUpdateChecker(new String[] {updateUrlGitHub, updateUrlGDrive});
+            runUpdateChecker(params.getStableUpdateUrls());
         }
     }
 
     private void checkForBetaUpdates() {
         if (mIsBetaChecked) {
-            String betaUpdateUrlGitHub = mContext.getString(R.string.beta_update_url_github);
+            CommonParams params = CommonParams.instance(mContext);
 
-            runUpdateChecker(new String[] {betaUpdateUrlGitHub});
+            runUpdateChecker(params.getBetaUpdateUrls());
         }
     }
 

@@ -6,7 +6,11 @@ import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class AssetPropertyParser2 implements ConfigParser {
     private static final String TAG = AssetPropertyParser2.class.getSimpleName();
@@ -15,15 +19,15 @@ public class AssetPropertyParser2 implements ConfigParser {
     private final InputStream mAssetStream;
     private Properties mProperties;
 
+    public AssetPropertyParser2(Context context, String... assetName) {
+        this(context, AssetHelper.getAssetMerged(context, Arrays.asList(assetName)));
+    }
+
     public AssetPropertyParser2(Context context, InputStream assetStream) {
         mContext = context;
         mAssetStream = assetStream;
 
         initProperties();
-    }
-
-    public AssetPropertyParser2(Context context, String assetName) {
-        this(context, AssetHelper.getAsset(context, assetName));
     }
 
     private void initProperties() {
@@ -52,6 +56,20 @@ public class AssetPropertyParser2 implements ConfigParser {
     public String[] getArray(String key) {
         if (mProperties == null) {
             return null;
+        }
+
+        Set<String> names = mProperties.stringPropertyNames();
+
+        List<String> valArr = new ArrayList<>();
+
+        for (String name : names) {
+            if (name.startsWith(key)) {
+                valArr.add(mProperties.getProperty(name));
+            }
+        }
+
+        if (valArr.size() > 1) {
+            return valArr.toArray(new String[]{});
         }
 
         String arrProp = mProperties.getProperty(key);

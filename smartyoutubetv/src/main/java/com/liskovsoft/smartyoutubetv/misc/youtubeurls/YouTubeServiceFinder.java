@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 
 public class YouTubeServiceFinder implements ServiceFinder {
@@ -16,19 +17,20 @@ public class YouTubeServiceFinder implements ServiceFinder {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
+        CommonParams params = CommonParams.instance(mContext);
 
         switch (prefs.getBootPage()) {
             case SmartPreferences.MUSIC_PAGE:
                 mIsPersistent = true;
-                mDefaultUrl = mContext.getString(R.string.youtube_music_page);
+                mDefaultUrl = params.getMusicPageUrl();
                 break;
             case SmartPreferences.SUBSCRIPTIONS_PAGE:
                 mIsPersistent = true;
-                mDefaultUrl = mContext.getString(R.string.youtube_subscriptions_page);
+                mDefaultUrl = params.getSubscriptionsPageUrl();
                 break;
             case SmartPreferences.DEFAULT_PAGE:
                 mIsPersistent = false;
-                mDefaultUrl = mContext.getString(R.string.youtube_main_page);
+                mDefaultUrl = params.getMainPageUrl();
                 break;
         }
 

@@ -13,7 +13,7 @@ public class AdAwayClient {
 
     public AdAwayClient(Context context) {
         mContext = context;
-        mAdList = new CommonParams(context).getAdUrls();
+        mAdList = CommonParams.instance(context).getAdsUrls();
     }
 
     public boolean isAd(String url) {
