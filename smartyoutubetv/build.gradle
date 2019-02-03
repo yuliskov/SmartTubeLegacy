@@ -36,8 +36,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.mitv.mediaservice"
-        versionCode 512
-        versionName "6.16.32"
+        versionCode 513
+        versionName "6.16.33"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
