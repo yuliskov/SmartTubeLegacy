@@ -16,3 +16,7 @@
 #   public *;
 #}
 
+# obfuscate only app code and not libs
+-keep class !com.liskovsoft.** {*;}
+-keep interface !com.liskovsoft.** {*;}
+
