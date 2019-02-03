@@ -55,7 +55,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
-        //waitCodecInit();
+        waitCodecInit();
 
         restoreVideoTrack();
         restoreSubtitleTrack();
@@ -68,7 +68,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreStatePartially() {
-        //waitCodecInit();
+        waitCodecInit();
 
         restoreVideoTrack();
     }
