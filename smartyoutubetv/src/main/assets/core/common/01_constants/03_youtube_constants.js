@@ -62,6 +62,8 @@ var YouTubeSelectors = {
     BUTTON_BACK: '#legend .back',
     OVERLAY_PANEL_CONTAINER: '#overlay-stage',
     OVERLAY_PANEL: '.overlay-action-panel',
+    MULTI_ACCOUNT_PANEL: '.overlay-action-panel.overlay-list-with-header',
+    WELCOME_SCREEN_PANEL: '.overlay-action-panel.welcome',
     PLAYER_UPLOAD_DATE: '.uploaded-date',
     PLAYER_VIDEO_DETAILS: '.player-video-details',
     PLAYER_VIEW_COUNT: '.view-count-label',

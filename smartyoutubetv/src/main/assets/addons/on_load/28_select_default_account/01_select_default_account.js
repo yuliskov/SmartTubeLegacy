@@ -11,6 +11,10 @@ function SelectDefaultAccountAddon() {
         var $this = this;
 
         EventUtils.onLoad(function() {
+            if (Utils.$(YouTubeSelectors.WELCOME_SCREEN_PANEL)) {
+                return;
+            }
+
             if (YouTubeUtils.isPlayerOpened() ||
                 YouTubeUtils.isSearchOpened() ||
                 YouTubeUtils.isChannelOpened()) { // dialog not shown yet, because the video is running
@@ -28,12 +32,11 @@ function SelectDefaultAccountAddon() {
 
     this.selectDefaultAccount = function() {
         Log.d(this.TAG, "Hiding multi-account panel");
-
         this.hidePanelContainer();
 
         var $this = this;
         setTimeout(function() { // panel pop-ups with delay
-            $this.closePanel();
+            $this.closeAccountPanel();
             $this.showPanelContainer();
         }, 3000);
     };
@@ -52,8 +55,8 @@ function SelectDefaultAccountAddon() {
         Utils.show(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
     };
 
-    this.closePanel = function() {
-        var dialog = Utils.$(YouTubeSelectors.OVERLAY_PANEL);
+    this.closeAccountPanel = function() {
+        var dialog = Utils.$(YouTubeSelectors.MULTI_ACCOUNT_PANEL);
 
         if (dialog) {
             Log.d(this.TAG, "closing account panel...");
