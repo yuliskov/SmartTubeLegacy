@@ -11,17 +11,24 @@ import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.FileHandler;
 
+import java.io.InputStream;
+
 public class AssetPropertyParser implements ConfigParser {
     private static final String TAG = AssetPropertyParser.class.getSimpleName();
     private final Context mContext;
-    private final String mAssetName;
+    private String mAssetName;
+    private final InputStream mAssetStream;
     private FileBasedConfiguration mConfig;
 
-    public AssetPropertyParser(String assetName, Context context) {
-        mAssetName = assetName;
+    public AssetPropertyParser(Context context, InputStream assetStream) {
         mContext = context;
+        mAssetStream = assetStream;
 
         initProps();
+    }
+
+    public AssetPropertyParser(Context context, String assetName) {
+        this(context, AssetHelper.getAsset(context, assetName));
     }
 
     private void initProps() {
@@ -35,7 +42,7 @@ public class AssetPropertyParser implements ConfigParser {
                             );
             mConfig = builder.getConfiguration();
             FileHandler fileHandler = new FileHandler(mConfig);
-            fileHandler.load(AssetHelper.getAsset(mContext, mAssetName));
+            fileHandler.load(mAssetStream);
         } catch (ConfigurationException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();

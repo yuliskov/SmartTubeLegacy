@@ -6,14 +6,16 @@ import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
 
 public class AdAwayInterceptor extends RequestInterceptor {
     private Context mContext;
+    private final AdAwayClient mClient;
 
     public AdAwayInterceptor(Context context) {
         mContext = context;
+        mClient = new AdAwayClient(context);
     }
 
     @Override
     public boolean test(String url) {
-        return AdAwayClient.isAd(url);
+        return mClient.isAd(url);
     }
 
     @Override

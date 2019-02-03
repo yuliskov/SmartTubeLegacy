@@ -2,7 +2,7 @@ package com.liskovsoft.browser;
 
 import android.content.res.AssetManager;
 import android.webkit.CookieSyncManager;
-import com.liskovsoft.smartyoutubetv.ApplicationCommon;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Browser extends ApplicationCommon {
+public class Browser extends CommonApplication {
     // Set to true to enable verbose logging.
     final static boolean LOGV_ENABLED = false;
 

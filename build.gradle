@@ -53,6 +53,7 @@ buildscript {
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
         apacheConfigurationVersion = 'org.apache.commons:commons-configuration2:2.4'
+        apacheBeanutilsVersion = 'commons-beanutils:commons-beanutils:1.9.3'
     }
 }
 

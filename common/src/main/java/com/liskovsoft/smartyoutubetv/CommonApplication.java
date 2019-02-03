@@ -6,8 +6,8 @@ import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 
-public class ApplicationCommon extends Application {
-    private static final String TAG = ApplicationCommon.class.getSimpleName();
+public class CommonApplication extends Application {
+    private static final String TAG = CommonApplication.class.getSimpleName();
 
     @Override
     public void onCreate() {

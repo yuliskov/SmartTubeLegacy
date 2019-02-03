@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv;
+package com.liskovsoft.common;
 
 import java.io.IOException;
 import java.io.InputStream;
