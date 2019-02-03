@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# obfuscate only app code but not libs
+-keep class !com.liskovsoft.** {*;}
+-keep interface !com.liskovsoft.** {*;}
+-keep enum !com.liskovsoft.** {*;}

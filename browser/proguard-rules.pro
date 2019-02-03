@@ -22,3 +22,8 @@
     @com.squareup.otto.Produce public *;
 }
 
+# obfuscate only app code but not libs
+-keep class !com.liskovsoft.** {*;}
+-keep interface !com.liskovsoft.** {*;}
+-keep enum !com.liskovsoft.** {*;}
+
