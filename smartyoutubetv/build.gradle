@@ -135,14 +135,13 @@ dependencies {
     // Common routines
     implementation project(path: ':common')
 
-    // gradle 4.6 migration
     implementation project(path: ':browser')
 
-    // gradle 4.6 migration
     implementation project(path: ':exoplayeractivity')
 
-    // gradle 4.6 migration
     implementation project(path: ':appupdatechecker')
+
+    implementation project(path: ':appbackupmanager')
 
     implementation(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
