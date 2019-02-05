@@ -55,7 +55,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
-        waitCodecInit();
+        //waitCodecInit();
 
         restoreVideoTrack();
         restoreSubtitleTrack();
@@ -68,7 +68,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreStatePartially() {
-        waitCodecInit();
+        //waitCodecInit();
 
         restoreVideoTrack();
     }
@@ -215,7 +215,6 @@ public class PlayerStateManager {
      * @return best format (cannot be null)
      */
     private MyFormat filterHighestVideo(Set<MyFormat> fmts) {
-        //String codecName = AVC_CODEC;
         MyFormat result = null;
 
         // select format with same codec and highest bitrate
@@ -226,17 +225,7 @@ public class PlayerStateManager {
             }
 
             // there is two levels of preference
-            // by codec (e.g. avc), height, fps, bitrate
-
-            //if (!codecEquals(result.codecs, codecName) && codecEquals(fmt.codecs, codecName)) {
-            //    result = fmt;
-            //    continue;
-            //}
-            //
-            //// non-avc
-            //if (codecEquals(result.codecs, codecName) && !codecEquals(fmt.codecs, codecName)) {
-            //    continue;
-            //}
+            // by codec (e.g. avc), height, fps, bitrate (with restrictions)
 
             // don't relay on bitrate, since some video have improper bitrate measurement
             // because of this, I've add frameRate comparision
@@ -254,7 +243,9 @@ public class PlayerStateManager {
 
             // don't relay on bitrate, since some video have improper bitrate measurement
             // because of this, I've add frameRate comparision
-            if ((result.bitrate < fmt.bitrate) && (result.height == fmt.height)) {
+            if ((result.bitrate < fmt.bitrate)  &&
+                 heightEquals(result.height, fmt.height) &&
+                 codecEquals(result.codecs, fmt.codecs)) {
                 result = fmt;
             }
         }
