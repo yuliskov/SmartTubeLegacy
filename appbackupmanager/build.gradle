@@ -1,6 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
+    // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion 28
 
 
@@ -29,4 +35,6 @@ dependencies {
     testImplementation project.properties.junitVersion
 
     implementation project.properties.appCompatVersion
+
+    implementation project.properties.openPgpVersion
 }
