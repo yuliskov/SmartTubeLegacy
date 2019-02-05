@@ -69,5 +69,5 @@
     <string name="option_zoom_fit_both">Fit either width or height</string>
     <string name="option_zoom_stretch">Stretch</string>
     <string name="checkbox_save_speed">Remember speed</string>
-    <string name="toast_format_restricted">Format is restricted by preset</string>
+    <string name="toast_format_restricted">Cannot switch format while preset is active</string>
 </resources>

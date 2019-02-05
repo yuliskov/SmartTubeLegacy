@@ -50,5 +50,5 @@
     <string name="btn_video_zoom">Зум</string>
     <string name="btn_favorites">Сохран</string>
     <string name="checkbox_save_speed">Запомнить скорость</string>
-    <string name="toast_format_restricted">Формат ограничен пресетом</string>
+    <string name="toast_format_restricted">Нельзя выбирать формат при активированном пресете</string>
 </resources>

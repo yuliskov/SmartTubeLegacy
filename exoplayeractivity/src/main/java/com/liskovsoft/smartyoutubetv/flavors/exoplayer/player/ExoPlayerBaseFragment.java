@@ -344,8 +344,11 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (playbackState == Player.STATE_READY && !mIsDurationSet) {
+        if ((playbackState == Player.STATE_IDLE     ||
+             playbackState == Player.STATE_READY)   &&
+             !mIsDurationSet) {
             mIsDurationSet = true; // run once per video
+
             if (mStateManager != null) {
                 // stateManage should be initialized here
                 mStateManager.restoreState();
