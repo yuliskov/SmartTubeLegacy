@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.format.Time;
 import android.view.View;
 import android.widget.TextView;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -36,7 +35,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -262,16 +261,12 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         TextView clock = root.findViewById(R.id.clock);
 
-        Time time = new Time();
-        time.setToNow();
+        // details: https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
+        SimpleDateFormat serverFormat = new SimpleDateFormat("EEE d MMM H:mm", Locale.getDefault());
+        String currentTime = serverFormat.format(new Date());
 
-        //SimpleDateFormat serverFormat = new SimpleDateFormat("EEE, MMM d, HH:mm", Locale.getDefault());
-        //String timeStrNew = serverFormat.format(Calendar.getInstance());
-
-        // details about format: http://php.net/manual/en/function.strftime.php
-        String timeStrOld = time.format("%a %e %h %R");
-        String currentTime = getString(R.string.time_title, timeStrOld);
-        clock.setText(currentTime);
+        String timeTitle = getString(R.string.time_title, currentTime);
+        clock.setText(timeTitle);
     }
 
     private void updateTitleQualityInfo() {
