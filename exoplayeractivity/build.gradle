@@ -61,7 +61,7 @@ dependencies {
 
     // api project.properties.exoplayerVersion
     api project.properties.amazonExoplayerVersion
-    // api project.properties.exoplayerLatestVersion
+    // api project.properties.exoplayerGitHubVersion
     
     implementation project.properties.multiDexVersion
 

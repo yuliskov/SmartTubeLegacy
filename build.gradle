@@ -47,9 +47,10 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         stethoDevVersion = 'com.github.facebook.stetho:stetho:6d148f20b96ecb29320cced6617830eda8af0426' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
-        amazonExoplayerVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
-        exoplayerLatestVersion = 'com.github.google:ExoPlayer:c38cd1cca9e9deb50724d82fcbc3ac02c49505a9' // 'exoplayer' is a needed module
+        amazonExoplayerGitHubVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
+        exoplayerGitHubVersion = 'com.github.google:ExoPlayer:c38cd1cca9e9deb50724d82fcbc3ac02c49505a9' // 'exoplayer' is a needed module
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.4' // https://bintray.com/google/exoplayer/exoplayer
+        amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.9.0' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
