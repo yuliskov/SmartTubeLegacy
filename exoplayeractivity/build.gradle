@@ -60,8 +60,8 @@ dependencies {
     implementation project.properties.appCompatVersion
 
     // api project.properties.exoplayerVersion
-    // api project.properties.amazonExoplayerVersion
-    api project.properties.exoplayerLatestVersion
+    api project.properties.amazonExoplayerVersion
+    // api project.properties.exoplayerLatestVersion
     
     implementation project.properties.multiDexVersion
 

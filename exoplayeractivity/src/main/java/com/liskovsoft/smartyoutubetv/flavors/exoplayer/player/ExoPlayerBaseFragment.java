@@ -35,6 +35,10 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
@@ -252,13 +256,21 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     private void updateClockView() {
         View root = getView();
-        if (root == null)
+        if (root == null) {
             throw new IllegalStateException("Fragment's root view is null");
+        }
+
         TextView clock = root.findViewById(R.id.clock);
+
         Time time = new Time();
         time.setToNow();
+
+        //SimpleDateFormat serverFormat = new SimpleDateFormat("EEE, MMM d, HH:mm", Locale.getDefault());
+        //String timeStrNew = serverFormat.format(Calendar.getInstance());
+
         // details about format: http://php.net/manual/en/function.strftime.php
-        String currentTime = getString(R.string.time_title, time.format("%a %e %h %R"));
+        String timeStrOld = time.format("%a %e %h %R");
+        String currentTime = getString(R.string.time_title, timeStrOld);
         clock.setText(currentTime);
     }
 
