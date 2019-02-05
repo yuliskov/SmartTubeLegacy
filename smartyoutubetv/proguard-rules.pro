@@ -16,8 +16,11 @@
 #   public *;
 #}
 
-## obfuscate only app code but not libs
-#-keep class !com.liskovsoft.** {*;}
-#-keep interface !com.liskovsoft.** {*;}
-#-keep enum !com.liskovsoft.** {*;}
+# https://www.guardsquare.com/en/products/proguard/manual/examples
+
+#-dontwarn **
+#
+#-keepclassmembers class * extends com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment {
+#    public void onCheckedChanged(...);
+#}
 

@@ -59,6 +59,7 @@ android {
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", crashEnabled.toString()
             ext.enableCrashlytics = crashEnabled
         }
+
         release {
             buildConfigField "boolean", "CRASHLYTICS_ENABLED", crashEnabled.toString()
             ext.enableCrashlytics = crashEnabled
