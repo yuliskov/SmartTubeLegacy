@@ -44,7 +44,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("../android.keystore")
+            storeFile file("../android-upd2.keystore")
             storePassword project.KEYSTORE_PASSWORD
             keyAlias 'private'
             keyPassword project.KEYSTORE_PASSWORD

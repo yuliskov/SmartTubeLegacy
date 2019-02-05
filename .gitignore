@@ -2,6 +2,7 @@ smartyoutubetv.properties
 common.properties
 gradle.properties
 android.keystore
+android-upd2.keystore
 build.log
 notes.txt
 deps.txt
