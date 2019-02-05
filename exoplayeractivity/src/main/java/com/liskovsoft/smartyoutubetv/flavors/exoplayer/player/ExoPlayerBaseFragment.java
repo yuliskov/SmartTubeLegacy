@@ -129,7 +129,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
 
-        // mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
+        mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)

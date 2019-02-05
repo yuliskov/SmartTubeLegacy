@@ -348,7 +348,7 @@ public class PlayerStateManager {
         boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
 
         // There is a bug (null codecs) on some Live formats (strange id == "1/27")
-        if (isTrackChanged && Helpers.isDash(trackId)) {
+        if (isTrackChanged && (Helpers.isDash(trackId) || isDefaultQualitySelected())) {
             mPrefs.setSelectedTrackId(trackId);
             mPrefs.setSelectedTrackHeight(height);
             mPrefs.setSelectedTrackCodecs(codecs);
