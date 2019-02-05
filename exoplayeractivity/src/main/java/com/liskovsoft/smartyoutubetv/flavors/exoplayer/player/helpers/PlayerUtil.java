@@ -31,6 +31,7 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager.MyFormat;
 
 /**
  * Utility methods for demo application.
@@ -38,6 +39,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 /*package*/ public final class PlayerUtil {
     private static final int VIDEO_RENDERER_INDEX = 0;
     private static final String MIME_SEPARATOR = "/";
+    private static final int HEIGHT_SHIFT = 100;
+    private static final int FPS_SHIFT = 10;
 
     private PlayerUtil() {
     }
@@ -134,34 +137,35 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 
     /**
      * Test format against user preferred one (selected in bootstrap)
+     * @param preferredFormat format specification e.g 1080|60|avc
      * @param format format
      * @return is test passed
      */
-    public static boolean isPreferredFormat(Context ctx, Format format) {
+    public static boolean isFormatMatch(String preferredFormat, MyFormat format) {
         if (notAVideo(format)) {
             return true;
         }
 
-        ExoPreferences prefs = ExoPreferences.instance(ctx);
-        String codecAndHeight = prefs.getPreferredCodec();
-        if (codecAndHeight.isEmpty()) { // all formats are preferred
-            return true;
+        String[] split = preferredFormat.split("\\|");
+
+        if (split.length != 3) { // contains values from previous versions
+            return false;
         }
 
-        String[] split = codecAndHeight.split("\\|");
-        if (split.length != 3) { // contains values from previous versions
-            return true;
-        }
         String height = split[0];
         String fps = split[1];
         String codec = split[2];
-        return format.height <= Integer.parseInt(height) &&
-               format.frameRate <= Integer.parseInt(fps) &&
-               format.codecs == null || format.codecs.contains(codec);
+        return format.height <= (Integer.parseInt(height) + HEIGHT_SHIFT) &&
+               format.frameRate <= (Integer.parseInt(fps) + FPS_SHIFT) &&
+               (format.codecs == null || format.codecs.contains(codec));
 
     }
 
-    private static boolean notAVideo(Format format) {
+    public static boolean isFormatRestricted(String preferredFormat) {
+        return !ExoPreferences.FORMAT_ANY.equals(preferredFormat);
+    }
+
+    private static boolean notAVideo(MyFormat format) {
         return format.height == -1;
     }
 

@@ -174,34 +174,42 @@ public class PlayerStateManager {
         MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
         TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
+        String preferredFormat = mPrefs.getPreferredFormat();
+
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
             TrackGroup trackGroup = groupArray.get(j);
             for (int i = 0; i < trackGroup.length; i++) {
                 Format format = trackGroup.getFormat(i);
 
-                if (PlayerUtil.isPreferredFormat(mPlayerFragment.getActivity(), format)) {
-                    MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
+                MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
 
-                    if (tracksEquals(format.id, trackId)) { // strict match found, stop search
-                        result.clear();
+                if (PlayerUtil.isFormatRestricted(preferredFormat)) {
+                    if (PlayerUtil.isFormatMatch(preferredFormat, myFormat)) {
                         result.add(myFormat);
-                        break;
                     }
 
-                    boolean codecMatch = trackCodecs == null || codecEquals(format.codecs, trackCodecs);
-                    boolean heightMatch = heightEquals(format.height, trackHeight) || format.height <= trackHeight;
-                    boolean fpsMatch = fpsEquals(format.frameRate, trackFps);
-                    boolean hdrMatch = PlayerUtil.isHdrCodec(format.codecs) == preferHdr;
+                    continue;
+                }
 
-                    if (codecMatch && heightMatch && fpsMatch && hdrMatch) {
-                        result.add(myFormat);
-                        continue;
-                    }
+                if (tracksEquals(format.id, trackId)) { // strict match found, stop search
+                    result.clear();
+                    result.add(myFormat);
+                    break;
+                }
 
-                    if (heightMatch) {
-                        backed.add(myFormat);
-                    }
+                boolean codecMatch = trackCodecs == null || codecEquals(format.codecs, trackCodecs);
+                boolean heightMatch = heightEquals(format.height, trackHeight) || format.height <= trackHeight;
+                boolean fpsMatch = fpsEquals(format.frameRate, trackFps);
+                boolean hdrMatch = PlayerUtil.isHdrCodec(format.codecs) == preferHdr;
+
+                if (codecMatch && heightMatch && fpsMatch && hdrMatch) {
+                    result.add(myFormat);
+                    continue;
+                }
+
+                if (heightMatch) {
+                    backed.add(myFormat);
                 }
             }
         }
@@ -467,7 +475,7 @@ public class PlayerStateManager {
     /**
      * Simple wrapper around {@link Format} class
      */
-    private class MyFormat {
+    public class MyFormat {
         public final String id;
         public final int bitrate;
         public final float frameRate;

@@ -15,8 +15,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
@@ -27,7 +25,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButto
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictCodecDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
@@ -209,7 +207,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         super.onClick(view);
 
         if (view.getId() == R.id.btn_restrict_codec) {
-            SingleChoiceSelectorDialog.create(getActivity(), new RestrictCodecDialogSource(getActivity()));
+            SingleChoiceSelectorDialog.create(getActivity(), new RestrictFormatDialogSource(getActivity()));
         } else if (view.getId() == R.id.btn_video_zoom) {
             SingleChoiceSelectorDialog.create(getActivity(), new VideoZoomDialogSource(getActivity(), mVideoZoomManager));
         }

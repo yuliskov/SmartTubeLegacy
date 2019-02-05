@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedT
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
@@ -207,9 +208,7 @@ import java.util.TreeSet;
                 trackView.setTag(R.string.track_view_format, format);
 
                 mTrackViews[groupIndex][trackIndex] = trackView;
-                if (PlayerUtil.isPreferredFormat(context, format)) {
-                    sortedViewList.add(trackView);
-                }
+                sortedViewList.add(trackView);
             }
         }
 
@@ -322,7 +321,7 @@ import java.util.TreeSet;
             mOverride = null;
         } else if (view == mDefaultView) { // Auto quality button selected
             mIsDisabled = false;
-            mOverride = null;
+            clearOverride();
         } else if (view == mEnableRandomAdaptationView) {
             setOverride(mOverride.groupIndex, mOverride.tracks, !mEnableRandomAdaptationView.isChecked());
         } else if (view == mAutoframerateView) {
@@ -350,7 +349,7 @@ import java.util.TreeSet;
                 // item already checked - do nothing
                 return;
             } else {
-                mOverride = new SelectionOverride(groupIndex, trackIndex);
+                setOverride(groupIndex, trackIndex);
             }
         }
 
@@ -371,6 +370,30 @@ import java.util.TreeSet;
         }
 
         ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();
+    }
+
+    private void clearOverride() {
+        if (canSwitchFormats()) {
+            mOverride = null;
+        }
+    }
+
+    private void setOverride(int groupIndex, int... tracks) {
+        if (canSwitchFormats()) {
+            mOverride = new SelectionOverride(groupIndex, tracks);
+        }
+    }
+
+    private boolean canSwitchFormats() {
+        ExoPreferences prefs = ExoPreferences.instance(mContext);
+
+        if (prefs.getPreferredFormat().equals(ExoPreferences.FORMAT_ANY)) {
+            return true;
+        }
+
+        MessageHelpers.showLongMessage(mContext, R.string.toast_format_restricted);
+
+        return false;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {

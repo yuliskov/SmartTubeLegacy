@@ -17,11 +17,12 @@ public final class ExoPreferences {
     private static final String SUBTITLE_LANG = "subtitleLang";
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String SWITCH_TO_UHD_CHECKED = "switch_to_uhd";
-    private static final String PREFERRED_CODEC = "preferredCodec";
+    private static final String PREFERRED_FORMAT = "preferredCodec";
     private static final String VIDEO_ZOOM_MODE = "videoZoomMode";
     private static final String SELECTED_TRACK_FPS = "selectedTrackFps";
     private static final String CURRENT_SPEED = "currentSpeed";
     private static final String RESTORE_SPEED = "restoreSpeed";
+    public static final String FORMAT_ANY = "";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -137,20 +138,25 @@ public final class ExoPreferences {
         return mPrefs.getString(SUBTITLE_LANG, null);
     }
 
-    public void setPreferredCodec(String codec) {
+    /**
+     * Height, fps, codec delimited by vertical line e.g. <code>2160|60|vp9</code>
+     * <br/>
+     * NOTE: vertical line must be escaped <code>\\|</code>
+     */
+    public void setPreferredFormat(String codec) {
         mPrefs.edit()
-                .putString(PREFERRED_CODEC, codec)
+                .putString(PREFERRED_FORMAT, codec)
                 .apply();
     }
 
     /**
-     * Get codec and maximum resolution (height), delimited by vertical line e.g. <code>avc|1080</code>
+     * Height, fps, codec delimited by vertical line e.g. <code>2160|60|vp9</code>
      * <br/>
      * NOTE: vertical line must be escaped <code>\\|</code>
      * @return codec and maximum height
      */
-    public String getPreferredCodec() {
-        return mPrefs.getString(PREFERRED_CODEC, "");
+    public String getPreferredFormat() {
+        return mPrefs.getString(PREFERRED_FORMAT, FORMAT_ANY);
     }
 
     public void setCheckedState(int id, boolean isChecked) {
