@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.liskovsoft.exoplayeractivity">
+<manifest xmlns:tools="http://schemas.android.com/tools"
+          package="com.liskovsoft.exoplayeractivity">
+
+    <!-- NOTE: use older sdk -->
+    <uses-sdk tools:overrideLibrary="
+            com.google.android.exoplayer2.ext.leanback,
+            android.support.v17.leanback,
+            com.google.android.exoplayer2.ext.cronet,
+            com.google.android.exoplayer2.ext.gvr,
+            com.google.android.exoplayer2.ext.rtmp,
+            org.chromium.net,
+            com.google.vr.cardboard,
+            net.butterflytv.rtmp_client"/>
 
     <application>
         <!-- NOTE: exoplayer specific section -->
