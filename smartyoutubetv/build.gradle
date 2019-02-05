@@ -151,9 +151,6 @@ dependencies {
     implementation project.properties.appCompatVersion
     implementation project.properties.constraintLayoutVersion
 
-    implementation project.properties.butterKnifeVersion
-    annotationProcessor project.properties.butterKnifeCompilerVersion
-
     implementation project.properties.gsonVersion
     implementation project.properties.jsonPathVersion
 
@@ -167,9 +164,6 @@ dependencies {
 
     implementation project.properties.nanoHttpdVersion
     implementation project.properties.voiceOverlayVersion
-
-    //implementation project.properties.exoplayerVersion
-    implementation project.properties.amazonExoplayerVersion
 
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion
