@@ -40,7 +40,7 @@
 
     <!-- NOTE: ExoApplication: exoplayer specific params -->
     <application
-        android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoApplication"
+        android:name="com.liskovsoft.browser.Browser"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner_main"
         android:hardwareAccelerated="true"

@@ -3,8 +3,6 @@ package com.liskovsoft.browser;
 import android.content.res.AssetManager;
 import android.webkit.CookieSyncManager;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ public class Browser extends CommonApplication {
     final static String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
     public static boolean activityRestored;
 
-    private static Bus sBus;
     private static Properties sProperties;
 
     @Override
@@ -62,13 +59,6 @@ public class Browser extends CommonApplication {
 
     public static EngineType getEngineType() {
         return sEngineType;
-    }
-
-    public static Bus getBus() {
-        if (sBus == null) {
-            sBus = new Bus(ThreadEnforcer.ANY);
-        }
-        return sBus;
     }
 
     public static String getProperty(String key) {

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 public class CommonApplication extends Application {
     private static final String TAG = CommonApplication.class.getSimpleName();
+    private static Bus sBus;
 
     @Override
     public void onCreate() {
@@ -30,5 +33,12 @@ public class CommonApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    public static Bus getBus() {
+        if (sBus == null) {
+            sBus = new Bus(ThreadEnforcer.ANY);
+        }
+        return sBus;
     }
 }
