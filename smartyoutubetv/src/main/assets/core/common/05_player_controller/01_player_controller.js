@@ -55,7 +55,7 @@ var PlayerController = {
             }
 
             setTimeout(function() {
-                YouTubeUtils.playerPlay();
+                player.play();
                 $this.checkPlayerState(position, onFail);
             }, this.checkTimeoutMS);
         }
