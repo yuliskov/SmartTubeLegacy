@@ -170,16 +170,14 @@ class DisplaySyncHelper implements UhdHelperListener {
         if (mode == null && mUhdHelper.getMode() == null) {
             String msg = "Mode changed Failure, Internal error occurred.";
             Log.w(TAG, msg);
-            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
         } else if (mUhdHelper.getMode().getModeId() != mNewMode) {
             // Once onDisplayChangedListener sends proper callback, the above if condition
             // need to changed to mode.getModeId() != modeId
             String msg = String.format("Mode changed Failure, Current mode id is %s, Expected mode id is %s", mUhdHelper.getMode().getModeId(), mNewMode);
             Log.w(TAG, msg);
-            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
         }
         else {
-            Log.i(TAG, "Mode changed Success");
+            Log.i(TAG, "Mode changed successfully");
         }
     }
 

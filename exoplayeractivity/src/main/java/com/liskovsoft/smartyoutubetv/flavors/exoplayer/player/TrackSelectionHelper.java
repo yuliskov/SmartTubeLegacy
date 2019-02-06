@@ -326,15 +326,16 @@ import java.util.TreeSet;
             setOverride(mOverride.groupIndex, mOverride.tracks, !mEnableRandomAdaptationView.isChecked());
         } else if (view == mAutoframerateView) {
             boolean checked = mAutoframerateView.isChecked();
-            AutoFrameRateManager autoFrameRateManager = ((ExoPlayerFragment) mPlayerFragment).getAutoFrameRateManager();
+            AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
             autoFrameRateManager.setEnabled(!checked);
         } else if (view == mHideErrorsView) {
             boolean checked = mHideErrorsView.isChecked();
-            ExoPlayerFragment player = ((ExoPlayerFragment) mPlayerFragment);
+            ExoPlayerFragment player = mPlayerFragment;
             player.setHidePlaybackErrors(!checked);
         } else { // change quality
             mIsDisabled = false;
-            @SuppressWarnings("unchecked") Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
+            @SuppressWarnings("unchecked")
+            Pair<Integer, Integer> tag = (Pair<Integer, Integer>) view.getTag();
             if (tag == null) {
                 return;
             }
@@ -369,7 +370,7 @@ import java.util.TreeSet;
             mSelector.setParameters(mSelector.buildUponParameters().clearSelectionOverrides(mRendererIndex)); // Auto quality button selected
         }
 
-        ((ExoPlayerFragment) mPlayerFragment).retryIfNeeded();
+        mPlayerFragment.retryIfNeeded();
     }
 
     private void clearOverride() {
@@ -391,7 +392,7 @@ import java.util.TreeSet;
             return true;
         }
 
-        MessageHelpers.showLongMessage(mContext, R.string.toast_format_restricted);
+        MessageHelpers.showMessage(mContext, R.string.toast_format_restricted);
 
         return false;
     }

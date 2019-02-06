@@ -34,7 +34,7 @@ public class PlayerStateManager {
     private static final long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min (most of songs)
     private static final long MAX_TRAIL_DURATION_MILLIS = 3 * 1000; // don't save if 3 sec of unseen video remains
     private static final long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
-    private static final long DECODER_INIT_TIME_MS = 500;
+    private static final long DECODER_INIT_TIME_MS = 1_000;
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
@@ -55,7 +55,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
-        waitCodecInit();
+        //waitCodecInit();
 
         restoreVideoTrack();
         restoreSubtitleTrack();
@@ -68,7 +68,7 @@ public class PlayerStateManager {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreStatePartially() {
-        waitCodecInit();
+        //waitCodecInit();
 
         restoreVideoTrack();
     }
