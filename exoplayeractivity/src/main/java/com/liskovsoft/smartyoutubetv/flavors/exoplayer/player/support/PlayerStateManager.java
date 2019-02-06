@@ -174,18 +174,16 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         TrackGroupArray groups = trackInfo.getTrackGroups(RENDERER_INDEX_SUBTITLE);
         SelectionOverride override = mSelector.getParameters().getSelectionOverride(RENDERER_INDEX_SUBTITLE, groups);
 
-        Format fmt = getFormatFromOverride(groups, override);
-
-        persistSubtitleTrack(new MyFormat(fmt));
+        persistSubtitleTrack(getFormatFromOverride(groups, override));
     }
 
-    private Format getFormatFromOverride(TrackGroupArray groups, SelectionOverride override) {
+    private MyFormat getFormatFromOverride(TrackGroupArray groups, SelectionOverride override) {
         if (override == null) {
             return null;
         }
 
         TrackGroup selectedGroup = groups.get(override.groupIndex);
-        return selectedGroup.getFormat(override.tracks[0]);
+        return new MyFormat(selectedGroup.getFormat(override.tracks[0]));
     }
 
     private void persistVideoPosition() {
