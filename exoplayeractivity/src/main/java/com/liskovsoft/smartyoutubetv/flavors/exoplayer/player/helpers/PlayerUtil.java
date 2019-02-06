@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedT
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager.MyFormat;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManagerBase.MyFormat;
 
 public final class PlayerUtil extends TrackSelectorUtil {
     private static final int VIDEO_RENDERER_INDEX = 0;

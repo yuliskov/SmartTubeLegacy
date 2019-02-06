@@ -6,20 +6,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDebugViewHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.MyDefaultTrackSelector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.PlayerStateManager;
@@ -129,7 +134,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
-        mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
+        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory);
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 

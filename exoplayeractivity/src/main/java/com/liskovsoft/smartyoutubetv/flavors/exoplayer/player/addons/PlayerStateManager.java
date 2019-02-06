@@ -22,15 +22,10 @@ import java.util.Set;
 /**
  * Restores saved position, quality and subtitles of the video
  */
-public class PlayerStateManager {
+public class PlayerStateManager extends PlayerStateManagerBase {
     private static final String TAG = PlayerStateManager.class.getSimpleName();
-    private static final String CODEC_AVC = "avc";
-    private static final String CODEC_VP9 = "vp9";
-    private static final String CODEC_VP9_HDR = "vp9.2";
     private static final int RENDERER_INDEX_VIDEO = PlayerCoreFragment.RENDERER_INDEX_VIDEO;
     private static final int RENDERER_INDEX_SUBTITLE = PlayerCoreFragment.RENDERER_INDEX_SUBTITLE;
-    private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
-    private static final float FPS_PRECISION = 10; // fps precision
     private static final long MIN_PERSIST_DURATION_MILLIS = 5 * 60 * 1000; // don't save if total duration < 5 min (most of songs)
     private static final long MAX_TRAIL_DURATION_MILLIS = 3 * 1000; // don't save if 3 sec of unseen video remains
     private static final long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
@@ -43,6 +38,7 @@ public class PlayerStateManager {
     private String mDefaultSubtitleLang;
 
     public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
+        super(playerFragment.getActivity());
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
@@ -87,20 +83,25 @@ public class PlayerStateManager {
     }
 
     private void restoreSubtitleTrack() {
-        Pair<Integer, Integer> trackGroupAndIndex = findProperSubtitleTrack();
+        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+
+        if (info == null) {
+            return;
+        }
+
+        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_SUBTITLE);
+
+        Pair<Integer, Integer> trackGroupAndIndex = findProperSubtitleTrack(groupArray);
 
         restoreTrackGroupAndIndex(trackGroupAndIndex, RENDERER_INDEX_SUBTITLE);
     }
 
-    private Pair<Integer, Integer> findProperSubtitleTrack() {
+    private Pair<Integer, Integer> findProperSubtitleTrack(TrackGroupArray groupArray) {
         mDefaultSubtitleLang = null;
         String subName = mPrefs.getSubtitleLang();
         if (subName == null) { // default track selected
             return null;
         }
-
-        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_SUBTITLE);
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -145,7 +146,15 @@ public class PlayerStateManager {
      * @return pair consisted from track group index and track number
      */
     private Pair<Integer, Integer> findProperVideoTrack() {
-        Set<MyFormat> fmts = findProperVideos();
+        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+
+        if (info == null) {
+            return null;
+        }
+
+        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
+
+        Set<MyFormat> fmts = findProperVideos(groupArray);
         MyFormat fmt = filterHighestVideo(fmts);
 
         if (fmt == null) {
@@ -155,125 +164,6 @@ public class PlayerStateManager {
 
         mDefaultTrackId = fmt.id;
         return fmt.pair;
-    }
-
-    /**
-     * Try to find a candidate(s) that match preferred settings
-     * @return one or more matched video tracks as {@link MyFormat}
-     */
-    private Set<MyFormat> findProperVideos() {
-        String trackId = mPrefs.getSelectedTrackId();
-        int trackHeight = mPrefs.getSelectedTrackHeight();
-        float trackFps = mPrefs.getSelectedTrackFps();
-        String trackCodecs = mPrefs.getSelectedTrackCodecs();
-        boolean preferHdr = PlayerUtil.isHdrCodec(trackCodecs);
-
-        Set<MyFormat> result = new HashSet<>();
-        Set<MyFormat> backed = new HashSet<>();
-
-        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
-        TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
-
-        String preferredFormat = mPrefs.getPreferredFormat();
-
-        // search the same tracks
-        for (int j = 0; j < groupArray.length; j++) {
-            TrackGroup trackGroup = groupArray.get(j);
-            for (int i = 0; i < trackGroup.length; i++) {
-                Format format = trackGroup.getFormat(i);
-
-                MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
-
-                if (PlayerUtil.isFormatRestricted(preferredFormat)) {
-                    if (PlayerUtil.isFormatMatch(preferredFormat, myFormat)) {
-                        result.add(myFormat);
-                    }
-
-                    continue;
-                }
-
-                if (tracksEquals(format.id, trackId)) { // strict match found, stop search
-                    result.clear();
-                    result.add(myFormat);
-                    break;
-                }
-
-                boolean codecMatch = trackCodecs == null || codecEquals(format.codecs, trackCodecs);
-                boolean heightMatch = heightEquals(format.height, trackHeight) || format.height <= trackHeight;
-                boolean fpsMatch = fpsEquals(format.frameRate, trackFps);
-                boolean hdrMatch = PlayerUtil.isHdrCodec(format.codecs) == preferHdr;
-
-                if (codecMatch && heightMatch && fpsMatch && hdrMatch) {
-                    result.add(myFormat);
-                    continue;
-                }
-
-                if (heightMatch) {
-                    backed.add(myFormat);
-                }
-            }
-        }
-
-        return result.isEmpty() ? backed : result;
-    }
-
-    /**
-     * Select format with same codec and highest bitrate. All track already have the same height.
-     * @param fmts source (cannot be null)
-     * @return best format (cannot be null)
-     */
-    private MyFormat filterHighestVideo(Set<MyFormat> fmts) {
-        MyFormat result = null;
-
-        // select format with same codec and highest bitrate
-        for (MyFormat fmt : fmts) {
-            if (result == null) {
-                result = fmt;
-                continue;
-            }
-
-            // there is two levels of preference
-            // by codec (e.g. avc), height, fps, bitrate (with restrictions)
-
-            // don't relay on bitrate, since some video have improper bitrate measurement
-            // because of this, I've add frameRate comparision
-            if (result.height < fmt.height) {
-                result = fmt;
-                continue;
-            }
-
-            // don't relay on bitrate, since some video have improper bitrate measurement
-            // because of this, I've add frameRate comparision
-            if ((result.frameRate < fmt.frameRate) && (result.height == fmt.height)) {
-                result = fmt;
-                continue;
-            }
-
-            // don't relay on bitrate, since some video have improper bitrate measurement
-            // because of this, I've add frameRate comparision
-            if ((result.bitrate < fmt.bitrate)  &&
-                 heightEquals(result.height, fmt.height) &&
-                 codecEquals(result.codecs, fmt.codecs)) {
-                result = fmt;
-            }
-        }
-        return result;
-    }
-
-    private boolean heightEquals(int leftHeight, int rightHeight) {
-        return Math.abs(leftHeight - rightHeight) <= HEIGHT_PRECISION_PX;
-    }
-
-    private boolean fpsEquals(float leftFps, float rightFps) {
-        return Math.abs(leftFps - rightFps) <= FPS_PRECISION;
-    }
-
-    private boolean tracksEquals(String leftTrackId, String rightTrackId) {
-        if (leftTrackId == null || rightTrackId == null) {
-            return false;
-        }
-
-        return leftTrackId.equals(rightTrackId);
     }
 
     /**
@@ -442,25 +332,6 @@ public class PlayerStateManager {
         return override == null;
     }
 
-    private boolean codecEquals(String codec1, String codec2) {
-        return Helpers.equals(codecShort(codec1), codecShort(codec2));
-    }
-
-    private String codecShort(String codecName) {
-        if (codecName == null) {
-            return null;
-        }
-
-        // simplify codec name: use avc instead of avc.111333
-        if (codecName.contains(CODEC_AVC)) {
-            codecName = CODEC_AVC;
-        } else if (codecName.contains(CODEC_VP9)) {
-            codecName = CODEC_VP9;
-        }
-
-        return codecName;
-    }
-
     private void restoreTrackGroupAndIndex(Pair<Integer, Integer> trackGroupAndIndex, int rendererIndex) {
         if (trackGroupAndIndex == null) {
             return;
@@ -470,28 +341,5 @@ public class PlayerStateManager {
         TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(trackGroupAndIndex.first, trackGroupAndIndex.second);
         mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(rendererIndex, trackGroupArray, override));
-    }
-
-    /**
-     * Simple wrapper around {@link Format} class
-     */
-    public class MyFormat {
-        public final String id;
-        public final int bitrate;
-        public final float frameRate;
-        public final String codecs;
-        public final int height;
-        public final int width;
-        public final Pair<Integer, Integer> pair;
-
-        public MyFormat(Format format, Pair<Integer, Integer> pair) {
-            id = format.id;
-            bitrate = format.bitrate;
-            frameRate = format.frameRate;
-            codecs = format.codecs;
-            width = format.width;
-            height = format.height;
-            this.pair = pair;
-        }
     }
 }
