@@ -1,0 +1,1 @@
+armeabi-v7a
