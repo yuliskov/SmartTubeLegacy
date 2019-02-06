@@ -18,15 +18,25 @@ public class PlayerStateManagerBase {
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
     private static final float FPS_PRECISION = 10; // fps precision
     private final ExoPreferences mPrefs;
+    private String mDefaultTrackId;
+    private String mDefaultSubtitleLang;
 
     public PlayerStateManagerBase(Context context) {
         mPrefs = new ExoPreferences(context);
     }
 
-    public MyFormat findProperFormat(TrackGroupArray groupArray) {
+    public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
         Set<MyFormat> fmts = findProperVideos(groupArray);
 
-        return filterHighestVideo(fmts);
+        MyFormat fmt = filterHighestVideo(fmts);
+
+        if (fmt == null) {
+            mDefaultTrackId = null;
+        } else {
+            mDefaultTrackId = fmt.id;
+        }
+
+        return fmt;
     }
 
     /**
@@ -131,6 +141,7 @@ public class PlayerStateManagerBase {
 
     public MyFormat findProperSubtitleFormat(TrackGroupArray groupArray) {
         String subName = mPrefs.getSubtitleLang();
+
         if (subName == null) { // default track selected
             return null;
         }
@@ -142,12 +153,19 @@ public class PlayerStateManagerBase {
                 Format format = trackGroup.getFormat(i);
 
                 if (subName.equals(format.language)) {
+                    mDefaultSubtitleLang = format.language;
                     return new MyFormat(format, new Pair<>(j, i));
                 }
             }
         }
 
+        mDefaultSubtitleLang = null;
+
         return null;
+    }
+
+    public long findProperVideoPosition(String key) {
+        return mPrefs.getPosition(key);
     }
 
     private boolean heightEquals(int leftHeight, int rightHeight) {
@@ -185,6 +203,77 @@ public class PlayerStateManagerBase {
         return codecName;
     }
 
+    protected void persistVideoParams(MyFormat format) {
+        String trackId = extractCurrentTrackId(format);
+        int height = extractCurrentTrackHeight(format);
+        String codecs = extractCurrentTrackCodecs(format); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
+        float fps = extractCurrentTrackFps(format);
+
+        // mDefaultTrackId: usually this happens when video does not contain preferred format
+        boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
+
+        // There is a bug (null codecs) on some Live formats (strange id == "1/27")
+        if (isTrackChanged && (Helpers.isDash(trackId) || (trackId == null))) {
+            mPrefs.setSelectedTrackId(trackId);
+            mPrefs.setSelectedTrackHeight(height);
+            mPrefs.setSelectedTrackCodecs(codecs);
+            mPrefs.setSelectedTrackFps(fps);
+        }
+    }
+
+    protected void persistVideoTrackPosition(String key, long position) {
+        if (position == 0) {
+            mPrefs.resetPosition(key);
+        } else {
+            mPrefs.setPosition(key, position);
+        }
+    }
+
+    protected void persistSubtitleTrack(MyFormat format) {
+        if (format == null) {
+            mPrefs.setSubtitleLang(null);
+            return;
+        }
+
+        boolean trackChanged = !Helpers.equals(format.language, mDefaultSubtitleLang);
+
+        if (trackChanged) {
+            mPrefs.setSubtitleLang(format.language);
+        }
+    }
+
+    private String extractCurrentTrackId(MyFormat format) {
+        if (format == null) {
+            return null;
+        }
+
+        return format.id;
+    }
+
+    private int extractCurrentTrackHeight(MyFormat format) {
+        if (format == null) {
+            return 0;
+        }
+
+        return format.height;
+    }
+
+    private String extractCurrentTrackCodecs(MyFormat format) {
+        if (format == null) {
+            return null;
+        }
+
+        return format.codecs;
+    }
+
+    private float extractCurrentTrackFps(MyFormat format) {
+        if (format == null) {
+            return 0;
+        }
+
+        return format.frameRate;
+    }
+
     /**
      * Simple wrapper around {@link Format} class
      */
@@ -197,6 +286,10 @@ public class PlayerStateManagerBase {
         public final int width;
         public final String language;
         public final Pair<Integer, Integer> pair;
+
+        public MyFormat(Format format) {
+            this(format, null);
+        }
 
         public MyFormat(Format format, Pair<Integer, Integer> pair) {
             id = format.id;

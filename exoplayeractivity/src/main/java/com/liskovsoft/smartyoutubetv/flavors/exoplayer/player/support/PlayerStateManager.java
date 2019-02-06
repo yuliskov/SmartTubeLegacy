@@ -3,16 +3,15 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 import android.util.Pair;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
-import com.google.android.exoplayer2.Player;
 
 /**
  * Restores saved position, quality and subtitles of the video
@@ -28,16 +27,12 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final SimpleExoPlayer mPlayer;
     private final DefaultTrackSelector mSelector;
-    private ExoPreferences mPrefs;
-    private String mDefaultTrackId;
-    private String mDefaultSubtitleLang;
 
     public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
         super(playerFragment.getActivity());
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
-        mPrefs = new ExoPreferences(playerFragment.getActivity());
     }
 
     /**
@@ -95,18 +90,16 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         MyFormat fmt = findProperSubtitleFormat(groupArray);
 
         if (fmt == null) {
-            mDefaultSubtitleLang = null;
             return null;
         }
-
-        mDefaultSubtitleLang = fmt.language;
 
         return fmt.pair;
     }
 
     private void restoreTrackPosition() {
         String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
-        long pos = mPrefs.getPosition(title);
+
+        long pos = findProperVideoPosition(title);
 
         if (pos != C.TIME_UNSET){
             mPlayer.seekTo(pos);
@@ -139,14 +132,12 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
         TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
-        MyFormat fmt = findProperFormat(groupArray);
+        MyFormat fmt = findProperVideoFormat(groupArray);
 
         if (fmt == null) {
-            mDefaultTrackId = null;
             return null;
         }
 
-        mDefaultTrackId = fmt.id;
         return fmt.pair;
     }
 
@@ -167,44 +158,37 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     }
 
     public void persistState() {
-        if (mPrefs == null) {
-            return;
-        }
-
-        persistTrackParams();
-        persistTrackPosition();
-        persistSubtitleTrack();
+        MyFormat format = isDefaultQualitySelected() ? null : new MyFormat(mPlayer.getVideoFormat());
+        persistVideoParams(format);
+        persistVideoPosition();
+        persistSubtitle();
     }
 
-    private void persistSubtitleTrack() {
+    private void persistSubtitle() {
         MappedTrackInfo trackInfo = mSelector.getCurrentMappedTrackInfo();
+
         if (trackInfo == null) {
             return;
         }
+
         TrackGroupArray groups = trackInfo.getTrackGroups(RENDERER_INDEX_SUBTITLE);
         SelectionOverride override = mSelector.getParameters().getSelectionOverride(RENDERER_INDEX_SUBTITLE, groups);
-        if (override == null && mDefaultSubtitleLang != null) { // user switched the track to auto mode
-            mPrefs.setSubtitleLang(null);
-            return;
-        }
-
-        if (override == null) {
-            return;
-        }
 
         Format fmt = getFormatFromOverride(groups, override);
 
-        if (!Helpers.equals(fmt.language, mDefaultSubtitleLang)) {
-            mPrefs.setSubtitleLang(fmt.language);
-        }
+        persistSubtitleTrack(new MyFormat(fmt));
     }
 
     private Format getFormatFromOverride(TrackGroupArray groups, SelectionOverride override) {
+        if (override == null) {
+            return null;
+        }
+
         TrackGroup selectedGroup = groups.get(override.groupIndex);
         return selectedGroup.getFormat(override.tracks[0]);
     }
 
-    private void persistTrackPosition() {
+    private void persistVideoPosition() {
         long duration = mPlayer.getDuration();
         if (duration < MIN_PERSIST_DURATION_MILLIS) {
             return;
@@ -214,84 +198,10 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         boolean almostAllVideoSeen = (duration - position) < MAX_TRAIL_DURATION_MILLIS;
         boolean isVideoJustStarts = position < MAX_START_DURATION_MILLIS;
         if (almostAllVideoSeen || isVideoJustStarts) {
-            mPrefs.resetPosition(title);
+            persistVideoTrackPosition(title, 0);
         } else {
-            mPrefs.setPosition(title, position);
+            persistVideoTrackPosition(title, position);
         }
-    }
-
-    private void persistTrackParams() {
-        String trackId = extractCurrentTrackId();
-        int height = extractCurrentTrackHeight();
-        String codecs = extractCurrentTrackCodecs(); // there is a bug (null codecs) on some Live formats (strange id == "1/27")
-        float fps = extractCurrentTrackFps();
-
-        // mDefaultTrackId: usually this happens when video does not contain preferred format
-        boolean isTrackChanged = !Helpers.equals(trackId, mDefaultTrackId);
-
-        // There is a bug (null codecs) on some Live formats (strange id == "1/27")
-        if (isTrackChanged && (Helpers.isDash(trackId) || isDefaultQualitySelected())) {
-            mPrefs.setSelectedTrackId(trackId);
-            mPrefs.setSelectedTrackHeight(height);
-            mPrefs.setSelectedTrackCodecs(codecs);
-            mPrefs.setSelectedTrackFps(fps);
-        }
-    }
-
-    private String extractCurrentTrackId() {
-        if (isDefaultQualitySelected()) {
-            return null;
-        }
-
-        Format videoFormat = mPlayer.getVideoFormat();
-
-        if (videoFormat == null) {
-            return null;
-        }
-
-        return videoFormat.id;
-    }
-
-    private int extractCurrentTrackHeight() {
-        if (isDefaultQualitySelected()) {
-            return 0;
-        }
-
-        Format videoFormat = mPlayer.getVideoFormat();
-
-        if (videoFormat == null) {
-            return 0;
-        }
-
-        return videoFormat.height;
-    }
-
-    private String extractCurrentTrackCodecs() {
-        if (isDefaultQualitySelected()) {
-            return null;
-        }
-
-        Format videoFormat = mPlayer.getVideoFormat();
-
-        if (videoFormat == null) {
-            return null;
-        }
-
-        return videoFormat.codecs;
-    }
-
-    private float extractCurrentTrackFps() {
-        if (isDefaultQualitySelected()) {
-            return 0;
-        }
-
-        Format videoFormat = mPlayer.getVideoFormat();
-
-        if (videoFormat == null) {
-            return 0;
-        }
-
-        return videoFormat.frameRate;
     }
 
     private boolean isDefaultQualitySelected() {
