@@ -3,7 +3,7 @@ package com.liskovsoft.appbackupmanager.ui;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import com.liskovsoft.appbackupmanager.Constants;
+import com.liskovsoft.appbackupmanager.support.Constants;
 
 import java.util.Locale;
 

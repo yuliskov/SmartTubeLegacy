@@ -2,6 +2,10 @@ package com.liskovsoft.appbackupmanager;
 
 import android.content.Context;
 import android.util.Log;
+import com.liskovsoft.appbackupmanager.support.AppInfo;
+import com.liskovsoft.appbackupmanager.support.Crypto;
+import com.liskovsoft.appbackupmanager.support.LogFile;
+import com.liskovsoft.appbackupmanager.support.ShellCommands;
 
 import java.io.File;
 
