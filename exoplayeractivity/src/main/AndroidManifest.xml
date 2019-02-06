@@ -4,14 +4,12 @@
 
     <!-- NOTE: use older sdk -->
     <uses-sdk tools:overrideLibrary="
-            com.google.android.exoplayer2.ext.leanback,
-            android.support.v17.leanback,
-            com.google.android.exoplayer2.ext.cronet,
-            com.google.android.exoplayer2.ext.gvr,
-            com.google.android.exoplayer2.ext.rtmp,
-            org.chromium.net,
-            com.google.vr.cardboard,
-            net.butterflytv.rtmp_client"/>
+        com.google.android.exoplayer2,
+        com.google.android.exoplayer2.ui,
+        com.google.android.exoplayer2.source.dash,
+        com.google.android.exoplayer2.source.hls,
+        com.google.android.exoplayer2.source.smoothstreaming,
+        com.google.android.exoplayer2.core"/>
 
     <application>
         <!-- NOTE: exoplayer specific section -->
