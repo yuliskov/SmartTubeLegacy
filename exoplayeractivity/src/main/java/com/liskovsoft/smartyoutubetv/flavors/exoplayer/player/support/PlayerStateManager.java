@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.util.Pair;
 import com.google.android.exoplayer2.C;
@@ -11,13 +11,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Selecti
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.google.android.exoplayer2.Player;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Restores saved position, quality and subtitles of the video
@@ -97,26 +92,16 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     }
 
     private Pair<Integer, Integer> findProperSubtitleTrack(TrackGroupArray groupArray) {
-        mDefaultSubtitleLang = null;
-        String subName = mPrefs.getSubtitleLang();
-        if (subName == null) { // default track selected
+        MyFormat fmt = findProperSubtitleFormat(groupArray);
+
+        if (fmt == null) {
+            mDefaultSubtitleLang = null;
             return null;
         }
 
-        // search the same tracks
-        for (int j = 0; j < groupArray.length; j++) {
-            TrackGroup trackGroup = groupArray.get(j);
-            for (int i = 0; i < trackGroup.length; i++) {
-                Format format = trackGroup.getFormat(i);
+        mDefaultSubtitleLang = fmt.language;
 
-                if (subName.equals(format.language)) {
-                    mDefaultSubtitleLang = format.language;
-                    return new Pair<>(j, i);
-                }
-            }
-        }
-
-        return null;
+        return fmt.pair;
     }
 
     private void restoreTrackPosition() {
@@ -154,8 +139,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
         TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
-        Set<MyFormat> fmts = findProperVideos(groupArray);
-        MyFormat fmt = filterHighestVideo(fmts);
+        MyFormat fmt = findProperFormat(groupArray);
 
         if (fmt == null) {
             mDefaultTrackId = null;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.view.SurfaceHolder;
 import com.google.android.exoplayer2.C;

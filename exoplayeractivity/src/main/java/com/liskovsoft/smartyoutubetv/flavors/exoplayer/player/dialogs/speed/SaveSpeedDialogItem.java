@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed;
 
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.MultiDialogItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 public class SaveSpeedDialogItem extends MultiDialogItem {
     private final ExoPreferences mPrefs;

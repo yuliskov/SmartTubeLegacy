@@ -4,7 +4,7 @@ import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 public class AutoFrameRateManager {
     private static final String TAG = AutoFrameRateManager.class.getSimpleName();

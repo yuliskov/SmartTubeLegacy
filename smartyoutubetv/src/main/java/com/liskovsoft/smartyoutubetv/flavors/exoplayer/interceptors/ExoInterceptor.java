@@ -13,8 +13,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;

@@ -1,10 +1,9 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons.VideoZoomManager;
 
 public final class ExoPreferences {
     private static ExoPreferences sInstance;

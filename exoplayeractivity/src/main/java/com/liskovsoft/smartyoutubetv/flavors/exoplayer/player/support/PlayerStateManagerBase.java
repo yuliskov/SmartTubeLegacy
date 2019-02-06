@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.addons;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Context;
 import android.util.Pair;
@@ -6,7 +6,6 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.HashSet;
@@ -22,6 +21,12 @@ public class PlayerStateManagerBase {
 
     public PlayerStateManagerBase(Context context) {
         mPrefs = new ExoPreferences(context);
+    }
+
+    public MyFormat findProperFormat(TrackGroupArray groupArray) {
+        Set<MyFormat> fmts = findProperVideos(groupArray);
+
+        return filterHighestVideo(fmts);
     }
 
     /**
@@ -124,6 +129,27 @@ public class PlayerStateManagerBase {
         return result;
     }
 
+    public MyFormat findProperSubtitleFormat(TrackGroupArray groupArray) {
+        String subName = mPrefs.getSubtitleLang();
+        if (subName == null) { // default track selected
+            return null;
+        }
+
+        // search the same tracks
+        for (int j = 0; j < groupArray.length; j++) {
+            TrackGroup trackGroup = groupArray.get(j);
+            for (int i = 0; i < trackGroup.length; i++) {
+                Format format = trackGroup.getFormat(i);
+
+                if (subName.equals(format.language)) {
+                    return new MyFormat(format, new Pair<>(j, i));
+                }
+            }
+        }
+
+        return null;
+    }
+
     private boolean heightEquals(int leftHeight, int rightHeight) {
         return Math.abs(leftHeight - rightHeight) <= HEIGHT_PRECISION_PX;
     }
@@ -169,6 +195,7 @@ public class PlayerStateManagerBase {
         public final String codecs;
         public final int height;
         public final int width;
+        public final String language;
         public final Pair<Integer, Integer> pair;
 
         public MyFormat(Format format, Pair<Integer, Integer> pair) {
@@ -178,6 +205,7 @@ public class PlayerStateManagerBase {
             codecs = format.codecs;
             width = format.width;
             height = format.height;
+            language = format.language;
             this.pair = pair;
         }
     }
