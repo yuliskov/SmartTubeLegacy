@@ -89,8 +89,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void initializePlayer() {
-        if (getIntent() == null)
+        if (getIntent() == null) {
             return;
+        }
 
         boolean needNewPlayer = mPlayer == null;
         super.initializePlayer();

@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
@@ -86,7 +87,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final String EXTENSION_LIST_EXTRA = "extension_list";
 
     public static final String MPD_CONTENT_EXTRA = "mpd_content";
-    private static final String DELIMITER = "------";
+    private static final String COMBINED_URL_DELIMITER = "------";
 
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
@@ -138,6 +139,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         clearResumePosition();
         mMediaDataSourceFactory = buildDataSourceFactory(true);
         mMainHandler = new Handler();
+
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER);
         }
@@ -175,50 +177,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void initializePlayer() {
         Intent intent = getIntent();
         boolean needNewPlayer = mPlayer == null;
+
         if (needNewPlayer) {
             initializeTrackSelector();
 
             mLastSeenTrackGroupArray = null;
 
-            UUID drmSchemeUuid = intent.hasExtra(DRM_SCHEME_UUID_EXTRA) ? UUID.fromString(intent.getStringExtra(DRM_SCHEME_UUID_EXTRA)) : null;
-
-            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
-            if (drmSchemeUuid != null) {
-                String drmLicenseUrl = intent.getStringExtra(DRM_LICENSE_URL);
-                String[] keyRequestPropertiesArray = intent.getStringArrayExtra(DRM_KEY_REQUEST_PROPERTIES);
-                try {
-                    drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl, keyRequestPropertiesArray);
-                } catch (UnsupportedDrmException e) {
-                    int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported : (e.reason == UnsupportedDrmException
-                            .REASON_UNSUPPORTED_SCHEME ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
-                    showToast(errorStringId);
-                    return;
-                }
-            }
-
-            boolean preferExtensionDecoders = intent.getBooleanExtra(PREFER_EXTENSION_DECODERS, false); // prefer soft decoders
-
-            @DefaultRenderersFactory.ExtensionRendererMode int extensionRendererMode = preferExtensionDecoders ?
-                    DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER :
-                    DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON;
-
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity(), DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
-
-
-            // increase player's min/max buffer size to 60 secs
-            // usage: ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl)
-
-            DefaultLoadControl loadControl = new DefaultLoadControl.Builder()
-                    .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
-                    .setBufferDurationsMs(
-            DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
-            DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                        DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
-                    )
-                    .createDefaultLoadControl();
-
-            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), renderersFactory, mTrackSelector, loadControl, drmSessionManager, BANDWIDTH_METER);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);
@@ -229,72 +194,153 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             mSimpleExoPlayerView.setPlayer(mPlayer);
             mPlayer.setPlayWhenReady(false); // give a chance to switch/restore track before play
         }
+
         if (needNewPlayer || mNeedRetrySource) {
-            String action = intent.getAction();
-            Uri[] uris;
-            String[] extensions;
+            MediaSource mediaSource = getMediaSource(intent);
 
-            if (ACTION_VIEW.equals(action)) {
-                uris = new Uri[]{intent.getData()};
-
-                extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA)};
-            } else if (ACTION_VIEW_LIST.equals(action)) {
-                String[] uriStrings = intent.getStringArrayExtra(URI_LIST_EXTRA);
-                uris = new Uri[uriStrings.length];
-                for (int i = 0; i < uriStrings.length; i++) {
-                    uris[i] = Uri.parse(uriStrings[i]);
-                }
-                extensions = intent.getStringArrayExtra(EXTENSION_LIST_EXTRA);
-                if (extensions == null) {
-                    extensions = new String[uriStrings.length];
-                }
-            } else {
-                showToast(getString(R.string.unexpected_intent_action, action));
+            if (mediaSource == null) {
                 return;
             }
-
-            if (Util.maybeRequestReadExternalStoragePermission(getActivity(), uris)) {
-                // The player will be reinitialized if the permission is granted.
-                return;
-            }
-
-            MediaSource[] mediaSources = new MediaSource[uris.length];
-
-            for (int i = 0; i < uris.length; i++) {
-                // NOTE: supply audio and video tracks in one field
-                String[] split = uris[i].toString().split(DELIMITER);
-                if (split.length == 2) {
-                    mediaSources[i] = new MergingMediaSource(buildMediaSource(Uri.parse(split[0]), null), buildMediaSource(Uri.parse(split[1]),
-                            null));
-                    continue;
-                }
-
-                String smallExtra = intent.getStringExtra(MPD_CONTENT_EXTRA);
-                String bigExtra = (String) ExtendedDataHolder.getInstance().getExtra(MPD_CONTENT_EXTRA);
-                if (smallExtra != null) {
-                    mediaSources[i] = buildMPDMediaSource(uris[i], smallExtra);
-                    continue;
-                } else if (bigExtra != null) { // stored externally?
-                    mediaSources[i] = buildMPDMediaSource(uris[i], bigExtra);
-                    continue;
-                }
-                mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
-            }
-
-            MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources);
 
             boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
 
             if (haveResumePosition) {
                 mPlayer.seekTo(mResumeWindow, mResumePosition);
             }
-
-            //player.prepare(mediaSource, !haveResumePosition, false);
+            
             mPlayer.prepare(mediaSource, !haveResumePosition, !haveResumePosition);
 
             mNeedRetrySource = false;
+
             updateButtonVisibilities();
         }
+    }
+
+    private MediaSource getMediaSource(Intent intent) {
+        Uri[] uris = getUris(intent);
+        String[] extensions = getExtensions(intent);
+
+        if (uris == null) {
+            return null;
+        }
+
+        MediaSource[] mediaSources = new MediaSource[uris.length];
+
+        for (int i = 0; i < uris.length; i++) {
+            // NOTE: supply audio and video tracks in one field
+            boolean isCombinedUri = uris[i].toString().contains(COMBINED_URL_DELIMITER);
+            boolean isSimpleMpdExtra = intent.hasExtra(MPD_CONTENT_EXTRA);
+            boolean isExtendedMpdExtra = ExtendedDataHolder.getInstance().hasExtra(MPD_CONTENT_EXTRA);
+
+            if (isSimpleMpdExtra) { // mpd content
+                String mpdExtra = intent.getStringExtra(MPD_CONTENT_EXTRA);
+                mediaSources[i] = buildMPDMediaSource(uris[i], mpdExtra);
+            } else if (isExtendedMpdExtra) { // mpd content stored externally?
+                String mpdExtra = (String) ExtendedDataHolder.getInstance().getExtra(MPD_CONTENT_EXTRA);
+                mediaSources[i] = buildMPDMediaSource(uris[i], mpdExtra);
+            } else if (isCombinedUri) { // video and audio in one url
+                String[] split = uris[i].toString().split(COMBINED_URL_DELIMITER);
+                mediaSources[i] = new MergingMediaSource(
+                        buildMediaSource(Uri.parse(split[0]), null),
+                        buildMediaSource(Uri.parse(split[1]), null)
+                );
+            } else { // url only
+                mediaSources[i] = buildMediaSource(uris[i], extensions[i]);
+            }
+        }
+
+        return mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources); // or playlist
+    }
+
+    private Uri[] getUris(Intent intent) {
+        String action = intent.getAction();
+        Uri[] uris = null;
+
+        if (ACTION_VIEW.equals(action)) {
+            uris = new Uri[]{intent.getData()};
+        } else if (ACTION_VIEW_LIST.equals(action)) {
+            String[] uriStrings = intent.getStringArrayExtra(URI_LIST_EXTRA);
+            uris = new Uri[uriStrings.length];
+
+            for (int i = 0; i < uriStrings.length; i++) {
+                uris[i] = Uri.parse(uriStrings[i]);
+            }
+        } else {
+            showToast(getString(R.string.unexpected_intent_action, action));
+        }
+
+        if (uris != null && Util.maybeRequestReadExternalStoragePermission(getActivity(), uris)) {
+            // The player will be reinitialized if the permission is granted.
+            return null;
+        }
+
+        return uris;
+    }
+
+    private String[] getExtensions(Intent intent) {
+        String action = intent.getAction();
+        String[] extensions = null;
+
+        if (ACTION_VIEW.equals(action)) {
+            extensions = new String[]{intent.getStringExtra(EXTENSION_EXTRA)};
+        } else if (ACTION_VIEW_LIST.equals(action)) {
+            String[] uriStrings = intent.getStringArrayExtra(URI_LIST_EXTRA);
+            extensions = intent.getStringArrayExtra(EXTENSION_LIST_EXTRA);
+
+            if (extensions == null) {
+                extensions = new String[uriStrings.length];
+            }
+        } else {
+            showToast(getString(R.string.unexpected_intent_action, action));
+        }
+
+        return extensions;
+    }
+
+    private RenderersFactory getRenderersFactory() {
+        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getActivity());
+        renderersFactory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+        return renderersFactory;
+    }
+
+    /**
+     * Increase player's min/max buffer size to 60 secs
+     * @return load control
+     */
+    private DefaultLoadControl getLoadControl() {
+        return new DefaultLoadControl.Builder()
+                .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
+                .setBufferDurationsMs(
+        DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
+        DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                )
+                .createDefaultLoadControl();
+    }
+
+    private DrmSessionManager<FrameworkMediaCrypto> getDrmManager(Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+
+        UUID drmSchemeUuid = intent.hasExtra(DRM_SCHEME_UUID_EXTRA) ? UUID.fromString(intent.getStringExtra(DRM_SCHEME_UUID_EXTRA)) : null;
+
+        DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
+
+        if (drmSchemeUuid != null) {
+            String drmLicenseUrl = intent.getStringExtra(DRM_LICENSE_URL);
+            String[] keyRequestPropertiesArray = intent.getStringArrayExtra(DRM_KEY_REQUEST_PROPERTIES);
+            try {
+                drmSessionManager = buildDrmSessionManager(drmSchemeUuid, drmLicenseUrl, keyRequestPropertiesArray);
+            } catch (UnsupportedDrmException e) {
+                int errorStringId = Util.SDK_INT < 18 ? R.string.error_drm_not_supported :
+                        (e.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
+                showToast(errorStringId);
+            }
+        }
+
+        return drmSessionManager;
     }
 
     protected abstract void initializeTrackSelector();
