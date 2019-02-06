@@ -43,7 +43,7 @@ public class PlayerStateManagerBase {
      * Try to find a candidate(s) that match preferred settings
      * @return one or more matched video tracks as {@link MyFormat}
      */
-    protected Set<MyFormat> findProperVideos(TrackGroupArray groupArray) {
+    private Set<MyFormat> findProperVideos(TrackGroupArray groupArray) {
         String trackId = mPrefs.getSelectedTrackId();
         int trackHeight = mPrefs.getSelectedTrackHeight();
         float trackFps = mPrefs.getSelectedTrackFps();
@@ -101,7 +101,7 @@ public class PlayerStateManagerBase {
      * @param fmts source (cannot be null)
      * @return best format (cannot be null)
      */
-    protected MyFormat filterHighestVideo(Set<MyFormat> fmts) {
+    private MyFormat filterHighestVideo(Set<MyFormat> fmts) {
         MyFormat result = null;
 
         // select format with same codec and highest bitrate
