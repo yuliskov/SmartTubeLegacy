@@ -106,7 +106,12 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * Restore track from prefs
      */
     private void restoreVideoTrack() {
-        new Handler().postDelayed(this::restoreVideoTrackReal, DECODER_INIT_TIME_MS);
+        if (trackGroupIsEmpty()) {
+            return;
+        }
+
+        Pair<Integer, Integer> trackGroupAndIndex = findProperVideoTrack();
+        restoreTrackGroupAndIndex(trackGroupAndIndex, RENDERER_INDEX_VIDEO);
     }
 
     private void restoreVideoTrackReal() {
