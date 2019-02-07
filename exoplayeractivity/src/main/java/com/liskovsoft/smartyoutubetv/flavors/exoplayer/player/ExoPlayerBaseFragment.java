@@ -13,23 +13,23 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultTrackSelector;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerButtonsManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerStateManager;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerButtonsManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInitializer;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerStateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
@@ -130,7 +130,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
-        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getActivity());
+        mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
@@ -353,15 +353,13 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if ((playbackState == Player.STATE_IDLE     ||
-             playbackState == Player.STATE_READY)   &&
-             !mIsDurationSet) {
+        if (mTrackSelector.getCurrentMappedTrackInfo() != null && !mIsDurationSet) {
             mIsDurationSet = true; // run once per video
 
-            //if (mStateManager != null) {
-            //    // stateManage should be initialized here
-            //    mStateManager.restoreState();
-            //}
+            if (mStateManager != null) {
+                // stateManage should be initialized here
+                mStateManager.restoreState();
+            }
 
             if (mPlayer != null) {
                 mPlayer.setPlayWhenReady(mShouldAutoPlay);

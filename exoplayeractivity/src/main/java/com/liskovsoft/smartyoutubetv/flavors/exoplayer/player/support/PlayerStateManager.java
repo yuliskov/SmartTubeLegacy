@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
+import android.os.Handler;
 import android.util.Pair;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -41,8 +41,6 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
-        //waitCodecInit();
-
         restoreVideoTrack();
         restoreSubtitleTrack();
         restoreTrackPosition();
@@ -54,8 +52,6 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreStatePartially() {
-        //waitCodecInit();
-
         restoreVideoTrack();
     }
 
@@ -110,12 +106,15 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * Restore track from prefs
      */
     private void restoreVideoTrack() {
+        new Handler().postDelayed(this::restoreVideoTrackReal, DECODER_INIT_TIME_MS);
+    }
+
+    private void restoreVideoTrackReal() {
         if (trackGroupIsEmpty()) {
             return;
         }
 
         Pair<Integer, Integer> trackGroupAndIndex = findProperVideoTrack();
-
         restoreTrackGroupAndIndex(trackGroupAndIndex, RENDERER_INDEX_VIDEO);
     }
 
