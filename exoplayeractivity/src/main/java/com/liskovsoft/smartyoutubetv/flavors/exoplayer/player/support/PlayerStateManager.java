@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 import android.os.Handler;
 import android.util.Pair;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -157,7 +158,13 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     }
 
     public void persistState() {
-        MyFormat format = isDefaultQualitySelected() ? null : new MyFormat(mPlayer.getVideoFormat());
+        Format videoFormat = mPlayer.getVideoFormat();
+
+        if (videoFormat == null) {
+            return;
+        }
+
+        MyFormat format = isDefaultQualitySelected() ? null : new MyFormat(videoFormat);
         persistVideoParams(format);
         persistVideoPosition();
         persistSubtitle();
