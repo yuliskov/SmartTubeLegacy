@@ -130,7 +130,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
-        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory);
+        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getActivity());
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
@@ -358,10 +358,10 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
              !mIsDurationSet) {
             mIsDurationSet = true; // run once per video
 
-            if (mStateManager != null) {
-                // stateManage should be initialized here
-                mStateManager.restoreState();
-            }
+            //if (mStateManager != null) {
+            //    // stateManage should be initialized here
+            //    mStateManager.restoreState();
+            //}
 
             if (mPlayer != null) {
                 mPlayer.setPlayWhenReady(mShouldAutoPlay);
