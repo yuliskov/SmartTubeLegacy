@@ -1,40 +1,5 @@
 package edu.mit.mobile.android.appupdater;
 
-/*
- * Copyright (C) 2010-2012  MIT Mobile Experience Lab
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.LocaleUtility;
-import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
-import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,8 +7,23 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.LocaleUtility;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
+import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
 import edu.mit.mobile.android.utils.StreamUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * A fairly simple non-Market app update checker. Give it a URL pointing to a JSON file
@@ -184,7 +164,10 @@ public class AppUpdateChecker {
      */
     public void forceCheckForUpdates() {
         Log.d(TAG, "checking for updates...");
-        if (versionTask == null) {
+
+        if (mVersionListUrls == null || mVersionListUrls.length == 0) {
+            Log.w(TAG, "Supplied url update list is null or empty");
+        } else if (versionTask == null) {
             versionTask = new GetVersionJsonTask();
             versionTask.execute(mVersionListUrls);
         } else {

@@ -49,7 +49,13 @@ public class AssetPropertyParser2 implements ConfigParser {
             return null;
         }
 
-        return mProperties.getProperty(key);
+        String val = mProperties.getProperty(key);
+
+        if (val == null) {
+            Log.e(TAG, key + " not found");
+        }
+
+        return val;
     }
 
     @Override
@@ -63,16 +69,23 @@ public class AssetPropertyParser2 implements ConfigParser {
         List<String> valArr = new ArrayList<>();
 
         for (String name : names) {
-            if (name.startsWith(key)) {
+            if (name.startsWith(key) &&
+                !name.equals(key)) { // only partial match for arrays
                 valArr.add(mProperties.getProperty(name));
             }
         }
 
-        if (valArr.size() > 1) {
+        if (valArr.size() != 0) {
             return valArr.toArray(new String[]{});
         }
 
         String arrProp = mProperties.getProperty(key);
+
+        if (arrProp == null) {
+            Log.e(TAG, key + " not found");
+            return null;
+        }
+
         return arrProp.split(ARRAY_DELIM_REGEX);
     }
 }
