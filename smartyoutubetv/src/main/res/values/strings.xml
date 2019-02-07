@@ -73,4 +73,5 @@
     <string name="tweak_open_subscriptions">Boot to subscriptions</string>
     <string name="tweak_global_afx_fix">Global afr fix</string>
     <string name="toast_remove_old_package">Package name has been changed. Please remove old app versions.</string>
+    <string name="tweak_history_fix">Enable history fix</string>
 </resources>

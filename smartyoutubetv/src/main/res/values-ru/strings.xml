@@ -60,4 +60,5 @@
     <string name="tweak_open_subscriptions">Загружаться в раздел Подписки</string>
     <string name="tweak_global_afx_fix">Исправление глобального автофреймрейта</string>
     <string name="toast_remove_old_package">Имя пакета было изменено. Пожалуйста, удалите предыдущие версии приложения.</string>
+    <string name="tweak_history_fix">Исправлять нерабочую историю</string>
 </resources>

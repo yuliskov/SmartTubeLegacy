@@ -29,6 +29,7 @@ public final class SmartPreferences {
     private static final String AFR_FIX_STATE = "afrFixState";
     public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
     public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
+    private static final String ENABLE_HISTORY_FIX = "enable_history_fix";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -213,5 +214,15 @@ public final class SmartPreferences {
 
     public String getAfrFixState() {
         return mPrefs.getString(AFR_FIX_STATE, AFR_FIX_STATE_DISABLED);
+    }
+
+    public void setEnableHistoryFix(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(ENABLE_HISTORY_FIX, isChecked)
+                .apply();
+    }
+
+    public boolean getEnableHistoryFix() {
+        return mPrefs.getBoolean(ENABLE_HISTORY_FIX, false);
     }
 }
