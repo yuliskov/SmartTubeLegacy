@@ -30,8 +30,9 @@ public final class PlayerUtil extends TrackSelectorUtil {
      * @return is test passed
      */
     public static boolean isFormatMatch(String preferredFormat, MyFormat format) {
-        if (notAVideo(format)) {
-            return true;
+        if (notAVideo(format) ||
+            ExoPreferences.FORMAT_ANY.equals(preferredFormat)) {
+            return false;
         }
 
         String[] split = preferredFormat.split("\\|");

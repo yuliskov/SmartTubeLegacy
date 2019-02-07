@@ -21,7 +21,7 @@ public final class ExoPreferences {
     private static final String SELECTED_TRACK_FPS = "selectedTrackFps";
     private static final String CURRENT_SPEED = "currentSpeed";
     private static final String RESTORE_SPEED = "restoreSpeed";
-    public static final String FORMAT_ANY = "";
+    public static final String FORMAT_ANY = "format_any";
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)

@@ -1,17 +1,20 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Pair;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerStateManagerBase {
+    private static final String TAG = PlayerStateManagerBase.class.getSimpleName();
     private static final String CODEC_AVC = "avc";
     private static final String CODEC_VP9 = "vp9";
     private static final String CODEC_VP9_HDR = "vp9.2";
@@ -34,6 +37,7 @@ public class PlayerStateManagerBase {
             mDefaultTrackId = null;
         } else {
             mDefaultTrackId = fmt.id;
+            Log.d(TAG, "Proper format found: " + fmt);
         }
 
         return fmt;
@@ -62,6 +66,8 @@ public class PlayerStateManagerBase {
                 Format format = trackGroup.getFormat(i);
 
                 MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
+
+                Log.d(TAG, "Is video profile enabled: " + PlayerUtil.isFormatRestricted(preferredFormat) + ", format: " + preferredFormat);
 
                 if (PlayerUtil.isFormatRestricted(preferredFormat)) {
                     if (PlayerUtil.isFormatMatch(preferredFormat, myFormat)) {
@@ -300,6 +306,15 @@ public class PlayerStateManagerBase {
             height = format.height;
             language = format.language;
             this.pair = pair;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return String.format(
+                    "id: %s, bitrate: %s, frameRate: %s, codecs: %s, height: %s, width: %s, language: %s, pair: %s",
+                    id, bitrate, frameRate, codecs, height, width, language, pair
+            );
         }
     }
 }
