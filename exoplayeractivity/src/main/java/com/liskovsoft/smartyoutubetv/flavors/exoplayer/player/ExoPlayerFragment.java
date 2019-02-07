@@ -83,16 +83,20 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     }
 
     private boolean isNonOKAction(KeyEvent event, boolean uiVisible) {
-        boolean isOKKey = false;
+        boolean isOkKey = false;
 
         if (mPlayerInitializer.getEnableOKPause()) {
-            isOKKey = event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
-                    event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
-                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
+            isOkKey = isOkKey(event);
         }
 
 
-        return !uiVisible && !isOKKey;
+        return !uiVisible && !isOkKey;
+    }
+
+    private boolean isOkKey(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
+                event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+                event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
     }
 
     private boolean applySeekAction(KeyEvent event, boolean uiVisible) {
