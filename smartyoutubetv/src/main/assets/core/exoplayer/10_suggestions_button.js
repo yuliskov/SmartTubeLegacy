@@ -121,7 +121,7 @@ function SuggestionsFakeButton(selector) {
         var $this = this;
         // immediate close not working here, so take delay
         setTimeout(function() {
-            ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
+            ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
         }, 100);
 
         this.alreadySent = true;

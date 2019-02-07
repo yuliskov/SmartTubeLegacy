@@ -13,7 +13,8 @@ console.log("Scripts::Running core script exo_utils.js");
  */
 var ExoUtils = {
     TAG: 'ExoUtils',
-    CLOSE_SUGGESTIONS: "action_close_suggestions",
+    ACTION_CLOSE_SUGGESTIONS: "action_close_suggestions",
+    ACTION_PLAYBACK_STARTED: "action_playback_started",
 
     // events order:
     // emptied
@@ -27,7 +28,6 @@ var ExoUtils = {
         var player = Utils.$('video');
         var onPlayDelayMS = 2000;
         var onLoadDelayMS = 1000;
-        var PLAYBACK_STARTED = "playback_started";
 
         if (!player || player.preparePlayerDone)
             return;
@@ -36,21 +36,21 @@ var ExoUtils = {
         function onLoad() {
             Log.d($this.TAG, 'preparePlayer: video has been loaded into webview... force start playback');
             setTimeout(function() {
-                
+                player.paused && player.play();
             }, onLoadDelayMS);
         }
 
         function onPlaying() {
             setTimeout(function() {
                 Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
-                // $this.sendAction(PLAYBACK_STARTED);
+                $this.sendAction(ExoUtils.ACTION_PLAYBACK_STARTED);
                 player.pause(); // prevent background playback
             }, onPlayDelayMS);
         }
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        // player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
+        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
         Utils.overrideProp(player, 'volume', 0);

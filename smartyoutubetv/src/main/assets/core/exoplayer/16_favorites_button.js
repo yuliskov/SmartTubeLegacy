@@ -19,7 +19,7 @@ function FavoritesButton(selector) {
 
             if (!el) {
                 Log.d(this.TAG, "Oops, suggestions button not found... return to the player");
-                ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
+                ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
                 return;
             }
 
@@ -27,7 +27,7 @@ function FavoritesButton(selector) {
 
             EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
                 Log.d($this.TAG, "User has closed the suggestions... return to the player");
-                ExoUtils.sendAction(ExoUtils.CLOSE_SUGGESTIONS);
+                ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
             });
         }
     };
