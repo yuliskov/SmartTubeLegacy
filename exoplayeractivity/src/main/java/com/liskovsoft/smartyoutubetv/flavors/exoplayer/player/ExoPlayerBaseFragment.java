@@ -77,6 +77,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private VideoZoomManager mVideoZoomManager;
     protected PlayerInitializer mPlayerInitializer;
     private String mSpeed = "1.0";
+    private long mPosition;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         boolean needNewPlayer = mPlayer == null;
+        boolean openNewVideo = mNeedRetrySource;
         super.initializePlayer();
 
         if (needNewPlayer) {
@@ -103,15 +105,22 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             // Do not move this code to another place!!! This statement must come after player initialization
             mAutoFrameRateManager = new AutoFrameRateManager(getActivity(), mPlayer);
-            mAutoFrameRateManager.saveOriginalState();
 
-            mPlayerInitializer.initVideoTitle();
+            //mAutoFrameRateManager.saveOriginalState();
+
+            //mPlayerInitializer.initVideoTitle();
 
             mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
 
-            restoreSpeed();
+            //restoreSpeed();
 
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
+        }
+
+        if (openNewVideo) {
+            mPlayerInitializer.initVideoTitle();
+            mAutoFrameRateManager.saveOriginalState();
+            restoreSpeed();
         }
     }
 
@@ -299,13 +308,28 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      */
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
-        releasePlayer(); // dispose player
+        //releasePlayer(); // dispose player
         mShouldAutoPlay = true; // force autoplay
+        mNeedRetrySource = true; // enable intent processing
         clearResumePosition(); // restore position will be done later from the app storage
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
         initializeUiScale();
+    }
+
+    protected void pausePlayer() {
+        if (mPlayer != null) {
+            mPosition = mPlayer.getCurrentPosition();
+            mPlayer.setPlayWhenReady(false);
+        }
+    }
+
+    protected void resumePlayer() {
+        if (mPlayer != null) {
+            mPlayer.seekTo(mPosition);
+            mPlayer.setPlayWhenReady(true);
+        }
     }
 
     /**

@@ -232,7 +232,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT > 23) {
-            performInitialization();
+            //performInitialization();
+            resumePlayer();
         }
     }
 
@@ -246,7 +247,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
-            performInitialization();
+            //performInitialization();
+            resumePlayer();
         }
     }
 
@@ -259,7 +261,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT <= 23) {
-            releasePlayer();
+            //releasePlayer();
+            pausePlayer();
         }
     }
 
@@ -274,7 +277,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT > 23) {
-            releasePlayer();
+            //releasePlayer();
+            pausePlayer();
         }
     }
 
@@ -302,7 +306,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     @Override
     public void onPauseFragment() {
         mState = GenericFragment.STATE_PAUSED;
-        releasePlayer();
+
+        //releasePlayer();
+        pausePlayer();
     }
 
     @Override
@@ -312,6 +318,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         if (!mIsAttached) {
             return;
         }
+
+        resumePlayer();
 
         // prevent double init: player will be initialized later in openVideo routine
         // initializePlayer();
@@ -330,7 +338,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     /**
      * Bugfix: {@link #getActivity} is null inside {@link #openVideo} and {@link #onResumeFragment()} routines
      */
-    public void performInitialization() {
+    private void performInitialization() {
         if (!mIsAttached) {
             return;
         }
