@@ -23,7 +23,8 @@ var PlayerController = {
     },
 
     setPosition: function(position, onFail) {
-        Log.d(this.TAG, "Updating position of the video");
+        var url = location.href;
+        Log.d(this.TAG, "Updating position of the video, url: " + url);
 
         var $this = this;
 
@@ -56,12 +57,12 @@ var PlayerController = {
 
             setTimeout(function() {
                 player.play();
-                $this.checkPlayerState(position, onFail);
+                $this.checkPlayerState(position, onFail, url);
             }, this.checkTimeoutMS);
         }
     },
 
-    checkPlayerState: function(position, onFail) {
+    checkPlayerState: function(position, onFail, checkUrl) {
         var $this = this;
 
         setTimeout(function() {
@@ -83,8 +84,11 @@ var PlayerController = {
                         break;
                 }
 
-                if (YouTubeUtils.isPlayerVisible() && (hasNaN || needSeek)) {
-                    Log.d($this.TAG, "Trying to unfreeze the video...");
+                var isStalled = hasNaN || needSeek;
+                var onSameVideo = location.href == checkUrl;
+
+                if (YouTubeUtils.isPlayerVisible() && isStalled && onSameVideo) {
+                    Log.d($this.TAG, "Retrying to unfreeze the video...");
                     $this.setPosition(position, onFail);
                 }
             }
