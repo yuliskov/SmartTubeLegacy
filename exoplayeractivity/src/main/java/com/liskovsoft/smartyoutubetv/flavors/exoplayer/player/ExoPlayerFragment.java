@@ -232,8 +232,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT > 23) {
-            //performInitialization();
-            resumePlayer();
+            performInitialization();
         }
     }
 
@@ -247,8 +246,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
-            //performInitialization();
-            resumePlayer();
+            performInitialization();
         }
     }
 
@@ -261,8 +259,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT <= 23) {
-            //releasePlayer();
-            pausePlayer();
+            releasePlayer();
         }
     }
 
@@ -277,8 +274,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         }
 
         if (Util.SDK_INT > 23) {
-            //releasePlayer();
-            pausePlayer();
+            releasePlayer();
         }
     }
 
@@ -307,8 +303,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
     public void onPauseFragment() {
         mState = GenericFragment.STATE_PAUSED;
 
-        //releasePlayer();
-        pausePlayer();
+        releasePlayer();
     }
 
     @Override
@@ -318,8 +313,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFr
         if (!mIsAttached) {
             return;
         }
-
-        resumePlayer();
 
         // prevent double init: player will be initialized later in openVideo routine
         // initializePlayer();

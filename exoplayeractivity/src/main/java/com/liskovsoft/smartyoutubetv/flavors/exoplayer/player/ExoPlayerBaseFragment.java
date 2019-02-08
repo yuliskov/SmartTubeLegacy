@@ -308,9 +308,9 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
      */
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
-        //releasePlayer(); // dispose player
+        releasePlayer(); // dispose player
         mShouldAutoPlay = true; // force autoplay
-        mNeedRetrySource = true; // enable intent processing
+        mNeedRetrySource = true; // process supplied intent
         clearResumePosition(); // restore position will be done later from the app storage
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
