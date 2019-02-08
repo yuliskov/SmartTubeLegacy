@@ -195,6 +195,28 @@ var EventUtils = {
         setTimeout(function() {
             $this.onLoad(callback);
         }, 500);
+    },
+
+    disableEvents: function(obj, events) {
+        if (!obj.addEventListener) {
+            return;
+        }
+
+        events = Utils.isArray(events) ? events : [events];
+
+        var $this = this;
+        var origin = obj.addEventListener;
+
+        obj.addEventListener = function(type, listener, options) {
+            for (var i = 0; i < events.length; i++) {
+                if (type == events[i]) {
+                    Log.d($this.TAG, "Disable event: " + type);
+                    return;
+                }
+            }
+
+            origin.call(document, type, listener, options);
+        };
     }
 };
 
