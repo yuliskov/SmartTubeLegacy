@@ -298,7 +298,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private RenderersFactory getRenderersFactory() {
-        return new DefaultRenderersFactory(getActivity(), DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON, 0);
+        return new DefaultRenderersFactory(getActivity(), DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON, 1_000);
     }
 
     /**

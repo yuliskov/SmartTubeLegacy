@@ -26,6 +26,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFr
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultTrackSelector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerStateManager;
@@ -130,7 +131,7 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
-        mTrackSelector = new DefaultTrackSelector(trackSelectionFactory);
+        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getContext());
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
