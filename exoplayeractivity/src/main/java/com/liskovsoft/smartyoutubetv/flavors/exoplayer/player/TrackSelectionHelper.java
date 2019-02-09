@@ -375,18 +375,22 @@ import java.util.TreeSet;
     }
 
     private void clearOverride() {
-        if (canSwitchFormats()) {
+        if (canSwitchFormats(ExoPlayerFragment.RENDERER_INDEX_VIDEO)) {
             mOverride = null;
         }
     }
 
     private void setOverride(int groupIndex, int... tracks) {
-        if (canSwitchFormats()) {
+        if (canSwitchFormats(groupIndex)) {
             mOverride = new SelectionOverride(groupIndex, tracks);
         }
     }
 
-    private boolean canSwitchFormats() {
+    private boolean canSwitchFormats(int groupIndex) {
+        if (ExoPlayerFragment.RENDERER_INDEX_VIDEO != groupIndex) {
+            return true;
+        }
+
         ExoPreferences prefs = ExoPreferences.instance(mContext);
 
         if (prefs.getPreferredFormat().equals(ExoPreferences.FORMAT_ANY)) {
