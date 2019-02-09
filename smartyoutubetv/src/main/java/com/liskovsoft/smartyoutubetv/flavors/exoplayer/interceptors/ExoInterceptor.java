@@ -242,7 +242,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
                 mManager.onOpen();
 
                 if (mEnableHistoryFix) {
-                    //forcePlaybackCheck();
+                    forcePlaybackCheck();
                     mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
                 } else {
                     mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // pause every time, except when mirroring
