@@ -9,6 +9,7 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.webkit.*;
 import android.widget.Toast;
+import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
 import edu.mit.mobile.android.appupdater.R;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
@@ -62,24 +63,8 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
         });
     }
 
-    private File getCacheDir() {
-        // NOTE: Android 6.0 fix
-        File cacheDir = mContext.getExternalCacheDir();
-        if (!PermissionManager.hasStoragePermissions((Activity) mContext)) {
-            showMessage("Storage permission not granted!");
-            return null;
-        }
-
-        if (cacheDir == null) { // no storage, try to use SDCard
-            cacheDir = Environment.getExternalStorageDirectory();
-            showMessage("Please, make sure that SDCard is mounted");
-        }
-
-        return cacheDir;
-    }
-
     private String downloadPackage(String uri) {
-        File cacheDir = getCacheDir();
+        File cacheDir = FileHelpers.getCacheDir(mContext);
         if (cacheDir == null) {
             return null;
         }

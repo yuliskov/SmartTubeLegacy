@@ -171,12 +171,8 @@ public final class MyDownloadManager {
             return mRequest.mDestinationUri;
         }
 
-        // NOTE: Android 6.0 fix
-        File cacheDir = mContext.getExternalCacheDir();
-        if (cacheDir == null) { // try to use SDCard
-            cacheDir = Environment.getExternalStorageDirectory();
-            MessageHelpers.showMessage(mContext,"Please, make sure that SDCard is mounted");
-        }
+        File cacheDir = FileHelpers.getCacheDir(mContext);
+
         File outputFile = new File(cacheDir, "tmp_file");
         return Uri.fromFile(outputFile);
     }

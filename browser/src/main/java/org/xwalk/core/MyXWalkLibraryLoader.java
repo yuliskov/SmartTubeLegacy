@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
+import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 
@@ -386,12 +387,7 @@ class MyXWalkLibraryLoader {
 
             String savedFile = DEFAULT_DOWNLOAD_FILE_NAME;
 
-            // NOTE: Android 6.0 fix
-            File downloadDir = mContext.getExternalCacheDir();
-            if (downloadDir == null) { // try to use SDCard
-                downloadDir = Environment.getExternalStorageDirectory();
-                showMessage("Please, make sure that SDCard is mounted");
-            }
+            File downloadDir = FileHelpers.getCacheDir(mContext);
 
             File downloadFile = new File(downloadDir, savedFile);
             if (downloadFile.isFile()) downloadFile.delete();
