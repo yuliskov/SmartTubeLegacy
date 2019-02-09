@@ -27,6 +27,8 @@ public class RestrictFormatDialogSource implements SingleDialogSource {
         mItems.add(new RestrictFormatDialogItem("FHD    30fps    vp9", "1080|30|vp9", mPrefs));
         mItems.add(new RestrictFormatDialogItem("FHD    60fps    avc+vp9", "1080|60|", mPrefs));
         mItems.add(new RestrictFormatDialogItem("FHD    30fps    avc+vp9", "1080|30|", mPrefs));
+        mItems.add(new RestrictFormatDialogItem("HD     30fps    avc", "720|30|avc", mPrefs));
+        mItems.add(new RestrictFormatDialogItem("HD     30fps    vp9", "720|30|vp9", mPrefs));
     }
 
     @Override
