@@ -25,7 +25,9 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
     protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
                                               Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
 
-        //restoreVideoTrack(groups);
+        if (!params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups)) {
+            restoreVideoTrack(groups);
+        }
 
         return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
     }
