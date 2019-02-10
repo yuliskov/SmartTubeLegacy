@@ -77,7 +77,8 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             try {
                 long id = manager.enqueue(request);
                 int size = manager.getSizeForDownloadedFile(id);
-                path = size > 1_000_000 ? manager.getUriForDownloadedFile(id).getPath() : null; // it could be a web page instead of apk
+                Uri destination = manager.getUriForDownloadedFile(id);
+                path = size > 1_000_000 ? destination.getPath() : null; // it could be a web page instead of apk
             } catch (IllegalStateException ex) { // 403 or something else
                 Log.d(TAG, ex.toString());
             }

@@ -142,6 +142,10 @@ public final class MyDownloadManager {
     }
 
     private Uri streamToFile(InputStream is, Uri destination) {
+        if (destination == null) {
+            return null;
+        }
+
         FileOutputStream fos = null;
 
         try {
@@ -173,6 +177,10 @@ public final class MyDownloadManager {
 
         File cacheDir = FileHelpers.getCacheDir(mContext);
 
+        if (cacheDir == null) {
+            return null;
+        }
+
         File outputFile = new File(cacheDir, "tmp_file");
         return Uri.fromFile(outputFile);
     }
@@ -181,7 +189,9 @@ public final class MyDownloadManager {
         mFileUri = null;
         mRequest = request;
         mRequestId = new Random().nextLong();
+
         doDownload();
+
         if (mRequest.mDestinationUri != null) {
             mFileUri = streamToFile(mResponseStream, getDestination());
         }
@@ -197,6 +207,7 @@ public final class MyDownloadManager {
         if (mFileUri == null) {
             mFileUri = streamToFile(mResponseStream, getDestination());
         }
+
         return mFileUri;
     }
 

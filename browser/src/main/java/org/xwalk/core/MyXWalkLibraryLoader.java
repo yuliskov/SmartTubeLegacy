@@ -439,9 +439,12 @@ class MyXWalkLibraryLoader {
             if (result == DownloadManager.STATUS_SUCCESSFUL) {
                 try {
                     Uri uri = mDownloadManager.getUriForDownloadedFile(mDownloadId);
-                    Log.d(TAG, "Uri for downloaded file:" + uri.toString());
 
-                    mListener.onDownloadCompleted(uri);
+                    Log.d(TAG, "Uri for downloaded file: " + uri);
+
+                    if (uri != null) {
+                        mListener.onDownloadCompleted(uri);
+                    }
                 } catch (IllegalStateException ex) {
                     Log.e(TAG, ex.getMessage(), ex);
                     MessageHelpers.showMessage(mContext, TAG, ex);
