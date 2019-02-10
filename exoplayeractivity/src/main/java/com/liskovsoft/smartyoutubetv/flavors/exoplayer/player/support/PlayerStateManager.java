@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
 
 /**
@@ -43,6 +44,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      */
     public void restoreState() {
         restoreVideoTrack();
+        restoreAudioTrack();
         restoreSubtitleTrack();
         restoreTrackPosition();
     }
@@ -103,6 +105,26 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         }
     }
 
+    private void restoreAudioTrack() {
+        MappedTrackInfo info = mSelector.getCurrentMappedTrackInfo();
+
+        if (info == null) {
+            return;
+        }
+
+        TrackGroupArray groupArray = info.getTrackGroups(ExoPlayerFragment.RENDERER_INDEX_AUDIO);
+
+        MyFormat audioFormat = findProperAudioFormat(groupArray);
+
+        if (audioFormat == null) {
+            return;
+        }
+
+        Pair<Integer, Integer> trackGroupAndIndex = audioFormat.pair;
+
+        restoreTrackGroupAndIndex(trackGroupAndIndex, ExoPlayerFragment.RENDERER_INDEX_AUDIO);
+    }
+
     /**
      * Restore track from prefs
      */
@@ -159,13 +181,16 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
     public void persistState() {
         Format videoFormat = mPlayer.getVideoFormat();
+        Format audioFormat = mPlayer.getAudioFormat();
 
-        if (videoFormat == null) {
+        if (videoFormat == null || audioFormat == null) {
             return;
         }
 
-        MyFormat format = isDefaultQualitySelected() ? null : new MyFormat(videoFormat);
-        persistVideoParams(format);
+        MyFormat video = isDefaultQualitySelected(ExoPlayerFragment.RENDERER_INDEX_VIDEO) ? null : new MyFormat(videoFormat);
+        MyFormat audio = isDefaultQualitySelected(ExoPlayerFragment.RENDERER_INDEX_AUDIO) ? null : new MyFormat(audioFormat);
+        persistVideoParams(video);
+        persistAudioParams(audio);
         persistVideoPosition();
         persistSubtitle();
     }
@@ -208,7 +233,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         }
     }
 
-    private boolean isDefaultQualitySelected() {
+    private boolean isDefaultQualitySelected(int rendererIndex) {
         if (mSelector == null) {
             return false;
         }
@@ -219,13 +244,13 @@ public class PlayerStateManager extends PlayerStateManagerBase {
             return false;
         }
 
-        TrackGroupArray groups = info.getTrackGroups(RENDERER_INDEX_VIDEO);
+        TrackGroupArray groups = info.getTrackGroups(rendererIndex);
 
         if (groups == null) {
             return false;
         }
 
-        SelectionOverride override = mSelector.getParameters().getSelectionOverride(RENDERER_INDEX_VIDEO, groups);
+        SelectionOverride override = mSelector.getParameters().getSelectionOverride(rendererIndex, groups);
 
         return override == null;
     }

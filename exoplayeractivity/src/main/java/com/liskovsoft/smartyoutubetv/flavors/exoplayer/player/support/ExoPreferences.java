@@ -12,6 +12,7 @@ public final class ExoPreferences {
     private static final String SELECTED_TRACK_ID = "selectedTrackId";
     private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
     private static final String SELECTED_TRACK_CODEC = "selectedTrackCodec";
+    private static final String SELECTED_AUDIO_TRACK_CODEC = "selectedAudioTrackCodec";
     private static final String HIDE_PLAYBACK_ERRORS = "hidePlaybackErrors";
     private static final String SUBTITLE_LANG = "subtitleLang";
     private static final String AUTOFRAMERATE_CHECKED = "display_rate_switch";
@@ -66,6 +67,16 @@ public final class ExoPreferences {
     public void setSelectedTrackCodecs(String codec) {
         mPrefs.edit()
                 .putString(SELECTED_TRACK_CODEC, codec)
+                .apply();
+    }
+
+    public String getSelectedAudioTrackCodecs() {
+        return mPrefs.getString(SELECTED_AUDIO_TRACK_CODEC, null);
+    }
+
+    public void setSelectedAudioTrackCodecs(String codec) {
+        mPrefs.edit()
+                .putString(SELECTED_AUDIO_TRACK_CODEC, codec)
                 .apply();
     }
 

@@ -10,7 +10,9 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PlayerStateManagerBase {
@@ -28,6 +30,10 @@ public class PlayerStateManagerBase {
         mPrefs = new ExoPreferences(context);
     }
 
+    public MyFormat findProperAudioFormat(TrackGroupArray groupArray) {
+        return findProperAudio(groupArray);
+    }
+
     public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
         Set<MyFormat> fmts = findProperVideos(groupArray);
 
@@ -41,6 +47,26 @@ public class PlayerStateManagerBase {
         }
 
         return fmt;
+    }
+
+    private MyFormat findProperAudio(TrackGroupArray groupArray) {
+        String trackCodecs = mPrefs.getSelectedAudioTrackCodecs();
+
+        // search the same tracks
+        for (int j = 0; j < groupArray.length; j++) {
+            TrackGroup trackGroup = groupArray.get(j);
+            for (int i = 0; i < trackGroup.length; i++) {
+                Format format = trackGroup.getFormat(i);
+
+                MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
+
+                if (codecEquals(myFormat.codecs, trackCodecs)) {
+                    return myFormat;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -207,6 +233,12 @@ public class PlayerStateManagerBase {
         }
 
         return codecName;
+    }
+
+    protected void persistAudioParams(MyFormat format) {
+        String codec = format == null ? null : format.codecs;
+
+        mPrefs.setSelectedAudioTrackCodecs(codec);
     }
 
     protected void persistVideoParams(MyFormat format) {
