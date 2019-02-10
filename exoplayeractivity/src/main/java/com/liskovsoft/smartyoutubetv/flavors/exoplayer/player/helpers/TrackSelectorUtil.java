@@ -6,27 +6,10 @@ import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 public class TrackSelectorUtil extends ApplicationUtil {
-    private static final String MIME_SEPARATOR = "/";
-
-    /**
-     * Builds a track name for display.
-     *
-     * @param format {@link Format} of the track.
-     * @return a generated name specific to the track.
-     */
-    public static CharSequence buildTrackName(Format format) {
-        String trackName;
-        if (MimeTypes.isVideo(format.sampleMimeType)) {
-            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildResolutionString(format),
-                    buildFPSString(format)), buildBitrateString(format)), buildTrackIdString(format)), buildCodecTypeString(format)), buildHDRString(format));
-        } else if (MimeTypes.isAudio(format.sampleMimeType)) {
-            trackName = joinWithSeparator(joinWithSeparator(joinWithSeparator(joinWithSeparator(buildLanguageString(format),
-                    buildAudioPropertyString(format)), buildBitrateString(format)), buildTrackIdString(format)), buildCodecTypeString(format));
-        } else {
-            trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), buildSampleMimeTypeString(format));
-        }
-        return trackName.length() == 0 ? "unknown" : trackName;
-    }
+    public static final String CODEC_SHORT_AVC = "avc";
+    public static final String CODEC_SHORT_VP9 = "vp9";
+    public static final String CODEC_SHORT_MP4A = "mp4a";
+    public static final String CODEC_SHORT_VORBIS = "vorbis";
 
     /**
      * Builds a track name for display.
@@ -46,16 +29,6 @@ public class TrackSelectorUtil extends ApplicationUtil {
             trackName = joinWithSeparator(joinWithSeparator(buildLanguageString(format), buildBitrateString(format)), extractCodec(format));
         }
         return trackName.length() == 0 ? "unknown" : trackName;
-    }
-
-    private static String buildCodecTypeString(Format format) {
-        if (format.sampleMimeType == null ||
-            format.codecs == null) {
-            return "";
-        }
-
-        String prefix = format.sampleMimeType.split(MIME_SEPARATOR)[0];
-        return String.format("%s/%s", prefix, format.codecs);
     }
 
     private static String buildHDRString(Format format) {
@@ -92,14 +65,6 @@ public class TrackSelectorUtil extends ApplicationUtil {
         return first.length() == 0 ? second : (second.length() == 0 ? first : first + "    " + second);
     }
 
-    private static String buildTrackIdString(Format format) {
-        return format.id == null ? "" : ("id:" + format.id);
-    }
-
-    private static String buildSampleMimeTypeString(Format format) {
-        return format.sampleMimeType == null ? "" : format.sampleMimeType;
-    }
-
     /**
      * Prepend spaces to make needed length
      */
@@ -128,9 +93,17 @@ public class TrackSelectorUtil extends ApplicationUtil {
             return "";
         }
 
-        String codec = format.codecs.toLowerCase();
+        return codecNameShort(format.codecs);
+    }
 
-        String[] codecNames = {"avc", "vp9", "mp4a", "vorbis"};
+    public static String codecNameShort(String codecNameFull) {
+        if (codecNameFull == null) {
+            return null;
+        }
+
+        String codec = codecNameFull.toLowerCase();
+
+        String[] codecNames = {CODEC_SHORT_AVC, CODEC_SHORT_VP9, CODEC_SHORT_MP4A, CODEC_SHORT_VORBIS};
 
         for (String codecName : codecNames) {
             if (codec.contains(codecName)) {

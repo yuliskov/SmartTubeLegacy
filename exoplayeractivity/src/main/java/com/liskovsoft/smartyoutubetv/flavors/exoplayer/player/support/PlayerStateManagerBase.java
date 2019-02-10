@@ -34,21 +34,6 @@ public class PlayerStateManagerBase {
         return findProperAudio(groupArray);
     }
 
-    public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
-        Set<MyFormat> fmts = findProperVideos(groupArray);
-
-        MyFormat fmt = filterHighestVideo(fmts);
-
-        if (fmt == null) {
-            mDefaultTrackId = null;
-        } else {
-            mDefaultTrackId = fmt.id;
-            Log.d(TAG, "Proper format found: " + fmt);
-        }
-
-        return fmt;
-    }
-
     private MyFormat findProperAudio(TrackGroupArray groupArray) {
         String trackCodecs = mPrefs.getSelectedAudioTrackCodecs();
 
@@ -67,6 +52,21 @@ public class PlayerStateManagerBase {
         }
 
         return null;
+    }
+
+    public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
+        Set<MyFormat> fmts = findProperVideos(groupArray);
+
+        MyFormat fmt = filterHighestVideo(fmts);
+
+        if (fmt == null) {
+            mDefaultTrackId = null;
+        } else {
+            mDefaultTrackId = fmt.id;
+            Log.d(TAG, "Proper format found: " + fmt);
+        }
+
+        return fmt;
     }
 
     /**
@@ -217,22 +217,7 @@ public class PlayerStateManagerBase {
     }
 
     private boolean codecEquals(String codec1, String codec2) {
-        return Helpers.equals(codecShort(codec1), codecShort(codec2));
-    }
-
-    private String codecShort(String codecName) {
-        if (codecName == null) {
-            return null;
-        }
-
-        // simplify codec name: use avc instead of avc.111333
-        if (codecName.contains(CODEC_AVC)) {
-            codecName = CODEC_AVC;
-        } else if (codecName.contains(CODEC_VP9)) {
-            codecName = CODEC_VP9;
-        }
-
-        return codecName;
+        return Helpers.equals(PlayerUtil.codecNameShort(codec1), PlayerUtil.codecNameShort(codec2));
     }
 
     protected void persistAudioParams(MyFormat format) {

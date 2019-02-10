@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 public final class ExoPreferences {
     private static ExoPreferences sInstance;
@@ -61,7 +62,7 @@ public final class ExoPreferences {
     }
 
     public String getSelectedTrackCodecs() {
-        return mPrefs.getString(SELECTED_TRACK_CODEC, null);
+        return mPrefs.getString(SELECTED_TRACK_CODEC, PlayerUtil.CODEC_SHORT_AVC);
     }
 
     public void setSelectedTrackCodecs(String codec) {
@@ -71,7 +72,7 @@ public final class ExoPreferences {
     }
 
     public String getSelectedAudioTrackCodecs() {
-        return mPrefs.getString(SELECTED_AUDIO_TRACK_CODEC, null);
+        return mPrefs.getString(SELECTED_AUDIO_TRACK_CODEC, PlayerUtil.CODEC_SHORT_MP4A);
     }
 
     public void setSelectedAudioTrackCodecs(String codec) {
