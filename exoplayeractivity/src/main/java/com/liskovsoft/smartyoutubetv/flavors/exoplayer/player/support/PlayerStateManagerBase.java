@@ -138,7 +138,7 @@ public class PlayerStateManagerBase {
             // because of this, I've add frameRate comparision
             if ((result.bitrate < fmt.bitrate)  &&
                     heightEquals(result.height, fmt.height) &&
-                    codecEquals(result.codecs, fmt.codecs)) {
+                    fpsEquals(result.frameRate, fmt.frameRate)) {
                 result = fmt;
             }
         }
