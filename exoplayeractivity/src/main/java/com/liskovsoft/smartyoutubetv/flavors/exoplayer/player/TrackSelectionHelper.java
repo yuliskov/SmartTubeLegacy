@@ -56,7 +56,6 @@ import java.util.TreeSet;
 
     private static final TrackSelection.Factory FIXED_FACTORY = new FixedTrackSelection.Factory();
     private static final TrackSelection.Factory RANDOM_FACTORY = new RandomTrackSelection.Factory();
-    private static final int VIDEO_GROUP_INDEX = 0; // is video
 
     private final DefaultTrackSelector mSelector;
     private final TrackSelection.Factory mTrackSelectionFactory;
@@ -158,7 +157,7 @@ import java.util.TreeSet;
 
         mHideErrorsView = createCheckButton(context, R.string.hide_playback_errors, root);
 
-        if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
+        if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_VIDEO) { // is video
             append(mHideErrorsView, root);
             append(createDivider(context, root), root);
         }
@@ -167,7 +166,7 @@ import java.util.TreeSet;
 
         mAutoframerateView = createCheckButton(context, R.string.enable_autoframerate, root);
 
-        if (mRendererIndex == VIDEO_GROUP_INDEX) { // is video
+        if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_VIDEO) { // is video
             append(mAutoframerateView, root);
             append(createDivider(context, root), root);
         }
@@ -375,19 +374,19 @@ import java.util.TreeSet;
     }
 
     private void clearOverride() {
-        if (canSwitchFormats(ExoPlayerFragment.RENDERER_INDEX_VIDEO)) {
+        if (canSwitchFormats()) {
             mOverride = null;
         }
     }
 
     private void setOverride(int groupIndex, int... tracks) {
-        if (canSwitchFormats(groupIndex)) {
+        if (canSwitchFormats()) {
             mOverride = new SelectionOverride(groupIndex, tracks);
         }
     }
 
-    private boolean canSwitchFormats(int groupIndex) {
-        if (ExoPlayerFragment.RENDERER_INDEX_VIDEO != groupIndex) {
+    private boolean canSwitchFormats() {
+        if (mRendererIndex != ExoPlayerFragment.RENDERER_INDEX_VIDEO) {
             return true;
         }
 
