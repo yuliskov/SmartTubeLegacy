@@ -1,8 +1,6 @@
 package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
-import android.os.Environment;
-import android.support.v4.content.ContextCompat;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -12,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,15 +24,8 @@ public class FileHelpers {
             return null;
         }
 
-        if (cacheDir == null) { // no storage, try to use SDCard
-            cacheDir = Environment.getExternalStorageDirectory();
-            MessageHelpers.showMessage(context, "Please, make sure that SDCard is mounted");
-        }
-
-        if (cacheDir == null) {
-            File tmpFile = new File("/mnt/usbdisk");
-            cacheDir = tmpFile.exists() ? tmpFile : null;
-            MessageHelpers.showMessage(context, "Trying to use external usb stick, is available: " + tmpFile.exists());
+        if (cacheDir == null) { // no storage, try to use internal one
+            cacheDir = context.getCacheDir();
         }
 
         return cacheDir;
