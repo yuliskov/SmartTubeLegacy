@@ -23,25 +23,15 @@ var PlayerController = {
     },
 
     setPosition: function(position, onFail) {
-        var url = location.href;
-        Log.d(this.TAG, "Updating position of the video, url: " + url);
-
         var $this = this;
 
         var player = YouTubeUtils.getPlayer();
 
+        var url = player.src;
+        Log.d(this.TAG, "Updating position of the video, url: " + url);
+
         if (player) {
-            if (isNaN(player.duration)) {
-                if (this.numTries-- <= 0) {
-                    Log.d(this.TAG, "Can't unfreeze video... Running on fail callback...");
-
-                    if (onFail) {
-                        onFail.call();
-                    }
-
-                    return;
-                }
-            } else {
+            if (!isNaN(player.duration)) {
                 switch (position) {
                     case this.POSITION_END:
                         Log.d(this.TAG, "Forcing end of the video");
@@ -55,10 +45,18 @@ var PlayerController = {
                 }
             }
 
-            setTimeout(function() {
-                player.play();
-                $this.checkPlayerState(position, onFail, url);
-            }, this.checkTimeoutMS);
+            if (this.numTries-- >= 0) {
+                setTimeout(function() {
+                    player.play();
+                    $this.checkPlayerState(position, onFail, url);
+                }, this.checkTimeoutMS);
+            } else {
+                Log.d(this.TAG, "Can't unfreeze video... Running on fail callback...");
+
+                if (onFail) {
+                    onFail.call();
+                }
+            }
         }
     },
 
@@ -85,9 +83,9 @@ var PlayerController = {
                 }
 
                 var isStalled = hasNaN || needSeek;
-                var onSameVideo = location.href == checkUrl;
+                var onSameVideo = player.src == checkUrl;
 
-                if (YouTubeUtils.isPlayerVisible() && isStalled && onSameVideo) {
+                if (isStalled && onSameVideo) {
                     Log.d($this.TAG, "Retrying to unfreeze the video...");
                     $this.setPosition(position, onFail);
                 }
