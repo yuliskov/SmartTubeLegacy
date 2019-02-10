@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,8 +33,9 @@ public class FileHelpers {
         }
 
         if (cacheDir == null) {
-            cacheDir = new File("/mnt/usbdisk");
-            MessageHelpers.showMessage(context, "Trying to use external usb stick, is available: " + cacheDir.exists());
+            File tmpFile = new File("/mnt/usbdisk");
+            cacheDir = tmpFile.exists() ? tmpFile : null;
+            MessageHelpers.showMessage(context, "Trying to use external usb stick, is available: " + tmpFile.exists());
         }
 
         return cacheDir;
