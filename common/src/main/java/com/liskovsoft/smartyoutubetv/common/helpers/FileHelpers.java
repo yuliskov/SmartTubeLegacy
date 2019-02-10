@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -28,6 +29,11 @@ public class FileHelpers {
         if (cacheDir == null) { // no storage, try to use SDCard
             cacheDir = Environment.getExternalStorageDirectory();
             MessageHelpers.showMessage(context, "Please, make sure that SDCard is mounted");
+        }
+
+        if (cacheDir == null) {
+            cacheDir = new File("/mnt/usbdisk");
+            MessageHelpers.showMessage(context, "Trying to use external usb stick, is available: " + cacheDir.exists());
         }
 
         return cacheDir;
