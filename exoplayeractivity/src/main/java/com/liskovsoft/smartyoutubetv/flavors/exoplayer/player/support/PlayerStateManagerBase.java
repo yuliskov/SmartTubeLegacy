@@ -10,9 +10,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PlayerStateManagerBase {
@@ -31,11 +29,15 @@ public class PlayerStateManagerBase {
     }
 
     public MyFormat findProperAudioFormat(TrackGroupArray groupArray) {
-        return findProperAudio(groupArray);
+        Set<MyFormat> fmts = findProperAudio(groupArray);
+
+        return filterHighestFormat(fmts);
     }
 
-    private MyFormat findProperAudio(TrackGroupArray groupArray) {
+    private Set<MyFormat> findProperAudio(TrackGroupArray groupArray) {
         String trackCodecs = mPrefs.getSelectedAudioTrackCodecs();
+
+        Set<MyFormat> result = new HashSet<>();
 
         // search the same tracks
         for (int j = 0; j < groupArray.length; j++) {
@@ -46,18 +48,18 @@ public class PlayerStateManagerBase {
                 MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
 
                 if (codecEquals(myFormat.codecs, trackCodecs)) {
-                    return myFormat;
+                    result.add(myFormat);
                 }
             }
         }
 
-        return null;
+        return result;
     }
 
     public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
         Set<MyFormat> fmts = findProperVideos(groupArray);
 
-        MyFormat fmt = filterHighestVideo(fmts);
+        MyFormat fmt = filterHighestFormat(fmts);
 
         if (fmt == null) {
             mDefaultTrackId = null;
@@ -133,7 +135,7 @@ public class PlayerStateManagerBase {
      * @param fmts source (cannot be null)
      * @return best format (cannot be null)
      */
-    private MyFormat filterHighestVideo(Set<MyFormat> fmts) {
+    private MyFormat filterHighestFormat(Set<MyFormat> fmts) {
         MyFormat result = null;
 
         // select format with same codec and highest bitrate
