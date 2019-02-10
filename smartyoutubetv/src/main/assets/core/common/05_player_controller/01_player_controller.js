@@ -57,6 +57,8 @@ var PlayerController = {
                     onFail.call();
                 }
             }
+        } else {
+            Log.i(this.TAG, "Error: player is null");
         }
     },
 
