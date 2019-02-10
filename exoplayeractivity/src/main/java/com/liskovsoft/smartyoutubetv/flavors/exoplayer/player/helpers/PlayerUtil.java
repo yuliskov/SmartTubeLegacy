@@ -25,28 +25,25 @@ public final class PlayerUtil extends TrackSelectorUtil {
 
     /**
      * Test format against user preferred one (selected in bootstrap)
-     * @param preferredFormat format specification e.g 1080|60|avc
+     * @param formatBoundary format specification e.g 1080|60|avc
      * @param format format
      * @return is test passed
      */
-    public static boolean isFormatMatch(String preferredFormat, MyFormat format) {
+    public static boolean isFormatMatch(String formatBoundary, MyFormat format) {
         if (notAVideo(format) ||
-            ExoPreferences.FORMAT_ANY.equals(preferredFormat)) {
+            ExoPreferences.FORMAT_ANY.equals(formatBoundary)) {
             return false;
         }
 
-        String[] split = preferredFormat.split("\\|");
+        String[] split = formatBoundary.split("\\|");
 
-        if (split.length != 3) { // contains values from previous versions
-            return false;
-        }
+        int height = split.length >= 1 ? Integer.parseInt(split[0]) : 0;
+        int fps = split.length >= 2 ? Integer.parseInt(split[1]) : 0;
+        String codec = split.length >= 3 ? split[2] : null;
 
-        String height = split[0];
-        String fps = split[1];
-        String codec = split[2];
-        return format.height <= (Integer.parseInt(height) + HEIGHT_SHIFT) &&
-               format.frameRate <= (Integer.parseInt(fps) + FPS_SHIFT) &&
-               (format.codecs == null || format.codecs.contains(codec));
+        return format.height <= (height + HEIGHT_SHIFT) &&
+               format.frameRate <= (fps + FPS_SHIFT) &&
+               (format.codecs == null || codec == null || format.codecs.contains(codec));
 
     }
 
