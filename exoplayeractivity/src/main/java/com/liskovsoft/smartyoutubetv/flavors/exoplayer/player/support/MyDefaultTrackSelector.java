@@ -25,6 +25,12 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
     protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
                                               Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
 
+        //restoreVideoTrack(groups);
+
+        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
+    }
+
+    private void restoreVideoTrack(TrackGroupArray groups) {
         MyFormat format = mStateManager.findProperVideoFormat(groups);
 
         if (format != null) {
@@ -34,7 +40,30 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
                     new SelectionOverride(format.pair.first, format.pair.second)
             ));
         }
+    }
 
-        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
+    private void forceAllFormatsSupport(int[][][] rendererFormatSupports) {
+        if (rendererFormatSupports == null) {
+            return;
+        }
+
+        for (int i = 0; i < rendererFormatSupports.length; i++) {
+            if (rendererFormatSupports[i] == null) {
+                continue;
+            }
+            for (int j = 0; j < rendererFormatSupports[i].length; j++) {
+                if (rendererFormatSupports[i][j] == null) {
+                    continue;
+                }
+                for (int k = 0; k < rendererFormatSupports[i][j].length; k++) {
+                    int supportLevel = rendererFormatSupports[i][j][k];
+                    int notSupported = 6;
+                    int formatSupported = 7;
+                    if (supportLevel == notSupported) {
+                        rendererFormatSupports[i][j][k] = formatSupported;
+                    }
+                }
+            }
+        }
     }
 }
