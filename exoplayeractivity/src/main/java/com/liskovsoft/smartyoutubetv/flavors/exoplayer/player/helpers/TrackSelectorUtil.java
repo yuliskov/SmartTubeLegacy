@@ -8,6 +8,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 public class TrackSelectorUtil extends ApplicationUtil {
     public static final String CODEC_SHORT_AVC = "avc";
     public static final String CODEC_SHORT_VP9 = "vp9";
+    public static final String CODEC_SHORT_VP9_HDR = "vp9.2";
     public static final String CODEC_SHORT_MP4A = "mp4a";
     public static final String CODEC_SHORT_VORBIS = "vorbis";
 

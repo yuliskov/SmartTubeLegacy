@@ -15,9 +15,6 @@ import java.util.Set;
 
 public class PlayerStateManagerBase {
     private static final String TAG = PlayerStateManagerBase.class.getSimpleName();
-    private static final String CODEC_AVC = "avc";
-    private static final String CODEC_VP9 = "vp9";
-    private static final String CODEC_VP9_HDR = "vp9.2";
     private static final int HEIGHT_PRECISION_PX = 10; // ten-pixel precision
     private static final float FPS_PRECISION = 10; // fps precision
     private final ExoPreferences mPrefs;
