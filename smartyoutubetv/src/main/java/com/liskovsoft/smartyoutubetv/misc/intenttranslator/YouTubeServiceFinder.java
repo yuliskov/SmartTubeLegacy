@@ -1,9 +1,8 @@
-package com.liskovsoft.smartyoutubetv.misc.youtubeurls;
+package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 

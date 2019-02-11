@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc.youtubeurls;
+package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,8 +18,9 @@ class YouTubeIntentTranslator implements IntentTranslator {
 
     @Override
     public Intent translate(Intent intent) {
-        if (intent == null)
+        if (intent == null) {
             return null;
+        }
 
         transformRegularIntentData(intent);
         transformAmazonIntentData(intent);

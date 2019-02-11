@@ -17,9 +17,9 @@ import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.keytranslator.BrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
-import com.liskovsoft.smartyoutubetv.misc.youtubeurls.ServiceFinder;
+import com.liskovsoft.smartyoutubetv.misc.intenttranslator.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import com.liskovsoft.smartyoutubetv.misc.youtubeurls.YouTubeServiceFinder;
+import com.liskovsoft.smartyoutubetv.misc.intenttranslator.YouTubeServiceFinder;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private static final String TAG = SmartYouTubeTVBaseFragment.class.getSimpleName();
