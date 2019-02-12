@@ -5,6 +5,7 @@ import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,6 +16,7 @@ import javax.net.ssl.SSLContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpHelpers {
@@ -29,6 +31,14 @@ public class OkHttpHelpers {
         }
 
         return doOkHttpRequest(url, mClient);
+    }
+
+    public static Response doGetOkHttpRequest(String url, Map<String, String> headers) {
+        if (mClient == null) {
+            mClient = createOkHttpClient();
+        }
+
+        return doGetOkHttpRequest(url, mClient, headers);
     }
 
     public static Response doGetOkHttpRequest(String url) {
@@ -50,6 +60,16 @@ public class OkHttpHelpers {
     public static Response doOkHttpRequest(String url, OkHttpClient client) {
         Request okHttpRequest = new Request.Builder()
                 .url(url)
+                .build();
+
+        return doOkHttpRequest(client, okHttpRequest);
+    }
+
+    private static Response doGetOkHttpRequest(String url, OkHttpClient client, Map<String, String> headers) {
+        Request okHttpRequest = new Request.Builder()
+                .url(url)
+                .headers(Headers.of(headers))
+                .get()
                 .build();
 
         return doOkHttpRequest(client, okHttpRequest);

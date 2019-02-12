@@ -31,6 +31,7 @@ public final class SmartPreferences {
     public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
     public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static final String ENABLE_HISTORY_FIX = "enable_history_fix";
+    private static final String AUTHORIZATION_HEADER = "authorization_header";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -225,5 +226,15 @@ public final class SmartPreferences {
 
     public boolean getEnableHistoryFix() {
         return mPrefs.getBoolean(ENABLE_HISTORY_FIX, false);
+    }
+
+    public void setAuthorizationHeader(String header) {
+        mPrefs.edit()
+                .putString(AUTHORIZATION_HEADER, header)
+                .apply();
+    }
+
+    public String getAuthorizationHeader() {
+        return mPrefs.getString(AUTHORIZATION_HEADER, "");
     }
 }

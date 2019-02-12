@@ -30,7 +30,9 @@ import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor implements PlayerListener {
     private final Context mContext;
@@ -187,20 +189,33 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
                 mSample = SampleHelpers.buildFromList(urlList);
             }
 
-            //@Override
-            //public void onTrackingUrlsFound(final List<Uri> urls) {
-            //    new Handler(mContext.getMainLooper()).postDelayed(() -> this.onTrackingUrlsFoundReal(urls), 10_000);
-            //}
-
             @Override
-            public void onTrackingUrlsFound(List<Uri> urls) {
+            public void onTrackingUrlsFound(final List<Uri> urls) {
+                new Handler(mContext.getMainLooper()).postDelayed(() -> this.onTrackingUrlsFoundReal(urls), 5_000);
+            }
+
+            public void onTrackingUrlsFoundReal(List<Uri> urls) {
                 for (Uri url : urls) {
                     String newUrl = url.toString();
                     if (newUrl.contains("youtube.com/api/stats/watchtime")) {
-                        newUrl = processUrl(newUrl);
-                        OkHttpHelpers.doGetOkHttpRequest(newUrl);
+                        OkHttpHelpers.doGetOkHttpRequest(processUrl(newUrl), getHeaders());
                     }
                 }
+            }
+
+            private Map<String, String> getHeaders() {
+                Map<String, String> result = new HashMap<>();
+
+                SmartPreferences prefs = SmartPreferences.instance(mContext);
+                result.put("Authorization", prefs.getAuthorizationHeader());
+                result.put("Referer", "https://www.youtube.com/tv");
+                result.put("User-Agent", "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)");
+                result.put("X-YouTube-Client-Name", "TVHTML5");
+                result.put("X-YouTube-Page-CL", "233168751");
+                result.put("X-YouTube-Page-Label", "youtube.ytfe.desktop_20190208_2_RC0");
+                result.put("X-YouTube-Utc-Offset", "120");
+
+                return result;
             }
 
             private String processUrl(String url) {

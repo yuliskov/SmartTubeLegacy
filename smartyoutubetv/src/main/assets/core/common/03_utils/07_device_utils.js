@@ -12,6 +12,7 @@ var DeviceUtils = {
     MESSAGE_APP_LOADED: 'message_app_loaded',
     MESSAGE_MIC_CLICKED: 'message_mic_clicked',
     MESSAGE_SYNC_LANG: 'message_sync_lang',
+    MESSAGE_AUTHORIZATION_HEADER: 'message_authorization_header',
 
     init: function() {
         // do init here

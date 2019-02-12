@@ -26,6 +26,11 @@ function AjaxInterceptorAddon() {
         window.XMLHttpRequest.prototype.setRequestHeader = function() {
             if (arguments.length == 2 && arguments[0] == $this.AUTHORIZATION_HEADER) {
                 Log.d($this.TAG, "Found header: " + arguments[1]);
+
+                DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTHORIZATION_HEADER, arguments[1]);
+
+                // stop override, we've found what we looking for
+                window.XMLHttpRequest.prototype.setRequestHeader = origin;
             }
 
             origin.apply(this, arguments);
@@ -33,4 +38,6 @@ function AjaxInterceptorAddon() {
     };
 }
 
-new AjaxInterceptorAddon().run();
+if (DeviceUtils.isExo()) {
+    new AjaxInterceptorAddon().run();
+}
