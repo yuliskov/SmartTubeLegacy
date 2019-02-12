@@ -269,7 +269,7 @@ public class YouTubeMediaParser {
 
         doCallbackOnDashMPDUrl(lastSignature);
         doCallbackOnHlsUrl();
-        doCallbackOnTrackingUrls();
+        //doCallbackOnTrackingUrls();
         doCallbackOnMediaItems(signatures);
     }
 
