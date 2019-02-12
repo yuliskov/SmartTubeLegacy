@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialo
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OkButtonDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenSubscriptionsDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenWatchLaterDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UnplayableVideoFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
@@ -37,6 +38,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new LockLastLauncherDialogItem(mContext));
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
+        mItems.add(new OpenWatchLaterDialogItem(mContext));
         mItems.add(new GlobalAfrFixDialogItem(mContext));
         mItems.add(new HistoryFixDialogItem(mContext));
     }

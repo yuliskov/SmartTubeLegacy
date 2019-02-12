@@ -61,4 +61,5 @@
     <string name="tweak_global_afx_fix">Исправление глобального автофреймрейта</string>
     <string name="toast_remove_old_package">Имя пакета было изменено. Пожалуйста, удалите предыдущие версии приложения.</string>
     <string name="tweak_history_fix">Исправлять историю</string>
+    <string name="tweak_open_watch_later">Загружаться в раздел Просмотреть позже</string>
 </resources>

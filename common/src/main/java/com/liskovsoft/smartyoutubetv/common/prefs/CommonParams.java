@@ -38,6 +38,10 @@ public final class CommonParams {
         return mParser.get("subscriptions_page_url");
     }
 
+    public String getWatchLaterPageUrl() {
+        return mParser.get("watch_later_page_url");
+    }
+
     public String[] getStableUpdateUrls() {
         return mParser.getArray("stable_urls");
     }

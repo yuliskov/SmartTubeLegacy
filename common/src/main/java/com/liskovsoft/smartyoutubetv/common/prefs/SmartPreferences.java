@@ -22,6 +22,7 @@ public final class SmartPreferences {
     private static final String BOOT_PAGE = "bootPage";
     public static final String MUSIC_PAGE = "music_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
+    public static final String WATCH_LATER_PAGE = "watch_later_page";
     public static final String DEFAULT_PAGE = "default_page";
     public static final String UPDATE_CHECK_STABLE = "update_check_stable";
     public static final String UPDATE_CHECK_BETA = "update_check_beta";
