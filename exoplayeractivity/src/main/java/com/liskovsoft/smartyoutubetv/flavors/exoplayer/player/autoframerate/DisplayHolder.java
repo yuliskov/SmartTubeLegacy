@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.os.Parcel;
 import android.os.Parcelable;

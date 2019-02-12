@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
 import android.os.Build;
@@ -116,7 +116,7 @@ class DisplaySyncHelper implements UhdHelperListener {
      * Utility method to check if device is Amazon Fire TV device
      * @return {@code true} true if device is Amazon Fire TV device.
      */
-    private boolean isAmazonFireTVDevice(){
+    public static boolean isAmazonFireTVDevice(){
         String deviceName = Build.MODEL;
         String manufacturerName = Build.MANUFACTURER;
         return (deviceName.startsWith("AFT")
@@ -127,7 +127,7 @@ class DisplaySyncHelper implements UhdHelperListener {
      * Check whether device supports mode change. Also shows toast if no
      * @return mode change supported
      */
-    public boolean supportsDisplayModeChange() {
+    public static boolean supportsDisplayModeChange() {
         boolean supportedDevice = true;
 
         //We fail for following conditions
@@ -141,19 +141,18 @@ class DisplaySyncHelper implements UhdHelperListener {
                         supportedDevice = false;
                     }
                     break;
-                default:
-                    DisplayHolder.Mode[] modes = getUhdHelper().getSupportedModes();
-                    if (modes == null || modes.length == 1) {
-                        Log.i(TAG, "Device doesn't contain enough modes to switch");
-                        supportedDevice = false;
-                    }
-                    break;
+                //default:
+                //    DisplayHolder.Mode[] modes = getUhdHelper().getSupportedModes();
+                //    if (modes == null || modes.length == 1) {
+                //        Log.i(TAG, "Device doesn't contain enough modes to switch");
+                //        supportedDevice = false;
+                //    }
+                //    break;
             }
         }
 
         if (!supportedDevice) {
             Log.i(TAG, "Device doesn't support display mode change");
-            Toast.makeText(mContext, R.string.autoframerate_not_supported, Toast.LENGTH_LONG).show();
         }
 
         return supportedDevice;

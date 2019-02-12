@@ -40,7 +40,7 @@ import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode.AutoFrameRateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 

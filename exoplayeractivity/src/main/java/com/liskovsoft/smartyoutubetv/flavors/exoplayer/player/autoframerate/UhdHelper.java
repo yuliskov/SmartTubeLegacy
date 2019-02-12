@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.displaymode;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -228,17 +228,6 @@ class UhdHelper {
     }
 
     /**
-     * Utility method to check if device is Amazon Fire TV device
-     *
-     * @return {@code true} true if device is Amazon Fire TV device.
-     */
-    private boolean isAmazonFireTVDevice() {
-        String deviceName = Build.MODEL;
-        String manufacturerName = Build.MANUFACTURER;
-        return (deviceName.startsWith("AFT") && "Amazon".equalsIgnoreCase(manufacturerName));
-    }
-
-    /**
      * Returns the current Display mode.
      *
      * @return {@link DisplayHolder.Mode Mode}
@@ -356,23 +345,12 @@ class UhdHelper {
          * set in the LayoutParams of any Window.
          */
         String deviceName = Build.MODEL;
-        boolean supportedDevice = true;
+
         // Let the handler know what listener to use, we will
         // send null callback in case of an error.
         mWorkHandler.setCallbackListener(mListener);
-        //We fail for following conditions
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            supportedDevice = false;
-        } else {
-            switch (Build.VERSION.SDK_INT) {
-                case Build.VERSION_CODES.LOLLIPOP:
-                case Build.VERSION_CODES.LOLLIPOP_MR1:
-                    if (!isAmazonFireTVDevice()) {
-                        supportedDevice = false;
-                    }
-                    break;
-            }
-        }
+
+        boolean supportedDevice = DisplaySyncHelper.supportsDisplayModeChange();
 
         //Some basic failure conditions that need handling
         if (!supportedDevice) {
@@ -380,7 +358,7 @@ class UhdHelper {
             //send and cleanup
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, 1, 1, null));
             return;
-        } else if (!isAmazonFireTVDevice()) {
+        } else if (!DisplaySyncHelper.isAmazonFireTVDevice()) {
             //We cannot not show interstitial for Non-Amazon Fire TV devices
             allowOverlayDisplay = false;
         }
