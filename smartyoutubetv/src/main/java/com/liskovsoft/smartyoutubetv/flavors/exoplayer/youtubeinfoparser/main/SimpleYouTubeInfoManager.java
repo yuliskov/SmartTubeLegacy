@@ -48,8 +48,10 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
             }
 
             @Override
-            public void onTrackingUrl(Uri url) {
-                mVisitor.onTrackingUrl(url);
+            public void onTrackingUrls(List<Uri> urls) {
+                for (Uri url : urls) {
+                    mVisitor.onTrackingUrl(url);
+                }
             }
 
             @Override

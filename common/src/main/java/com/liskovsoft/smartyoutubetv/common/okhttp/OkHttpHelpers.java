@@ -31,6 +31,14 @@ public class OkHttpHelpers {
         return doOkHttpRequest(url, mClient);
     }
 
+    public static Response doGetOkHttpRequest(String url) {
+        if (mClient == null) {
+            mClient = createOkHttpClient();
+        }
+
+        return doGetOkHttpRequest(url, mClient);
+    }
+
     public static Response doHeadOkHttpRequest(String url) {
         if (mClient == null) {
             mClient = createOkHttpClient();
@@ -42,6 +50,15 @@ public class OkHttpHelpers {
     public static Response doOkHttpRequest(String url, OkHttpClient client) {
         Request okHttpRequest = new Request.Builder()
                 .url(url)
+                .build();
+
+        return doOkHttpRequest(client, okHttpRequest);
+    }
+
+    private static Response doGetOkHttpRequest(String url, OkHttpClient client) {
+        Request okHttpRequest = new Request.Builder()
+                .url(url)
+                .get()
                 .build();
 
         return doOkHttpRequest(client, okHttpRequest);

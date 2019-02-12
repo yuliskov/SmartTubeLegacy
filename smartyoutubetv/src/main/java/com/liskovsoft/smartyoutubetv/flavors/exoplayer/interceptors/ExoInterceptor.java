@@ -187,9 +187,16 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
                 mSample = SampleHelpers.buildFromList(urlList);
             }
 
+            //@Override
+            //public void onTrackingUrlsFound(final List<Uri> urls) {
+            //    new Handler(mContext.getMainLooper()).postDelayed(() -> this.onTrackingUrlsFoundReal(urls), 10_000);
+            //}
+
             @Override
-            public void onTrackingUrlFound(Uri url) {
-                OkHttpHelpers.doHeadOkHttpRequest(url.toString());
+            public void onTrackingUrlsFound(List<Uri> urls) {
+                for (Uri url : urls) {
+                    OkHttpHelpers.doGetOkHttpRequest(url.toString());
+                }
             }
 
             @Override

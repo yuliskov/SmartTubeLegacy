@@ -42,7 +42,15 @@ public class YouTubeMediaParser {
     private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.adaptiveFormats";
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
-    private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsPlaybackUrl.baseUrl";
+    private static final String[] JSON_INFO_TRACKING_URLS = {
+            "$.playbackTracking.videostatsPlaybackUrl.baseUrl",
+            "$.playbackTracking.videostatsDelayplayUrl.baseUrl",
+            "$.playbackTracking.videostatsWatchtimeUrl.baseUrl",
+            "$.playbackTracking.ptrackingUrl.baseUrl",
+            "$.playbackTracking.qoeUrl.baseUrl",
+            "$.playbackTracking.setAwesomeUrl.baseUrl",
+            "$.playbackTracking.atrUrl.baseUrl"
+    };
     private static final int COMMON_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
@@ -54,7 +62,7 @@ public class YouTubeMediaParser {
      */
     private MyQueryString mDashMPDUrl;
     private MyQueryString mHlsUrl;
-    private MyQueryString mTrackingUrl;
+    private List<Uri> mTrackingUrls;
     private List<MediaItem> mNewMediaItems;
     private DocumentContext mParser;
 
@@ -105,11 +113,15 @@ public class YouTubeMediaParser {
         mHlsUrl = MyQueryStringFactory.parse(url);
     }
 
-    private void extractTrackingUrl() {
-        String url = extractJson(mParser, JSON_INFO_TRACKING_URL);
+    private void extractTrackingUrls() {
+        if (mTrackingUrls == null) {
+            mTrackingUrls = new ArrayList<>();
+        }
 
-        // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
-        mTrackingUrl = MyQueryStringFactory.parse(url);
+        for (String key : JSON_INFO_TRACKING_URLS) {
+            String url = extractJson(mParser, key);
+            mTrackingUrls.add(Uri.parse(url));
+        }
     }
 
     private void extractDashMPDUrl() {
@@ -254,19 +266,26 @@ public class YouTubeMediaParser {
 
         List<String> signatures = doneEvent.getSignatures();
         String lastSignature = signatures.get(signatures.size() - 1);
-        applySignatureAndParseDashMPDUrl(lastSignature);
-        applySignaturesToMediaItems(signatures);
-        mergeMediaItems();
-        mListener.onExtractMediaItemsAndDecipher(mMediaItems);
+
+        doCallbackOnDashMPDUrl(lastSignature);
+        doCallbackOnHlsUrl();
+        doCallbackOnTrackingUrls();
+        doCallbackOnMediaItems(signatures);
     }
 
-    private void mergeMediaItems() {
-        if (mNewMediaItems != null) { // NOTE: NPE here
-            mMediaItems.addAll(mNewMediaItems);
+    private void doCallbackOnTrackingUrls() {
+        if (!mTrackingUrls.isEmpty()) {
+            mListener.onTrackingUrls(mTrackingUrls);
         }
     }
 
-    private void applySignatureAndParseDashMPDUrl(String signature) {
+    private void doCallbackOnHlsUrl() {
+        if (!isEmpty(mHlsUrl)) {
+            mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
+        }
+    }
+
+    private void doCallbackOnDashMPDUrl(String signature) {
         if (!mDashMPDUrl.isEmpty() && signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
             mDashMPDUrl.remove(MediaItem.S);
             mDashMPDUrl.set(MediaItem.SIGNATURE, signature);
@@ -279,14 +298,6 @@ public class YouTubeMediaParser {
             mListener.onDashUrl(Uri.parse(mDashMPDUrl.toString()));
         }
 
-        if (!isEmpty(mHlsUrl)) {
-            mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
-        }
-
-        if (!isEmpty(mTrackingUrl)) {
-            mListener.onTrackingUrl(Uri.parse(mTrackingUrl.toString()));
-        }
-
         // NOTE: parser not working properly here, use url
         // NOTE: raw live format could crash exoplayer
 
@@ -295,7 +306,7 @@ public class YouTubeMediaParser {
         //mNewMediaItems = parser.parse();
     }
 
-    private void applySignaturesToMediaItems(List<String> signatures) {
+    private void doCallbackOnMediaItems(List<String> signatures) {
         if (signatures.size() < mMediaItems.size()) {
             throw new IllegalStateException("Signatures and media items aren't match");
         }
@@ -314,6 +325,12 @@ public class YouTubeMediaParser {
             item.setSignature(signature);
             item.setS(null);
         }
+
+        if (mNewMediaItems != null) { // NOTE: NPE here
+            mMediaItems.addAll(mNewMediaItems);
+        }
+
+        mListener.onExtractMediaItemsAndDecipher(mMediaItems);
     }
 
     // not used code
@@ -336,14 +353,14 @@ public class YouTubeMediaParser {
         extractMediaItems();
         extractDashMPDUrl();
         extractHlsUrl();
-        // extractTrackingUrl();
+        extractTrackingUrls();
         decipherSignatures();
     }
 
     public interface ParserListener {
         void onHlsUrl(Uri url);
         void onDashUrl(Uri url);
-        void onTrackingUrl(Uri url);
+        void onTrackingUrls(List<Uri> urls);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 

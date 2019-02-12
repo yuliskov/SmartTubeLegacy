@@ -11,6 +11,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.Yo
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String[] mContent;
@@ -23,7 +25,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private GenericInfo mInfo;
         private Uri mHlsUrl;
         private Uri mDashUrl;
-        private Uri mTrackingUrl;
+        private List<Uri> mTrackingUrls;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
             mMediaFoundCallback = mediaFoundCallback;
@@ -66,7 +68,11 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onTrackingUrl(Uri url) {
-            mTrackingUrl = url;
+            if (mTrackingUrls == null) {
+                mTrackingUrls = new ArrayList<>();
+            }
+
+            mTrackingUrls.add(url);
         }
 
         @Override
@@ -82,8 +88,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onInfoFound(mInfo);
             }
 
-            if (mTrackingUrl != null) {
-                mMediaFoundCallback.onTrackingUrlFound(mTrackingUrl);
+            if (mTrackingUrls != null) {
+                mMediaFoundCallback.onTrackingUrlsFound(mTrackingUrls);
             }
 
             if (mHlsUrl != null) { // live stream usually
