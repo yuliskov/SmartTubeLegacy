@@ -35,6 +35,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -355,6 +356,27 @@ public final class Helpers {
     public static void enableButtonSounds(Context context, boolean enable) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, !enable);
+    }
+
+    /**
+     * Find all packages starting for specified name
+     * @param context ctx
+     * @param pkgPrefix starts with
+     * @return packages or empty list if not found
+     */
+    public static List<String> findPackagesByPrefix(Context context, String pkgPrefix) {
+        final PackageManager pm = context.getPackageManager();
+        //get a list of installed apps.
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        List<String> pkgNames = new ArrayList<>();
+
+        for (ApplicationInfo info : packages) {
+            if (info.packageName != null && info.packageName.startsWith(pkgPrefix)) {
+                pkgNames.add(info.packageName);
+            }
+        }
+
+        return pkgNames;
     }
 
     public static boolean isPackageExists(Context context, String pkgName) {

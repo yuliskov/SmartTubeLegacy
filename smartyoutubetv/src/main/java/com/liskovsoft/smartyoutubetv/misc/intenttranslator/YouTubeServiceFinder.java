@@ -37,6 +37,11 @@ public class YouTubeServiceFinder implements ServiceFinder {
                 break;
         }
 
+        if (mDefaultUrl == null) { // other services not specified, e.g. kids flavor
+            mIsPersistent = false;
+            mDefaultUrl = params.getMainPageUrl();
+        }
+
         mTranslator = new YouTubeIntentTranslator(mDefaultUrl);
     }
 

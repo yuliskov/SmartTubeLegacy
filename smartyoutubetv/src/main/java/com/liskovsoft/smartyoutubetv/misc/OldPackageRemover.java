@@ -7,6 +7,8 @@ import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
 
+import java.util.List;
+
 public class OldPackageRemover {
     private final Context mContext;
 
@@ -17,10 +19,17 @@ public class OldPackageRemover {
     public void remove() {
         CommonParams params = CommonParams.instance(mContext);
         String[] names = params.getOldPackageNames();
+
+        if (names == null) {
+            return;
+        }
+
         for (String name : names) {
-            if (Helpers.isPackageExists(mContext, name)) {
+            List<String> pkgNames = Helpers.findPackagesByPrefix(mContext, name); // use prefix to remove kids and live versions too
+
+            for (String pkgName : pkgNames) {
                 MessageHelpers.showLongMessage(mContext, R.string.toast_remove_old_package);
-                Helpers.removePackage(mContext, name);
+                Helpers.removePackage(mContext, pkgName);
             }
         }
     }

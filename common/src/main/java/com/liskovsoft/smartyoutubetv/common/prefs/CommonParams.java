@@ -51,6 +51,6 @@ public final class CommonParams {
     }
 
     public String[] getOldPackageNames() {
-        return mParser.getArray("old_packages");
+        return mParser.getArray("old_package_names");
     }
 }
