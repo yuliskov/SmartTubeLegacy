@@ -45,16 +45,11 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
     private String mCurrentUrl;
-    private boolean mPlaybackStarted;
     private final boolean mUnplayableVideoFix;
-    private final boolean mEnableHistoryFix;
-    private Listener mPlayerListener;
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
-    private static final String ACTION_PLAYBACK_STARTED = "action_playback_started";
     public static final String URL_VIDEO_DATA = "get_video_info";
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
-    private static final long FORCE_PLAYBACK_TIMEOUT_MS = 10_000;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -64,22 +59,10 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         @Subscribe
         public void onGenericStringResult(GenericStringResultEvent event) {
             String action = event.getResult();
+
             if (action.equals(ACTION_CLOSE_SUGGESTIONS)) {
                 returnToPlayer();
-            } else if (action.equals(ACTION_PLAYBACK_STARTED)) {
-                playbackStarted();
             }
-        }
-
-        private void playbackStarted() {
-            if (!mEnableHistoryFix || mPlaybackStarted || !mManager.isOpened() || mManager.isMirroring(mCurrentUrl)) {
-                return;
-            }
-
-            Log.d(TAG, "Playback is started");
-            mPlaybackStarted = true;
-
-            new Handler(mContext.getMainLooper()).post(mFragmentsManager::pausePrevious); // pause browser
         }
 
         private void returnToPlayer() {
@@ -101,7 +84,6 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
 
         mFragmentsManager.setPlayerListener(this);
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
-        mEnableHistoryFix = SmartPreferences.instance(context).getEnableHistoryFix();
 
         mTracker = new YouTubeTracker(mContext);
     }
@@ -125,8 +107,6 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             //    mReceiver.returnToPlayer();
             return null;
         }
-
-        mPlaybackStarted = false;
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
@@ -239,18 +219,15 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             return;
         }
 
-        mPlayerListener = new ActionsReceiver.Listener() { // player is opened from from get_video_info url
+        // player is opened from from get_video_info url
+        // pause every time, except when mirroring
+        Listener playerListener = new Listener() { // player is opened from from get_video_info url
             @Override
             public void onDone() {
                 Log.d(TAG, "About to start ExoPlayer fragment: " + playerIntent.getExtras());
                 mManager.onOpen();
 
-                if (mEnableHistoryFix) {
-                    forcePlaybackCheck();
-                    mFragmentsManager.openExoPlayer(playerIntent, false); // don't pause until playback is started
-                } else {
-                    mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // pause every time, except when mirroring
-                }
+                mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // pause every time, except when mirroring
             }
 
             @Override
@@ -260,15 +237,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             }
         };
 
-        Runnable processor = new ActionsReceiver(mContext, playerIntent, mPlayerListener);
+        Runnable processor = new ActionsReceiver(mContext, playerIntent, playerListener);
         processor.run();
-    }
-
-    /**
-     * Force to open the video if playback not started within specified timeout
-     */
-    private void forcePlaybackCheck() {
-        new Handler(mContext.getMainLooper()).postDelayed(mReceiver::playbackStarted, FORCE_PLAYBACK_TIMEOUT_MS);
     }
 
     public void onPlayerAction(Intent intent) {

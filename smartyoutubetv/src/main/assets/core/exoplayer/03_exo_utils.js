@@ -43,7 +43,7 @@ var ExoUtils = {
         function onPlaying() {
             setTimeout(function() {
                 Log.d($this.TAG, "preparePlayer: oops, video not paused yet... doing pause...");
-                $this.sendAction(ExoUtils.ACTION_PLAYBACK_STARTED);
+                //$this.sendAction(ExoUtils.ACTION_PLAYBACK_STARTED);
                 player.pause(); // prevent background playback
             }, onPlayDelayMS);
         }
