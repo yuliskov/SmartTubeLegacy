@@ -36,8 +36,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 535
-        versionName "6.16.55"
+        versionCode 536
+        versionName "6.16.56"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
