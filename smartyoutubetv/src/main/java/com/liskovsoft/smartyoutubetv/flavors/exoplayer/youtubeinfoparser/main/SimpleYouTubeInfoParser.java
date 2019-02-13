@@ -25,7 +25,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private GenericInfo mInfo;
         private Uri mHlsUrl;
         private Uri mDashUrl;
-        private List<Uri> mTrackingUrls;
+        private Uri mTrackingUrl;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
             mMediaFoundCallback = mediaFoundCallback;
@@ -68,11 +68,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onTrackingUrl(Uri url) {
-            if (mTrackingUrls == null) {
-                mTrackingUrls = new ArrayList<>();
-            }
-
-            mTrackingUrls.add(url);
+            mTrackingUrl = url;
         }
 
         @Override
@@ -88,8 +84,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onInfoFound(mInfo);
             }
 
-            if (mTrackingUrls != null) {
-                mMediaFoundCallback.onTrackingUrlsFound(mTrackingUrls);
+            if (mTrackingUrl != null) {
+                mMediaFoundCallback.onTrackingUrlFound(mTrackingUrl);
             }
 
             if (mHlsUrl != null) { // live stream usually

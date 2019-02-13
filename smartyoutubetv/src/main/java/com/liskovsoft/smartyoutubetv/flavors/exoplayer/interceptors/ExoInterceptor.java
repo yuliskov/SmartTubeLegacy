@@ -7,32 +7,31 @@ import android.os.Handler;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser;
-import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
-import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
-import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeInfoParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor implements PlayerListener {
     private final Context mContext;
@@ -41,6 +40,7 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
     private final ActionsSender mActionSender;
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
+    private final YouTubeTracker mTracker;
     private InputStream mResponseStreamSimple;
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private Intent mCachedIntent;
@@ -102,6 +102,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
         mFragmentsManager.setPlayerListener(this);
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
         mEnableHistoryFix = SmartPreferences.instance(context).getEnableHistoryFix();
+
+        mTracker = new YouTubeTracker(mContext);
     }
 
     @Override
@@ -190,52 +192,8 @@ public class ExoInterceptor extends RequestInterceptor implements PlayerListener
             }
 
             @Override
-            public void onTrackingUrlsFound(final List<Uri> urls) {
-                new Handler(mContext.getMainLooper()).postDelayed(() -> this.onTrackingUrlsFoundReal(urls), 5_000);
-            }
-
-            public void onTrackingUrlsFoundReal(List<Uri> urls) {
-                for (Uri url : urls) {
-                    String newUrl = url.toString();
-                    if (newUrl.contains("youtube.com/api/stats/watchtime")) {
-                        OkHttpHelpers.doGetOkHttpRequest(processUrl(newUrl), getHeaders());
-                    }
-                }
-            }
-
-            private Map<String, String> getHeaders() {
-                Map<String, String> result = new HashMap<>();
-
-                SmartPreferences prefs = SmartPreferences.instance(mContext);
-                result.put("Authorization", prefs.getAuthorizationHeader());
-                result.put("Referer", "https://www.youtube.com/tv");
-                result.put("User-Agent", "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)");
-                result.put("X-YouTube-Client-Name", "TVHTML5");
-                result.put("X-YouTube-Page-CL", "233168751");
-                result.put("X-YouTube-Page-Label", "youtube.ytfe.desktop_20190208_2_RC0");
-                result.put("X-YouTube-Utc-Offset", "120");
-
-                return result;
-            }
-
-            private String processUrl(String url) {
-                String toAppend = "&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=0&fmt=137&fs=0&rt=292.768&euri=https%3A%2F%2Fwww" +
-                        ".youtube.com%2Ftv%23%2Fwatch%2Fvideo%2Fidle%3Fv%3DPugNThnZVF0%26resume&lact=485&state=paused&volume=100&c=TVHTML5&cver=6" +
-                        ".20180807&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV" +
-                        "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1";
-
-                MyQueryString result = MyQueryStringFactory.parse(url + toAppend);
-                MyQueryString videoInfo = MyQueryStringFactory.parse(mCurrentUrl);
-
-                result.remove("fexp");
-                result.remove("plid");
-                result.remove("subscribed");
-
-                String cpn = "cpn";
-                result.set(cpn, videoInfo.get(cpn));
-                result.set("el", "leanback");
-
-                return result.toString();
+            public void onTrackingUrlFound(Uri url) {
+                mTracker.track(url.toString(), mCurrentUrl);
             }
 
             @Override

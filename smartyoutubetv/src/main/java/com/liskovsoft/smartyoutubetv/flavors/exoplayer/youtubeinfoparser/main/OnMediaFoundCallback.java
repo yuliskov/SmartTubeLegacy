@@ -11,7 +11,7 @@ public abstract class OnMediaFoundCallback {
     public void onHLSFound(Uri hlsUrl){}
     public void onUrlListFound(List<String> uriList) {}
     public void onDashUrlFound(Uri dashUrl) {}
-    public void onTrackingUrlsFound(List<Uri> urls) {}
+    public void onTrackingUrlFound(Uri url) {}
     public void onInfoFound(GenericInfo info){}
     public abstract void onDone();
 }

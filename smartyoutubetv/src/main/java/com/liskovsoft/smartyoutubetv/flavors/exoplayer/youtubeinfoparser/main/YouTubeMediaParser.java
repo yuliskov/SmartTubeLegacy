@@ -42,15 +42,7 @@ public class YouTubeMediaParser {
     private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.adaptiveFormats";
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
-    private static final String[] JSON_INFO_TRACKING_URLS = {
-            "$.playbackTracking.videostatsPlaybackUrl.baseUrl",
-            "$.playbackTracking.videostatsDelayplayUrl.baseUrl",
-            "$.playbackTracking.videostatsWatchtimeUrl.baseUrl",
-            "$.playbackTracking.ptrackingUrl.baseUrl",
-            "$.playbackTracking.qoeUrl.baseUrl",
-            "$.playbackTracking.setAwesomeUrl.baseUrl",
-            "$.playbackTracking.atrUrl.baseUrl"
-    };
+    private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsWatchtimeUrl.baseUrl";
     private static final int COMMON_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
@@ -62,7 +54,7 @@ public class YouTubeMediaParser {
      */
     private MyQueryString mDashMPDUrl;
     private MyQueryString mHlsUrl;
-    private List<Uri> mTrackingUrls;
+    private MyQueryString mTrackingUrl;
     private List<MediaItem> mNewMediaItems;
     private DocumentContext mParser;
 
@@ -114,14 +106,9 @@ public class YouTubeMediaParser {
     }
 
     private void extractTrackingUrls() {
-        if (mTrackingUrls == null) {
-            mTrackingUrls = new ArrayList<>();
-        }
+        String url = extractJson(mParser, JSON_INFO_TRACKING_URL);
 
-        for (String key : JSON_INFO_TRACKING_URLS) {
-            String url = extractJson(mParser, key);
-            mTrackingUrls.add(Uri.parse(url));
-        }
+        mTrackingUrl = MyQueryStringFactory.parse(url);
     }
 
     private void extractDashMPDUrl() {
@@ -274,8 +261,8 @@ public class YouTubeMediaParser {
     }
 
     private void doCallbackOnTrackingUrls() {
-        if (!mTrackingUrls.isEmpty()) {
-            mListener.onTrackingUrls(mTrackingUrls);
+        if (!isEmpty(mTrackingUrl)) {
+            mListener.onTrackingUrl(Uri.parse(mTrackingUrl.toString()));
         }
     }
 
@@ -360,7 +347,7 @@ public class YouTubeMediaParser {
     public interface ParserListener {
         void onHlsUrl(Uri url);
         void onDashUrl(Uri url);
-        void onTrackingUrls(List<Uri> urls);
+        void onTrackingUrl(Uri url);
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 
