@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.kodi;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.kodi;
 
 import android.content.Context;
 import android.net.Uri;

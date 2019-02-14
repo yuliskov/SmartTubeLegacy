@@ -26,7 +26,7 @@ public class ActionsReceiver implements Runnable {
     private boolean mDone;
     private int mRetryCount = 1;
 
-    interface Listener {
+    public interface Listener {
         void onDone();
         void onCancel();
     }
