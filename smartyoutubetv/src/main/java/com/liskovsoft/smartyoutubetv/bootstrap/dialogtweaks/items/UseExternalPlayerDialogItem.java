@@ -19,11 +19,11 @@ public class UseExternalPlayerDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getEnableLogToFile();
+        return mPrefs.getUseExternalPlayer();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setEnableLogToFile(checked);
+        mPrefs.setUseExternalPlayer(checked);
     }
 }
