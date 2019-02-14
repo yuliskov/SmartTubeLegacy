@@ -7,7 +7,8 @@ import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoCallbackWrapper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoPlayerWrapper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer.ExternalPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeInfoParser;
@@ -30,7 +31,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
     private final YouTubeTracker mTracker;
-    private final ExoCallbackWrapper mExoCallback;
+    private final OnMediaFoundCallback mExoCallback;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
@@ -46,7 +47,12 @@ public class ExoInterceptor extends RequestInterceptor {
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
 
         mTracker = new YouTubeTracker(mContext);
-        mExoCallback = new ExoCallbackWrapper(mContext, this);
+
+        if (SmartPreferences.instance(context).getUseExternalPlayer()) {
+            mExoCallback = new ExternalPlayerWrapper(mContext, this);
+        } else {
+            mExoCallback = new ExoPlayerWrapper(mContext, this);
+        }
     }
 
     @Override

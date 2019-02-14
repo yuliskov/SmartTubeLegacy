@@ -25,8 +25,8 @@ import com.squareup.otto.Subscribe;
 import java.io.InputStream;
 import java.util.List;
 
-public class ExoCallbackWrapper extends OnMediaFoundCallback implements PlayerListener {
-    private static final String TAG = ExoCallbackWrapper.class.getSimpleName();
+public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerListener {
+    private static final String TAG = ExoPlayerWrapper.class.getSimpleName();
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
@@ -62,7 +62,7 @@ public class ExoCallbackWrapper extends OnMediaFoundCallback implements PlayerLi
         }
     }
 
-    public ExoCallbackWrapper(Context context, ExoInterceptor interceptor) {
+    public ExoPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
 

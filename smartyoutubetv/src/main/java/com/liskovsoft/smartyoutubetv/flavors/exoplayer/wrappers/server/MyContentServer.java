@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.kodi;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.server;
 
 import android.net.Uri;
 import android.util.Log;
@@ -8,8 +8,8 @@ import fi.iki.elonen.NanoHTTPD;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MyHttpd extends NanoHTTPD {
-    private static final String TAG = MyHttpd.class.getSimpleName();
+public class MyContentServer extends NanoHTTPD {
+    private static final String TAG = MyContentServer.class.getSimpleName();
     private static final String STRM_DASH_CONTENT =
             "#KODIPROP:inputstreamaddon=inputstream.adaptive\n" +
             "#KODIPROP:inputstream.adaptive.manifest_type=mpd\n" +
@@ -18,7 +18,7 @@ public class MyHttpd extends NanoHTTPD {
     private Uri mLiveUrl;
     private String mDashContent;
 
-    public MyHttpd() {
+    public MyContentServer() {
         super(8080);
         startServer(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         Log.i(TAG, "\nRunning! Point your browsers to http://localhost:8080/ \n");

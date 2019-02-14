@@ -75,4 +75,5 @@
     <string name="toast_remove_old_package">Package name has been changed. Please remove old app versions.</string>
     <string name="tweak_history_fix">Enable history fix</string>
     <string name="tweak_open_watch_later">Boot strict to Watch Later</string>
+    <string name="tweak_open_externally">Use external player</string>
 </resources>
