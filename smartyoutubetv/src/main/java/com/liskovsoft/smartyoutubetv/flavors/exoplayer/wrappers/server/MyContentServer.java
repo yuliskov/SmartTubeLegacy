@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.server;
 
 import android.net.Uri;
-import android.util.Log;
 import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
@@ -13,15 +13,18 @@ public class MyContentServer extends NanoHTTPD {
     private static final String STRM_DASH_CONTENT =
             "#KODIPROP:inputstreamaddon=inputstream.adaptive\n" +
             "#KODIPROP:inputstream.adaptive.manifest_type=mpd\n" +
-            "http://localhost:8080/dash.mpd";
-    private static final String STRM_HLS_CONTENT = "%s";
+            "%s";
+    private static final String DASH_PATH = "/dash.mpd";
+    private static final String STRM_PATH = "/video.strm";
+    private static final String URL_PATTERN = "%s%s";
+    private static final int SERVER_PORT = 8080;
     private Uri mLiveUrl;
     private String mDashContent;
 
     public MyContentServer() {
-        super(8080);
+        super(SERVER_PORT);
         startServer(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-        Log.i(TAG, "\nRunning! Point your browsers to http://localhost:8080/ \n");
+        Log.i(TAG, String.format("\nRunning! Point your browsers to %s \n", getBaseName()));
     }
 
     private void startServer(int timeout, boolean daemon) {
@@ -35,9 +38,9 @@ public class MyContentServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         switch (session.getUri()) {
-            case "/video.strm":
+            case STRM_PATH:
                 return newFixedLengthResponse(getContent());
-            case "/dash.mpd":
+            case DASH_PATH:
                 return newFixedLengthResponse(mDashContent);
         }
 
@@ -47,11 +50,11 @@ public class MyContentServer extends NanoHTTPD {
 
     private String getContent() {
         if (mDashContent != null) {
-            return STRM_DASH_CONTENT;
+            return String.format(STRM_DASH_CONTENT, getDashUrl());
         }
 
         if (mLiveUrl != null) {
-            return String.format(STRM_HLS_CONTENT, mLiveUrl);
+            return String.format("%s", mLiveUrl);
         }
 
         return null;
@@ -65,5 +68,17 @@ public class MyContentServer extends NanoHTTPD {
     public void setLiveStream(Uri url) {
         mLiveUrl = url;
         mDashContent = null;
+    }
+
+    public String getDashUrl() {
+        return String.format(URL_PATTERN, getBaseName(), DASH_PATH);
+    }
+
+    public String getStrmUrl() {
+        return String.format(URL_PATTERN, getBaseName(), STRM_PATH);
+    }
+
+    private String getBaseName() {
+        return String.format("%s:%s", getHostname(), getListeningPort());
     }
 }

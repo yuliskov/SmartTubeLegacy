@@ -12,27 +12,26 @@ import java.io.InputStream;
 public class ExternalPlayerWrapper extends OnMediaFoundCallback {
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
-    private MyContentServer mHttpd;
-    private static String STRM_URL = "http://localhost:8080/video.strm";
+    private MyContentServer mServer;
 
     public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
-        initHttpd();
+        initServer();
     }
 
-    private void initHttpd() {
-        mHttpd = new MyContentServer();
+    private void initServer() {
+        mServer = new MyContentServer();
     }
 
     @Override
     public void onDashMPDFound(InputStream mpdContent) {
-        mHttpd.setDashStream(mpdContent);
+        mServer.setDashStream(mpdContent);
     }
 
     @Override
     public void onDashUrlFound(Uri dashUrl) {
-        mHttpd.setLiveStream(dashUrl);
+        mServer.setLiveStream(dashUrl);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback {
 
     private void openExternalPlayer() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(STRM_URL), "*/*");
+        intent.setDataAndType(Uri.parse(mServer.getDashUrl()), "video/*");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
