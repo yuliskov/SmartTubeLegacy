@@ -30,7 +30,6 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_120MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_180MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 10 * 1000;
-    private Boolean mEnableOKPause;
 
     public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -166,15 +165,5 @@ public class PlayerInitializer {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager2 manager = new SurfaceManager2(mPlayerFragment.getActivity(), player);
         videoSurfaceView.getHolder().addCallback(manager);
-    }
-
-    public boolean getEnableOKPause() {
-        if (mEnableOKPause != null) {
-            return mEnableOKPause;
-        }
-
-        mEnableOKPause = SmartPreferences.instance(mPlayerFragment.getActivity()).getEnableOKPause();
-
-        return mEnableOKPause;
     }
 }

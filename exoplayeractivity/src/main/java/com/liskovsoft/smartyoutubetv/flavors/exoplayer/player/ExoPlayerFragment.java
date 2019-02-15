@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.KeyHandler;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.exoplayeractivity.R;
@@ -18,166 +19,22 @@ import com.liskovsoft.smartyoutubetv.keytranslator.PlayerKeyTranslator;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class ExoPlayerFragment extends ExoPlayerBaseFragment implements PlayerFragment {
+public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
     private int mState;
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
-    private KeyTranslator mTranslator;
+    private KeyHandler mKeyHandler;
 
     // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        event = getKeyTranslator().doTranslateKeys(event);
-        setDispatchEvent(event);
-
-        if (isVolumeEvent(event)) {
-            return false;
+        if (mKeyHandler == null) {
+            mKeyHandler = new KeyHandler(getActivity(), this);
         }
 
-        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
-        boolean isDownAction = event.getAction() == KeyEvent.ACTION_DOWN;
-
-        boolean uiVisible = isUiVisible();
-
-        if (isBackKey(event) && !uiVisible) {
-            if (isUpAction) {
-                onBackPressed();
-            }
-            return true;
-        }
-
-        if (isBackKey(event) || isOutFakeKey(event)) {
-            return hideUI(event);
-        }
-
-        // Show the controls on any key event.
-        if (!uiVisible && isDownAction) {
-            mSimpleExoPlayerView.showController();
-        }
-
-        if (uiVisible && isMenuKey(event) && isDownAction) {
-            mSimpleExoPlayerView.hideController();
-            return true;
-        }
-
-        if (applySeekAction(event, uiVisible) || isNonOKAction(event, uiVisible)) {
-            return true;
-        }
-
-        // If the event was not handled then see if the player view can handle it as a media key event.
-        return mSimpleExoPlayerView.dispatchMediaKeyEvent(event);
-    }
-
-    private KeyTranslator getKeyTranslator() {
-        if (mTranslator == null) {
-            mTranslator = new PlayerKeyTranslator();
-        }
-
-        return mTranslator;
-    }
-
-    private boolean isMenuKey(KeyEvent event) {
-        return event.getKeyCode() == KeyEvent.KEYCODE_MENU;
-    }
-
-    private boolean isNonOKAction(KeyEvent event, boolean uiVisible) {
-        boolean isOkKey = false;
-
-        if (mPlayerInitializer.getEnableOKPause()) {
-            isOkKey = isOkKey(event);
-        }
-
-
-        return !uiVisible && !isOkKey;
-    }
-
-    private boolean isOkKey(KeyEvent event) {
-        return event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
-                event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
-                event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
-    }
-
-    private boolean applySeekAction(KeyEvent event, boolean uiVisible) {
-        // move selection to the timebar on left/right key events
-        boolean isLeftRightKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT;
-
-        if (!uiVisible && isLeftRightKey) {
-            setFocusOnTimeBar();
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isAnyKeyAction(KeyEvent event, boolean uiVisible) {
-        // fix focus on the play/pause button: don't move selection
-        boolean isUpDownKey = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN;
-        boolean isMenuKey = event.getKeyCode() == KeyEvent.KEYCODE_MENU;
-
-        if (!uiVisible && (isUpDownKey || isMenuKey)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void setFocusOnTimeBar() {
-        View timeBar = mSimpleExoPlayerView.findViewById(R.id.time_bar);
-        if (timeBar != null) {
-            timeBar.requestFocus();
-        }
-    }
-
-    // Activity input
-
-    private boolean isBackKey(KeyEvent event) {
-        return event.getKeyCode() == KeyEvent.KEYCODE_BACK;
-    }
-
-    private boolean isOutFakeKey(KeyEvent event) {
-        View root = getView();
-
-        boolean isUp = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP;
-
-        if (root != null && isUp && isUiVisible()) {
-            View upBtn = root.findViewById(R.id.up_catch_button);
-            return upBtn.isFocused();
-        }
-
-        return false;
-    }
-
-    private boolean hideUI(KeyEvent event) {
-        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
-        boolean isVisible = isUiVisible();
-
-        if (isVisible) {
-            if (isUpAction) {
-                mSimpleExoPlayerView.hideController();
-
-                // fix control lost over the player ui
-                getView().requestFocus();
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean isVolumeEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ||
-                event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            return true;
-        }
-        return false;
-    }
-
-    private void setDispatchEvent(KeyEvent event) {
-        if (getActivity() instanceof FragmentManager) {
-            ((FragmentManager) getActivity()).setDispatchEvent(event);
-        }
+        return mKeyHandler.handle(event);
     }
 
     @Override

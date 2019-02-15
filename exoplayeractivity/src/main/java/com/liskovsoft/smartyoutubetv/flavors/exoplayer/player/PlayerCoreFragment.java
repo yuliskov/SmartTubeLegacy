@@ -60,6 +60,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 
 import java.io.IOException;
@@ -69,7 +70,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.UUID;
 
-public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlayerControlView.VisibilityListener {
+public abstract class PlayerCoreFragment extends Fragment implements OnClickListener, Player.EventListener, PlayerControlView.VisibilityListener, PlayerInterface {
     private static final String TAG = PlayerCoreFragment.class.getName();
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
@@ -676,5 +677,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     public SimpleExoPlayer getPlayer() {
         return mPlayer;
+    }
+
+    @Override
+    public PlayerView getExoPlayerView() {
+        return mSimpleExoPlayerView;
     }
 }

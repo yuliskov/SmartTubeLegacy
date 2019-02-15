@@ -42,7 +42,7 @@ import java.util.Locale;
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class ExoPlayerBaseFragment extends PlayerCoreFragment {
+public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private static final String TAG = ExoPlayerBaseFragment.class.getName();
 
     public static final String BUTTON_FAVORITES = "button_favorites";
@@ -479,7 +479,8 @@ public class ExoPlayerBaseFragment extends PlayerCoreFragment {
         CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource((ExoPlayerFragment) this));
     }
 
-    protected boolean isUiVisible() {
+    @Override
+    public boolean isUiVisible() {
         return mInterfaceVisibilityState == View.VISIBLE;
     }
 
