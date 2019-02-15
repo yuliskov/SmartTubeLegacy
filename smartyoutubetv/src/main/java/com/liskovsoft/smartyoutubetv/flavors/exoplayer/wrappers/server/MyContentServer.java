@@ -79,6 +79,6 @@ public class MyContentServer extends NanoHTTPD {
     }
 
     private String getBaseName() {
-        return String.format("%s:%s", getHostname(), getListeningPort());
+        return String.format("http://localhost:%s", getListeningPort());
     }
 }
