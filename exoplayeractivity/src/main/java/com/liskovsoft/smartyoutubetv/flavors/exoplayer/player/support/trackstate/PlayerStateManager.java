@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate;
 
 import android.os.Handler;
 import android.util.Pair;

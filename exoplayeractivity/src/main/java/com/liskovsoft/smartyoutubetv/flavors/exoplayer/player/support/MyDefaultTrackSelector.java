@@ -8,7 +8,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerStateManagerBase.MyFormat;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate.PlayerStateManagerBase;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate.PlayerStateManagerBase.MyFormat;
 
 public class MyDefaultTrackSelector extends DefaultTrackSelector {
     private final Context mContext;
