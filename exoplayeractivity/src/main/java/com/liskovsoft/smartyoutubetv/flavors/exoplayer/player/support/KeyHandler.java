@@ -127,7 +127,7 @@ public class KeyHandler {
     }
 
     private boolean isOutFakeKey(KeyEvent event) {
-        View root = mFragment.getExoPlayerView(); // TODO: getView()
+        View root = mFragment.getExoPlayerView();
 
         boolean isUp = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP;
 
@@ -148,7 +148,7 @@ public class KeyHandler {
                 mFragment.getExoPlayerView().hideController();
 
                 // fix control lost over the player ui
-                mFragment.getExoPlayerView().requestFocus(); // TODO: getView()
+                mFragment.getExoPlayerView().requestFocus();
             }
             return true;
         }
