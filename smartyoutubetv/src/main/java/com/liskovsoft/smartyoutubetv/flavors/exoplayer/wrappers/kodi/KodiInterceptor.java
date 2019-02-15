@@ -31,14 +31,14 @@ public class KodiInterceptor extends MPDExtractInterceptor {
 
     @Override
     protected void onDashMPDFound(InputStream mpdContent) {
-        mHttpd.setDashStream(mpdContent);
+        mHttpd.setDashContent(mpdContent);
         closeWebPlayerWindow();
         openKodi();
     }
 
     @Override
     protected void onLiveUrlFound(Uri hlsUrl) {
-        mHttpd.setLiveStream(hlsUrl);
+        mHttpd.setLiveContent(hlsUrl);
         closeWebPlayerWindow();
         openKodi();
     }

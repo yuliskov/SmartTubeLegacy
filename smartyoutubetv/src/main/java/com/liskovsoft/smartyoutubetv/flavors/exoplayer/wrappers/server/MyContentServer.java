@@ -60,12 +60,12 @@ public class MyContentServer extends NanoHTTPD {
         return null;
     }
 
-    public void setDashStream(InputStream content) {
+    public void setDashContent(InputStream content) {
         mDashContent = Helpers.toString(content);
         mLiveUrl = null;
     }
 
-    public void setLiveStream(Uri url) {
+    public void setLiveContent(Uri url) {
         mLiveUrl = url;
         mDashContent = null;
     }
