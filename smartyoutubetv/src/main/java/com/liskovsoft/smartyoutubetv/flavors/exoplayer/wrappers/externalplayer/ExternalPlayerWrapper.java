@@ -3,21 +3,23 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.server.MyContentServer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class ExternalPlayerWrapper extends OnMediaFoundCallback {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
-    private MyContentServer mServer;
     private static final int TYPE_DASH_CONTENT = 0;
     private static final int TYPE_DASH_URL = 1;
     private static final int TYPE_HLS_URL = 2;
+    private static final String MPD_FILE_NAME = "tmp_video.mpd";
+    private final File mMpdFile;
     private int mContentType;
     private Uri mDashUrl;
     private Uri mHlsUrl;
@@ -25,16 +27,12 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback {
     public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
-        initServer();
-    }
-
-    private void initServer() {
-        mServer = new MyContentServer();
+        mMpdFile = new File(FileHelpers.getCacheDir(mContext), MPD_FILE_NAME);
     }
 
     @Override
     public void onDashMPDFound(InputStream mpdContent) {
-        mServer.setDashContent(mpdContent);
+        FileHelpers.streamToFile(mpdContent, mMpdFile);
         mContentType = TYPE_DASH_CONTENT;
     }
 
@@ -60,7 +58,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback {
 
         switch (mContentType) {
             case TYPE_DASH_CONTENT:
-                intent.setDataAndType(Uri.parse(mServer.getDashUrl()), "video/*");
+                intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), "video/*");
                 break;
             case TYPE_DASH_URL:
                 intent.setDataAndType(mDashUrl, "video/*"); // mpd

@@ -1,21 +1,20 @@
 package edu.mit.mobile.android.appupdater.addons;
 
-import android.app.Activity;
-import android.content.*;
-import android.net.*;
-import android.os.*;
-import android.os.Build.VERSION;
-import android.support.v4.content.FileProvider;
+import android.content.Context;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.webkit.*;
+import android.webkit.URLUtil;
 import android.widget.Toast;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import edu.mit.mobile.android.appupdater.R;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * Usage:
@@ -46,7 +45,7 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
         }
 
         if (path != null) {
-            installPackage(path);
+            Helpers.installPackage(mContext, path);
         } else {
             showMessage(mContext.getResources().getString(R.string.cant_download_msg));
         }
@@ -55,12 +54,7 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     }
 
     private void showMessage(final String msg) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show());
     }
 
     private String downloadPackage(String uri) {
@@ -87,27 +81,5 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             // MessageHelpers.showMessage(mContext, TAG, ex);
         }
         return path;
-    }
-
-    // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails
-    private void installPackage(String packagePath) {
-        if (packagePath == null) {
-            return;
-        }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri file = getFileUri(packagePath);
-        intent.setDataAndType(file, "application/vnd.android.package-archive");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
-        mContext.startActivity(intent);
-    }
-
-    private Uri getFileUri(String packagePath) {
-        // if your targetSdkVersion is 24 or higher, we have to use FileProvider class
-        // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-        if (VERSION.SDK_INT >= 24) {
-            return FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".update_provider", new File(packagePath));
-        } else {
-            return Uri.fromFile(new File(packagePath));
-        }
     }
 }

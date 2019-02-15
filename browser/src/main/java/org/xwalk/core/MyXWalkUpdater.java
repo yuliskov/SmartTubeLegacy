@@ -21,6 +21,8 @@ import android.util.Log;
 import java.io.File;
 import java.util.List;
 
+import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import org.xwalk.core.MyXWalkLibraryLoader.DownloadListener;
 
@@ -530,31 +532,7 @@ public class MyXWalkUpdater {
 
             Log.d(TAG, "Install the Crosswalk runtime: " + uri.toString());
 
-            installPackage(uri.getPath());
-        }
-
-        // NOTE: Android 7.0 fixes
-        // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails
-        private void installPackage(String packagePath) {
-            if (packagePath == null) {
-                return;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri file = getFileUri(packagePath);
-            intent.setDataAndType(file, "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
-            mContext.startActivity(intent);
-        }
-
-        // NOTE: Android 7.0 fixes
-        private Uri getFileUri(String packagePath) {
-            // if your targetSdkVersion is 24 or higher, we have to use FileProvider class
-            // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-            if (VERSION.SDK_INT >= 24) {
-                return FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".update_provider", new File(packagePath));
-            } else {
-                return Uri.fromFile(new File(packagePath));
-            }
+            Helpers.installPackage(mContext, uri.getPath());
         }
     }
 

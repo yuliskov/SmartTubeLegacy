@@ -1,6 +1,9 @@
 package com.liskovsoft.smartyoutubetv.common.helpers;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Build.VERSION;
+import android.support.v4.content.FileProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -119,5 +122,24 @@ public class FileHelpers {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // NOTE: Android 7.0 fix
+    public static Uri getFileUri(Context context, String filePath) {
+        // if your targetSdkVersion is 24 or higher, we have to use FileProvider class
+        // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+        if (VERSION.SDK_INT >= 24) {
+            return FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".update_provider", new File(filePath));
+        } else {
+            return Uri.fromFile(new File(filePath));
+        }
+    }
+
+    public static Uri getFileUri(Context context, File filePath) {
+        if (filePath == null) {
+            return null;
+        }
+
+        return getFileUri(context, filePath.getAbsolutePath());
     }
 }

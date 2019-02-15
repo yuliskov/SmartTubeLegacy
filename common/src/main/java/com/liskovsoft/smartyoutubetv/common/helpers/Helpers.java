@@ -398,4 +398,16 @@ public final class Helpers {
         intent.setData(Uri.parse("package:" + pkgName));
         context.startActivity(intent);
     }
+
+    // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails
+    public static void installPackage(Context context, String packagePath) {
+        if (packagePath == null) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri file = FileHelpers.getFileUri(context, packagePath);
+        intent.setDataAndType(file, "application/vnd.android.package-archive");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
+        context.startActivity(intent);
+    }
 }
