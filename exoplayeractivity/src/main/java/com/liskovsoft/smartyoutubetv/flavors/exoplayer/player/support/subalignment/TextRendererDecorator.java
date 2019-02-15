@@ -29,7 +29,7 @@ public class TextRendererDecorator implements TextOutput {
         List<Cue> result = new ArrayList<>();
 
         for (Cue cue : cues) {
-            if (cue.textSizeType == Cue.TYPE_UNSET || cue.textSize == Cue.DIMEN_UNSET) {
+            if (cue.position == 0 && cue.positionAnchor == Cue.ANCHOR_TYPE_START) { // unaligned sub encountered
                 result.add(new Cue(cue.text));
             } else {
                 result.add(cue);
