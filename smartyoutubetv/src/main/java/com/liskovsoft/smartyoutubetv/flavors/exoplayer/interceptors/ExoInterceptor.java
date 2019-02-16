@@ -1,12 +1,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer.ExternalPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
@@ -168,5 +170,12 @@ public class ExoInterceptor extends RequestInterceptor {
 
     public String getCurrentUrl() {
         return mCurrentUrl;
+    }
+
+    public void closePlayer() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        new ActionsSender(mContext, this).bindActions(intent);
+        mManager.onClose();
     }
 }

@@ -62,7 +62,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     @Override
     public void onResult(int resultCode, Intent data) {
         Log.d(TAG, "External player is closed: " + resultCode + " " + data);
-        mInterceptor.getBackgroundActionManager().onClose();
+        mInterceptor.closePlayer();
     }
 
     /**
@@ -88,13 +88,15 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
         intent.setPackage("org.videolan.vlc");
         //intent.setComponent(new ComponentName("org.videolan.vlc", "org.videolan.vlc.gui.video.VideoPlayerActivity"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
 
         try {
             ((FragmentManager)mContext).startActivityForResult(intent, this);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
             MessageHelpers.showMessage(mContext, R.string.message_install_vlc_player);
+            mInterceptor.closePlayer();
         }
     }
 }
