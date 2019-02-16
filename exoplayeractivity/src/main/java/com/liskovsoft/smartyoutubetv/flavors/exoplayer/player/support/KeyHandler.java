@@ -5,26 +5,47 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 import com.liskovsoft.smartyoutubetv.keytranslator.PlayerKeyTranslator;
 
+import java.util.HashMap;
+
 public class KeyHandler {
     private final Activity mActivity;
     private final PlayerInterface mFragment;
     private KeyTranslator mTranslator;
     private Boolean mEnableOKPause;
+    private HashMap<Integer, Runnable> mActions;
 
     public KeyHandler(Activity activity, PlayerInterface playerFragment) {
         mActivity = activity;
         mFragment = playerFragment;
+        mTranslator = new PlayerKeyTranslator();
+
+        initActionMapping();
+    }
+
+    @TargetApi(15)
+    private void initActionMapping() {
+        mActions = new HashMap<>();
+
+        ExoPlayer player = mFragment.getPlayer();
+        PlayerView playerView = mFragment.getExoPlayerView();
+
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, () -> player.setPlayWhenReady(true));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, () -> player.setPlayWhenReady(false));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> player.setPlayWhenReady(false));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, () -> player.setPlayWhenReady(!player.getPlayWhenReady()));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, () -> playerView.findViewById(R.id.exo_next2).callOnClick());
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, () -> playerView.findViewById(R.id.exo_prev).callOnClick());
     }
 
     public boolean handle(KeyEvent event) {
-        event = getKeyTranslator().doTranslateKeys(event);
+        event = mTranslator.doTranslateKeys(event);
         setDispatchEvent(event);
 
         if (isVolumeEvent(event)) {
@@ -73,44 +94,16 @@ public class KeyHandler {
         return mFragment.getExoPlayerView().dispatchMediaKeyEvent(event);
     }
 
-    @TargetApi(15)
     private boolean applySpecialKeyAction(KeyEvent event) {
-        ExoPlayer player = mFragment.getPlayer();
+        if (mActions.containsKey(event.getKeyCode())) {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                mActions.get(event.getKeyCode()).run();
+            }
 
-        switch (event.getKeyCode()) {
-            case KeyEvent.KEYCODE_MEDIA_PLAY:
-                player.setPlayWhenReady(true);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_PAUSE:
-            case KeyEvent.KEYCODE_MEDIA_STOP:
-                player.setPlayWhenReady(false);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                player.setPlayWhenReady(!player.getPlayWhenReady());
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
-                player.seekTo(player.getCurrentPosition() + 10_000);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_REWIND:
-                player.seekTo(player.getCurrentPosition() - 10_000);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_NEXT:
-                mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
-                return true;
+            return true;
         }
 
         return false;
-    }
-
-    private KeyTranslator getKeyTranslator() {
-        if (mTranslator == null) {
-            mTranslator = new PlayerKeyTranslator();
-        }
-
-        return mTranslator;
     }
 
     private boolean isMenuKey(KeyEvent event) {
