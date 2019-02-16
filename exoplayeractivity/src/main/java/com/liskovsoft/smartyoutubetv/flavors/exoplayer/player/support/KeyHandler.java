@@ -1,8 +1,11 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -44,6 +47,10 @@ public class KeyHandler {
             return hideUI(event);
         }
 
+        if (applySpecialKeyAction(event)) {
+            return true;
+        }
+
         // Show the controls on any key event.
         if (!uiVisible && isDownAction) {
             mFragment.getExoPlayerView().showController();
@@ -64,6 +71,38 @@ public class KeyHandler {
 
         // If the event was not handled then see if the player view can handle it as a media key event.
         return mFragment.getExoPlayerView().dispatchMediaKeyEvent(event);
+    }
+
+    @TargetApi(15)
+    private boolean applySpecialKeyAction(KeyEvent event) {
+        ExoPlayer player = mFragment.getPlayer();
+
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+                player.setPlayWhenReady(true);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+                player.setPlayWhenReady(false);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                player.setPlayWhenReady(!player.getPlayWhenReady());
+                break;
+            case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
+                player.seekTo(player.getCurrentPosition() + 10_000);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                player.seekTo(player.getCurrentPosition() - 10_000);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
+                break;
+        }
+
+        return false;
     }
 
     private KeyTranslator getKeyTranslator() {
@@ -91,8 +130,8 @@ public class KeyHandler {
 
     private boolean isOkKey(KeyEvent event) {
         return event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
-                event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
-                event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
+               event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+               event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
     }
 
     private boolean applySeekAction(KeyEvent event, boolean uiVisible) {

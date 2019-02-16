@@ -678,6 +678,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         updateButtonVisibilities();
     }
 
+    @Override
     public SimpleExoPlayer getPlayer() {
         return mPlayer;
     }
