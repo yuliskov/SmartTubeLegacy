@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -33,15 +31,12 @@ public class KeyHandler {
     private void initActionMapping() {
         mActions = new HashMap<>();
 
-        ExoPlayer player = mFragment.getPlayer();
-        PlayerView playerView = mFragment.getExoPlayerView();
-
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, () -> player.setPlayWhenReady(true));
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, () -> player.setPlayWhenReady(false));
-        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> player.setPlayWhenReady(false));
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, () -> player.setPlayWhenReady(!player.getPlayWhenReady()));
-        mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, () -> playerView.findViewById(R.id.exo_next2).callOnClick());
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, () -> playerView.findViewById(R.id.exo_prev).callOnClick());
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, () -> mFragment.getPlayer().setPlayWhenReady(true));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, () -> mFragment.getPlayer().setPlayWhenReady(false));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> mFragment.getPlayer().setPlayWhenReady(false));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, () -> mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady()));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick());
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick());
     }
 
     public boolean handle(KeyEvent event) {
