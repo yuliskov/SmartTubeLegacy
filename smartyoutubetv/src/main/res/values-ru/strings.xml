@@ -63,4 +63,5 @@
     <string name="tweak_history_fix">Исправлять историю</string>
     <string name="tweak_open_watch_later">Загружаться в раздел Просмотреть позже</string>
     <string name="tweak_open_externally">Использовать внешний плеер</string>
+    <string name="message_install_vlc_player">Для проигрывания нужен VLC плеер</string>
 </resources>

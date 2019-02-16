@@ -12,6 +12,7 @@ import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.helpers.PermissionManager;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
@@ -19,6 +20,8 @@ import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
+
+import java.util.HashMap;
 
 public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
@@ -29,7 +32,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private LoadingManager mLoadingManager;
     private boolean mLoadingDone;
     private MainApkUpdater mApkUpdater;
-    
+    private int mRequestCode = 50;
+    private HashMap<Integer, ActivityResult> mResultMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // fix lang in case activity has been destroyed and then restored
@@ -53,6 +58,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mLoadingManager = new TipsLoadingManager(this);
         mApkUpdater = new MainApkUpdater(this);
+        mResultMap = new HashMap<>();
     }
 
     @Override
@@ -205,6 +211,14 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ActivityResult result = mResultMap.get(requestCode);
+
+        if (result != null) {
+            result.onResult(resultCode, data);
+            mResultMap.remove(requestCode);
+            return;
+        }
+
         mVoiceBridge.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -250,5 +264,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingDone = true;
         mLoadingManager.hide();
         mApkUpdater.start();
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, ActivityResult callback) {
+        int requestCode = mRequestCode++;
+        mResultMap.put(requestCode, callback);
+        startActivityForResult(intent, requestCode);
     }
 }

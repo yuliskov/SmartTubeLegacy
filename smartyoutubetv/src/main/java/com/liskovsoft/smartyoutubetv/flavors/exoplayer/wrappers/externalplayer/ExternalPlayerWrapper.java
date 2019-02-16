@@ -1,17 +1,23 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
+import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.OnMediaFoundCallback;
+import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 import java.io.File;
 import java.io.InputStream;
 
-public class ExternalPlayerWrapper extends OnMediaFoundCallback {
+public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
@@ -50,10 +56,19 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback {
 
     @Override
     public void onDone() {
-        openExternalPlayer();
+        openInVLCPlayer();
     }
 
-    private void openExternalPlayer() {
+    @Override
+    public void onResult(int resultCode, Intent data) {
+        Log.d(TAG, "External player is closed: " + resultCode + " " + data);
+        mInterceptor.getBackgroundActionManager().onClose();
+    }
+
+    /**
+     * <a href="https://wiki.videolan.org/Android_Player_Intents/">Create VLC intent</a>
+     */
+    private void openInVLCPlayer() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
         switch (mContentType) {
@@ -71,7 +86,15 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback {
                 break;
         }
 
+        intent.setPackage("org.videolan.vlc");
+        //intent.setComponent(new ComponentName("org.videolan.vlc", "org.videolan.vlc.gui.video.VideoPlayerActivity"));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+
+        try {
+            ((FragmentManager)mContext).startActivityForResult(intent, this);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            MessageHelpers.showMessage(mContext, R.string.message_install_vlc_player);
+        }
     }
 }

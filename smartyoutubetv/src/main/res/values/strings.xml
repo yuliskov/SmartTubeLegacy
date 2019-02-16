@@ -76,4 +76,5 @@
     <string name="tweak_history_fix">Enable history fix</string>
     <string name="tweak_open_watch_later">Boot strict to Watch Later</string>
     <string name="tweak_open_externally">Use external player</string>
+    <string name="message_install_vlc_player">Please install VLC player</string>
 </resources>
