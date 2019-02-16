@@ -80,26 +80,26 @@ public class KeyHandler {
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 player.setPlayWhenReady(true);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 player.setPlayWhenReady(false);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 player.setPlayWhenReady(!player.getPlayWhenReady());
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
                 player.seekTo(player.getCurrentPosition() + 10_000);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 player.seekTo(player.getCurrentPosition() - 10_000);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
                 mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
-                break;
+                return true;
         }
 
         return false;
