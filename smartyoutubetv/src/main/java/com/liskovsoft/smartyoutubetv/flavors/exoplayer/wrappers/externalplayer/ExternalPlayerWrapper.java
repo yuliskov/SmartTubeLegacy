@@ -88,7 +88,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
         intent.setPackage("org.videolan.vlc");
         //intent.setComponent(new ComponentName("org.videolan.vlc", "org.videolan.vlc.gui.video.VideoPlayerActivity"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         try {
             ((FragmentManager)mContext).startActivityForResult(intent, this);
