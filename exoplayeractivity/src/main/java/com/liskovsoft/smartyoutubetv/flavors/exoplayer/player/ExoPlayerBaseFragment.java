@@ -149,9 +149,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
         // Enable tunneling if supported by the current media and device configuration.
-        if (Util.SDK_INT >= 21) {
-            mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(getActivity())));
-        }
+        //if (Util.SDK_INT >= 21) {
+        //    mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(getActivity())));
+        //}
 
         mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, trackSelectionFactory);
         mEventLogger = new EventLogger(mTrackSelector);
