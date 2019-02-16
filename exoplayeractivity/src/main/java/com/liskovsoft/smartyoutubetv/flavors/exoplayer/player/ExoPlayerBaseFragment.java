@@ -2,18 +2,21 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.dialogs.CombinedChoiceSelectorDialog;
@@ -146,8 +149,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
         // Enable tunneling if supported by the current media and device configuration.
-        //if (Util.SDK_INT >= 21)
-        //    trackSelector.setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this));
+        if (Util.SDK_INT >= 21) {
+            mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(getActivity())));
+        }
 
         mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, trackSelectionFactory);
         mEventLogger = new EventLogger(mTrackSelector);
