@@ -370,7 +370,6 @@ public class PreciseTimeBar extends View implements TimeBar {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
     }
 
-    @TargetApi(14)
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
@@ -379,8 +378,7 @@ public class PreciseTimeBar extends View implements TimeBar {
         }
         event.setClassName(PreciseTimeBar.class.getName());
     }
-
-    @TargetApi(21)
+    
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
@@ -391,17 +389,13 @@ public class PreciseTimeBar extends View implements TimeBar {
             return;
         }
 
-        info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
-        info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
-
-        //TODO: cleanup
-        //if (Util.SDK_INT >= 21) {
-        //    info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
-        //    info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
-        //} else if (Util.SDK_INT >= 16) {
-        //    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
-        //    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
-        //}
+        if (Util.SDK_INT >= 21) {
+            info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
+            info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
+        } else if (Util.SDK_INT >= 16) {
+            info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
+            info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
+        }
     }
 
     @TargetApi(16)
