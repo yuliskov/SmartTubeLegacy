@@ -33,7 +33,7 @@ public class KeyHandler {
 
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, () -> mFragment.getPlayer().setPlayWhenReady(true));
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, () -> mFragment.getPlayer().setPlayWhenReady(false));
-        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> mFragment.getPlayer().setPlayWhenReady(false));
+        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_back).callOnClick());
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, () -> mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady()));
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick());
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick());
