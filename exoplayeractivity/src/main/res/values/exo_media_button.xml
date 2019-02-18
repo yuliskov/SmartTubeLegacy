@@ -104,8 +104,8 @@
     <style name="ExoMediaButton2.User">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/user_page</item>
-        <item name="imageOff">@mipmap/btn_user_on</item>
-        <item name="imageOn">@mipmap/btn_user_on</item>
+        <item name="imageOff">@mipmap/btn_user_off</item>
+        <item name="imageOn">@mipmap/btn_user_off</item>
     </style>
 
     <style name="ExoMediaButton2.Like">

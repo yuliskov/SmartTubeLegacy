@@ -1,7 +1,12 @@
-console.log("Scripts::Running core script favorites_button.js");
+console.log("Scripts::Running core script overlay_button.js");
 
-function FavoritesButton(selector) {
-    this.TAG = "FavoritesButton";
+/**
+ * Any button that could open an overlay like favorites, user channel etc
+ * @param selector btn selector
+ * @constructor
+ */
+function OverlayButton(selector) {
+    this.TAG = "OverlayButton";
     this.selector = selector;
 
     this.getChecked = function() {
@@ -18,7 +23,7 @@ function FavoritesButton(selector) {
             var el = this.findToggle();
 
             if (!el) {
-                Log.d(this.TAG, "Oops, favorites button not found... return to the player");
+                Log.d(this.TAG, "Oops, " + this.selector + " button not found... return to the player");
                 ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
                 return;
             }
@@ -26,7 +31,7 @@ function FavoritesButton(selector) {
             EventUtils.triggerEnter(el);
 
             EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
-                Log.d($this.TAG, "User has closed the favorites... return to the player");
+                Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
                 ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
             });
         }
@@ -35,4 +40,4 @@ function FavoritesButton(selector) {
     this.decorator.apply(this);
 }
 
-FavoritesButton.prototype = new ExoButton();
+OverlayButton.prototype = new ExoButton();
