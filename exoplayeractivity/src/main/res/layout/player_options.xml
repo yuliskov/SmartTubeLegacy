@@ -9,6 +9,10 @@
     android:orientation="horizontal"
     android:visibility="gone">
 
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+        android:id="@+id/exo_user"
+        style="@style/ExoMediaButton2.User"/>
+
     <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
         android:id="@+id/exo_share"
         style="@style/ExoMediaButton2.Share"/>

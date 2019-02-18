@@ -16,32 +16,37 @@ function ExoButtonDecorator(btn) {
         EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
     };
 
-    this.doCallbackIfReady = function(callback) {
-        var $this = this;
-        setTimeout(function() {
-            Log.d($this.TAG, "after toggle options: " + $this.btn.selector + ' ' + $this.btn.findToggle());
-
-            callback();
-            ExoButtonDecorator.callbackStack.shift(); // remove this callback
-            if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
-                ExoButtonDecorator.callbackStack[0]();
-            }
-        }, this.menuToggleTimeout);
-    };
-
     this.setCheckedWrapper = function(callback) {
         var obj = this.btn.findToggle();
+        var $this = this;
+
         if (!obj || !obj.children.length) {
-            Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + this.btn.selector);
-            this.doPressOnOptionsBtn();
-            this.doCallbackIfReady(callback);
-            return;
+            Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + this.btn.selector + " saving for later calls");
+
+            var decorator = ExoButtonDecorator.callbackStack.shift(); // save for later
+            if (!decorator.alreadyCalled) {
+                decorator.alreadyCalled = true;
+                ExoButtonDecorator.backedCallbackStack.push(decorator);
+            } else {
+                Log.d(this.TAG, "Callback already called... don't save for later");
+            }
+        } else {
+            Log.d(this.TAG, 'set checked wrapper: btn found: ' + this.btn.selector);
+
+            callback();
+
+            ExoButtonDecorator.callbackStack.shift(); // remove this callback
         }
 
-        Log.d(this.TAG, 'set checked wrapper: btn found: ' + this.btn.selector);
-        callback();
-        ExoButtonDecorator.callbackStack.shift(); // remove this callback
-        if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
+        if (ExoButtonDecorator.callbackStack.length != 0) { // call previous callback
+            ExoButtonDecorator.callbackStack[0]();
+        } else if (ExoButtonDecorator.backedCallbackStack.length != 0) { // run our backed calls
+            this.doPressOnOptionsBtn();
+
+            Log.d($this.TAG, "Running our backed calls");
+
+            ExoButtonDecorator.callbackStack = ExoButtonDecorator.backedCallbackStack;
+            ExoButtonDecorator.backedCallbackStack = [];
             ExoButtonDecorator.callbackStack[0]();
         }
     };
@@ -75,7 +80,7 @@ function ExoButtonDecorator(btn) {
         var $this = this;
         var realSetChecked = this.btn.setChecked;
         this.btn.setChecked = function(doChecked) {
-            Log.d($this.TAG, "setChecked " + $this.btn.selector + " " + doChecked);
+            Log.d($this.TAG, "Running set checked on: " + $this.btn.selector + " " + doChecked);
             var thisBtn = this;
             var callback = function() {
                 $this.setCheckedWrapper(function() {
@@ -108,3 +113,5 @@ function ExoButtonDecorator(btn) {
 
 // global storage for pending callbacks
 ExoButtonDecorator.callbackStack = [];
+// storage for not initialized buttons
+ExoButtonDecorator.backedCallbackStack = [];
