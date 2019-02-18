@@ -42,6 +42,10 @@
         android:orientation="horizontal"
         android:gravity="end">
 
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+            android:id="@+id/exo_favorites"
+            style="@style/ExoMediaButton2.Favorites"/>
+
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
             android:id="@+id/exo_speed"
             style="@style/ExoMediaButton2.Speed"/>
