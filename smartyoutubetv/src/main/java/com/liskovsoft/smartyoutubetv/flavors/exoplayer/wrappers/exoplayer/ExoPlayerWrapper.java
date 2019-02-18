@@ -163,6 +163,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onPlayerAction(Intent intent) {
         boolean doNotClose =
+                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
 

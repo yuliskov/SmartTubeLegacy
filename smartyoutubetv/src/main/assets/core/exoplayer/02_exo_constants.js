@@ -9,7 +9,7 @@ var PlayerActivity = {
     BUTTON_LIKE: 'button_like',
     BUTTON_DISLIKE: 'button_dislike',
     BUTTON_SUBSCRIBE: 'button_subscribe',
-    // BUTTON_USER_PAGE: 'button_user_page',
+    BUTTON_USER_PAGE: 'button_user_page',
     BUTTON_PREV: 'button_prev',
     BUTTON_NEXT: 'button_next',
     BUTTON_SUGGESTIONS: 'button_suggestions',
@@ -24,7 +24,7 @@ var PlayerActivityMapping = {
     BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
     BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
     BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
-    // BUTTON_USER_PAGE: '.pivot-channel-tile',
+    BUTTON_USER_PAGE: ['.transport-channel-button', '.pivot-channel-tile'],
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
     BUTTON_NEXT: ['.skip-forward-button', '.new-skip-forward-button', '.icon-player-next.button'],

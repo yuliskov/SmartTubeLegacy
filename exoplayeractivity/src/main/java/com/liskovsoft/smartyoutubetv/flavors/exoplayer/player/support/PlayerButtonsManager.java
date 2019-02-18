@@ -178,8 +178,9 @@ public class PlayerButtonsManager {
         Intent resultIntent = new Intent();
         for (Map.Entry<Integer, Boolean> entry : mButtonStates.entrySet()) {
             String realKey = mIdTagMapping.get(entry.getKey());
-            if (realKey == null)
+            if (realKey == null) {
                 continue;
+            }
             resultIntent.putExtra(realKey, entry.getValue());
         }
         resetState();
@@ -189,6 +190,7 @@ public class PlayerButtonsManager {
     private void resetState() {
         mButtonStates.put(R.id.exo_favorites, false);
         mButtonStates.put(R.id.exo_suggestions, false);
+        mButtonStates.put(R.id.exo_user, false);
         mButtonStates.put(R.id.exo_back, false);
         mButtonStates.put(R.id.exo_next2, false);
         mButtonStates.put(R.id.exo_prev, false);

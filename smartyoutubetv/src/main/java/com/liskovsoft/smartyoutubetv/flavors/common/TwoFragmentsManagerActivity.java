@@ -158,6 +158,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "on receive player action: " + action);
 
         boolean doNotPause =
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
                 action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
                 action.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
         setActiveFragment(mBrowserFragment, !doNotPause);
