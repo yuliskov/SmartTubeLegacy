@@ -14,6 +14,9 @@ function BackButton(selector) {
             return;
         }
 
+        // fix input lost after opening user channel page
+        Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER).focus();
+
         this.retryTimes--;
 
         EventUtils.triggerEnter(this.findToggle());
