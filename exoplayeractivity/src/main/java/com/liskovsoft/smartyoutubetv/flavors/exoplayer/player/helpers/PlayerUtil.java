@@ -45,7 +45,7 @@ public final class PlayerUtil extends TrackSelectorUtil {
         return format.height <= (height + HEIGHT_SHIFT) &&
                format.frameRate <= (fps + FPS_SHIFT) &&
                (format.codecs == null || codec == null || format.codecs.contains(codec)) &&
-               (hdr == null || TrackSelectorUtil.isHdrCodec(format.codecs));
+               (hdr != null || !TrackSelectorUtil.isHdrCodec(format.codecs));
 
     }
 
