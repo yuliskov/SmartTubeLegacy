@@ -3,7 +3,7 @@ console.log("Scripts::Running core script exo_button.js");
 function ExoButton(selector) {
     this.TAG = 'ExoButton';
     this.selector = selector;
-    this.decorator = new ExoButtonDecorator(this);
+    this.decorator = ExoButtonDecorator.instance();
 
     /**
      * Return first element that exists (array of selectors case)
@@ -71,7 +71,7 @@ function ExoButton(selector) {
         this.isChecked = doChecked;
     };
 
-    this.decorator.apply();
+    this.decorator.apply(this);
 }
 
 ExoButton.fromSelector = function(selector) {

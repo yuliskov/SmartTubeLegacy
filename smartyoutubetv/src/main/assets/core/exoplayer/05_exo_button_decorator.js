@@ -3,108 +3,127 @@ console.log("Scripts::Running core script exo_button_decorator.js");
 /**
  * Decorator for methods {@link ExoButton.setChecked} and {@link ExoButton.getChecked}<br/>
  * Decorator purpose: initialize the buttons in same order they was checked
- * @param btn button to decorate
  * @constructor
  */
-function ExoButtonDecorator(btn) {
+function ExoButtonDecorator() {
     this.TAG = 'ExoButtonDecorator';
-    this.btn = btn;
     this.menuToggleTimeout = 500; // timeout until Options show on/off
+    this.running = false;
+    this.currentIndex = 0;
+    this.callbackStack = [];
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
         EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
     };
 
-    this.doCallbackIfReady = function(callback) {
+    this.setCheckedWrapper = function(callback, btn, secondAttempt) {
+        var obj = btn.findToggle();
         var $this = this;
-        setTimeout(function() {
-            Log.d($this.TAG, "after toggle options: " + $this.btn.selector + ' ' + $this.btn.findToggle());
+        var objExists = obj && obj.children.length;
 
-            callback();
-            ExoButtonDecorator.callbackStack.shift(); // remove this callback
-            if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
-                ExoButtonDecorator.callbackStack[0]();
+        if (!objExists && secondAttempt) {
+            Log.d(this.TAG, "element not found, exiting " + btn.selector);
+        } else if (!objExists) {
+            Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + btn.selector);
+
+            if (!this.pendingOptions) {
+                $this.doPressOnOptionsBtn();
             }
-        }, this.menuToggleTimeout);
-    };
 
-    this.setCheckedWrapper = function(callback) {
-        var obj = this.btn.findToggle();
-        if (!obj || !obj.children.length) {
-            Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + this.btn.selector);
-            this.doPressOnOptionsBtn();
-            this.doCallbackIfReady(callback);
+            this.pendingOptions = true;
+
+            setTimeout(function() {
+                $this.pendingOptions = false;
+                $this.setCheckedWrapper(callback, btn, true);
+            }, $this.menuToggleTimeout);
+
             return;
+        } else {
+            Log.d(this.TAG, "Element is found!!! Running real set checked on " + btn.selector);
+            callback();
         }
 
-        Log.d(this.TAG, 'set checked wrapper: btn found: ' + this.btn.selector);
-        callback();
-        ExoButtonDecorator.callbackStack.shift(); // remove this callback
-        if (ExoButtonDecorator.callbackStack[0]) { // call previous callback
-            ExoButtonDecorator.callbackStack[0]();
+        this.currentIndex++;
+
+        if (this.callbackStack[this.currentIndex]) { // call previous callback
+            this.callbackStack[this.currentIndex]();
+        } else {
+            Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length);
+            this.running = false;
+            this.currentIndex = 0;
+            this.callbackStack = [];
         }
     };
 
-    this.getCheckedWrapper = function(callback) {
-        var obj = this.btn.findToggle();
+    this.getCheckedWrapper = function(callback, btn) {
+        var obj = btn.findToggle();
         if (!obj || !obj.children.length) {
-            Log.d(this.TAG, 'get checked wrapper: btn not initialized: ' + this.btn.selector);
+            Log.d(this.TAG, 'get checked wrapper: btn not initialized: ' + btn.selector);
             this.doPressOnOptionsBtn();
         }
         return callback();
     };
 
     this.apply = function(btn) {
-        if (btn) {
-            this.btn = btn;
-        }
-
-        if (!this.btn.selector) {
-            Log.d(this.TAG, "Button selector not found: " + this.btn.constructor.name + " Exiting...");
+        if (!btn) {
+            Log.d(this.TAG, "Button is null");
             return;
         }
 
-        Log.d(this.TAG, "Applying decorations to: " + this.btn.selector);
+        if (!btn.selector) {
+            Log.d(this.TAG, "Button selector not found: " + btn.constructor.name + " Exiting...");
+            return;
+        }
 
-        this.applySetChecked();
-        this.applyGetChecked();
+        Log.d(this.TAG, "Applying decorations to: " + btn.selector);
+
+        this.applySetChecked(btn);
+        this.applyGetChecked(btn);
     };
 
-    this.applySetChecked = function() {
+    this.applySetChecked = function(btn) {
         var $this = this;
-        var realSetChecked = this.btn.setChecked;
-        this.btn.setChecked = function(doChecked) {
-            Log.d($this.TAG, "setChecked " + $this.btn.selector + " " + doChecked);
+        var realSetChecked = btn.setChecked;
+        btn.setChecked = function(doChecked) {
             var thisBtn = this;
-            var callback = function() {
+            var wrapper = function() {
                 $this.setCheckedWrapper(function() {
                     realSetChecked.call(thisBtn, doChecked);
-                });
+                }, btn);
             };
-            if (ExoButtonDecorator.callbackStack.length == 0) {
-                ExoButtonDecorator.callbackStack.push(callback);
-                callback();
-            } else {
-                // simply push (call it later)
-                ExoButtonDecorator.callbackStack.push(callback);
+
+            // simply push (call it later)
+            Log.d($this.TAG, "Adding set checked to the stack: " + btn.selector);
+            $this.callbackStack.push(wrapper);
+
+            if (!$this.running) {
+                Log.d($this.TAG, "Starting set checked chaining: " + btn.selector + " " + doChecked);
+                $this.running = true;
+                wrapper();
             }
         };
     };
 
-    this.applyGetChecked = function() {
+    this.applyGetChecked = function(btn) {
         var $this = this;
 
         // can't use stack! we have to return immediately! no delays allowed!
-        var realGetChecked = this.btn.getChecked;
-        this.btn.getChecked = function() {
+        var realGetChecked = btn.getChecked;
+        btn.getChecked = function() {
             var thisBtn = this;
             return $this.getCheckedWrapper(function() {
                 return realGetChecked.call(thisBtn);
-            });
+            }, btn);
         };
     };
 }
 
 // global storage for pending callbacks
-ExoButtonDecorator.callbackStack = [];
+ExoButtonDecorator.instance = function() {
+    if (!this.obj) {
+        this.obj = new ExoButtonDecorator();
+    }
+
+    return this.obj;
+};
