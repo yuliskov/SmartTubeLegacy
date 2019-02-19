@@ -32,6 +32,7 @@ public final class SmartPreferences {
     public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static final String AUTHORIZATION_HEADER = "authorization_header";
     private static final String USE_EXTERNAL_PLAYER = "use_external_player";
+    private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -236,5 +237,15 @@ public final class SmartPreferences {
 
     public boolean getUseExternalPlayer() {
         return mPrefs.getBoolean(USE_EXTERNAL_PLAYER, false);
+    }
+
+    public void setFixAspectRatio(boolean isChecked) {
+        mPrefs.edit()
+                .putBoolean(FIX_ASPECT_RATIO, isChecked)
+                .apply();
+    }
+
+    public boolean getFixAspectRatio() {
+        return mPrefs.getBoolean(FIX_ASPECT_RATIO, false);
     }
 }

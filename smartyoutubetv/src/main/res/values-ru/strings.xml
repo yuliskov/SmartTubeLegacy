@@ -64,4 +64,5 @@
     <string name="tweak_open_watch_later">Загружаться в раздел Просмотреть позже</string>
     <string name="tweak_open_externally">Использовать внешний плеер</string>
     <string name="message_install_vlc_player">Для проигрывания нужен VLC плеер</string>
+    <string name="tweak_fix_aspect">Исправление соотношения сторон и зума</string>
 </resources>
