@@ -40,10 +40,12 @@ public final class PlayerUtil extends TrackSelectorUtil {
         int height = split.length >= 1 ? Integer.parseInt(split[0]) : 0;
         int fps = split.length >= 2 ? Integer.parseInt(split[1]) : 0;
         String codec = split.length >= 3 ? split[2] : null;
+        String hdr = split.length >= 4 ? split[3] : null;
 
         return format.height <= (height + HEIGHT_SHIFT) &&
                format.frameRate <= (fps + FPS_SHIFT) &&
-               (format.codecs == null || codec == null || format.codecs.contains(codec));
+               (format.codecs == null || codec == null || format.codecs.contains(codec)) &&
+               (hdr == null || TrackSelectorUtil.isHdrCodec(format.codecs));
 
     }
 

@@ -19,8 +19,10 @@ public class RestrictFormatDialogSource implements SingleDialogSource {
 
         mItems = new ArrayList<>();
         mItems.add(new RestrictFormatDialogItem(mContext.getString(R.string.no_restrictions), ExoPreferences.FORMAT_ANY, mPrefs));
+        mItems.add(new RestrictFormatDialogItem("4K     60fps    vp9    hdr", "2160|60|vp9|hdr", mPrefs));
         mItems.add(new RestrictFormatDialogItem("4K     60fps    vp9", "2160|60|vp9", mPrefs));
         mItems.add(new RestrictFormatDialogItem("4K     30fps    vp9", "2160|30|vp9", mPrefs));
+        mItems.add(new RestrictFormatDialogItem("2K     60fps    vp9    hdr", "1440|60|vp9|hdr", mPrefs));
         mItems.add(new RestrictFormatDialogItem("2K     60fps    vp9", "1440|60|vp9", mPrefs));
         mItems.add(new RestrictFormatDialogItem("2K     30fps    vp9", "1440|30|vp9", mPrefs));
         mItems.add(new RestrictFormatDialogItem("FHD    60fps    avc", "1080|60|avc", mPrefs));
