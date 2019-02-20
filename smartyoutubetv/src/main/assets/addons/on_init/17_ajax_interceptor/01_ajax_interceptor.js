@@ -8,7 +8,7 @@ console.log("Scripts::Running script ajax_interceptor.js");
 function AuthInterceptor() {
     this.TAG = 'AuthInterceptor';
     this.AUTHORIZATION_HEADER = 'Authorization';
-    this.shouldIntercept = true;
+    this.shouldIntercept = DeviceUtils.isExo();
 
     this.intercept = function(name, value) {
         if (name == this.AUTHORIZATION_HEADER) {
@@ -80,6 +80,4 @@ function AjaxInterceptorAddon() {
     };
 }
 
-if (DeviceUtils.isExo()) {
-    new AjaxInterceptorAddon().run();
-}
+new AjaxInterceptorAddon().run();
