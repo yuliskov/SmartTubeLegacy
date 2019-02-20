@@ -41,7 +41,7 @@ function UserAgentInterceptor() {
 
 function AjaxInterceptorAddon() {
     this.TAG = 'AjaxInterceptorAddon';
-    this.interceptors = [new AuthInterceptor(), new UserAgentInterceptor()];
+    this.interceptors = [new AuthInterceptor()];
 
     this.run = function() {
         this.overrideSetHeaders();
@@ -60,6 +60,8 @@ function AjaxInterceptorAddon() {
         window.XMLHttpRequest.prototype.setRequestHeader = function() {
             if (arguments.length == 2) {
                 var shouldIntercept = false;
+
+                Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
 
                 for (var i = 0; i < $this.interceptors.length; i++) {
                     var interceptor = $this.interceptors[i];
