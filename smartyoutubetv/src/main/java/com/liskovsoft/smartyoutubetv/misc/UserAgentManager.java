@@ -30,7 +30,7 @@ public class UserAgentManager {
     }
 
     public String getUA() {
-        return LG_SMART_TV;
+        return PHILIPS_SMART_TV;
     }
 
     public Map<String, String> getUAHeaders() {
