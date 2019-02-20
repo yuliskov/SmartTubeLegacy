@@ -54,30 +54,23 @@ class FileLogger extends MyLogger {
             BufferedWriter buf = getWriter();
             buf.append(text);
             buf.newLine();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
+            MessageHelpers.showMessage(mContext, "Can't initialize log file " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private BufferedWriter getWriter() {
+    private BufferedWriter getWriter() throws IOException {
         if (mWriter == null) {
             File logFile = getLogFile(mContext);
 
             if (!logFile.exists()) {
-                try {
-                    logFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                logFile.createNewFile();
             }
 
-            try {
-                //BufferedWriter for performance, true to set append to file flag
-                mWriter = new BufferedWriter(new FileWriter(logFile, false));
-                writeLogHeader();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //BufferedWriter for performance, true to set append to file flag
+            mWriter = new BufferedWriter(new FileWriter(logFile, false));
+            writeLogHeader();
 
             MessageHelpers.showLongMessage(mContext, mContext.getString(R.string.log_to_file_started, getLogPath(mContext)));
         }
