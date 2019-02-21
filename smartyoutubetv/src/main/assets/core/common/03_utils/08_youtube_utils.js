@@ -152,8 +152,8 @@ var YouTubeUtils = {
     },
 
     isSearchOpened: function() {
-        var isOpened = location.hash.indexOf(this.SEARCH_SIGN) != -1;
-        Log.d(this.TAG, "Search is opened: " + isOpened + ", hash: " + location.hash);
+        var isOpened = this.isPageOpened(YouTubeSelectors.SEARCH_PAGE);
+        Log.d(this.TAG, "Search is opened?: " + isOpened);
         return isOpened;
     },
 
@@ -186,5 +186,9 @@ var YouTubeUtils = {
 
     getPlayer: function() {
         return Utils.$('video');
+    },
+
+    isPageOpened: function(elementOrSelector) {
+        return !Utils.hasClass(Utils.$(elementOrSelector), YouTubeClasses.HIDDEN);
     }
 };

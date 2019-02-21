@@ -38,14 +38,21 @@ var VoiceSearch = {
         Log.d(this.TAG, "going to the search page");
 
         this.navigateToTheSearchPage();
+        this.checkSearchOpened();
         this.typeSearchText(searchText);
         this.commitChanges();
         this.selectResultsRow();
         this.unfocusMicButton();
     },
 
+    checkSearchOpened: function() {
+        if (!YouTubeUtils.isSearchOpened()) {
+            EventUtils.triggerEnter(YouTubeSelectors.SEARCH_SIDE_BUTTON);
+        }
+    },
+
     navigateToTheSearchPage: function() {
-        if (location.hash.indexOf(this.SEARCH_PAGE_TAG) != -1) {
+        if (YouTubeUtils.isSearchOpened()) {
             this.moveSelectionFromResultRow();
             return;
         }
