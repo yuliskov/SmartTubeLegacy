@@ -78,6 +78,7 @@ function SuggestionsFakeButton(selector) {
     this.selector = selector;
     this.retryTimes = 10;
     this.callDelayMS = 500;
+    this.stateless = true;
 
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);

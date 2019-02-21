@@ -86,6 +86,11 @@ function ExoButtonDecorator() {
         var $this = this;
         var realSetChecked = btn.setChecked;
         btn.setChecked = function(doChecked) {
+            if (this.stateless && !doChecked) {
+                Log.d($this.TAG, "Excluding from processing: " + this.selector);
+                return;
+            }
+
             var thisBtn = this;
             var wrapper = function() {
                 $this.setCheckedWrapper(function() {

@@ -9,6 +9,7 @@ function ChannelButton(selector) {
     this.TAG = "ChannelButton";
     this.selector = selector;
     this.CHANNEL_CHECK_TIMEOUT_MS = 5000;
+    this.stateless = true;
 
     this.setChecked = function(doChecked) {
         var $this = this;

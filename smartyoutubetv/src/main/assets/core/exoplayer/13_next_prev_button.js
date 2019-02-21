@@ -6,6 +6,7 @@ console.log("Scripts::Running core script next_prev_button.js");
  */
 function NextPrevButton(selector) {
     this.selector = selector;
+    this.stateless = true;
 
     this.getChecked = function() {
         console.log("NextPrevButton: getChecked " + this.selector);

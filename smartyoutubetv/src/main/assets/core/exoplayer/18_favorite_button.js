@@ -8,6 +8,7 @@ console.log("Scripts::Running core script favorite_button.js");
 function FavoriteButton(selector) {
     this.TAG = "FavoriteButton";
     this.selector = selector;
+    this.stateless = true;
 
     this.decorator.apply(this);
 }

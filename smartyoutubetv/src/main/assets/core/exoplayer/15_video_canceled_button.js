@@ -6,6 +6,7 @@ console.log("Scripts::Running core script video_canceled_button.js");
  */
 function VideoCanceledButton(selector) {
     this.selector = selector;
+    this.stateless = true;
 
     this.getChecked = function() {
         return YouTubeUtils.isPlayerClosed();

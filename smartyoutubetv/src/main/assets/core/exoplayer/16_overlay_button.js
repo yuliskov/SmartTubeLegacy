@@ -8,6 +8,7 @@ console.log("Scripts::Running core script overlay_button.js");
 function OverlayButton(selector) {
     this.TAG = "OverlayButton";
     this.selector = selector;
+    this.stateless = true;
 
     this.getChecked = function() {
         Log.d(this.TAG, "getChecked " + this.selector);
