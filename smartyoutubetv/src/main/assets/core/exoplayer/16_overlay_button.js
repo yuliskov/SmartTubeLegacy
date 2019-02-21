@@ -16,20 +16,24 @@ function OverlayButton(selector) {
     };
 
     this.sendClose = function() {
-        // immediate close not working here, so take delay
-        setTimeout(function() {
-            ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
-        }, 500);
+        ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
     };
 
-    this.closePlayerControls = function() {
+    this.closePlayerControlsAndSend = function() {
+        var $this = this;
+
         if (YouTubeUtils.isPlayerControlsClosed()) {
+            this.sendClose();
             return;
         }
 
         Log.d(this.TAG, "closing player controls");
 
         EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+
+        setTimeout(function() {
+            $this.closePlayerControlsAndSend();
+        }, 500);
     };
 
     this.setChecked = function(doChecked) {
@@ -51,8 +55,7 @@ function OverlayButton(selector) {
             EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
                 Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
 
-                $this.closePlayerControls();
-                $this.sendClose();
+                $this.closePlayerControlsAndSend();
             });
         }
     };
