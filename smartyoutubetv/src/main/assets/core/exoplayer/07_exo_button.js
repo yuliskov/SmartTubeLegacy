@@ -85,8 +85,9 @@ ExoButton.fromSelector = function(selector) {
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
             case PlayerActivityMapping.BUTTON_FAVORITES:
+                return new FavoriteButton(selector);
             case PlayerActivityMapping.BUTTON_USER_PAGE:
-                return new OverlayButton(selector);
+                return new ChannelButton(selector);
             case PlayerActivityMapping.BUTTON_BACK:
                 return new BackButton(selector);
             case PlayerActivityMapping.BUTTON_PREV:
