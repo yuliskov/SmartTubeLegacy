@@ -143,6 +143,10 @@ var YouTubeUtils = {
         return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
     },
 
+    isPlayerControlsClosed: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.WATCH_IDLE_CLASS);
+    },
+
     isPlayerOpened: function() {
         var isOpened =
             location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
