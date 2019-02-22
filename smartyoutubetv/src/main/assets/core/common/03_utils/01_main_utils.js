@@ -332,6 +332,10 @@ var Utils = {
         }
 
         return elem.innerHTML;
+    },
+
+    isEven: function(n) {
+        return n % 2 == 0;
     }
 };
 
