@@ -55,7 +55,9 @@ function OverlayButton(selector) {
             EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
                 Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
 
-                $this.closePlayerControlsAndSend();
+                setTimeout(function() {
+                    $this.closePlayerControlsAndSend();
+                }, 500);
             });
         }
     };
