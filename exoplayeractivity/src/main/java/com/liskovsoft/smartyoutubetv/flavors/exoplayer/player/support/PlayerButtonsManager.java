@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
@@ -175,7 +176,29 @@ public class PlayerButtonsManager {
     }
 
     public Intent createResultIntent() {
+        Intent resultIntent;
+
+        resultIntent = createStateIntent();
+
+        resetState();
+
+        return resultIntent;
+    }
+
+    private Intent createStateIntent() {
         Intent resultIntent = new Intent();
+
+        // this buttons could be clicked only in the middle of the video
+        // so return one of them
+        for (int id : new int[]{R.id.exo_user, R.id.exo_suggestions, R.id.exo_favorites}) {
+            Boolean checked = mButtonStates.get(id);
+            mButtonStates.remove(id);
+            if (checked != null && checked) { // one btn could be checked at a time
+                resultIntent.putExtra(mIdTagMapping.get(id), true);
+                return resultIntent;
+            }
+        }
+
         for (Map.Entry<Integer, Boolean> entry : mButtonStates.entrySet()) {
             String realKey = mIdTagMapping.get(entry.getKey());
             if (realKey == null) {
@@ -183,7 +206,7 @@ public class PlayerButtonsManager {
             }
             resultIntent.putExtra(realKey, entry.getValue());
         }
-        resetState();
+
         return resultIntent;
     }
 
