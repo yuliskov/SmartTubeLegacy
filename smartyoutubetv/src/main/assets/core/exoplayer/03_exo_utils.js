@@ -15,6 +15,7 @@ var ExoUtils = {
     TAG: 'ExoUtils',
     ACTION_CLOSE_SUGGESTIONS: "action_close_suggestions",
     ACTION_PLAYBACK_STARTED: "action_playback_started",
+    ACTION_DISABLE_KEY_EVENTS: "action_disable_key_events",
 
     // events order:
     // emptied

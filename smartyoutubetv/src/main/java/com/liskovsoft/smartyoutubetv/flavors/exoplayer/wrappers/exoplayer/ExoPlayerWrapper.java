@@ -38,6 +38,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private Intent mCachedIntent;
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
+    private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -48,8 +49,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         public void onGenericStringResult(GenericStringResultEvent event) {
             String action = event.getResult();
 
-            if (action.equals(ACTION_CLOSE_SUGGESTIONS)) {
-                returnToPlayer();
+            switch (action) {
+                case ACTION_CLOSE_SUGGESTIONS:
+                    returnToPlayer();
+                case ACTION_DISABLE_KEY_EVENTS:
+                    mFragmentsManager.disableKeyEvents();
             }
         }
 

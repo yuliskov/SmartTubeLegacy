@@ -8,4 +8,5 @@ public interface FragmentManager {
     void onAppLoaded();
     LoadingManager getLoadingManager();
     void startActivityForResult(Intent intent, ActivityResult callback);
+    void disableKeyEvents();
 }

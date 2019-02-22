@@ -34,6 +34,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private MainApkUpdater mApkUpdater;
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
+    private boolean mDisableKeyEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +72,13 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
-        if (fragment == null)
+        if (fragment == null) {
             throw new IllegalStateException("Active fragment can't be null");
+        }
 
-        if (mActiveFragment == fragment)
+        if (mActiveFragment == fragment) {
             return;
+        }
 
         if (pausePrevious) {
             pauseFragment(mActiveFragment);
@@ -86,13 +89,15 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         mActiveFragment = fragment;
+        mDisableKeyEvents = false;
 
         resumeFragment(mActiveFragment);
     }
 
     protected void pausePrevious() {
-        if (mPrevFragment == null)
+        if (mPrevFragment == null) {
             return;
+        }
 
         pauseFragment(mPrevFragment);
         mPrevFragment = null;
@@ -166,6 +171,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.d(TAG, "Dispatching event: " + event);
+
+        if (mDisableKeyEvents) { // 'll be enabled again after fragment switching
+            return true;
+        }
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
             SmartUtils.returnToLaunchersDialog(this);
@@ -271,5 +280,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         int requestCode = mRequestCode++;
         mResultMap.put(requestCode, callback);
         startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void disableKeyEvents() {
+        mDisableKeyEvents = true;
     }
 }
