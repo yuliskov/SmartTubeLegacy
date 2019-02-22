@@ -35,10 +35,12 @@ var PlayerController = {
                 switch (position) {
                     case this.POSITION_END:
                         Log.d(this.TAG, "Forcing end of the video");
-                        // HACK: use floor because currentTime sometimes can't be set
+                        // switch between different strategies
                         if (Utils.isEven(this.numTries)) {
+                            // use floor because currentTime sometimes can't be set
                             player.currentTime = Math.floor(player.duration);
                         } else {
+                            // other cases
                             player.currentTime = player.duration;
                         }
                         break;
