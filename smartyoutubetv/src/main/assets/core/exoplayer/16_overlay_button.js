@@ -9,6 +9,7 @@ function OverlayButton(selector) {
     this.TAG = "OverlayButton";
     this.selector = selector;
     this.stateless = true;
+    this.recentlyClosed = false;
 
     this.getChecked = function() {
         Log.d(this.TAG, "getChecked " + this.selector);
@@ -54,6 +55,8 @@ function OverlayButton(selector) {
 
             EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
                 Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
+
+                $this.recentlyClosed = true;
 
                 ExoUtils.sendAction(ExoUtils.ACTION_DISABLE_KEY_EVENTS);
 
