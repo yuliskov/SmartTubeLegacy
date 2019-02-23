@@ -11,6 +11,12 @@ function TrackEndFakeButton(selector) {
         btn.setChecked(true);
     };
 
+    this.pressBackButton = function() {
+        Log.d(this.TAG, "Something is wrong, do workaround: switching back");
+        var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_BACK);
+        btn.setChecked(true);
+    };
+
     this.getChecked = function() {
         return null; // not exists
     };
@@ -22,7 +28,7 @@ function TrackEndFakeButton(selector) {
 
             var $this = this;
             PlayerController.jumpToEnd(function() {
-                $this.pressNextButton();
+                $this.pressBackButton();
             });
         }
     };
