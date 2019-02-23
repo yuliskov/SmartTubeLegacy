@@ -1,6 +1,7 @@
 console.log("Scripts::Running core script exo_constants.js");
 
 // java constants
+// NOTE: order is important
 var PlayerActivity = {
     VIDEO_CANCELED: 'video_canceled',
     VIDEO_VIEW_COUNT: 'video_views',
@@ -8,12 +9,12 @@ var PlayerActivity = {
     VIDEO_DATE: 'video_date',
     BUTTON_LIKE: 'button_like',
     BUTTON_DISLIKE: 'button_dislike',
+    BUTTON_FAVORITES: 'button_favorites',
     BUTTON_SUBSCRIBE: 'button_subscribe',
     BUTTON_USER_PAGE: 'button_user_page',
     BUTTON_PREV: 'button_prev',
     BUTTON_NEXT: 'button_next',
     BUTTON_SUGGESTIONS: 'button_suggestions',
-    BUTTON_FAVORITES: 'button_favorites',
     TRACK_ENDED: 'track_ended',
     BUTTON_BACK: 'button_back' // should be the last
 };
