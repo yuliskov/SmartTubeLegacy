@@ -53,7 +53,7 @@ buildscript {
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.5' // https://bintray.com/google/exoplayer/exoplayer
         exoplayerGitHubVersion = 'com.github.google:ExoPlayer:c38cd1cca9e9deb50724d82fcbc3ac02c49505a9' // 'exoplayer' is a needed module
         exoplayerMyGitHubVersion = 'com.github.yuliskov.ExoPlayer:exoplayer:r2.9.5-upd5' // 2.9.5 NOTE: 'exoplayer' is a needed module
-        voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.+'
+        voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.0.0-beta02' // https://github.com/algolia/voice-overlay-android
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
         openPgpVersion = 'org.sufficientlysecure:openpgp-api:9.0'
@@ -66,15 +66,15 @@ allprojects {
         jcenter()
         google()
 
-        // crosswalk
-        maven {
-            url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2'
-        }
-
         // com.android.support libs, constraint lib
         maven {
             url 'https://maven.google.com/'
             name 'Google'
+        }
+
+        // crosswalk
+        maven {
+            url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2'
         }
 
         // add lib from github (e.g. exoplayer-amazon-port)
