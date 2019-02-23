@@ -87,7 +87,7 @@ function ExoButtonDecorator() {
         var realSetChecked = btn.setChecked;
         btn.setChecked = function(doChecked) {
             if (this.stateless && !doChecked) {
-                Log.d($this.TAG, "Excluding from processing: " + this.selector);
+                Log.d($this.TAG, "Excluding from set checked processing: " + this.selector);
                 return;
             }
 
@@ -116,6 +116,11 @@ function ExoButtonDecorator() {
         // can't use stack! we have to return immediately! no delays allowed!
         var realGetChecked = btn.getChecked;
         btn.getChecked = function() {
+            if (this.stateless) {
+                Log.d($this.TAG, "Excluding from get checked processing: " + this.selector);
+                return false;
+            }
+
             var thisBtn = this;
             return $this.getCheckedWrapper(function() {
                 return realGetChecked.call(thisBtn);
