@@ -34,6 +34,7 @@ public class PlayerStateManagerBase {
 
     private Set<MyFormat> findProperAudio(TrackGroupArray groupArray) {
         String trackCodecs = mPrefs.getSelectedAudioTrackCodecs();
+        int bitrate = mPrefs.getSelectedAudioTrackBitrate();
 
         Set<MyFormat> result = new HashSet<>();
 
@@ -44,6 +45,10 @@ public class PlayerStateManagerBase {
                 Format format = trackGroup.getFormat(i);
 
                 MyFormat myFormat = new MyFormat(format, new Pair<>(j, i));
+
+                if (bitrate != 0 && myFormat.bitrate > bitrate + 10_000) {
+                    continue;
+                }
 
                 if (codecEquals(myFormat.codecs, trackCodecs)) {
                     result.add(myFormat);
@@ -222,8 +227,10 @@ public class PlayerStateManagerBase {
 
     protected void persistAudioParams(MyFormat format) {
         String codec = format == null ? null : format.codecs;
+        int bitrate = format == null ? 0 : format.bitrate;
 
         mPrefs.setSelectedAudioTrackCodecs(codec);
+        mPrefs.setSelectedAudioTrackBitrate(bitrate);
     }
 
     protected void persistVideoParams(MyFormat format) {
