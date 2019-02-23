@@ -17,9 +17,9 @@ function ChannelButton(selector) {
 
         // check that app switched to the channels page
         setTimeout(function() {
-            if (!YouTubeUtils.isChannelOpened() && !$this.recentlyClosed) {
+            if (!YouTubeUtils.isChannelOpened()) {
                 Log.d($this.TAG, "Channel still not opened... return to the player...");
-                ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
+                $this.cancelEvents();
             }
         }, this.CHANNEL_CHECK_TIMEOUT_MS);
     };

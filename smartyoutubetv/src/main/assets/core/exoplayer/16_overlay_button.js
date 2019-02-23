@@ -53,7 +53,7 @@ function OverlayButton(selector) {
 
             EventUtils.triggerEnter(el);
 
-            EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, function() {
+            var handler = function() {
                 Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
 
                 $this.recentlyClosed = true;
@@ -63,7 +63,18 @@ function OverlayButton(selector) {
                 setTimeout(function() {
                     $this.closePlayerControlsAndSend();
                 }, 500);
-            });
+            };
+
+            this.handler = handler;
+
+            EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, handler);
+        }
+    };
+
+    this.cancelEvents = function() {
+        if (this.handler && !this.recentlyClosed) {
+            EventUtils.removeListener(this.selector, YouTubeEvents.COMPONENT_FOCUS_EVENT, this.handler);
+            this.sendClose();
         }
     };
 
