@@ -28,7 +28,7 @@ function TrackEndFakeButton(selector) {
 
             var $this = this;
             PlayerController.jumpToEnd(function() {
-                $this.pressBackButton();
+                $this.pressNextButton();
             });
         }
     };

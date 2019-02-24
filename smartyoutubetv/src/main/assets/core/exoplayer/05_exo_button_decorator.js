@@ -8,51 +8,61 @@ console.log("Scripts::Running core script exo_button_decorator.js");
 function ExoButtonDecorator() {
     this.TAG = 'ExoButtonDecorator';
     this.menuToggleTimeout = 500; // timeout until Options show on/off
-    this.running = false;
-    this.currentIndex = 0;
     this.callbackStack = [];
+    this.callbackBackupStack = [];
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
         EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
     };
 
-    this.setCheckedWrapper = function(callback, btn, secondAttempt) {
+    this.setCheckedWrapper = function(callback, btn) {
         var obj = btn.findToggle();
         var $this = this;
         var objExists = obj && obj.children.length;
 
-        if (!objExists && secondAttempt) {
-            Log.d(this.TAG, "element not found, exiting " + btn.selector);
+        if (this.pendingOptions) { // wait till timeout riches
+            return;
+        }
+
+        if (!objExists && this.backupCopied) {
+            // prevent loop
+            this.callbackStack.shift(); // at least one item should be there
         } else if (!objExists) {
             Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + btn.selector);
 
-            if (!this.pendingOptions) {
-                $this.doPressOnOptionsBtn();
+            if (this.callbackStack.length != 0) { // save this callback for later usage
+                this.callbackBackupStack.push(this.callbackStack.shift());
             }
 
-            this.pendingOptions = true;
+            if (this.callbackStack.length == 0 && this.callbackBackupStack.length != 0) {
+                this.callbackStack = this.callbackBackupStack;
+                this.callbackBackupStack = [];
+                this.backupCopied = true;
 
-            setTimeout(function() {
-                $this.pendingOptions = false;
-                $this.setCheckedWrapper(callback, btn, true);
-            }, $this.menuToggleTimeout);
+                this.pendingOptions = true;
 
-            return;
+                this.doPressOnOptionsBtn();
+
+                setTimeout(function() {
+                    $this.pendingOptions = false;
+                    $this.callbackStack[0]();
+                }, $this.menuToggleTimeout);
+
+                return;
+            }
         } else {
             Log.d(this.TAG, "Element is found!!! Running real set checked on " + btn.selector);
             callback();
+            this.callbackStack.shift(); // at least one item should be there
         }
 
-        this.currentIndex++;
-
-        if (this.callbackStack[this.currentIndex]) { // call previous callback
-            this.callbackStack[this.currentIndex]();
+        if (this.callbackStack.length != 0) {
+            this.callbackStack[0]();
         } else {
-            Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length);
+            Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length + " " + this.callbackBackupStack.length);
             this.running = false;
-            this.currentIndex = 0;
-            this.callbackStack = [];
+            this.backupCopied = false;
         }
     };
 
