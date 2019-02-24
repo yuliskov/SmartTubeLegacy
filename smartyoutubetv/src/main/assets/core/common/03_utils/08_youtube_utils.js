@@ -167,6 +167,10 @@ var YouTubeUtils = {
         return isOpened;
     },
 
+    isOverlayOpened: function() {
+        return !Utils.hasClass(Utils.$(YouTubeSelectors.OVERLAY_PANEL_CONTAINER), YouTubeClasses.HIDDEN);
+    },
+
     isDisabled: function(elem) {
         var hasClass = Utils.hasClass(elem, YouTubeClasses.ELEMENT_DISABLED);
         console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);

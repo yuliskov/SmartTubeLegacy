@@ -22,6 +22,7 @@ function ExoButtonDecorator() {
         var objExists = obj && obj.children.length;
 
         if (this.pendingOptions) { // wait till timeout riches
+            Log.d(this.TAG, "Found pending set checked queries... Exiting... " + btn.selector);
             return;
         }
 
@@ -53,11 +54,16 @@ function ExoButtonDecorator() {
             }
         } else {
             Log.d(this.TAG, "Element is found!!! Running real set checked on " + btn.selector);
-            callback();
             this.callbackStack.shift(); // at least one item should be there
+            callback();
         }
 
         if (this.callbackStack.length != 0) {
+            this.callbackStack[0]();
+        } else if (this.callbackBackupStack.length != 0) {
+            this.callbackStack = this.callbackBackupStack;
+            this.callbackBackupStack = [];
+            this.backupCopied = true;
             this.callbackStack[0]();
         } else {
             Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length + " " + this.callbackBackupStack.length);
