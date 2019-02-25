@@ -126,6 +126,32 @@ var Utils = {
         });
     },
 
+    overridePropOnce: function(obj, propName, value) { // pure function
+        //obj[propName] = value;
+        obj[propName + 'Real'] = value;
+        Object.defineProperty(obj, propName, {
+            get: function() {
+                if (obj.doneOnce) { // give a chance to decide whether to use original value
+                    return obj[propName + 'Real'];
+                }
+
+                obj.doneOnce = true;
+
+                return value;
+            },
+            set: function(val){
+                if (obj.doneOnce) { // give a chance to decide whether to use original value
+                    obj[propName + 'Real'] = val;
+                    return;
+                }
+
+                obj.doneOnce = true;
+            },
+            configurable: true,
+            enumerable: true
+        });
+    },
+
     /**
      * Override prop limited number of times.
      * After limit is reached prop will be reverted to the original state.

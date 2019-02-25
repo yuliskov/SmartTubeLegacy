@@ -23,6 +23,26 @@ var PlayerController = {
         this.setPosition(this.POSITION_ONE_SEC, onFail);
     },
 
+    setPosition2: function(position, onFail) {
+        var $this = this;
+
+        var player = YouTubeUtils.getPlayer();
+
+        switch (position) {
+            case this.POSITION_END:
+                Log.d(this.TAG, "Forcing end of the video");
+
+                Utils.overridePropOnce(player, 'duration', 999999);
+                Utils.overridePropOnce(player, 'currentTime', 999999);
+
+                break;
+            case this.POSITION_ONE_SEC:
+                Log.d(this.TAG, "Advance position by one second");
+                player.currentTime = this.advanceTimeSec;
+                break;
+        }
+    },
+
     setPosition: function(position, onFail) {
         var $this = this;
 
