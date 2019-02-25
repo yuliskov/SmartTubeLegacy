@@ -11,14 +11,15 @@ var PlayerController = {
     checkTimeoutMS: 500,
     numTries: 0,
     advanceTimeSec: 20,
+    defaultNumTries: 10,
 
     jumpToEnd: function(onFail) {
-        this.numTries = 10;
+        this.numTries = this.defaultNumTries;
         this.setPosition(this.POSITION_END, onFail);
     },
 
     advance: function(onFail) {
-        this.numTries = 10;
+        this.numTries = this.defaultNumTries;
         this.setPosition(this.POSITION_ONE_SEC, onFail);
     },
 
