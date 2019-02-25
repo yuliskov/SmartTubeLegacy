@@ -24,6 +24,6 @@ function DisableFocusAddon() {
     };
 }
 
-if (DeviceUtils.isExo()) {
-    new DisableFocusAddon().run();
-}
+// if (DeviceUtils.isExo()) {
+//     new DisableFocusAddon().run();
+// }
