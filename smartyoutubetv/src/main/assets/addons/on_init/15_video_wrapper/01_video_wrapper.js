@@ -27,18 +27,28 @@ function VideoWrapperAddon() {
                 video.addEventListenerReal = video.addEventListener;
 
                 video.addEventListener = function(type, listener, options) {
+                    Log.d($this.TAG, "Add event listener: " + type + " " + listener);
+
                     if (!this.listeners) {
                         this.listeners = {};
                     }
 
-                    Log.d($this.TAG, "Storing " + type + " listener for future use...");
+                    //Log.d($this.TAG, "Storing " + type + " listener for future use...");
                     this.listeners[type] = listener;
 
-                    if (type == 'timeupdate' || type == 'ended' || type == 'abort') {
+                    if (type == 'timeupdate' || type == 'ended') {
                         return;
                     }
 
                     this.addEventListenerReal(type, listener, options);
+                };
+
+                video.dispatchEventReal = video.dispatchEvent;
+
+                video.dispatchEvent = function(event) {
+                    Log.d($this.TAG, "Dispatching event: " + event);
+
+                    this.dispatchEventReal(event);
                 };
 
                 return video;
