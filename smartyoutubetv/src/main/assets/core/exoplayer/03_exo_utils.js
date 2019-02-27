@@ -51,7 +51,7 @@ var ExoUtils = {
 
         // once player is created it will be reused by other videos
         // 'loadeddata' is first event when video can be muted
-        player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
+        //player.addEventListener(DefaultEvents.PLAYER_DATA_LOADED, onLoad, false);
         player.addEventListener(DefaultEvents.PLAYER_PLAYING, onPlaying, false);
 
         Utils.overrideProp(player, 'volume', 0);

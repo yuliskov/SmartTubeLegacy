@@ -43,12 +43,17 @@ var PlayerController = {
         }
     },
 
+    getPlayerSrc: function() {
+        return location.hash;
+    },
+
     setPosition: function(position, onFail) {
         var $this = this;
 
         var player = YouTubeUtils.getPlayer();
 
-        var url = player.src;
+        var url = this.getPlayerSrc();
+
         Log.d(this.TAG, "Updating position of the video, url: " + url);
 
         if (player) {
@@ -90,7 +95,7 @@ var PlayerController = {
             var player = YouTubeUtils.getPlayer();
 
             if (player) {
-                Log.d($this.TAG, "Checking player src, position and duration: " + player.src + " " + player.currentTime + " " + player.duration);
+                Log.d($this.TAG, "Checking player src, position and duration: " + player.src + ' ' + player.currentTime + ' ' + player.duration + ' ' + checkUrl);
 
                 var hasNaN = isNaN(player.currentTime) || isNaN(player.duration);
 
@@ -106,7 +111,7 @@ var PlayerController = {
                 }
 
                 var isStalled = hasNaN || needSeek;
-                var onSameVideo = player.src == checkUrl;
+                var onSameVideo = $this.getPlayerSrc() == checkUrl;
 
                 if (isStalled && onSameVideo) {
                     Log.d($this.TAG, "Retrying to unfreeze the video...");
