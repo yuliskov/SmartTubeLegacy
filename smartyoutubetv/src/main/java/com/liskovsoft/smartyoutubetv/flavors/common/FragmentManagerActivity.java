@@ -276,6 +276,11 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     @Override
+    public boolean isAppLoaded() {
+        return mLoadingDone;
+    }
+
+    @Override
     public void startActivityForResult(Intent intent, ActivityResult callback) {
         int requestCode = mRequestCode++;
         mResultMap.put(requestCode, callback);

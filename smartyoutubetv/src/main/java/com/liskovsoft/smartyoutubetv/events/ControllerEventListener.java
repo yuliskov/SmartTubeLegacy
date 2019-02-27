@@ -113,6 +113,12 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     @Override
     public void onReceiveError(Tab tab, int errorCode) {
         Log.w(TAG, "onReceiveError called: errorCode: " + errorCode);
+
+        if (((FragmentManager) mContext).isAppLoaded()) {
+            Log.w(TAG, "error in the middle of the work... ignoring...");
+            return;
+        }
+
         Log.w(TAG, "onReceiveError called: reloading tab...");
         ((FragmentManager) mContext).getLoadingManager().showMessage(mErrorTranslator.translate(errorCode));
         tab.reload();
