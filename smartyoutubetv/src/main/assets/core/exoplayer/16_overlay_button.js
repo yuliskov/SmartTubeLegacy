@@ -41,8 +41,6 @@ function OverlayButton(selector) {
         Log.d(this.TAG, "setChecked " + this.selector + " " + doChecked);
 
         if (doChecked) {
-            var $this = this;
-
             var el = this.findToggle();
 
             if (!el) {
@@ -53,22 +51,30 @@ function OverlayButton(selector) {
 
             EventUtils.triggerEnter(el);
 
-            var handler = function() {
-                Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
-
-                $this.recentlyClosed = true;
-
-                ExoUtils.sendAction(ExoUtils.ACTION_DISABLE_KEY_EVENTS);
-
-                setTimeout(function() {
-                    $this.closePlayerControlsAndSend();
-                }, 500);
-            };
-
-            this.handler = handler;
-
-            EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, handler);
+            this.initHandler();
         }
+    };
+
+    this.initHandler = function() {
+        if (this.handler) {
+            return;
+        }
+
+        var $this = this;
+
+        this.handler = function() {
+            Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
+
+            $this.recentlyClosed = true;
+
+            ExoUtils.sendAction(ExoUtils.ACTION_DISABLE_KEY_EVENTS);
+
+            setTimeout(function() {
+                $this.closePlayerControlsAndSend();
+            }, 500);
+        };
+
+        EventUtils.addListenerOnce(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, this.handler);
     };
 
     this.cancelEvents = function() {
