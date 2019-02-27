@@ -926,13 +926,17 @@ public class Tab implements PictureListener {
         }
 
         private void onReceiveError(int errorCode) {
-            Log.w(TAG, "network error");
+            Log.w(TAG, "network error: " + errorCode);
 
-            if (errorCode == WebViewClient.ERROR_UNKNOWN) // ignore fake errors on Android 7.0
+            if (errorCode == WebViewClient.ERROR_UNKNOWN) {
+                Log.w(TAG, "ignore fake errors on Android 7.0");
                 return;
+            }
 
-            if (mListener != null)
+            if (mListener != null) {
                 mListener.onReceiveError(Tab.this, errorCode);
+            }
+
             mLoadSuccess = false;
         }
 

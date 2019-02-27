@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -27,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ControllerEventListener implements Controller.EventListener, Tab.EventListener {
-    private static final Logger logger = LoggerFactory.getLogger(ControllerEventListener.class);
+    private static final String TAG = ControllerEventListener.class.getSimpleName();
     private static final String JS_INTERFACE_NAME = "app";
     private final Context mContext;
     private final WebViewJavaScriptInterface mJSInterface;
@@ -111,7 +112,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
      */
     @Override
     public void onReceiveError(Tab tab, int errorCode) {
-        logger.info("onReceiveError called: errorCode: " + errorCode);
+        Log.w(TAG, "onReceiveError called: errorCode: " + errorCode);
+        Log.w(TAG, "onReceiveError called: reloading tab...");
         ((FragmentManager) mContext).getLoadingManager().showMessage(mErrorTranslator.translate(errorCode));
         tab.reload();
     }
@@ -148,7 +150,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
 
     @SuppressLint("NewApi")
     private void addJSInterface(Tab tab) {
-        logger.info("ControllerEventListener::on addJSInterface");
+        Log.i(TAG, "ControllerEventListener::on addJSInterface");
 
         mJSInterface.add(tab);
 
