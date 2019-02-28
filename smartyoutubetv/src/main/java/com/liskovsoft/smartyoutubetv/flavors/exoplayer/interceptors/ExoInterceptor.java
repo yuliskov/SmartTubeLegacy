@@ -33,10 +33,10 @@ public class ExoInterceptor extends RequestInterceptor {
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
     private final YouTubeTracker mTracker;
-    private final OnMediaFoundCallback mExoCallback;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
+    private final boolean mUseExternalPlayer;
     public static final String URL_VIDEO_DATA = "get_video_info";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
 
@@ -47,14 +47,9 @@ public class ExoInterceptor extends RequestInterceptor {
         mManager = new BackgroundActionManager();
         
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
+        mUseExternalPlayer = SmartPreferences.instance(context).getUseExternalPlayer();
 
         mTracker = new YouTubeTracker(mContext);
-
-        if (SmartPreferences.instance(context).getUseExternalPlayer()) {
-            mExoCallback = new ExternalPlayerWrapper(mContext, this);
-        } else {
-            mExoCallback = new ExoPlayerWrapper(mContext, this);
-        }
     }
 
     @Override
@@ -114,27 +109,35 @@ public class ExoInterceptor extends RequestInterceptor {
      * For parsing details see {@link YouTubeMediaParser}
      */
     private void parseAndOpenExoPlayer() {
+        OnMediaFoundCallback exoCallback;
+
+        if (mUseExternalPlayer) {
+            exoCallback = new ExternalPlayerWrapper(mContext, this);
+        } else {
+            exoCallback = new ExoPlayerWrapper(mContext, this);
+        }
+
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
         Log.d(TAG, "Video manifest received");
         dataParser.parse(new OnMediaFoundCallback() {
             @Override
             public void onDashUrlFound(Uri dashUrl) {
-                mExoCallback.onDashUrlFound(dashUrl);
+                exoCallback.onDashUrlFound(dashUrl);
             }
 
             @Override
             public void onHLSFound(final Uri hlsUrl) {
-                mExoCallback.onHLSFound(hlsUrl);
+                exoCallback.onHLSFound(hlsUrl);
             }
 
             @Override
             public void onDashMPDFound(final InputStream mpdContent) {
-                mExoCallback.onDashMPDFound(mpdContent);
+                exoCallback.onDashMPDFound(mpdContent);
             }
 
             @Override
             public void onUrlListFound(final List<String> urlList) {
-                mExoCallback.onUrlListFound(urlList);
+                exoCallback.onUrlListFound(urlList);
             }
 
             @Override
@@ -144,12 +147,12 @@ public class ExoInterceptor extends RequestInterceptor {
 
             @Override
             public void onInfoFound(GenericInfo info) {
-                mExoCallback.onInfoFound(info);
+                exoCallback.onInfoFound(info);
             }
 
             @Override
             public void onDone() {
-                mExoCallback.onDone();
+                exoCallback.onDone();
             }
         });
     }
