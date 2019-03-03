@@ -1,6 +1,5 @@
-package com.liskovsoft.smartyoutubetv.common.helpers;
+package com.liskovsoft.sharedutils.helpers;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage;
 
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
-import com.liskovsoft.smartyoutubetv.common.helpers.LangUpdater;
+import com.liskovsoft.sharedutils.helpers.LangUpdater;
 import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
 
 import java.util.ArrayList;

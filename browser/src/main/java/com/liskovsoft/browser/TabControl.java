@@ -2,7 +2,7 @@ package com.liskovsoft.browser;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.helpers;
+package com.liskovsoft.sharedutils.helpers;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class AppInfoHelpers {
     public static String getAppVersion(Context context) {

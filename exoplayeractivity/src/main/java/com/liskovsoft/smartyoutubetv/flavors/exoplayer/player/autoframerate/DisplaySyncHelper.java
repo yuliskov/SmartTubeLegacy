@@ -3,9 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 import android.app.Activity;
 import android.os.Build;
 import android.view.Window;
-import android.widget.Toast;
-import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;

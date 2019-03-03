@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.okhttp;
+package com.liskovsoft.sharedutils.okhttp;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;

@@ -24,7 +24,7 @@ import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.*;
 

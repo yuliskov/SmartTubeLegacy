@@ -1,4 +1,4 @@
-package com.liskovsoft.common.configparser;
+package com.liskovsoft.sharedutils.configparser;
 
 public interface ConfigParser {
     String get(String key);

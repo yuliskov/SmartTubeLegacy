@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.content.Context;
 import android.util.Log;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.webscripts.MainScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 

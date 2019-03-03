@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.server;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;

@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.webkit.WebView;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;

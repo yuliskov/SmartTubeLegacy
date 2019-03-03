@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.helpers.AssetHelper;
+import com.liskovsoft.sharedutils.helpers.AssetHelper;
 
 import java.io.InputStream;
 

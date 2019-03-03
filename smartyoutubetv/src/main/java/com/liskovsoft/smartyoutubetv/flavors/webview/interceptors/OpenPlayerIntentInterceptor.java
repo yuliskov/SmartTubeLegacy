@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.ByteArrayInputStream;

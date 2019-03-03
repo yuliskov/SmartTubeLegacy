@@ -13,7 +13,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -21,8 +20,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.List;
 
-import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import org.xwalk.core.MyXWalkLibraryLoader.DownloadListener;
 

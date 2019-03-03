@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 class YouTubeIntentTranslator implements IntentTranslator {
     private static final String TAG = YouTubeIntentTranslator.class.getSimpleName();

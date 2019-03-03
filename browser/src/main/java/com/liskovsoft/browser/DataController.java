@@ -29,7 +29,7 @@ import android.os.Message;
 import com.liskovsoft.browser.helpers.BrowserContract;
 import com.liskovsoft.browser.helpers.BrowserContract.History;
 import com.liskovsoft.browser.provider.BrowserProvider2.Thumbnails;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;

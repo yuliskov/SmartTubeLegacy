@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GetButtonStatesCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;

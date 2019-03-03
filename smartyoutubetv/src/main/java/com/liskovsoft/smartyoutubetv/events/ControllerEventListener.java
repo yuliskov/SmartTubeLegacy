@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -24,8 +24,6 @@ import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.ErrorTranslator;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ControllerEventListener implements Controller.EventListener, Tab.EventListener {
     private static final String TAG = ControllerEventListener.class.getSimpleName();

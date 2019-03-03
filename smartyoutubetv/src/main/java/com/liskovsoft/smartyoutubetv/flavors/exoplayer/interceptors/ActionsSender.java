@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SyncButtonsCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 

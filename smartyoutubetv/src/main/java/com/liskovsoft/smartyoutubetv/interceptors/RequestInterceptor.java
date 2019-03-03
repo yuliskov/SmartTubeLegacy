@@ -1,13 +1,12 @@
 package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import okhttp3.MediaType;
 import okhttp3.Response;
 
 import java.io.InputStream;
-import java.io.SequenceInputStream;
 
 public abstract class RequestInterceptor {
     public abstract boolean test(String url);

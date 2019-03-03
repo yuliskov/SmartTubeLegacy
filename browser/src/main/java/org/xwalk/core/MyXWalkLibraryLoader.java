@@ -9,14 +9,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
-import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 
 import java.io.File;

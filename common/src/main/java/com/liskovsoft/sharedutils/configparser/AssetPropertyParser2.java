@@ -1,8 +1,8 @@
-package com.liskovsoft.common.configparser;
+package com.liskovsoft.sharedutils.configparser;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.helpers.AssetHelper;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.helpers.AssetHelper;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.io.IOException;
 import java.io.InputStream;

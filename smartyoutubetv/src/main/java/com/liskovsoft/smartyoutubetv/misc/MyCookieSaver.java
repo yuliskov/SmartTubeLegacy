@@ -4,7 +4,7 @@ import android.webkit.CookieManager;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.smartyoutubetv.common.okhttp.MyCookieLoader;
+import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
 import org.xwalk.core.XWalkCookieManager;
 
 /**

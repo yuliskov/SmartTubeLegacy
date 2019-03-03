@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;

@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;

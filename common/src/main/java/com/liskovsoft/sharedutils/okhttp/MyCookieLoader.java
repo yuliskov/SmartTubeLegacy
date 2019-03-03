@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.okhttp;
+package com.liskovsoft.sharedutils.okhttp;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;

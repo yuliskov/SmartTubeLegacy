@@ -1,9 +1,9 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;

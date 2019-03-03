@@ -1,6 +1,6 @@
-package com.liskovsoft.common.configparser;
+package com.liskovsoft.sharedutils.configparser;
 
-import com.liskovsoft.common.TestHelpers;
+import com.liskovsoft.sharedutils.TestHelpers;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 import org.junit.Before;
 import org.junit.Test;

@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 import com.liskovsoft.smartyoutubetv.keytranslator.PlayerKeyTranslator;

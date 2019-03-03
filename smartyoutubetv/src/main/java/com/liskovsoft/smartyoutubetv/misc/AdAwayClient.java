@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
 
 public class AdAwayClient {
     private final Context mContext;

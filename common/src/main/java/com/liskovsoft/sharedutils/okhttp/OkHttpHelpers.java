@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.okhttp;
+package com.liskovsoft.sharedutils.okhttp;
 
 import android.util.Log;
 import okhttp3.CipherSuite;

@@ -1,11 +1,11 @@
-package com.liskovsoft.smartyoutubetv.common.mylogger;
+package com.liskovsoft.sharedutils.mylogger;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.R;
-import com.liskovsoft.smartyoutubetv.common.helpers.AppInfoHelpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.FileHelpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,7 +1,7 @@
-package com.liskovsoft.smartyoutubetv.common.mylogger;
+package com.liskovsoft.sharedutils.mylogger;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class Log {
     private static MyLogger sLogger = new SystemLogger();

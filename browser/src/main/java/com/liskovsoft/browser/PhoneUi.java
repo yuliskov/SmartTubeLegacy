@@ -3,7 +3,7 @@ package com.liskovsoft.browser;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 public class PhoneUi extends TitleBarBaseUi {
     private static final String TAG = PhoneUi.class.getSimpleName();

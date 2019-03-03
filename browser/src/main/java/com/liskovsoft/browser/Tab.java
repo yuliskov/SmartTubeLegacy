@@ -56,7 +56,7 @@ import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
 import com.liskovsoft.browser.xwalk.XWalkResourceClientAdapter;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.nio.ByteBuffer;
 import java.util.Map;

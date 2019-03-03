@@ -8,11 +8,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.Sim
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeSubParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
     private final String[] mContent;

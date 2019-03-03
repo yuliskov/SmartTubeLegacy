@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.keytranslator;
 
 import android.view.KeyEvent;
-import com.liskovsoft.smartyoutubetv.common.mylogger.Log;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.Map;
 

@@ -2,10 +2,9 @@ package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivityBase;
-import com.liskovsoft.smartyoutubetv.common.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.common.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
 
 import java.util.List;
 

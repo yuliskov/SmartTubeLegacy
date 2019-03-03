@@ -3,8 +3,8 @@ package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.common.prefs.CommonParams;
-import com.liskovsoft.smartyoutubetv.common.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class YouTubeServiceFinder implements ServiceFinder {
     private final Context mContext;

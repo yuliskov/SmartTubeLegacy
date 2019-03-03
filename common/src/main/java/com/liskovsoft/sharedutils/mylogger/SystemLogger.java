@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.mylogger;
+package com.liskovsoft.sharedutils.mylogger;
 
 import android.util.Log;
 

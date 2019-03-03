@@ -1,4 +1,4 @@
-package com.liskovsoft.common;
+package com.liskovsoft.sharedutils;
 
 import java.io.IOException;
 import java.io.InputStream;

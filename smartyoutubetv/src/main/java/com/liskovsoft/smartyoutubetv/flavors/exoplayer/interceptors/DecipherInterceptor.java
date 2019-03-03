@@ -8,7 +8,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.Ci
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeEvent;
 import com.squareup.otto.Subscribe;
-import com.liskovsoft.smartyoutubetv.common.okhttp.OkHttpHelpers;
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import okhttp3.Response;
 
 import java.io.InputStream;

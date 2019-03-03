@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.common.helpers;
+package com.liskovsoft.sharedutils.helpers;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;

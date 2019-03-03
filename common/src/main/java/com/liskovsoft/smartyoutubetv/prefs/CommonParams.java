@@ -1,8 +1,8 @@
-package com.liskovsoft.smartyoutubetv.common.prefs;
+package com.liskovsoft.smartyoutubetv.prefs;
 
 import android.content.Context;
-import com.liskovsoft.common.configparser.AssetPropertyParser2;
-import com.liskovsoft.common.configparser.ConfigParser;
+import com.liskovsoft.sharedutils.configparser.AssetPropertyParser2;
+import com.liskovsoft.sharedutils.configparser.ConfigParser;
 
 public final class CommonParams {
     private final Context mContext;
