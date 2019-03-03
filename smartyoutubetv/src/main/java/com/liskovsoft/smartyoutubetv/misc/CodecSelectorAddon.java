@@ -4,9 +4,9 @@ import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
-import com.liskovsoft.smartyoutubetv.dialogs.SingleChoiceSelectorDialog;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.SingleDialogSource;
+import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
 
 import java.util.ArrayList;

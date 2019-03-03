@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.LangUpdater;
+import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
 import com.liskovsoft.sharedutils.mylogger.Log;

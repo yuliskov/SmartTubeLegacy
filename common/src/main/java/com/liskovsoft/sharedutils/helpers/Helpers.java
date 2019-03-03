@@ -364,12 +364,9 @@ public final class Helpers {
      * @return packages or empty list if not found
      */
     public static List<String> findPackagesByPrefix(Context context, String pkgPrefix) {
-        final PackageManager pm = context.getPackageManager();
-        //get a list of installed apps.
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         List<String> pkgNames = new ArrayList<>();
 
-        for (ApplicationInfo info : packages) {
+        for (ApplicationInfo info : getInstalledPackages(context)) {
             if (info.packageName != null && info.packageName.startsWith(pkgPrefix)) {
                 pkgNames.add(info.packageName);
             }
@@ -379,11 +376,7 @@ public final class Helpers {
     }
 
     public static boolean isPackageExists(Context context, String pkgName) {
-        final PackageManager pm = context.getPackageManager();
-        //get a list of installed apps.
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        for (ApplicationInfo info : packages) {
+        for (ApplicationInfo info : getInstalledPackages(context)) {
             if (pkgName.equals(info.packageName)) {
                 return true;
             }
@@ -403,10 +396,30 @@ public final class Helpers {
         if (packagePath == null) {
             return;
         }
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri file = FileHelpers.getFileUri(context, packagePath);
         intent.setDataAndType(file, "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
         context.startActivity(intent);
+    }
+
+    public static List<ApplicationInfo> getInstalledPackages(Context context) {
+        final PackageManager pm = context.getPackageManager();
+        //get a list of installed apps.
+
+        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
+    }
+
+    public static List<String> getInstalledPackagesWithMainActivity(Context context) {
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
+        List<String> result = new ArrayList<>();
+        for (ResolveInfo info : pkgAppsList) {
+            result.add(info.activityInfo.packageName);
+        }
+
+        return result;
     }
 }

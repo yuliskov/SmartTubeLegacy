@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 public class BetaUpdateCheckDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;

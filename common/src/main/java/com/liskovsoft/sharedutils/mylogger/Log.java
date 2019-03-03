@@ -1,9 +1,11 @@
 package com.liskovsoft.sharedutils.mylogger;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class Log {
+    public static final int LOG_TYPE_FILE = 0;
+    public static final int LOG_TYPE_SYSTEM = 1;
+
     private static MyLogger sLogger = new SystemLogger();
 
     public static void d(String tag, Object msg) {
@@ -46,13 +48,14 @@ public class Log {
         sLogger.flush();
     }
 
-    public static void init(Context context) {
-        SmartPreferences prefs = SmartPreferences.instance(context);
-
-        if (prefs.getEnableLogToFile()) {
-            sLogger = new FileLogger(context);
-        } else {
-            sLogger = new SystemLogger();
+    public static void init(Context context, int logType) {
+        switch (logType) {
+            case LOG_TYPE_FILE:
+                sLogger = new FileLogger(context);
+                break;
+            case LOG_TYPE_SYSTEM:
+                sLogger = new SystemLogger();
+                break;
         }
     }
 }

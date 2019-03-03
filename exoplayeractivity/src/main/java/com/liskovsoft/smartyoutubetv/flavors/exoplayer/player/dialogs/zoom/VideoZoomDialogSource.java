@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom;
 
 import android.content.Context;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.SingleDialogSource;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.SingleDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
 
 import java.util.ArrayList;

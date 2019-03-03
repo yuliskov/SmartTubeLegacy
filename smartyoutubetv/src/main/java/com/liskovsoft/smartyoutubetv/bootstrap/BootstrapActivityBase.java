@@ -11,9 +11,10 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.LangUpdater;
+import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.misc.OldPackageRemover;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.InitializationCallback;
 
@@ -39,7 +40,8 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
     }
 
     private void initLogger() {
-        Log.init(this.getApplicationContext());
+        SmartPreferences prefs = SmartPreferences.instance(this.getApplicationContext());
+        Log.init(this.getApplicationContext(), prefs.getLogType());
     }
 
     private void makeActivityHorizontal() {

@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom;
 
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
 
 public class VideoZoomDialogItem extends DialogItem {

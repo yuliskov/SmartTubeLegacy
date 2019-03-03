@@ -2,8 +2,8 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage;
 
 import android.os.Handler;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
-import com.liskovsoft.sharedutils.helpers.LangUpdater;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 import java.util.Map;
 

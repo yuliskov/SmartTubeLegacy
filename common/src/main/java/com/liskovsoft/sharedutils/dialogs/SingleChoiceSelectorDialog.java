@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.dialogs;
+package com.liskovsoft.sharedutils.dialogs;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import com.liskovsoft.smartyoutubetv.common.R;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 public class SingleChoiceSelectorDialog extends GenericSelectorDialog {
     private final SingleDialogSource mDialogSource;

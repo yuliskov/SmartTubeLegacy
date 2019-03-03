@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed;
 import android.content.Context;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.CombinedDialogSource;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.CombinedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 

@@ -16,7 +16,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenWatchLater
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UnplayableVideoFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.MultiDialogSource;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.MultiDialogSource;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 public final class SmartPreferences {
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
@@ -16,7 +17,6 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
-    private static final String BOOTSTRAP_LOG_TO_FILE = "logToFile";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
@@ -33,6 +33,7 @@ public final class SmartPreferences {
     private static final String AUTHORIZATION_HEADER = "authorization_header";
     private static final String USE_EXTERNAL_PLAYER = "use_external_player";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
+    private static final String LOG_TYPE = "log_type";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -169,16 +170,6 @@ public final class SmartPreferences {
         return mPrefs.getBoolean(BOOTSTRAP_OK_PAUSE, true);
     }
 
-    public void setEnableLogToFile(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_LOG_TO_FILE, isChecked)
-                .apply();
-    }
-
-    public boolean getEnableLogToFile() {
-        return mPrefs.getBoolean(BOOTSTRAP_LOG_TO_FILE, false);
-    }
-
     public void setUnplayableVideoFix(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(UNPLAYABLE_VIDEO_FIX, isChecked)
@@ -247,5 +238,15 @@ public final class SmartPreferences {
 
     public boolean getFixAspectRatio() {
         return mPrefs.getBoolean(FIX_ASPECT_RATIO, false);
+    }
+
+    public int getLogType() {
+        return mPrefs.getInt(LOG_TYPE, Log.LOG_TYPE_SYSTEM);
+    }
+
+    public void setLogType(int type) {
+        mPrefs.edit()
+                .putInt(LOG_TYPE, type)
+                .apply();
     }
 }

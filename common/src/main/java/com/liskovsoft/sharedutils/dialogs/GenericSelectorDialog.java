@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.dialogs;
+package com.liskovsoft.sharedutils.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.common.R;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.MultiDialogItem;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.SingleDialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.MultiDialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.SingleDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;

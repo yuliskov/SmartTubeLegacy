@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import com.liskovsoft.smartyoutubetv.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 public class LockLastLauncherDialogItem extends DialogItem {
     private final Context mContext;
