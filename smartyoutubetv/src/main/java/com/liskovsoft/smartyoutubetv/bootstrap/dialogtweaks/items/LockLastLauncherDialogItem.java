@@ -12,7 +12,10 @@ public class LockLastLauncherDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
 
     public LockLastLauncherDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_lock_last_launcher, AppInfoHelpers.getActivityLabelRobust(context)), false);
+        super(context.getResources().getString(
+                R.string.tweak_lock_last_launcher,
+                AppInfoHelpers.getActivityLabelRobust(context, SmartPreferences.instance(context).getBootstrapActivityName())),
+                false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);

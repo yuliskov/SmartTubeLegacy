@@ -88,11 +88,13 @@ class FileLogger extends MyLogger {
 
     private void writeLogHeader() {
         String time = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US).format(new Date());
-        String version = AppInfoHelpers.getAppVersionRobust(mContext);
+        String version = AppInfoHelpers.getAppName(mContext);
+        String deviceName = Helpers.getDeviceName();
         append("---------------------------------------");
         append("----------- STARTING LOG --------------");
         append("-------- " +    time     + " ----------");
         append("------- "  +   version   +   " --------");
+        append("------- "  +  deviceName +   " --------");
         append("---------------------------------------");
     }
 

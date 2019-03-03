@@ -6,25 +6,22 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class AppInfoHelpers {
-    public static String getAppVersion(Context context) {
+    public static String getAppName(Context context) {
         return formatAppVersion(getAppVersionNum(context), getActivityLabel(context));
     }
 
-    public static String getAppVersionRobust(Context context) {
-        return formatAppVersion(getAppVersionNum(context), getActivityLabelRobust(context));
+    public static String getAppNameRobust(Context context, String launchActivityName) {
+        return formatAppVersion(getAppVersionNum(context), getActivityLabelRobust(context, launchActivityName));
     }
 
     private static String formatAppVersion(String version, String label) {
         return String.format("%s (%s)", version, label);
     }
 
-    public static String getActivityLabelRobust(Context context) {
-        SmartPreferences prefs = SmartPreferences.instance(context);
-        String name = prefs.getBootstrapActivityName();
-        return name == null ? getActivityLabel(context) : getActivityLabel(context, name);
+    public static String getActivityLabelRobust(Context context, String launchActivityName) {
+        return getActivityLabel(context, launchActivityName);
     }
 
     public static String getAppVersionNum(Context context) {
@@ -42,18 +39,16 @@ public class AppInfoHelpers {
         return versionName;
     }
 
-    private static String getActivityLabel(Context context) {
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            return getActivityLabel(context, activity.getComponentName());
-        }
-
-        return null;
+    public static String getActivityLabel(Context context) {
+        return getActivityLabel(context, (String) null);
     }
 
-    private static String getActivityLabel(Context context, String cls) {
+    public static String getActivityLabel(Context context, String cls) {
         if (cls != null) {
             return getActivityLabel(context, new ComponentName(context, cls));
+        } else if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            return getActivityLabel(context, activity.getComponentName());
         }
 
         return null;

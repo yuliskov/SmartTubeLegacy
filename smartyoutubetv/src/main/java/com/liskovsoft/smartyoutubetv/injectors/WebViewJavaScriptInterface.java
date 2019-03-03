@@ -74,7 +74,7 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getAppVersion() {
-        return AppInfoHelpers.getAppVersion(mContext);
+        return AppInfoHelpers.getAppName(mContext);
     }
 
     @JavascriptInterface
