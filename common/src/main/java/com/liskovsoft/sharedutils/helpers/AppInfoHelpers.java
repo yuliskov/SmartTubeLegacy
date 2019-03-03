@@ -8,11 +8,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 public class AppInfoHelpers {
-    public static String getAppName(Context context) {
+    public static String getAppVersion(Context context) {
         return formatAppVersion(getAppVersionNum(context), getActivityLabel(context));
     }
 
-    public static String getAppNameRobust(Context context, String launchActivityName) {
+    public static String getAppVersionRobust(Context context, String launchActivityName) {
         return formatAppVersion(getAppVersionNum(context), getActivityLabelRobust(context, launchActivityName));
     }
 
