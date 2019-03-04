@@ -134,6 +134,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
+    implementation project(path: ':ext-sharedutils')
+
     implementation project(path: ':common')
 
     implementation project(path: ':browser')

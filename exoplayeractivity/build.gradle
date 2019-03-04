@@ -51,6 +51,8 @@ dependencies {
     })
     testImplementation project.properties.junitVersion
 
+    implementation project(path: ':ext-sharedutils')
+
     implementation project(path: ':common')
 
     // gradle 4.6 migration

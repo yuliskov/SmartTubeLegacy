@@ -73,7 +73,7 @@ public class CodecSelectorAddon {
     }
 
     public void run() {
-        SingleChoiceSelectorDialog.create(mContext, new CodecSelectorDialogSource());
+        SingleChoiceSelectorDialog.create(mContext, new CodecSelectorDialogSource(), R.style.AppDialog);
     }
 
     public String getPreferredCodec() {

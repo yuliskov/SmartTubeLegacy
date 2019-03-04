@@ -65,10 +65,10 @@ public class BootstrapActivity extends BootstrapActivityBase {
     public void onClick(View button) {
         switch (button.getId()) {
             case R.id.btn_select_lang:
-                SingleChoiceSelectorDialog.create(this, new LanguageDialogSource(this));
+                SingleChoiceSelectorDialog.create(this, new LanguageDialogSource(this), R.style.AppDialog);
                 break;
             case R.id.btn_tweaks:
-                MultiChoiceSelectorDialog.create(this, new TweaksDialogSource(this));
+                MultiChoiceSelectorDialog.create(this, new TweaksDialogSource(this), R.style.AppDialog);
                 break;
         }
     }
