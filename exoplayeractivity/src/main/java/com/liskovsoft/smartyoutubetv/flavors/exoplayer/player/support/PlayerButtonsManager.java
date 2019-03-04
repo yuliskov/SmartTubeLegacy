@@ -73,7 +73,7 @@ public class PlayerButtonsManager {
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = mRootView.findViewById(btnId);
                 // NOTE: if no such state then mark button as disabled
-                btn.disable();
+                btn.disableEvents(); // don't visually disable button, only disable events
                 continue;
             }
 
@@ -100,6 +100,11 @@ public class PlayerButtonsManager {
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         final int id = button.getId();
+
+        if (id == R.id.exo_subscribe && !isChecked) {
+            Log.d(TAG, "Hmm. Suspicious. Subscribe button has been unchecked. Canceling unsubscribe...");
+            return;
+        }
 
         Log.d(TAG, "Button is checked: " + mIdTagMapping.get(id) + ": " + isChecked);
 

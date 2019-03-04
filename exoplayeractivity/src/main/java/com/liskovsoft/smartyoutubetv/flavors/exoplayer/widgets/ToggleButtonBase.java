@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ToggleButtonBase extends LinearLayout {
+    private static final String TAG = ToggleButtonBase.class.getSimpleName();
     private int mBindToId;
     protected Drawable mImage;
     protected Drawable mImageOn;
@@ -187,9 +189,15 @@ public abstract class ToggleButtonBase extends LinearLayout {
     }
 
     private void callCheckedListener(boolean isChecked) {
+        if (mIsDisabled) {
+            Log.d(TAG, "Button " + getId() + " is disabled... Cancel checking events...");
+            return;
+        }
+
         for (OnCheckedChangeListener listener : mCheckedListeners) {
-             if (listener != null)
+             if (listener != null) {
                  listener.onCheckedChanged(this, isChecked);
+             }
         }
     }
 
@@ -209,6 +217,10 @@ public abstract class ToggleButtonBase extends LinearLayout {
 
     public boolean isDisabled() {
         return mIsDisabled;
+    }
+
+    public void disableEvents() {
+        mIsDisabled = true;
     }
 
     public void disable() {
