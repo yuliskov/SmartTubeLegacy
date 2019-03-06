@@ -36,11 +36,11 @@ function VideoWrapperAddon() {
                     //Log.d($this.TAG, "Storing " + type + " listener for future use...");
                     this.listeners[type] = listener;
 
-                    if (type == 'timeupdate' || type == 'ended') {
-                        return;
-                    }
-
-                    this.addEventListenerReal(type, listener, options);
+                    // if (type == 'timeupdate' || type == 'ended' || type == 'playing' || type == 'loadeddata' || type == 'focus' || type == 'play') {
+                    //     return;
+                    // }
+                    //
+                    // this.addEventListenerReal(type, listener, options);
                 };
 
                 video.dispatchEventReal = video.dispatchEvent;
