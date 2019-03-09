@@ -229,7 +229,7 @@ public class PlayerStateManagerBase {
         String codec = format == null ? null : format.codecs;
         int bitrate = format == null ? 0 : format.bitrate;
 
-        mPrefs.setSelectedAudioTrackCodecs(codec);
+        mPrefs.setSelectedAudioTrackCodecs(codec == null ? "" : codec);
         mPrefs.setSelectedAudioTrackBitrate(bitrate);
     }
 
