@@ -44,7 +44,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':ext-sharedutils')
+    implementation project(path: ':sharedutils')
 
     implementation project(path: ':common')
 

@@ -41,7 +41,7 @@ dependencies {
     testImplementation project.properties.junitVersion
     testImplementation project.properties.robolectricVersion
 
-    implementation project(path: ':ext-sharedutils')
+    implementation project(path: ':sharedutils')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

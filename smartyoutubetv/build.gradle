@@ -36,8 +36,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 560
-        versionName "6.16.80"
+        versionCode 561
+        versionName "6.16.81"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -134,7 +134,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
-    implementation project(path: ':ext-sharedutils')
+    implementation project(path: ':sharedutils')
+    implementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 
@@ -160,7 +161,9 @@ dependencies {
     // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
     configurations.all {
         resolutionStrategy {
-            force project.properties.asmVersion // resolve 'jsonPath' conflicts
+            // resolve conflicts
+            force project.properties.asmVersion
+            force project.properties.mediaCompatVersion
         }
     }
 

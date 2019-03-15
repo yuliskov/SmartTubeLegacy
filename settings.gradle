@@ -1,5 +1,7 @@
 include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common', ':appbackupmanager'
 
 gradle.ext.sharedUtilsRoot = '../SharedUtils'
-gradle.ext.sharedUtilsModulePrefix = 'ext-'
 apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
+
+gradle.ext.myVideoTubeRoot = '../MyVideoTube'
+apply from: new File(gradle.ext.myVideoTubeRoot, 'core_settings.gradle')

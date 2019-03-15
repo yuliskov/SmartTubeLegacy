@@ -61,7 +61,7 @@ dependencies {
     implementation project.properties.ottoVersion
     implementation project.properties.dnsjavaVersion
 
-    implementation project(path: ':ext-sharedutils')
+    implementation project(path: ':sharedutils')
 
     implementation project(path: ':common')
 
