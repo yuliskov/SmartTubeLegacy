@@ -72,12 +72,12 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     private DisplayHolder.Mode findCloserMode(List<DisplayHolder.Mode> modes, float rate) {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
-        relatedRates.put(1500, new int[]{6000, 3000});
-        relatedRates.put(2397, new int[]{2397, 2400, 6000, 3000});
-        relatedRates.put(2400, new int[]{2400, 6000, 3000});
-        relatedRates.put(2500, new int[]{5000, 2500});
-        relatedRates.put(2997, new int[]{2997, 6000, 3000});
-        relatedRates.put(3000, new int[]{6000, 3000});
+        relatedRates.put(1500, new int[]{3000, 6000});
+        relatedRates.put(2397, new int[]{2397, 2400, 3000, 6000});
+        relatedRates.put(2400, new int[]{2400, 3000, 6000});
+        relatedRates.put(2500, new int[]{2500, 5000});
+        relatedRates.put(2997, new int[]{2997, 3000, 6000});
+        relatedRates.put(3000, new int[]{3000, 6000});
         relatedRates.put(5000, new int[]{5000, 2500});
         relatedRates.put(5994, new int[]{5994, 6000, 3000});
         relatedRates.put(6000, new int[]{6000, 3000});
@@ -109,6 +109,46 @@ class DisplaySyncHelper implements UhdHelperListener {
 
         return null;
     }
+
+    //private DisplayHolder.Mode findCloserMode(List<DisplayHolder.Mode> modes, float rate) {
+    //    HashMap<Integer, int[]> relatedRates = new HashMap<>();
+    //    relatedRates.put(1500, new int[]{6000, 3000});
+    //    relatedRates.put(2397, new int[]{2397, 2400, 6000, 3000});
+    //    relatedRates.put(2400, new int[]{2400, 6000, 3000});
+    //    relatedRates.put(2500, new int[]{5000, 2500});
+    //    relatedRates.put(2997, new int[]{2997, 6000, 3000});
+    //    relatedRates.put(3000, new int[]{6000, 3000});
+    //    relatedRates.put(5000, new int[]{5000, 2500});
+    //    relatedRates.put(5994, new int[]{5994, 6000, 3000});
+    //    relatedRates.put(6000, new int[]{6000, 3000});
+    //
+    //    int myRate = (int) (rate * 100.0F);
+    //    if (myRate >= 2300 && myRate <= 2399) {
+    //        myRate = 2397;
+    //    }
+    //
+    //    if (relatedRates.containsKey(myRate)) {
+    //        HashMap<Integer, DisplayHolder.Mode> rateAndMode = new HashMap<>();
+    //        Iterator modeIterator = modes.iterator();
+    //
+    //        while (modeIterator.hasNext()) {
+    //            DisplayHolder.Mode mode = (DisplayHolder.Mode) modeIterator.next();
+    //            rateAndMode.put((int) (mode.getRefreshRate() * 100.0F), mode);
+    //        }
+    //
+    //        int[] rates = relatedRates.get(myRate);
+    //        int ratesLen = rates.length;
+    //
+    //        for (int i = 0; i < ratesLen; ++i) {
+    //            int newRate = rates[i];
+    //            if (rateAndMode.containsKey(newRate)) {
+    //                return rateAndMode.get(newRate);
+    //            }
+    //        }
+    //    }
+    //
+    //    return null;
+    //}
 
     /**
      * Utility method to check if device is Amazon Fire TV device
