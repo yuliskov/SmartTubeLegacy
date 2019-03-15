@@ -221,16 +221,19 @@ class DisplaySyncHelper implements UhdHelperListener {
             }
 
             DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
+
             if (closerMode == null) {
                 Log.i(TAG, "Could not find closer refresh rate for " + videoFramerate + "fps");
                 return false;
             }
 
             Log.i(TAG, "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
-            if (closerMode.equals(mode)) {
-                Log.i(TAG, "Do not need to change mode.");
-                return false;
-            }
+            Log.i(TAG, "Current mode: " + mode);
+
+            //if (closerMode.equals(mode)) {
+            //    Log.i(TAG, "Do not need to change mode.");
+            //    return false;
+            //}
 
             mNewMode = closerMode.getModeId();
             mUhdHelper.registerModeChangeListener(this);
