@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
@@ -40,8 +42,9 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
     }
 
     private void initLogger() {
-        SmartPreferences prefs = SmartPreferences.instance(this.getApplicationContext());
-        Log.init(this.getApplicationContext(), prefs.getLogType());
+        Context ctx = getApplicationContext();
+        SmartPreferences prefs = SmartPreferences.instance(ctx);
+        Log.init(ctx, prefs.getLogType(), AppInfoHelpers.getActivityLabel(ctx, prefs.getBootstrapActivityName()));
     }
 
     private void makeActivityHorizontal() {

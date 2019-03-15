@@ -230,10 +230,10 @@ class DisplaySyncHelper implements UhdHelperListener {
             Log.i(TAG, "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
             Log.i(TAG, "Current mode: " + mode);
 
-            //if (closerMode.equals(mode)) {
-            //    Log.i(TAG, "Do not need to change mode.");
-            //    return false;
-            //}
+            if (closerMode.equals(mode)) {
+                Log.i(TAG, "Do not need to change mode.");
+                return false;
+            }
 
             mNewMode = closerMode.getModeId();
             mUhdHelper.registerModeChangeListener(this);

@@ -1,6 +1,8 @@
 package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -30,6 +32,7 @@ public class LogToFileDialogItem extends DialogItem {
             mPrefs.setLogType(Log.LOG_TYPE_SYSTEM);
         }
 
-        Log.init(mContext.getApplicationContext(), mPrefs.getLogType());
+        Context ctx = mContext.getApplicationContext();
+        Log.init(ctx, mPrefs.getLogType(), AppInfoHelpers.getActivityLabel(ctx, mPrefs.getBootstrapActivityName()));
     }
 }
