@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
@@ -248,6 +249,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void initPermissions() {
+        if (BuildConfig.DEBUG) { // avoid error on genymotion emulator (NoSuchField error)
+            return;
+        }
+
         PermissionManager.verifyStoragePermissions(this);
     }
 
