@@ -3,10 +3,12 @@ package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class YouTubeServiceFinder implements ServiceFinder {
+    private static final String TAG = YouTubeServiceFinder.class.getSimpleName();
     private final Context mContext;
     private final IntentTranslator mTranslator;
     private String mDefaultUrl;
@@ -52,10 +54,18 @@ public class YouTubeServiceFinder implements ServiceFinder {
 
     @Override
     public Intent getIntent(Intent origin) {
+        Log.d(TAG, "Intent before transform: " + origin.getData());
+
+        Intent result;
+
         if (mIsPersistent) {
-            return new Intent(Intent.ACTION_VIEW, Uri.parse(mDefaultUrl));
+            result = new Intent(Intent.ACTION_VIEW, Uri.parse(mDefaultUrl));
+        } else {
+            result = mTranslator.translate(origin);
         }
 
-        return mTranslator.translate(origin);
+        Log.d(TAG, "Intent after transform: " + result.getData());
+
+        return result;
     }
 }
