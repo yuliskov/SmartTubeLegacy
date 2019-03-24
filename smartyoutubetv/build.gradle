@@ -135,7 +135,7 @@ dependencies {
 
     // Common routines
     implementation project(path: ':sharedutils')
-    implementation project(path: ':leanbackassistant')
+    origImplementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 

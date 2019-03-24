@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_url">https://www.youtube.com/tv/upg</string>
-    <string name="update_url">https://drive.google.com/uc?id=1fF5TIFza6gCmkmn_G3OoIN20hk4Th4ZP</string>
     <string name="app_name">Live YouTube TV</string>
 </resources>
