@@ -42,14 +42,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file("../android-upd2.keystore")
-            storePassword project.KEYSTORE_PASSWORD
-            keyAlias 'private'
-            keyPassword project.KEYSTORE_PASSWORD
-        }
-    }
+    //signingConfigs {
+    //    release {
+    //        storeFile file("../android-upd2.keystore")
+    //        storePassword project.KEYSTORE_PASSWORD
+    //        keyAlias 'private'
+    //        keyPassword project.KEYSTORE_PASSWORD
+    //    }
+    //}
 
     buildTypes {
         // NOTE: to enable Crashlytics add fabric.properties file with your api keys
@@ -69,7 +69,7 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 

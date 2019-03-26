@@ -110,6 +110,6 @@ function Enable4KAddon() {
     };
 }
 
-if (!DeviceUtils.isExo()) {
-    new Enable4KAddon().run();
-}
+// if (!DeviceUtils.isExo()) {
+//     new Enable4KAddon().run();
+// }
