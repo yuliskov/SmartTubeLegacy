@@ -97,6 +97,10 @@ android {
             matchingFallbacks = ['lite']
             applicationIdSuffix ".live"
         }
+        Vadnotam {
+            matchingFallbacks = ['lite']
+            applicationId "com.adnotam.smartyoutubetv"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk

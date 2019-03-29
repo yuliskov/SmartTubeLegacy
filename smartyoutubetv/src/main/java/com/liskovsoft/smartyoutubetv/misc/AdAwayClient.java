@@ -17,10 +17,12 @@ public class AdAwayClient {
     }
 
     public boolean isAd(String url) {
-        for (String subUrl : mAdList) {
-            boolean contains = Helpers.matchSubstr(url, subUrl);
-            if (contains) {
-                return true;
+        if (mAdList != null) {
+            for (String subUrl : mAdList) {
+                boolean contains = Helpers.matchSubstr(url, subUrl);
+                if (contains) {
+                    return true;
+                }
             }
         }
 

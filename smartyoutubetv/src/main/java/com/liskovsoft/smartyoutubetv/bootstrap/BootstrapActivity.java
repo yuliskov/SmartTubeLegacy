@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage.LanguageDialogSource;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.TweaksDialogSource;
@@ -42,6 +43,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
         initLauncherMapping();
         initVersion();
         lockOtherLaunchers();
+
+        CommonApplication.setFromBootstrap(true);
     }
 
     private void initVersion() {
