@@ -20,6 +20,7 @@ public class PlayerStateManagerBase {
     private static final float FPS_PRECISION = 10; // fps precision
     private final ExoPreferences mPrefs;
     private String mDefaultTrackId;
+    private String mDefaultAudioTrackId;
     private String mDefaultSubtitleLang;
 
     public PlayerStateManagerBase(Context context) {
@@ -29,7 +30,16 @@ public class PlayerStateManagerBase {
     public MyFormat findProperAudioFormat(TrackGroupArray groupArray) {
         Set<MyFormat> fmts = findProperAudio(groupArray);
 
-        return filterHighestFormat(fmts);
+        MyFormat fmt = filterHighestFormat(fmts);
+
+        if (fmt == null) {
+            mDefaultAudioTrackId = null;
+        } else {
+            mDefaultAudioTrackId = fmt.id;
+            Log.d(TAG, "Proper format found: " + fmt);
+        }
+
+        return fmt;
     }
 
     private Set<MyFormat> findProperAudio(TrackGroupArray groupArray) {
@@ -229,8 +239,13 @@ public class PlayerStateManagerBase {
         String codec = format == null ? null : format.codecs;
         int bitrate = format == null ? 0 : format.bitrate;
 
-        mPrefs.setSelectedAudioTrackCodecs(codec == null ? "" : codec);
-        mPrefs.setSelectedAudioTrackBitrate(bitrate);
+        // mDefaultTrackId: usually this happens when video does not contain preferred format
+        boolean isTrackChanged = format != null && !Helpers.equals(format.id, mDefaultAudioTrackId);
+
+        if (isTrackChanged) {
+            mPrefs.setSelectedAudioTrackCodecs(codec == null ? "" : codec);
+            mPrefs.setSelectedAudioTrackBitrate(bitrate);
+        }
     }
 
     protected void persistVideoParams(MyFormat format) {
