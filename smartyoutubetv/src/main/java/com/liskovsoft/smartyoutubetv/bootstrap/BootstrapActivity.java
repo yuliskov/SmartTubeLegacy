@@ -6,18 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import com.liskovsoft.sharedutils.dialogs.MultiChoiceSelectorDialog;
+import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage.LanguageDialogSource;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.TweaksDialogSource;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import com.liskovsoft.sharedutils.dialogs.MultiChoiceSelectorDialog;
-import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapButtonBase;
 import com.liskovsoft.smartyoutubetv.widgets.BootstrapCheckButton;
 
@@ -43,8 +42,6 @@ public class BootstrapActivity extends BootstrapActivityBase {
         initLauncherMapping();
         initVersion();
         lockOtherLaunchers();
-
-        CommonApplication.setFromBootstrap(true);
     }
 
     private void initVersion() {

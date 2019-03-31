@@ -3,16 +3,15 @@ package com.liskovsoft.smartyoutubetv.flavors.common.loading;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
-import android.widget.TextView;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
 
 import java.util.Random;
 
 public class TipsLoadingManager extends BaseLoadingManager {
     private final Activity mContext;
     private final Random mRandom;
+    private final boolean mShowTips;
 
     private final int[] mTips = {
             R.string.tip_show_main_screen,
@@ -24,6 +23,7 @@ public class TipsLoadingManager extends BaseLoadingManager {
         super(context);
         mContext = context;
         mRandom = new Random(System.currentTimeMillis());
+        mShowTips = AppInfoHelpers.isActivityExists(mContext, "BootstrapActivity");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TipsLoadingManager extends BaseLoadingManager {
 
     @Override
     public void show() {
-        if (CommonApplication.getFromBootstrap()) {
+        if (mShowTips) {
             showRandomTip();
             getRootView().setVisibility(View.VISIBLE);
         }
@@ -52,7 +52,7 @@ public class TipsLoadingManager extends BaseLoadingManager {
 
     @Override
     public void hide() {
-        if (CommonApplication.getFromBootstrap()) {
+        if (mShowTips) {
             new Handler(mContext.getMainLooper())
                     .postDelayed(() -> getRootView().setVisibility(View.GONE), 500);
         }

@@ -11,7 +11,6 @@ import com.squareup.otto.ThreadEnforcer;
 public class CommonApplication extends Application {
     private static final String TAG = CommonApplication.class.getSimpleName();
     private static Bus sBus;
-    private static boolean sFromBootstrap;
 
     @Override
     public void onCreate() {
@@ -41,13 +40,5 @@ public class CommonApplication extends Application {
             sBus = new Bus(ThreadEnforcer.ANY);
         }
         return sBus;
-    }
-
-    public static boolean getFromBootstrap() {
-        return sFromBootstrap;
-    }
-
-    public static void setFromBootstrap(boolean fromBootstrap) {
-        sFromBootstrap = fromBootstrap;
     }
 }
