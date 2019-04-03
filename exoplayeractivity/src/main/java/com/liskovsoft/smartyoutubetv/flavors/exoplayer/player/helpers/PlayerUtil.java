@@ -35,6 +35,10 @@ public final class PlayerUtil extends TrackSelectorUtil {
             return false;
         }
 
+        if (formatBoundary == null || formatBoundary.isEmpty()) {
+            return false;
+        }
+
         String[] split = formatBoundary.split("\\|");
 
         int height = split.length >= 1 ? Integer.parseInt(split[0]) : 0;
