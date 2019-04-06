@@ -17,6 +17,8 @@ function Enable4KAddon() {
     // Below values is calculated by me through the logging mechanism.
     this.INIT_WIDTH_CALLS = 33;
     this.INIT_HEIGHT_CALLS = 38;
+    this.WIDTH_4K = 3850;
+    this.HEIGHT_4K = 2160;
 
     this.run = function() {
         // this.saveOriginalValues();
@@ -55,9 +57,6 @@ function Enable4KAddon() {
         // remove asterisk from dimensions value like "950x640*2"
         // window.devicePixelRatio = 1.0;
 
-        // imitate 4K resolution
-        var w = 3840, h = 2160;
-
         // Where to find proper values for INIT_WIDTH_CALLS and INIT_HEIGHT_CALLS:
         // 1) use logged version of overrideProp (see below)
         // 2) measure calls needed to boot into the initial page of the app
@@ -67,21 +66,9 @@ function Enable4KAddon() {
         // same as above but robust one because doesn't rely on call nums
         // override until video element will be initialized or you will get zoomed video
         var $this = this;
-        Utils.overrideProp(window, "innerWidth", w, function() {return $this.isVideoInitialized()});
-        Utils.overrideProp(window,"innerHeight", h, function() {return $this.isVideoInitialized()});
+        Utils.overrideProp(window, "innerWidth", this.WIDTH_4K, function() {return $this.isVideoInitialized()});
+        Utils.overrideProp(window,"innerHeight", this.HEIGHT_4K, function() {return $this.isVideoInitialized()});
     };
-
-    // function overrideProp(obj, propName, value) { // pure function
-    //
-    //     // logging: see call nums in the window.overrideinnerWidth and window.overrideinnerHeight
-    //     window['override' + propName] = 0;
-    //
-    //     obj[propName] = value;
-    //
-    //     Object.defineProperty(obj, propName, { get: function(){window['override' + propName]++;
-    //             return value;}, set: function(val){}, configurable: true, enumerable: true });
-    //
-    // }
 
     this.saveOriginalValues = function() {
         if (this.originWidth || this.originHeight) {
