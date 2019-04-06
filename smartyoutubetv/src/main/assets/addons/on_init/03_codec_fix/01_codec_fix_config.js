@@ -11,6 +11,7 @@ console.log("Scripts::Running script codec_fix_config.js");
  * Config for the WebView browser's engine (1th launcher)
  */
 var CodecConfig_WebView = {
+    'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
     // 'MiBOX4 (oneday)': 'mp4', // disqus: MiBox S
     'MiBOX3_PRO (once)': 'mp4', // mt8173 (disqus), fix hangs on video loads
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
@@ -48,6 +49,7 @@ var CodecConfig_WebView = {
  * Config for the CrossWalk browser's engine (2nd launcher)
  */
 var CodecConfig_XWalk = {
+    'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
     'Hi3798CV100 (Hi3798CV100)': 'mp4', // github issue #176
     'X96mini (p281)': 'mp4', // amlogic: Telegram group
