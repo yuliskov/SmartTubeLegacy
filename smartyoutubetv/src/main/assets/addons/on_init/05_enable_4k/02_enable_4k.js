@@ -55,19 +55,24 @@ function Enable4KAddon() {
     this.increaseResolution = function() {
         // NOTE: WONT WORK PROPERLY
         // remove asterisk from dimensions value like "950x640*2"
-        // window.devicePixelRatio = 1.0;
+        //window.devicePixelRatio = 1.0;
 
+        // HACK: use fake 4k resolution
+        Utils.overrideProp(window, "devicePixelRatio", 4.0);
+
+        // NOTE: WONT WORK PROPERLY
         // Where to find proper values for INIT_WIDTH_CALLS and INIT_HEIGHT_CALLS:
         // 1) use logged version of overrideProp (see below)
         // 2) measure calls needed to boot into the initial page of the app
-        // Utils.overridePropNum("window.innerWidth", w, this.INIT_WIDTH_CALLS);
-        // Utils.overridePropNum("window.innerHeight", h, this.INIT_HEIGHT_CALLS);
+        // Utils.overridePropNum("window.innerWidth", this.WIDTH_4K, this.INIT_WIDTH_CALLS);
+        // Utils.overridePropNum("window.innerHeight", this.HEIGHT_4K, this.INIT_HEIGHT_CALLS);
 
+        // NOTE: WONT WORK PROPERLY
         // same as above but robust one because doesn't rely on call nums
         // override until video element will be initialized or you will get zoomed video
-        var $this = this;
-        Utils.overrideProp(window, "innerWidth", this.WIDTH_4K, function() {return $this.isVideoInitialized()});
-        Utils.overrideProp(window,"innerHeight", this.HEIGHT_4K, function() {return $this.isVideoInitialized()});
+        // var $this = this;
+        // Utils.overrideProp(window, "innerWidth", this.WIDTH_4K, function() {return $this.isVideoInitialized()});
+        // Utils.overrideProp(window,"innerHeight", this.HEIGHT_4K, function() {return $this.isVideoInitialized()});
     };
 
     this.saveOriginalValues = function() {
@@ -97,6 +102,6 @@ function Enable4KAddon() {
     };
 }
 
-// if (!DeviceUtils.isExo()) {
-//     new Enable4KAddon().run();
-// }
+if (!DeviceUtils.isExo()) {
+    new Enable4KAddon().run();
+}
