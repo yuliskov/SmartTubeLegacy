@@ -5,6 +5,7 @@
 console.log("Scripts::Running script device_utils.js");
 
 var DeviceUtils = {
+    TAG: 'DeviceUtils',
     WEBM: 'webm',
     MP4: 'mp4',
     WEBVIEW: 'WebView',
@@ -39,8 +40,9 @@ var DeviceUtils = {
             return;
         }
 
-        if (!window.MediaSource)
+        if (!window.MediaSource) {
             window.MediaSource = window.WebKitMediaSource;
+        }
 
         if (!window.MediaSource) {
             console.log('DeviceUtils::disableCodec: MediaSource is null');
@@ -53,11 +55,15 @@ var DeviceUtils = {
 
         function overrideIsTypeSupported(origin, obj) {
             return function(fullCodec) {
-                // console.log('DeviceUtils::isTypeSupported ' + fullCodec);
+                var supported = origin.call(obj, fullCodec);
+                console.log('DeviceUtils::isTypeSupported ' + fullCodec + ' ' + supported);
+
                 // YouTube's 4K videos encoded exclusively in WEBM codec
-                if ($this.specCmp(fullCodec, codec) && !$this.is4KCodec(codec))
+                if (!$this.isLive(fullCodec) && !$this.is4KCodec(codec) && $this.specCmp(fullCodec, codec)) {
                     return false;
-                return origin.call(obj, fullCodec);
+                }
+
+                return supported;
             }
         }
 
@@ -143,6 +149,42 @@ var DeviceUtils = {
         }
 
         return false;
+    },
+
+    /**
+     * Is live stream. Such content has limited codec support.
+     */
+    isLive: function(codec) {
+        var isVP9 = codec.indexOf('video/webm') != -1;
+        var beginOfTheVideo = this.isBeginOfTheVideo();
+        var isLive = beginOfTheVideo && isVP9;
+
+        // series of queries
+        if (!isLive && this.prevIsLive && !beginOfTheVideo) {
+            isLive = true;
+        }
+
+        this.prevIsLive = isLive;
+
+        Log.d(this.TAG, "Is live: " + isLive);
+
+        return isLive;
+    },
+
+    /**
+     * Test codec query intervals
+     */
+    isBeginOfTheVideo: function() {
+        if (!this.prevVideoTime) {
+            this.prevVideoTime = 0;
+        }
+
+        var currentTimeMs = Utils.getCurrentTimeMs();
+        var diff = currentTimeMs - this.prevVideoTime;
+
+        this.prevVideoTime = currentTimeMs;
+
+        return diff > 1000;
     },
 
     supportsVideoType: function(type) {
