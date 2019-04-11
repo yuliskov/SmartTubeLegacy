@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -87,6 +88,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
+
+    private boolean getPlaybackRequiresGesture() {
+        return mPrefs.getBoolean(PREF_PLAYBACK_REQUIRES_GESTURE, false);
+    }
 
     public String getHomePage() {
         return mPrefs.getString(PREF_HOMEPAGE, getFactoryResetHomeUrl(mContext));
@@ -376,6 +381,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             settings.setUserAgentString(ua);
         } else {
             settings.setUserAgentString(USER_AGENTS[getUserAgent()]);
+        }
+
+        if (VERSION.SDK_INT >= 17) {
+            settings.setMediaPlaybackRequiresUserGesture(getPlaybackRequiresGesture());
         }
     }
 

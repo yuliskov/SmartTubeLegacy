@@ -19,6 +19,7 @@ public interface PreferenceKeys {
     // ----------------------
     // Keys for advanced_preferences.xml
     // ----------------------
+    static final String PREF_PLAYBACK_REQUIRES_GESTURE = "playback_requires_gesture";
     static final String PREF_AUTOFIT_PAGES = "autofit_pages";
     static final String PREF_BLOCK_POPUP_WINDOWS = "block_popup_windows";
     static final String PREF_DEFAULT_TEXT_ENCODING = "default_text_encoding";
