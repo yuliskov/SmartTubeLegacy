@@ -88,7 +88,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
-
+    
     private boolean getPlaybackRequiresGesture() {
         return mPrefs.getBoolean(PREF_PLAYBACK_REQUIRES_GESTURE, false);
     }
@@ -384,6 +384,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         }
 
         if (VERSION.SDK_INT >= 17) {
+            // NOTE: 'autoplay' fix on WebView engine
             settings.setMediaPlaybackRequiresUserGesture(getPlaybackRequiresGesture());
         }
     }
