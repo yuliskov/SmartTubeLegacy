@@ -54,7 +54,7 @@ var ListenerUtil = {
 
         var container = this.getContainer(listenerSpec.selectorOrElement);
 
-        if (!container || !container.children || !container.children.length) {
+        if (!container || !container.children || (!container.children.length && container.tagName == 'DIV')) {
             Log.d(this.TAG, "Can't " + listenerSpec.type + ": element " + EventUtils.toSelector(listenerSpec.selectorOrElement) + " not initialized... waiting...");
             this.addPendingHandler(listenerSpec);
         } else if (listenerSpec.type == this.ADD_HANDLER) {

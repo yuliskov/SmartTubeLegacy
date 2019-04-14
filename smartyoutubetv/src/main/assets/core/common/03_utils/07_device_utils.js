@@ -59,7 +59,10 @@ var DeviceUtils = {
                 console.log('DeviceUtils::isTypeSupported ' + fullCodec + ' ' + supported);
 
                 // YouTube's 4K videos encoded exclusively in WEBM codec
-                if (!$this.isLive(fullCodec) && !$this.is4KCodec(codec) && $this.specCmp(fullCodec, codec)) {
+                if ($this.isPlaybackWorking()   &&
+                    !$this.isLive(fullCodec)    &&
+                    !$this.is4KCodec(codec)     &&
+                    $this.specCmp(fullCodec, codec)) {
                     return false;
                 }
 
@@ -149,6 +152,37 @@ var DeviceUtils = {
         }
 
         return false;
+    },
+
+    /**
+     * Check that we not blocked all playable codecs
+     * @returns {boolean} it works!
+     */
+    isPlaybackWorking: function() {
+        if (!this.playbackListenersAdded && YouTubeUtils.getPlayer()) {
+            this.addPlaybackListeners();
+            this.playbackListenersAdded = true;
+        }
+
+        if (!this.playbackStarting) { // wait one video
+            return true;
+        }
+
+        return this.playbackWorking;
+    },
+
+    addPlaybackListeners: function() {
+        var $this = this;
+
+        EventUtils.addListenerOnce(YouTubeUtils.getPlayer(), DefaultEvents.PLAYER_PLAY, function() {
+            Log.d($this.TAG, "Playback is starting...");
+            $this.playbackStarting = true;
+        });
+
+        EventUtils.addListenerOnce(YouTubeUtils.getPlayer(), DefaultEvents.PLAYER_PLAYING, function() {
+            Log.d($this.TAG, "Playback is working...");
+            $this.playbackWorking = true;
+        });
     },
 
     /**
