@@ -1,5 +1,5 @@
-<resources>
-    <string name="system_lang">Par défaut</string>
-    <string name="log_stored_in_path">Journal activé: %s</string>
-    <string name="log_to_file_started">Début du journal: %s</string>
+ï»¿<resources>
+    <string name="system_lang">Par dÃ©faut</string>
+    <string name="log_stored_in_path">Journal activÃ©: %s</string>
+    <string name="log_to_file_started">DÃ©but du journal: %s</string>
 </resources>
