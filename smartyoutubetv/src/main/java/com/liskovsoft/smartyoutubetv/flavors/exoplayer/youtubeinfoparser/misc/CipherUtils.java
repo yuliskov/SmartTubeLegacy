@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * YouTube's decipher routine tools<br/>
  * Routine can have any form<br/>
- * Main file: <em>"tv-player.js"</em><br/>
+ * Main file: <em>"tv-player.js"</em> or <em>"tv-player-ias.js"</em><br/>
  * Searched marks: a.split("") ... a.join("")
  */
 public class CipherUtils {
@@ -19,7 +19,7 @@ public class CipherUtils {
         Pattern regex = Pattern.compile(decipherPattern);
         String jsCode = scanner.findWithinHorizon(regex, 0);
         if (jsCode == null) {
-            return "";
+            return null;
         }
         String cleaned = jsCode.replaceFirst("function\\ [_$A-Za-z]{2}", "function decipherSignature");
         return cleaned;

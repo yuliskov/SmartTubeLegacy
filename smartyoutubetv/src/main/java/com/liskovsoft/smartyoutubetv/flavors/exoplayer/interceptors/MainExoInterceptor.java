@@ -25,7 +25,7 @@ public class MainExoInterceptor extends RequestInterceptor {
             return true;
         }
 
-        if (url.contains("tv-player.js")) {
+        if (url.contains("tv-player")) {
             mCurrentInterceptor = mCipherInterceptor;
             return true;
         }

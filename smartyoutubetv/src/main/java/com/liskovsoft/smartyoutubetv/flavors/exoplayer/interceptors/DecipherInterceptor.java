@@ -14,7 +14,7 @@ import okhttp3.Response;
 import java.io.InputStream;
 
 /**
- * intercepts "tv-player.js"
+ * intercepts "tv-player.js", "tv-player-ias.js"
  */
 public class DecipherInterceptor extends RequestInterceptor {
     private String mJSDecipherCode;
@@ -30,7 +30,7 @@ public class DecipherInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        if (mJSDecipherCode != null) { // remove once
+        if (mJSDecipherCode != null) { // run once
             return null;
         }
 
@@ -40,12 +40,7 @@ public class DecipherInterceptor extends RequestInterceptor {
     }
 
     private void runInOtherThread(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                cacheResponse(url);
-            }
-        }).start();
+        new Thread(() -> cacheResponse(url)).start();
     }
 
     private void cacheResponse(String url) {
