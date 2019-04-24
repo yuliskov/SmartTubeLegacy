@@ -199,4 +199,11 @@ public class WebViewJavaScriptInterface {
         SmartPreferences prefs = SmartPreferences.instance(mContext);
         return SmartPreferences.AFR_FIX_STATE_ENABLED.equals(prefs.getAfrFixState());
     }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public int getPlaybackWorking() {
+        SmartPreferences prefs = SmartPreferences.instance(mContext);
+        return prefs.getPlaybackWorking();
+    }
 }

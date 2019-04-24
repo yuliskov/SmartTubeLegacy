@@ -34,6 +34,10 @@ public final class SmartPreferences {
     private static final String USE_EXTERNAL_PLAYER = "use_external_player";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
     private static final String LOG_TYPE = "log_type";
+    private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
+    public static final int PLAYBACK_UNKNOWN = 0;
+    public static final int PLAYBACK_IS_WORKING = 1;
+    public static final int PLAYBACK_NOT_WORKING = 2;
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -248,5 +252,15 @@ public final class SmartPreferences {
         mPrefs.edit()
                 .putInt(LOG_TYPE, type)
                 .apply();
+    }
+
+    public void setPlaybackWorking(int state) {
+        mPrefs.edit()
+                .putInt(PLAYBACK_WORKING_KEY, state)
+                .apply();
+    }
+
+    public int getPlaybackWorking() {
+        return mPrefs.getInt(PLAYBACK_WORKING_KEY, PLAYBACK_UNKNOWN);
     }
 }

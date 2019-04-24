@@ -14,6 +14,9 @@ var DeviceUtils = {
     MESSAGE_MIC_CLICKED: 'message_mic_clicked',
     MESSAGE_SYNC_LANG: 'message_sync_lang',
     MESSAGE_AUTHORIZATION_HEADER: 'message_authorization_header',
+    PLAYBACK_UNKNOWN: 0,
+    PLAYBACK_IS_WORKING: 1,
+    PLAYBACK_NOT_WORKING: 2,
 
     init: function() {
         // do init here
@@ -159,30 +162,9 @@ var DeviceUtils = {
      * @returns {boolean} it works!
      */
     isPlaybackWorking: function() {
-        if (!this.playbackListenersAdded && YouTubeUtils.getPlayer()) {
-            this.addPlaybackListeners();
-            this.playbackListenersAdded = true;
-        }
+        var state = this.getPlaybackWorking();
 
-        if (!this.playbackStarting) { // wait one video
-            return true;
-        }
-
-        return this.playbackWorking;
-    },
-
-    addPlaybackListeners: function() {
-        var $this = this;
-
-        EventUtils.addListenerOnce(YouTubeUtils.getPlayer(), DefaultEvents.PLAYER_PLAY, function() {
-            Log.d($this.TAG, "Playback is starting...");
-            $this.playbackStarting = true;
-        });
-
-        EventUtils.addListenerOnce(YouTubeUtils.getPlayer(), DefaultEvents.PLAYER_PLAYING, function() {
-            Log.d($this.TAG, "Playback is working...");
-            $this.playbackWorking = true;
-        });
+        return state == this.PLAYBACK_UNKNOWN || state == this.PLAYBACK_IS_WORKING;
     },
 
     /**
@@ -281,6 +263,10 @@ var DeviceUtils = {
 
     isMicAvailable: function() {
         return this.getApp().isMicAvailable();
+    },
+
+    getPlaybackWorking: function() {
+        return this.getApp().getPlaybackWorking();
     },
 
     isMicAvailable2: function() {
