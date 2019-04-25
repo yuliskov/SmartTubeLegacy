@@ -24,7 +24,7 @@ var CodecConfig_WebView = {
     'MiTV4 (pulpfiction)': 'mp4', // amlogic: MiTV4 (github > issues)
     'HnL11620 (m201)': 'mp4', // amlogic: (gmail)
     'IPTV-1000': 'mp4', // https://github.com/yuliskov/SmartYouTubeTV/issues/119
-    '(vbox86p)': 'mp4', // Genymotion virtual device
+    // '(vbox86p)': 'mp4', // Genymotion virtual device
     'MiTV3S (pulpfiction)': 'mp4', // MiTV3S 55/60 (4pda)
     'MStar Android TV (aosp_ponkan32)': 'mp4', // ??? (gmail)
     'MiTV3S (missionimpossible)': 'mp4', // MiTV3 ???
