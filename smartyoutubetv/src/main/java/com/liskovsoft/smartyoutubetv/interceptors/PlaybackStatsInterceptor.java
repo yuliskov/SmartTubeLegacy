@@ -20,8 +20,11 @@ public class PlaybackStatsInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (!AppInfoHelpers.isAppJustInstalled() &&
-            mPrefs.getPlaybackWorking() == SmartPreferences.PLAYBACK_NOT_WORKING) { // set only once
+        if (AppInfoHelpers.isAppJustInstalled()) {
+            mPrefs.setPlaybackWorking(SmartPreferences.PLAYBACK_UNKNOWN);
+        }
+
+        if (mPrefs.getPlaybackWorking() == SmartPreferences.PLAYBACK_NOT_WORKING) { // set only once
             return false;
         }
 
