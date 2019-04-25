@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
@@ -19,7 +20,8 @@ public class PlaybackStatsInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (mPrefs.getPlaybackWorking() == SmartPreferences.PLAYBACK_NOT_WORKING) { // set only once
+        if (!AppInfoHelpers.isAppJustInstalled() &&
+            mPrefs.getPlaybackWorking() == SmartPreferences.PLAYBACK_NOT_WORKING) { // set only once
             return false;
         }
 
