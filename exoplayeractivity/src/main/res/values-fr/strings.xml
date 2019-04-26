@@ -10,9 +10,9 @@
     <string name="next_video">Suivante</string>
     <string name="pause">Pause</string>
     <string name="play">Lire</string>
-    <string name="dislike">Je n\'aime pas</string>
-    <string name="like">J\'aime</string>
-    <string name="stats">Statistiques</string>
+    <string name="dislike">Détester</string>
+    <string name="like">Aimer</string>
+    <string name="stats">Stats</string>
     <string name="subscribe">S\'abonner</string>
     <string name="quality">Qualité</string>
     <string name="video">Vidéo</string>
@@ -35,7 +35,7 @@
     <string name="selection_disabled">Désactiver la piste</string>
     <string name="selection_default">Qualité par défaut</string>
     <string name="sample_list_load_error">Un ou plusieurs exemples de listes n\'ont pas pu être chargés</string>
-    <string name="exo_like_desc">J\'aime</string>
+    <string name="exo_like_desc">Aimer</string>
     <string name="captions">Légendes</string>
     <string name="not_implemented_msg">Pas encore implémenté</string>
     <string name="published">Publié</string>
@@ -48,7 +48,7 @@
     <string name="track_view_format">Format de vue de piste</string>
     <string name="hide_playback_errors">Masquer les érreurs de lecture</string>
     <string name="no_subtitle_msg">La vidéo ne contient pas de sous-titres</string>
-    <string name="repeat_video">Répéter la vidéo</string>
+    <string name="repeat_video">Répéter</string>
     <string name="video_speed">Vitesse</string>
     <string name="select_video_speed">Sélectionnez la vitesse de la vidéo</string>
     <string name="normal">Normal</string>
