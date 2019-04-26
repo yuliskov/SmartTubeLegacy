@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class YouTubeTracker {
     private static final String TAG = YouTubeTracker.class.getSimpleName();
+    private static final String HISTORY_URL = "youtube.com/api/stats/watchtime";
     private final Context mContext;
     private static final String toAppend =
             "&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=0&fmt=137&fs=0&rt=292.768&euri=https%3A%2F%2Fwww" +
@@ -25,18 +26,15 @@ public class YouTubeTracker {
     }
 
     public void track(String trackingUrl, String videoUrl) {
-        if (!trackingUrl.contains("youtube.com/api/stats/watchtime")) {
-            Log.d(TAG, "This tracking url isn't supported: " + trackingUrl);
-            return;
-        }
-
-        if (trackingUrl.contains("youtube.com/api/stats/watchtime")) {
+        if (trackingUrl.contains(HISTORY_URL)) {
             Map<String, String> headers = getHeaders();
             trackingUrl = processUrl(trackingUrl, videoUrl);
             Log.d(TAG, "Tracking url: " + trackingUrl);
             Log.d(TAG, "Tracking headers: " + headers);
             Response response = OkHttpHelpers.doGetOkHttpRequest(trackingUrl, headers);
             Log.d(TAG, "Tracking response: " + response);
+        } else {
+            Log.d(TAG, "This tracking url isn't supported: " + trackingUrl);
         }
     }
 
