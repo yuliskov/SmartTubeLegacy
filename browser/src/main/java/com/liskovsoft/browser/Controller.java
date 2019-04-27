@@ -24,8 +24,10 @@ import android.webkit.WebChromeClient.FileChooserParams;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Controller implements UiController, WebViewController, ActivityController {
@@ -124,8 +126,15 @@ public class Controller implements UiController, WebViewController, ActivityCont
 
         onControllerStart();
 
-        // mCrashRecoverHandler has any previously saved state.
-        mCrashRecoveryHandler.startRecovery(intent);
+        try {
+            // mCrashRecoverHandler has any previously saved state.
+            mCrashRecoveryHandler.startRecovery(intent);
+        } catch (Exception e) {
+            MessageHelpers.showLongMessage(mActivity, "Cannot proceed without Chrome browser installed");
+            Log.d(TAG, e);
+            e.printStackTrace();
+        }
+
         mIntent = intent; // store intent for the future call of 'restart'
     }
 
