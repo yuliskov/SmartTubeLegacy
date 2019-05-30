@@ -43,7 +43,7 @@ public class YouTubeMediaParser {
     private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
     private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
     private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsWatchtimeUrl.baseUrl";
-    private static final int COMMON_SIGNATURE_LENGTH = 81;
+    private static final int DECIPHERED_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
     private final int mId;
@@ -234,12 +234,22 @@ public class YouTubeMediaParser {
     }
 
     private String getStrangeSignature(MyQueryString query) {
-        return getStrangeSignature(query.get(MediaItem.S), query.get(MediaItem.SIGNATURE));
+        return getStrangeSignature(
+                query.get(MediaItem.S),
+                query.get(MediaItem.S_ALT_1),
+                query.get(MediaItem.S_ALT_2),
+                query.get(MediaItem.SIGNATURE));
     }
 
     private String getStrangeSignature(MediaItem item) {
         MyQueryString query = MyQueryStringFactory.parse(item.getUrl());
-        return getStrangeSignature(item.getS(), item.getSignature(), query.get(MediaItem.S), query.get(MediaItem.SIGNATURE));
+        return getStrangeSignature(
+                item.getS(),
+                item.getSignature(),
+                query.get(MediaItem.S),
+                query.get(MediaItem.S_ALT_1),
+                query.get(MediaItem.S_ALT_2),
+                query.get(MediaItem.SIGNATURE));
     }
 
     // NOTE: don't delete
@@ -273,7 +283,7 @@ public class YouTubeMediaParser {
     }
 
     private void doCallbackOnDashMPDUrl(String signature) {
-        if (!mDashMPDUrl.isEmpty() && signature != null && signature.length() == COMMON_SIGNATURE_LENGTH) {
+        if (!mDashMPDUrl.isEmpty() && signature != null && signature.length() == DECIPHERED_SIGNATURE_LENGTH) {
             mDashMPDUrl.remove(MediaItem.S);
             mDashMPDUrl.set(MediaItem.SIGNATURE, signature);
         } else {
@@ -357,6 +367,8 @@ public class YouTubeMediaParser {
         String TYPE = "type";
         String ITAG = "itag";
         String S = "s";
+        String S_ALT_1 = "sig";
+        String S_ALT_2 = "lsig";
         String SIGNATURE = "signature";
         // End Common params
 
@@ -505,20 +517,12 @@ public class YouTubeMediaParser {
                 continue;
             }
 
-            if (!isValidSignature(signature)) {
+            if (signature.length() != DECIPHERED_SIGNATURE_LENGTH) {
                 return signature;
             }
         }
 
         return null;
-    }
-
-    private static boolean isValidSignature(String signature) {
-        if (signature == null) {
-            return false;
-        }
-
-        return signature.length() == COMMON_SIGNATURE_LENGTH;
     }
 
     private static boolean isEmpty(MyQueryString queryString) {

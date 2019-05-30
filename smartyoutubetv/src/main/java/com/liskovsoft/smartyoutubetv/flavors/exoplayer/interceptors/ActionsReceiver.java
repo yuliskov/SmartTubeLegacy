@@ -19,6 +19,7 @@ import java.util.Map;
 public class ActionsReceiver implements Runnable {
     private static final String TAG = ActionsReceiver.class.getSimpleName();
     private static final long RESPONSE_CHECK_DELAY_MS = 5_000;
+    private static final String UNDEFINED = "undefined";
     private final Context mContext;
     private final Intent mIntent;
     private final Listener mListener;
@@ -81,14 +82,16 @@ public class ActionsReceiver implements Runnable {
 
     @Override
     public void run() {
-        mStateCommand = new GetButtonStatesCommand(new GetButtonStatesCommand.Callback() {
-            @Override
-            public void onResult(String result) {
-                processJSON(result);
-                doneResult();
-
-                Log.d(TAG, "GetButtonStatesCommand: result");
+        mStateCommand = new GetButtonStatesCommand(result -> {
+            if (result == null || result.isEmpty() || result.equals(UNDEFINED)) {
+                Log.e(TAG, "GetButtonStates doesn't return meaningful value: " + result);
+                return;
             }
+
+            processJSON(result);
+            doneResult();
+
+            Log.d(TAG, "GetButtonStatesCommand: result");
         });
 
         Log.d(TAG, "Before GetButtonStatesCommand");
