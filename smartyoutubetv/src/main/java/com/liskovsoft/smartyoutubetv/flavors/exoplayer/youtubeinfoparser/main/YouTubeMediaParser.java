@@ -62,6 +62,10 @@ public class YouTubeMediaParser {
         mContent = content;
         mId = new Random().nextInt();
 
+        if (Log.getLogType() == Log.LOG_TYPE_FILE) {
+            Log.d(TAG, content);
+        }
+
         initJsonParser();
     }
 
@@ -174,6 +178,7 @@ public class YouTubeMediaParser {
 
         // TODO: signature bug on the VEVO videos
         if (mMediaItems.isEmpty()) {
+            Log.d(TAG, "JSON section doesn't contain dash formats... Trying to get ones from url-encoded section...");
             mMediaItems.addAll(extractDashMediaItems(mContent));
         }
 
@@ -236,8 +241,6 @@ public class YouTubeMediaParser {
     private String getStrangeSignature(MyQueryString query) {
         return getStrangeSignature(
                 query.get(MediaItem.S),
-                query.get(MediaItem.S_ALT_1),
-                query.get(MediaItem.S_ALT_2),
                 query.get(MediaItem.SIGNATURE));
     }
 
@@ -247,8 +250,6 @@ public class YouTubeMediaParser {
                 item.getS(),
                 item.getSignature(),
                 query.get(MediaItem.S),
-                query.get(MediaItem.S_ALT_1),
-                query.get(MediaItem.S_ALT_2),
                 query.get(MediaItem.SIGNATURE));
     }
 

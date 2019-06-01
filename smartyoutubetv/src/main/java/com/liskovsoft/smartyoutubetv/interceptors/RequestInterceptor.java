@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import okhttp3.MediaType;
 import okhttp3.Response;
@@ -9,6 +10,8 @@ import okhttp3.Response;
 import java.io.InputStream;
 
 public abstract class RequestInterceptor {
+    private static final String TAG = RequestInterceptor.class.getSimpleName();
+
     public abstract boolean test(String url);
     public abstract WebResourceResponse intercept(String url);
 
@@ -36,6 +39,12 @@ public abstract class RequestInterceptor {
 
     protected WebResourceResponse prependResponse(String url, InputStream toPrepend) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) {
+            Log.e(TAG, "Oops... unknown error inside OkHttpHelpers: " + url);
+            return null;
+        }
+
         InputStream responseStream = response.body().byteStream();
         return createResponse(response.body().contentType(), Helpers.appendStream(toPrepend, responseStream));
     }
