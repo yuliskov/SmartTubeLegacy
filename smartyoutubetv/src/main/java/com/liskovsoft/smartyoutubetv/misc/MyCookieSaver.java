@@ -12,17 +12,13 @@ import org.xwalk.core.XWalkCookieManager;
  * Consists in two parts: {@link MyCookieLoader MyCookieLoader} and {@link MyCookieSaver MyCookieSaver}
  */
 public class MyCookieSaver {
-    /**
-     * full url ex: https://www.youtube.com/tv#/surface?c=FEmy_youtube&params=cAY%253D&resume
-     */
-    private static final String LOGIN_URL_PART = "my_youtube";
-    private static String sCookie;
+    private static final String BROWSE_URL_PART = "youtube.com/tv#/surface";
 
     public static void saveCookie(WebView webView) {
         String url = webView.getUrl();
-        if (url != null && url.contains(LOGIN_URL_PART)) {
-            sCookie = getCookie(url);
-            MyCookieLoader.setCookie(sCookie);
+        if (url != null && url.contains(BROWSE_URL_PART)) {
+            String cookie = getCookie(url);
+            MyCookieLoader.setCookie(cookie);
         }
     }
 

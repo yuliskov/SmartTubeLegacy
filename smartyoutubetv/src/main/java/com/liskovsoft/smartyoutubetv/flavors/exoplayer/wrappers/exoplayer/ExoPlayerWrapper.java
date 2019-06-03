@@ -147,7 +147,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         Listener playerListener = new Listener() { // player is opened from from get_video_info url
             @Override
             public void onDone() {
-                Log.d(TAG, "About to start ExoPlayer fragment: " + playerIntent.getExtras());
+                Log.d(TAG, "About to start ExoPlayer fragment...");
+
+                if (Log.getLogType() == Log.LOG_TYPE_FILE) {
+                    Log.d(TAG, "Passing intent to ExoPlayer: " + playerIntent.getExtras());
+                }
+
                 mManager.onOpen();
 
                 mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // pause every time, except when mirroring
