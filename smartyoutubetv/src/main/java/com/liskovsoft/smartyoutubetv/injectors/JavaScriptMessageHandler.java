@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 
 import android.content.Context;
 import com.liskovsoft.browser.Browser;
-import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 

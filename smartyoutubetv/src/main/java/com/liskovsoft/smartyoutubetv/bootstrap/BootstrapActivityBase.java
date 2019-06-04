@@ -13,7 +13,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.misc.OldPackageRemover;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;

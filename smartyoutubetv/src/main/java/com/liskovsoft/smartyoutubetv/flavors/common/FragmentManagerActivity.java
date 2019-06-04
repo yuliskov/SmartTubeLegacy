@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
-import com.liskovsoft.smartyoutubetv.lang.LangUpdater;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
 import com.liskovsoft.sharedutils.mylogger.Log;

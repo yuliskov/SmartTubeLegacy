@@ -61,7 +61,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void setupUA() {
-        mUAManager = new UserAgentManager(getActivity());
+        mUAManager = new UserAgentManager();
     }
 
     private void initKeys() {
