@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -24,6 +25,7 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExoInterceptor extends RequestInterceptor {
@@ -101,7 +103,9 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("cookie", MyCookieLoader.getRawCookie());
+        Response responseSimple = OkHttpHelpers.doGetOkHttpRequest(url, headers);
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 

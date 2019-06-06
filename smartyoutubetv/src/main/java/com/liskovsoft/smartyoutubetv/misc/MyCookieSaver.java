@@ -18,7 +18,7 @@ public class MyCookieSaver {
         String url = webView.getUrl();
         if (url != null && url.contains(BROWSE_URL_PART)) {
             String cookie = getCookie(url);
-            MyCookieLoader.setCookie(cookie);
+            MyCookieLoader.setRawCookie(cookie);
         }
     }
 
