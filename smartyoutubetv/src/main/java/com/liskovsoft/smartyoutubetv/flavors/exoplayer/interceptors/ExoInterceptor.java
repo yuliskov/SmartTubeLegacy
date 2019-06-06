@@ -65,6 +65,8 @@ public class ExoInterceptor extends RequestInterceptor {
 
         url = unplayableVideoFix(url);
 
+        url = unplayableVideoFix2(url);
+
         mCurrentUrl = url;
 
         if (mManager.cancelPlayback(url)) {
@@ -77,6 +79,13 @@ public class ExoInterceptor extends RequestInterceptor {
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
         return null;
+    }
+
+    private String unplayableVideoFix2(String url) {
+        MyQueryString myQuery = MyQueryStringFactory.parse(url);
+        myQuery.remove(PARAM_ACCESS_TOKEN);
+
+        return myQuery.toString();
     }
 
     /**
@@ -103,9 +112,7 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("cookie", MyCookieLoader.getRawCookie());
-        Response responseSimple = OkHttpHelpers.doGetOkHttpRequest(url, headers);
+        Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
