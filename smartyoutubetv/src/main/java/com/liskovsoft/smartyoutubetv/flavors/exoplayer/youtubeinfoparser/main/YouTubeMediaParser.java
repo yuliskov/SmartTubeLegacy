@@ -229,28 +229,25 @@ public class YouTubeMediaParser {
         List<String> result = new ArrayList<>();
 
         for (MediaItem item : mMediaItems) {
-            result.add(getStrangeSignature(item));
+            result.add(findStrangeSignature(item));
         }
 
-        result.add(getStrangeSignature(mDashMPDUrl));
-        result.add(getStrangeSignature(mHlsUrl));
+        result.add(findStrangeSignature(mDashMPDUrl));
+        result.add(findStrangeSignature(mHlsUrl));
 
         return result;
     }
 
-    private String getStrangeSignature(MyQueryString query) {
-        return getStrangeSignature(
-                query.get(MediaItem.S),
-                query.get(MediaItem.SIGNATURE));
+    private String findStrangeSignature(MyQueryString query) {
+        return findStrangeSignature(
+                query.get(MediaItem.S));
     }
 
-    private String getStrangeSignature(MediaItem item) {
+    private String findStrangeSignature(MediaItem item) {
         MyQueryString query = MyQueryStringFactory.parse(item.getUrl());
-        return getStrangeSignature(
+        return findStrangeSignature(
                 item.getS(),
-                item.getSignature(),
-                query.get(MediaItem.S),
-                query.get(MediaItem.SIGNATURE));
+                query.get(MediaItem.S));
     }
 
     // NOTE: don't delete
@@ -312,11 +309,16 @@ public class YouTubeMediaParser {
         for (int i = 0; i < mMediaItems.size(); i++) {
             String signature = signatures.get(i);
 
+            MediaItem item = mMediaItems.get(i);
+
+            //if (signature == null && isValidSignature(item.getS())) {
+            //    signature = item.getS();
+            //}
+
             if (signature == null) {
                 continue;
             }
 
-            MediaItem item = mMediaItems.get(i);
             MyQueryString url = MyQueryStringFactory.parse(item.getUrl());
             url.set(MediaItem.SIGNATURE, signature);
             item.setUrl(url.toString());
@@ -512,18 +514,24 @@ public class YouTubeMediaParser {
      * @param signatures list
      * @return first non-normal signature or null
      */
-    private String getStrangeSignature(String... signatures) {
+    private String findStrangeSignature(String... signatures) {
         for (String signature : signatures) {
             if (signature == null) {
                 continue;
             }
 
-            if (signature.length() != DECIPHERED_SIGNATURE_LENGTH) {
-                return signature;
-            }
+            return signature;
+
+            //if (!isValidSignature(signature)) {
+            //    return signature;
+            //}
         }
 
         return null;
+    }
+
+    private static boolean isValidSignature(String signature) {
+        return signature != null && signature.length() == DECIPHERED_SIGNATURE_LENGTH;
     }
 
     private static boolean isEmpty(MyQueryString queryString) {
