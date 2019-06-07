@@ -6,4 +6,5 @@ public interface MyQueryString {
     void set(String key, String value);
     boolean isEmpty();
     boolean isValid();
+    boolean contains(String key);
 }

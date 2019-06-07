@@ -82,4 +82,9 @@ public class MyUrlEncodedQueryString implements MyQueryString {
     public boolean isEmpty() {
         return mUrl == null || mUrl.isEmpty();
     }
+
+    @Override
+    public boolean contains(String key) {
+        return mQueryString.contains(key);
+    }
 }

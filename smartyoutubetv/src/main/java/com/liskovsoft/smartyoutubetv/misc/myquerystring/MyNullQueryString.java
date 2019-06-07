@@ -37,10 +37,15 @@ public class MyNullQueryString implements MyQueryString {
     public boolean isValid() {
         return false;
     }
-    
+
     @NotNull
     @Override
     public String toString() {
         return mUrl;
+    }
+
+    @Override
+    public boolean contains(String key) {
+        return false;
     }
 }

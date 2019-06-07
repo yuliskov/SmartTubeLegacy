@@ -311,16 +311,18 @@ public class YouTubeMediaParser {
 
             MediaItem item = mMediaItems.get(i);
 
-            //if (signature == null && isValidSignature(item.getS())) {
-            //    signature = item.getS();
-            //}
-
             if (signature == null) {
                 continue;
             }
 
             MyQueryString url = MyQueryStringFactory.parse(item.getUrl());
-            url.set(MediaItem.SIGNATURE, signature);
+
+            if (url.contains(MediaItem.SIGNATURE2_MARK)) {
+                url.set(MediaItem.SIGNATURE2, signature);
+            } else {
+                url.set(MediaItem.SIGNATURE, signature);
+            }
+
             item.setUrl(url.toString());
             item.setSignature(signature);
             item.setS(null);
@@ -370,9 +372,9 @@ public class YouTubeMediaParser {
         String TYPE = "type";
         String ITAG = "itag";
         String S = "s";
-        String S_ALT_1 = "sig";
-        String S_ALT_2 = "lsig";
         String SIGNATURE = "signature";
+        String SIGNATURE2 = "sig";
+        String SIGNATURE2_MARK = "lsig";
         // End Common params
 
         // DASH params

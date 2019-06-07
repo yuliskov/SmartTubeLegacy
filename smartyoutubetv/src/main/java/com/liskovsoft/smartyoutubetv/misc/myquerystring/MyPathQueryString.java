@@ -94,4 +94,9 @@ public class MyPathQueryString implements MyQueryString {
 
         return Helpers.matchAll(mUrl, "^[^&=]*$", "\\/[^\\/]+\\/[^\\/]+");
     }
+
+    @Override
+    public boolean contains(String key) {
+        return get(key) != null;
+    }
 }
