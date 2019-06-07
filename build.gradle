@@ -31,6 +31,7 @@ buildscript {
         constraintLayoutVersion = 'com.android.support.constraint:constraint-layout:1.1.2'
         dnsjavaVersion = 'dnsjava:dnsjava:2.1.8'
         okhttpVersion = 'com.squareup.okhttp3:okhttp:3.9.1'
+        okhttpProfiler = 'com.itkacher.okhttpprofiler:okhttpprofiler:1.0.5'
         ottoVersion = 'com.squareup:otto:1.3.8'
         butterKnifeVersion = 'com.jakewharton:butterknife:8.4.0'
         butterKnifeCompilerVersion = 'com.jakewharton:butterknife-compiler:8.4.0'

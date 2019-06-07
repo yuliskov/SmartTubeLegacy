@@ -4,6 +4,7 @@ import android.webkit.CookieManager;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
 import org.xwalk.core.XWalkCookieManager;
 
@@ -13,6 +14,8 @@ import org.xwalk.core.XWalkCookieManager;
  */
 public class MyCookieSaver {
     private static final String BROWSE_URL_PART = "youtube.com/tv#/surface";
+    private static final String SITE_URL = "https://www.youtube.com";
+    private static final String TAG = MyCookieSaver.class.getSimpleName();
 
     public static void saveCookie(WebView webView) {
         String url = webView.getUrl();
@@ -20,6 +23,12 @@ public class MyCookieSaver {
             String cookie = getCookie(url);
             MyCookieLoader.setRawCookie(cookie);
         }
+    }
+
+    public static void saveCookie() {
+        Log.d(TAG, "Saving cookie...");
+
+        MyCookieLoader.setRawCookie(getCookie(SITE_URL));
     }
 
     private static String getCookie(String url) {

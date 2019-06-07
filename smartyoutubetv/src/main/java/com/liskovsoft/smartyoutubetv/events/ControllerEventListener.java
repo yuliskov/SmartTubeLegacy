@@ -94,7 +94,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     @Override
     public void onPageFinished(Tab tab, String url) {
         bindTabToInjectors(tab);
-        syncCookies(tab);
+        // syncCookies(tab);
     }
 
     /**
@@ -128,6 +128,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         if (mContext instanceof TwoFragmentManager) {
             ((TwoFragmentManager) mContext).onBrowserLoaded();
         }
+
+        MyCookieSaver.saveCookie();
     }
 
     @Override

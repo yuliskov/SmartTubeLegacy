@@ -7,6 +7,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -23,10 +24,12 @@ import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
@@ -41,6 +44,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final boolean mUseExternalPlayer;
     public static final String URL_VIDEO_DATA = "get_video_info";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
+    private Map<String, String> mHeaders;
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor) {
         mContext = context;
@@ -65,8 +69,6 @@ public class ExoInterceptor extends RequestInterceptor {
 
         url = unplayableVideoFix(url);
 
-        url = unplayableVideoFix2(url);
-
         mCurrentUrl = url;
 
         if (mManager.cancelPlayback(url)) {
@@ -79,13 +81,6 @@ public class ExoInterceptor extends RequestInterceptor {
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
         return null;
-    }
-
-    private String unplayableVideoFix2(String url) {
-        MyQueryString myQuery = MyQueryStringFactory.parse(url);
-        myQuery.remove(PARAM_ACCESS_TOKEN);
-
-        return myQuery.toString();
     }
 
     /**
@@ -112,8 +107,32 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        Response responseSimple = OkHttpHelpers.doOkHttpRequest(url);
+        Response responseSimple = OkHttpHelpers.doGetOkHttpRequest(url, prepareHeaders());
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
+    }
+
+    private Map<String, String> prepareHeaders() {
+        if (mHeaders != null) {
+            return mHeaders;
+        }
+
+        String rawCookie = MyCookieLoader.getRawCookie();
+
+        if (rawCookie == null) { // header cannot be null
+            return null;
+        }
+
+        mHeaders = new HashMap<>();
+        mHeaders.put("Cookie", rawCookie);
+        mHeaders.put("User-Agent", new UserAgentManager().getUA());
+        mHeaders.put("Referer", "https://www.youtube.com/tv");
+        mHeaders.put("x-client-data", "CJW2yQEIo7bJAQjBtskBCKmdygEIqKPKAQi/p8oBCOKoygE=");
+        mHeaders.put("x-youtube-client-name", "TVHTML5");
+        mHeaders.put("x-youtube-client-version", "6.20180913");
+        mHeaders.put("x-youtube-page-cl", "251772599");
+        mHeaders.put("x-youtube-page-label", "youtube.ytfe.desktop_20190605_0_RC0");
+        mHeaders.put("x-youtube-utc-offset", "180");
+        return mHeaders;
     }
 
     /**
