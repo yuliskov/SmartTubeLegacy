@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
+import com.liskovsoft.smartyoutubetv.misc.MyCookieLoader;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -24,7 +24,6 @@ import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.util.HashMap;

@@ -5,7 +5,6 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.MyCookieLoader;
 import org.xwalk.core.XWalkCookieManager;
 
 /**
