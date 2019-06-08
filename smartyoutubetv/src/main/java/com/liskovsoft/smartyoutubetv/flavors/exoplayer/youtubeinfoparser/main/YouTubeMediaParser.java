@@ -301,6 +301,12 @@ public class YouTubeMediaParser {
         //mNewMediaItems = parser.parse();
     }
 
+    /**
+     * There are two types of the signatures:<br/>
+     * 1) Long signature. It could be in the form ...lsig=xxxx&sig=xxxx...<br/>
+     * 2) Short signature. It could be in the form ...signature=xxxxxx...<br/>
+     * @param signatures deciphered signatures or nulls if videos not need to be deciphered
+     */
     private void doCallbackOnMediaItems(List<String> signatures) {
         if (signatures.size() < mMediaItems.size()) {
             throw new IllegalStateException("Signatures and media items aren't match");
