@@ -20,7 +20,7 @@ public class YouTubeTracker {
             "&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=0&fmt=137&fs=0&rt=292.768&euri=https%3A%2F%2Fwww" +
             ".youtube.com%2Ftv%23%2Fwatch%2Fvideo%2Fidle%3Fv%3DPugNThnZVF0%26resume&lact=485&state=paused&volume=100&c=TVHTML5&cver=6" +
             ".20180807&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV" +
-            "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1";
+            "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1&el=leanback";
     private final UserAgentManager mUA;
     private Map<String, String> mHeaders;
 
@@ -30,13 +30,13 @@ public class YouTubeTracker {
     }
 
     public void track(String trackingUrl, String videoUrl) {
-        track(trackingUrl, videoUrl, 600);
+        track(trackingUrl, videoUrl, 600, 1000);
     }
 
-    public void track(String trackingUrl, String videoUrl, float seconds) {
+    public void track(String trackingUrl, String videoUrl, float watched, float length) {
         if (checkUrl(trackingUrl)) {
             Map<String, String> headers = getHeaders();
-            final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, seconds);
+            final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, watched, length);
             Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
             Log.d(TAG, "Tracking headers: " + headers);
             new Thread(() -> {  // avoid NetworkOnMainThreadException
@@ -78,7 +78,7 @@ public class YouTubeTracker {
         return result;
     }
 
-    private String processUrl(String url, String videoUrl, float seconds) {
+    private String processUrl(String url, String videoUrl, float watched, float length) {
         MyQueryString result = MyQueryStringFactory.parse(url + toAppend);
         MyQueryString videoInfo = MyQueryStringFactory.parse(videoUrl);
 
@@ -86,11 +86,16 @@ public class YouTubeTracker {
         result.remove("plid");
         result.remove("subscribed");
 
-        String cpn = "cpn"; // video id???
+        // video id???
+        String cpn = "cpn";
         result.set(cpn, videoInfo.get(cpn));
-        result.set("el", "leanback");
         // watch time in seconds
-        result.set("cmt", seconds);
+        result.set("cmt", watched);
+        // length of the video
+        result.set("len", length);
+        //result.set("st", length);
+        //result.set("et", length);
+        //result.set("rt", length);
 
         return result.toString();
     }
