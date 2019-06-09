@@ -29,6 +29,11 @@ public class MyNullQueryString implements MyQueryString {
     }
 
     @Override
+    public void set(String key, float value) {
+        
+    }
+
+    @Override
     public boolean isEmpty() {
         return true;
     }

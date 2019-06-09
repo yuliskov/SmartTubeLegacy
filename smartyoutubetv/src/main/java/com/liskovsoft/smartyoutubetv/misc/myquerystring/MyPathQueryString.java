@@ -46,6 +46,11 @@ public class MyPathQueryString implements MyQueryString {
         }
     }
 
+    @Override
+    public void set(String key, float value) {
+        set(key, String.valueOf(value));
+    }
+
     private boolean replace(String key, String newValue) {
         if (mUrl == null) {
             return false;

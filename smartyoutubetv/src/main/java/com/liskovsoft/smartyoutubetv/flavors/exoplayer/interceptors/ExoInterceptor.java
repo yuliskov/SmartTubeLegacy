@@ -36,7 +36,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final DelayedCommandCallInterceptor mDelayedInterceptor;
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
-    private final YouTubeTracker mTracker;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
@@ -53,8 +52,6 @@ public class ExoInterceptor extends RequestInterceptor {
         
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
         mUseExternalPlayer = SmartPreferences.instance(context).getUseExternalPlayer();
-
-        mTracker = new YouTubeTracker(mContext);
     }
 
     @Override
@@ -115,23 +112,27 @@ public class ExoInterceptor extends RequestInterceptor {
             return mHeaders;
         }
 
+        Map<String, String> headers = new HashMap<>();
         String rawCookie = MyCookieLoader.getRawCookie();
 
-        if (rawCookie == null) { // header cannot be null
-            return null;
+        // header cannot be null
+        if (rawCookie == null) {
+            return headers;
         }
 
-        mHeaders = new HashMap<>();
-        mHeaders.put("Cookie", rawCookie);
-        mHeaders.put("User-Agent", new UserAgentManager().getUA());
-        mHeaders.put("Referer", "https://www.youtube.com/tv");
-        mHeaders.put("x-client-data", "CJW2yQEIo7bJAQjBtskBCKmdygEIqKPKAQi/p8oBCOKoygE=");
-        mHeaders.put("x-youtube-client-name", "TVHTML5");
-        mHeaders.put("x-youtube-client-version", "6.20180913");
-        mHeaders.put("x-youtube-page-cl", "251772599");
-        mHeaders.put("x-youtube-page-label", "youtube.ytfe.desktop_20190605_0_RC0");
-        mHeaders.put("x-youtube-utc-offset", "180");
-        return mHeaders;
+        headers.put("Cookie", rawCookie);
+        headers.put("User-Agent", new UserAgentManager().getUA());
+        headers.put("Referer", "https://www.youtube.com/tv");
+        headers.put("x-client-data", "CJW2yQEIo7bJAQjBtskBCKmdygEIqKPKAQi/p8oBCOKoygE=");
+        headers.put("x-youtube-client-name", "TVHTML5");
+        headers.put("x-youtube-client-version", "6.20180913");
+        headers.put("x-youtube-page-cl", "251772599");
+        headers.put("x-youtube-page-label", "youtube.ytfe.desktop_20190605_0_RC0");
+        headers.put("x-youtube-utc-offset", "180");
+
+        mHeaders = headers;
+
+        return headers;
     }
 
     /**
@@ -170,8 +171,8 @@ public class ExoInterceptor extends RequestInterceptor {
             }
 
             @Override
-            public void onTrackingUrlFound(Uri url) {
-                mTracker.track(url.toString(), mCurrentUrl);
+            public void onTrackingUrlFound(Uri trackingUrl) {
+                exoCallback.onTrackingUrlFound(trackingUrl);
             }
 
             @Override

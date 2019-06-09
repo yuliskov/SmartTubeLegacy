@@ -19,6 +19,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.On
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
@@ -30,6 +31,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
+    private final YouTubeTracker mTracker;
     private GenericInfo mInfo;
     private Sample mSample;
     private final Context mContext;
@@ -39,6 +41,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
+    private Uri mTrackingUrl;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -78,6 +81,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         // bind onPlayerAction callback
         mFragmentsManager.setPlayerListener(this);
+        mTracker = new YouTubeTracker(mContext);
     }
 
     @Override
@@ -103,6 +107,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onInfoFound(GenericInfo info) {
         mInfo = info;
+    }
+
+    @Override
+    public void onTrackingUrlFound(Uri trackingUrl) {
+        mTrackingUrl = trackingUrl;
     }
 
     @Override
@@ -177,6 +186,9 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
 
         if (!doNotClose) {
+            if (mTrackingUrl != null) {
+                mTracker.track(mTrackingUrl.toString(), mInterceptor.getCurrentUrl());
+            }
             mManager.onClose();
         }
 

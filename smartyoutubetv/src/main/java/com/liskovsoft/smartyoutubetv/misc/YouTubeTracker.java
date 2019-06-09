@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
+import android.os.Handler;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -21,6 +22,7 @@ public class YouTubeTracker {
             ".20180807&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV" +
             "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1";
     private final UserAgentManager mUA;
+    private Map<String, String> mHeaders;
 
     public YouTubeTracker(Context context) {
         mContext = context;
@@ -28,23 +30,42 @@ public class YouTubeTracker {
     }
 
     public void track(String trackingUrl, String videoUrl) {
-        if (trackingUrl.contains(HISTORY_URL)) {
+        track(trackingUrl, videoUrl, 600);
+    }
+
+    public void track(String trackingUrl, String videoUrl, float seconds) {
+        if (checkUrl(trackingUrl)) {
             Map<String, String> headers = getHeaders();
-            trackingUrl = processUrl(trackingUrl, videoUrl);
-            Log.d(TAG, "Tracking url: " + trackingUrl);
+            final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, seconds);
+            Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
             Log.d(TAG, "Tracking headers: " + headers);
-            Response response = OkHttpHelpers.doGetOkHttpRequest(trackingUrl, headers);
-            Log.d(TAG, "Tracking response: " + response);
+            new Thread(() -> {  // avoid NetworkOnMainThreadException
+                Response response = OkHttpHelpers.doGetOkHttpRequest(fullTrackingUrl, headers);
+                Log.d(TAG, "Tracking response: " + response);
+            }).start();
         } else {
             Log.d(TAG, "This tracking url isn't supported: " + trackingUrl);
         }
     }
 
+    private boolean checkUrl(String trackingUrl) {
+        return trackingUrl.contains(HISTORY_URL);
+    }
+
     private Map<String, String> getHeaders() {
+        if (mHeaders != null) {
+            return mHeaders;
+        }
+
         Map<String, String> result = new HashMap<>();
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
-        result.put("Authorization", prefs.getAuthorizationHeader());
+        String authorization = prefs.getAuthorizationHeader();
+        if (authorization.isEmpty()) {
+            return result;
+        }
+
+        result.put("Authorization", authorization);
         result.put("Referer", "https://www.youtube.com/tv");
         result.put("User-Agent", mUA.getUA());
         result.put("X-YouTube-Client-Name", "TVHTML5");
@@ -52,10 +73,12 @@ public class YouTubeTracker {
         result.put("X-YouTube-Page-Label", "youtube.ytfe.desktop_20190208_2_RC0");
         result.put("X-YouTube-Utc-Offset", "120");
 
+        mHeaders = result;
+
         return result;
     }
 
-    private String processUrl(String url, String videoUrl) {
+    private String processUrl(String url, String videoUrl, float seconds) {
         MyQueryString result = MyQueryStringFactory.parse(url + toAppend);
         MyQueryString videoInfo = MyQueryStringFactory.parse(videoUrl);
 
@@ -63,9 +86,11 @@ public class YouTubeTracker {
         result.remove("plid");
         result.remove("subscribed");
 
-        String cpn = "cpn";
+        String cpn = "cpn"; // video id???
         result.set(cpn, videoInfo.get(cpn));
         result.set("el", "leanback");
+        // watch time in seconds
+        result.set("cmt", seconds);
 
         return result.toString();
     }

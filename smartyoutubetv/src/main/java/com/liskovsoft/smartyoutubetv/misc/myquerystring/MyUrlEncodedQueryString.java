@@ -55,6 +55,11 @@ public class MyUrlEncodedQueryString implements MyQueryString {
         mQueryString.set(key, value);
     }
 
+    @Override
+    public void set(String key, float value) {
+        set(key, String.valueOf(value));
+    }
+
     @NotNull
     @Override
     public String toString() {
