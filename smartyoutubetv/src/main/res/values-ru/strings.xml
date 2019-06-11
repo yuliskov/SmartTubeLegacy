@@ -4,11 +4,11 @@
     <string name="xwalk_desc">1080 Дополнит.</string>
     <string name="exo_desc">4K Основной</string>
     <string name="exo_desc2">4K Дополнит.</string>
-    <string name="bootstrap_main_title">Выберите лаунчер YouTube</string>
+    <string name="bootstrap_main_title">Выберите вариант YouTube</string>
     <string name="starting_popup">Запуск из главного лаунчера</string>
     <string name="save_selection">Запомнить</string>
-    <string name="bootstrap_bottom_title">Лаунчеры отличаются стабильностью работы на конкр. девайсе</string>
-    <string name="tip_show_main_screen">Нажмите Назад, чтобы вернуться к главному экрану</string>
+    <string name="bootstrap_bottom_title">Отличаются стабильностью работы на конкр. девайсе</string>
+    <string name="tip_show_main_screen">Чтобы открыть настройки, нажмите НАЗАД прямо здесь</string>
     <string name="app_name_720">1080 Основной</string>
     <string name="app_name_1080">1080 Дополнит.</string>
     <string name="app_name_4k">4K Основной</string>
@@ -38,15 +38,15 @@
     <string name="error_unknown">Ошибка соединения: %s</string>
     <string name="codec_selector_title">Выберите кодек</string>
     <string name="restart_app_msg">Перезапустите приложение, чтобы изменения вступили в силу</string>
-    <string name="tip_solve_problem">В случае проблем попробуйте поменять лаунчер</string>
-    <string name="tip_disable_updates">Обновления можно отключить на главном экране</string>
+    <string name="tip_solve_problem">Проблемы? Выберите другую версию Ютуб в настройках</string>
+    <string name="tip_disable_updates">Чтобы настроить обновление нажмите НАЗАД прямо здесь</string>
     <string name="large_btn_title_main">Основной</string>
     <string name="large_btn_title_alt">Дополнит.</string>
     <string name="title_exo_main">PRO Основной</string>
     <string name="title_exo_alt">PRO Дополнит.</string>
     <string name="title_webview">LITE Основной</string>
     <string name="title_xwalk">LITE Дополнит.</string>
-    <string name="tweaks">Твики</string>
+    <string name="tweaks">Настройки</string>
     <string name="tip_tweaks">Различные мелкие настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
     <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
@@ -65,4 +65,5 @@
     <string name="tweak_open_externally">Использовать внешний плеер</string>
     <string name="message_install_vlc_player">Для проигрывания нужен VLC плеер</string>
     <string name="tweak_fix_aspect">Исправление соотношения сторон и зума</string>
+    <string name="tweak_animated_previews">Анимированные превью</string>
 </resources>

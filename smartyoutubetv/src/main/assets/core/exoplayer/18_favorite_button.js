@@ -13,6 +13,7 @@ function FavoriteButton(selector) {
 
     this.setChecked = function(doChecked) {
         var $this = this;
+        // call super
         FavoriteButton.prototype.setChecked.apply(this, arguments);
 
         // check that app switched to the channels page

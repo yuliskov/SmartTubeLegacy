@@ -71,7 +71,8 @@ var YouTubeSelectors = {
     PLAYER_NEW_TITLE: '.watch-title-tray',
     PLAYER_SUGGESTIONS: '#bottom-half.bottom-half',
     PLAYER_SUGGESTIONS_LIST: 'div.pivot-shelf-list',
-    PLAYER_UI_CONTAINER: '#transport-controls'
+    PLAYER_UI_CONTAINER: '#transport-controls',
+    CHANNEL_CONTENT: '.ytlr-tv-browse-renderer'
 };
 
 /**

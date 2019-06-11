@@ -38,6 +38,7 @@ public final class SmartPreferences {
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
+    private static final String ANIMATED_PREVIEWS = "animated_previews";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -262,5 +263,15 @@ public final class SmartPreferences {
 
     public int getPlaybackWorking() {
         return mPrefs.getInt(PLAYBACK_WORKING_KEY, PLAYBACK_UNKNOWN);
+    }
+
+    public boolean getEnableAnimatedPreviews() {
+        return mPrefs.getBoolean(ANIMATED_PREVIEWS, false);
+    }
+
+    public void setEnableAnimatedPreviews(boolean enable) {
+        mPrefs.edit()
+                .putBoolean(ANIMATED_PREVIEWS, enable)
+                .apply();
     }
 }

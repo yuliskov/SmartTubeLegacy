@@ -3,19 +3,20 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
-import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
@@ -74,10 +75,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // remove other fragment if exists
         // if container is empty add this
 
-        GenericFragment removeCandidate = mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
-
         if (pausePrevious) {
-            Log.d(TAG, "Remove fragment " + removeCandidate.getClass().getSimpleName());
+            GenericFragment removeCandidate = findCandidateToRemove(fragment);
+            Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
             removeFromContainer(removeCandidate);
         }
 
@@ -85,6 +85,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         addToContainer(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
+    }
+
+    private GenericFragment findCandidateToRemove(GenericFragment fragment) {
+        return mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
     }
 
     private void removeFromContainer(GenericFragment fragment) {
@@ -133,18 +137,21 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void openExoPlayer(final Intent intent, final boolean pausePrevious) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "opening player for intent=" + intent);
-                setActiveFragment(mPlayerFragment, pausePrevious);
-                mPlayerFragment.openVideo(intent);
-            }
+        runOnUiThread(() -> {
+            Log.d(TAG, "opening player for intent=" + intent);
+            setActiveFragment(mPlayerFragment, pausePrevious);
+            mPlayerFragment.openVideo(intent);
         });
     }
 
     @Override
     public void pausePrevious() {
+        GenericFragment activeFragment = getActiveFragment();
+        GenericFragment removeCandidate = findCandidateToRemove(activeFragment);
+
+        Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
+        removeFromContainer(removeCandidate);
+
         super.pausePrevious();
     }
 

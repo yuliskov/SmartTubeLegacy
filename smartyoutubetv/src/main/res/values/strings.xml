@@ -78,4 +78,5 @@
     <string name="tweak_open_externally">Use external player</string>
     <string name="message_install_vlc_player">Please install VLC player</string>
     <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
+    <string name="tweak_animated_previews">Enable animated previews</string>
 </resources>

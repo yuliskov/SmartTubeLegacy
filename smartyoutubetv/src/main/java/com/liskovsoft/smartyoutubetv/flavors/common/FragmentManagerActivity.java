@@ -73,6 +73,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         setTheme(com.liskovsoft.browser.R.style.SimpleUITheme);
     }
 
+    protected GenericFragment getActiveFragment() {
+        return mActiveFragment;
+    }
+
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (fragment == null) {
             throw new IllegalStateException("Active fragment can't be null");

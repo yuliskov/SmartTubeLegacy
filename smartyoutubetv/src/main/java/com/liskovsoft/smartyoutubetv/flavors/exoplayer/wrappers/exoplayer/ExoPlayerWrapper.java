@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver;
@@ -42,6 +43,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
     private Uri mTrackingUrl;
+    private final Runnable mOnPause;
+    private final Handler mHandler;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -82,6 +85,9 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         // bind onPlayerAction callback
         mFragmentsManager.setPlayerListener(this);
         mTracker = new YouTubeTracker(mContext);
+
+        mOnPause = mFragmentsManager::pausePrevious;
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -164,7 +170,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
                 mManager.onOpen();
 
-                mFragmentsManager.openExoPlayer(playerIntent, pauseBrowser); // pause every time, except when mirroring
+                mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
+
+                if (pauseBrowser) {
+                    mHandler.postDelayed(mOnPause, 10_000);
+                }
             }
 
             @Override
@@ -180,6 +190,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onPlayerAction(Intent intent) {
+        mHandler.removeCallbacks(mOnPause);
+
         boolean doNotClose =
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||

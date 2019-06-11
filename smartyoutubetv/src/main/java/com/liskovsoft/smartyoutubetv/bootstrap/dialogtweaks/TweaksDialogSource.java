@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EndCardsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
@@ -43,6 +44,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new GlobalAfrFixDialogItem(mContext));
         mItems.add(new UseExternalPlayerDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
+        //mItems.add(new AnimatedPreviewsDialogItem(mContext));
     }
 
     @Override

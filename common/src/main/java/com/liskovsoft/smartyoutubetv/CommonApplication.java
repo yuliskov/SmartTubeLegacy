@@ -5,12 +5,14 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 public class CommonApplication extends Application {
     private static final String TAG = CommonApplication.class.getSimpleName();
     private static Bus sBus;
+    private static SmartPreferences sSmartPreferences;
 
     @Override
     public void onCreate() {
@@ -20,6 +22,8 @@ public class CommonApplication extends Application {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }
+
+        sSmartPreferences = SmartPreferences.instance(this);
     }
 
     /**
@@ -40,5 +44,9 @@ public class CommonApplication extends Application {
             sBus = new Bus(ThreadEnforcer.ANY);
         }
         return sBus;
+    }
+
+    public static SmartPreferences getSmartPreferences() {
+        return sSmartPreferences;
     }
 }

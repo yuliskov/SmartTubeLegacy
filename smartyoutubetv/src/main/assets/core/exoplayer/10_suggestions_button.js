@@ -35,7 +35,7 @@ function SuggestionsWatcher(host) {
                     console.log("SuggestionsWatcher: simple close suggestions: " + diff);
                     closeSuggestions(); // event is standalone
                 } else {
-                    console.log("SuggestionsWatcher: user have clicked on thumbnail");
+                    console.log("SuggestionsWatcher: user have clicked on thumbnail...");
                 }
             }, 100);
         };

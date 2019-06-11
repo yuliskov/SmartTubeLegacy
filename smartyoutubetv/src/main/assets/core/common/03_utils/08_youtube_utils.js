@@ -12,6 +12,7 @@ var YouTubeUtils = {
     VIDEO_LIST_SIGN: '#/watch/loading?list',
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: '#/channel',
+    CHANNEL_SIGN2: '#/zylon-detail-surface',
 
     isComponentDisabled: function(element) {
         var el = element;
@@ -144,7 +145,12 @@ var YouTubeUtils = {
     },
 
     isPlayerControlsClosed: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.WATCH_IDLE_CLASS);
+        var watch = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        var isClosed =
+            Utils.hasClass(watch, YouTubeClasses.WATCH_IDLE_CLASS) ||
+            Utils.hasClass(watch, YouTubeClasses.NO_MODEL);
+        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch.className);
+        return isClosed;
     },
 
     isPlayerOpened: function() {
@@ -162,7 +168,9 @@ var YouTubeUtils = {
     },
 
     isChannelOpened: function() {
-        var isOpened = location.hash.indexOf(this.CHANNEL_SIGN) != -1;
+        var isOpened =
+            location.hash.indexOf(this.CHANNEL_SIGN) != -1 ||
+            location.hash.indexOf(this.CHANNEL_SIGN2) != -1;
         Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
         return isOpened;
     },

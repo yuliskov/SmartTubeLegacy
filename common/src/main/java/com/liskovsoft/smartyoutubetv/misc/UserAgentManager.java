@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
+import com.liskovsoft.smartyoutubetv.CommonApplication;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,14 +21,24 @@ public class UserAgentManager {
      * Old UI (with exit dialog)
      */
     private final static String PHILIPS_SMART_TV = "Opera/9.80 (Linux armv7l; HbbTV/1.2.1 (; Philips; 40HFL5010T12; ; PHILIPSTV; CE-HTML/1.0 NETTV/4.4.1 SmartTvA/3.0.0 Firmware/004.002.036.135 (PhilipsTV, 3.1.1,)en) ) Presto/2.12.407 Version/12.50";
+    /**
+     * User agent from the official YouTube for TV app
+     */
+    private final static String COBALT_CLIENT = "Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Gecko) Starboard/1";
     private final HashMap<String, String> mHeaders;
+    private final boolean mEnableAnimations;
 
     public UserAgentManager() {
+        mEnableAnimations = CommonApplication.getSmartPreferences().getEnableAnimatedPreviews();
         mHeaders = new HashMap<>();
         mHeaders.put(USER_AGENT, getUA());
     }
 
     public String getUA() {
+        //if (mEnableAnimations) {
+        //    return COBALT_CLIENT;
+        //}
+
         return LG_SMART_TV;
     }
 

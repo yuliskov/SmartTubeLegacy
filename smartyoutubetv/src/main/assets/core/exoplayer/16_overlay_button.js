@@ -49,6 +49,8 @@ function OverlayButton(selector) {
                 return;
             }
 
+            Log.d(this.TAG, "Location is " + location.hash);
+
             EventUtils.triggerEnter(el);
 
             this.initHandler();
@@ -65,11 +67,20 @@ function OverlayButton(selector) {
         this.handler = function() {
             Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
 
+            if ($this.onChannelClosed) {
+                $this.onChannelClosed();
+            }
+
+            if ($this.recentlyClosed) {
+                return; // event in canceled in the one of the descendant classes
+            }
+
             $this.recentlyClosed = true;
 
             ExoUtils.sendAction(ExoUtils.ACTION_DISABLE_KEY_EVENTS);
 
             setTimeout(function() {
+                Log.d($this.TAG, "Location is " + location.hash);
                 $this.closePlayerControlsAndSend();
             }, 500);
         };
