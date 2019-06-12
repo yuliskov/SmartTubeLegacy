@@ -11,15 +11,13 @@ function ChannelButton(selector) {
     this.CHANNEL_CHECK_TIMEOUT_MS = 5000;
     this.stateless = true;
 
-    this.setChecked = function(doChecked) {
+    this.onOverlayOpen = function() {
         var $this = this;
-        // call super
-        ChannelButton.prototype.setChecked.apply(this, arguments);
 
         // check that app switched to the channels page
-        setTimeout(function() {
+        this.timeout = setTimeout(function() {
             if (!YouTubeUtils.isChannelOpened()) {
-                Log.d($this.TAG, "Channel still not opened... return to the player...");
+                Log.d($this.TAG, "Oops... Channel still not opened... return to the player...");
                 $this.cancelEvents();
             } else {
                 $this.onPress = function(e) {
@@ -34,9 +32,10 @@ function ChannelButton(selector) {
         }, this.CHANNEL_CHECK_TIMEOUT_MS);
     };
 
-    this.onChannelClosed = function() {
-        Log.d(this.TAG, "Disposing event listeners...");
+    this.onOverlayClosed = function() {
+        Log.d(this.TAG, "Disposing event listeners, timeouts...");
         EventUtils.removeListener(YouTubeSelectors.CHANNEL_CONTENT, DefaultEvents.KEY_DOWN, this.onPress);
+        clearTimeout(this.timeout);
     };
 
     this.decorator.apply(this);

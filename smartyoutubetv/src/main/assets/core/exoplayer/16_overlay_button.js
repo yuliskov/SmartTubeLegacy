@@ -10,13 +10,24 @@ function OverlayButton(selector) {
     this.selector = selector;
     this.stateless = true;
     this.recentlyClosed = false;
+    this.id = OverlayButton.id++;
 
     this.getChecked = function() {
         Log.d(this.TAG, "getChecked " + this.selector);
         return false;
     };
 
+    this.cleanup = function() {
+        clearTimeout(this.closeTimeout);
+        clearTimeout(this.closeTimeout2);
+        EventUtils.removeListener(this.selector, YouTubeEvents.COMPONENT_FOCUS_EVENT, this.handler);
+    };
+
     this.sendClose = function() {
+        Log.d(this.TAG, "Switching to the player activity... " + this.id);
+
+        this.cleanup();
+
         ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
     };
 
@@ -32,7 +43,7 @@ function OverlayButton(selector) {
 
         EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
-        setTimeout(function() {
+        this.closeTimeout = setTimeout(function() {
             $this.closePlayerControlsAndSend();
         }, 500);
     };
@@ -54,6 +65,10 @@ function OverlayButton(selector) {
             EventUtils.triggerEnter(el);
 
             this.initHandler();
+
+            if (this.onOverlayOpen) {
+                this.onOverlayOpen();
+            }
         }
     };
 
@@ -67,8 +82,8 @@ function OverlayButton(selector) {
         this.handler = function() {
             Log.d($this.TAG, "User has closed the " + $this.selector + " overlay... return to the player");
 
-            if ($this.onChannelClosed) {
-                $this.onChannelClosed();
+            if ($this.onOverlayClosed) {
+                $this.onOverlayClosed();
             }
 
             if ($this.recentlyClosed) {
@@ -79,7 +94,7 @@ function OverlayButton(selector) {
 
             ExoUtils.sendAction(ExoUtils.ACTION_DISABLE_KEY_EVENTS);
 
-            setTimeout(function() {
+            $this.closeTimeout2 = setTimeout(function() {
                 Log.d($this.TAG, "Location is " + location.hash);
                 $this.closePlayerControlsAndSend();
             }, 500);
@@ -90,7 +105,7 @@ function OverlayButton(selector) {
 
     this.cancelEvents = function() {
         if (this.handler && !this.recentlyClosed) {
-            EventUtils.removeListener(this.selector, YouTubeEvents.COMPONENT_FOCUS_EVENT, this.handler);
+            this.recentlyClosed = true;
             this.sendClose();
         }
     };
@@ -98,4 +113,5 @@ function OverlayButton(selector) {
     this.decorator.apply(this);
 }
 
+OverlayButton.id = 0;
 OverlayButton.prototype = new ExoButton();
