@@ -13,8 +13,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;

@@ -34,7 +34,7 @@ dependencies {
 
     testImplementation project.properties.junitVersion
 
-    implementation project.properties.appCompatVersion
+    implementation project.properties.appCompatXVersion
 
     implementation project.properties.openPgpVersion
 }

@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;

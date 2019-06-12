@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import com.liskovsoft.browser.SuggestionsAdapter.CompletionListener;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 
 /**
  * TODO: not implemented

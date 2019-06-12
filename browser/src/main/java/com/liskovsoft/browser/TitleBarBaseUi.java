@@ -2,7 +2,7 @@ package com.liskovsoft.browser;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 public abstract class TitleBarBaseUi extends BaseUi {
     protected final TitleBar mTitleBar;

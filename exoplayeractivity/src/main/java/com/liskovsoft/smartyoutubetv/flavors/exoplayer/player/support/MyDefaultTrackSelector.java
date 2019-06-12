@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -23,14 +23,14 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
 
     @Nullable
     @Override
-    protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-                                              Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
+    protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
+                                              Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
 
         if (!params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups)) {
             restoreVideoTrack(groups);
         }
 
-        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
+        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
     }
 
     private void restoreVideoTrack(TrackGroupArray groups) {

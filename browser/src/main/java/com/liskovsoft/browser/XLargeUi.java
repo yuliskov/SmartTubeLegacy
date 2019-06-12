@@ -1,9 +1,9 @@
 package com.liskovsoft.browser;
 
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -48,8 +48,8 @@ public class XLargeUi extends TitleBarBaseUi {
             Log.e(TAG, "Activity does not have support action bar");
             return;
         }
-        mActionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
-        mActionBar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+        mActionBar.setNavigationMode(androidx.appcompat.app.ActionBar.NAVIGATION_MODE_STANDARD);
+        mActionBar.setDisplayOptions(androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         mActionBar.setCustomView(mTabBar);
     }
 

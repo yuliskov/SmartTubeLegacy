@@ -48,7 +48,7 @@ dependencies {
 
     implementation project(path: ':common')
 
-    implementation project.properties.appCompatVersion
+    implementation project.properties.appCompatXVersion
 
     implementation project.properties.dnsjavaVersion
 

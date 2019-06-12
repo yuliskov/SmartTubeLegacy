@@ -155,7 +155,7 @@ dependencies {
         transitive = true
     }
 
-    implementation project.properties.appCompatVersion
+    implementation project.properties.appCompatXVersion
     implementation project.properties.constraintLayoutVersion
 
     implementation project.properties.gsonVersion

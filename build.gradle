@@ -27,6 +27,7 @@ buildscript {
         minSdkVersion = 14
         targetSdkVersion = 26
         appCompatVersion = 'com.android.support:appcompat-v7:28.0.0'
+        appCompatXVersion = 'androidx.appcompat:appcompat:1.0.0'
         supportVersion = 'com.android.support:support-v4:28.0.0'
         constraintLayoutVersion = 'com.android.support.constraint:constraint-layout:1.1.2'
         dnsjavaVersion = 'dnsjava:dnsjava:2.1.8'
@@ -51,9 +52,9 @@ buildscript {
         amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.9.0' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
         amazonExoplayerGitHubVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
         amazonExoplayerMyGitHubVersion = 'com.github.yuliskov.exoplayer-amazon-port:exoplayer:r2.9.5-upd4' // 2.9.5 NOTE: 'exoplayer' is a needed module
-        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.6' // https://bintray.com/google/exoplayer/exoplayer
-        exoplayerGitHubVersion = 'com.github.google:ExoPlayer:c38cd1cca9e9deb50724d82fcbc3ac02c49505a9' // 'exoplayer' is a needed module
-        exoplayerMyGitHubVersion = 'com.github.yuliskov.ExoPlayer:exoplayer:r2.9.5-upd5' // 2.9.5 NOTE: 'exoplayer' is a needed module
+        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.10.1' // https://bintray.com/google/exoplayer/exoplayer
+        //exoplayerGitHubVersion = 'com.github.google:ExoPlayer:c38cd1cca9e9deb50724d82fcbc3ac02c49505a9' // 'exoplayer' is a needed module
+        //exoplayerMyGitHubVersion = 'com.github.yuliskov.ExoPlayer:exoplayer:r2.9.5-upd5' // 2.9.5 NOTE: 'exoplayer' is a needed module
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.0.0-beta02' // https://github.com/algolia/voice-overlay-android
         multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'

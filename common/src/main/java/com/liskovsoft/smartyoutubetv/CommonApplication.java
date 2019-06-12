@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;

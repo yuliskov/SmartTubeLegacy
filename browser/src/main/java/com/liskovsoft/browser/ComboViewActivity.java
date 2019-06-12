@@ -1,16 +1,16 @@
 package com.liskovsoft.browser;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -196,7 +196,7 @@ public class ComboViewActivity extends AppCompatActivity implements CombinedBook
         }
 
         @Override
-        public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(androidx.appcompat.app.ActionBar.Tab tab, FragmentTransaction ft) {
             Object tag = tab.getTag();
             for (int i = 0; i < mTabs.size(); i++) {
                 if (mTabs.get(i) == tag) {
@@ -206,11 +206,11 @@ public class ComboViewActivity extends AppCompatActivity implements CombinedBook
         }
 
         @Override
-        public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(androidx.appcompat.app.ActionBar.Tab tab, FragmentTransaction ft) {
         }
 
         @Override
-        public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(androidx.appcompat.app.ActionBar.Tab tab, FragmentTransaction ft) {
         }
     }
 

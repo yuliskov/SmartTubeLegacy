@@ -9,12 +9,7 @@ import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.KeyHandler;
-import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
-import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
-import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
-import com.liskovsoft.smartyoutubetv.keytranslator.PlayerKeyTranslator;
 
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.

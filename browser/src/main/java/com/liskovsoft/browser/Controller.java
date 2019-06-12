@@ -13,22 +13,35 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.support.v7.view.ActionMode;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager.LayoutParams;
-import android.webkit.*;
+import android.webkit.CookieSyncManager;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebChromeClient.FileChooserParams;
+import android.webkit.WebView;
+import androidx.appcompat.view.ActionMode;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Controller implements UiController, WebViewController, ActivityController {
     private static final String TAG = Controller.class.getSimpleName();
@@ -849,7 +862,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
                 if (!pauseWebViewTimers(tab)) {
                     if (mWakeLock == null) {
                         PowerManager pm = (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
-                        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Browser");
+                        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Browser:Controller");
                     }
                     mWakeLock.acquire();
                     mHandler.sendMessageDelayed(mHandler.obtainMessage(RELEASE_WAKELOCK), WAKELOCK_TIMEOUT);

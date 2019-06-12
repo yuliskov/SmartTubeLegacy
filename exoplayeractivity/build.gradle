@@ -59,7 +59,7 @@ dependencies {
     implementation project(path: ':browser')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project.properties.appCompatVersion
+    implementation project.properties.appCompatXVersion
 
     //api project.properties.exoplayerMyGitHubVersion
     api project.properties.exoplayerVersion

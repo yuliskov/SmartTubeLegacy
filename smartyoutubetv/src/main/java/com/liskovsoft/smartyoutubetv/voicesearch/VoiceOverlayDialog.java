@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.algolia.instantsearch.voice.VoiceSpeechRecognizer;
 import com.algolia.instantsearch.voice.ui.Voice;
 import com.algolia.instantsearch.voice.ui.VoiceInputDialogFragment;

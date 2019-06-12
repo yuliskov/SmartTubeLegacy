@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.injectors.MicClickedEvent;
 import com.squareup.otto.Subscribe;

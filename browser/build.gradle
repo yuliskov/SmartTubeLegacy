@@ -55,7 +55,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project.properties.appCompatVersion
+    implementation project.properties.appCompatXVersion
     
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion

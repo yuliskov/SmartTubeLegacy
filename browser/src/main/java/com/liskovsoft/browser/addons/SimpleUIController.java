@@ -1,7 +1,7 @@
 package com.liskovsoft.browser.addons;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.R;
 import com.liskovsoft.browser.UI;
