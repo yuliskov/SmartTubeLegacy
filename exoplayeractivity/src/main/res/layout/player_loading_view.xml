@@ -6,7 +6,6 @@
               android:layout_height="wrap_content"
               android:paddingLeft="4dp"
               android:paddingRight="4dp"
-              android:visibility="gone"
               android:layout_gravity="center"
               android:background="#00000000"
               android:textColor="@color/white"

@@ -77,6 +77,22 @@ var EventUtils = {
         Utils.delayTillTestFnSuccess(fn, testFn);
     },
 
+    delayUntilElementInit: function(selector, callback) {
+        var $this = this;
+        var el = Utils.$(selector);
+
+        if (!el) {
+            setTimeout(function() {
+                $this.delayUntilElementInit(selector, callback)
+            }, 100);
+            return;
+        }
+
+        if (callback) {
+            callback(el);
+        }
+    },
+
     isPlayerInitialized: function() {
         var elem = Utils.$(YouTubeConstants.PLAYER_EVENTS_RECEIVER_SELECTOR);
         return Utils.hasClass(elem, YouTubeConstants.PLAYER_CONTAINER_CLASS);

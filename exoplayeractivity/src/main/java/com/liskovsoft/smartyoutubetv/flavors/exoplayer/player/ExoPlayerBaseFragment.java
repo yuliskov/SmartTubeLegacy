@@ -8,13 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
@@ -114,10 +117,11 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             //restoreSpeed();
 
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
+
+            mPlayerInitializer.initVideoTitle();
         }
 
         if (openNewVideo) {
-            mPlayerInitializer.initVideoTitle();
             mAutoFrameRateManager.saveOriginalState();
             restoreSpeed();
         }
@@ -308,6 +312,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
      */
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
+
+        if (isStateIntent(intent)) {
+            Helpers.mergeIntents(getIntent(), intent);
+
+            mPlayerInitializer.initVideoTitle();
+            syncButtonStates();
+            return;
+        }
+
         releasePlayer(); // dispose player
         mShouldAutoPlay = true; // force autoplay
         mNeedRetrySource = true; // process supplied intent
@@ -316,6 +329,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
         initializeUiScale();
+    }
+
+    private boolean isStateIntent(Intent intent) {
+        return intent.getAction() == null;
     }
 
     protected void pausePlayer() {
@@ -344,6 +361,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mShouldAutoPlay = mPlayer.getPlayWhenReady(); // save paused state
             updateResumePosition(); // save position
             mPlayer.release();
+            resetUiState();
         }
 
         if (mSimpleExoPlayerView != null) {
@@ -407,6 +425,22 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         showLoadingMessage(playbackState);
 
         super.onPlayerStateChanged(playWhenReady, playbackState);
+    }
+
+    /**
+     * Reset player's title and show loading
+     */
+    private void resetUiState() {
+        showLoadingMessage(Player.STATE_IDLE);
+
+        if (mPlayerInitializer != null) {
+            mPlayerInitializer.resetVideoTitle();
+        }
+
+        //TimeBar timeBar = rootView.findViewById(R.id.player_view).findViewById(R.id.exo_progress);
+        //timeBar.setEnabled(false);
+        //timeBar.setDuration(C.TIME_UNSET);
+        //timeBar.setPosition(0);
     }
 
     private void showLoadingMessage(int playbackState) {

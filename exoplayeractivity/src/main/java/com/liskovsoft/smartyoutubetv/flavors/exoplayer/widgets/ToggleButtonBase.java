@@ -218,6 +218,10 @@ public abstract class ToggleButtonBase extends LinearLayout {
         return mIsDisabled;
     }
 
+    public void enableEvents() {
+        mIsDisabled = false;
+    }
+
     public void disableEvents() {
         mIsDisabled = true;
     }

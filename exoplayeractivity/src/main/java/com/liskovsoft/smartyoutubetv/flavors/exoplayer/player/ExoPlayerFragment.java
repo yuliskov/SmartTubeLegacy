@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.KeyHandler;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 

@@ -208,7 +208,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         }
 
         if (needNewPlayer || mNeedRetrySource) {
-            MediaSource mediaSource = getMediaSource(intent);
+            MediaSource mediaSource = extractMediaSource(intent);
 
             if (mediaSource == null) {
                 return;
@@ -228,7 +228,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         }
     }
 
-    private MediaSource getMediaSource(Intent intent) {
+    private MediaSource extractMediaSource(Intent intent) {
         Uri[] uris = getUris(intent);
         String[] extensions = getExtensions(intent);
 

@@ -638,7 +638,7 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     @Override
     public void removeListener(OnScrubListener listener) {
-
+        this.listener = null;
     }
 
 }

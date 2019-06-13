@@ -28,7 +28,6 @@ public class PlayerButtonsManager {
     private final ExoPreferences mPrefs;
     private final View mRootView;
     private boolean mListenerAdded;
-    private Intent mCachedIntent;
 
     public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -65,12 +64,6 @@ public class PlayerButtonsManager {
 
     private void initWebButtons() {
         Intent intent = mPlayerFragment.getIntent();
-
-        if (intent == null || intent.equals(mCachedIntent)) {
-            return;
-        }
-
-        mCachedIntent = intent;
 
         Bundle extras = intent.getExtras();
 

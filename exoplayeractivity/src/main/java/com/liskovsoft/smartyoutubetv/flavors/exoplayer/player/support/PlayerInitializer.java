@@ -22,8 +22,10 @@ public class PlayerInitializer {
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final PlayerView mExoPlayerView;
     private final View mRootView;
-    private TextView videoTitle;
-    private TextView videoTitle2;
+    private final String mTemplMessage;
+    private final TextView videoTitle;
+    private final TextView videoTitle2;
+    private final TextView videoQuality;
     private static final int SEEK_INCREMENT_10MIN_MS = 5 * 1000;
     private static final int SEEK_INCREMENT_60MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_120MIN_MS = 10 * 1000;
@@ -33,10 +35,19 @@ public class PlayerInitializer {
     public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
         mRootView = mPlayerFragment.getView();
-        if (mRootView == null)
+
+        if (mRootView == null) {
             throw new IllegalStateException("Fragment's root view is null");
+        }
+
+        videoTitle = mRootView.findViewById(R.id.video_title);
+        videoTitle2 = mRootView.findViewById(R.id.video_title2);
+        videoQuality = mRootView.findViewById(R.id.video_quality);
+
         mExoPlayerView = mRootView.findViewById(R.id.player_view);
-        
+
+        mTemplMessage = mPlayerFragment.getResources().getString(R.string.loading_view_message);
+
         // makeActivityFullscreen();
         // makeActivityHorizontal();
     }
@@ -52,10 +63,14 @@ public class PlayerInitializer {
     }
 
     public void initVideoTitle() {
-        videoTitle = mRootView.findViewById(R.id.video_title);
         videoTitle.setText(getMainTitle());
-        videoTitle2 = mRootView.findViewById(R.id.video_title2);
         videoTitle2.setText(getSecondTitle());
+    }
+
+    public void resetVideoTitle() {
+        videoTitle.setText(mTemplMessage);
+        videoTitle2.setText(mTemplMessage);
+        videoQuality.setText(mTemplMessage);
     }
 
     public String getMainTitle() {
@@ -83,7 +98,7 @@ public class PlayerInitializer {
     private String getPublishDate() {
         Intent intent = mPlayerFragment.getIntent();
         String published = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
-        return published == null ? "" : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
+        return published == null ? mTemplMessage : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {
@@ -99,7 +114,7 @@ public class PlayerInitializer {
      */
     private String formatNumber(String num) {
         if (num == null) {
-            return null;
+            return mTemplMessage;
         }
         
         if (!Helpers.isNumeric(num)) {

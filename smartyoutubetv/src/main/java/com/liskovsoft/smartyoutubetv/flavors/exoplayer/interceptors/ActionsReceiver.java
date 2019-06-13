@@ -28,7 +28,7 @@ public class ActionsReceiver implements Runnable {
     private int mRetryCount = 1;
 
     public interface Listener {
-        void onDone();
+        void onDone(Intent state);
         void onCancel();
     }
 
@@ -109,7 +109,7 @@ public class ActionsReceiver implements Runnable {
         mDone = true;
 
         if (checkIntent()) {
-            mListener.onDone();
+            mListener.onDone(mIntent);
         } else {
             mListener.onCancel();
         }

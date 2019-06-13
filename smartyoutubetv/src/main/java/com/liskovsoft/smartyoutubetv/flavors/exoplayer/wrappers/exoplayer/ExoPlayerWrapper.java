@@ -45,6 +45,30 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private Uri mTrackingUrl;
     private final Runnable mOnPause;
     private final Handler mHandler;
+    private static final long BROWSER_INIT_TIME_MS = 10_000;
+
+    // player is opened from from get_video_info url
+    // pause every time, except when mirroring
+    private class BrowserStateListener implements Listener { // player is opened from from get_video_info url
+        @Override
+        public void onDone(Intent state) {
+            Log.d(TAG, "About to start ExoPlayer fragment...");
+
+            if (Log.getLogType() == Log.LOG_TYPE_FILE) {
+                Log.d(TAG, "Passing browser state to ExoPlayer: " + state.getExtras());
+            }
+
+            boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
+
+            mFragmentsManager.openExoPlayer(state, pauseBrowser);
+        }
+
+        @Override
+        public void onCancel() {
+            Log.d(TAG, "Browser state is empty");
+            //mManager.onCancel();
+        }
+    }
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -86,8 +110,13 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mFragmentsManager.setPlayerListener(this);
         mTracker = new YouTubeTracker(mContext);
 
-        mOnPause = mFragmentsManager::pausePrevious;
+        mOnPause = () -> new ActionsReceiver(mContext, new Intent(), new BrowserStateListener()).run();
         mHandler = new Handler(Looper.getMainLooper());
+    }
+
+    @Override
+    public void onStart() {
+        mFragmentsManager.openExoPlayer(null, false);
     }
 
     @Override
@@ -157,35 +186,45 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             return;
         }
 
-        // player is opened from from get_video_info url
-        // pause every time, except when mirroring
-        Listener playerListener = new Listener() { // player is opened from from get_video_info url
-            @Override
-            public void onDone() {
-                Log.d(TAG, "About to start ExoPlayer fragment...");
+        mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
+        mManager.onOpen();
 
-                if (Log.getLogType() == Log.LOG_TYPE_FILE) {
-                    Log.d(TAG, "Passing intent to ExoPlayer: " + playerIntent.getExtras());
-                }
+        // give the browser time to initialization
+        mHandler.postDelayed(mOnPause, BROWSER_INIT_TIME_MS);
 
-                mManager.onOpen();
+        //if (pauseBrowser) { // give the browser time to initialization
+        //    mHandler.postDelayed(mOnPause, 10_000);
+        //}
 
-                mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
-
-                if (pauseBrowser) {
-                    mHandler.postDelayed(mOnPause, 10_000);
-                }
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "Cancel start of ExoPlayer fragment");
-                mManager.onCancel();
-            }
-        };
-
-        Runnable processor = new ActionsReceiver(mContext, playerIntent, playerListener);
-        processor.run();
+        //// player is opened from from get_video_info url
+        //// pause every time, except when mirroring
+        //Listener playerListener = new Listener() { // player is opened from from get_video_info url
+        //    @Override
+        //    public void onDone() {
+        //        Log.d(TAG, "About to start ExoPlayer fragment...");
+        //
+        //        if (Log.getLogType() == Log.LOG_TYPE_FILE) {
+        //            Log.d(TAG, "Passing intent to ExoPlayer: " + playerIntent.getExtras());
+        //        }
+        //
+        //        //mManager.onOpen();
+        //
+        //        //mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
+        //
+        //        if (pauseBrowser) {
+        //            mHandler.postDelayed(mOnPause, 10_000);
+        //        }
+        //    }
+        //
+        //    @Override
+        //    public void onCancel() {
+        //        Log.d(TAG, "Cancel start of ExoPlayer fragment");
+        //        mManager.onCancel();
+        //    }
+        //};
+        //
+        //Runnable processor = new ActionsReceiver(mContext, playerIntent, playerListener);
+        //processor.run();
     }
 
     @Override

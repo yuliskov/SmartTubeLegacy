@@ -2,13 +2,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.misc.MyCookieLoader;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
-import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoPlayerWrapper;
@@ -17,17 +13,17 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.On
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
+import com.liskovsoft.smartyoutubetv.misc.MyCookieLoader;
+import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import okhttp3.Response;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor {
@@ -36,10 +32,10 @@ public class ExoInterceptor extends RequestInterceptor {
     private final DelayedCommandCallInterceptor mDelayedInterceptor;
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
+    private final OnMediaFoundCallback mExoCallback;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
-    private final boolean mUseExternalPlayer;
     public static final String URL_VIDEO_DATA = "get_video_info";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
     private Map<String, String> mHeaders;
@@ -51,7 +47,13 @@ public class ExoInterceptor extends RequestInterceptor {
         mManager = new BackgroundActionManager();
         
         mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
-        mUseExternalPlayer = SmartPreferences.instance(context).getUseExternalPlayer();
+        boolean useExternalPlayer = SmartPreferences.instance(context).getUseExternalPlayer();
+
+        if (useExternalPlayer) {
+            mExoCallback = new ExternalPlayerWrapper(mContext, this);
+        } else {
+            mExoCallback = new ExoPlayerWrapper(mContext, this);
+        }
     }
 
     @Override
@@ -63,7 +65,7 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        url = unplayableVideoFix(url);
+        //url = unplayableVideoFix(url);
 
         mCurrentUrl = url;
 
@@ -73,6 +75,8 @@ public class ExoInterceptor extends RequestInterceptor {
             //    mReceiver.returnToPlayer();
             return null;
         }
+
+        mExoCallback.onStart();
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
@@ -107,6 +111,40 @@ public class ExoInterceptor extends RequestInterceptor {
         mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
     }
 
+    /**
+     * For parsing details see {@link YouTubeMediaParser}
+     */
+    private void parseAndOpenExoPlayer() {
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
+        Log.d(TAG, "Video manifest received");
+        dataParser.parse(mExoCallback);
+    }
+
+    public void updateLastCommand(GenericCommand command) {
+        mDelayedInterceptor.setCommand(command);
+        // force call command without adding to the history (in case WebView)
+        mDelayedInterceptor.forceRun(true);
+    }
+
+    public TwoFragmentManager getFragmentsManager() {
+        return mFragmentsManager;
+    }
+
+    public BackgroundActionManager getBackgroundActionManager() {
+        return mManager;
+    }
+
+    public String getCurrentUrl() {
+        return mCurrentUrl;
+    }
+
+    public void closePlayer() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        new ActionsSender(mContext, this).bindActions(intent);
+        mManager.onClose();
+    }
+
     private Map<String, String> prepareHeaders() {
         if (mHeaders != null) {
             return mHeaders;
@@ -133,82 +171,5 @@ public class ExoInterceptor extends RequestInterceptor {
         mHeaders = headers;
 
         return headers;
-    }
-
-    /**
-     * For parsing details see {@link YouTubeMediaParser}
-     */
-    private void parseAndOpenExoPlayer() {
-        OnMediaFoundCallback exoCallback;
-
-        if (mUseExternalPlayer) {
-            exoCallback = new ExternalPlayerWrapper(mContext, this);
-        } else {
-            exoCallback = new ExoPlayerWrapper(mContext, this);
-        }
-
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
-        Log.d(TAG, "Video manifest received");
-        dataParser.parse(new OnMediaFoundCallback() {
-            @Override
-            public void onDashUrlFound(Uri dashUrl) {
-                exoCallback.onDashUrlFound(dashUrl);
-            }
-
-            @Override
-            public void onHLSFound(final Uri hlsUrl) {
-                exoCallback.onHLSFound(hlsUrl);
-            }
-
-            @Override
-            public void onDashMPDFound(final InputStream mpdContent) {
-                exoCallback.onDashMPDFound(mpdContent);
-            }
-
-            @Override
-            public void onUrlListFound(final List<String> urlList) {
-                exoCallback.onUrlListFound(urlList);
-            }
-
-            @Override
-            public void onTrackingUrlFound(Uri trackingUrl) {
-                exoCallback.onTrackingUrlFound(trackingUrl);
-            }
-
-            @Override
-            public void onInfoFound(GenericInfo info) {
-                exoCallback.onInfoFound(info);
-            }
-
-            @Override
-            public void onDone() {
-                exoCallback.onDone();
-            }
-        });
-    }
-
-    public void updateLastCommand(GenericCommand command) {
-        mDelayedInterceptor.setCommand(command);
-        // force call command without adding to the history (in case WebView)
-        mDelayedInterceptor.forceRun(true);
-    }
-
-    public TwoFragmentManager getFragmentsManager() {
-        return mFragmentsManager;
-    }
-
-    public BackgroundActionManager getBackgroundActionManager() {
-        return mManager;
-    }
-
-    public String getCurrentUrl() {
-        return mCurrentUrl;
-    }
-
-    public void closePlayer() {
-        Intent intent = new Intent();
-        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
-        new ActionsSender(mContext, this).bindActions(intent);
-        mManager.onClose();
     }
 }

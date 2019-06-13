@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public abstract class OnMediaFoundCallback {
+    public void onStart(){}
     public void onDashMPDFound(InputStream mpdContent){}
     public void onHLSFound(Uri hlsUrl){}
     public void onUrlListFound(List<String> uriList) {}
