@@ -188,7 +188,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         clearPendingEvents();
 
         if (playerIntent == null) {
-            Log.d(TAG, "Switching to the running player from suggestions");
+            Log.d(TAG, "Switching to the running player from suggestions or user's page");
             mFragmentsManager.openExoPlayer(null, false); // player is opened from suggestions
             mHandler.postDelayed(mOnResume, BROWSER_INIT_TIME_MS);
             return;

@@ -364,10 +364,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             resetUiState();
         }
 
-        if (mSimpleExoPlayerView != null) {
-            mSimpleExoPlayerView.hideController();
-        }
-
         if (mStateManager != null) {
             mStateManager.persistState();
         }
@@ -418,6 +414,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 mAutoFrameRateManager.apply();
             }
 
+            mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
             mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
             updateTitleQualityInfo();
         }
@@ -435,6 +432,18 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         if (mPlayerInitializer != null) {
             mPlayerInitializer.resetVideoTitle();
+        }
+
+        if (mSimpleExoPlayerView != null) {
+            // hide ui player by default
+            mSimpleExoPlayerView.setControllerAutoShow(false);
+            mSimpleExoPlayerView.hideController();
+
+            // hide the last frame of the previous video
+            View shutter = mSimpleExoPlayerView.findViewById(com.google.android.exoplayer2.ui.R.id.exo_shutter);
+            if (shutter != null) {
+                shutter.setVisibility(View.VISIBLE);
+            }
         }
 
         //TimeBar timeBar = rootView.findViewById(R.id.player_view).findViewById(R.id.exo_progress);

@@ -101,7 +101,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         resumeFragment(mActiveFragment);
     }
 
-    protected void pausePrevious() {
+    public void pausePrevious() {
         if (mPrevFragment == null) {
             return;
         }

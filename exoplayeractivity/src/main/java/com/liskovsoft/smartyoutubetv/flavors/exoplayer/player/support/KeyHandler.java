@@ -63,7 +63,7 @@ public class KeyHandler {
             return hideUI(event);
         }
 
-        if (applySpecialKeyAction(event)) {
+        if (applyMediaKeys(event)) {
             return true;
         }
 
@@ -89,7 +89,7 @@ public class KeyHandler {
         return mFragment.getExoPlayerView().dispatchMediaKeyEvent(event);
     }
 
-    private boolean applySpecialKeyAction(KeyEvent event) {
+    private boolean applyMediaKeys(KeyEvent event) {
         if (mActions.containsKey(event.getKeyCode())) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 mActions.get(event.getKeyCode()).run();

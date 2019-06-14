@@ -271,7 +271,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
         startTag("", "AdaptationSet");
         attribute("", "id", id);
         attribute("", "mimeType", sub.getMimeType());
-        attribute("", "lang", sub.getLanguageCode());
+        attribute("", "language", sub.getLanguageCode()); // NOTE: this tag doesn't work
+        attribute("", "lang", sub.getName());
 
         startTag("", "Role");
         attribute("", "schemeIdUri", "urn:mpeg:DASH:role:2011");

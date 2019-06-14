@@ -98,7 +98,7 @@ public class PlayerInitializer {
     private String getPublishDate() {
         Intent intent = mPlayerFragment.getIntent();
         String published = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
-        return published == null ? mTemplMessage : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
+        return published == null || published.isEmpty() ? mTemplMessage : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {
@@ -113,7 +113,7 @@ public class PlayerInitializer {
      * @return formatted number as string
      */
     private String formatNumber(String num) {
-        if (num == null) {
+        if (num == null || num.isEmpty()) {
             return mTemplMessage;
         }
         

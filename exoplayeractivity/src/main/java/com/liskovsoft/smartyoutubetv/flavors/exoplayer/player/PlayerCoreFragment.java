@@ -171,10 +171,9 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         mSimpleExoPlayerView = root.findViewById(R.id.player_view);
         mSimpleExoPlayerView.setControllerVisibilityListener(this);
-        // mSimpleExoPlayerView.requestFocus();
-
         // hide ui player by default
         mSimpleExoPlayerView.setControllerAutoShow(false);
+
         mPlayerTopBar.setVisibility(View.GONE);
     }
 

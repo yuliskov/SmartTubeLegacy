@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:id="@+id/root"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:keepScreenOn="true">
 
     <com.google.android.exoplayer2.ui.PlayerView
-             android:id="@+id/player_view"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"/>
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shutter_background_color="@color/black"/>
 
     <include layout="@layout/player_top_bar"/>
 

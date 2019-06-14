@@ -54,7 +54,7 @@ public class TrackSelectorUtil extends ApplicationUtil {
     }
 
     private static String buildLanguageString(Format format) {
-        return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? "" : align(format.language, 9);
+        return TextUtils.isEmpty(format.language) || "und".equals(format.language) ? "" : align(format.language, 15);
     }
 
     private static String buildBitrateString(Format format) {

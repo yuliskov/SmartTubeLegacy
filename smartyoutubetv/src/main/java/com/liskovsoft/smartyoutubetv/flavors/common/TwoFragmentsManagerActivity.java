@@ -74,14 +74,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // remove other fragment if exists
         // if container is empty add this
 
-        if (pausePrevious) {
-            GenericFragment removeCandidate = findCandidateToRemove(fragment);
-            Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
-            removeFromContainer(removeCandidate);
-        }
+        //if (pausePrevious) {
+        //    GenericFragment removeCandidate = findCandidateToRemove(fragment);
+        //    Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
+        //    removeFromContainer(removeCandidate);
+        //}
 
         Log.d(TAG, "Add fragment " + fragment.getClass().getSimpleName());
-        addToContainer(fragment);
+        moveToTop(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
     }
@@ -103,7 +103,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void addToContainer(GenericFragment fragment) {
+    private void moveToTop(GenericFragment fragment) {
         if (!isInitialized(fragment)) {
             return;
         }
@@ -111,19 +111,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         ViewGroup container = findViewById(R.id.exo_container);
         View child = fragment.getWrapper();
 
+        // fragment not attached
         if (!containsChild(container, child)) {
             container.addView(child);
             return;
         }
 
-        // ensure that view is placed above others
-
-        int idx = container.indexOfChild(child);
-        int count = container.getChildCount();
-        if ((idx + 1) != count) { // should be the top view
-            container.removeView(child);
-            container.addView(child);
-        }
+        // fragment already attached, so only reorder it
+        child.bringToFront();
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
@@ -143,16 +138,16 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         });
     }
 
-    @Override
-    public void pausePrevious() {
-        GenericFragment activeFragment = getActiveFragment();
-        GenericFragment removeCandidate = findCandidateToRemove(activeFragment);
-
-        Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
-        removeFromContainer(removeCandidate);
-
-        super.pausePrevious();
-    }
+    //@Override
+    //public void pausePrevious() {
+    //    GenericFragment activeFragment = getActiveFragment();
+    //    GenericFragment removeCandidate = findCandidateToRemove(activeFragment);
+    //
+    //    Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
+    //    removeFromContainer(removeCandidate);
+    //
+    //    super.pausePrevious();
+    //}
 
     @Override
     public void setPlayerListener(PlayerListener listener) {

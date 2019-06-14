@@ -113,7 +113,7 @@ public class YouTubeSubParser {
          * Example: see {@link Name} class
          */
         @SerializedName("name")
-        private Name mName;
+        private Name2 mName;
         private String mMimeType;
         private String mCodecs;
 
@@ -149,12 +149,20 @@ public class YouTubeSubParser {
             mVssId = vssId;
         }
 
-        public Name getName() {
-            return mName;
+        public String getName() {
+            if (mName == null || mName.getTitles() == null) {
+                return null;
+            }
+
+            return mName.getTitles()[0].getText();
         }
 
-        public void setName(Name name) {
-            mName = name;
+        public void setName(String name) {
+            if (mName == null || mName.getTitles() == null) {
+                return;
+            }
+
+            mName.getTitles()[0].setText(name);
         }
 
         public String getMimeType() {
@@ -186,6 +194,28 @@ public class YouTubeSubParser {
 
             public void setSimpleText(String simpleText) {
                 mSimpleText = simpleText;
+            }
+        }
+
+        public class Name2 {
+            @SerializedName("runs")
+            private Title[] mTitles;
+
+            public Title[] getTitles() {
+                return mTitles;
+            }
+
+            private class Title {
+                @SerializedName("text")
+                private String mText;
+
+                public String getText() {
+                    return mText;
+                }
+
+                public void setText(String text) {
+                    mText = text;
+                }
             }
         }
     }
