@@ -82,6 +82,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
             throw new IllegalStateException("Active fragment can't be null");
         }
 
+        mDisableKeyEvents = false;
+
         if (mActiveFragment == fragment) {
             return;
         }
@@ -95,7 +97,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         mActiveFragment = fragment;
-        mDisableKeyEvents = false;
 
         resumeFragment(mActiveFragment);
     }

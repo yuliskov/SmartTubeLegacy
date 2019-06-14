@@ -12,4 +12,6 @@ function VideoSetupAddon() {
     };
 }
 
-new VideoSetupAddon().run();
+if (DeviceUtils.isExo()) {
+    new VideoSetupAddon().run();
+}

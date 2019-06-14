@@ -43,7 +43,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
     private Uri mTrackingUrl;
-    private final Runnable mOnPause;
+    private final Runnable mOnNewVideo;
+    private final Runnable mOnResume;
     private final Handler mHandler;
     private static final long BROWSER_INIT_TIME_MS = 10_000;
 
@@ -110,13 +111,19 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mFragmentsManager.setPlayerListener(this);
         mTracker = new YouTubeTracker(mContext);
 
-        mOnPause = () -> new ActionsReceiver(mContext, new Intent(), new BrowserStateListener()).run();
+        mOnNewVideo = () -> new ActionsReceiver(mContext, new Intent(), new BrowserStateListener()).run();
+        mOnResume = () -> {
+            boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
+            mFragmentsManager.openExoPlayer(null, pauseBrowser);
+        };
+
         mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
     public void onStart() {
         mFragmentsManager.openExoPlayer(null, false);
+        clearPendingEvents();
     }
 
     @Override
@@ -178,11 +185,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
-        final boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
+        clearPendingEvents();
 
         if (playerIntent == null) {
             Log.d(TAG, "Switching to the running player from suggestions");
-            mFragmentsManager.openExoPlayer(null, pauseBrowser); // player is opened from suggestions
+            mFragmentsManager.openExoPlayer(null, false); // player is opened from suggestions
+            mHandler.postDelayed(mOnResume, BROWSER_INIT_TIME_MS);
             return;
         }
 
@@ -190,46 +198,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mManager.onOpen();
 
         // give the browser time to initialization
-        mHandler.postDelayed(mOnPause, BROWSER_INIT_TIME_MS);
-
-        //if (pauseBrowser) { // give the browser time to initialization
-        //    mHandler.postDelayed(mOnPause, 10_000);
-        //}
-
-        //// player is opened from from get_video_info url
-        //// pause every time, except when mirroring
-        //Listener playerListener = new Listener() { // player is opened from from get_video_info url
-        //    @Override
-        //    public void onDone() {
-        //        Log.d(TAG, "About to start ExoPlayer fragment...");
-        //
-        //        if (Log.getLogType() == Log.LOG_TYPE_FILE) {
-        //            Log.d(TAG, "Passing intent to ExoPlayer: " + playerIntent.getExtras());
-        //        }
-        //
-        //        //mManager.onOpen();
-        //
-        //        //mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
-        //
-        //        if (pauseBrowser) {
-        //            mHandler.postDelayed(mOnPause, 10_000);
-        //        }
-        //    }
-        //
-        //    @Override
-        //    public void onCancel() {
-        //        Log.d(TAG, "Cancel start of ExoPlayer fragment");
-        //        mManager.onCancel();
-        //    }
-        //};
-        //
-        //Runnable processor = new ActionsReceiver(mContext, playerIntent, playerListener);
-        //processor.run();
+        mHandler.postDelayed(mOnNewVideo, BROWSER_INIT_TIME_MS);
     }
 
     @Override
     public void onPlayerAction(Intent intent) {
-        mHandler.removeCallbacks(mOnPause);
+        clearPendingEvents();
 
         boolean doNotClose =
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
@@ -244,5 +218,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         }
 
         mActionSender.bindActions(intent);
+    }
+
+    private void clearPendingEvents() {
+        mHandler.removeCallbacks(mOnNewVideo);
+        mHandler.removeCallbacks(mOnResume);
     }
 }
