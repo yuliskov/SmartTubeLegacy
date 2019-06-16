@@ -18,9 +18,9 @@ function DisableFocusAddon() {
     };
 
     this.disableDocumentFocus = function() {
-        var vName = (!document.visibilityState && document.webkitVisibilityState) ? 'webkitvisibilitychange' : 'visibilitychange';
+        var visibilityEvent = (!document.visibilityState && document.webkitVisibilityState) ? 'webkitvisibilitychange' : 'visibilitychange';
 
-        EventUtils.disableEvents(document, vName);
+        EventUtils.disableEvents(document, visibilityEvent);
     };
 }
 

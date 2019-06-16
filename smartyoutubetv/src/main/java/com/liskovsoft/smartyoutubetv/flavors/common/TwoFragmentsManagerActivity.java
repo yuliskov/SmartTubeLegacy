@@ -74,20 +74,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // remove other fragment if exists
         // if container is empty add this
 
-        //if (pausePrevious) {
-        //    GenericFragment removeCandidate = findCandidateToRemove(fragment);
-        //    Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
-        //    removeFromContainer(removeCandidate);
-        //}
-
-        Log.d(TAG, "Add fragment " + fragment.getClass().getSimpleName());
+        Log.d(TAG, "Moving fragment to top " + fragment.getClass().getSimpleName());
         moveToTop(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
-    }
-
-    private GenericFragment findCandidateToRemove(GenericFragment fragment) {
-        return mBrowserFragment.equals(fragment) ? mPlayerFragment : mBrowserFragment;
     }
 
     private void removeFromContainer(GenericFragment fragment) {

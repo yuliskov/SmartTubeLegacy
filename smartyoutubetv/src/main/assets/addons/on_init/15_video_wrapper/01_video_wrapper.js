@@ -24,32 +24,8 @@ function VideoWrapperAddon() {
 
                 var video = document.createElementReal(tagName);
 
-                video.addEventListenerReal = video.addEventListener;
-
-                video.addEventListener = function(type, listener, options) {
-                    Log.d($this.TAG, "Add event listener: " + type + " " + listener);
-
-                    if (!this.listeners) {
-                        this.listeners = {};
-                    }
-
-                    //Log.d($this.TAG, "Storing " + type + " listener for future use...");
-                    this.listeners[type] = listener;
-
-                    // if (type == 'timeupdate' || type == 'ended' || type == 'playing' || type == 'loadeddata' || type == 'focus' || type == 'play') {
-                    //     return;
-                    // }
-                    //
-                    // this.addEventListenerReal(type, listener, options);
-                };
-
-                video.dispatchEventReal = video.dispatchEvent;
-
-                video.dispatchEvent = function(event) {
-                    Log.d($this.TAG, "Dispatching event: " + event);
-
-                    this.dispatchEventReal(event);
-                };
+                // $this.addFakeListener(video);
+                $this.overrideVolumeProp(video);
 
                 return video;
             }
@@ -57,7 +33,45 @@ function VideoWrapperAddon() {
             return this.createElementReal(tagName);
         };
     };
+
+    this.overrideVolumeProp = function(video) {
+        Log.d(this.TAG, "Overriding video's volume property");
+        Utils.overrideProp(video, 'volume', 0);
+    };
+
+    this.addFakeListener = function(video) {
+        var $this = this;
+
+        video.addEventListenerReal = video.addEventListener;
+
+        video.addEventListener = function(type, listener, options) {
+            Log.d($this.TAG, "Add event listener: " + type + " " + listener);
+
+            if (!this.listeners) {
+                this.listeners = {};
+            }
+
+            Log.d($this.TAG, "Storing " + type + " listener for future use...");
+            this.listeners[type] = listener;
+
+            // if (type == 'timeupdate' || type == 'ended' || type == 'playing' || type == 'loadeddata' || type == 'focus' || type == 'play') {
+            //     return;
+            // }
+            //
+            // this.addEventListenerReal(type, listener, options);
+        };
+
+        video.dispatchEventReal = video.dispatchEvent;
+
+        video.dispatchEvent = function(event) {
+            Log.d($this.TAG, "Dispatching event: " + event);
+
+            this.dispatchEventReal(event);
+        };
+    };
 }
 
-// new VideoWrapperAddon().run();
+if (DeviceUtils.isExo()) {
+    new VideoWrapperAddon().run();
+}
 

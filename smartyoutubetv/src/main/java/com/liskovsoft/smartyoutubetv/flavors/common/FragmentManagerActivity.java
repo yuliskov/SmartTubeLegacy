@@ -85,6 +85,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mDisableKeyEvents = false;
 
         if (mActiveFragment == fragment) {
+            if (pausePrevious && mPrevFragment != null) {
+                pauseFragment(mPrevFragment);
+            }
+
             return;
         }
 

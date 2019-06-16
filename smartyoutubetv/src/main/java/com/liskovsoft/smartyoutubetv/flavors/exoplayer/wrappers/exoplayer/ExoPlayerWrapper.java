@@ -47,6 +47,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final Runnable mOnResume;
     private final Handler mHandler;
     private static final long BROWSER_INIT_TIME_MS = 10_000;
+    private boolean mBlockHandlers;
 
     // player is opened from from get_video_info url
     // pause every time, except when mirroring
@@ -54,6 +55,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         @Override
         public void onDone(Intent state) {
             Log.d(TAG, "About to start ExoPlayer fragment...");
+
+            if (mBlockHandlers) {
+                Log.d(TAG, "Browser state callback hab been canceled");
+                return;
+            }
 
             if (Log.getLogType() == Log.LOG_TYPE_FILE) {
                 Log.d(TAG, "Passing browser state to ExoPlayer: " + state.getExtras());
@@ -123,6 +129,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onStart() {
         mFragmentsManager.openExoPlayer(null, false);
+        mBlockHandlers = true;
         clearPendingEvents();
     }
 
@@ -185,6 +192,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     private void prepareAndOpenExoPlayer(final Intent playerIntent) {
+        mBlockHandlers = false;
         clearPendingEvents();
 
         if (playerIntent == null) {
@@ -203,6 +211,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onPlayerAction(Intent intent) {
+        mBlockHandlers = true;
         clearPendingEvents();
 
         boolean doNotClose =
