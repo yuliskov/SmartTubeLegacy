@@ -144,6 +144,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
 
         if (intent != null) {
             openVideoFromIntent(intent);
+        } else {
+            // focus player's controller by hiding it)
+            mSimpleExoPlayerView.hideController();
         }
     }
 

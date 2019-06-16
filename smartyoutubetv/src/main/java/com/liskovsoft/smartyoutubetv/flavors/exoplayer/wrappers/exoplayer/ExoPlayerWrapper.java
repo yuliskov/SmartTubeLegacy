@@ -128,9 +128,9 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onStart() {
-        mFragmentsManager.openExoPlayer(null, false);
         mBlockHandlers = true;
         clearPendingEvents();
+        mFragmentsManager.openExoPlayer(null, false);
     }
 
     @Override
