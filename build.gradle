@@ -28,6 +28,7 @@ buildscript {
         targetSdkVersion = 26
         appCompatVersion = 'com.android.support:appcompat-v7:28.0.0'
         appCompatXVersion = 'androidx.appcompat:appcompat:1.0.0'
+        annotationXVersion = 'androidx.annotation:annotation:1.0.0'
         supportVersion = 'com.android.support:support-v4:28.0.0'
         constraintLayoutVersion = 'com.android.support.constraint:constraint-layout:1.1.2'
         dnsjavaVersion = 'dnsjava:dnsjava:2.1.8'
@@ -60,6 +61,10 @@ buildscript {
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
         openPgpVersion = 'org.sufficientlysecure:openpgp-api:9.0'
         mediaCompatVersion = 'com.android.support:support-media-compat:28.0.0'
+        previewSeekBarVersion = 'com.github.rubensousa:previewseekbar:2.0.0'
+        previewSeekBarExoVersion = 'com.github.rubensousa:previewseekbar-exoplayer:2.8.1.0'
+        glideVersion = 'com.github.bumptech.glide:glide:4.9.0'
+        glideCompilerVersion = 'com.github.bumptech.glide:compiler:4.9.0'
     }
 }
 

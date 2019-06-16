@@ -615,7 +615,7 @@ public class PreciseTimeBar extends View implements TimeBar {
         return (int) (dps * displayMetrics.density + 0.5f);
     }
 
-    private static int getDefaultScrubberColor(int playedColor) {
+    protected static int getDefaultScrubberColor(int playedColor) {
         return 0xFF000000 | playedColor;
     }
 

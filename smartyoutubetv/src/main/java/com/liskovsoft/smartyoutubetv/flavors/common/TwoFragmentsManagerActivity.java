@@ -157,6 +157,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         mPlayerListener.onPlayerAction(action);
     }
 
+    @Override
+    public void openBrowser(boolean pausePrevious) {
+        runOnUiThread(() -> setActiveFragment(mBrowserFragment, pausePrevious));
+    }
+
     private void initBrowserTransparency() {
         if (mTransparencyDone) {
             return;

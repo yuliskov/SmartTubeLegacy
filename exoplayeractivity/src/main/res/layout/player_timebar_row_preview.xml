@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/time_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/player_second_padding"
+    android:paddingRight="@dimen/player_second_padding">
+
+    <TextView android:id="@id/exo_position"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="14sp"
+              android:textStyle="bold"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:includeFontPadding="false"
+              android:textColor="#ffffff"/>
+
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.previewtimebar.PreviewTimeBar
+        android:id="@id/exo_progress"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="26dp"
+        app:played_color="@color/red"
+        app:unplayed_color="@color/white_50"
+        app:buffered_color="@color/white"
+        app:scrubber_color="@color/white"/>
+
+    <TextView android:id="@id/exo_duration"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="14sp"
+              android:textStyle="bold"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:includeFontPadding="false"
+              android:textColor="#ffffff"/>
+
+    <FrameLayout
+        android:id="@+id/previewFrameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/preview_video_frame"
+        android:padding="@dimen/video_frame_width"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.25"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+
+</LinearLayout>

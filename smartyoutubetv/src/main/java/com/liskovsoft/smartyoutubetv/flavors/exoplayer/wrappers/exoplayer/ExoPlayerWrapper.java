@@ -167,6 +167,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     public void onDone() {
         if (mSample == null || mInfo == null) {
             mManager.onCancel();
+            mFragmentsManager.openBrowser(true);
             return;
         }
 
@@ -174,6 +175,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Intent exoIntent = createExoIntent(mSample, mInfo);
         prepareAndOpenExoPlayer(exoIntent);
+        mSample = null;
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
