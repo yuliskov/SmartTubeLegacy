@@ -18,7 +18,7 @@
 
     <include layout="@layout/player_dummy_row"/>
 
-    <include layout="@layout/player_timebar_row"/>
+    <include layout="@layout/player_timebar_row_preview"/>
 
     <include layout="@layout/player_controls_row"/>
 

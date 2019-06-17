@@ -4,21 +4,19 @@ import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser.Storyboard;
 
 import java.util.List;
 
 public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
     private final YouTubeMediaParser mMediaParser;
     private final YouTubeSubParser mSubParser;
-    private final YouTubeStoryParser mStoryParer;
+    private final JsonInfoParser mParser;
     private YouTubeInfoVisitor mVisitor;
 
     public SimpleYouTubeInfoManager(String content) {
-        JsonInfoParser parser = new JsonInfoParser(content);
-        mMediaParser = new YouTubeMediaParser(content, parser);
-        mSubParser = new YouTubeSubParser(content, parser);
-        mStoryParer = new YouTubeStoryParser(content, parser);
+        mParser = new JsonInfoParser(content);
+        mMediaParser = new YouTubeMediaParser(content, mParser);
+        mSubParser = new YouTubeSubParser(content, mParser);
     }
 
     @Override
@@ -35,9 +33,9 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
             }
         }
 
-        Storyboard story = mStoryParer.extractStory();
-        if (story != null) {
-            mVisitor.onStory(story);
+        String spec = mParser.extractStorySpec();
+        if (spec != null) {
+            mVisitor.onStorySpec(spec);
         }
 
         mMediaParser.extractMediaItemsAndDecipher(new YouTubeMediaParser.ParserListener() {

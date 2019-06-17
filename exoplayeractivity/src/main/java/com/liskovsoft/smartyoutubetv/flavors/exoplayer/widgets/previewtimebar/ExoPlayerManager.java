@@ -3,20 +3,20 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.previewtimebar;
 import android.widget.ImageView;
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
-import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.android.exoplayer2.Player;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser.Storyboard;
 
 public class ExoPlayerManager implements PreviewLoader {
     private PreviewTimeBar mPreviewTimeBar;
-    private String mThumbnailsUrl;
     private ImageView mImageView;
+    private final Storyboard mStoryBoard;
 
     public ExoPlayerManager(PreviewTimeBar previewTimeBar,
                             ImageView imageView,
-                            String thumbnailsUrl) {
+                            Storyboard storyboard) {
         mImageView = imageView;
         mPreviewTimeBar = previewTimeBar;
-        mThumbnailsUrl = thumbnailsUrl;
+        mStoryBoard = storyboard;
     }
 
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -27,10 +27,13 @@ public class ExoPlayerManager implements PreviewLoader {
 
     @Override
     public void loadPreview(long currentPosition, long max) {
+        int imgNum = (int) currentPosition / mStoryBoard.getThumbSetDurMS();
+        long realPosMS = currentPosition % mStoryBoard.getThumbSetDurMS();
+
         GlideApp.with(mImageView)
-                .load(mThumbnailsUrl)
+                .load(mStoryBoard.getThumbSetLink(imgNum))
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .transform(new GlideThumbnailTransformation(currentPosition))
+                .transform(new GlideThumbnailTransformation(realPosMS))
                 .into(mImageView);
     }
 }

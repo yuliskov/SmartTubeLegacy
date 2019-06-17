@@ -24,6 +24,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         private Uri mHlsUrl;
         private Uri mDashUrl;
         private Uri mTrackingUrl;
+        private String mSpec;
 
         public MergeMediaVisitor(OnMediaFoundCallback mediaFoundCallback) {
             mMediaFoundCallback = mediaFoundCallback;
@@ -70,6 +71,11 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         }
 
         @Override
+        public void onStorySpec(String spec) {
+            mSpec = spec;
+        }
+
+        @Override
         public void doneVisiting() {
             if (mCounter != mContent.length) {
                 mCounter++;
@@ -84,6 +90,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
             if (mTrackingUrl != null) {
                 mMediaFoundCallback.onTrackingUrlFound(mTrackingUrl);
+            }
+
+            if (mSpec != null) {
+                mMediaFoundCallback.onStorySpecFound(mSpec);
             }
 
             if (mHlsUrl != null) { // live stream usually

@@ -4,38 +4,40 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.View;
-import android.widget.TextView;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultTrackSelector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInitializer;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.previewtimebar.ExoPlayerManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.previewtimebar.PreviewTimeBar;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +68,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String TRACK_ENDED = "track_ended";
     public static final String DISPLAY_MODE_ID = "display_mode_id";
     public static final String VIDEO_CANCELED = "video_canceled";
+    public static final String STORYBOARD_SPEC = "storyboard_spec";
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 
@@ -119,12 +122,25 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
 
             mPlayerInitializer.initVideoTitle();
+
+            initTimelinePreviews();
         }
 
         if (openNewVideo) {
             mAutoFrameRateManager.saveOriginalState();
             restoreSpeed();
         }
+    }
+
+    private void initTimelinePreviews() {
+        PreviewTimeBar previewTimeBar = mSimpleExoPlayerView.findViewById(R.id.exo_progress);
+        previewTimeBar.setPreviewLoader(
+                new ExoPlayerManager(
+                        previewTimeBar,
+                        getView().findViewById(R.id.imageView),
+                        new YouTubeStoryParser(getIntent().getStringExtra(ExoPlayerFragment.STORYBOARD_SPEC)).extractStory()
+                )
+        );
     }
 
     protected void initializeUiScale() {

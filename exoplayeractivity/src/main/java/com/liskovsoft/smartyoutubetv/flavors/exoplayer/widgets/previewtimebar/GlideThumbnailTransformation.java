@@ -9,20 +9,26 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
-
 public class GlideThumbnailTransformation extends BitmapTransformation {
-
-    public static final int MAX_LINES = 7;
-    public static final int MAX_COLUMNS = 7;
-    public static final int THUMBNAILS_EACH = 5000; // millisseconds
+    private int mMaxLines;
+    private int mMaxColumns;
+    private int mThumbnailsEach; // duration of each thumbnail in millisseconds
 
     private int x;
     private int y;
 
     public GlideThumbnailTransformation(long position) {
-        int square = (int) position / THUMBNAILS_EACH;
-        y = square / MAX_LINES;
-        x = square % MAX_COLUMNS;
+        this(position, 7, 7, 5000);
+    }
+
+    public GlideThumbnailTransformation(long position, int maxLines, int maxColumns, int thumbEachMS) {
+        mMaxLines = maxLines;
+        mMaxColumns = maxColumns;
+        mThumbnailsEach = thumbEachMS;
+
+        int square = (int) position / mThumbnailsEach;
+        y = square / mMaxLines;
+        x = square % mMaxColumns;
     }
 
     private int getX() {
@@ -36,8 +42,8 @@ public class GlideThumbnailTransformation extends BitmapTransformation {
     @Override
     protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform,
                                int outWidth, int outHeight) {
-        int width = toTransform.getWidth() / MAX_COLUMNS;
-        int height = toTransform.getHeight() / MAX_LINES;
+        int width = toTransform.getWidth() / mMaxColumns;
+        int height = toTransform.getHeight() / mMaxLines;
         return Bitmap.createBitmap(toTransform, x * width, y * height, width, height);
     }
 

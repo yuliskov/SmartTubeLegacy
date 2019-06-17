@@ -34,7 +34,9 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final ExoInterceptor mInterceptor;
     private final YouTubeTracker mTracker;
     private GenericInfo mInfo;
+    private String mSpec;
     private Sample mSample;
+    private Uri mTrackingUrl;
     private final Context mContext;
     private final TwoFragmentManager mFragmentsManager;
     private final BackgroundActionManager mManager;
@@ -42,11 +44,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
-    private Uri mTrackingUrl;
+    private static final long BROWSER_INIT_TIME_MS = 10_000;
     private final Runnable mOnNewVideo;
     private final Runnable mOnResume;
     private final Handler mHandler;
-    private static final long BROWSER_INIT_TIME_MS = 10_000;
     private boolean mBlockHandlers;
 
     // player is opened from from get_video_info url
@@ -164,6 +165,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     @Override
+    public void onStorySpecFound(String spec) {
+        mSpec = spec;
+    }
+
+    @Override
     public void onDone() {
         if (mSample == null || mInfo == null) {
             mManager.onCancel();
@@ -184,6 +190,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         playerIntent.putExtra(ExoPlayerFragment.VIDEO_AUTHOR, info.getAuthor());
         playerIntent.putExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT, info.getViewCount());
         playerIntent.putExtra(ExoPlayerFragment.VIDEO_ID, extractVideoId());
+        playerIntent.putExtra(ExoPlayerFragment.STORYBOARD_SPEC, mSpec);
         mCachedIntent = playerIntent;
         return playerIntent;
     }

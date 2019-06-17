@@ -24,6 +24,7 @@ public class JsonInfoParser {
     private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsWatchtimeUrl.baseUrl";
     private static final String JSON_INFO_ALL_SUBS = "$.captions.playerCaptionsTracklistRenderer.captionTracks";
     private static final String JSON_INFO_SINGLE_SUB_URL = "$.captions.playerCaptionsTracklistRenderer.captionTracks[0].baseUrl";
+    private static final String JSON_INFO_STORY_SPEC = "$.storyboards.playerStoryboardSpecRenderer.spec";
     private final String mContent;
     private final DocumentContext mParser;
 
@@ -92,7 +93,7 @@ public class JsonInfoParser {
             return subs;
         } catch (PathNotFoundException e) {
             String msg = "It is ok. Video does not have a subtitles";
-            android.util.Log.i(TAG, msg);
+            Log.i(TAG, msg);
         }
 
         return null;
@@ -112,6 +113,10 @@ public class JsonInfoParser {
 
     public List<MediaItem> extractDashMediaItems() {
         return extractMediaItems(JSON_INFO_DASH_FORMATS);
+    }
+
+    public String extractStorySpec() {
+        return extract(JSON_INFO_STORY_SPEC);
     }
 
     public class Subtitle {
