@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
 import com.google.gson.annotations.SerializedName;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

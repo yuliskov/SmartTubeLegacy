@@ -1,13 +1,6 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.PathNotFoundException;
-import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -15,8 +8,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.CipherUtils;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyPathQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.squareup.otto.Subscribe;
@@ -37,12 +31,6 @@ public class YouTubeMediaParser {
     private static final String DASH_FORMATS = "adaptive_fmts";
     private static final String REGULAR_FORMATS = "url_encoded_fmt_stream_map";
     private static final String FORMATS_DELIM = ","; // %2C
-    private static final String JSON_INFO = "player_response";
-    private static final String JSON_INFO_REGULAR_FORMATS = "$.streamingData.formats";
-    private static final String JSON_INFO_DASH_FORMATS = "$.streamingData.adaptiveFormats";
-    private static final String JSON_INFO_DASH_URL = "$.streamingData.dashManifestUrl";
-    private static final String JSON_INFO_HLS_URL = "$.streamingData.hlsManifestUrl";
-    private static final String JSON_INFO_TRACKING_URL = "$.playbackTracking.videostatsWatchtimeUrl.baseUrl";
     private static final int DECIPHERED_SIGNATURE_LENGTH = 81;
 
     private final String mContent;
@@ -56,9 +44,9 @@ public class YouTubeMediaParser {
     private MyQueryString mHlsUrl;
     private MyQueryString mTrackingUrl;
     private List<MediaItem> mNewMediaItems;
-    private DocumentContext mParser;
+    private JsonInfoParser mParser;
 
-    public YouTubeMediaParser(String content) {
+    public YouTubeMediaParser(String content, JsonInfoParser parser) {
         mContent = content;
         mId = new Random().nextInt();
 
@@ -66,30 +54,12 @@ public class YouTubeMediaParser {
             Log.d(TAG, content);
         }
 
-        initJsonParser();
-    }
-
-    private void initJsonParser() {
-        String jsonInfo = extractParam(mContent, JSON_INFO);
-
-        if (jsonInfo == null) {
-            return;
-        }
-
-        Configuration conf = Configuration
-                .builder()
-                .mappingProvider(new GsonMappingProvider())
-                .jsonProvider(new GsonJsonProvider())
-                .build();
-
-        mParser = JsonPath
-                .using(conf)
-                .parse(jsonInfo);
+        mParser = parser;
     }
 
     public GenericInfo extractGenericInfo() {
         GenericInfo info = new SimpleYouTubeGenericInfo();
-        Uri videoInfo = parseUri(mContent);
+        Uri videoInfo = ParserUtils.parseUri(mContent);
         info.setLengthSeconds(videoInfo.getQueryParameter(GenericInfo.LENGTH_SECONDS));
         info.setTitle(videoInfo.getQueryParameter(GenericInfo.TITLE));
         info.setAuthor(videoInfo.getQueryParameter(GenericInfo.AUTHOR));
@@ -99,10 +69,10 @@ public class YouTubeMediaParser {
     }
 
     private void extractHlsUrl() {
-        String url = extractParam(mContent, HLS_URL);
+        String url = ParserUtils.extractParam(mContent, HLS_URL);
 
         if (url == null) {
-            url = extractJson(mParser, JSON_INFO_HLS_URL);
+            url = mParser.extractHlsUrl();
         }
 
         // link overview: http://mysite.com/key/value/key2/value2/s/122343435535
@@ -110,16 +80,16 @@ public class YouTubeMediaParser {
     }
 
     private void extractTrackingUrls() {
-        String url = extractJson(mParser, JSON_INFO_TRACKING_URL);
+        String url = mParser.extractTrackingUrl();
 
         mTrackingUrl = MyQueryStringFactory.parse(url);
     }
 
     private void extractDashMPDUrl() {
-        String url = extractParam(mContent, DASH_MPD_URL);
+        String url = ParserUtils.extractParam(mContent, DASH_MPD_URL);
 
         if (url == null) {
-            url = extractJson(mParser, JSON_INFO_DASH_URL);
+            url = mParser.extractDashUrl();
         }
 
         // dash mpd link overview: http://mysite.com/key/value/key2/value2/s/122343435535
@@ -130,7 +100,7 @@ public class YouTubeMediaParser {
         List<MediaItem> list = new ArrayList<>();
         List<String> items = new ArrayList<>();
 
-        String formats = extractParam(content, queryParam);
+        String formats = ParserUtils.extractParam(content, queryParam);
 
         // stream may not contain formats
         if (formats != null) {
@@ -160,8 +130,8 @@ public class YouTubeMediaParser {
         List<MediaItem> list = new ArrayList<>();
 
         if (mParser != null) {
-            // list.addAll(extractJsonList(mParser, JSON_INFO_REGULAR_FORMATS));
-            list.addAll(extractJsonList(mParser, JSON_INFO_DASH_FORMATS));
+            // list.addAll(extractMediaItems(mParser, JSON_INFO_REGULAR_FORMATS));
+            list.addAll(mParser.extractDashMediaItems());
         }
 
         return list;
@@ -201,7 +171,7 @@ public class YouTubeMediaParser {
     }
 
     private MediaItem createMediaItem(String content) {
-        Uri mediaUrl = parseUri(content);
+        Uri mediaUrl = ParserUtils.parseUri(content);
         SimpleYouTubeMediaItem mediaItem = new SimpleYouTubeMediaItem();
         mediaItem.setBitrate(mediaUrl.getQueryParameter(MediaItem.BITRATE));
         mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
@@ -269,13 +239,13 @@ public class YouTubeMediaParser {
     }
 
     private void doCallbackOnTrackingUrls() {
-        if (!isEmpty(mTrackingUrl)) {
+        if (!ParserUtils.isEmpty(mTrackingUrl)) {
             mListener.onTrackingUrl(Uri.parse(mTrackingUrl.toString()));
         }
     }
 
     private void doCallbackOnHlsUrl() {
-        if (!isEmpty(mHlsUrl)) {
+        if (!ParserUtils.isEmpty(mHlsUrl)) {
             mListener.onHlsUrl(Uri.parse(mHlsUrl.toString()));
         }
     }
@@ -289,7 +259,7 @@ public class YouTubeMediaParser {
         }
 
         // Looking for qhd formats for live streams. They're here.
-        if (!isEmpty(mDashMPDUrl)) {
+        if (!ParserUtils.isEmpty(mDashMPDUrl)) {
             mListener.onDashUrl(Uri.parse(mDashMPDUrl.toString()));
         }
 
@@ -372,82 +342,6 @@ public class YouTubeMediaParser {
         void onExtractMediaItemsAndDecipher(List<MediaItem> items);
     }
 
-    public interface MediaItem extends Comparable<MediaItem> {
-        // Common params
-        String URL = "url";
-        String TYPE = "type";
-        String ITAG = "itag";
-        String S = "s";
-        String SIGNATURE = "signature";
-        String SIGNATURE2 = "sig";
-        String SIGNATURE2_MARK = "lsig";
-        // End Common params
-
-        // DASH params
-        String CLEN = "clen";
-        String BITRATE = "bitrate";
-        String PROJECTION_TYPE = "projection_type";
-        String XTAGS = "xtags";
-        String SIZE = "size";
-        String INDEX = "index";
-        String FPS = "fps";
-        String LMT = "lmt";
-        String QUALITY_LABEL = "quality_label";
-        String INIT = "init";
-        // End DASH params
-
-        // Regular video params
-        String QUALITY = "quality";
-        // End Regular params
-
-        // Common
-        String getUrl();
-        void setUrl(String url);
-        String getS();
-        void setS(String s);
-        String getType();
-        void setType(String type);
-        String getITag();
-        void setITag(String itag);
-
-        // DASH
-        String getClen();
-        void setClen(String clen);
-        String getBitrate();
-        void setBitrate(String bitrate);
-        String getProjectionType();
-        void setProjectionType(String projectionType);
-        String getXtags();
-        void setXtags(String xtags);
-        String getSize();
-        void setSize(String size);
-        String getIndex();
-        void setIndex(String index);
-        String getInit();
-        void setInit(String init);
-        String getFps();
-        void setFps(String fps);
-        String getLmt();
-        void setLmt(String lmt);
-        String getQualityLabel();
-        void setQualityLabel(String qualityLabel);
-
-        // Other/Regular
-        String getQuality();
-        void setQuality(String quality);
-        boolean belongsToType(String type);
-        void setSignature(String signature);
-        String getSignature();
-        void setAudioSamplingRate(String audioSamplingRate);
-        String getAudioSamplingRate();
-        void setSourceURL(String sourceURL);
-        String getSourceURL();
-        List<String> getSegmentUrlList();
-        void setSegmentUrlList(List<String> urls);
-        List<String> getGlobalSegmentList();
-        void setGlobalSegmentList(List<String> segments);
-    }
-
     public interface GenericInfo {
         String LENGTH_SECONDS = "length_seconds";
         String TITLE = "title";
@@ -466,57 +360,6 @@ public class YouTubeMediaParser {
         void setTimestamp(String timestamp);
     }
 
-    // Utils
-
-    private static List<MediaItem> extractJsonList(DocumentContext parser, String jsonPath) {
-        TypeRef<List<SimpleYouTubeMediaItem>> typeRef = new TypeRef<List<SimpleYouTubeMediaItem>>() {};
-
-        List<MediaItem> list = new ArrayList<>();
-
-        try {
-            list.addAll(parser.read(jsonPath, typeRef));
-        } catch (PathNotFoundException e) {
-            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
-            Log.d(TAG, msg);
-        }
-
-        return list;
-    }
-
-    private static String extractJson(DocumentContext parser, String jsonPath) {
-        TypeRef<String> typeRef = new TypeRef<String>() {};
-
-        String result = null;
-
-        try {
-            result = parser.read(jsonPath, typeRef);
-        } catch (PathNotFoundException e) {
-            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
-            Log.d(TAG, msg);
-        }
-
-        return result;
-    }
-
-    private static String extractParam(String content, String queryParam) {
-        Uri videoInfo = parseUri(content);
-        String value = videoInfo.getQueryParameter(queryParam);
-
-        if (value != null && value.isEmpty()) {
-            return null;
-        }
-
-        return value;
-    }
-
-    private static Uri parseUri(String content) {
-        if (content.startsWith("http")) {
-            return Uri.parse(content);
-        }
-
-        return Uri.parse("http://example.com?" + content);
-    }
-
     /**
      * Returns first non-normal signature
      * @param signatures list
@@ -529,24 +372,8 @@ public class YouTubeMediaParser {
             }
 
             return signature;
-
-            //if (!isValidSignature(signature)) {
-            //    return signature;
-            //}
         }
 
         return null;
-    }
-
-    private static boolean isValidSignature(String signature) {
-        return signature != null && signature.length() == DECIPHERED_SIGNATURE_LENGTH;
-    }
-
-    private static boolean isEmpty(MyQueryString queryString) {
-        if (queryString == null) {
-            return true;
-        }
-
-        return queryString.isEmpty();
     }
 }

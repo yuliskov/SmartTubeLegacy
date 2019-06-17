@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp;
 
 import android.net.Uri;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 
 import java.io.InputStream;
 import java.util.ArrayList;

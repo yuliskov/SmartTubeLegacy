@@ -1,20 +1,24 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeSubParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser.Storyboard;
 
 import java.util.List;
 
 public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
     private final YouTubeMediaParser mMediaParser;
     private final YouTubeSubParser mSubParser;
+    private final YouTubeStoryParser mStoryParer;
     private YouTubeInfoVisitor mVisitor;
 
     public SimpleYouTubeInfoManager(String content) {
-        mMediaParser = new YouTubeMediaParser(content);
-        mSubParser = new YouTubeSubParser(content);
+        JsonInfoParser parser = new JsonInfoParser(content);
+        mMediaParser = new YouTubeMediaParser(content, parser);
+        mSubParser = new YouTubeSubParser(content, parser);
+        mStoryParer = new YouTubeStoryParser(content, parser);
     }
 
     @Override
@@ -22,15 +26,18 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
         mVisitor = visitor;
 
         GenericInfo info = mMediaParser.extractGenericInfo();
-
         mVisitor.onGenericInfo(info);
 
         List<Subtitle> subs = mSubParser.extractAllSubs();
-
         if (subs != null) {
             for (Subtitle sub : subs) {
                 mVisitor.onSubItem(sub);
             }
+        }
+
+        Storyboard story = mStoryParer.extractStory();
+        if (story != null) {
+            mVisitor.onStory(story);
         }
 
         mMediaParser.extractMediaItemsAndDecipher(new YouTubeMediaParser.ParserListener() {

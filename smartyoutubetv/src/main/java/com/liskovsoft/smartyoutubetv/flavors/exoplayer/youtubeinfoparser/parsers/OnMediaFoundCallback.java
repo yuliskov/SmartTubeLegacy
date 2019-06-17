@@ -1,7 +1,7 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.main.YouTubeMediaParser.GenericInfo;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 
 import java.io.InputStream;
 import java.util.List;
