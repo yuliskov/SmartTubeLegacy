@@ -29,7 +29,8 @@
         app:played_color="@color/red"
         app:unplayed_color="@color/white_50"
         app:buffered_color="@color/white"
-        app:scrubber_color="@color/white"/>
+        app:scrubber_color="@color/white"
+        app:previewFrameLayout="@id/previewFrameLayout"/>
 
     <TextView android:id="@id/exo_duration"
               android:layout_width="wrap_content"
