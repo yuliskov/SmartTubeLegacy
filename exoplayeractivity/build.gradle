@@ -62,11 +62,8 @@ dependencies {
     implementation project.properties.appCompatXVersion
     implementation project.properties.constraintLayoutXVersion
 
-    //api project.properties.exoplayerMyGitHubVersion
-    api project.properties.exoplayerVersion
-    //api project.properties.amazonExoplayerVersion
-    //api project.properties.amazonExoplayerMyGitHubVersion
-    //api project.properties.exoplayerGitHubVersion
+    //api project.properties.exoplayerVersion
+    api project.properties.amazonExoplayerVersion
 
     implementation project.properties.previewSeekBarVersion
     implementation project.properties.previewSeekBarExoVersion

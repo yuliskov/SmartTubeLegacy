@@ -51,7 +51,7 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         stethoDevVersion = 'com.github.facebook.stetho:stetho:6d148f20b96ecb29320cced6617830eda8af0426' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
-        amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.9.0' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
+        amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.10.1' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
         amazonExoplayerGitHubVersion = 'com.github.amzn.exoplayer-amazon-port:exoplayer:09f605d6ab230202e3f49bba74511cd375e545c1' // 2.9.0 NOTE: 'exoplayer' is a needed module
         amazonExoplayerMyGitHubVersion = 'com.github.yuliskov.exoplayer-amazon-port:exoplayer:r2.9.5-upd4' // 2.9.5 NOTE: 'exoplayer' is a needed module
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.10.1' // https://bintray.com/google/exoplayer/exoplayer
