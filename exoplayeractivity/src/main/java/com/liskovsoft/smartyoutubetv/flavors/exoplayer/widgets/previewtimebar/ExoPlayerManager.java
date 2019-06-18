@@ -4,6 +4,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.request.target.Target;
 import com.github.rubensousa.previewseekbar.PreviewLoader;
 import com.google.android.exoplayer2.Player;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser.Size;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeStoryParser.Storyboard;
 
 public class ExoPlayerManager implements PreviewLoader {
@@ -33,11 +34,14 @@ public class ExoPlayerManager implements PreviewLoader {
 
         int imgNum = (int) currentPosition / mStoryBoard.getThumbSetDurMS();
         long realPosMS = currentPosition % mStoryBoard.getThumbSetDurMS();
+        Size size = mStoryBoard.getSize();
+        GlideThumbnailTransformation transformation =
+                new GlideThumbnailTransformation(realPosMS, size.getWidth(), size.getHeight(), size.getRowCount(), size.getColCount(), size.getDurationMS());
 
         GlideApp.with(mImageView)
                 .load(mStoryBoard.getThumbSetLink(imgNum))
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .transform(new GlideThumbnailTransformation(realPosMS))
+                .transform(transformation)
                 .into(mImageView);
     }
 }

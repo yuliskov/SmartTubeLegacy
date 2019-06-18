@@ -169,11 +169,11 @@ public class YouTubeStoryParser {
             return mHeight;
         }
 
-        public int getRowsCount() {
+        public int getRowCount() {
             return mRowsCount;
         }
 
-        public int getColsCount() {
+        public int getColCount() {
             return mColsCount;
         }
     }

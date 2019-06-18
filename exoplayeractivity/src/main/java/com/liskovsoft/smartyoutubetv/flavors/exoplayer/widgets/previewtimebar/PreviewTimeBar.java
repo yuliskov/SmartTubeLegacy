@@ -63,7 +63,7 @@ public class PreviewTimeBar extends PreciseTimeBar implements PreviewView, TimeB
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (!delegate.isSetup() && getWidth() != 0 && getHeight() != 0 && !isInEditMode()) {
-            delegate.onLayout((ViewGroup) getParent(), frameLayoutId);
+            delegate.onLayout((ViewGroup) getParent().getParent(), frameLayoutId);
         }
     }
 

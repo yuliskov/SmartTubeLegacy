@@ -28,6 +28,7 @@ buildscript {
         targetSdkVersion = 26
         appCompatVersion = 'com.android.support:appcompat-v7:28.0.0'
         appCompatXVersion = 'androidx.appcompat:appcompat:1.0.0'
+        constraintLayoutXVersion = 'androidx.constraintlayout:constraintlayout:1.1.2'
         annotationXVersion = 'androidx.annotation:annotation:1.0.0'
         supportVersion = 'com.android.support:support-v4:28.0.0'
         constraintLayoutVersion = 'com.android.support.constraint:constraint-layout:1.1.2'

@@ -182,6 +182,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         Intent exoIntent = createExoIntent(mSample, mInfo);
         prepareAndOpenExoPlayer(exoIntent);
         mSample = null;
+        mSpec = null;
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
