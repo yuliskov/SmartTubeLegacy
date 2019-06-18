@@ -187,6 +187,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
             return true;
         }
 
+        event = unknownKeyFix(event);
+
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
             SmartUtils.returnToLaunchersDialog(this);
             return true;
@@ -194,6 +196,26 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mEvent = event; // give a choice to modify this event in the middle of the pipeline
         return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
+    }
+
+    private KeyEvent unknownKeyFix(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN &&
+            event.getScanCode() == 68) {
+            event = new KeyEvent(
+                    event.getDownTime(),
+                    event.getEventTime(),
+                    event.getAction(),
+                    KeyEvent.KEYCODE_BACK,
+                    event.getRepeatCount(),
+                    event.getMetaState(),
+                    event.getDeviceId(),
+                    event.getScanCode(),
+                    event.getFlags(),
+                    event.getSource()
+            );
+        }
+
+        return event;
     }
 
     @Override

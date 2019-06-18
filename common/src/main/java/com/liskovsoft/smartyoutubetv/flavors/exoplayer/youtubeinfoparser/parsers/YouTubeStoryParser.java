@@ -22,14 +22,14 @@ public class YouTubeStoryParser {
      * @param spec specification e.g. <code>https:\/\/i.ytimg.com\/sb\/Pk2oW4SDDxY\/storyboard3_L$L\/$N.jpg|48#27#100#10#10#0#default#vpw4l5h3xmm2AkCT6nMZbvFIyJw|80#45#90#10#10#2000#M$M#hCWDvBSbgeV52mPYmOHjgdLFI1o|160#90#90#5#5#2000#M$M#ys1MKEnwYXA1QAcFiugAA_cZ81Q</code>
      */
     public YouTubeStoryParser(String spec) {
-        if (spec == null) {
-            throw new IllegalStateException("spec cannot be null");
-        }
-
         mSpec = spec;
     }
 
     public Storyboard extractStory() {
+        if (mSpec == null) {
+            return null;
+        }
+
         return parseStoryboardSpec(mSpec);
     }
 

@@ -134,11 +134,13 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     private void initTimelinePreviews() {
         PreviewTimeBar previewTimeBar = mSimpleExoPlayerView.findViewById(R.id.exo_progress);
+        String spec = getIntent().getStringExtra(ExoPlayerFragment.STORYBOARD_SPEC);
+
         previewTimeBar.setPreviewLoader(
                 new ExoPlayerManager(
                         previewTimeBar,
                         getView().findViewById(R.id.imageView),
-                        new YouTubeStoryParser(getIntent().getStringExtra(ExoPlayerFragment.STORYBOARD_SPEC)).extractStory()
+                        new YouTubeStoryParser(spec).extractStory()
                 )
         );
     }

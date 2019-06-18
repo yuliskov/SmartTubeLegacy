@@ -27,6 +27,10 @@ public class ExoPlayerManager implements PreviewLoader {
 
     @Override
     public void loadPreview(long currentPosition, long max) {
+        if (mStoryBoard == null) {
+            return;
+        }
+
         int imgNum = (int) currentPosition / mStoryBoard.getThumbSetDurMS();
         long realPosMS = currentPosition % mStoryBoard.getThumbSetDurMS();
 

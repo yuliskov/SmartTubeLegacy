@@ -39,8 +39,11 @@ import com.google.android.exoplayer2.ui.TimeBar;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -98,7 +101,7 @@ public class PreciseTimeBar extends View implements TimeBar {
     private final Formatter formatter;
     private final Runnable stopScrubbingRunnable;
 
-    private OnScrubListener listener;
+    private List<OnScrubListener> listeners;
     private int keyCountIncrement;
     private long keyTimeIncrement;
     private int lastCoarseScrubXPosition;
@@ -132,6 +135,7 @@ public class PreciseTimeBar extends View implements TimeBar {
         playedAdMarkerPaint = new Paint();
         scrubberPaint = new Paint();
         scrubberPaint.setAntiAlias(true);
+        listeners = new ArrayList<>();
 
         // Calculate the dimensions and paints for drawn elements.
         Resources res = context.getResources();
@@ -296,9 +300,11 @@ public class PreciseTimeBar extends View implements TimeBar {
                         positionScrubber(x);
                     }
                     scrubPosition = getTouchedScrubberPosition();
-                    if (listener != null) {
+
+                    for (OnScrubListener listener : listeners) {
                         listener.onScrubMove(this, scrubPosition);
                     }
+
                     update();
                     invalidate();
                     return true;
@@ -441,7 +447,8 @@ public class PreciseTimeBar extends View implements TimeBar {
         if (parent != null) {
             parent.requestDisallowInterceptTouchEvent(true);
         }
-        if (listener != null) {
+
+        for (OnScrubListener listener : listeners) {
             listener.onScrubStart(this, getScrubberPosition());
         }
     }
@@ -453,7 +460,8 @@ public class PreciseTimeBar extends View implements TimeBar {
             parent.requestDisallowInterceptTouchEvent(false);
         }
         invalidate();
-        if (listener != null) {
+
+        for (OnScrubListener listener : listeners) {
             listener.onScrubStop(this, getScrubberPosition(), canceled);
         }
     }
@@ -578,9 +586,11 @@ public class PreciseTimeBar extends View implements TimeBar {
         if (!scrubbing) {
             startScrubbing();
         }
-        if (listener != null) {
+
+        for (OnScrubListener listener : listeners) {
             listener.onScrubMove(this, scrubPosition);
         }
+
         update();
         return true;
     }
@@ -633,12 +643,13 @@ public class PreciseTimeBar extends View implements TimeBar {
 
     @Override
     public void addListener(OnScrubListener listener) {
-        this.listener = listener;
+        Log.d(TAG, "Add listener: " + listener.getClass().getSimpleName());
+        this.listeners.add(listener);
     }
 
     @Override
     public void removeListener(OnScrubListener listener) {
-        this.listener = null;
+        this.listeners.remove(listener);
     }
 
 }
