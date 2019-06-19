@@ -61,6 +61,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project.properties.appCompatXVersion
     implementation project.properties.constraintLayoutXVersion
+    implementation project.properties.collectionXVersion
 
     //api project.properties.exoplayerVersion
     api project.properties.amazonExoplayerVersion
