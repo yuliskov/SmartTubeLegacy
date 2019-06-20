@@ -10,7 +10,6 @@
     android:padding="@dimen/player_main_padding">
 
     <TextView android:id="@+id/video_title"
-              android:text="@string/loading_view_message"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:paddingLeft="4dp"
@@ -27,7 +26,6 @@
                       android:layout_height="wrap_content"
                       android:orientation="horizontal">
             <TextView android:id="@+id/video_title2"
-                      android:text="@string/loading_view_message"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textSize="14sp"
@@ -35,7 +33,6 @@
                       tools:ignore="SmallSp"
                       android:maxLines="1"/>
             <TextView android:id="@+id/video_quality"
-                      android:text="@string/loading_view_message"
                       android:paddingLeft="30dp"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"

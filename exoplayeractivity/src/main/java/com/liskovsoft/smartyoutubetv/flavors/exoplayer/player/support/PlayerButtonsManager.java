@@ -22,12 +22,13 @@ import java.util.Map;
 public class PlayerButtonsManager {
     private static final String TAG = PlayerButtonsManager.class.getSimpleName();
     private final ExoPlayerBaseFragment mPlayerFragment;
-    private final Map<Integer, Boolean> mButtonStates;
-    private final Map<Integer, String> mIdTagMapping;
     private final PlayerView mExoPlayerView;
     private final ExoPreferences mPrefs;
     private final View mRootView;
     private boolean mListenerAdded;
+    private Map<Integer, Boolean> mButtonStates;
+    private Map<Integer, String> mOutputIdTagMapping;
+    private Map<Integer, String> mInputIdTagMapping;
 
     public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -40,10 +41,13 @@ public class PlayerButtonsManager {
         mExoPlayerView = mRootView.findViewById(R.id.player_view);
         mPrefs = ExoPreferences.instance(playerFragment.getActivity());
 
-        mButtonStates = new HashMap<>();
-        mIdTagMapping = new HashMap<>();
+        initButtonStates();
+        initOutputIdTagMapping();
+        initInputIdTagMapping();
+    }
 
-        initIdTagMapping();
+    private void initButtonStates() {
+        mButtonStates = new HashMap<>();
     }
 
     public void syncButtonStates() {
@@ -71,7 +75,7 @@ public class PlayerButtonsManager {
             return;
         }
 
-        for (Map.Entry<Integer, String> entry : mIdTagMapping.entrySet()) {
+        for (Map.Entry<Integer, String> entry : mInputIdTagMapping.entrySet()) {
             boolean isButtonDisabled = !extras.containsKey(entry.getValue()); // no such button in data
             // NOTE: fix phantom subscribe/unsubscribe
             if (isButtonDisabled) {
@@ -92,15 +96,29 @@ public class PlayerButtonsManager {
         }
     }
 
-    private void initIdTagMapping() {
-        mIdTagMapping.put(R.id.exo_user, ExoPlayerFragment.BUTTON_USER_PAGE);
-        mIdTagMapping.put(R.id.exo_like, ExoPlayerFragment.BUTTON_LIKE);
-        mIdTagMapping.put(R.id.exo_dislike, ExoPlayerFragment.BUTTON_DISLIKE);
-        mIdTagMapping.put(R.id.exo_subscribe, ExoPlayerFragment.BUTTON_SUBSCRIBE);
-        mIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
-        mIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
-        mIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
-        mIdTagMapping.put(R.id.exo_favorites, ExoPlayerFragment.BUTTON_FAVORITES);
+    /**
+     * Id/Tag map for all buttons
+     */
+    private void initOutputIdTagMapping() {
+        mOutputIdTagMapping = new HashMap<>();
+        mOutputIdTagMapping.put(R.id.exo_user, ExoPlayerFragment.BUTTON_USER_PAGE);
+        mOutputIdTagMapping.put(R.id.exo_like, ExoPlayerFragment.BUTTON_LIKE);
+        mOutputIdTagMapping.put(R.id.exo_dislike, ExoPlayerFragment.BUTTON_DISLIKE);
+        mOutputIdTagMapping.put(R.id.exo_subscribe, ExoPlayerFragment.BUTTON_SUBSCRIBE);
+        mOutputIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
+        mOutputIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
+        mOutputIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
+        mOutputIdTagMapping.put(R.id.exo_favorites, ExoPlayerFragment.BUTTON_FAVORITES);
+    }
+
+    /**
+     * Id/Tag map for toggle buttons
+     */
+    private void initInputIdTagMapping() {
+        mInputIdTagMapping = new HashMap<>();
+        mInputIdTagMapping.put(R.id.exo_like, ExoPlayerFragment.BUTTON_LIKE);
+        mInputIdTagMapping.put(R.id.exo_dislike, ExoPlayerFragment.BUTTON_DISLIKE);
+        mInputIdTagMapping.put(R.id.exo_subscribe, ExoPlayerFragment.BUTTON_SUBSCRIBE);
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
@@ -111,7 +129,7 @@ public class PlayerButtonsManager {
         //    return;
         //}
 
-        Log.d(TAG, "Button is checked: " + mIdTagMapping.get(id) + ": " + isChecked);
+        Log.d(TAG, "Button is checked: " + mOutputIdTagMapping.get(id) + ": " + isChecked);
 
         mButtonStates.put(id, isChecked);
 
@@ -203,13 +221,13 @@ public class PlayerButtonsManager {
             Boolean checked = mButtonStates.get(id);
             mButtonStates.remove(id);
             if (checked != null && checked) { // one btn could be checked at a time
-                resultIntent.putExtra(mIdTagMapping.get(id), true);
+                resultIntent.putExtra(mOutputIdTagMapping.get(id), true);
                 return resultIntent;
             }
         }
 
         for (Map.Entry<Integer, Boolean> entry : mButtonStates.entrySet()) {
-            String realKey = mIdTagMapping.get(entry.getKey());
+            String realKey = mOutputIdTagMapping.get(entry.getKey());
             if (realKey == null) {
                 continue;
             }

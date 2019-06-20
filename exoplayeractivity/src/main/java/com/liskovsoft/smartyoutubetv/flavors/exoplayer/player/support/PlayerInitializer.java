@@ -46,20 +46,7 @@ public class PlayerInitializer {
 
         mExoPlayerView = mRootView.findViewById(R.id.player_view);
 
-        mTemplMessage = mPlayerFragment.getResources().getString(R.string.loading_view_message);
-
-        // makeActivityFullscreen();
-        // makeActivityHorizontal();
-    }
-
-    private void makeActivityFullscreen() {
-        mPlayerFragment.getActivity().getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
-
-        if (VERSION.SDK_INT >= 19) {
-            View decorView = mPlayerFragment.getActivity().getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View
-                    .SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+        mTemplMessage = "";
     }
 
     public void initVideoTitle() {
@@ -98,7 +85,7 @@ public class PlayerInitializer {
     private String getPublishDate() {
         Intent intent = mPlayerFragment.getIntent();
         String published = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
-        return published == null || published.isEmpty() ? mTemplMessage : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
+        return published == null ? mTemplMessage : published.replace("&nbsp;", " "); // &nbsp; sometimes appears in output
     }
 
     private String getViewCount() {
@@ -113,7 +100,7 @@ public class PlayerInitializer {
      * @return formatted number as string
      */
     private String formatNumber(String num) {
-        if (num == null || num.isEmpty()) {
+        if (num == null) {
             return mTemplMessage;
         }
         

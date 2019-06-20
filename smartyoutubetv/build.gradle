@@ -154,9 +154,9 @@ dependencies {
     implementation(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
     }
-
+    
     implementation project.properties.appCompatXVersion
-    implementation project.properties.constraintLayoutVersion
+    implementation project.properties.constraintLayoutXVersion
 
     implementation project.properties.gsonVersion
     implementation project.properties.jsonPathVersion
