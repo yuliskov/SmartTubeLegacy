@@ -55,4 +55,6 @@ function CodecFixAddon() {
     };
 }
 
-new CodecFixAddon().run();
+if (!DeviceUtils.isExo()) {
+    new CodecFixAddon().run();
+}

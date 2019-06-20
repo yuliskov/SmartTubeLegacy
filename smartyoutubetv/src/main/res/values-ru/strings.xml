@@ -4,7 +4,7 @@
     <string name="xwalk_desc">1080 Дополнит.</string>
     <string name="exo_desc">4K Основной</string>
     <string name="exo_desc2">4K Дополнит.</string>
-    <string name="bootstrap_main_title">Выберите вариант YouTube</string>
+    <string name="bootstrap_main_title">Выберите версию YouTube</string>
     <string name="starting_popup">Запуск из главного лаунчера</string>
     <string name="save_selection">Запомнить</string>
     <string name="bootstrap_bottom_title">Отличаются стабильностью работы на конкр. девайсе</string>
