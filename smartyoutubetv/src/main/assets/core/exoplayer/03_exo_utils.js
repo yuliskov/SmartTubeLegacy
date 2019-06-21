@@ -63,6 +63,13 @@ var ExoUtils = {
      * Used when calling through app boundaries.
      */
     getButtonStates: function() {
+        this.getButtonStatesTime = Utils.getCurrentTimeMs();
+
+        // 10 second window between 'get' and 'sync'
+        if (this.syncButtonsTime && (this.getButtonStatesTime - this.syncButtonsTime) < 10000) {
+            return;
+        }
+
         YouTubeUtils.hidePlayerBackground();
         YouTubeUtils.disablePlayerSuggestions();
         this.preparePlayer();
@@ -98,6 +105,7 @@ var ExoUtils = {
         }
 
         Log.d(this.TAG, "getButtonStates: " + JSON.stringify(states));
+
         return states;
     },
 
@@ -105,6 +113,13 @@ var ExoUtils = {
      * Used when calling through app boundaries.
      */
     syncButtons: function(states) {
+        this.syncButtonsTime = Utils.getCurrentTimeMs();
+
+        // 10 second window between 'get' and 'sync'
+        if (this.getButtonStatesTime && (this.syncButtonsTime - this.getButtonStatesTime) < 10000) {
+            return;
+        }
+
         var $this = this;
         // 'likes not saved' fix
         setTimeout(function() {
@@ -139,5 +154,5 @@ var ExoUtils = {
         } else {
             Log.d(this.TAG,"app not found");
         }
-    }
+    },
 };
