@@ -1,13 +1,9 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import com.google.gson.annotations.SerializedName;
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 
@@ -25,45 +21,11 @@ public class JsonInfoParser {
     private static final String JSON_INFO_ALL_SUBS = "$.captions.playerCaptionsTracklistRenderer.captionTracks";
     private static final String JSON_INFO_SINGLE_SUB_URL = "$.captions.playerCaptionsTracklistRenderer.captionTracks[0].baseUrl";
     private static final String JSON_INFO_STORY_SPEC = "$.storyboards.playerStoryboardSpecRenderer.spec";
-    private final String mContent;
     private final DocumentContext mParser;
 
     public JsonInfoParser(String content) {
-        mContent = content;
-        mParser = createJsonInfoParser();
-    }
-
-    private DocumentContext createJsonInfoParser() {
-        String jsonInfo = ParserUtils.extractParam(mContent, JSON_INFO);
-
-        if (jsonInfo == null) {
-            return null;
-        }
-
-        Configuration conf = Configuration
-                .builder()
-                .mappingProvider(new GsonMappingProvider())
-                .jsonProvider(new GsonJsonProvider())
-                .build();
-
-        return JsonPath
-                .using(conf)
-                .parse(jsonInfo);
-    }
-
-    private String extract(String jsonPath) {
-        TypeRef<String> typeRef = new TypeRef<String>() {};
-
-        String result = null;
-
-        try {
-            result = mParser.read(jsonPath, typeRef);
-        } catch (PathNotFoundException e) {
-            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
-            Log.d(TAG, msg);
-        }
-
-        return result;
+        String jsonInfo = ParserUtils.extractParam(content, JSON_INFO);
+        mParser = ParserUtils.createJsonInfoParser(jsonInfo);
     }
 
     private List<MediaItem> extractMediaItems(String jsonPath) {
@@ -100,15 +62,15 @@ public class JsonInfoParser {
     }
 
     public String extractHlsUrl() {
-        return extract(JSON_INFO_HLS_URL);
+        return ParserUtils.extractString(JSON_INFO_HLS_URL, mParser);
     }
 
     public String extractTrackingUrl() {
-        return extract(JSON_INFO_TRACKING_URL);
+        return ParserUtils.extractString(JSON_INFO_TRACKING_URL, mParser);
     }
 
     public String extractDashUrl() {
-        return extract(JSON_INFO_DASH_URL);
+        return ParserUtils.extractString(JSON_INFO_DASH_URL, mParser);
     }
 
     public List<MediaItem> extractDashMediaItems() {
@@ -116,7 +78,7 @@ public class JsonInfoParser {
     }
 
     public String extractStorySpec() {
-        return extract(JSON_INFO_STORY_SPEC);
+        return ParserUtils.extractString(JSON_INFO_STORY_SPEC, mParser);
     }
 
     public class Subtitle {
