@@ -20,6 +20,7 @@ import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import okhttp3.MediaType;
 import okhttp3.Response;
 
 import java.io.InputStream;
@@ -80,6 +81,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
+
         return null;
     }
 

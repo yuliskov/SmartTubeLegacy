@@ -63,8 +63,8 @@ dependencies {
     implementation project.properties.constraintLayoutXVersion
     implementation project.properties.collectionXVersion
 
-    //api project.properties.exoplayerVersion
-    api project.properties.amazonExoplayerVersion
+    api project.properties.exoplayerVersion
+    //api project.properties.amazonExoplayerVersion
 
     implementation project.properties.previewSeekBarVersion
     implementation project.properties.previewSeekBarExoVersion
