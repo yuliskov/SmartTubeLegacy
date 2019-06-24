@@ -23,6 +23,8 @@ public class PlaybackStatsInterceptor extends RequestInterceptor {
     private int mRunCount = 0;
 
     public PlaybackStatsInterceptor(Context context) {
+        super(context);
+
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
     }

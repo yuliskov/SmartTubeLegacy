@@ -6,15 +6,19 @@ import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
 public class MainExoInterceptor extends RequestInterceptor {
     private final Context mContext;
-    private final RequestInterceptor mExoInterceptor;
+    private final ExoInterceptor mExoInterceptor;
     private final DecipherInterceptor mCipherInterceptor;
     private final DelayedCommandCallInterceptor mDoOnPlayEndInterceptor;
+    private final ExoNextInterceptor mExoNextInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public MainExoInterceptor(Context context) {
+        super(context);
+        
         mContext = context;
-        mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor();
-        mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor);
+        mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor(context);
+        mExoNextInterceptor = new ExoNextInterceptor(context);
+        mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor, mExoNextInterceptor);
         mCipherInterceptor = new DecipherInterceptor(context);
     }
 
@@ -35,6 +39,11 @@ public class MainExoInterceptor extends RequestInterceptor {
         // attention: not working when WebView restored
         if (url.contains("ptracking")) {
             mCurrentInterceptor = mDoOnPlayEndInterceptor;
+            return true;
+        }
+
+        if (url.contains(ExoNextInterceptor.URL_NEXT_DATA)) {
+            mCurrentInterceptor = mExoNextInterceptor;
             return true;
         }
 

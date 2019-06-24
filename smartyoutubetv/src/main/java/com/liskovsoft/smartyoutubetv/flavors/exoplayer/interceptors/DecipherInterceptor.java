@@ -20,6 +20,8 @@ public class DecipherInterceptor extends RequestInterceptor {
     private String mJSDecipherCode;
 
     public DecipherInterceptor(Context context) {
+        super(context);
+
         Browser.getBus().register(this);
     }
 

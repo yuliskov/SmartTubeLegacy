@@ -10,6 +10,8 @@ public class MainRequestInterceptor extends RequestInterceptor {
     private final ArrayList<RequestInterceptor> mInterceptors;
 
     public MainRequestInterceptor(Context context) {
+        super(context);
+
         mContext = context;
         mInterceptors = new ArrayList<>();
         //mInterceptors.add(new ContentSecurityPolicyInterceptor(context));

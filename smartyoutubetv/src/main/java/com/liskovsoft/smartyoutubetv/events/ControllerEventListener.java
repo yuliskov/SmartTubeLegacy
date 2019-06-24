@@ -37,6 +37,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private final Controller mController;
     private final RequestInterceptor mInterceptor;
     private final ErrorTranslator mErrorTranslator;
+    private final MyCookieSaver mCookieSaver;
 
     public ControllerEventListener(Activity context, Controller controller) {
         mContext = context;
@@ -49,6 +50,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         mJSInterface = new WebViewJavaScriptInterface(mContext);
         mInterceptor = new MainRequestInterceptor(mContext);
         mErrorTranslator = new ErrorTranslator(mContext);
+        mCookieSaver = new MyCookieSaver(mContext);
     }
 
     private FrameLayout getRootView() {
@@ -76,10 +78,6 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         }
 
         return null;
-    }
-
-    private void syncCookies(Tab tab) {
-        MyCookieSaver.saveCookie(tab.getWebView());
     }
 
     @Override
@@ -129,7 +127,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
             ((TwoFragmentManager) mContext).onBrowserLoaded();
         }
 
-        MyCookieSaver.saveCookie();
+        mCookieSaver.saveCookie();
     }
 
     @Override

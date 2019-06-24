@@ -13,13 +13,20 @@ public final class SmartPreferences {
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECK = "bootstrapUpdateCheck";
     private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
-    private static final String COOKIE_MANAGER_COOKIE = "cookieManagerCookie";
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
+    private static final String AFR_FIX_STATE = "afrFixState";
+    private static final String AUTHORIZATION_HEADER = "authorization_header";
+    private static final String COOKIE_HEADER = "cookie_header";
+    private static final String USE_EXTERNAL_PLAYER = "use_external_player";
+    private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
+    private static final String LOG_TYPE = "log_type";
+    private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
+    private static final String ANIMATED_PREVIEWS = "animated_previews";
     public static final String MUSIC_PAGE = "music_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
     public static final String WATCH_LATER_PAGE = "watch_later_page";
@@ -27,18 +34,11 @@ public final class SmartPreferences {
     public static final String UPDATE_CHECK_STABLE = "update_check_stable";
     public static final String UPDATE_CHECK_BETA = "update_check_beta";
     public static final String UPDATE_CHECK_DISABLED = "update_check_disabled";
-    private static final String AFR_FIX_STATE = "afrFixState";
     public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
     public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
-    private static final String AUTHORIZATION_HEADER = "authorization_header";
-    private static final String USE_EXTERNAL_PLAYER = "use_external_player";
-    private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
-    private static final String LOG_TYPE = "log_type";
-    private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
-    private static final String ANIMATED_PREVIEWS = "animated_previews";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -144,17 +144,6 @@ public final class SmartPreferences {
                 .apply();
     }
 
-    public void setCookie(String cookie) {
-        mPrefs.edit()
-                .putString(COOKIE_MANAGER_COOKIE, cookie)
-                .apply();
-    }
-
-    public String getCookie() {
-        String cookie = mPrefs.getString(COOKIE_MANAGER_COOKIE, "");
-        return cookie;
-    }
-
     public void setEnableEndCards(boolean isChecked) {
         mPrefs.edit()
                 .putBoolean(BOOTSTRAP_END_CARDS, isChecked)
@@ -222,7 +211,17 @@ public final class SmartPreferences {
     }
 
     public String getAuthorizationHeader() {
-        return mPrefs.getString(AUTHORIZATION_HEADER, "");
+        return mPrefs.getString(AUTHORIZATION_HEADER, null);
+    }
+
+    public void setCookieHeader(String header) {
+        mPrefs.edit()
+                .putString(COOKIE_HEADER, header)
+                .apply();
+    }
+
+    public String getCookieHeader() {
+        return mPrefs.getString(COOKIE_HEADER, null);
     }
 
     public void setUseExternalPlayer(boolean isChecked) {

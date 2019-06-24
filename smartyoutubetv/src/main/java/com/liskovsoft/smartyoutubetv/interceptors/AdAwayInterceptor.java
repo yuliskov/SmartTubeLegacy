@@ -9,6 +9,8 @@ public class AdAwayInterceptor extends RequestInterceptor {
     private final AdAwayClient mClient;
 
     public AdAwayInterceptor(Context context) {
+        super(context);
+
         mContext = context;
         mClient = new AdAwayClient(context);
     }

@@ -13,6 +13,8 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private Context mContext;
 
     public OpenExternalPlayerInterceptor(Context context) {
+        super(context);
+
         mContext = context;
         boolean isWebView = mContext instanceof SmartYouTubeTV1080Activity;
         boolean isXWalk = mContext instanceof SmartYouTubeTV1080AltActivity;

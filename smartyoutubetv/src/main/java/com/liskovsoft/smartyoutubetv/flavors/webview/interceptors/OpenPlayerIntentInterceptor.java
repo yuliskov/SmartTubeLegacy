@@ -28,6 +28,8 @@ public class OpenPlayerIntentInterceptor extends RequestInterceptor {
     private Boolean mCachedDeviceMatchResult = null;
 
     public OpenPlayerIntentInterceptor(Context context) {
+        super(context);
+
         mContext = context;
     }
 

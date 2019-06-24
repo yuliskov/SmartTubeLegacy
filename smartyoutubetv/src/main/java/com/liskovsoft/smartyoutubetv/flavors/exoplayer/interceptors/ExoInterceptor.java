@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoPlayerWrapper;
@@ -15,16 +14,11 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.misc.MyCookieLoader;
-import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import okhttp3.MediaType;
-import okhttp3.Response;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor {
@@ -34,6 +28,8 @@ public class ExoInterceptor extends RequestInterceptor {
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
     private final OnMediaFoundCallback mExoCallback;
+    private final ExoNextInterceptor mNextInterceptor;
+    private final SmartPreferences mPrefs;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
@@ -41,14 +37,18 @@ public class ExoInterceptor extends RequestInterceptor {
     private static final String PARAM_ACCESS_TOKEN = "access_token";
     private Map<String, String> mHeaders;
 
-    public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor) {
+    public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor, ExoNextInterceptor nextInterceptor) {
+        super(context);
+
         mContext = context;
         mFragmentsManager = (TwoFragmentManager) context;
         mDelayedInterceptor = delayedInterceptor;
+        mNextInterceptor = nextInterceptor;
         mManager = new BackgroundActionManager();
+        mPrefs = SmartPreferences.instance(mContext);
         
-        mUnplayableVideoFix = SmartPreferences.instance(context).getUnplayableVideoFix();
-        boolean useExternalPlayer = SmartPreferences.instance(context).getUseExternalPlayer();
+        mUnplayableVideoFix = mPrefs.getUnplayableVideoFix();
+        boolean useExternalPlayer = mPrefs.getUseExternalPlayer();
 
         if (useExternalPlayer) {
             mExoCallback = new ExternalPlayerWrapper(mContext, this);
@@ -109,8 +109,7 @@ public class ExoInterceptor extends RequestInterceptor {
     // The general idea is to take a union of itags of both DASH manifests (for example
     // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
     private void prepareResponseStream(String url) {
-        Response responseSimple = OkHttpHelpers.doGetOkHttpRequest(url, prepareHeaders());
-        mResponseStreamSimple = responseSimple == null ? null : responseSimple.body().byteStream();
+        mResponseStreamSimple = getUrlData(url);
     }
 
     /**
@@ -145,33 +144,5 @@ public class ExoInterceptor extends RequestInterceptor {
         intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
         new ActionsSender(mContext, this).bindActions(intent);
         mManager.onClose();
-    }
-
-    private Map<String, String> prepareHeaders() {
-        if (mHeaders != null) {
-            return mHeaders;
-        }
-
-        Map<String, String> headers = new HashMap<>();
-        String rawCookie = MyCookieLoader.getRawCookie();
-
-        // header cannot be null
-        if (rawCookie == null) {
-            return headers;
-        }
-
-        headers.put("Cookie", rawCookie);
-        headers.put("User-Agent", new UserAgentManager().getUA());
-        headers.put("Referer", "https://www.youtube.com/tv");
-        headers.put("x-client-data", "CJW2yQEIo7bJAQjBtskBCKmdygEIqKPKAQi/p8oBCOKoygE=");
-        headers.put("x-youtube-client-name", "TVHTML5");
-        headers.put("x-youtube-client-version", "6.20180913");
-        headers.put("x-youtube-page-cl", "251772599");
-        headers.put("x-youtube-page-label", "youtube.ytfe.desktop_20190605_0_RC0");
-        headers.put("x-youtube-utc-offset", "180");
-
-        mHeaders = headers;
-
-        return headers;
     }
 }

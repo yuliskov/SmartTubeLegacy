@@ -20,6 +20,8 @@ public class VideoInfoInterceptor extends RequestInterceptor {
     private VideoFormat mSelectedFormat;
 
     public VideoInfoInterceptor(Context context) {
+        super(context);
+
         mContext = context;
         mPrefs = SmartPreferences.instance(mContext);
         mSelectedFormat = VideoFormat.fromName(mPrefs.getSelectedFormat());

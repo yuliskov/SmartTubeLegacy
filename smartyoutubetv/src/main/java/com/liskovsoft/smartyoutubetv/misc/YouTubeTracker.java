@@ -61,7 +61,7 @@ public class YouTubeTracker {
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
         String authorization = prefs.getAuthorizationHeader();
-        if (authorization.isEmpty()) {
+        if (authorization == null) {
             return result;
         }
 

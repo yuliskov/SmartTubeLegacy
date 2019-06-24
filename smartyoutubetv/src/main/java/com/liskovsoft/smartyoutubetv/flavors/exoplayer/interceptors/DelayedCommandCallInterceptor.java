@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.webkit.WebResourceResponse;
@@ -12,12 +13,8 @@ public class DelayedCommandCallInterceptor extends RequestInterceptor {
     private boolean mInterceptReceived;
     private boolean mForceRun;
 
-    public DelayedCommandCallInterceptor() {
-        
-    }
-
-    public DelayedCommandCallInterceptor(GenericCommand command) {
-        mCommand = command;
+    public DelayedCommandCallInterceptor(Context context) {
+        super(context);
     }
 
     @Override

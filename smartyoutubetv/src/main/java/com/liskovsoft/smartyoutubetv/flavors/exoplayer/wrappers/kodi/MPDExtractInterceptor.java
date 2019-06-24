@@ -24,6 +24,8 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
     private String mCurrentUrl;
 
     public MPDExtractInterceptor(Context context) {
+        super(context);
+        
         mContext = context;
     }
 
