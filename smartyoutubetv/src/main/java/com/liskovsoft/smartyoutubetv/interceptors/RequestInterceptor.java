@@ -86,6 +86,12 @@ public abstract class RequestInterceptor {
         return response == null ? null : response.body().byteStream();
     }
 
+    protected InputStream postUrlData(String url, String body) {
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, prepareHeaders(), body, "application/json");
+
+        return response == null ? null : response.body().byteStream();
+    }
+
     private Map<String, String> prepareHeaders() {
         if (mCachedHeaders != null) {
             return mCachedHeaders;

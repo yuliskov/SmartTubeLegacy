@@ -13,15 +13,14 @@ import java.io.InputStream;
 
 public class ExoNextInterceptor extends RequestInterceptor {
     private static final String TAG = ExoNextInterceptor.class.getSimpleName();
-    public static final String URL_NEXT_DATA = "youtubei/v1/next";
+    private static final String URL_NEXT_DATA = "https://www.youtube.com/youtubei/v1/next";
     private final Context mContext;
     private final SmartPreferences mPrefs;
-    private InputStream mResponseStream;
     private static final String POST_BODY = "{\"context\":{\"client\":{\"clientName\":\"TVHTML5\",\"clientVersion\":\"6.20180913\"," +
             "\"screenWidthPoints\":1280,\"screenHeightPoints\":720,\"screenPixelDensity\":1,\"theme\":\"CLASSIC\",\"utcOffsetMinutes\":180," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\"}," +
             "\"acceptRegion\":\"UA\",\"deviceMake\":\"LG\",\"deviceModel\":\"42LA660S-ZA\",\"platform\":\"TV\"}," + "\"request" +
-            "\":{\"consistencyTokenJars\":[]},\"user\":{\"enableSafetyMode\":false}},\"videoId\":\"0noUsmTB3_g\",\"racyCheckOk\":true," +
+            "\":{\"consistencyTokenJars\":[]},\"user\":{\"enableSafetyMode\":false}},\"videoId\":\"%VIDEO_ID%\",\"racyCheckOk\":true," +
             "\"contentCheckOk\":true}";
 
     public ExoNextInterceptor(Context context) {
@@ -40,16 +39,18 @@ public class ExoNextInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video metadata is intercepted successfully");
 
-        mResponseStream = getUrlData(url);
-
         return null;
     }
 
-    public VideoMetadata getMetadata() {
-        if (mResponseStream == null) {
+    public VideoMetadata getMetadata(String videoId) {
+        InputStream response = postUrlData(URL_NEXT_DATA, POST_BODY.replace("%VIDEO_ID%", videoId));
+
+        if (response == null) {
             return null;
         }
 
-        return new JsonNextParser(Helpers.toString(mResponseStream)).extractVideoMetadata();
+        VideoMetadata metadata = new JsonNextParser(Helpers.toString(response)).extractVideoMetadata();
+
+        return metadata;
     }
 }

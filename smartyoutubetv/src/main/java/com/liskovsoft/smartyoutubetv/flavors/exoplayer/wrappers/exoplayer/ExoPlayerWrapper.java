@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
@@ -50,6 +51,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final Runnable mOnPause;
     private final Handler mHandler;
     private boolean mBlockHandlers;
+    private VideoMetadata mMetadata;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -154,11 +156,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onMetadata(VideoMetadata metadata) {
-        if (metadata == null) {
-            return;
-        }
-
-        mFragmentsManager.openExoPlayer(metadata.toIntent(), false);
+        mMetadata = metadata;
     }
 
     @Override
@@ -202,6 +200,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             mFragmentsManager.openExoPlayer(null, false); // player is opened from suggestions
             mHandler.postDelayed(mOnResume, BROWSER_INIT_TIME_MS);
             return;
+        }
+
+        if (mMetadata != null) {
+            Helpers.mergeIntents(playerIntent, mMetadata.toIntent());
         }
 
         mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring

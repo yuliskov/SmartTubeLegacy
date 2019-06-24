@@ -97,4 +97,8 @@ public class BackgroundActionManager {
 
         return false;
     }
+
+    public String getVideoId(String url) {
+        return MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
+    }
 }

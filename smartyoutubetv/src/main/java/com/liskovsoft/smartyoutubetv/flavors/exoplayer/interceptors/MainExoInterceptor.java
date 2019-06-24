@@ -42,11 +42,6 @@ public class MainExoInterceptor extends RequestInterceptor {
             return true;
         }
 
-        if (url.contains(ExoNextInterceptor.URL_NEXT_DATA)) {
-            mCurrentInterceptor = mExoNextInterceptor;
-            return true;
-        }
-
         return false;
     }
 

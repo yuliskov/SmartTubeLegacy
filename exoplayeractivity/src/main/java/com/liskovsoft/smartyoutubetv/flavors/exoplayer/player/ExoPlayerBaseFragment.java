@@ -332,7 +332,11 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         Log.d(TAG, "Open video from intent=" + intent);
 
         if (isStateIntent(intent)) {
-            Helpers.mergeIntents(getIntent(), intent);
+            if (getIntent() == null) {
+                setIntent(intent);
+            } else {
+                Helpers.mergeIntents(getIntent(), intent);
+            }
 
             mPlayerInitializer.initVideoTitle();
             syncButtonStates();
