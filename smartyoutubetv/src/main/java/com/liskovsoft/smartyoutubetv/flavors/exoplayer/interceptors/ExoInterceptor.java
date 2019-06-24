@@ -19,7 +19,6 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
-import java.util.Map;
 
 public class ExoInterceptor extends RequestInterceptor {
     private final Context mContext;
@@ -35,7 +34,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final boolean mUnplayableVideoFix;
     public static final String URL_VIDEO_DATA = "get_video_info";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
-    private Map<String, String> mHeaders;
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor, ExoNextInterceptor nextInterceptor) {
         super(context);
@@ -78,6 +76,7 @@ public class ExoInterceptor extends RequestInterceptor {
         }
 
         mExoCallback.onStart();
+        mExoCallback.onMetadata(mNextInterceptor.getMetadata());
 
         prepareResponseStream(url);
         parseAndOpenExoPlayer();

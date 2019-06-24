@@ -58,9 +58,17 @@ public class ParserUtils {
     }
 
     public static String extractString(String jsonPath, DocumentContext parser) {
-        TypeRef<String> typeRef = new TypeRef<String>() {};
+        return ParserUtils.<String>extractType(jsonPath, parser);
+    }
 
-        String result = null;
+    public static Boolean extractBool(String jsonPath, DocumentContext parser) {
+        return ParserUtils.<Boolean>extractType(jsonPath, parser);
+    }
+
+    private static <T> T extractType(String jsonPath, DocumentContext parser) {
+        TypeRef<T> typeRef = new TypeRef<T>() {};
+
+        T result = null;
 
         try {
             result = parser.read(jsonPath, typeRef);

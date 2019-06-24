@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 
 import java.io.InputStream;
@@ -15,5 +16,6 @@ public abstract class OnMediaFoundCallback {
     public void onTrackingUrlFound(Uri trackingUrl) {}
     public void onStorySpecFound(String spec) {}
     public void onInfoFound(GenericInfo info){}
+    public void onMetadata(VideoMetadata metadata){}
     public abstract void onDone();
 }
