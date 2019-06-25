@@ -2,9 +2,11 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parser
 
 import android.content.Intent;
 import com.jayway.jsonpath.DocumentContext;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
 public class JsonNextParser {
+    private static final String TAG = JsonNextParser.class.getSimpleName();
     private static final String VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
             ".videoMetadataRenderer.title.runs[0].text";
     private static final String VIEW_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
@@ -29,6 +31,8 @@ public class JsonNextParser {
     private static final String IS_SUBSCRIBED = "$.transportControls.transportControlsRenderer.subscribeButton.toggleButtonRenderer.isToggled";
     private static final String IS_LIKED = "$.transportControls.transportControlsRenderer.likeButton.toggleButtonRenderer.isToggled";
     private static final String IS_DISLIKED = "$.transportControls.transportControlsRenderer.dislikeButton.toggleButtonRenderer.isToggled";
+    private static final String CHANNEL_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
+            ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.channelId";
     private final DocumentContext mParser;
 
     public JsonNextParser(String nextContent) {
@@ -36,8 +40,15 @@ public class JsonNextParser {
     }
 
     public VideoMetadata extractVideoMetadata() {
-        VideoMetadata videoMetadata = initCurrentVideo();
-        videoMetadata.setNextVideo(initNextVideo());
+        VideoMetadata videoMetadata = null;
+
+        try {
+            videoMetadata = initCurrentVideo();
+            videoMetadata.setNextVideo(initNextVideo());
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+            Log.d(TAG, ex.getMessage());
+        }
 
         return videoMetadata;
     }
@@ -55,6 +66,7 @@ public class JsonNextParser {
         videoMetadata.setSubscribed(bool(IS_SUBSCRIBED));
         videoMetadata.setLiked(bool(IS_LIKED));
         videoMetadata.setDisliked(bool(IS_DISLIKED));
+        videoMetadata.setChannelId(str(CHANNEL_ID));
 
         return videoMetadata;
     }
@@ -68,11 +80,23 @@ public class JsonNextParser {
     }
 
     private boolean bool(String path) {
-        return ParserUtils.extractBool(path, mParser);
+        Boolean result = ParserUtils.extractBool(path, mParser);
+
+        if (result == null) {
+            throw new IllegalStateException("Oops... seems that video metadata format has been changed: " + path);
+        }
+
+        return result;
     }
 
     private String str(String path) {
-        return ParserUtils.extractString(path, mParser);
+        String result = ParserUtils.extractString(path, mParser);
+
+        if (result == null) {
+            throw new IllegalStateException("Oops... seems that video metadata format has been changed: " + path);
+        }
+
+        return result;
     }
 
     public static class VideoMetadata {
@@ -86,6 +110,7 @@ public class JsonNextParser {
         private boolean mLiked;
         private boolean mDisliked;
         private String mVideoId;
+        private String mChannelId;
 
         private VideoMetadata mNextVideo;
 
@@ -175,6 +200,14 @@ public class JsonNextParser {
 
         public void setDisliked(boolean disliked) {
             mDisliked = disliked;
+        }
+
+        public String getChannelId() {
+            return mChannelId;
+        }
+
+        public void setChannelId(String channelId) {
+            mChannelId = channelId;
         }
 
         public Intent toIntent() {

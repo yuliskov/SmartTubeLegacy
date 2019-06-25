@@ -53,7 +53,7 @@ public class ActionsSender {
             // if intent state changed (user adds likes/dislikes/subs etc)
             VideoMetadata newMetadata = VideoMetadata.fromIntent(intent);
 
-            mActions.apply(metadata, newMetadata);
+            mActions.compareAndApply(metadata, newMetadata);
         }
     }
 

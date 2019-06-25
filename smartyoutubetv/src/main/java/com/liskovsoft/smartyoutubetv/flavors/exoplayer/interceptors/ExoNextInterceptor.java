@@ -24,6 +24,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
             "\"acceptRegion\":\"UA\",\"deviceMake\":\"LG\",\"deviceModel\":\"42LA660S-ZA\",\"platform\":\"TV\",\"acceptLanguage\":\"%LANG%\"}," + "\"request" +
             "\":{\"consistencyTokenJars\":[]},\"user\":{\"enableSafetyMode\":false}},\"videoId\":\"%VIDEO_ID%\",\"racyCheckOk\":true," +
             "\"contentCheckOk\":true}";
+    private final String mPostBodyReal;
 
     public ExoNextInterceptor(Context context) {
         super(context);
@@ -31,6 +32,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
         mLang = new LangUpdater(context);
+        mPostBodyReal = POST_BODY.replace("%LANG%", mLang.getPreferredBrowserLocale());
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
     }
 
     public VideoMetadata getMetadata(String videoId) {
-        InputStream response = postUrlData(URL_NEXT_DATA, POST_BODY.replace("%VIDEO_ID%", videoId).replace("%LANG%", mLang.getPreferredBrowserLocale()));
+        InputStream response = postUrlData(URL_NEXT_DATA, mPostBodyReal.replace("%VIDEO_ID%", videoId));
 
         if (response == null) {
             return null;

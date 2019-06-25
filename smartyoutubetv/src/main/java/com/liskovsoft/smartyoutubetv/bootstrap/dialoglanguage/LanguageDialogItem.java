@@ -36,7 +36,7 @@ public class LanguageDialogItem extends DialogItem {
 
         mUpdater.setPreferredLocale(mLangCode);
 
-        // give a time to settings to apply
+        // give a time to settings to compareAndApply
         new Handler(mActivity.getMainLooper()).postDelayed(mActivity::restart, 1_000);
     }
 

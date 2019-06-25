@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
  * <p>
  * This class provides static methods for <a href="#create()">creating</a> UrlEncodedQueryString
  * instances by <a href="#parse(java.lang.CharSequence)">parsing</a> URI and string forms. It can
- * then be used to create, retrieve, update and delete parameters, and to re-apply the query string
+ * then be used to create, retrieve, update and delete parameters, and to re-compareAndApply the query string
  * back to an existing URI.
  * <p>
  * <h4>Encoding and decoding</h4> UrlEncodedQueryString automatically encodes and decodes parameter
@@ -102,19 +102,19 @@ import java.util.StringTokenizer;
  * When modifying parameters, the ordering of existing parameters is maintained. Parameters are
  * <code>set</code> and <code>removed</code> in-place, while <code>appended</code> parameters are
  * added to the end of the query string.
- * <h4>Applying the Query</h4> UrlEncodedQueryString can be used to apply a modified query string
+ * <h4>Applying the Query</h4> UrlEncodedQueryString can be used to compareAndApply a modified query string
  * back to a URI, creating a new URI:
  * <p>
  * <code>
  *     	URI uri = new URI("/forum/article.jsp?id=2");<br/>
  *     	UrlEncodedQueryString queryString = UrlEncodedQueryString.parse(uri);<br/>
  *     	queryString.set("id", 3);<br/>
- *     	uri = queryString.apply(uri);<br/>
+ *     	uri = queryString.compareAndApply(uri);<br/>
  * </code>
  * <p>
  * When reconstructing query strings, there are two valid separator parameters defined by the W3C
  * (ampersand "&amp;" and semicolon ";"), with ampersand being the most common. The
- * <code>apply</code> and <code>toString</code> methods both default to using an ampersand, with
+ * <code>compareAndApply</code> and <code>toString</code> methods both default to using an ampersand, with
  * overloaded forms for using a semicolon.
  * <h4>Thread Safety</h4> This implementation is not synchronized. If multiple threads access a
  * query string concurrently, and at least one of the threads modifies the query string, it must be
@@ -141,7 +141,7 @@ class UrlEncodedQueryStringBase {
 	 * Ampersands in URI attribute values</a>.
 	 * <p>
 	 * <em>All</em> separators are recognised when parsing query strings. <em>One</em> separator may
-	 * be passed to <code>toString</code> and <code>apply</code> when outputting query strings.
+	 * be passed to <code>toString</code> and <code>compareAndApply</code> when outputting query strings.
 	 */
 
 	public static enum Separator {
