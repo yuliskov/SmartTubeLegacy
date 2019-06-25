@@ -82,6 +82,7 @@ public class PlayerButtonsManager {
                 Integer btnId = entry.getKey();
                 ToggleButtonBase btn = mRootView.findViewById(btnId);
                 // NOTE: if no such state then mark button as disabled
+                btn.resetState();
                 btn.disableEvents(); // don't visually disable button, only disable events
                 continue;
             }

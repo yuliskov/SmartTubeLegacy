@@ -28,11 +28,15 @@ public class JsonNextParser {
             ".maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId";
     private static final String NEXT_VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
             ".maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text";
-    private static final String IS_SUBSCRIBED = "$.transportControls.transportControlsRenderer.subscribeButton.toggleButtonRenderer.isToggled";
-    private static final String IS_LIKED = "$.transportControls.transportControlsRenderer.likeButton.toggleButtonRenderer.isToggled";
-    private static final String IS_DISLIKED = "$.transportControls.transportControlsRenderer.dislikeButton.toggleButtonRenderer.isToggled";
+    private static final String IS_SUBSCRIBED = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
+            ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.subscribed";
+    private static final String LIKE_STATUS = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
+            ".videoMetadataRenderer.likeStatus";
     private static final String CHANNEL_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
             ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.channelId";
+    private static final String LIKE_STATUS_LIKE = "LIKE";
+    private static final String LIKE_STATUS_DISLIKE = "DISLIKE";
+    private static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
     private final DocumentContext mParser;
 
     public JsonNextParser(String nextContent) {
@@ -54,6 +58,18 @@ public class JsonNextParser {
     }
 
     private VideoMetadata initCurrentVideo() {
+        String likeStatus = str(LIKE_STATUS);
+
+        if (likeStatus == null) {
+            throw new IllegalStateException("Oops... seems that 'likeStatus' metadata format has been changed: " + LIKE_STATUS);
+        }
+
+        Boolean isSubscribed = bool(IS_SUBSCRIBED);
+
+        if (isSubscribed == null) {
+            throw new IllegalStateException("Oops... seems that 'subscribed' metadata format has been changed: " + IS_SUBSCRIBED);
+        }
+
         VideoMetadata videoMetadata = new VideoMetadata();
 
         videoMetadata.setTitle(str(VIDEO_TITLE));
@@ -63,9 +79,9 @@ public class JsonNextParser {
         videoMetadata.setDescription(str(DESCRIPTION));
         videoMetadata.setPublishedDate(str(PUBLISHED_DATE_FULL));
         videoMetadata.setVideoId(str(VIDEO_ID));
-        videoMetadata.setSubscribed(bool(IS_SUBSCRIBED));
-        videoMetadata.setLiked(bool(IS_LIKED));
-        videoMetadata.setDisliked(bool(IS_DISLIKED));
+        videoMetadata.setSubscribed(isSubscribed);
+        videoMetadata.setLiked(LIKE_STATUS_LIKE.equals(likeStatus));
+        videoMetadata.setDisliked(LIKE_STATUS_DISLIKE.equals(likeStatus));
         videoMetadata.setChannelId(str(CHANNEL_ID));
 
         return videoMetadata;
@@ -79,11 +95,11 @@ public class JsonNextParser {
         return nextVideoMetadata;
     }
 
-    private boolean bool(String path) {
+    private Boolean bool(String path) {
         Boolean result = ParserUtils.extractBool(path, mParser);
-
+        
         if (result == null) {
-            throw new IllegalStateException("Oops... seems that video metadata format has been changed: " + path);
+            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + path);
         }
 
         return result;
@@ -93,7 +109,7 @@ public class JsonNextParser {
         String result = ParserUtils.extractString(path, mParser);
 
         if (result == null) {
-            throw new IllegalStateException("Oops... seems that video metadata format has been changed: " + path);
+            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + path);
         }
 
         return result;
