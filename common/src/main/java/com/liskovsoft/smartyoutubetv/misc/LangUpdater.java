@@ -39,6 +39,15 @@ public class LangUpdater {
     }
 
     /**
+     * Get locale in http format (e.g. zh, ru-RU etc)<br/>
+     * Example: <code>ru,en-US;q=0.9,en;q=0.8,uk;q=0.7</code>
+     * @return lang code
+     */
+    public String getPreferredBrowserLocale() {
+        return getPreferredLocale().replace("_", "-").toLowerCase();
+    }
+
+    /**
      * E.g. ru, uk, en
      * @param langCode lang
      */

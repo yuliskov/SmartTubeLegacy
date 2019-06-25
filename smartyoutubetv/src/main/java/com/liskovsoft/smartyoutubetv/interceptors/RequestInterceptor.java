@@ -5,33 +5,23 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
-import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import okhttp3.MediaType;
 import okhttp3.Response;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class RequestInterceptor {
     private static final String TAG = RequestInterceptor.class.getSimpleName();
     private final Context mContext;
-    private SmartPreferences mPrefs;
-    /**
-     * Common request headers
-     */
-    private Map<String, String> mCachedHeaders;
+    private final HeaderManager mManager;
 
     public abstract boolean test(String url);
     public abstract WebResourceResponse intercept(String url);
 
     public RequestInterceptor(Context context) {
         mContext = context;
-
-        if (mContext != null) {
-            mPrefs = SmartPreferences.instance(context);
-        }
+        mManager = new HeaderManager(context);
     }
 
     private String getMimeType(MediaType contentType) {
@@ -75,56 +65,14 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream getUrlData(String url) {
-        Response response;
-
-        if (mPrefs != null) {
-            response = OkHttpHelpers.doGetOkHttpRequest(url, prepareHeaders());
-        } else {
-            response = OkHttpHelpers.doGetOkHttpRequest(url);
-        }
+        Response response = OkHttpHelpers.doGetOkHttpRequest(url, mManager.getHeaders());
 
         return response == null ? null : response.body().byteStream();
     }
 
     protected InputStream postUrlData(String url, String body) {
-        Response response = OkHttpHelpers.doPostOkHttpRequest(url, prepareHeaders(), body, "application/json");
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
 
         return response == null ? null : response.body().byteStream();
-    }
-
-    private Map<String, String> prepareHeaders() {
-        if (mCachedHeaders != null) {
-            return mCachedHeaders;
-        }
-
-        Map<String, String> headers = new HashMap<>();
-        String rawCookie = mPrefs.getCookieHeader();
-        String authorization = mPrefs.getAuthorizationHeader();
-
-        headers.put("Referer", "https://www.youtube.com/tv");
-        headers.put("x-client-data", "CJW2yQEIo7bJAQjBtskBCKmdygEIqKPKAQi/p8oBCOKoygE=");
-        headers.put("x-youtube-client-name", "TVHTML5");
-        headers.put("x-youtube-client-version", "6.20180913");
-        headers.put("x-youtube-page-cl", "251772599");
-        headers.put("x-youtube-page-label", "youtube.ytfe.desktop_20190605_0_RC0");
-        headers.put("x-youtube-utc-offset", "180");
-        headers.put("User-Agent", new UserAgentManager().getUA());
-
-        if (rawCookie != null) {
-            headers.put("Cookie", rawCookie);
-        }
-
-        if (authorization != null) {
-            headers.put("Authorization", authorization);
-        }
-
-        // don't cache not fully initialized headers
-        if (rawCookie == null || authorization == null) {
-            return headers;
-        }
-
-        mCachedHeaders = headers;
-
-        return headers;
     }
 }

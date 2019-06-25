@@ -21,12 +21,11 @@ public class YouTubeTracker {
             ".youtube.com%2Ftv%23%2Fwatch%2Fvideo%2Fidle%3Fv%3DPugNThnZVF0%26resume&lact=485&state=paused&volume=100&c=TVHTML5&cver=6" +
             ".20180807&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV" +
             "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1&el=leanback";
-    private final UserAgentManager mUA;
-    private Map<String, String> mHeaders;
+    private final HeaderManager mManager;
 
     public YouTubeTracker(Context context) {
         mContext = context;
-        mUA = new UserAgentManager();
+        mManager = new HeaderManager(mContext);
     }
 
     public void track(String trackingUrl, String videoUrl) {
@@ -35,7 +34,7 @@ public class YouTubeTracker {
 
     public void track(String trackingUrl, String videoUrl, float watched, float length) {
         if (checkUrl(trackingUrl)) {
-            Map<String, String> headers = getHeaders();
+            HashMap<String, String> headers = mManager.getHeaders();
             final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, watched, length);
             Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
             Log.d(TAG, "Tracking headers: " + headers);
@@ -50,32 +49,6 @@ public class YouTubeTracker {
 
     private boolean checkUrl(String trackingUrl) {
         return trackingUrl.contains(HISTORY_URL);
-    }
-
-    private Map<String, String> getHeaders() {
-        if (mHeaders != null) {
-            return mHeaders;
-        }
-
-        Map<String, String> result = new HashMap<>();
-
-        SmartPreferences prefs = SmartPreferences.instance(mContext);
-        String authorization = prefs.getAuthorizationHeader();
-        if (authorization == null) {
-            return result;
-        }
-
-        result.put("Authorization", authorization);
-        result.put("Referer", "https://www.youtube.com/tv");
-        result.put("User-Agent", mUA.getUA());
-        result.put("X-YouTube-Client-Name", "TVHTML5");
-        result.put("X-YouTube-Page-CL", "233168751");
-        result.put("X-YouTube-Page-Label", "youtube.ytfe.desktop_20190208_2_RC0");
-        result.put("X-YouTube-Utc-Offset", "120");
-
-        mHeaders = result;
-
-        return result;
     }
 
     private String processUrl(String url, String videoUrl, float watched, float length) {
