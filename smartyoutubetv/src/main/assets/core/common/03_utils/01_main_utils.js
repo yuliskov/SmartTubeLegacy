@@ -362,6 +362,18 @@ var Utils = {
 
     isEven: function(n) {
         return n % 2 == 0;
+    },
+
+    removeFromArray: function(array, obj) {
+        if (!array || !obj) {
+            return;
+        }
+
+        var idx = array.indexOf(obj);
+
+        if (idx != -1) {
+            array.splice(idx, 1); // remove element by idx
+        }
     }
 };
 
