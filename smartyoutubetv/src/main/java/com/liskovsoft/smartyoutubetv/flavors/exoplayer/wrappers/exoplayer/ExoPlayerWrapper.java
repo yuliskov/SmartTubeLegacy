@@ -230,7 +230,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             mManager.onClose();
         }
 
-        mActionSender.bindActions(intent);
+        mActionSender.bindActions(intent, mMetadata);
     }
 
     private void clearPendingEvents() {

@@ -4,13 +4,13 @@ console.log("Scripts::Running core script exo_constants.js");
 // NOTE: order is important
 var PlayerActivity = {
     VIDEO_CANCELED: 'video_canceled',
-    VIDEO_VIEW_COUNT: 'video_views',
+    //VIDEO_VIEW_COUNT: 'video_views',
     SCREEN_WIDTH: 'screen_width',
-    VIDEO_DATE: 'video_date',
-    BUTTON_LIKE: 'button_like',
-    BUTTON_DISLIKE: 'button_dislike',
+    //VIDEO_DATE: 'video_date',
+    //BUTTON_LIKE: 'button_like',
+    //BUTTON_DISLIKE: 'button_dislike',
     BUTTON_FAVORITES: 'button_favorites',
-    BUTTON_SUBSCRIBE: 'button_subscribe',
+    //BUTTON_SUBSCRIBE: 'button_subscribe',
     BUTTON_USER_PAGE: 'button_user_page',
     BUTTON_PREV: 'button_prev',
     BUTTON_NEXT: 'button_next',

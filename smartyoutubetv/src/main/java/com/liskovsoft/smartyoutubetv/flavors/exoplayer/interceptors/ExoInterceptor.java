@@ -29,6 +29,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final OnMediaFoundCallback mExoCallback;
     private final ExoNextInterceptor mNextInterceptor;
     private final SmartPreferences mPrefs;
+    private final ActionsSender mSender;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
@@ -44,6 +45,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mNextInterceptor = nextInterceptor;
         mManager = new BackgroundActionManager();
         mPrefs = SmartPreferences.instance(mContext);
+        mSender = new ActionsSender(mContext, this);
         
         mUnplayableVideoFix = mPrefs.getUnplayableVideoFix();
         boolean useExternalPlayer = mPrefs.getUseExternalPlayer();
@@ -141,7 +143,7 @@ public class ExoInterceptor extends RequestInterceptor {
     public void closePlayer() {
         Intent intent = new Intent();
         intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
-        new ActionsSender(mContext, this).bindActions(intent);
+        mSender.bindActions(intent);
         mManager.onClose();
     }
 }

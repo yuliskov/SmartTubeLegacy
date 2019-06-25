@@ -9,6 +9,8 @@ public class JsonNextParser {
             ".videoMetadataRenderer.title.runs[0].text";
     private static final String VIEW_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
             ".videoMetadataRenderer.shortViewCountText.runs[0].text";
+    private static final String VIEW_COUNT_FULL = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
+            ".videoMetadataRenderer.viewCountText.runs[0].text";
     private static final String LIKES_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
             ".videoMetadataRenderer.likesCount.runs[0].text";
     private static final String DISLIKES_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
@@ -17,6 +19,8 @@ public class JsonNextParser {
             ".videoMetadataRenderer.description.runs[0].text";
     private static final String PUBLISHED_DATE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
             ".contents[0].videoMetadataRenderer.publishedTimeText.runs[0].text";
+    private static final String PUBLISHED_DATE_FULL = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
+            ".contents[0].videoMetadataRenderer.dateText.runs[0].text";
     private static final String VIDEO_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.videoId";
     private static final String NEXT_VIDEO_ID = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
             ".maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId";
@@ -42,11 +46,11 @@ public class JsonNextParser {
         VideoMetadata videoMetadata = new VideoMetadata();
 
         videoMetadata.setTitle(str(VIDEO_TITLE));
-        videoMetadata.setViewCount(str(VIEW_COUNT));
+        videoMetadata.setViewCount(str(VIEW_COUNT_FULL));
         videoMetadata.setLikesCount(str(LIKES_COUNT));
         videoMetadata.setDislikesCount(str(DISLIKES_COUNT));
         videoMetadata.setDescription(str(DESCRIPTION));
-        videoMetadata.setPublishedDate(str(PUBLISHED_DATE));
+        videoMetadata.setPublishedDate(str(PUBLISHED_DATE_FULL));
         videoMetadata.setVideoId(str(VIDEO_ID));
         videoMetadata.setSubscribed(bool(IS_SUBSCRIBED));
         videoMetadata.setLiked(bool(IS_LIKED));
@@ -183,6 +187,22 @@ public class JsonNextParser {
             intent.putExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE, mSubscribed);
 
             return intent;
+        }
+
+        public static VideoMetadata fromIntent(Intent intent) {
+            if (intent == null) {
+                return null;
+            }
+
+            VideoMetadata metadata = new VideoMetadata();
+            metadata.mTitle = intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
+            metadata.mViewCount = intent.getStringExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT);
+            metadata.mPublishedDate = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
+            metadata.mLiked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_LIKE, false);
+            metadata.mDisliked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_DISLIKE, false);
+            metadata.mSubscribed = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE, false);
+
+            return metadata;
         }
     }
 }
