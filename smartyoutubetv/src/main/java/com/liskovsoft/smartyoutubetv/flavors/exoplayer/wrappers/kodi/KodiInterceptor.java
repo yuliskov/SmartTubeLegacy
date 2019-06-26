@@ -59,7 +59,7 @@ public class KodiInterceptor extends MPDExtractInterceptor {
 
     private void closeWebPlayerWindow() {
         // Web-player's window not needed anymore. Close it.
-        HashMap<String, Boolean> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put(ExoPlayerFragment.BUTTON_BACK, true);
         updateLastCommand(new SyncButtonsCommand(map));
     }

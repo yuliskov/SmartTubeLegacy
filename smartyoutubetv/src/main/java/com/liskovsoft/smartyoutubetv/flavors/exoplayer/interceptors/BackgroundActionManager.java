@@ -8,6 +8,7 @@ public class BackgroundActionManager {
     private static final long NO_INTERACTION_TIMEOUT_MS = 500;
     private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 2_000;
     private static final String PARAM_VIDEO_ID = "video_id";
+    private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
     /**
      * fix playlist advance bug<br/>
@@ -100,5 +101,9 @@ public class BackgroundActionManager {
 
     public String getVideoId(String url) {
         return MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
+    }
+
+    public String getPlaylistId(String url) {
+        return MyUrlEncodedQueryString.parse(url).get(PARAM_PLAYLIST_ID);
     }
 }

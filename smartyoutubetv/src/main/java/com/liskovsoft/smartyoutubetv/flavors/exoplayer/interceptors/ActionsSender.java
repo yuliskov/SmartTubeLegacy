@@ -44,7 +44,16 @@ public class ActionsSender {
         Log.d(TAG, "Running SyncButtonsCommand");
 
         // applyAutoframerate(intent);
-        Map<String, Boolean> buttonStates = extractButtonStates(intent);
+        Map<String, Object> buttonStates = extractButtonStates(intent);
+
+        if (metadata != null) {
+            VideoMetadata nextVideo = metadata.getNextVideo();
+            if (nextVideo != null) {
+                String playlistId = nextVideo.getPlaylistId();
+                buttonStates.put("param", nextVideo.getVideoId() + "|" + (playlistId == null ? "" : playlistId));
+            }
+        }
+
         SyncButtonsCommand myCommand = new SyncButtonsCommand(buttonStates);
         mInterceptor.updateLastCommand(myCommand);
 
@@ -57,8 +66,8 @@ public class ActionsSender {
         }
     }
 
-    private Map<String, Boolean> extractButtonStates(Intent intent) {
-        Map<String, Boolean> result = new HashMap<>();
+    private Map<String, Object> extractButtonStates(Intent intent) {
+        Map<String, Object> result = new HashMap<>();
         Bundle extras = intent.getExtras();
         for (String buttonId : extras.keySet()) {
             Object val = extras.get(buttonId);

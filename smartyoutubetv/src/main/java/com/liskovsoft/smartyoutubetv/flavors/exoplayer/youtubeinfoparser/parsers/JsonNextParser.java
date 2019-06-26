@@ -5,6 +5,8 @@ import com.jayway.jsonpath.DocumentContext;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
+import java.util.Arrays;
+
 public class JsonNextParser {
     private static final String TAG = JsonNextParser.class.getSimpleName();
     private static final String VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
@@ -26,6 +28,10 @@ public class JsonNextParser {
     private static final String VIDEO_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.videoId";
     private static final String NEXT_VIDEO_ID = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
             ".maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId";
+    private static final String NEXT_VIDEO_ID_2 = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
+            ".autoplayEndpointRenderer.endpoint.watchEndpoint.videoId";
+    private static final String NEXT_VIDEO_PLAYLIST_ID = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
+            ".autoplayEndpointRenderer.endpoint.watchEndpoint.playlistId";
     private static final String NEXT_VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
             ".maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text";
     private static final String IS_SUBSCRIBED = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
@@ -90,26 +96,41 @@ public class JsonNextParser {
     private VideoMetadata initNextVideo() {
         VideoMetadata nextVideoMetadata = new VideoMetadata();
         nextVideoMetadata.setTitle(str(NEXT_VIDEO_TITLE));
-        nextVideoMetadata.setVideoId(str(NEXT_VIDEO_ID));
+        nextVideoMetadata.setVideoId(str(NEXT_VIDEO_ID, NEXT_VIDEO_ID_2));
+        nextVideoMetadata.setPlaylistId(str(NEXT_VIDEO_PLAYLIST_ID));
 
         return nextVideoMetadata;
     }
 
-    private Boolean bool(String path) {
-        Boolean result = ParserUtils.extractBool(path, mParser);
+    private Boolean bool(String... paths) {
+        Boolean result = null;
+
+        for (String path : paths) {
+            result = ParserUtils.extractBool(path, mParser);
+            if (result != null) {
+                break;
+            }
+        }
         
         if (result == null) {
-            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + path);
+            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
         }
 
         return result;
     }
 
-    private String str(String path) {
-        String result = ParserUtils.extractString(path, mParser);
+    private String str(String... paths) {
+        String result = null;
+
+        for (String path : paths) {
+            result = ParserUtils.extractString(path, mParser);
+            if (result != null) {
+                break;
+            }
+        }
 
         if (result == null) {
-            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + path);
+            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
         }
 
         return result;
@@ -127,6 +148,7 @@ public class JsonNextParser {
         private boolean mDisliked;
         private String mVideoId;
         private String mChannelId;
+        private String mPlaylistId;
 
         private VideoMetadata mNextVideo;
 
@@ -224,6 +246,14 @@ public class JsonNextParser {
 
         public void setChannelId(String channelId) {
             mChannelId = channelId;
+        }
+
+        public String getPlaylistId() {
+            return mPlaylistId;
+        }
+
+        public void setPlaylistId(String playlistId) {
+            mPlaylistId = playlistId;
         }
 
         public Intent toIntent() {

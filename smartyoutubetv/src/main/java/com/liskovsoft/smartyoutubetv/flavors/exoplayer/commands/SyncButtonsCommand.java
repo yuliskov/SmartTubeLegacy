@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class SyncButtonsCommand extends GenericCommand {
     private static final String COMMAND = "ExoUtils.syncButtons";
-    private final Map<String, Boolean> mStates;
+    private final Map<String, Object> mStates;
 
-    public SyncButtonsCommand(Map<String, Boolean> buttonStates) {
+    public SyncButtonsCommand(Map<String, Object> buttonStates) {
         mStates = buttonStates;
     }
 
@@ -30,7 +30,7 @@ public class SyncButtonsCommand extends GenericCommand {
         passToBrowser(String.format(pattern, command, concatParams));
     }
 
-    private String toJson(Map<String, Boolean> states) {
+    private String toJson(Map<String, Object> states) {
         Gson gson = new Gson();
         return gson.toJson(states);
     }

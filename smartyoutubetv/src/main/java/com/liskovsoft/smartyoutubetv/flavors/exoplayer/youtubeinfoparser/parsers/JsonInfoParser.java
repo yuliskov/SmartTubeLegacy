@@ -62,22 +62,42 @@ public class JsonInfoParser {
     }
 
     public String extractHlsUrl() {
+        if (mParser == null) {
+            return null;
+        }
+
         return ParserUtils.extractString(JSON_INFO_HLS_URL, mParser);
     }
 
     public String extractTrackingUrl() {
+        if (mParser == null) {
+            return null;
+        }
+
         return ParserUtils.extractString(JSON_INFO_TRACKING_URL, mParser);
     }
 
     public String extractDashUrl() {
+        if (mParser == null) {
+            return null;
+        }
+
         return ParserUtils.extractString(JSON_INFO_DASH_URL, mParser);
     }
 
     public List<MediaItem> extractDashMediaItems() {
+        if (mParser == null) {
+            return null;
+        }
+
         return extractMediaItems(JSON_INFO_DASH_FORMATS);
     }
 
     public String extractStorySpec() {
+        if (mParser == null) {
+            return null;
+        }
+
         return ParserUtils.extractString(JSON_INFO_STORY_SPEC, mParser);
     }
 

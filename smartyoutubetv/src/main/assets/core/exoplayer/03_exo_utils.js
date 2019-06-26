@@ -141,7 +141,7 @@ var ExoUtils = {
             if (isChecked == undefined) // button gone, removed etc..
                 continue;
             var selector = PlayerActivityMapping[key];
-            var btn = ExoButton.fromSelector(selector);
+            var btn = ExoButton.fromSelector(selector, states['param']);
             btn.setChecked(isChecked);
         }
     },

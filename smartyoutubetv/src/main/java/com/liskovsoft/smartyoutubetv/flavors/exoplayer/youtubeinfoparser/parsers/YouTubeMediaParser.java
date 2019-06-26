@@ -131,7 +131,11 @@ public class YouTubeMediaParser {
 
         if (mParser != null) {
             // list.addAll(extractMediaItems(mParser, JSON_INFO_REGULAR_FORMATS));
-            list.addAll(mParser.extractDashMediaItems());
+            List<MediaItem> items = mParser.extractDashMediaItems();
+
+            if (items != null) {
+                list.addAll(items);
+            }
         }
 
         return list;

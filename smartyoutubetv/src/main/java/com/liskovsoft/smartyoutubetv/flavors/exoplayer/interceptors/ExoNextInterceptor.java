@@ -22,8 +22,10 @@ public class ExoNextInterceptor extends RequestInterceptor {
             "\"screenWidthPoints\":1280,\"screenHeightPoints\":720,\"screenPixelDensity\":1,\"theme\":\"CLASSIC\",\"utcOffsetMinutes\":180," +
             "\"webpSupport\":false,\"animatedWebpSupport\":false,\"tvAppInfo\":{\"appQuality\":\"TV_APP_QUALITY_LIMITED_ANIMATION\"}," +
             "\"acceptRegion\":\"UA\",\"deviceMake\":\"LG\",\"deviceModel\":\"42LA660S-ZA\",\"platform\":\"TV\",\"acceptLanguage\":\"%LANG%\"}," + "\"request" +
-            "\":{\"consistencyTokenJars\":[]},\"user\":{\"enableSafetyMode\":false}},\"videoId\":\"%VIDEO_ID%\",\"racyCheckOk\":true," +
+            "\":{\"consistencyTokenJars\":[]},\"user\":{\"enableSafetyMode\":false}},%VIDEO_DATA%\"racyCheckOk\":true," +
             "\"contentCheckOk\":true}";
+    private static final String PLAYLIST_ID = "\"playlistId\":\"%PLAYLIST_ID%\",";
+    private static final String VIDEO_ID = "\"videoId\":\"%VIDEO_ID%\",";
     private final String mPostBodyReal;
 
     public ExoNextInterceptor(Context context) {
@@ -47,8 +49,8 @@ public class ExoNextInterceptor extends RequestInterceptor {
         return null;
     }
 
-    public VideoMetadata getMetadata(String videoId) {
-        InputStream response = postUrlData(URL_NEXT_DATA, mPostBodyReal.replace("%VIDEO_ID%", videoId));
+    public VideoMetadata getMetadata(String videoId, String playlistId) {
+        InputStream response = postUrlData(URL_NEXT_DATA, getBody(videoId, playlistId));
 
         if (response == null) {
             return null;
@@ -57,5 +59,19 @@ public class ExoNextInterceptor extends RequestInterceptor {
         VideoMetadata metadata = new JsonNextParser(Helpers.toString(response)).extractVideoMetadata();
 
         return metadata;
+    }
+    
+    private String getBody(String videoId, String playlistId) {
+        // always presents
+        String videoData = VIDEO_ID.replace("%VIDEO_ID%", videoId);
+
+        // present only on play lists
+        if (playlistId != null) {
+            videoData += PLAYLIST_ID.replace("%PLAYLIST_ID%", playlistId);
+        }
+
+        String result = mPostBodyReal.replace("%VIDEO_DATA%", videoData);
+
+        return result;
     }
 }
