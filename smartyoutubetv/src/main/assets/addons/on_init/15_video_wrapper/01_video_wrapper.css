@@ -1,0 +1,5 @@
+/* Hide Autoplay option in the settings (not needed anymore) */
+/* Key navigation don't work */
+/*.new-list.limited-list.secondary-nav-list > .new-list-container.vertical > .secondary-nav-tab:nth-child(2) {*/
+/*    display: none !important;*/
+/*}*/

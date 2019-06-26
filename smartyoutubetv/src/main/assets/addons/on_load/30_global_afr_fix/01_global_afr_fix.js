@@ -26,6 +26,6 @@ function GlobalAfrFixAddon() {
     };
 }
 
-if (DeviceUtils.isExo() && DeviceUtils.isAfrFixEnabled()) {
-    new GlobalAfrFixAddon().run();
-}
+// if (DeviceUtils.isExo() && DeviceUtils.isAfrFixEnabled()) {
+//     new GlobalAfrFixAddon().run();
+// }

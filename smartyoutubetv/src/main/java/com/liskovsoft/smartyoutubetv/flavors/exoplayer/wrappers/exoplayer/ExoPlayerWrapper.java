@@ -8,8 +8,6 @@ import android.os.Looper;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsReceiver.Listener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsSender;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.BackgroundActionManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
@@ -47,8 +45,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String ACTION_CLOSE_SUGGESTIONS = "action_close_suggestions";
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
     private static final long BROWSER_INIT_TIME_MS = 10_000;
-    private final Runnable mOnResume;
-    private final Runnable mOnPause;
+    private final Runnable mPauseBrowser;
     private final Handler mHandler;
     private boolean mBlockHandlers;
     private VideoMetadata mMetadata;
@@ -71,8 +68,9 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         }
 
         private void returnToPlayer() {
-            new Handler(mContext.getMainLooper()).post(() -> {
+            mHandler.post(() -> {
                 if (mCachedIntent != null) {
+                    Log.d(TAG, "Switching to the running player from suggestions or user's page");
                     prepareAndOpenExoPlayer(null); // player should already be running so pass null
                 }
             });
@@ -93,19 +91,13 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mFragmentsManager.setPlayerListener(this);
         mTracker = new YouTubeTracker(mContext);
 
-        mOnResume = () -> {
-            boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
-            mFragmentsManager.openExoPlayer(null, pauseBrowser);
-        };
-
-        mOnPause = () -> {
+        mPauseBrowser = () -> {
             if (mBlockHandlers) {
-                Log.d(TAG, "Browser state callback hab been canceled");
+                Log.d(TAG, "Browser pause has been canceled");
                 return;
             }
 
             boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
-
             mFragmentsManager.openExoPlayer(null, pauseBrowser);
         };
 
@@ -195,22 +187,18 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mBlockHandlers = false;
         clearPendingEvents();
 
-        if (playerIntent == null) {
-            Log.d(TAG, "Switching to the running player from suggestions or user's page");
-            mFragmentsManager.openExoPlayer(null, false); // player is opened from suggestions
-            mHandler.postDelayed(mOnResume, BROWSER_INIT_TIME_MS);
-            return;
-        }
+        if (playerIntent != null) {
+            if (mMetadata != null) {
+                Helpers.mergeIntents(playerIntent, mMetadata.toIntent());
+            }
 
-        if (mMetadata != null) {
-            Helpers.mergeIntents(playerIntent, mMetadata.toIntent());
+            mManager.onOpen(); // about to open new video
         }
 
         mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
-        mManager.onOpen();
 
         // give the browser time to initialization
-        mHandler.postDelayed(mOnPause, BROWSER_INIT_TIME_MS);
+        mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
     }
 
     @Override
@@ -234,7 +222,6 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     private void clearPendingEvents() {
-        mHandler.removeCallbacks(mOnPause);
-        mHandler.removeCallbacks(mOnResume);
+        mHandler.removeCallbacks(mPauseBrowser);
     }
 }

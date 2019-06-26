@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
@@ -184,11 +185,11 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        Log.d(TAG, "Dispatching event: " + event);
-
         if (mDisableKeyEvents) { // 'll be enabled again after fragment switching
             return true;
         }
+
+        Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
 
         event = unknownKeyFix(event);
 
@@ -329,7 +330,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public void disableKeyEvents() {
-        mDisableKeyEvents = true;
+        // only browser: prevent user from pressing back key multiple times
+        if (mActiveFragment instanceof BrowserFragment) {
+            mDisableKeyEvents = true;
+        }
     }
 
     private void makeActivityHorizontal() {
