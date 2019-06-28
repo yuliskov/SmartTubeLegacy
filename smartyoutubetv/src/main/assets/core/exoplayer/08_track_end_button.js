@@ -26,6 +26,8 @@ function TrackEndFakeButton(selector) {
             YouTubeUtils.enablePlayerSuggestions();
             YouTubeUtils.showPlayerBackground();
 
+            YouTubeUtils.getPlayer().imitateEnding();
+
             // var $this = this;
             // PlayerController.jumpToEnd(function() {
             //     $this.pressNextButton();

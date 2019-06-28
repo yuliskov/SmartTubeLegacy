@@ -25,9 +25,24 @@ function EventLoggerHandler() {
 
     this.onCreate = function(video) {
         this.addFakeListener(video);
+
         this.overrideProp(video, 'duration');
         this.overrideProp(video, 'currentTime');
         this.overrideProp(video, 'paused');
+
+        // this.overrideProp(video, 'src');
+        // this.overrideProp(video, 'currentSrc');
+
+        this.addEndVideoFunction(video);
+    };
+
+    this.addEndVideoFunction = function(video) {
+        video.imitateEnding = function() {
+            this.properties.duration = 999;
+            this.properties.currentTime = 999;
+            this.listeners['pause'][0]({type: 'pause'});
+            this.listeners['timeupdate'][0]({type: 'timeupdate'});
+        };
     };
 
     this.addFakeListener = function(video) {
@@ -54,14 +69,14 @@ function EventLoggerHandler() {
             // next events not needed for the playback:
             // loadstart, durationchange, loadedmetadata, loadeddata, ended
 
-            function wrapper(e) {
-                Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
-                listener.call(video, e);
-            }
-
-            if (type == 'pause' || type == 'timeupdate') {
-                this.addEventListenerReal(type, wrapper, options);
-            }
+            // function wrapper(e) {
+            //     Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
+            //     listener.call(video, e);
+            // }
+            //
+            // if (type == 'pause' || type == 'timeupdate') {
+            //     this.addEventListenerReal(type, wrapper, options);
+            // }
         };
     };
 
@@ -103,12 +118,7 @@ function VideoSrcHandler() {
 
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
-    this.handlers = [new EventLoggerHandler()];
-
-    if (DeviceUtils.isExo()) {
-        this.handlers.push(new VolumeHandler());
-        this.handlers.push(new VideoSrcHandler());
-    }
+    this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
 
     this.run = function() {
         this.applyWrapping();
@@ -138,9 +148,7 @@ function VideoWrapperAddon() {
     };
 }
 
-// if (DeviceUtils.isExo()) {
-//     new VideoWrapperAddon().run();
-// }
-
-new VideoWrapperAddon().run();
+if (DeviceUtils.isExo()) {
+    new VideoWrapperAddon().run();
+}
 
