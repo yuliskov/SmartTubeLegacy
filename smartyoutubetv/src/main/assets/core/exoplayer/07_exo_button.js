@@ -74,14 +74,14 @@ function ExoButton(selector) {
     this.decorator.apply(this);
 }
 
-ExoButton.fromSelector = function(selector, param) {
+ExoButton.fromSelector = function(selector) {
     var TAG = 'ExoButton'; // 'this' is reference to ExoButton
 
-    function createButton(selector, param) {
+    function createButton(selector) {
         Log.d(TAG, "fromSelector: create button " + selector);
         switch (selector) {
             case PlayerActivityMapping.TRACK_ENDED:
-                return new TrackEndFakeButton(selector, param);
+                return new TrackEndFakeButton(selector);
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
             case PlayerActivityMapping.BUTTON_FAVORITES:
@@ -101,5 +101,5 @@ ExoButton.fromSelector = function(selector, param) {
         }
     }
 
-    return createButton(selector, param);
+    return createButton(selector);
 };

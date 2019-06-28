@@ -43,17 +43,7 @@ public class ActionsSender {
 
         Log.d(TAG, "Running SyncButtonsCommand");
 
-        // applyAutoframerate(intent);
         Map<String, Object> buttonStates = extractButtonStates(intent);
-
-        if (metadata != null) {
-            VideoMetadata nextVideo = metadata.getNextVideo();
-            if (nextVideo != null) {
-                String playlistId = nextVideo.getPlaylistId();
-                buttonStates.put("param", nextVideo.getVideoId() + "|" + (playlistId == null ? "" : playlistId));
-            }
-        }
-
         SyncButtonsCommand myCommand = new SyncButtonsCommand(buttonStates);
         mInterceptor.updateLastCommand(myCommand);
 
