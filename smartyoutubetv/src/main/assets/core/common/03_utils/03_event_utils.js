@@ -233,6 +233,18 @@ var EventUtils = {
 
             origin.call(document, type, listener, options);
         };
+    },
+
+    stringify: function(obj) {
+        return JSON.stringify(obj, function(k, v) {
+            if (v instanceof Node) {
+                return 'Node';
+            }
+            if (v instanceof Window) {
+                return 'Window';
+            }
+            return v;
+        }, ' ');
     }
 };
 

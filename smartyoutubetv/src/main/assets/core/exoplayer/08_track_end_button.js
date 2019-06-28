@@ -26,10 +26,10 @@ function TrackEndFakeButton(selector) {
             YouTubeUtils.enablePlayerSuggestions();
             YouTubeUtils.showPlayerBackground();
 
-            var $this = this;
-            PlayerController.jumpToEnd(function() {
-                $this.pressNextButton();
-            });
+            // var $this = this;
+            // PlayerController.jumpToEnd(function() {
+            //     $this.pressNextButton();
+            // });
         }
     };
 }

@@ -20,6 +20,70 @@ function VolumeHandler() {
     };
 }
 
+function EventLoggerHandler() {
+    this.TAG = 'EventLoggerHandler';
+
+    this.onCreate = function(video) {
+        this.addFakeListener(video);
+        this.overrideProp(video, 'duration');
+        this.overrideProp(video, 'currentTime');
+        this.overrideProp(video, 'paused');
+    };
+
+    this.addFakeListener = function(video) {
+        var $this = this;
+
+        video.addEventListenerReal = video.addEventListener;
+
+        video.addEventListener = function(type, listener, options) {
+            Log.d($this.TAG, "Add event listener: " + type + " " + listener);
+
+            if (!video.listeners) {
+                video.listeners = {};
+            }
+
+            if (!video.listeners[type]) {
+                video.listeners[type] = [];
+            }
+
+            video.listeners[type].push(listener);
+
+            // events essential for the playback:
+            // pause, timeupdate
+
+            // next events not needed for the playback:
+            // loadstart, durationchange, loadedmetadata, loadeddata, ended
+
+            function wrapper(e) {
+                Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
+                listener.call(video, e);
+            }
+
+            if (type == 'pause' || type == 'timeupdate') {
+                this.addEventListenerReal(type, wrapper, options);
+            }
+        };
+    };
+
+    this.overrideProp = function(obj, propName) { // pure function
+        var $this = this;
+        if (!obj.properties) {
+            obj.properties = {};
+        }
+
+        obj.properties[propName] = obj[propName];
+
+        Object.defineProperty(obj, propName, {
+            get: function() {
+                // Log.d($this.TAG, "Getting property: " + propName + ", value: " + obj.properties[propName]);
+
+                return obj.properties[propName];
+            },
+            set: function(val){}
+        });
+    };
+}
+
 /**
  * Fix <b>Global AFR</b> on some devices<br/>
  * Fix excessive resource consumption<br/>
@@ -39,7 +103,12 @@ function VideoSrcHandler() {
 
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
-    this.handlers = [new VolumeHandler(), new VideoSrcHandler()];
+    this.handlers = [new EventLoggerHandler()];
+
+    if (DeviceUtils.isExo()) {
+        this.handlers.push(new VolumeHandler());
+        this.handlers.push(new VideoSrcHandler());
+    }
 
     this.run = function() {
         this.applyWrapping();
@@ -67,40 +136,11 @@ function VideoWrapperAddon() {
             return this.createElementReal(tagName);
         };
     };
-
-    // this.addFakeListener = function(video) {
-    //     var $this = this;
-    //
-    //     video.addEventListenerReal = video.addEventListener;
-    //
-    //     video.addEventListener = function(type, listener, options) {
-    //         Log.d($this.TAG, "Add event listener: " + type + " " + listener);
-    //
-    //         if (!this.listeners) {
-    //             this.listeners = {};
-    //         }
-    //
-    //         Log.d($this.TAG, "Storing " + type + " listener for future use...");
-    //         this.listeners[type] = listener;
-    //
-    //         // if (type == 'timeupdate' || type == 'ended' || type == 'playing' || type == 'loadeddata' || type == 'focus' || type == 'play') {
-    //         //     return;
-    //         // }
-    //         //
-    //         // this.addEventListenerReal(type, listener, options);
-    //     };
-    //
-    //     video.dispatchEventReal = video.dispatchEvent;
-    //
-    //     video.dispatchEvent = function(event) {
-    //         Log.d($this.TAG, "Dispatching event: " + event);
-    //
-    //         this.dispatchEventReal(event);
-    //     };
-    // };
 }
 
-if (DeviceUtils.isExo()) {
-    new VideoWrapperAddon().run();
-}
+// if (DeviceUtils.isExo()) {
+//     new VideoWrapperAddon().run();
+// }
+
+new VideoWrapperAddon().run();
 
