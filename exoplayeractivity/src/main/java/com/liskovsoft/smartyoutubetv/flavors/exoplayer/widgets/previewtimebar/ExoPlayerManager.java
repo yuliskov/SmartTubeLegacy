@@ -13,20 +13,20 @@ import java.util.Set;
 
 public class ExoPlayerManager implements PreviewLoader {
     private static final String TAG = ExoPlayerManager.class.getSimpleName();
-    private static final int DIRECTION_RIGHT = 0;
-    private static final int DIRECTION_LEFT = 1;
     private PreviewTimeBar mPreviewTimeBar;
     private ImageView mImageView;
     private final Storyboard mStoryBoard;
-    private int mLastImgNum = -1;
-    private Set<Integer> mCachedImages;
-    private int mSeekDirection;
-    private boolean mDontPreload;
+    private static final int DIRECTION_RIGHT = 0;
+    private static final int DIRECTION_LEFT = 1;
+    private int mCurrentImgNum = -1;
+    private Set<Integer> mCachedImageNums;
+    private int mSeekDirection = DIRECTION_RIGHT;
+    private static final int MAX_PRELOADED_IMAGES = 3;
 
     public ExoPlayerManager(PreviewTimeBar previewTimeBar,
                             ImageView imageView,
                             Storyboard storyboard) {
-        mCachedImages = new ArraySet<>();
+        mCachedImageNums = new ArraySet<>();
         mImageView = imageView;
         mPreviewTimeBar = previewTimeBar;
         mStoryBoard = storyboard;
@@ -47,21 +47,27 @@ public class ExoPlayerManager implements PreviewLoader {
     }
 
     private void preloadNextImage() {
-        if (mStoryBoard == null || mDontPreload) {
+        if (mStoryBoard == null) {
             return;
         }
 
-        int imgNum = mSeekDirection == DIRECTION_RIGHT ? mLastImgNum + 1 : mLastImgNum - 1; // get next image
+        for (int i = 1; i <= MAX_PRELOADED_IMAGES; i++) {
+            int imgNum = mSeekDirection == DIRECTION_RIGHT ? mCurrentImgNum + i : mCurrentImgNum - i; // get next image
+            preloadImage(imgNum);
+        }
+    }
 
-        if (mCachedImages.contains(imgNum) || imgNum < 0) {
+    private void preloadImage(int imgNum) {
+        if (mCachedImageNums.contains(imgNum) || imgNum < 0) {
             return;
         }
 
         Log.d(TAG, "Oops, image #" + imgNum + " didn't cached yet");
 
-        mCachedImages.add(imgNum);
+        mCachedImageNums.add(imgNum);
 
-        String link = mStoryBoard.getThumbSetLink(imgNum);
+        String link = mStoryBoard.getGroupUrl(imgNum);
+
         GlideApp.with(mImageView)
                 .load(link)
                 .preload();
@@ -73,23 +79,24 @@ public class ExoPlayerManager implements PreviewLoader {
             return;
         }
 
-        int imgNum = (int) currentPosition / mStoryBoard.getThumbSetDurMS();
-        long realPosMS = currentPosition % mStoryBoard.getThumbSetDurMS();
-        Size size = mStoryBoard.getSize();
+        int imgNum = (int) currentPosition / mStoryBoard.getGroupDurationMS();
+        long realPosMS = currentPosition % mStoryBoard.getGroupDurationMS();
+        Size size = mStoryBoard.getGroupSize();
         GlideThumbnailTransformation transformation =
-                new GlideThumbnailTransformation(realPosMS, size.getWidth(), size.getHeight(), size.getRowCount(), size.getColCount(), size.getDurationMS());
+                new GlideThumbnailTransformation(realPosMS, size.getWidth(), size.getHeight(), size.getRowCount(), size.getColCount(), size.getDurationEachMS());
 
         GlideApp.with(mImageView)
-                .load(mStoryBoard.getThumbSetLink(imgNum))
+                .load(mStoryBoard.getGroupUrl(imgNum))
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .transform(transformation)
                 .into(mImageView);
 
-        mDontPreload = mLastImgNum == -1;
+        if (mCurrentImgNum != imgNum) {
+            mSeekDirection = mCurrentImgNum < imgNum ? DIRECTION_RIGHT : DIRECTION_LEFT;
+            mCachedImageNums.add(imgNum);
+            mCurrentImgNum = imgNum;
 
-        mSeekDirection = mLastImgNum < imgNum ? DIRECTION_RIGHT : DIRECTION_LEFT;
-        mCachedImages.add(imgNum);
-        mLastImgNum = imgNum;
-        preloadNextImage();
+            preloadNextImage();
+        }
     }
 }

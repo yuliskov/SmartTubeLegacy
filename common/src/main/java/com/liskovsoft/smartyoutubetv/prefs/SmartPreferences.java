@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 public final class SmartPreferences {
+    private static final String TAG = SmartPreferences.class.getSimpleName();
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
     private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
@@ -36,6 +37,7 @@ public final class SmartPreferences {
     public static final String UPDATE_CHECK_DISABLED = "update_check_disabled";
     public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
     public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
+    private static final String IS_APP_JUST_INSTALLED = "is_app_just_installed";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -272,5 +274,17 @@ public final class SmartPreferences {
         mPrefs.edit()
                 .putBoolean(ANIMATED_PREVIEWS, enable)
                 .apply();
+    }
+
+    public boolean isAppJustInstalled() {
+        boolean justInstalled = mPrefs.getBoolean(IS_APP_JUST_INSTALLED, true);
+
+        if (justInstalled) {
+            mPrefs.edit().putBoolean(IS_APP_JUST_INSTALLED, false).apply();
+        }
+
+        Log.d(TAG, "Is app just installed: " + justInstalled);
+
+        return justInstalled;
     }
 }

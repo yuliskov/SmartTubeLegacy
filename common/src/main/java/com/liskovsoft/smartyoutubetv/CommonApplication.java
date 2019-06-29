@@ -4,15 +4,23 @@ import android.app.Application;
 import android.content.Context;
 import androidx.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
+import com.jakewharton.disklrucache.DiskLruCache;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
+import java.io.File;
+import java.io.IOException;
+
 public class CommonApplication extends Application {
     private static final String TAG = CommonApplication.class.getSimpleName();
     private static Bus sBus;
     private static SmartPreferences sSmartPreferences;
+    private static DiskLruCache sCache;
 
     @Override
     public void onCreate() {
@@ -24,6 +32,19 @@ public class CommonApplication extends Application {
         }
 
         sSmartPreferences = SmartPreferences.instance(this);
+        sCache = createDiskLruCache();
+    }
+
+    private DiskLruCache createDiskLruCache() {
+        try {
+            File dir = new File(FileHelpers.getCacheDir(this), "DiskLruCache");
+            return DiskLruCache.open(dir, AppInfoHelpers.getAppVersionCode(this), 1, 10_000_000);
+        } catch (IOException e) {
+            Log.e(TAG, e);
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -48,5 +69,9 @@ public class CommonApplication extends Application {
 
     public static SmartPreferences getSmartPreferences() {
         return sSmartPreferences;
+    }
+
+    public static DiskLruCache getCache() {
+        return sCache;
     }
 }

@@ -31,7 +31,7 @@ public class PlaybackStatsInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (AppInfoHelpers.isAppJustInstalled() || (BuildConfig.DEBUG && mRunCount++ <= 1)) {
+        if (mPrefs.isAppJustInstalled() || (BuildConfig.DEBUG && mRunCount++ <= 1)) {
             mPrefs.setPlaybackWorking(SmartPreferences.PLAYBACK_UNKNOWN);
         }
 

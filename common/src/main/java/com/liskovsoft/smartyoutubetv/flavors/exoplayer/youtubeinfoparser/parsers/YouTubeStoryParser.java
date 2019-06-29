@@ -53,7 +53,7 @@ public class YouTubeStoryParser {
             size.mQuality = Integer.valueOf(sizes[2]);
             size.mColsCount = Integer.valueOf(sizes[3]);
             size.mRowsCount = Integer.valueOf(sizes[4]);
-            size.mDurationMS = Integer.valueOf(sizes[5]);
+            size.mDurationEachMS = Integer.valueOf(sizes[5]);
             size.mImageName = sizes[6];
             size.mSignature = sizes[7];
 
@@ -74,7 +74,7 @@ public class YouTubeStoryParser {
         private int mCachedIdx = -1;
         private int mCachedLenMS = -1;
 
-        public String getThumbSetLink(int imgNum) {
+        public String getGroupUrl(int imgNum) {
             // EX: https:\/\/i.ytimg.com\/sb\/2XY3AvVgDns\/storyboard3_L$L\/$N.jpg
             // EX: https://i.ytimg.com/sb/k4YRWT_Aldo/storyboard3_L2/M0.jpg?sigh=RVdv4fMsE-eDcsCUzIy-iCQNteI
 
@@ -97,21 +97,25 @@ public class YouTubeStoryParser {
             return link;
         }
 
-        public int getThumbSetDurMS() {
+        /**
+         * Get duration of all thumbnails group
+         * @return duration
+         */
+        public int getGroupDurationMS() {
             if (mCachedLenMS != -1) {
                 return mCachedLenMS;
             }
 
             Size size = mSizes.get(chooseBestSizeIdx());
 
-            int lenMS = size.mRowsCount * size.mColsCount * size.mDurationMS;
+            int lenMS = size.mRowsCount * size.mColsCount * size.mDurationEachMS;
 
             mCachedLenMS = lenMS;
 
             return lenMS;
         }
 
-        public Size getSize() {
+        public Size getGroupSize() {
             int bestIdx = chooseBestSizeIdx();
             return mSizes.get(bestIdx);
         }
@@ -149,7 +153,7 @@ public class YouTubeStoryParser {
         private int mQuality;
         private int mColsCount;
         private int mRowsCount;
-        private int mDurationMS; // duration of each thumbnail
+        private int mDurationEachMS; // duration of each thumbnail
         private String mImageName;
         private String mSignature;
 
@@ -157,8 +161,8 @@ public class YouTubeStoryParser {
          * Duration of each thumbnail in ms
          * @return thumbnail duration
          */
-        public int getDurationMS() {
-            return mDurationMS;
+        public int getDurationEachMS() {
+            return mDurationEachMS;
         }
 
         public int getWidth() {

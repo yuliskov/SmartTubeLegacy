@@ -55,4 +55,6 @@ dependencies {
     implementation project.properties.multiDexVersion
 
     implementation project.properties.stethoVersion
+
+    implementation project.properties.diskLruCacheVersion
 }

@@ -132,6 +132,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation project.properties.junitVersion
+    // example: assertThat(newEmployees).hasSize(6).contains(frodo, sam);
+    testImplementation project.properties.assertJVersion
     testImplementation project.properties.robolectricVersion
     testImplementation project.properties.commonsIOVersion
 
@@ -149,7 +151,7 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    origImplementation project(path: ':appbackupmanager')
+    //origImplementation project(path: ':appbackupmanager')
 
     implementation(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
@@ -176,4 +178,6 @@ dependencies {
 
     implementation project.properties.okhttpVersion
     implementation project.properties.ottoVersion
+
+    implementation project.properties.diskLruCacheVersion
 }
