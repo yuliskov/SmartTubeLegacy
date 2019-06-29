@@ -81,6 +81,7 @@ ExoButton.fromSelector = function(selector) {
         Log.d(TAG, "fromSelector: create button " + selector);
         switch (selector) {
             case PlayerActivityMapping.TRACK_ENDED:
+            case PlayerActivityMapping.BUTTON_NEXT:
                 return new TrackEndFakeButton(selector);
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
@@ -91,7 +92,6 @@ ExoButton.fromSelector = function(selector) {
             case PlayerActivityMapping.BUTTON_BACK:
                 return new BackButton(selector);
             case PlayerActivityMapping.BUTTON_PREV:
-            case PlayerActivityMapping.BUTTON_NEXT:
                 return new NextPrevButton(selector);
             case PlayerActivityMapping.VIDEO_CANCELED:
                 return new VideoCanceledButton(selector);

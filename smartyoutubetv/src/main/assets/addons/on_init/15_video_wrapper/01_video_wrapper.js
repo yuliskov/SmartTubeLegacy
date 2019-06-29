@@ -24,20 +24,27 @@ function EventLoggerHandler() {
     this.TAG = 'EventLoggerHandler';
 
     this.onCreate = function(video) {
-        this.addFakeListener(video);
+        this.turnOffEvents(video);
 
-        this.overrideProp(video, 'duration');
-        this.overrideProp(video, 'currentTime');
-        this.overrideProp(video, 'paused');
+        // required props
+        this.turnOffProp(video, 'duration');
+        this.turnOffProp(video, 'currentTime');
+        this.turnOffProp(video, 'paused');
 
-        // this.overrideProp(video, 'src');
-        // this.overrideProp(video, 'currentSrc');
+        // let's save some resources
+        this.turnOffProp(video, 'src', true);
+        this.turnOffProp(video, 'currentSrc', true);
+        // above lines won't work without overriding network state
+        this.turnOffProp(video, 'networkState');
 
-        this.addEndVideoFunction(video);
+        this.addImitateEndingFunction(video);
     };
 
-    this.addEndVideoFunction = function(video) {
+    this.addImitateEndingFunction = function(video) {
         video.imitateEnding = function() {
+            // required if you intend to override 'src' and 'currentSrc'
+            this.properties.networkState = 2;
+            // all props are required
             this.properties.duration = 999;
             this.properties.currentTime = 999;
             this.listeners['pause'][0]({type: 'pause'});
@@ -45,7 +52,7 @@ function EventLoggerHandler() {
         };
     };
 
-    this.addFakeListener = function(video) {
+    this.turnOffEvents = function(video) {
         var $this = this;
 
         video.addEventListenerReal = video.addEventListener;
@@ -80,8 +87,7 @@ function EventLoggerHandler() {
         };
     };
 
-    this.overrideProp = function(obj, propName) { // pure function
-        var $this = this;
+    this.turnOffProp = function(obj, propName, persist) { // pure function
         if (!obj.properties) {
             obj.properties = {};
         }
@@ -94,7 +100,11 @@ function EventLoggerHandler() {
 
                 return obj.properties[propName];
             },
-            set: function(val){}
+            set: function(val) {
+                if (persist) {
+                    obj.properties[propName] = val;
+                }
+            }
         });
     };
 }

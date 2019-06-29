@@ -414,7 +414,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (mTrackSelector.getCurrentMappedTrackInfo() != null && !mIsDurationSet) {
+        if (mTrackSelector != null && mTrackSelector.getCurrentMappedTrackInfo() != null && !mIsDurationSet) {
             mIsDurationSet = true; // run once per video
 
             if (mStateManager != null) {
@@ -463,8 +463,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             // hide the last frame of the previous video
             View shutter = mSimpleExoPlayerView.findViewById(com.google.android.exoplayer2.ui.R.id.exo_shutter);
+
             if (shutter != null) {
                 shutter.setVisibility(View.VISIBLE);
+            }
+
+            View loading = mSimpleExoPlayerView.findViewById(R.id.loading_view);
+
+            if (loading != null) {
+                loading.setVisibility(View.VISIBLE);
             }
         }
 

@@ -28,20 +28,20 @@ public class BackgroundActionManager {
         Log.d(TAG, "Video closed ms ago: " + elapsedTimeAfterClose);
 
         // Search screen and XWalk fix: same video intercepted twice (Why??)
-        boolean videoClosedRecently = elapsedTimeAfterClose < NO_INTERACTION_TIMEOUT_MS;
-        if (videoClosedRecently) {
-            Log.d(TAG, "Video is closed recently");
-            mPrevCallTime = System.currentTimeMillis();
-            return true;
-        }
+        //boolean videoClosedRecently = elapsedTimeAfterClose < NO_INTERACTION_TIMEOUT_MS;
+        //if (videoClosedRecently) {
+        //    Log.d(TAG, "Video is closed recently");
+        //    mPrevCallTime = System.currentTimeMillis();
+        //    return true;
+        //}
 
         // throttle calls
-        boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
-        if (highCallRate) {
-            Log.d(TAG, "To high call rate");
-            mPrevCallTime = System.currentTimeMillis();
-            return true;
-        }
+        //boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
+        //if (highCallRate) {
+        //    Log.d(TAG, "To high call rate");
+        //    mPrevCallTime = System.currentTimeMillis();
+        //    return true;
+        //}
 
         // the same video could opened multiple times
         String videoId = MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
