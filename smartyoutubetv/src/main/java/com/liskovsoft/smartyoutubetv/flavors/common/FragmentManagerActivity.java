@@ -8,8 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import com.liskovsoft.sharedutils.helpers.CacheHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
@@ -314,6 +316,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingDone = true;
         mLoadingManager.hide();
         mApkUpdater.start();
+        CacheHelpers.close(CommonApplication.getCache());
     }
 
     @Override

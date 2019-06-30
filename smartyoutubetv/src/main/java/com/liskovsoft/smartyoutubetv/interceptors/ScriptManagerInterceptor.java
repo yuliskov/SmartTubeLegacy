@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.webscripts.MainScriptManager;
+import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 
 import java.io.InputStream;
@@ -24,7 +24,7 @@ public class ScriptManagerInterceptor extends RequestInterceptor {
         super(context);
         
         mContext = context;
-        mManager = new MainScriptManager(context);
+        mManager = new MainCachedScriptManager(context);
     }
 
     @Override
