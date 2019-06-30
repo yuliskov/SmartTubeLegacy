@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.BuildConfig;
@@ -38,7 +37,7 @@ public class CommonApplication extends Application {
     private DiskLruCache createDiskLruCache() {
         try {
             File dir = new File(FileHelpers.getCacheDir(this), "DiskLruCache");
-            return DiskLruCache.open(dir, AppInfoHelpers.getAppVersionCode(this), 1, 10_000_000);
+            return DiskLruCache.open(dir, 1, 1, 1_000_000);
         } catch (IOException e) {
             Log.e(TAG, e);
             e.printStackTrace();
