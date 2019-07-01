@@ -29,7 +29,7 @@ public class ExoScriptManager implements ScriptManager {
             return null;
         }
 
-        return ScriptManager.wrapAssetJSFiles(mContext, CORE_EXO_DIR);
+        return ScriptManager.anonAssetJSFiles(mContext, CORE_EXO_DIR);
     }
 
     @Override

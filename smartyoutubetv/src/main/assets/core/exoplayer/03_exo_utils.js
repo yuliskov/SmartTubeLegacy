@@ -1,17 +1,10 @@
 console.log("Scripts::Running core script exo_utils.js");
 
 /**
- * Note: if you intend to rename this var don't forget to do the same inside
+ * Note: if you intend to rename this var don't forget to do the same inside<br/>
  * <b>GetButtonStatesCommand</b> and <b>SyncButtonsCommand</b> classes<br/>
- *
- * Usage: <b>PressCommandBase.java</b><br/>
- * <code>ExoUtils.triggerEvent(ExoUtils.$('%s'), 'keyup', 13);</code><br/>
- *
- * Usage: <b>PressCommandBase.java</b><br/>
- * <code>ExoUtils.isDisabled(targetButton) && app && app.onGenericBooleanResult(false, %s);</code>
- * @constructor empty
  */
-var ExoUtils = {
+window.ExoUtils = {
     TAG: 'ExoUtils',
     ACTION_CLOSE_SUGGESTIONS: "action_close_suggestions",
     ACTION_PLAYBACK_STARTED: "action_playback_started",
@@ -90,9 +83,7 @@ var ExoUtils = {
                 continue;
             states[newName] = isChecked;
         }
-
-        states[PlayerActivity.VIDEO_DATE] = YouTubeUtils.getVideoDate();
-        states[PlayerActivity.VIDEO_VIEW_COUNT] = YouTubeUtils.getViewCount();
+        
         states[PlayerActivity.SCREEN_WIDTH] = DeviceUtils.getScreenWidth();
 
         // don't let app to close video player (see ActionsReceiver.java)
@@ -155,5 +146,5 @@ var ExoUtils = {
         } else {
             Log.d(this.TAG,"app not found");
         }
-    },
+    }
 };

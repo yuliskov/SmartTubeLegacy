@@ -44,7 +44,7 @@ public class AddonsScriptManager implements ScriptManager {
         InputStream result = null;
 
         for (String dir : dirs) {
-            InputStream asset = ScriptManager.wrapAssetJSFiles(mContext, dir);
+            InputStream asset = ScriptManager.anonAssetJSFiles(mContext, dir);
             result = result == null ? asset : FileHelpers.appendStream(result, asset);
         }
 

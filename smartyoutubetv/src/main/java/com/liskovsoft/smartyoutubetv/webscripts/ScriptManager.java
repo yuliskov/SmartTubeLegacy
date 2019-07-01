@@ -21,7 +21,7 @@ public interface ScriptManager {
     InputStream getOnLoadScripts();
     InputStream getStyles();
 
-    static InputStream wrapAssetJSFiles(Context context, String dir) {
+    static InputStream anonAssetJSFiles(Context context, String dir) {
         InputStream asset = AssetHelper.getAssetJSFilesMerged(context, dir); // code for single addon
         asset = FileHelpers.appendStream(Helpers.toStream(HEADER_FN_JS), asset);
         asset = FileHelpers.appendStream(asset, Helpers.toStream(FOOTER_FN_JS));
