@@ -316,7 +316,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingDone = true;
         mLoadingManager.hide();
         mApkUpdater.start();
-        CacheHelpers.close(CommonApplication.getCache());
     }
 
     @Override
