@@ -29,7 +29,7 @@
     <string name="exo_tip">До 4K на більшості пристроїв</string>
     <string name="exo_alt_tip">До 4K і деколи більш стабільна робота</string>
     <string name="exit_msg">Натисніть двічі Назад щоб вийти</string>
-    <string name="error_host_lookup">Не вдається під\'єднатися до інтернету: %s</string>
+    <string name="error_host_lookup">Нема интернету: %s</string>
     <string name="error_unknown">Помилка з\'єднання: %s</string>
     <string name="large_btn_title_main">Основний</string>
     <string name="large_btn_title_alt">Додатков.</string>
