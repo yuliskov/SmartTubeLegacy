@@ -16,12 +16,12 @@ public interface ScriptManager {
     String CORE_EXO_DIR = CORE_ROOT_DIR + "/" + "exoplayer";
     String CORE_ENDCARDS_DIR = CORE_ROOT_DIR + "/" + "endcards";
     String HEADER_FN_JS = "(function(){\n";
-    String FOOTER_FN_JS = "\n})();";
+    String FOOTER_FN_JS = "\n})();\n";
     InputStream getOnInitScripts();
     InputStream getOnLoadScripts();
     InputStream getStyles();
 
-    static InputStream getAssetJSFilesWrapped(Context context, String dir) {
+    static InputStream wrapAssetJSFiles(Context context, String dir) {
         InputStream asset = AssetHelper.getAssetJSFilesMerged(context, dir); // code for single addon
         asset = FileHelpers.appendStream(Helpers.toStream(HEADER_FN_JS), asset);
         asset = FileHelpers.appendStream(asset, Helpers.toStream(FOOTER_FN_JS));
