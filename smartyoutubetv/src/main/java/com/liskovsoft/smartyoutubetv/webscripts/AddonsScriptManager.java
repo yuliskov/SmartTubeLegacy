@@ -10,8 +10,6 @@ import java.util.List;
 
 public class AddonsScriptManager implements ScriptManager {
     private final Context mContext;
-    private static final String HEADER_FN_JS = "(function(){\n";
-    private static final String FOOTER_FN_JS = "\n})();";
 
     public AddonsScriptManager(Context context) {
         mContext = context;
@@ -46,10 +44,7 @@ public class AddonsScriptManager implements ScriptManager {
         InputStream result = null;
 
         for (String dir : dirs) {
-            InputStream asset = AssetHelper.getAssetJSFilesMerged(mContext, dir); // code for single addon
-            asset = FileHelpers.appendStream(Helpers.toStream(HEADER_FN_JS), asset);
-            asset = FileHelpers.appendStream(asset, Helpers.toStream(FOOTER_FN_JS));
-
+            InputStream asset = ScriptManager.getAssetJSFilesWrapped(mContext, dir);
             result = result == null ? asset : FileHelpers.appendStream(result, asset);
         }
 
