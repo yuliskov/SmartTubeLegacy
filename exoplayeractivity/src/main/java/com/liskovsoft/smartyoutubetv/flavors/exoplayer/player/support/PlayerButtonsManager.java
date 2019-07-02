@@ -160,8 +160,10 @@ public class PlayerButtonsManager {
             mPrefs.setCheckedState(id, isChecked);
         } else if (isShareButton) {
             displayShareDialog();
-        } else if (isUserPageButton    ||
-                   isNextButton        ||
+        } else if (isUserPageButton) {
+            mPlayerFragment.getPlayer().setPlayWhenReady(false);
+            mPlayerFragment.onPlayerAction();
+        } else if (isNextButton        ||
                    isPrevButton        ||
                    isSuggestions       ||
                    isFavorites) {
