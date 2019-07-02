@@ -1,8 +1,9 @@
 console.log("Scripts::Running core script exo_utils.js");
 
 /**
- * Note: if you intend to rename this var don't forget to do the same inside<br/>
- * <b>GetButtonStatesCommand</b> and <b>SyncButtonsCommand</b> classes<br/>
+ * NOTE: object is used through the java code<br/>
+ * NOTE: if you intend to rename/delete this var don't forget to do the same inside<br/>
+ * <b>GetButtonStatesCommand.java</b> and <b>SyncButtonsCommand.java</b><br/>
  */
 window.ExoUtils = {
     TAG: 'ExoUtils',

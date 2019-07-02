@@ -5,7 +5,12 @@
 
 console.log("Scripts::Running script voice_search.js");
 
-var VoiceSearch = {
+/**
+ * NOTE: object is used through the java code<br/>
+ * NOTE: if you intend to rename/delete this var don't forget to do the same inside<br/>
+ * <b>VoiceSearchConnector.java</b><br/>
+ */
+window.VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
