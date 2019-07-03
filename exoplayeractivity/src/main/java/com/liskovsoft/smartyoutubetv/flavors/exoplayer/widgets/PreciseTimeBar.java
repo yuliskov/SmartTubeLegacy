@@ -240,10 +240,10 @@ public class PreciseTimeBar extends View implements TimeBar {
         update();
     }
 
-    @Override
-    public long getPreferredUpdateDelay() {
-        return 1_000;
-    }
+    //@Override
+    //public long getPreferredUpdateDelay() {
+    //    return 1_000;
+    //}
 
     @Override
     public void setAdGroupTimesMs(@Nullable long[] adGroupTimesMs, @Nullable boolean[] playedAdGroups, int adGroupCount) {

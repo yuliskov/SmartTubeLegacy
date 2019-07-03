@@ -9,17 +9,13 @@ function AuthInterceptor() {
     this.TAG = 'AuthInterceptor';
     this.AUTHORIZATION_HEADER = 'Authorization';
     this.shouldIntercept = DeviceUtils.isExo();
-    this.prevTimeMS = Utils.getCurrentTimeMs();
-    this.TIME_LIMIT_MS = 60000;
 
     this.intercept = function(name, value) {
-        var curTimeMS = Utils.getCurrentTimeMs();
-        if (name == this.AUTHORIZATION_HEADER && curTimeMS - this.prevTimeMS > this.TIME_LIMIT_MS) {
+        if (name == this.AUTHORIZATION_HEADER && this.prevValue != value) {
             Log.d(this.TAG, "Found auth header: " + value);
 
             DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTHORIZATION_HEADER, value);
-
-            this.prevTimeMS = curTimeMS;
+            this.prevValue = value;
         }
     };
 }
