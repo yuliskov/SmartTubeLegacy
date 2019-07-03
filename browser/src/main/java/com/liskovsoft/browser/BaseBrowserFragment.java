@@ -82,7 +82,7 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         // NOTE: fix state saving when finishing activity
         saveBrowserState(null);
         //super.finish();
-        System.exit(0);
+        //System.exit(0);
     }
 
     /**

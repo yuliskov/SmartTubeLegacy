@@ -79,4 +79,5 @@
     <string name="message_install_vlc_player">Please install VLC player</string>
     <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
     <string name="tweak_animated_previews">Enable animated previews</string>
+    <string name="close_msg">App closed!</string>
 </resources>

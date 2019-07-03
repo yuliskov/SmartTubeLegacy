@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.liskovsoft.sharedutils.helpers.CacheHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
@@ -41,6 +41,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
+    private static final long LONG_PRESS_TIME_MS = 5_000;
+    private Handler mHandler;
+    private Runnable mExitAppFn = ()-> {MessageHelpers.showMessage(this, R.string.close_msg); this.finish();};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingManager = new TipsLoadingManager(this);
         mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
+        mHandler = new Handler(getMainLooper());
     }
 
     @Override
@@ -175,8 +179,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public void finish() {
-        super.finish();
         mActiveFragment.finish();
+        super.finish();
     }
 
     @Override
@@ -187,6 +191,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        checkLongPressExit(event);
+
         if (mDisableKeyEvents) { // 'll be enabled again after fragment switching
             return true;
         }
@@ -202,26 +208,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mEvent = event; // give a choice to modify this event in the middle of the pipeline
         return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
-    }
-
-    private KeyEvent unknownKeyFix(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN &&
-            event.getScanCode() == 68) {
-            event = new KeyEvent(
-                    event.getDownTime(),
-                    event.getEventTime(),
-                    event.getAction(),
-                    KeyEvent.KEYCODE_BACK,
-                    event.getRepeatCount(),
-                    event.getMetaState(),
-                    event.getDeviceId(),
-                    event.getScanCode(),
-                    event.getFlags(),
-                    event.getSource()
-            );
-        }
-
-        return event;
     }
 
     @Override
@@ -340,5 +326,36 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     private void makeActivityHorizontal() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    }
+
+    private void checkLongPressExit(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN &&
+            event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getRepeatCount() == 0) { // same event fires multiple times
+                mHandler.postDelayed(mExitAppFn, LONG_PRESS_TIME_MS);
+            }
+        } else {
+            mHandler.removeCallbacks(mExitAppFn);
+        }
+    }
+
+    private KeyEvent unknownKeyFix(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN &&
+                event.getScanCode() == 68) {
+            event = new KeyEvent(
+                    event.getDownTime(),
+                    event.getEventTime(),
+                    event.getAction(),
+                    KeyEvent.KEYCODE_BACK,
+                    event.getRepeatCount(),
+                    event.getMetaState(),
+                    event.getDeviceId(),
+                    event.getScanCode(),
+                    event.getFlags(),
+                    event.getSource()
+            );
+        }
+
+        return event;
     }
 }
