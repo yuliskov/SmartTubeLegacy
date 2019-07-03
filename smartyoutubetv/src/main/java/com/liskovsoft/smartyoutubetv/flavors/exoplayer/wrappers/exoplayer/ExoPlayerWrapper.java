@@ -213,7 +213,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         if (!doNotClose) {
             if (mTrackingUrl != null) {
-                mTracker.track(mTrackingUrl.toString(), mInterceptor.getCurrentUrl());
+                mTracker.track(
+                        mTrackingUrl.toString(),
+                        mInterceptor.getCurrentUrl(),
+                        intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
+                        intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
+                );
             }
             mManager.onClose();
         }

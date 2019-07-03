@@ -69,6 +69,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String DISPLAY_MODE_ID = "display_mode_id";
     public static final String VIDEO_CANCELED = "video_canceled";
     public static final String STORYBOARD_SPEC = "storyboard_spec";
+    public static final String VIDEO_LENGTH = "video_length";
+    public static final String VIDEO_POSITION = "video_position";
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 
@@ -211,6 +213,11 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     private void onPlayerAction(Intent result) {
+        if (mPlayer != null) {
+            result.putExtra(VIDEO_LENGTH, (float) mPlayer.getDuration() / 1_000);
+            result.putExtra(VIDEO_POSITION, (float) mPlayer.getCurrentPosition() / 1_000);
+        }
+
         ((PlayerListener) getActivity()).onPlayerAction(result);
     }
 

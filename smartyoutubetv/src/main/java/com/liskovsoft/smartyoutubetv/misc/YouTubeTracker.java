@@ -32,8 +32,13 @@ public class YouTubeTracker {
         track(trackingUrl, videoUrl, 600, 1000);
     }
 
+    public void track(String trackingUrl, String videoUrl, float length) {
+        track(trackingUrl, videoUrl, length, length);
+    }
+
     public void track(String trackingUrl, String videoUrl, float watched, float length) {
         if (checkUrl(trackingUrl)) {
+            Log.d(TAG, String.format("Start history tracking: %s, %s, %s, %s", trackingUrl, videoUrl, watched, length));
             HashMap<String, String> headers = mManager.getHeaders();
             final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, watched, length);
             Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
@@ -62,13 +67,12 @@ public class YouTubeTracker {
         // video id???
         String cpn = "cpn";
         result.set(cpn, videoInfo.get(cpn));
-        // watch time in seconds
-        result.set("cmt", watched);
         // length of the video
         result.set("len", length);
-        //result.set("st", length);
-        //result.set("et", length);
-        //result.set("rt", length);
+        // watch time in seconds
+        result.set("cmt", watched);
+        result.set("st", String.format("%s,%s", 0, watched));
+        result.set("et", String.format("%s,%s", 0, watched));
 
         return result.toString();
     }
