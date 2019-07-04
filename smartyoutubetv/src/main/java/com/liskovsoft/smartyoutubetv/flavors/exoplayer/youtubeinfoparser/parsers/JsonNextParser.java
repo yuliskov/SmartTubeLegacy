@@ -143,9 +143,9 @@ public class JsonNextParser {
         private String mDislikesCount;
         private String mDescription;
         private String mPublishedDate;
-        private boolean mSubscribed;
-        private boolean mLiked;
-        private boolean mDisliked;
+        private Boolean mSubscribed;
+        private Boolean mLiked;
+        private Boolean mDisliked;
         private String mVideoId;
         private String mChannelId;
         private String mPlaylistId;
@@ -216,27 +216,27 @@ public class JsonNextParser {
             mNextVideo = autoplayMetadata;
         }
 
-        public boolean isSubscribed() {
+        public Boolean isSubscribed() {
             return mSubscribed;
         }
 
-        public void setSubscribed(boolean subscribed) {
+        public void setSubscribed(Boolean subscribed) {
             mSubscribed = subscribed;
         }
 
-        public boolean isLiked() {
+        public Boolean isLiked() {
             return mLiked;
         }
 
-        public void setLiked(boolean liked) {
+        public void setLiked(Boolean liked) {
             mLiked = liked;
         }
 
-        public boolean isDisliked() {
+        public Boolean isDisliked() {
             return mDisliked;
         }
 
-        public void setDisliked(boolean disliked) {
+        public void setDisliked(Boolean disliked) {
             mDisliked = disliked;
         }
 
@@ -274,12 +274,20 @@ public class JsonNextParser {
             }
 
             VideoMetadata metadata = new VideoMetadata();
+
             metadata.mTitle = intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
             metadata.mViewCount = intent.getStringExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT);
             metadata.mPublishedDate = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
-            metadata.mLiked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_LIKE, false);
-            metadata.mDisliked = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_DISLIKE, false);
-            metadata.mSubscribed = intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE, false);
+            metadata.mLiked =
+                    intent.hasExtra(ExoPlayerFragment.BUTTON_LIKE) ?
+                    intent.getBooleanExtra(ExoPlayerFragment.BUTTON_LIKE, false) :
+                    null;
+            metadata.mDisliked = intent.hasExtra(ExoPlayerFragment.BUTTON_DISLIKE) ?
+                    intent.getBooleanExtra(ExoPlayerFragment.BUTTON_DISLIKE, false) :
+                    null;
+            metadata.mSubscribed = intent.hasExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE) ?
+                    intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE, false) :
+                    null;
 
             return metadata;
         }

@@ -96,7 +96,11 @@ public class YouTubeActions {
         );
     }
 
-    private void apply(boolean oldVal, boolean newVal, Runnable positive, Runnable negative) {
+    private void apply(Boolean oldVal, Boolean newVal, Runnable positive, Runnable negative) {
+        if (oldVal == null || newVal == null) {
+            return;
+        }
+
         if (!oldVal && newVal) {
             positive.run();
         } else if (oldVal && !newVal) {
