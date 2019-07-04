@@ -83,7 +83,7 @@ function SuggestionsFakeButton(selector) {
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
         if (suggestionsShown || !YouTubeUtils.isPlayerOpened()) {
-            Log.d(this.TAG, "Success. Suggestions already has been shown or player isn't opened!");
+            Log.d(this.TAG, "Success. Suggestions already has been shown or player is closed!");
             return;
         }
 
@@ -101,7 +101,7 @@ function SuggestionsFakeButton(selector) {
         EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
 
         var $this = this;
-        setTimeout(function() {
+        this.openTimeout = setTimeout(function() {
            $this.tryToOpenSuggestions();
         }, this.callDelayMS);
     };
@@ -115,11 +115,13 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.sendClose = function() {
+        clearTimeout(this.openTimeout);
+        clearTimeout(this.closeTimeout);
+
         if (this.alreadySent) {
             return;
         }
-
-        var $this = this;
+        
         // immediate close not working here, so take delay
         setTimeout(function() {
             ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
@@ -151,7 +153,7 @@ function SuggestionsFakeButton(selector) {
 
         var $this = this;
         // immediate close not working here, so take delay
-        setTimeout(function() {
+        this.closeTimeout = setTimeout(function() {
             $this.closeSuggestions();
             $this.sendClose();
         }, this.callDelayMS);
