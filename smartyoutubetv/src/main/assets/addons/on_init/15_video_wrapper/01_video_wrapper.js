@@ -128,7 +128,8 @@ function VideoSrcHandler() {
 
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
-    this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
+    // this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
+    this.handlers = [new VolumeHandler()];
 
     this.run = function() {
         this.applyWrapping();
