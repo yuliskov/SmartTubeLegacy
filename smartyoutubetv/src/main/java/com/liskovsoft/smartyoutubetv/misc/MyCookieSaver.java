@@ -35,15 +35,23 @@ public class MyCookieSaver {
     public void saveCookie() {
         Log.d(TAG, "Saving cookie...");
 
-        mPrefs.setCookieHeader(getCookie(SITE_URL));
+        String cookie = getCookie(SITE_URL);
+
+        if (cookie != null) {
+            mPrefs.setCookieHeader(cookie);
+        }
     }
 
     private String getCookie(String url) {
         EngineType engine = Browser.getEngineType();
-        String cookie;
+        String cookie = null;
         if (engine == EngineType.XWalk) {
             XWalkCookieManager xWalkCookieManager = new XWalkCookieManager();
-            cookie = xWalkCookieManager.getCookie(url);
+            try {
+                cookie = xWalkCookieManager.getCookie(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             CookieManager cookieManager = CookieManager.getInstance();
             cookie = cookieManager.getCookie(url);

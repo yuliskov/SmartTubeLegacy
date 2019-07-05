@@ -55,7 +55,7 @@ function AjaxInterceptorAddon() {
 
         window.XMLHttpRequest.prototype.setRequestHeader = function() {
             if (arguments.length == 2) {
-                Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
+                // Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
 
                 var toRemove = null;
 
