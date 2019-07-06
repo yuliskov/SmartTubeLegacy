@@ -358,11 +358,9 @@ public abstract class ToggleButtonBase extends LinearLayout {
             try {
                 mResolvedMethod.invoke(mResolvedContext, compoundButton, b);
             } catch (IllegalAccessException e) {
-                throw new IllegalStateException(
-                        "Could not execute non-public method for app:onCheckedChanged", e);
+                Log.e(TAG, "Could not execute non-public method for app:onCheckedChanged", e);
             } catch (InvocationTargetException e) {
-                throw new IllegalStateException(
-                        "Could not execute method for app:onCheckedChanged", e);
+                Log.e(TAG, "Could not execute method for app:onCheckedChanged", e);
             }
         }
 

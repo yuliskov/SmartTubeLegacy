@@ -113,15 +113,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             // Do not move this code to another place!!! This statement must come after player initialization
             mAutoFrameRateManager = new AutoFrameRateManager(getActivity(), mPlayer);
 
-            //mAutoFrameRateManager.saveOriginalState();
-
-            //mPlayerInitializer.initVideoTitle();
-
             mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
-
-            //restoreSpeed();
-
-            // mPlayer.addListener(new PlayerHangListener(getActivity(), mStateManager));
 
             mPlayerInitializer.initVideoTitle();
 

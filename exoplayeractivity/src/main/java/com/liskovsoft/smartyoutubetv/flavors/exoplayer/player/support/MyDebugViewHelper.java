@@ -234,8 +234,11 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         }
 
         try {
-            //MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false, false);
-            MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false);
+            MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false, false);
+
+            if (info == null) {
+                return false;
+            }
 
             for (String name : new String[]{"omx.google.", "c2.android."}) {
                 if (info.name.toLowerCase().startsWith(name)) {
