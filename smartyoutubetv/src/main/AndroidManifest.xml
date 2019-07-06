@@ -8,11 +8,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <!-- NOTE: use older sdk -->
     <uses-sdk tools:overrideLibrary="org.xwalk.core, com.algolia.instantsearch.voice, android.support.v17.leanback, androidx.leanback, com.github.rubensousa.previewseekbar, com.github.rubensousa.previewseekbar.exoplayer"/>
-
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <!-- Leanback required fields -->
     <uses-feature

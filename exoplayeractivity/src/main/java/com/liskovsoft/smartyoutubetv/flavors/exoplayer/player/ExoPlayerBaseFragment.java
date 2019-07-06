@@ -314,7 +314,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         View root = getView();
 
         if (root == null) {
-            throw new IllegalStateException("Fragment's root view is null");
+            Log.e(TAG, "Fragment's root view is null");
+            return;
         }
 
         TextView quality = root.findViewById(R.id.video_quality);

@@ -32,7 +32,9 @@ public class SpeedDialogSource implements CombinedDialogSource {
         mItems.add(new SpeedDialogItem("1.75", "1.75", mPlayer, mPrefs));
         mItems.add(new SpeedDialogItem("2", "2.0", mPlayer, mPrefs));
 
-        SpeedDialogItem.sCurrentSpeed = String.valueOf(mPlayer.getPlaybackParameters().speed);
+        if (mPlayer != null) {
+            SpeedDialogItem.sCurrentSpeed = String.valueOf(mPlayer.getPlaybackParameters().speed);
+        }
     }
 
     @Override

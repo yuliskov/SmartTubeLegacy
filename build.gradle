@@ -47,7 +47,7 @@ buildscript {
         junitVersion = 'junit:junit:4.12'
         robolectricVersion = 'org.robolectric:robolectric:3.5.1'
         espressoCoreVersion = 'com.android.support.test.espresso:espresso-core:2.2.2'
-        crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.9.9@aar'
+        crashlyticsVersion = 'com.crashlytics.sdk.android:crashlytics:2.10.1@aar'
         asmVersion = 'org.ow2.asm:asm:5.0.4'
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         stethoDevVersion = 'com.github.facebook.stetho:stetho:6d148f20b96ecb29320cced6617830eda8af0426' // Chrome Dev Tools

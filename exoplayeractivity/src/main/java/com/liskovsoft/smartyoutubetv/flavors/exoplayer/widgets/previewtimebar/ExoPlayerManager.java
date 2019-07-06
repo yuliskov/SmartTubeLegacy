@@ -75,7 +75,7 @@ public class ExoPlayerManager implements PreviewLoader {
 
     @Override
     public void loadPreview(long currentPosition, long max) {
-        if (mStoryBoard == null) {
+        if (mStoryBoard == null || mStoryBoard.getGroupDurationMS() == 0) {
             return;
         }
 

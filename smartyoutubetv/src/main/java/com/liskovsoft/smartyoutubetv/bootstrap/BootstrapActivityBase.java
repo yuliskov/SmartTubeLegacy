@@ -79,12 +79,17 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
      */
     private void setupCrashLogs() {
         if (BuildConfig.CRASHLYTICS_ENABLED) {
+            Log.d(TAG, "Crashlytics is enabled. Running setup...");
+
             CrashlyticsCore core = new CrashlyticsCore.Builder()
                     .disabled(BuildConfig.DEBUG)
                     .build();
-            Fabric.with(new Fabric.Builder(this).kits(new Crashlytics.Builder()
-                    .core(core)
-                    .build())
+
+            Fabric.with(
+                    new Fabric.Builder(this).kits(
+                            new Crashlytics.Builder()
+                            .core(core)
+                            .build())
                     .initializationCallback(new InitializationCallback<Fabric>() {
                         @Override
                         public void success(Fabric fabric) {

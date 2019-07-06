@@ -515,7 +515,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void onClick(View view) {
         if (view == mRetryButton) {
             initializePlayer();
-        } else if (view.getParent() == mDebugRootView && view.getTag() != null) {
+        } else if (view.getParent() == mDebugRootView && view.getTag() != null && mTrackSelector != null) {
             MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
             if (mappedTrackInfo != null) {
                 mTrackSelectionHelper.showSelectionDialog(
@@ -546,7 +546,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
-            if (trackGroups.length != 0) {
+            if (trackGroups.length != 0 && getActivity() != null) {
                 TextToggleButton button = new TextToggleButton(getActivity());
                 int label, id;
                 switch (mPlayer.getRendererType(i)) {
