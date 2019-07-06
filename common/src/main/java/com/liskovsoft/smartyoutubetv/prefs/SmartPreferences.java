@@ -20,7 +20,7 @@ public final class SmartPreferences {
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
-    private static final String AFR_FIX_STATE = "afrFixState";
+    private static final String GLOBAL_AFR_FIX_STATE = "afrFixState";
     private static final String AUTHORIZATION_HEADER = "authorization_header";
     private static final String COOKIE_HEADER = "cookie_header";
     private static final String USE_EXTERNAL_PLAYER = "use_external_player";
@@ -35,8 +35,8 @@ public final class SmartPreferences {
     public static final String UPDATE_CHECK_STABLE = "update_check_stable";
     public static final String UPDATE_CHECK_BETA = "update_check_beta";
     public static final String UPDATE_CHECK_DISABLED = "update_check_disabled";
-    public static final String AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
-    public static final String AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
+    public static final String GLOBAL_AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
+    public static final String GLOBAL_AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static final String IS_APP_JUST_INSTALLED = "is_app_just_installed";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
@@ -196,14 +196,14 @@ public final class SmartPreferences {
         return mPrefs.getString(BOOT_PAGE, DEFAULT_PAGE);
     }
 
-    public void setAfrFixState(String state) {
+    public void setGlobalAfrFixState(String state) {
         mPrefs.edit()
-                .putString(AFR_FIX_STATE, state)
+                .putString(GLOBAL_AFR_FIX_STATE, state)
                 .apply();
     }
 
-    public String getAfrFixState() {
-        return mPrefs.getString(AFR_FIX_STATE, AFR_FIX_STATE_DISABLED);
+    public String getGlobalAfrFixState() {
+        return mPrefs.getString(GLOBAL_AFR_FIX_STATE, GLOBAL_AFR_FIX_STATE_DISABLED);
     }
 
     public void setAuthorizationHeader(String header) {

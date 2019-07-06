@@ -67,4 +67,5 @@
     <string name="tweak_fix_aspect">Исправление соотношения сторон и зума</string>
     <string name="tweak_animated_previews">Анимированные превью</string>
     <string name="close_msg">Приложение закрыто!</string>
+    <string name="global_afr_fix_warning">Это опция может повлиять на автовоспроизведение</string>
 </resources>

@@ -41,7 +41,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
-        //mItems.add(new GlobalAfrFixDialogItem(mContext));
+        mItems.add(new GlobalAfrFixDialogItem(mContext));
         mItems.add(new UseExternalPlayerDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));

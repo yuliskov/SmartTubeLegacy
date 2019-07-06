@@ -117,7 +117,9 @@ function VideoSrcHandler() {
     this.TAG = 'VideoSrcHandler';
 
     this.onCreate = function(video) {
-        this.overrideVideoSrc(video);
+        if (DeviceUtils.isGlobalAfrFixEnabled()) {
+            this.overrideVideoSrc(video);
+        }
     };
 
     this.overrideVideoSrc = function(video) {
@@ -129,7 +131,7 @@ function VideoSrcHandler() {
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
     // this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
-    this.handlers = [new VolumeHandler()];
+    this.handlers = [new VolumeHandler(), new VideoSrcHandler()];
 
     this.run = function() {
         this.applyWrapping();

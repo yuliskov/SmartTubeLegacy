@@ -195,9 +195,9 @@ public class WebViewJavaScriptInterface {
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
-    public boolean isAfrFixEnabled() {
+    public boolean isGlobalAfrFixEnabled() {
         SmartPreferences prefs = SmartPreferences.instance(mContext);
-        return SmartPreferences.AFR_FIX_STATE_ENABLED.equals(prefs.getAfrFixState());
+        return SmartPreferences.GLOBAL_AFR_FIX_STATE_ENABLED.equals(prefs.getGlobalAfrFixState());
     }
 
     @JavascriptInterface

@@ -274,8 +274,8 @@ var DeviceUtils = {
         return jsMicAvailable || this.getApp().isMicAvailable();
     },
 
-    isAfrFixEnabled: function() {
-        return this.getApp().isAfrFixEnabled();
+    isGlobalAfrFixEnabled: function() {
+        return this.getApp().isGlobalAfrFixEnabled();
     }
 };
 

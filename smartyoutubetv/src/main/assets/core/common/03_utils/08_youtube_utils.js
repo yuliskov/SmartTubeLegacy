@@ -13,6 +13,7 @@ var YouTubeUtils = {
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: '#/channel',
     CHANNEL_SIGN2: '#/zylon-detail-surface',
+    CHANNEL_SIGN3: '#/zylon-surface',
 
     isComponentDisabled: function(element) {
         var el = element;
@@ -169,8 +170,10 @@ var YouTubeUtils = {
 
     isChannelOpened: function() {
         var isOpened =
-            location.hash.indexOf(this.CHANNEL_SIGN) != -1 ||
-            location.hash.indexOf(this.CHANNEL_SIGN2) != -1;
+            location.hash.indexOf(this.CHANNEL_SIGN)  != -1  ||
+            location.hash.indexOf(this.CHANNEL_SIGN2) != -1  ||
+            location.hash.indexOf(this.CHANNEL_SIGN3) != -1;
+
         Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
         return isOpened;
     },
