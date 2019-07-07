@@ -374,6 +374,17 @@ var Utils = {
         if (idx != -1) {
             array.splice(idx, 1); // remove element by idx
         }
+    },
+
+    dumpObj: function(obj) {
+        var output = '';
+        for (var property in obj) {
+            if (obj[property] != null && typeof obj[property] != "function" && property.indexOf('_') == -1) {
+                output += property + ': ' + obj[property]+'; ';
+            }
+        }
+
+        Log.d(this.TAG, output);
     }
 };
 

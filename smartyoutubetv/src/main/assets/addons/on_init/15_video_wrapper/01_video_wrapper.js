@@ -47,8 +47,11 @@ function EventLoggerHandler() {
             // all props are required
             this.properties.duration = 999;
             this.properties.currentTime = 999;
-            this.listeners['pause'][0]({type: 'pause'});
-            this.listeners['timeupdate'][0]({type: 'timeupdate'});
+
+            this.properties.readyState = 4;
+
+            this.listeners['pause'][0]({type: 'pause', isTrusted: true});
+            this.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
         };
     };
 
@@ -130,8 +133,8 @@ function VideoSrcHandler() {
 
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
-    // this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
-    this.handlers = [new VolumeHandler(), new VideoSrcHandler()];
+    this.handlers = [new EventLoggerHandler(), new VolumeHandler()];
+    //this.handlers = [new VolumeHandler(), new VideoSrcHandler()];
 
     this.run = function() {
         this.applyWrapping();

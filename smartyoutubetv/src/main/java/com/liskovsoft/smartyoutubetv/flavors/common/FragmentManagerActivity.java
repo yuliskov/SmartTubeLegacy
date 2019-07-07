@@ -41,7 +41,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
-    private static final long LONG_PRESS_TIME_MS = 3_000;
+    private static final long LONG_PRESS_TIME_MS = 10_000;
     private Handler mHandler;
     private Runnable mExitAppFn = ()-> {MessageHelpers.showMessage(this, R.string.close_msg); this.finish();};
 

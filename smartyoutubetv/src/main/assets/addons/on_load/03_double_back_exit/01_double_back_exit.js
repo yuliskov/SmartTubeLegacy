@@ -13,7 +13,7 @@ function DoubleBackAddon() {
     this.rootListenerAdded = false;
 
     this.run = function() {
-        //this.addRootListener();
+        this.addRootListener();
         this.overrideClose();
     };
 
