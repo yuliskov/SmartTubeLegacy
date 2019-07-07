@@ -1,5 +1,6 @@
 package com.liskovsoft.browser;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
@@ -8,15 +9,33 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
+import org.xwalk.core.XWalkPreferences;
 
 import java.util.Map;
 
 public class BrowserWebViewFactory implements WebViewFactory {
     protected final Context mContext;
     protected Map<String, String> mNextHeaders;
+    private final boolean mIsXWalk;
 
     public BrowserWebViewFactory(Context browser) {
         mContext = browser;
+        mIsXWalk = Browser.getEngineType() == EngineType.XWalk;
+
+        initRemoteDebugging();
+    }
+
+    @TargetApi(19)
+    private void initRemoteDebugging() {
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+
+        if (mIsXWalk) {
+            XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
+        } else {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
     }
 
     /**
@@ -28,8 +47,8 @@ public class BrowserWebViewFactory implements WebViewFactory {
      */
     protected WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         WebView w;
-        boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
-        if (isXWalk) {
+
+        if (mIsXWalk) {
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         } else {
             // BUGFIX: rare memory leak in WebView

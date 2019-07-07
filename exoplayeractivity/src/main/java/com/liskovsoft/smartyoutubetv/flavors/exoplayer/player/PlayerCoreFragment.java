@@ -649,12 +649,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      */
     private void retryPlayback() {
         if (mRetryCount++ < 5) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    initializePlayer();
-                }
-            }, 500);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> initializePlayer(), 500);
         }
     }
 

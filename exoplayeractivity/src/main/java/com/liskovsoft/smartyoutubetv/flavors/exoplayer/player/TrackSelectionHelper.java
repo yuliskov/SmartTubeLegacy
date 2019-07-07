@@ -266,7 +266,11 @@ import java.util.TreeSet;
 
     private void updateViews() {
         AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
-        mAutoframerateView.setChecked(autoFrameRateManager.getEnabled());
+        if (autoFrameRateManager != null) {
+            mAutoframerateView.setChecked(autoFrameRateManager.getEnabled());
+        } else {
+            mAutoframerateView.setChecked(false);
+        }
 
         mHideErrorsView.setChecked(mPlayerFragment.getHidePlaybackErrors());
 

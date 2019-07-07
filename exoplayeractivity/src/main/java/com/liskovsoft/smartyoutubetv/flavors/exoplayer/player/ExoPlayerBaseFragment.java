@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -99,7 +101,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void initializePlayer() {
-        if (getIntent() == null) {
+        if (getIntent() == null || getActivity() == null) {
             return;
         }
 
@@ -155,7 +157,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
-        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getContext());
+        mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getActivity());
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
 
@@ -242,10 +244,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onClick(View view) {
         super.onClick(view);
 
+        Context context = getActivity();
+        if (context == null) {
+            return;
+        }
+
         if (view.getId() == R.id.btn_restrict_codec) {
-            SingleChoiceSelectorDialog.create(getActivity(), new RestrictFormatDialogSource(getActivity()), R.style.AppDialog);
+            SingleChoiceSelectorDialog.create(context, new RestrictFormatDialogSource(context), R.style.AppDialog);
         } else if (view.getId() == R.id.btn_video_zoom) {
-            SingleChoiceSelectorDialog.create(getActivity(), new VideoZoomDialogSource(getActivity(), mVideoZoomManager), R.style.AppDialog);
+            SingleChoiceSelectorDialog.create(context, new VideoZoomDialogSource(context, mVideoZoomManager), R.style.AppDialog);
         }
     }
 

@@ -23,14 +23,14 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
 
     @Nullable
     @Override
-    protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-                                              Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
+    protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
+                                              Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
 
         if (!params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups)) {
             restoreVideoTrack(groups);
         }
 
-        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
+        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
     }
 
     private void restoreVideoTrack(TrackGroupArray groups) {
