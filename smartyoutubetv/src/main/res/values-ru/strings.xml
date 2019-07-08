@@ -68,4 +68,5 @@
     <string name="tweak_animated_previews">Анимированные превью</string>
     <string name="close_msg">Приложение закрыто!</string>
     <string name="global_afr_fix_warning">Это опция может повлиять на автовоспроизведение</string>
+    <string name="tweak_back_press_exit">Удерживайте НАЗАД чтобы закрыть приложение</string>
 </resources>

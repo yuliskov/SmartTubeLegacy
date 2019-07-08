@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -41,9 +42,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
-    private static final long LONG_PRESS_TIME_MS = 10_000;
     private Handler mHandler;
     private Runnable mExitAppFn = ()-> {MessageHelpers.showMessage(this, R.string.close_msg); this.finish();};
+    private static final long BACK_PRESS_DURATION_MS = 2_000;
+    private boolean mBackPressExitEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
         mHandler = new Handler(getMainLooper());
+        mBackPressExitEnabled = CommonApplication.getPreferences().getEnableBackPressExit();
     }
 
     @Override
@@ -329,10 +332,14 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void checkLongPressExit(KeyEvent event) {
+        if (!mBackPressExitEnabled) {
+            return;
+        }
+
         if (event.getAction() == KeyEvent.ACTION_DOWN &&
             event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             if (event.getRepeatCount() == 0) { // same event fires multiple times
-                mHandler.postDelayed(mExitAppFn, LONG_PRESS_TIME_MS);
+                mHandler.postDelayed(mExitAppFn, BACK_PRESS_DURATION_MS);
             }
         } else {
             mHandler.removeCallbacks(mExitAppFn);

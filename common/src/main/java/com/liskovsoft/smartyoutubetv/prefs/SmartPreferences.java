@@ -38,6 +38,7 @@ public final class SmartPreferences {
     public static final String GLOBAL_AFR_FIX_STATE_ENABLED = "afr_fix_state_enabled";
     public static final String GLOBAL_AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static final String IS_APP_JUST_INSTALLED = "is_app_just_installed";
+    private static final String BACK_PRESS_EXIT = "back_press_exit";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -286,5 +287,15 @@ public final class SmartPreferences {
         Log.d(TAG, "Is app just installed: " + justInstalled);
 
         return justInstalled;
+    }
+
+    public boolean getEnableBackPressExit() {
+        return mPrefs.getBoolean(BACK_PRESS_EXIT, false);
+    }
+
+    public void setEnableBackPressExit(boolean enable) {
+        mPrefs.edit()
+                .putBoolean(BACK_PRESS_EXIT, enable)
+                .apply();
     }
 }

@@ -81,4 +81,5 @@
     <string name="tweak_animated_previews">Enable animated previews</string>
     <string name="close_msg">App closed!</string>
     <string name="global_afr_fix_warning">This may cause autoplay to work incorrectly</string>
+    <string name="tweak_back_press_exit">Hold back key to exit</string>
 </resources>

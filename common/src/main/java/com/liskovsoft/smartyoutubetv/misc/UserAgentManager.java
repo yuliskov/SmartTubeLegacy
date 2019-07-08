@@ -29,7 +29,7 @@ public class UserAgentManager {
     private final boolean mEnableAnimations;
 
     public UserAgentManager() {
-        mEnableAnimations = CommonApplication.getSmartPreferences().getEnableAnimatedPreviews();
+        mEnableAnimations = CommonApplication.getPreferences().getEnableAnimatedPreviews();
         mHeaders = new HashMap<>();
         mHeaders.put(USER_AGENT, getUA());
     }

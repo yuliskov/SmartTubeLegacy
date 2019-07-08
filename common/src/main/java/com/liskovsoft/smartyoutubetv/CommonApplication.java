@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import androidx.multidex.MultiDex;
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Bus;
@@ -23,18 +22,13 @@ public class CommonApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //// A WebView debug bridge, enables access to Chrome Dev Tools
-        //if (BuildConfig.DEBUG) {
-        //    Stetho.initializeWithDefaults(this);
-        //}
-
         sSmartPreferences = SmartPreferences.instance(this);
         sCache = createDiskLruCache();
     }
 
     private DiskLruCache createDiskLruCache() {
         try {
-            File dir = new File(FileHelpers.getCacheDir(this), "DiskLruCache");
+            File dir = new File(getCacheDir(), "DiskLruCache");
             return DiskLruCache.open(dir, 1, 1, 1_000_000);
         } catch (IOException e) {
             Log.e(TAG, e);
@@ -64,7 +58,7 @@ public class CommonApplication extends Application {
         return sBus;
     }
 
-    public static SmartPreferences getSmartPreferences() {
+    public static SmartPreferences getPreferences() {
         return sSmartPreferences;
     }
 
