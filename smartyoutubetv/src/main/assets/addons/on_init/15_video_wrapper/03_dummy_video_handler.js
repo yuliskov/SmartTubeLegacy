@@ -98,12 +98,13 @@ function DummyVideoHandler() {
             video.properties.currentTime++;
             video.listeners['pause'][0]({type: 'pause', isTrusted: true});
             video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
-        }, 1000);
+        }, 100);
     };
 
     this.imitateEnding = function(video) {
         var i = 0;
         var $this = this;
+        var curTime = video.properties.currentTime;
         video.properties.currentTime = video.properties.duration;
         video.properties.paused = true;
         video.properties.ended = true;
@@ -112,7 +113,7 @@ function DummyVideoHandler() {
 
             if (i > 3) {
                 clearInterval(interval);
-                video.properties.currentTime = 0;
+                video.properties.currentTime = curTime;
                 video.properties.paused = false;
                 video.properties.ended = false;
                 return;
@@ -122,6 +123,6 @@ function DummyVideoHandler() {
 
             video.listeners['pause'][0]({type: 'pause', isTrusted: true});
             video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
-        }, 1000);
+        }, 100);
     };
 }
