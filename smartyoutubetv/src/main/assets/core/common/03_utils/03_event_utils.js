@@ -273,6 +273,7 @@ var EventUtils = {
 
             // function wrapper(e) {
             //     Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
+            //     Log.d($this.TAG, "Video: " + Utils.dumpObj(video));
             //     listener.call(video, e);
             // }
             //
@@ -282,7 +283,7 @@ var EventUtils = {
         };
     },
 
-    turnOffProp: function(obj, propName, persist) { // pure function
+    turnOffProp: function(obj, propName, persist, onSet) { // pure function
         if (!obj.properties) {
             obj.properties = {};
         }
@@ -296,6 +297,10 @@ var EventUtils = {
                 return obj.properties[propName];
             },
             set: function(val) {
+                if (onSet) {
+                    onSet(val);
+                }
+
                 if (persist) {
                     obj.properties[propName] = val;
                 }

@@ -384,7 +384,7 @@ var Utils = {
             }
         }
 
-        Log.d(this.TAG, output);
+        return output;
     }
 };
 
