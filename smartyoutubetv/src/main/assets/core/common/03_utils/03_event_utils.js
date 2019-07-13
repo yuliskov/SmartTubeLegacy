@@ -245,6 +245,62 @@ var EventUtils = {
             }
             return v;
         }, ' ');
+    },
+
+    turnOffEvents: function(video) { // pure function
+        var $this = this;
+
+        video.addEventListenerReal = video.addEventListener;
+
+        video.addEventListener = function(type, listener, options) {
+            Log.d($this.TAG, "Add event listener: " + type + " " + listener);
+
+            if (!video.listeners) {
+                video.listeners = {};
+            }
+
+            if (!video.listeners[type]) {
+                video.listeners[type] = [];
+            }
+
+            video.listeners[type].push(listener);
+
+            // events essential for the playback:
+            // pause, timeupdate
+
+            // next events not needed for the playback:
+            // loadstart, durationchange, loadedmetadata, loadeddata, ended
+
+            // function wrapper(e) {
+            //     Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
+            //     listener.call(video, e);
+            // }
+            //
+            // if (type == 'pause' || type == 'timeupdate') {
+            //     this.addEventListenerReal(type, wrapper, options);
+            // }
+        };
+    },
+
+    turnOffProp: function(obj, propName, persist) { // pure function
+        if (!obj.properties) {
+            obj.properties = {};
+        }
+
+        obj.properties[propName] = obj[propName];
+
+        Object.defineProperty(obj, propName, {
+            get: function() {
+                // Log.d($this.TAG, "Getting property: " + propName + ", value: " + obj.properties[propName]);
+
+                return obj.properties[propName];
+            },
+            set: function(val) {
+                if (persist) {
+                    obj.properties[propName] = val;
+                }
+            }
+        });
     }
 };
 
