@@ -140,17 +140,17 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         );
     }
 
-    protected void initializeUiScale() {
-        int width = getIntent().getIntExtra(SCREEN_WIDTH, 0);
-
-        if (getIntent() == null || width == 0) {
-            return;
-        }
-
-        float scaledWidth = width * TEXT_SIZE_SMALL / SCREEN_WIDTH_SMALL;
-
-        mLoadingView.setTextSize(scaledWidth);
-    }
+    //protected void initializeUiScale() {
+    //    int width = getIntent().getIntExtra(SCREEN_WIDTH, 0);
+    //
+    //    if (getIntent() == null || width == 0) {
+    //        return;
+    //    }
+    //
+    //    float scaledWidth = width * TEXT_SIZE_SMALL / SCREEN_WIDTH_SMALL;
+    //
+    //    mLoadingView.setTextSize(scaledWidth);
+    //}
 
     protected void initializeTrackSelector() {
         TrackSelection.Factory trackSelectionFactory =
@@ -358,7 +358,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
-        initializeUiScale();
+        //initializeUiScale();
     }
 
     private boolean isStateIntent(Intent intent) {

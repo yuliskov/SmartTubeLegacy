@@ -203,7 +203,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         } else if (getIntent() != null) {
             syncButtonStates(); // onCheckedChanged depends on this
             initializePlayer();
-            initializeUiScale();
+            //initializeUiScale();
         }
     }
 }

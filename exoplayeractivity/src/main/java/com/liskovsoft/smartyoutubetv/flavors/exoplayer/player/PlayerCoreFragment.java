@@ -104,7 +104,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     protected PlayerView mSimpleExoPlayerView;
     protected LinearLayout mDebugRootView;
-    protected TextView mLoadingView;
+    protected View mLoadingView;
     protected FrameLayout mDebugViewGroup;
     private TextToggleButton mRetryButton;
 

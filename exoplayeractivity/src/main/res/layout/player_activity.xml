@@ -15,5 +15,5 @@
 
     <include layout="@layout/player_debug_view"/>
 
-    <include layout="@layout/player_loading_view"/>
+    <include layout="@layout/player_loading_view2"/>
 </FrameLayout>
