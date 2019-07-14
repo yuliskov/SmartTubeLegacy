@@ -143,7 +143,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
             // mCrashRecoverHandler has any previously saved state.
             mCrashRecoveryHandler.startRecovery(intent);
         } catch (Exception e) {
-            MessageHelpers.showLongMessage(mActivity, "Cannot proceed without Chrome browser");
+            MessageHelpers.showLongMessage(mActivity, "Check that you've installed Chrome browser\n" + e.getLocalizedMessage());
             Log.d(TAG, e);
             e.printStackTrace();
         }
