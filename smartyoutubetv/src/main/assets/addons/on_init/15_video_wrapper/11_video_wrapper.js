@@ -9,7 +9,7 @@ console.log("Scripts::Running script video_wrapper.js");
 
 function VideoWrapperAddon() {
     this.TAG = 'VideoWrapperAddon';
-    this.handlers = [new DummyVideoHandler(), new VolumeHandler()];
+    this.handlers = [new DummyVideoHandler()];
     //this.handlers = [new VolumeHandler(), new VideoSrcHandler()];
 
     this.run = function() {
