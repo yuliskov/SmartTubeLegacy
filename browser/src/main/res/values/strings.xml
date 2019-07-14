@@ -450,4 +450,5 @@
     <string name="too_many_subwindows_dialog_message">Only one pop-up can be open
         at a time.</string>
     <string name="low_memory_notify">Warning: memory is low. Saving state...</string>
+    <string name="select_webview_provider_msg">Check that you\'ve installed Chrome browser.\nAnd select Chrome WebView provider in the Developer Options.</string>
 </resources>

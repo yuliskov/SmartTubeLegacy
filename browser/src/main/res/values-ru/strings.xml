@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="low_memory_notify">Внимание: память заканчивается...</string>
+    <string name="select_webview_provider_msg">Убедитесь, что браузер Chrome установлен.\nИ выберите провайдер Chrome WebView в разделе Developer Options.</string>
 </resources>

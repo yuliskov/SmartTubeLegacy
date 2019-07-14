@@ -143,7 +143,9 @@ public class Controller implements UiController, WebViewController, ActivityCont
             // mCrashRecoverHandler has any previously saved state.
             mCrashRecoveryHandler.startRecovery(intent);
         } catch (Exception e) {
-            MessageHelpers.showLongMessage(mActivity, "Check that you've installed Chrome browser\n" + e.getLocalizedMessage());
+            // User should select Chrome WebView provider in Developer Options
+            // Android TV Developer Options: http://corochann.com/how-to-enable-developer-mode-in-android-tv-216.html
+            MessageHelpers.showLongMessage(mActivity, R.string.select_webview_provider_msg);
             Log.d(TAG, e);
             e.printStackTrace();
         }
