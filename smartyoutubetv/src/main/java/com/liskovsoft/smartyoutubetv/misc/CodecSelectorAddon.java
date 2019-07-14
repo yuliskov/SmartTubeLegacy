@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -54,7 +55,7 @@ public class CodecSelectorAddon {
         private final List<DialogItem> mCodecs;
 
         public CodecSelectorDialogSource() {
-            mPrefs = SmartPreferences.instance(mContext);
+            mPrefs = CommonApplication.getPreferences();
             mCodecs = new ArrayList<>();
             mCodecs.add(new CodecSelectorDialogItem("Auto", "", mPrefs));
             mCodecs.add(new CodecSelectorDialogItem("AVC", MP4, mPrefs));
@@ -77,6 +78,6 @@ public class CodecSelectorAddon {
     }
 
     public String getPreferredCodec() {
-        return SmartPreferences.instance(mContext).getPreferredCodec();
+        return CommonApplication.getPreferences().getPreferredCodec();
     }
 }
