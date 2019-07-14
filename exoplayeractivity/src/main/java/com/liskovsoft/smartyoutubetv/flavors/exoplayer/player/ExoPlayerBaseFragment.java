@@ -6,11 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -212,7 +211,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             result.putExtra(VIDEO_POSITION, (float) mPlayer.getCurrentPosition() / 1_000);
         }
 
-        ((PlayerListener) getActivity()).onPlayerAction(result);
+        if (getActivity() != null) {
+            ((PlayerListener) getActivity()).onPlayerAction(result);
+        }
     }
 
     protected void syncButtonStates() {
@@ -421,24 +422,11 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (mTrackSelector != null && mTrackSelector.getCurrentMappedTrackInfo() != null && !mIsDurationSet) {
-            mIsDurationSet = true; // run once per video
-
-            if (mStateManager != null) {
-                // stateManage should be initialized here
-                mStateManager.restoreState();
-            }
-
-            if (mPlayer != null) {
-                mPlayer.setPlayWhenReady(mShouldAutoPlay);
-            }
-        }
+        restorePlayerStateIfNeeded();
 
         if (playbackState == Player.STATE_ENDED) {
             onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
-        }
-
-        if (playbackState == Player.STATE_READY) {
+        } else if (playbackState == Player.STATE_READY) {
             if (mAutoFrameRateManager != null) {
                 mAutoFrameRateManager.apply();
             }
@@ -448,7 +436,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             updateTitleQualityInfo();
         }
 
-        showLoadingMessage(playbackState);
+        if (getActivity() != null) {
+            if (playWhenReady) {
+                getActivity().getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+            } else {
+                getActivity().getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        }
+
+        showHideLoadingMessage(playbackState);
 
         super.onPlayerStateChanged(playWhenReady, playbackState);
     }
@@ -457,7 +453,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * Reset player's title and show loading
      */
     private void resetUiState() {
-        showLoadingMessage(Player.STATE_IDLE);
+        showHideLoadingMessage(Player.STATE_IDLE);
 
         if (mPlayerInitializer != null) {
             mPlayerInitializer.resetVideoTitle();
@@ -488,9 +484,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         //timeBar.setPosition(0);
     }
 
-    private void showLoadingMessage(int playbackState) {
-        int visibility = playbackState == Player.STATE_IDLE ||
-                playbackState == Player.STATE_BUFFERING ? View.VISIBLE : View.GONE;
+    private void showHideLoadingMessage(int playbackState) {
+        int visibility = playbackState == Player.STATE_READY ? View.GONE : View.VISIBLE;
         mLoadingView.setVisibility(visibility);
     }
 
@@ -569,6 +564,21 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         if (prefs.getRestoreSpeed()) {
             mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(prefs.getCurrentSpeed()), 1.0f));
+        }
+    }
+
+    private void restorePlayerStateIfNeeded() {
+        if (mTrackSelector != null && mTrackSelector.getCurrentMappedTrackInfo() != null && !mIsDurationSet) {
+            mIsDurationSet = true; // run once per video
+
+            if (mStateManager != null) {
+                // stateManage should be initialized here
+                mStateManager.restoreState();
+            }
+
+            if (mPlayer != null) {
+                mPlayer.setPlayWhenReady(mShouldAutoPlay);
+            }
         }
     }
 }

@@ -111,8 +111,10 @@ function DummyVideoHandler() {
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitateEnding");
 
-            if (i > 3) {
+            if (i >= 1) {
                 clearInterval(interval);
+
+                // do cleanup, prepare for playing
                 video.properties.currentTime = curTime;
                 video.properties.paused = false;
                 video.properties.ended = false;
