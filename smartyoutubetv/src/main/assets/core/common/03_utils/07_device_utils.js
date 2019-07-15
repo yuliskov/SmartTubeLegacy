@@ -6,8 +6,8 @@ console.log("Scripts::Running script device_utils.js");
 
 var DeviceUtils = {
     TAG: 'DeviceUtils',
-    WEBM: 'webm',
-    MP4: 'mp4',
+    VP9: 'vp9',
+    AVC: 'avc',
     WEBVIEW: 'WebView',
     XWALK: 'XWalk',
     MESSAGE_APP_LOADED: 'message_app_loaded',
@@ -77,11 +77,11 @@ var DeviceUtils = {
     },
 
     disableWebmCodec: function() {
-        this.disableCodec(this.WEBM);
+        this.disableCodec(this.VP9);
     },
 
     disableMP4Codec: function() {
-        this.disableCodec(this.MP4);
+        this.disableCodec(this.AVC);
     },
 
     /**

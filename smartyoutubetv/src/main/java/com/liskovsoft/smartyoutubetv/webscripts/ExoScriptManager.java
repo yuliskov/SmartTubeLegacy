@@ -25,19 +25,16 @@ public class ExoScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnLoadScripts() {
-        if (!isExo) {
-            return null;
-        }
-
         return ScriptManager.anonAssetJSFiles(mContext, CORE_EXO_DIR);
     }
 
     @Override
     public InputStream getStyles() {
-        if (!isExo) {
-            return null;
-        }
-
         return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_EXO_DIR);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isExo;
     }
 }

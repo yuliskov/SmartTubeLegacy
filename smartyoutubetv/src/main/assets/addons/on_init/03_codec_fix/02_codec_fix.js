@@ -5,6 +5,7 @@
 console.log("Scripts::Running script codec_fix.js");
 
 function CodecFixAddon() {
+    this.TAG = 'CodecFixAddon';
     this.run = function() {
         var config = this.findProperConfig();
         this.applyCodecFixes(config);
@@ -16,10 +17,12 @@ function CodecFixAddon() {
     this.findProperConfig = function() {
         // CodecSelectorAddon usage
         switch (DeviceUtils.getPreferredCodec()) {
-            case DeviceUtils.MP4:
-                return CodecConfig_MP4;
-            case DeviceUtils.WEBM:
-                return CodecConfig_WEBM;
+            case DeviceUtils.AVC:
+                Log.d(this.TAG, "Forcing AVC codec...");
+                return CodecConfig_AVC;
+            case DeviceUtils.VP9:
+                Log.d(this.TAG, "Forcing VP9 codec...");
+                return CodecConfig_VP9;
         }
 
         if (DeviceUtils.isWebView()) {
@@ -30,7 +33,7 @@ function CodecFixAddon() {
             return CodecConfig_XWalk;
         }
 
-        console.log("CodecFixAddon::unknown engine type " + DeviceUtils.getEngineType());
+        Log.d(this.TAG, "CodecFixAddon::unknown engine type " + DeviceUtils.getEngineType());
         return {};
     };
 

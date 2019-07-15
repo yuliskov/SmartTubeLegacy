@@ -105,13 +105,16 @@ function DummyVideoHandler() {
         var i = 0;
         var $this = this;
         var curTime = video.properties.currentTime;
+        var url = location.href;
         video.properties.currentTime = video.properties.duration;
         video.properties.paused = true;
         video.properties.ended = true;
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitateEnding");
 
-            if (i >= 1) {
+            var urlChanged = location.href != url;
+
+            if (i >= 3 || urlChanged) {
                 clearInterval(interval);
 
                 // do cleanup, prepare for playing

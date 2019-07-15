@@ -7,6 +7,8 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitD
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EndCardsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceVP9DialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.GlobalAfrFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
@@ -42,11 +44,13 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
-        mItems.add(new GlobalAfrFixDialogItem(mContext));
+        //mItems.add(new GlobalAfrFixDialogItem(mContext));
         mItems.add(new UseExternalPlayerDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new BackPressExitDialogItem(mContext));
+        mItems.add(new ForceAVCDialogItem(mContext));
+        mItems.add(new ForceVP9DialogItem(mContext));
     }
 
     @Override

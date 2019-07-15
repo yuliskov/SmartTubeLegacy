@@ -50,4 +50,9 @@ public class AddonsScriptManager implements ScriptManager {
 
         return result;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

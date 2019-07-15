@@ -69,4 +69,6 @@
     <string name="close_msg">Приложение закрыто!</string>
     <string name="global_afr_fix_warning">Это опция может повлиять на автовоспроизведение</string>
     <string name="tweak_back_press_exit">Удерживайте НАЗАД чтобы закрыть приложение</string>
+    <string name="force_avc_lite_only">Использовать только AVC кодек (только LITE)</string>
+    <string name="force_vp9_lite_only">Использовать только VP9 кодек (только LITE)</string>
 </resources>

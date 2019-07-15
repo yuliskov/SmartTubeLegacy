@@ -79,5 +79,5 @@ var CodecConfig_XWalk = {
     '': 'webm' // other devices (entry should be the last in the list)
 };
 
-var CodecConfig_MP4 = {'': 'webm'};
-var CodecConfig_WEBM = {'': 'mp4'};
+var CodecConfig_AVC = {'': 'webm'};
+var CodecConfig_VP9 = {'': 'mp4'};

@@ -2,11 +2,11 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 public final class ExoPreferences {
+    private static final String SHARED_PREFERENCES_NAME = ExoPreferences.class.getName();
     private static ExoPreferences sInstance;
     private final Context mContext;
     private SharedPreferences mPrefs;
@@ -34,7 +34,7 @@ public final class ExoPreferences {
 
     public ExoPreferences(Context context) {
         mContext = context.getApplicationContext();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     public String getSelectedTrackId() {

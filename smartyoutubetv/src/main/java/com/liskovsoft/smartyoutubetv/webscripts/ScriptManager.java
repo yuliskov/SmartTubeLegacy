@@ -20,6 +20,7 @@ public interface ScriptManager {
     InputStream getOnInitScripts();
     InputStream getOnLoadScripts();
     InputStream getStyles();
+    boolean isEnabled();
 
     static InputStream anonAssetJSFiles(Context context, String dir) {
         InputStream asset = AssetHelper.getAssetJSFilesMerged(context, dir); // code for single addon

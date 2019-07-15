@@ -13,10 +13,19 @@ public class MainScriptManager implements ScriptManager {
 
     public MainScriptManager(Context context) {
         mContext = context;
-        mManagers.add(new CommonScriptManager(context));
-        mManagers.add(new AddonsScriptManager(context));
-        mManagers.add(new ExoScriptManager(context));
-        mManagers.add(new EndCardsScriptManager(context));
+
+        ScriptManager[] managers = {
+                new CommonScriptManager(context),
+                new AddonsScriptManager(context),
+                new ExoScriptManager(context),
+                new EndCardsScriptManager(context)
+        };
+
+        for (ScriptManager manager : managers) {
+            if (manager.isEnabled()) {
+                mManagers.add(manager);
+            }
+        }
     }
 
     @Override
@@ -50,5 +59,14 @@ public class MainScriptManager implements ScriptManager {
         }
 
         return is;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    protected List<ScriptManager> getManagers() {
+        return mManagers;
     }
 }

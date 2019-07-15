@@ -19,10 +19,10 @@ public class MainCachedScriptManager extends MainScriptManager {
 
         mCache = CommonApplication.getCache();
 
-        String label = context.getClass().getSimpleName().toLowerCase();
-        ON_INIT_SCRIPTS_KEY = String.format("%s_%s_%s", "on_init_scripts", label, BuildConfig.TIMESTAMP);
-        ON_LOAD_SCRIPTS_KEY = String.format("%s_%s_%s", "on_load_scripts", label, BuildConfig.TIMESTAMP);
-        STYLES_KEY = String.format("%s_%s_%s", "styles", label, BuildConfig.TIMESTAMP);
+        int hash = getHash();
+        ON_INIT_SCRIPTS_KEY = String.format("%s_%s_%s", "on_init_scripts", hash, BuildConfig.TIMESTAMP);
+        ON_LOAD_SCRIPTS_KEY = String.format("%s_%s_%s", "on_load_scripts", hash, BuildConfig.TIMESTAMP);
+        STYLES_KEY = String.format("%s_%s_%s", "styles", hash, BuildConfig.TIMESTAMP);
     }
 
     @Override
@@ -50,5 +50,14 @@ public class MainCachedScriptManager extends MainScriptManager {
         }
 
         return CacheHelpers.saveToCache(mCache, super.getStyles(), STYLES_KEY);
+    }
+
+    private int getHash() {
+        int fullHash = 0;
+        for (ScriptManager manager : getManagers()) {
+            int hash = manager.getClass().getName().hashCode();
+            fullHash += hash;
+        }
+        return fullHash;
     }
 }

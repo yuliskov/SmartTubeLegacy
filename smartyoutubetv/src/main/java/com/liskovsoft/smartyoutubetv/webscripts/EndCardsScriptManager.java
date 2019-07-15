@@ -2,18 +2,18 @@ package com.liskovsoft.smartyoutubetv.webscripts;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.AssetHelper;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
 
 public class EndCardsScriptManager implements ScriptManager {
     private final Context mContext;
-    private final boolean isEnabled;
+    private final boolean mIsEnabled;
 
     public EndCardsScriptManager(Context context) {
         mContext = context;
-        SmartPreferences mPrefs = SmartPreferences.instance(context);
-        isEnabled = mPrefs.getEnableEndCards();
+        mIsEnabled = CommonApplication.getPreferences().getEnableEndCards();
     }
 
     @Override
@@ -28,9 +28,11 @@ public class EndCardsScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        if (!isEnabled) {
-            return null;
-        }
         return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_ENDCARDS_DIR);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return mIsEnabled;
     }
 }

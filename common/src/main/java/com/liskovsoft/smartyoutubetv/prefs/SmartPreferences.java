@@ -42,6 +42,9 @@ public final class SmartPreferences {
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
+    public static final String AVC = "avc";
+    public static final String VP9 = "vp9";
+    public static final String NONE = "";
     private static SmartPreferences sInstance;
     private Context mContext;
     private SharedPreferences mPrefs;
