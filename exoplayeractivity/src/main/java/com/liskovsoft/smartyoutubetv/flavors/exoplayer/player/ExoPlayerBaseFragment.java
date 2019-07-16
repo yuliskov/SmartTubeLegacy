@@ -436,12 +436,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             updateTitleQualityInfo();
         }
 
-        if (getActivity() != null) {
-            if (playWhenReady) {
-                getActivity().getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
-            } else {
-                getActivity().getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
-            }
+        if (mSimpleExoPlayerView != null) {
+            mSimpleExoPlayerView.setKeepScreenOn(playWhenReady && playbackState == Player.STATE_READY);
         }
 
         showHideLoadingMessage(playbackState);
