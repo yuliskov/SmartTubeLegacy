@@ -15,6 +15,7 @@ import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
+import com.liskovsoft.smartyoutubetv.misc.AnalogStickTranslator;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
@@ -30,7 +31,7 @@ import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
 
-public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
+public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager, AnalogStickTranslator.Callback {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
@@ -46,6 +47,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private Runnable mExitAppFn = ()-> {MessageHelpers.showMessage(this, R.string.close_msg); this.finish();};
     private static final long BACK_PRESS_DURATION_MS = 2_000;
     private boolean mBackPressExitEnabled;
+    private AnalogStickTranslator mStickTranslator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mResultMap = new HashMap<>();
         mHandler = new Handler(getMainLooper());
         mBackPressExitEnabled = CommonApplication.getPreferences().getEnableBackPressExit();
+        mStickTranslator = new AnalogStickTranslator(this);
     }
 
     @Override
@@ -215,6 +218,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        mStickTranslator.handle(event);
+
         return mActiveFragment.dispatchGenericMotionEvent(event) || super.dispatchGenericMotionEvent(event);
     }
 
@@ -364,5 +369,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         return event;
+    }
+
+    @Override
+    public void onStickKeyEvent(KeyEvent event) {
+        dispatchKeyEvent(event);
     }
 }
