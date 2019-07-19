@@ -163,9 +163,17 @@ public class Tab implements PictureListener {
 
         restoreState(state);
 
-        if (getId() == -1) {
-            mId = TabControl.getNextId();
+        if (getId() != -1) {
+            Log.d(TAG, "Tab is restored, old id: " + getId());
         }
+
+        // NOTE: duplicate tab ids fix. Force unique id even when tab is restored.
+        mId = TabControl.getNextId();
+
+        // NOTE: below could lead to duplicate tab ids error!
+        //if (getId() == -1) {
+        //    mId = TabControl.getNextId();
+        //}
 
         // NOTE: state restored here!!!
         setWebView(w);
