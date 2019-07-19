@@ -37,7 +37,7 @@ var DeviceUtils = {
         };
     },
 
-    disableCodec: function(codec) {
+    disableCodec: function(codec, force) {
         if (!codec) {
             console.log('DeviceUtils::disableCodec: codec is null');
             return;
@@ -61,11 +61,15 @@ var DeviceUtils = {
                 var supported = origin.call(obj, fullCodec);
                 console.log('DeviceUtils::isTypeSupported ' + fullCodec + ' ' + supported);
 
-                // YouTube's 4K videos encoded exclusively in WEBM codec
-                if ($this.isPlaybackWorking()   &&
+                if (force) { // disable even when codec isn't supported by device
+                    if (Utils.contains(fullCodec, codec)) {
+                        return false;
+                    }
+                } else if (
+                    $this.isPlaybackWorking()   &&
                     !$this.isLive(fullCodec)    &&
                     !$this.is4KCodec(codec)     &&
-                    $this.specCmp(fullCodec, codec)) {
+                    Utils.contains(fullCodec, codec)) {
                     return false;
                 }
 
@@ -74,25 +78,6 @@ var DeviceUtils = {
         }
 
         window.MediaSource.isTypeSupported = overrideIsTypeSupported(window.MediaSource.isTypeSupported, window.MediaSource);
-    },
-
-    disableWebmCodec: function() {
-        this.disableCodec(this.VP9);
-    },
-
-    disableMP4Codec: function() {
-        this.disableCodec(this.AVC);
-    },
-
-    /**
-     * Compare special strings.
-     * Returns true even when the second string is empty: this.specCmp('abc', '') == true
-     * Or when strings partially matched: this.specCmp('abc', 'ab') == true
-     */
-    specCmp: function(fullSpec, spec) {
-        fullSpec = fullSpec.toLowerCase();
-        spec = spec.toLowerCase();
-        return fullSpec.indexOf(spec) >= 0;
     },
 
     getApp: function() {
@@ -239,10 +224,10 @@ var DeviceUtils = {
         var argsLen = arguments.length;
         for (var i = 0; i < argsLen; i++) {
             var device = arguments[i];
-            if (DeviceUtils.specCmp(window.thisDevice, device)) {
+            if (Utils.contains(window.thisDevice, device)) {
                 return true;
             }
-            if (DeviceUtils.specCmp(window.thisDeviceHardware, device)) {
+            if (Utils.contains(window.thisDeviceHardware, device)) {
                 return true;
             }
         }

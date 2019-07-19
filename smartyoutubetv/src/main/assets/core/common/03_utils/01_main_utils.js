@@ -385,6 +385,17 @@ var Utils = {
         }
 
         return output;
+    },
+
+    /**
+     * Compare special strings.
+     * Returns true even when the second string is empty: this.specCmp('abc', '') == true
+     * Or when strings partially matched: this.specCmp('abc', 'ab') == true
+     */
+    contains: function(fullSpec, spec) {
+        fullSpec = fullSpec.toLowerCase();
+        spec = spec.toLowerCase();
+        return fullSpec.indexOf(spec) >= 0;
     }
 };
 
