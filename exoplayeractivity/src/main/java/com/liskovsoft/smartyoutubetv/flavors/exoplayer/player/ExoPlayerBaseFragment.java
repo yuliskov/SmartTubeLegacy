@@ -259,6 +259,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     void addCustomButtonToQualitySection() {
+        if (getActivity() == null) {
+            return;
+        }
+
         addRestrictCodecButton();
         addVideoZoomButton();
     }
