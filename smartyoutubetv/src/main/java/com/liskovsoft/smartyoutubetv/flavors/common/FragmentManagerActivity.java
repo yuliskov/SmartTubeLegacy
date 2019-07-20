@@ -335,8 +335,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
             return;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN &&
-            event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+        boolean isBack =
+                event.getKeyCode() == KeyEvent.KEYCODE_BACK ||
+                event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE ||
+                event.getKeyCode() == KeyEvent.KEYCODE_B;
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
             if (event.getRepeatCount() == 0) { // same event fires multiple times
                 mHandler.postDelayed(mExitAppFn, BACK_PRESS_DURATION_MS);
             }
