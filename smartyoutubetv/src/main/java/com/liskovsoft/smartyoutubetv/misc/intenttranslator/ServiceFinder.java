@@ -4,5 +4,5 @@ import android.content.Intent;
 
 public interface ServiceFinder {
     String getUrl();
-    Intent getIntent(Intent intent);
+    Intent transformIntent(Intent intent);
 }

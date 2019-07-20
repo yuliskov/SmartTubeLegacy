@@ -53,7 +53,7 @@ public class YouTubeServiceFinder implements ServiceFinder {
     }
 
     @Override
-    public Intent getIntent(Intent origin) {
+    public Intent transformIntent(Intent origin) {
         Log.d(TAG, "Intent before transform: " + origin.getData());
 
         Intent result;

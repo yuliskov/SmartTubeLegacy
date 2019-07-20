@@ -86,7 +86,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
 
-        Intent intent = mServiceFinder.getIntent(origin);
+        Intent intent = mServiceFinder.transformIntent(origin);
         boolean restoreState = icicle != null && intent.getData() == null;
         mController.start(restoreState ? null : intent);
         setController(mController);
@@ -156,7 +156,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onNewIntent(Intent intent) {
-        super.onNewIntent(mServiceFinder.getIntent(intent));
+        super.onNewIntent(mServiceFinder.transformIntent(intent));
     }
 
     @Override
@@ -168,4 +168,13 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     public void onBackPressed() {
         // NOP
     }
+
+    //@Override
+    //public void onResume() {
+    //    super.onResume();
+    //
+    //    if (getActivity() != null && mController != null && getActivity().getIntent() != null) {
+    //         mController.handleNewIntent(getActivity().getIntent());
+    //    }
+    //}
 }

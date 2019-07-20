@@ -205,4 +205,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "Browser content started to load");
         initBrowserTransparency();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (mBrowserFragment != null) {
+            mBrowserFragment.onNewIntent(intent);
+        }
+    }
 }

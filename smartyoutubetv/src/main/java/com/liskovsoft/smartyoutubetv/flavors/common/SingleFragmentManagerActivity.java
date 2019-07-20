@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,4 +34,12 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
     }
 
     protected abstract BrowserFragment getBrowserFragment();
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (mFragment != null) {
+            mFragment.onNewIntent(intent);
+        }
+    }
 }

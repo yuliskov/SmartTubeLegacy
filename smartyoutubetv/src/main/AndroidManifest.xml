@@ -67,8 +67,7 @@
                   android:icon="@mipmap/ic_launcher_main2"
                   android:label="@string/app_name"
                   android:windowSoftInputMode="adjustResize"
-                  android:noHistory="true"
-                  android:launchMode="standard">
+                  android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

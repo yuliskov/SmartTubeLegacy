@@ -163,12 +163,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        mActiveFragment.onNewIntent(intent);
-    }
-
-    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         return mActiveFragment.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }

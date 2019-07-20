@@ -111,7 +111,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
         // value used in StateUpdater class
         intent.putExtra(FROM_BOOTSTRAP, true);
         // NOTE: make activity transparent (non-reachable from launcher or resents)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClassName(ctx, clazz);
 
         try {
@@ -124,7 +124,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
     private void startActivity(Context ctx, Class clazz) {
         Intent intent = getIntent(); // modify original intent
         // NOTE: make activity transparent (non-reachable from launcher or from resent list)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
 
         startActivity(intent);
