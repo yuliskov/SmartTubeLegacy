@@ -58,7 +58,7 @@ public class YouTubeServiceFinder implements ServiceFinder {
 
         Intent result;
 
-        if (mIsPersistent) {
+        if (mIsPersistent && origin.getData() == null) {
             result = new Intent(Intent.ACTION_VIEW, Uri.parse(mDefaultUrl));
         } else {
             result = mTranslator.translate(origin);
