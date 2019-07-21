@@ -3,6 +3,7 @@
     <ProgressBar
         android:id="@+id/loading_view"
         android:layout_gravity="center"
+        android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_large_holo"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"

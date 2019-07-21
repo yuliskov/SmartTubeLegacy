@@ -20,8 +20,9 @@
 
 
         <ProgressBar
-            android:indeterminateDrawable="@drawable/progress_large_holo"
             android:id="@+id/progressBar1"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_large_holo"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
