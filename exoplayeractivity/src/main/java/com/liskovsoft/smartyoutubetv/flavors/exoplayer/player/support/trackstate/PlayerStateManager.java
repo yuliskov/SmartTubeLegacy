@@ -154,7 +154,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
         TrackGroupArray groupArray = info.getTrackGroups(RENDERER_INDEX_VIDEO);
 
-        MyFormat fmt = findProperVideoFormat(groupArray);
+        MyFormat fmt = findPreferredVideoFormat(groupArray);
 
         if (fmt == null) {
             return null;

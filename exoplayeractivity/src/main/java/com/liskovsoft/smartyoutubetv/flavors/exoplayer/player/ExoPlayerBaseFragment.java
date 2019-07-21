@@ -522,9 +522,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * At this point user've changed video quality
      */
     void retryIfNeeded() {
-        if (mStateManager != null)
-            mStateManager.persistState();
-
         if (mNeedRetrySource) {
             initializePlayer();
         }

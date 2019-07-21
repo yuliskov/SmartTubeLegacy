@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate
 public class MyDefaultTrackSelector extends DefaultTrackSelector {
     private final Context mContext;
     private final PlayerStateManagerBase mStateManager;
+    private boolean mAlreadyRestored;
 
     public MyDefaultTrackSelector(Factory trackSelectionFactory, Context context) {
         super(trackSelectionFactory);
@@ -26,7 +27,11 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
     protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
                                               Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
 
-        if (!params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups)) {
+        // Restore state before video starts playing
+        boolean isAuto = !params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups);
+
+        if (isAuto && !mAlreadyRestored) {
+            mAlreadyRestored = true;
             restoreVideoTrack(groups);
         }
 
@@ -34,7 +39,7 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
     }
 
     private void restoreVideoTrack(TrackGroupArray groups) {
-        MyFormat format = mStateManager.findProperVideoFormat(groups);
+        MyFormat format = mStateManager.findPreferredVideoFormat(groups);
 
         if (format != null) {
             setParameters(buildUponParameters().setSelectionOverride(
@@ -42,31 +47,6 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
                     groups,
                     new SelectionOverride(format.pair.first, format.pair.second)
             ));
-        }
-    }
-
-    private void forceAllFormatsSupport(int[][][] rendererFormatSupports) {
-        if (rendererFormatSupports == null) {
-            return;
-        }
-
-        for (int i = 0; i < rendererFormatSupports.length; i++) {
-            if (rendererFormatSupports[i] == null) {
-                continue;
-            }
-            for (int j = 0; j < rendererFormatSupports[i].length; j++) {
-                if (rendererFormatSupports[i][j] == null) {
-                    continue;
-                }
-                for (int k = 0; k < rendererFormatSupports[i][j].length; k++) {
-                    int supportLevel = rendererFormatSupports[i][j][k];
-                    int notSupported = 6;
-                    int formatSupported = 7;
-                    if (supportLevel == notSupported) {
-                        rendererFormatSupports[i][j][k] = formatSupported;
-                    }
-                }
-            }
         }
     }
 }

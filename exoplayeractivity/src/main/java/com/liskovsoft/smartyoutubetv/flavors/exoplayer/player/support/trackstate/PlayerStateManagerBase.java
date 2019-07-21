@@ -69,7 +69,12 @@ public class PlayerStateManagerBase {
         return result;
     }
 
-    public MyFormat findProperVideoFormat(TrackGroupArray groupArray) {
+    /**
+     * Restore state before video starts playing.
+     * @param groupArray
+     * @return
+     */
+    public MyFormat findPreferredVideoFormat(TrackGroupArray groupArray) {
         Set<MyFormat> fmts = findProperVideos(groupArray);
 
         MyFormat fmt = filterHighestFormat(fmts);
@@ -240,7 +245,7 @@ public class PlayerStateManagerBase {
         int bitrate = format == null ? 0 : format.bitrate;
 
         // mDefaultTrackId: usually this happens when video does not contain preferred format
-        boolean isTrackChanged = format != null && !Helpers.equals(format.id, mDefaultAudioTrackId);
+        boolean isTrackChanged = !Helpers.equals(format != null ? format.id : null, mDefaultAudioTrackId);
 
         if (isTrackChanged) {
             mPrefs.setSelectedAudioTrackCodecs(codec == null ? "" : codec);
