@@ -13,7 +13,7 @@ public class AnalogStickTranslator {
     private float mY;
 
     public interface Callback {
-        void onStickKeyEvent(KeyEvent event);
+        void onAnalogStickKeyEvent(KeyEvent event);
     }
 
     public AnalogStickTranslator(Callback callback) {

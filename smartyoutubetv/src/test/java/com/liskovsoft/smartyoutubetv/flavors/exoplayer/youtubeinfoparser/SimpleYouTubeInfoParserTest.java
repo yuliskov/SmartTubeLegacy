@@ -1,18 +1,19 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.sharedutils.TestHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.CipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.SimpleMPDBuilder;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeSubParser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeSubParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.tmp.YouTubeInfoParser;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.CipherUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -133,7 +134,7 @@ public class SimpleYouTubeInfoParserTest {
     @Test
     public void getAllSubsTest() {
         String content = TestHelpers.readResource("get_video_info_subs");
-        YouTubeSubParser parser = new YouTubeSubParser(content);
+        YouTubeSubParser parser = new YouTubeSubParser(content, new JsonInfoParser(content));
         List<Subtitle> allSubs = parser.extractAllSubs();
         String formatKey = "fmt=vtt";
         String expected = "https://www.youtube.com/api/timedtext?caps=&key=yttt1&expire=1515741851&v=WS7f5xpGYn8&hl=en_US&signature" +
@@ -145,7 +146,7 @@ public class SimpleYouTubeInfoParserTest {
     @Test
     public void addSubsToMpdTest() {
         String content = TestHelpers.readResource("get_video_info_subs");
-        YouTubeSubParser parser = new YouTubeSubParser(content);
+        YouTubeSubParser parser = new YouTubeSubParser(content, new JsonInfoParser(content));
         List<Subtitle> allSubs = parser.extractAllSubs();
         MPDBuilder builder = new SimpleMPDBuilder();
         builder.append(allSubs);

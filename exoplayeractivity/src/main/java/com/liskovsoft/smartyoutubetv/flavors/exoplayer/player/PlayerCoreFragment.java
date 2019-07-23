@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -59,12 +58,12 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.MyDefaultRenderersFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.MyDefaultRenderersFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -667,14 +666,6 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             cause = cause.getCause();
         }
         return false;
-    }
-
-    private boolean errorWhileClickedOnPlayButton() {
-        View root = getView();
-        if (root == null)
-            throw new IllegalStateException("Fragment's root view is null");
-        View pauseBtn = root.findViewById(R.id.exo_pause);
-        return mNeedRetrySource && pauseBtn.isFocused();
     }
 
     @Override

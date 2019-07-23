@@ -370,7 +370,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void onStickKeyEvent(KeyEvent event) {
+    public void onAnalogStickKeyEvent(KeyEvent event) {
         dispatchKeyEvent(event);
     }
 }
