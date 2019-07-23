@@ -141,6 +141,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
+    testImplementation project(path: ':sharedutils')
     implementation project(path: ':sharedutils')
     origImplementation project(path: ':leanbackassistant')
 
