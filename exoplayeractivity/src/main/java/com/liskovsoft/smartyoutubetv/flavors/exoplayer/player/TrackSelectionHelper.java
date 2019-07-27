@@ -331,7 +331,9 @@ import java.util.TreeSet;
         } else if (view == mAutoframerateView) {
             boolean checked = mAutoframerateView.isChecked();
             AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
-            autoFrameRateManager.setEnabled(!checked);
+            if (autoFrameRateManager != null) {
+                autoFrameRateManager.setEnabled(!checked);
+            }
         } else if (view == mHideErrorsView) {
             boolean checked = mHideErrorsView.isChecked();
             ExoPlayerFragment player = mPlayerFragment;

@@ -569,34 +569,31 @@ public class MyXWalkDialogManager {
     }
 
     private void showDialog(final AlertDialog dialog, final ArrayList<ButtonAction> actions) {
-        dialog.setOnShowListener(new OnShowListener() {
-            @Override
-            public void onShow(DialogInterface d) {
-                for (ButtonAction action : actions) {
-                    Button button = dialog.getButton(action.mWhich);
-                    if (button == null) {
-                        if (action.mMandatory) {
-                            throw new RuntimeException("Button " + action.mWhich + " is mandatory");
-                        } else {
-                            continue;
-                        }
+        dialog.setOnShowListener(d -> {
+            for (ButtonAction action : actions) {
+                Button button = dialog.getButton(action.mWhich);
+                if (button == null) {
+                    if (action.mMandatory) {
+                        throw new RuntimeException("Button " + action.mWhich + " is mandatory");
+                    } else {
+                        continue;
                     }
+                }
 
-                    if (action.mClickAction != null) {
-                        final Runnable command = action.mClickAction;
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dismissDialog();
-                                command.run();
-                            }
-                        });
-                    }
+                if (action.mClickAction != null) {
+                    final Runnable command = action.mClickAction;
+                    button.setOnClickListener(view -> {
+                        dismissDialog();
+                        command.run();
+                    });
                 }
             }
         });
 
         mActiveDialog = dialog;
-        mActiveDialog.show();
+
+        if (!mContext.isFinishing()) {
+            mActiveDialog.show();
+        }
     }
 }
