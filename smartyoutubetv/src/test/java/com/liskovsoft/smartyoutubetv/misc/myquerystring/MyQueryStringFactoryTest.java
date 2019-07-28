@@ -1,15 +1,13 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MyQueryStringFactoryTest {
     private static final String PATH_URL = "http://myurl.com/hello/world/key1/value1/key2/value2/";
     private static final String PATH_URL2 = "http://myurl.com/hello/world/key2/value2/";

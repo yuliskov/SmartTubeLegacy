@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 import android.net.Uri;
 import com.liskovsoft.sharedutils.TestHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.CipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
@@ -18,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -34,7 +32,6 @@ import static junit.framework.Assert.assertTrue;
  * You have to set working directory to <code>$MODULE_DIR$</code>. <a href="http://robolectric.org/getting-started/">More info</a>
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SimpleYouTubeInfoParserTest {
     private InputStream mYouTubeVideoInfo;
     private InputStream mYouTubeVideoInfoCiphered;

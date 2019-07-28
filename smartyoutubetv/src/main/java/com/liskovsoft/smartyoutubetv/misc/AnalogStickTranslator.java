@@ -8,6 +8,8 @@ import android.view.MotionEvent;
  * Translates stick's {@link MotionEvent} to {@link KeyEvent}
  */
 public class AnalogStickTranslator {
+    private static final float THRESHOLD = 0.1f;
+    private static final float THRESHOLD2 = -0.1f;
     private final Callback mCallback;
     private float mX;
     private float mY;
@@ -21,11 +23,32 @@ public class AnalogStickTranslator {
     }
 
     public void handle(MotionEvent event) {
-        if (!isAnalogStick(event)) {
+        if (!isAnalogStick(event) || mCallback == null) {
             return;
         }
 
+        float oldX = mX;
+        float oldY = mY;
+        int key = KeyEvent.KEYCODE_UNKNOWN;
+
         calculate(event);
+
+        if (mX > THRESHOLD && mX > oldX) {
+            // moving right
+            key = KeyEvent.KEYCODE_DPAD_RIGHT;
+        } else if (mX < THRESHOLD2 && mX < oldX) {
+            // moving left
+            key = KeyEvent.KEYCODE_DPAD_LEFT;
+        } else if (mY > THRESHOLD && mY > oldY) {
+            // moving up
+            key = KeyEvent.KEYCODE_DPAD_UP;
+        } else if (mY < THRESHOLD2 && mY < oldY) {
+            // moving down
+            key = KeyEvent.KEYCODE_DPAD_DOWN;
+        }
+
+        mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
+        mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key));
     }
 
     private void calculate(MotionEvent event) {

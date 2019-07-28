@@ -31,6 +31,7 @@ android {
 
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
+    testOptions.unitTests.includeAndroidResources = true
 
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion
@@ -141,7 +142,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Common routines
-    testImplementation project(path: ':sharedutils')
+    testImplementation project(path: ':sharedtests')
     implementation project(path: ':sharedutils')
     origImplementation project(path: ':leanbackassistant')
 

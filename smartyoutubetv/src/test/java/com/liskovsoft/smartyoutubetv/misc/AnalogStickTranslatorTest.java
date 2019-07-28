@@ -1,22 +1,22 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.misc.AnalogStickTranslator.Callback;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class AnalogStickTranslatorTest implements Callback {
     private final float[][] LEFT = {{-0.001f, 0.0013f}, {-0.19f, 0.025f}, {-0.42f, 0.07f}, {-0.6f, 0.07f}, {-0.74f, 0.08f}, {-0.8f, 0.09f}, {-1.0f, 0.08f}};
     private final float[][] RIGHT = {{0.001f, -0.0013f}, {0.19f, -0.025f}, {0.42f, -0.07f}, {0.6f, -0.07f}, {0.74f, -0.08f}, {0.8f, -0.09f}, {1.0f, -0.08f}};
@@ -102,7 +102,8 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent != null && mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT);
+        assertTrue("Event is not null", mLastKeyEvent != null);
+        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT);
     }
 
     @Test
@@ -120,7 +121,8 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent != null && mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT);
+        assertTrue("Event is not null", mLastKeyEvent != null);
+        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT);
     }
 
     @Test
@@ -138,7 +140,8 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent != null && mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP);
+        assertTrue("Event is not null", mLastKeyEvent != null);
+        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP);
     }
 
     @Test
@@ -156,11 +159,13 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent != null && mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN);
+        assertTrue("Event is not null", mLastKeyEvent != null);
+        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN);
     }
 
     private MotionEvent initMotionEvent(float[] event) {
         MotionEvent newEvent = MotionEvent.obtain(0, System.currentTimeMillis(), MotionEvent.ACTION_MOVE, event[0], event[1], 0);
+        newEvent.setSource(InputDevice.SOURCE_JOYSTICK);
         return newEvent;
     }
 
