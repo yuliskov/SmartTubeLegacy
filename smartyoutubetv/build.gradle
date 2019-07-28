@@ -164,15 +164,15 @@ dependencies {
     implementation project.properties.gsonVersion
     implementation project.properties.jsonPathVersion
 
-    // view dependencies: gradlew -q smartyoutubetv:dependencies
-    // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
-    configurations.all {
-        resolutionStrategy {
-            // resolve conflicts
-            force project.properties.asmVersion
-            force project.properties.mediaCompatVersion
-        }
-    }
+//    // view dependencies: gradlew -q smartyoutubetv:dependencies
+//    // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
+//    configurations.all {
+//        resolutionStrategy {
+//            // resolve conflicts
+//            force project.properties.asmVersion
+//            force project.properties.mediaCompatVersion
+//        }
+//    }
 
     implementation project.properties.nanoHttpdVersion
     implementation project.properties.voiceOverlayVersion
