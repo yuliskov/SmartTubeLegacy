@@ -153,8 +153,6 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    //origImplementation project(path: ':appbackupmanager')
-
     implementation(project.properties.crashlyticsVersion) { // see top part of this file
         transitive = true
     }

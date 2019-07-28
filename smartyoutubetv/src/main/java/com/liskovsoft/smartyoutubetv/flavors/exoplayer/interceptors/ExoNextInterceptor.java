@@ -15,6 +15,7 @@ import java.io.InputStream;
 public class ExoNextInterceptor extends RequestInterceptor {
     private static final String TAG = ExoNextInterceptor.class.getSimpleName();
     private static final String URL_NEXT_DATA = "https://www.youtube.com/youtubei/v1/next";
+    private static final String URL_NEXT_DATA_KIDS = "https://www.youtube.com/youtubei/v1/next?key=AIzaSyD91ZYw_MqMcKSG9PSrCy10JHwbk-6Vis4";
     private final Context mContext;
     private final SmartPreferences mPrefs;
     private final LangUpdater mLang;
