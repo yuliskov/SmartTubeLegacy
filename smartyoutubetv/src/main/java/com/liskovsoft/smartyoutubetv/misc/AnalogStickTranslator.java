@@ -33,22 +33,24 @@ public class AnalogStickTranslator {
 
         calculate(event);
 
-        if (mX > THRESHOLD && mX > oldX) {
+        if (mX > THRESHOLD && mX > oldX && oldX != 0) {
             // moving right
             key = KeyEvent.KEYCODE_DPAD_RIGHT;
-        } else if (mX < THRESHOLD2 && mX < oldX) {
+        } else if (mX < THRESHOLD2 && mX < oldX && oldX != 0) {
             // moving left
             key = KeyEvent.KEYCODE_DPAD_LEFT;
-        } else if (mY > THRESHOLD && mY > oldY) {
+        } else if (mY > THRESHOLD && mY > oldY && oldY != 0) {
             // moving up
             key = KeyEvent.KEYCODE_DPAD_UP;
-        } else if (mY < THRESHOLD2 && mY < oldY) {
+        } else if (mY < THRESHOLD2 && mY < oldY && oldY != 0) {
             // moving down
             key = KeyEvent.KEYCODE_DPAD_DOWN;
         }
 
-        mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
-        mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key));
+        if (key != KeyEvent.KEYCODE_UNKNOWN) {
+            mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, key));
+            mCallback.onAnalogStickKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, key));
+        }
     }
 
     private void calculate(MotionEvent event) {
@@ -67,58 +69,66 @@ public class AnalogStickTranslator {
     }
 
     private void processJoystickInput(MotionEvent event, int historyPos) {
-        InputDevice mInputDevice = event.getDevice();
+        InputDevice device = InputDevice.getDevice(event.getDeviceId());
 
         // Calculate the horizontal distance to move by
         // using the input value from one of these physical controls:
         // the left control stick, hat axis, or the right control stick.
-        mX = getCenteredAxis(event, mInputDevice,
+        mX = getCenteredAxis(event, device,
                 MotionEvent.AXIS_X, historyPos);
         if (mX == 0) {
-            mX = getCenteredAxis(event, mInputDevice,
+            mX = getCenteredAxis(event, device,
                     MotionEvent.AXIS_HAT_X, historyPos);
         }
 
         if (mX == 0) {
-            mX = getCenteredAxis(event, mInputDevice,
+            mX = getCenteredAxis(event, device,
                     MotionEvent.AXIS_Z, historyPos);
         }
 
         // Calculate the vertical distance to move by
         // using the input value from one of these physical controls:
         // the left control stick, hat switch, or the right control stick.
-        mY = getCenteredAxis(event, mInputDevice,
+        mY = getCenteredAxis(event, device,
                 MotionEvent.AXIS_Y, historyPos);
         if (mY == 0) {
-            mY = getCenteredAxis(event, mInputDevice,
+            mY = getCenteredAxis(event, device,
                     MotionEvent.AXIS_HAT_Y, historyPos);
         }
 
         if (mY == 0){
-            mY = getCenteredAxis(event, mInputDevice,
+            mY = getCenteredAxis(event, device,
                     MotionEvent.AXIS_RZ, historyPos);
         }
 
     }
 
     private static float getCenteredAxis(MotionEvent event, InputDevice device, int axis, int historyPos) {
-        final InputDevice.MotionRange range = device.getMotionRange(axis, event.getSource());
+        InputDevice.MotionRange range = null;
 
-        // A joystick at rest does not always report an absolute position of
-        // (0,0). Use the getFlat() method to determine the range of values
-        // bounding the joystick axis center.
-        if (range != null) {
-            final float flat = range.getFlat();
-            final float value =
-                    historyPos < 0 ? event.getAxisValue(axis):
-                            event.getHistoricalAxisValue(axis, historyPos);
-
-            // Ignore axis values that are within the 'flat' region of the
-            // joystick axis center.
-            if (Math.abs(value) > flat) {
-                return value;
-            }
+        if (device != null) {
+            range = device.getMotionRange(axis, event.getSource());
         }
+
+        float flat = 0;
+
+        if (range != null) {
+            // A joystick at rest does not always report an absolute position of
+            // (0,0). Use the getFlat() method to determine the range of values
+            // bounding the joystick axis center.
+            flat = range.getFlat();
+        }
+
+        final float value =
+                historyPos < 0 ? event.getAxisValue(axis):
+                        event.getHistoricalAxisValue(axis, historyPos);
+
+        // Ignore axis values that are within the 'flat' region of the
+        // joystick axis center.
+        if (Math.abs(value) > flat) {
+            return value;
+        }
+
         return 0;
     }
 

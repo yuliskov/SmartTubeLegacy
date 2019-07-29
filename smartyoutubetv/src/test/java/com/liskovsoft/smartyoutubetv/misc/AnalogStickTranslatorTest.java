@@ -93,7 +93,7 @@ public class AnalogStickTranslatorTest implements Callback {
            mTranslator.handle(me);
         }
 
-        assertNull("Event not produced when moving in descendant direction", mLastKeyEvent);
+        assertNull("Event should NOT be produced when moving in descendant direction", mLastKeyEvent);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class AnalogStickTranslatorTest implements Callback {
         }
 
         assertTrue("Event is not null", mLastKeyEvent != null);
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT);
+        assertTrue("Event should be produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertNull("Event not produced when moving in descendant direction", mLastKeyEvent);
+        assertNull("Event should NOT be produced when moving in descendant direction", mLastKeyEvent);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class AnalogStickTranslatorTest implements Callback {
         }
 
         assertTrue("Event is not null", mLastKeyEvent != null);
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT);
+        assertTrue("Event should be produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertNull("Event not produced when moving in descendant direction", mLastKeyEvent);
+        assertNull("Event should NOT be produced when moving in descendant direction", mLastKeyEvent);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class AnalogStickTranslatorTest implements Callback {
         }
 
         assertTrue("Event is not null", mLastKeyEvent != null);
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP);
+        assertTrue("Event should be produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class AnalogStickTranslatorTest implements Callback {
             mTranslator.handle(me);
         }
 
-        assertNull("Event not produced when moving in descendant direction", mLastKeyEvent);
+        assertNull("Event should NOT be produced when moving in descendant direction", mLastKeyEvent);
     }
 
     @Test
@@ -160,7 +160,7 @@ public class AnalogStickTranslatorTest implements Callback {
         }
 
         assertTrue("Event is not null", mLastKeyEvent != null);
-        assertTrue("Event IS produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN);
+        assertTrue("Event should be produced when moving in ascendant direction", mLastKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN);
     }
 
     private MotionEvent initMotionEvent(float[] event) {
