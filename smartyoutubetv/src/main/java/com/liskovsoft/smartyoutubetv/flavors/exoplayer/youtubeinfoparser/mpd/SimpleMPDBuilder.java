@@ -371,7 +371,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         startTag("", "BaseURL");
 
-        if (!item.getClen().equals(NULL_CONTENT_LENGTH)) {
+        if (item.getClen() != null && !item.getClen().equals(NULL_CONTENT_LENGTH)) {
             attribute("", "yt:contentLength", item.getClen());
         }
 

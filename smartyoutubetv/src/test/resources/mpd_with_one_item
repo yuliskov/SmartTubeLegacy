@@ -5,7 +5,7 @@
       <Role schemeIdUri="urn:mpeg:DASH:role:2011" value="main" />
       <Representation id="133" codecs="avc1.640033" startWithSAP="1" audioSamplingRate="44100">
         <BaseURL>http://empty.url?dur=1234</BaseURL>
-        <SegmentBase>
+        <SegmentBase indexRange="0-759" indexRangeExact="true">
           <Initialization range="0-759" />
         </SegmentBase>
       </Representation>

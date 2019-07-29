@@ -124,6 +124,7 @@ public class SimpleYouTubeInfoParserTest {
         fakeItem.setUrl("http://empty.url?dur=1234"); // we must setup a duration
         fakeItem.setType("video/mp4;+codecs=\"avc1.640033\"");
         fakeItem.setInit("0-759");
+        fakeItem.setIndex("0-759");
         fakeItem.setITag("133");
         return fakeItem;
     }
