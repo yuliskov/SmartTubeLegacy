@@ -193,7 +193,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     public boolean dispatchKeyEvent(KeyEvent event) {
         checkLongPressExit(event);
 
-        if (mDisableKeyEvents) { // 'll be enabled again after fragment switching
+        if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
             return true;
         }
 

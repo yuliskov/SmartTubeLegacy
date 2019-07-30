@@ -33,10 +33,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // all fragments should be initialized on start
         // or you will get different kinds of errors
         // because this process takes some time
+        Log.d(TAG, "Creating fragments...");
         initBrowserFragment();
         initPlayerFragment();
-        Log.d(TAG, "creating fragments...");
-        setActiveFragment(mBrowserFragment, true);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
@@ -56,7 +55,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     private void initFragment(GenericFragment fragment) {
         if (fragment.getWrapper() == null) {
-            throw new IllegalStateException("Fragment not initialized");
+            throw new IllegalStateException("Wrapper not initialized");
         }
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -67,6 +66,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
         if (mBrowserFragment == null || mPlayerFragment == null) {
+            Log.d(TAG, "Can't set active fragment. Some of them is null");
             return;
         }
 
@@ -74,7 +74,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         // remove other fragment if exists
         // if container is empty add this
 
-        Log.d(TAG, "Moving fragment to top " + fragment.getClass().getSimpleName());
         moveToTop(fragment);
 
         super.setActiveFragment(fragment, pausePrevious);
@@ -113,8 +112,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     private void moveToTop(GenericFragment fragment) {
         if (!isInitialized(fragment)) {
+            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
             return;
         }
+
+        Log.d(TAG, "Moving fragment to top: " + fragment.getClass().getSimpleName());
 
         View wrapper = fragment.getWrapper();
 
@@ -221,8 +223,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onBrowserLoaded() {
-        Log.d(TAG, "Browser content started to load");
+        Log.d(TAG, "Begin init WebUI");
         initBrowserTransparency();
+        setActiveFragment(mBrowserFragment, true);
     }
 
     @Override
