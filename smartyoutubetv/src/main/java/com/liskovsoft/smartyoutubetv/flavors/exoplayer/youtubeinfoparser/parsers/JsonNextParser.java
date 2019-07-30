@@ -11,6 +11,8 @@ public class JsonNextParser {
     private static final String TAG = JsonNextParser.class.getSimpleName();
     private static final String VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
             ".videoMetadataRenderer.title.runs[0].text";
+    private static final String VIDEO_AUTHOR = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
+            ".videoOwnerRenderer.title.runs[0].text";
     private static final String VIEW_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
             ".videoMetadataRenderer.shortViewCountText.runs[0].text";
     private static final String VIEW_COUNT_FULL = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
@@ -79,6 +81,7 @@ public class JsonNextParser {
         VideoMetadata videoMetadata = new VideoMetadata();
 
         videoMetadata.setTitle(str(VIDEO_TITLE));
+        videoMetadata.setAuthor(str(VIDEO_AUTHOR));
         videoMetadata.setViewCount(str(VIEW_COUNT_FULL));
         videoMetadata.setLikesCount(str(LIKES_COUNT));
         videoMetadata.setDislikesCount(str(DISLIKES_COUNT));
@@ -138,6 +141,7 @@ public class JsonNextParser {
 
     public static class VideoMetadata {
         private String mTitle;
+        private String mAuthor;
         private String mViewCount;
         private String mLikesCount;
         private String mDislikesCount;
@@ -158,6 +162,14 @@ public class JsonNextParser {
 
         public void setTitle(String title) {
             mTitle = title;
+        }
+
+        public String getAuthor() {
+            return mAuthor;
+        }
+
+        public void setAuthor(String author) {
+            mAuthor = author;
         }
 
         public String getViewCount() {
@@ -259,6 +271,7 @@ public class JsonNextParser {
         public Intent toIntent() {
             Intent intent = new Intent();
             intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, mTitle);
+            intent.putExtra(ExoPlayerFragment.VIDEO_AUTHOR, mAuthor);
             intent.putExtra(ExoPlayerFragment.VIDEO_VIEW_COUNT, mViewCount);
             intent.putExtra(ExoPlayerFragment.VIDEO_DATE, mPublishedDate);
             intent.putExtra(ExoPlayerFragment.BUTTON_LIKE, mLiked);

@@ -27,6 +27,8 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     private String mITag;
     @SerializedName("url")
     private String mUrl;
+    @SerializedName("cipher")
+    private String mCipher;
     private String mSignature;
     @SerializedName("mimeType")
     private String mType;
@@ -90,6 +92,16 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @Override
     public void setUrl(String url) {
         mUrl = url;
+    }
+
+    @Override
+    public String getCipher() {
+        return mCipher;
+    }
+
+    @Override
+    public void setCipher(String cipher) {
+        mCipher = cipher;
     }
 
     @Override

@@ -236,6 +236,7 @@ public class JsonInfoParser {
     public interface MediaItem extends Comparable<MediaItem> {
         // Common params
         String URL = "url";
+        String CIPHER = "cipher";
         String TYPE = "type";
         String ITAG = "itag";
         String S = "s";
@@ -264,6 +265,9 @@ public class JsonInfoParser {
         // Common
         String getUrl();
         void setUrl(String url);
+        // music videos only
+        String getCipher();
+        void setCipher(String url);
         String getS();
         void setS(String s);
         String getType();

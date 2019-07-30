@@ -130,7 +130,6 @@ public class YouTubeMediaParser {
         List<MediaItem> list = new ArrayList<>();
 
         if (mParser != null) {
-            // list.addAll(extractMediaItems(mParser, JSON_INFO_REGULAR_FORMATS));
             List<MediaItem> items = mParser.extractDashMediaItems();
 
             if (items != null) {
@@ -203,6 +202,7 @@ public class YouTubeMediaParser {
         List<String> result = new ArrayList<>();
 
         for (MediaItem item : mMediaItems) {
+            prepareForDecipher(item);
             result.add(findStrangeSignature(item));
         }
 
@@ -379,5 +379,18 @@ public class YouTubeMediaParser {
         }
 
         return null;
+    }
+
+    private void prepareForDecipher(MediaItem item) {
+        if (item.getCipher() == null) { // regular video
+            return;
+        }
+
+        // music video
+        Uri parseUri = ParserUtils.parseUri(item.getCipher());
+        String cipher = parseUri.getQueryParameter(MediaItem.S);
+        String url = parseUri.getQueryParameter(MediaItem.URL);
+        item.setS(cipher);
+        item.setUrl(url);
     }
 }
