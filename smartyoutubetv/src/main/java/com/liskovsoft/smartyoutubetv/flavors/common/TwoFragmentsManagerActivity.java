@@ -93,7 +93,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void moveToTop(GenericFragment fragment) {
+    private void moveToTopOld(GenericFragment fragment) {
         if (!isInitialized(fragment)) {
             return;
         }
@@ -109,6 +109,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         // fragment already attached, so only reorder it
         child.bringToFront();
+    }
+
+    private void moveToTop(GenericFragment fragment) {
+        if (!isInitialized(fragment)) {
+            return;
+        }
+
+        View wrapper = fragment.getWrapper();
+
+        // fragment already attached, so only reorder it
+        wrapper.bringToFront();
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
@@ -192,11 +203,19 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void sendViewToBack(View child) {
+    private void sendViewToBackOld(View child) {
         ViewGroup parent = (ViewGroup) child.getParent();
         if (parent != null && parent.indexOfChild(child) != 0) {
             parent.removeView(child);
             parent.addView(child, 0);
+        }
+    }
+
+    private void sendViewToBack(View myCurrentView) {
+        ViewGroup myViewGroup = ((ViewGroup) myCurrentView.getParent());
+        int index = myViewGroup.indexOfChild(myCurrentView);
+        for(int i = 0; i<index; i++) {
+            myViewGroup.bringChildToFront(myViewGroup.getChildAt(i));
         }
     }
 
