@@ -44,7 +44,6 @@ public class TipsLoadingManager extends BaseLoadingManager {
     public void show() {
         if (mShowTips) {
             showRandomTip();
-            getRootView().setVisibility(View.VISIBLE);
         }
 
         super.show();

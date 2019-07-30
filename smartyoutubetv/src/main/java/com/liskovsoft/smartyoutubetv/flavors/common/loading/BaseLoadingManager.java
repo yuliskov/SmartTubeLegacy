@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
 
@@ -33,7 +34,9 @@ public abstract class BaseLoadingManager implements LoadingManager {
     @Override
     public void hide() {
         new Handler(mContext.getMainLooper())
-                .postDelayed(() -> getRootView().setVisibility(View.GONE), 500);
+                .postDelayed(() -> {
+                    getRootView().setVisibility(View.GONE);
+                }, 500);
     }
 
     @Override

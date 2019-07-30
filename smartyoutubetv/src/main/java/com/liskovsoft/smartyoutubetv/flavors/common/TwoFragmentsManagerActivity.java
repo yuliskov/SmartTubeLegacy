@@ -36,6 +36,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "Creating fragments...");
         initBrowserFragment();
         initPlayerFragment();
+        // set active but don't move top so loading won't be overlapped
+        super.setActiveFragment(mBrowserFragment, true);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
@@ -205,27 +207,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void sendViewToBackOld(View child) {
-        ViewGroup parent = (ViewGroup) child.getParent();
-        if (parent != null && parent.indexOfChild(child) != 0) {
-            parent.removeView(child);
-            parent.addView(child, 0);
-        }
-    }
-
-    private void sendViewToBack(View myCurrentView) {
-        ViewGroup myViewGroup = ((ViewGroup) myCurrentView.getParent());
-        int index = myViewGroup.indexOfChild(myCurrentView);
-        for(int i = 0; i<index; i++) {
-            myViewGroup.bringChildToFront(myViewGroup.getChildAt(i));
-        }
-    }
-
     @Override
     public void onBrowserLoaded() {
         Log.d(TAG, "Begin init WebUI");
         initBrowserTransparency();
-        setActiveFragment(mBrowserFragment, true);
     }
 
     @Override

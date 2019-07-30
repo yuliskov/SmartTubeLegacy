@@ -301,6 +301,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public void onAppLoaded() {
+        Log.d(TAG, "App loaded");
         mLoadingDone = true;
         mLoadingManager.hide();
         mApkUpdater.start();
