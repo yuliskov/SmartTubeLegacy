@@ -27,6 +27,6 @@ function PlayerHangFixAddon() {
     };
 }
 
-if (DeviceUtils.isWebView() && !DeviceUtils.isExo()) {
-    new PlayerHangFixAddon().run();
-}
+// if (DeviceUtils.isWebView() && !DeviceUtils.isExo()) {
+//     new PlayerHangFixAddon().run();
+// }
