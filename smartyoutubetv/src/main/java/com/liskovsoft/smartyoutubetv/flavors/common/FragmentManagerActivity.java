@@ -212,7 +212,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
-        mStickTranslator.handle(event);
+        //mStickTranslator.handle(event);
 
         return mActiveFragment.dispatchGenericMotionEvent(event) || super.dispatchGenericMotionEvent(event);
     }
