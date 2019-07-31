@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.R;
 
@@ -19,6 +20,7 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
 
         initBrowserFragment();
         setupEvents();
+        Helpers.disableScreensaver(this);
     }
 
     private void setupEvents() {

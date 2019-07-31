@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv.injectors;
 
+import android.app.Activity;
 import android.content.Context;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -11,6 +13,8 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_MIC_CLICKED = "message_mic_clicked";
     private final static String MESSAGE_SYNC_LANG = "message_sync_lang";
     private final static String MESSAGE_AUTHORIZATION_HEADER = "message_authorization_header";
+    private final static String MESSAGE_ENABLE_SCREENSAVER = "message_enable_screensaver";
+    private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -33,6 +37,12 @@ public class JavaScriptMessageHandler {
             case MESSAGE_AUTHORIZATION_HEADER:
                 SmartPreferences prefs = SmartPreferences.instance(mContext);
                 prefs.setAuthorizationHeader(content);
+                break;
+            case MESSAGE_ENABLE_SCREENSAVER:
+                Helpers.enableScreensaver((Activity) mContext);
+                break;
+            case MESSAGE_DISABLE_SCREENSAVER:
+                Helpers.disableScreensaver((Activity) mContext);
                 break;
         }
     }
