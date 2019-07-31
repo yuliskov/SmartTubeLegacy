@@ -529,9 +529,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     // NOTE: dynamically create quality buttons
     private void updateButtonVisibilities() {
+        //mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
+
+        if (mDebugRootView.getChildCount() != 1) { // already initialized
+            return;
+        }
+
         mDebugRootView.removeAllViews();
 
-        mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
         mDebugRootView.addView(mRetryButton);
 
         if (mPlayer == null) {
@@ -637,18 +642,19 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             clearResumePosition();
         } else {
             updateResumePosition();
+            // show retry button to the options
             updateButtonVisibilities();
         }
 
-        retryPlayback();
+        restorePlayback();
     }
 
     /**
      * Trying to restore the playback without user interaction
      */
-    private void retryPlayback() {
+    private void restorePlayback() {
         if (mRetryCount++ < 5) {
-            new Handler(Looper.getMainLooper()).postDelayed(() -> initializePlayer(), 500);
+            new Handler(Looper.getMainLooper()).postDelayed(this::initializePlayer, 500);
         }
     }
 

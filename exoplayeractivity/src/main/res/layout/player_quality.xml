@@ -10,18 +10,7 @@
     <!-- NOTE: all contents will be replaced dynamically! See PlayerActivity#updateButtonVisibilities() -->
 
     <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-        android:id="@+id/exo_video"
-        style="@style/ExoMediaButton2.Video"/>
-
-    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-        android:id="@+id/exo_audio"
-        style="@style/ExoMediaButton2.Audio"/>
-
-    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
-        android:id="@+id/exo_captions2"
-        style="@style/ExoMediaButton2.Subtitles"/>
-
-    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton
         android:id="@+id/retry_button"
-        style="@style/ExoMediaButton2.Retry"/>
+        style="@style/ExoMediaButton2.Retry"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -2,4 +2,8 @@
 <resources>
     <item name="btn_restrict_codec" type="id"/>
     <item name="btn_video_zoom" type="id"/>
+    <!-- Options section. See PlayerActivity#updateButtonVisibilities() -->
+    <item name="exo_video" type="id"/>
+    <item name="exo_audio" type="id"/>
+    <item name="exo_captions2" type="id"/>
 </resources>
