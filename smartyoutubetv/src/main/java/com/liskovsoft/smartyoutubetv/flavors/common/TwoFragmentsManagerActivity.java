@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -23,6 +25,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
     private boolean mTransparencyDone;
+    private boolean mXWalkFixDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +143,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             Log.d(TAG, "opening player for intent=" + intent);
             setActiveFragment(mPlayerFragment, pausePrevious);
             mPlayerFragment.openVideo(intent);
+            xwalkFix();
         });
     }
 
@@ -211,6 +215,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onBrowserLoaded() {
         Log.d(TAG, "Begin init WebUI");
         initBrowserTransparency();
+    }
+
+    /**
+     * Fix white screen on the first video (XWalk only)
+     */
+    private void xwalkFix() {
+        if (Browser.getEngineType() == EngineType.XWalk && !mXWalkFixDone) {
+            Intent intent = new Intent();
+            intent.putExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, true);
+            onPlayerAction(intent);
+            mXWalkFixDone = true;
+        }
     }
 
     @Override
