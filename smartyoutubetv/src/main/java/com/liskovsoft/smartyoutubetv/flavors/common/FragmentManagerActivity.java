@@ -16,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.misc.AnalogStickTranslator;
+import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
@@ -31,7 +32,7 @@ import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
 
-public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager, AnalogStickTranslator.Callback {
+public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
@@ -43,11 +44,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
-    private Handler mHandler;
-    private Runnable mExitAppFn = ()-> {MessageHelpers.showMessage(this, R.string.close_msg); this.finish();};
-    private static final long BACK_PRESS_DURATION_MS = 2_000;
-    private boolean mBackPressExitEnabled;
-    private AnalogStickTranslator mStickTranslator;
+    private GlobalKeyHandler mKeyHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +72,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingManager = new TipsLoadingManager(this);
         mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
-        mHandler = new Handler(getMainLooper());
-        mBackPressExitEnabled = CommonApplication.getPreferences().getEnableBackPressExit();
-        mStickTranslator = new AnalogStickTranslator(this);
+        mKeyHandler = new GlobalKeyHandler(this);
     }
 
     @Override
@@ -191,7 +186,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        checkLongPressExit(event);
+        mKeyHandler.checkLongPressExit(event);
 
         if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
             return true;
@@ -199,7 +194,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
 
-        event = unknownKeyFix(event);
+        event = mKeyHandler.translateKey(event);
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
             SmartUtils.returnToLaunchersDialog(this);
@@ -212,8 +207,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
-        //mStickTranslator.handle(event);
-
         return mActiveFragment.dispatchGenericMotionEvent(event) || super.dispatchGenericMotionEvent(event);
     }
 
@@ -329,49 +322,5 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     private void makeActivityHorizontal() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-    }
-
-    private void checkLongPressExit(KeyEvent event) {
-        if (!mBackPressExitEnabled) {
-            return;
-        }
-
-        boolean isBack =
-                event.getKeyCode() == KeyEvent.KEYCODE_BACK ||
-                event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE ||
-                event.getKeyCode() == KeyEvent.KEYCODE_B;
-
-        if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
-            if (event.getRepeatCount() == 0) { // same event fires multiple times
-                mHandler.postDelayed(mExitAppFn, BACK_PRESS_DURATION_MS);
-            }
-        } else {
-            mHandler.removeCallbacks(mExitAppFn);
-        }
-    }
-
-    private KeyEvent unknownKeyFix(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN &&
-                event.getScanCode() == 68) {
-            event = new KeyEvent(
-                    event.getDownTime(),
-                    event.getEventTime(),
-                    event.getAction(),
-                    KeyEvent.KEYCODE_BACK,
-                    event.getRepeatCount(),
-                    event.getMetaState(),
-                    event.getDeviceId(),
-                    event.getScanCode(),
-                    event.getFlags(),
-                    event.getSource()
-            );
-        }
-
-        return event;
-    }
-
-    @Override
-    public void onAnalogStickKeyEvent(KeyEvent event) {
-        dispatchKeyEvent(event);
     }
 }
