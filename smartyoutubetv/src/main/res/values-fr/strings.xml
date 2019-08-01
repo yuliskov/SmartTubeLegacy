@@ -78,4 +78,10 @@
     <string name="tweak_open_externally">Utiliser un lecteur externe</string>
     <string name="message_install_vlc_player">S\'il vous plaît installer le lecteur VLC</string>
     <string name="tweak_fix_aspect">Activer les proportions et la correction de zoom</string>
+    <string name="tweak_animated_previews">Activer les aperçus animés</string>
+    <string name="close_msg">App fermé!</string>
+    <string name="global_afr_fix_warning">Cela peut entraîner un fonctionnement incorrect de la lecture automatique</string>
+    <string name="tweak_back_press_exit">Retenir la clé pour sortir</string>
+    <string name="force_avc_lite_only">Forcer le codec AVC (LITE uniquement)</string>
+    <string name="force_vp9_lite_only">Forcer le codec VP9 (LITE uniquement)</string>
 </resources>
