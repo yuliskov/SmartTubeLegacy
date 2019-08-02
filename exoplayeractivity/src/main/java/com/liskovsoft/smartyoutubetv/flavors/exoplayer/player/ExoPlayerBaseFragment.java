@@ -75,17 +75,16 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private static final float TEXT_SIZE_SMALL = 14;
     private static final float SCREEN_WIDTH_SMALL = 640;
 
-    private MyDebugViewHelper mDebugViewHelper;
-
-    private boolean mIsDurationSet;
+    private long mPosition;
     private int mInterfaceVisibilityState = View.INVISIBLE;
-    private PlayerButtonsManager mButtonsManager;
+    private boolean mIsDurationSet;
+
+    protected PlayerButtonsManager mButtonsManager;
+    private PlayerInitializer mPlayerInitializer;
+    private MyDebugViewHelper mDebugViewHelper;
     private AutoFrameRateManager mAutoFrameRateManager;
     private PlayerStateManager mStateManager;
     private VideoZoomManager mVideoZoomManager;
-    protected PlayerInitializer mPlayerInitializer;
-    private String mSpeed = "1.0";
-    private long mPosition;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

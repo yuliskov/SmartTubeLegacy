@@ -161,7 +161,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     }
 
     private void initElems() {
-        if (isChecked()) {
+        if (getChecked()) {
             onButtonChecked();
             callCheckedListener(true);
             uncheckBindToView();
@@ -200,7 +200,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         }
     }
 
-    protected boolean isChecked() {
+    public boolean getChecked() {
         return mIsChecked;
     }
     

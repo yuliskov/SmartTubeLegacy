@@ -145,12 +145,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         if (intent != null) {
             openVideoFromIntent(intent);
         } else {
-            if (getPlayer() != null) { // resume from the user page
-                getPlayer().setPlayWhenReady(true);
-            }
-
-            // focus player's controller by hiding it)
-            mSimpleExoPlayerView.hideController();
+            // loop video while user page or suggestions displayed
+            mButtonsManager.syncRepeatButton();
         }
     }
 

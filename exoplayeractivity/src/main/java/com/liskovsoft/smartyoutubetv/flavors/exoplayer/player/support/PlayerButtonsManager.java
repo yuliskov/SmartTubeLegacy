@@ -160,13 +160,11 @@ public class PlayerButtonsManager {
             mPrefs.setCheckedState(id, isChecked);
         } else if (isShareButton) {
             displayShareDialog();
-        } else if (isUserPageButton) {
-            mPlayerFragment.getPlayer().setPlayWhenReady(false);
+        } else if (isUserPageButton || isSuggestions) {
+            // loop video while user page or suggestions displayed
+            mPlayerFragment.setRepeatEnabled(true);
             mPlayerFragment.onPlayerAction();
-        } else if (isNextButton        ||
-                   isPrevButton        ||
-                   isSuggestions       ||
-                   isFavorites) {
+        } else if (isNextButton || isPrevButton || isFavorites) {
             mPlayerFragment.onPlayerAction();
         } else if (isBackButton) {
             mPlayerFragment.onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
@@ -311,5 +309,11 @@ public class PlayerButtonsManager {
     @TargetApi(11)
     private void setViewAlphaV11(View view, float alpha) {
         view.setAlpha(alpha);
+    }
+
+    public void syncRepeatButton() {
+        ToggleButtonBase btn = mRootView.findViewById(R.id.exo_repeat);
+        boolean checked = btn.getChecked();
+        mPlayerFragment.setRepeatEnabled(checked);
     }
 }

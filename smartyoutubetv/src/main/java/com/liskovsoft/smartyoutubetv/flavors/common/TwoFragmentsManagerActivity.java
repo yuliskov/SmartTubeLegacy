@@ -147,17 +147,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         });
     }
 
-    //@Override
-    //public void pausePrevious() {
-    //    GenericFragment activeFragment = getActiveFragment();
-    //    GenericFragment removeCandidate = findCandidateToRemove(activeFragment);
-    //
-    //    Log.d(TAG, "Removing fragment " + removeCandidate.getClass().getSimpleName());
-    //    removeFromContainer(removeCandidate);
-    //
-    //    super.pausePrevious();
-    //}
-
     @Override
     public void setPlayerListener(PlayerListener listener) {
         mPlayerListener = listener;
