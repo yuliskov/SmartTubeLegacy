@@ -15,12 +15,25 @@ import java.util.Map;
 public class YouTubeTracker {
     private static final String TAG = YouTubeTracker.class.getSimpleName();
     private static final String HISTORY_URL = "youtube.com/api/stats/watchtime";
+    private static final String DOC_ID = "docid";
+    private static final String EI = "ei";
+    private static final String CPN = "cpn";
+    private static final String OF = "of";
+    private static final String VM = "vm";
+    private static final String LEN = "len";
+    private static final String CMT = "cmt";
+    private static final String ST = "st";
+    private static final String ET = "et";
+    private static final String CL = "cl";
+    private static final String LACT = "lact";
     private final Context mContext;
-    private static final String toAppend =
-            "&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=0&fmt=137&fs=0&rt=292.768&euri=https%3A%2F%2Fwww" +
-            ".youtube.com%2Ftv%23%2Fwatch%2Fvideo%2Fidle%3Fv%3DPugNThnZVF0%26resume&lact=485&state=paused&volume=100&c=TVHTML5&cver=6" +
-            ".20180807&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV" +
-            "&final=1&hl=ru_RU&cr=UA&feature=g-topic-rch&afmt=140&idpj=-8&ldpj=-2&muted=0&st=13.347&et=13.347&conn=1&el=leanback";
+    private static final String sUrlTemplate =
+            "https://www.youtube.com/api/stats/watchtime?ns=yt&el=leanback&cpn=RQ0fqVlDsVnKBCGO&docid" +
+            "=umLzt6Hew94&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=604.069&ei=SH5EXeKHKrLm7gSlw7jYAQ&fmt=247&fs=0&rt=9" +
+            ".003&of=fdwwIhWkvwgeO28lFSW_lw&euri=https%3A%2F%2Fwww.youtube" +
+            ".com%2Ftv%23%2Fsurface%3Fc%3DFEtopics%26resume&lact=290&cl=260482851&state=paused&vm=CAEQARgE&volume=100%2C100&c=TVHTML5&cver=6" +
+            ".20180913&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV&hl=en_US&cr" +
+            "=UA&len=1048.681&rtn=19&feature=g-topic-rec&afmt=251&idpj=-2&ldpj=-21&rti=9&muted=0%2C0&st=0%2C603.418&et=5.963%2C604.069&conn=1%2C1";
     private final HeaderManager mManager;
 
     public YouTubeTracker(Context context) {
@@ -56,23 +69,27 @@ public class YouTubeTracker {
         return trackingUrl.contains(HISTORY_URL);
     }
 
-    private String processUrl(String url, String videoUrl, float watched, float length) {
-        MyQueryString result = MyQueryStringFactory.parse(url + toAppend);
+    private String processUrl(String trackUrl, String videoUrl, float watched, float length) {
+        MyQueryString result = MyQueryStringFactory.parse(sUrlTemplate);
+        MyQueryString trackInfo = MyQueryStringFactory.parse(trackUrl);
         MyQueryString videoInfo = MyQueryStringFactory.parse(videoUrl);
 
-        result.remove("fexp");
-        result.remove("plid");
-        result.remove("subscribed");
+        result.set(DOC_ID, trackInfo.get(DOC_ID));
+        result.set(OF, trackInfo.get(OF));
+        //result.set(VM, trackInfo.get(VM));
+        result.set(CL, trackInfo.get(CL));
+        result.set(EI, videoInfo.get(EI));
+        result.set(CPN, videoInfo.get(CPN));
+        result.set(LACT, videoInfo.get(LACT));
 
-        // video id???
-        String cpn = "cpn";
-        result.set(cpn, videoInfo.get(cpn));
         // length of the video
-        result.set("len", length);
+        result.set(LEN, length);
         // watch time in seconds
-        result.set("cmt", watched);
-        result.set("st", String.format("%s,%s", 0, watched));
-        result.set("et", String.format("%s,%s", 0, watched));
+        result.set(CMT, watched);
+        // result.set(ST, watched - 2); // ???
+        result.set(ST, String.format("%s,%s", 0, watched)); // ???
+        //result.set(ET, watched);
+        result.set(ET, String.format("%s,%s", 0, watched));
 
         return result.toString();
     }
