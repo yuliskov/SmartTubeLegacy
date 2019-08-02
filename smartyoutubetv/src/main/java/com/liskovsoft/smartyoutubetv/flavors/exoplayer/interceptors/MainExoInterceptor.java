@@ -42,6 +42,12 @@ public class MainExoInterceptor extends RequestInterceptor {
             return true;
         }
 
+        // history is tracked via YouTubeTracker
+        //if (url.contains("watchtime")) {
+        //    mCurrentInterceptor = null; // block url
+        //    return true;
+        //}
+
         return false;
     }
 
@@ -49,6 +55,11 @@ public class MainExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         if (!test(url)) {
             return null;
+        }
+
+        if (mCurrentInterceptor == null) {
+            // block url
+            return new WebResourceResponse(null, null, null);
         }
 
         return mCurrentInterceptor.intercept(url);

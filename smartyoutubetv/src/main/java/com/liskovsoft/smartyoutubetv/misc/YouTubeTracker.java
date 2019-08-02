@@ -27,13 +27,13 @@ public class YouTubeTracker {
     private static final String CL = "cl";
     private static final String LACT = "lact";
     private final Context mContext;
-    private static final String sUrlTemplate =
-            "https://www.youtube.com/api/stats/watchtime?ns=yt&el=leanback&cpn=RQ0fqVlDsVnKBCGO&docid" +
-            "=umLzt6Hew94&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=604.069&ei=SH5EXeKHKrLm7gSlw7jYAQ&fmt=247&fs=0&rt=9" +
-            ".003&of=fdwwIhWkvwgeO28lFSW_lw&euri=https%3A%2F%2Fwww.youtube" +
-            ".com%2Ftv%23%2Fsurface%3Fc%3DFEtopics%26resume&lact=290&cl=260482851&state=paused&vm=CAEQARgE&volume=100%2C100&c=TVHTML5&cver=6" +
-            ".20180913&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV&hl=en_US&cr" +
-            "=UA&len=1048.681&rtn=19&feature=g-topic-rec&afmt=251&idpj=-2&ldpj=-21&rti=9&muted=0%2C0&st=0%2C603.418&et=5.963%2C604.069&conn=1%2C1";
+    private static final String sUrlTemplate = "https://www.youtube.com/api/stats/watchtime?ns=yt&el=leanback&cpn=_YBRc8b3mTG7TxFG&docid" +
+            "=ti_gH1pA4gM&ver=2&referrer=https%3A%2F%2Fwww.youtube.com%2Ftv&cmt=20&ei=eINEXcOXJpTt7QTZ6LuoBA&fmt=136&fs=0&rt=164" +
+            ".854&of=Bq_4EmPSblOd4rZYcOQrdg&euri=https%3A%2F%2Fwww.youtube" +
+            ".com%2Ftv%23%2Fwatch%2Fvideo%2Fidle%3Fv%3Dfm7kbQkG9mA%26resume&lact=750&cl=260482851&state=paused&vm" +
+            "=CAEQARgEKiBITWo5SXpCYUVHNzJXbXVBVl9nWHBfNjJjWFlNQlpKZw&volume=100&subscribed=1&c=TVHTML5&cver=6" +
+            ".20180913&cplayer=UNIPLAYER&cbrand=LG&cbr=Safari&cbrver&ctheme=CLASSIC&cmodel=42LA660S-ZA&cnetwork&cos&cosver&cplatform=TV&final=1&hl" +
+            "=en_US&cr=UA&len=647&feature=history&afmt=140&idpj=-8&ldpj=-13&muted=0&st=211&et=211&conn=1";
     private final HeaderManager mManager;
 
     public YouTubeTracker(Context context) {
@@ -86,8 +86,8 @@ public class YouTubeTracker {
         result.set(LEN, length);
         // watch time in seconds
         result.set(CMT, watched);
-        // result.set(ST, watched - 2); // ???
-        result.set(ST, String.format("%s,%s", 0, watched)); // ???
+        //result.set(ST, watched); // ???
+        result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
         //result.set(ET, watched);
         result.set(ET, String.format("%s,%s", 0, watched));
 
