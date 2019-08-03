@@ -62,9 +62,17 @@ public class ActionsSender {
         for (String buttonId : extras.keySet()) {
             Object val = extras.get(buttonId);
 
-            if (val instanceof Boolean) { // button states as boolean
-                result.put(buttonId, (Boolean) val);
+            if (val != null) {
+                result.put(buttonId, val);
             }
+
+            //if (val instanceof Boolean) { // button states as boolean
+            //    result.put(buttonId, (Boolean) val);
+            //}
+            //
+            //if (val instanceof Float) {
+            //    result.put(buttonId, (Float) val);
+            //}
         }
         
         return result;

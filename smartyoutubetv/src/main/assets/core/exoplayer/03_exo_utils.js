@@ -135,7 +135,7 @@ window.ExoUtils = {
                 continue;
             }
             var selector = PlayerActivityMapping[key];
-            var btn = ExoButton.fromSelector(selector);
+            var btn = ExoButton.fromSelector(selector, states);
             btn.setChecked(isChecked);
         }
     },

@@ -74,15 +74,15 @@ function ExoButton(selector) {
     this.decorator.apply(this);
 }
 
-ExoButton.fromSelector = function(selector) {
+ExoButton.fromSelector = function(selector, states) {
     var TAG = 'ExoButton'; // 'this' is reference to ExoButton
 
-    function createButton(selector) {
+    function createButton(selector, states) {
         Log.d(TAG, "fromSelector: create button " + selector);
         switch (selector) {
             case PlayerActivityMapping.TRACK_ENDED:
             case PlayerActivityMapping.BUTTON_NEXT:
-                return new TrackEndFakeButton(selector);
+                return new TrackEndFakeButton(selector, states);
             case PlayerActivityMapping.BUTTON_SUGGESTIONS:
                 return new SuggestionsFakeButton(selector);
             case PlayerActivityMapping.BUTTON_FAVORITES:
@@ -90,16 +90,16 @@ ExoButton.fromSelector = function(selector) {
             case PlayerActivityMapping.BUTTON_USER_PAGE:
                 return new ChannelButton(selector);
             case PlayerActivityMapping.BUTTON_BACK:
-                return new BackButton(selector);
+                return new BackButton(selector, states);
             case PlayerActivityMapping.BUTTON_PREV:
                 return new NextPrevButton(selector);
             case PlayerActivityMapping.VIDEO_CANCELED:
                 return new VideoCanceledButton(selector);
-            default:
-                // all other buttons is processed here
-                return new ExoButton(selector);
+            // default:
+            //     // all other buttons is processed here
+            //     return new ExoButton(selector);
         }
     }
 
-    return createButton(selector);
+    return createButton(selector, states);
 };

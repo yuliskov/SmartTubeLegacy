@@ -4,13 +4,14 @@ console.log("Scripts::Running core script back_button.js");
  * Checks that player is running and performs button press until success.
  * @param selector button selector
  */
-function BackButton(selector) {
+function BackButton(selector, states) {
     this.selector = selector;
     this.retryTimes = 10;
     this.checkDelayMS = 1000;
     this.stateless = true;
+    this.TAG = 'BackButton';
 
-    this.retryOnFail = function() {
+    this.pressBackOrRetry = function() {
         if (this.retryTimes <= 0 || YouTubeUtils.isPlayerClosed()) {
             return;
         }
@@ -25,7 +26,7 @@ function BackButton(selector) {
         var $this = this;
         setTimeout(function() {
             console.log("BackButton: attempt to press on the element: " + $this.selector);
-            $this.retryOnFail();
+            $this.pressBackOrRetry();
         }, this.checkDelayMS);
     };
 
@@ -41,11 +42,15 @@ function BackButton(selector) {
 
             YouTubeUtils.showPlayerBackground();
 
-            PlayerController.advance();
+            // update history position
+            // YouTubeUtils.getPlayer().properties.currentTime = states['video_position'];
+            // Log.d(this.TAG, "Current time is set to " + YouTubeUtils.getPlayer().currentTime);
+
+            //PlayerController.advance();
 
             // 'likes not saved' fix
             setTimeout(function() {
-                $this.retryOnFail();
+                $this.pressBackOrRetry();
             }, this.checkDelayMS);
         }
     };

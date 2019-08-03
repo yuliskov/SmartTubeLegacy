@@ -24,7 +24,8 @@ public class MainExoInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (url.contains(ExoInterceptor.URL_VIDEO_DATA)) {
+        if (url.contains(ExoInterceptor.URL_VIDEO_DATA) ||
+            url.contains(ExoInterceptor.URL_TRACKING_DATA)) {
             mCurrentInterceptor = mExoInterceptor;
             return true;
         }

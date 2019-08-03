@@ -53,6 +53,8 @@ public class YouTubeTracker {
         if (checkUrl(trackingUrl)) {
             Log.d(TAG, String.format("Start history tracking: %s, %s, %s, %s", trackingUrl, videoUrl, watched, length));
             HashMap<String, String> headers = mManager.getHeaders();
+            headers.remove("Cookie");
+            headers.remove("Accept-Language");
             final String fullTrackingUrl = processUrl(trackingUrl, videoUrl, watched, length);
             Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
             Log.d(TAG, "Tracking headers: " + headers);
@@ -86,10 +88,10 @@ public class YouTubeTracker {
         result.set(LEN, length);
         // watch time in seconds
         result.set(CMT, watched);
-        //result.set(ST, watched); // ???
-        result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
-        //result.set(ET, watched);
-        result.set(ET, String.format("%s,%s", 0, watched));
+        result.set(ST, watched); // ???
+        //result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
+        result.set(ET, watched);
+        //result.set(ET, String.format("%s,%s", 0, watched));
 
         return result.toString();
     }

@@ -20,6 +20,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.YouTubeHistoryUpdater;
 import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
@@ -33,10 +34,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
     private final YouTubeTracker mTracker;
+    private final YouTubeHistoryUpdater mTracker2;
     private GenericInfo mInfo;
     private String mSpec;
     private Sample mSample;
     private Uri mTrackingUrl;
+    private Uri mRealTrackingUrl;
     private final Context mContext;
     private final TwoFragmentManager mFragmentsManager;
     private final BackgroundActionManager mManager;
@@ -90,6 +93,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         // bind onPlayerAction callback
         mFragmentsManager.setPlayerListener(this);
         mTracker = new YouTubeTracker(mContext);
+        mTracker2 = new YouTubeHistoryUpdater(mContext);
 
         mPauseBrowser = () -> {
             if (mBlockHandlers) {
@@ -139,6 +143,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onTrackingUrlFound(Uri trackingUrl) {
         mTrackingUrl = trackingUrl;
+    }
+
+    @Override
+    public void onRealTrackingUrlFound(Uri trackingUrl) {
+        mRealTrackingUrl = trackingUrl;
     }
 
     @Override
@@ -206,24 +215,42 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mBlockHandlers = true;
         clearPendingEvents();
 
-        boolean doNotClose =
+        boolean showOverlay =
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
 
-        if (!doNotClose) {
-            if (mTrackingUrl != null) {
-                mTracker.track(
-                        mTrackingUrl.toString(),
-                        mInterceptor.getCurrentUrl(),
-                        intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
-                        intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
-                );
-            }
+        if (!showOverlay) {
+            //updateHistory2(intent);
             mManager.onClose();
         }
 
         mActionSender.bindActions(intent, mMetadata);
+    }
+
+    private void updateHistory2(Intent intent) {
+        if (mRealTrackingUrl == null) {
+            return;
+        }
+
+        mTracker2.sync(
+                mRealTrackingUrl.toString(),
+                intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
+                intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
+        );
+    }
+
+    private void updateHistory(Intent intent) {
+        if (mTrackingUrl == null) {
+            return;
+        }
+
+        mTracker.track(
+                mTrackingUrl.toString(),
+                mInterceptor.getCurrentUrl(),
+                intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
+                intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
+        );
     }
 
     private void clearPendingEvents() {

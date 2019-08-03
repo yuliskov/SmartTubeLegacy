@@ -14,6 +14,7 @@ public abstract class OnMediaFoundCallback {
     public void onUrlListFound(List<String> uriList) {}
     public void onDashUrlFound(Uri dashUrl) {}
     public void onTrackingUrlFound(Uri trackingUrl) {}
+    public void onRealTrackingUrlFound(Uri trackingUrl) {}
     public void onStorySpecFound(String spec) {}
     public void onInfoFound(GenericInfo info){}
     public void onMetadata(VideoMetadata metadata){}

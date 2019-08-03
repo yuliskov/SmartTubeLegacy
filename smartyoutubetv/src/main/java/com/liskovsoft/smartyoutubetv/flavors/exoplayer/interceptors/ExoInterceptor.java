@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -34,6 +35,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
     public static final String URL_VIDEO_DATA = "get_video_info";
+    public static final String URL_TRACKING_DATA = "watchtime";
     private static final String PARAM_ACCESS_TOKEN = "access_token";
 
     public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor, ExoNextInterceptor nextInterceptor) {
@@ -67,6 +69,14 @@ public class ExoInterceptor extends RequestInterceptor {
         Log.d(TAG, "Video intercepted: " + url);
 
         //url = unplayableVideoFix(url);
+
+        if (url.contains(URL_TRACKING_DATA)) {
+            mExoCallback.onRealTrackingUrlFound(Uri.parse(url));
+
+            // block url
+            //return new WebResourceResponse(null, null, null);
+            return null;
+        }
 
         mCurrentUrl = url;
 

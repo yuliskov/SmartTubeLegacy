@@ -1,6 +1,6 @@
 console.log("Scripts::Running core script track_end_button.js");
 
-function TrackEndFakeButton(selector) {
+function TrackEndFakeButton(selector, states) {
     this.TAG = 'TrackEndFakeButton';
     this.selector = selector;
     this.stateless = true;
@@ -25,6 +25,10 @@ function TrackEndFakeButton(selector) {
         if (doChecked && !YouTubeUtils.isPlayerClosed()) {
             YouTubeUtils.enablePlayerSuggestions();
             YouTubeUtils.showPlayerBackground();
+
+            // update history position
+            // YouTubeUtils.getPlayer().properties.currentTime = states['video_position'];
+            // Log.d(this.TAG, "Current time is set to " + YouTubeUtils.getPlayer().currentTime);
 
             YouTubeUtils.getPlayer().imitateEnding();
 
