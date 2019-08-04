@@ -10,6 +10,7 @@ public class MainExoInterceptor extends RequestInterceptor {
     private final DecipherInterceptor mCipherInterceptor;
     private final DelayedCommandCallInterceptor mDoOnPlayEndInterceptor;
     private final ExoNextInterceptor mExoNextInterceptor;
+    private final HistoryInterceptor mHistoryInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public MainExoInterceptor(Context context) {
@@ -18,14 +19,14 @@ public class MainExoInterceptor extends RequestInterceptor {
         mContext = context;
         mDoOnPlayEndInterceptor = new DelayedCommandCallInterceptor(context);
         mExoNextInterceptor = new ExoNextInterceptor(context);
-        mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor, mExoNextInterceptor);
         mCipherInterceptor = new DecipherInterceptor(context);
+        mHistoryInterceptor = new HistoryInterceptor(context);
+        mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor, mExoNextInterceptor, mHistoryInterceptor);
     }
 
     @Override
     public boolean test(String url) {
-        if (url.contains(ExoInterceptor.URL_VIDEO_DATA) ||
-            url.contains(ExoInterceptor.URL_TRACKING_DATA)) {
+        if (url.contains("get_video_info")) {
             mCurrentInterceptor = mExoInterceptor;
             return true;
         }
@@ -44,10 +45,10 @@ public class MainExoInterceptor extends RequestInterceptor {
         }
 
         // history is tracked via YouTubeTracker
-        //if (url.contains("watchtime")) {
-        //    mCurrentInterceptor = null; // block url
-        //    return true;
-        //}
+        if (url.contains("watchtime")) {
+            mCurrentInterceptor = mHistoryInterceptor;
+            return true;
+        }
 
         return false;
     }

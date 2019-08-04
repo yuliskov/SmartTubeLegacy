@@ -43,15 +43,17 @@ function BackButton(selector, states) {
             YouTubeUtils.showPlayerBackground();
 
             // update history position
-            // YouTubeUtils.getPlayer().properties.currentTime = states['video_position'];
-            // Log.d(this.TAG, "Current time is set to " + YouTubeUtils.getPlayer().currentTime);
-
-            //PlayerController.advance();
+            // var pos = states['video_position'];
+            // var len = states['video_length'];
+            // YouTubeUtils.getPlayer().imitatePosition(pos, len);
+            // Log.d(this.TAG, "Current time is set to " + pos + ', ' + len);
 
             // 'likes not saved' fix
-            setTimeout(function() {
-                $this.pressBackOrRetry();
-            }, this.checkDelayMS);
+            // setTimeout(function() {
+            //     $this.pressBackOrRetry();
+            // }, this.checkDelayMS);
+
+            this.pressBackOrRetry();
         }
     };
 }

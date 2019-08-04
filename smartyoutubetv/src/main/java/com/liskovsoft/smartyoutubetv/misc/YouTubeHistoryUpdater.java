@@ -38,6 +38,15 @@ public class YouTubeHistoryUpdater {
     private String processUrl(String trackingUrl, float position, float length) {
         MyQueryString result = MyQueryStringFactory.parse(trackingUrl);
 
+        // only for testing
+        if (length == 0) {
+            length = Float.parseFloat(result.get(LEN));
+        }
+
+        if (position == 0) {
+            position = length;
+        }
+
         // length of the video
         result.set(LEN, length);
         // watch time in seconds

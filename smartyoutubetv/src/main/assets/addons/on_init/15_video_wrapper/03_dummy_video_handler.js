@@ -7,7 +7,7 @@ function DummyVideoHandler() {
         this.redirectProps(video);
         this.initProps(video);
 
-        this.addImitateEndingFunction(video);
+        this.addAdditionalFunctions(video);
     };
 
     this.redirectProps = function(video) {
@@ -58,11 +58,16 @@ function DummyVideoHandler() {
         video.properties.src = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
     };
 
-    this.addImitateEndingFunction = function(video) {
+    this.addAdditionalFunctions = function(video) {
         var $this = this;
         video.imitateEnding = function() {
-            Log.d($this.TAG, "End of the video is reached");
-            $this.imitateEnding(video);
+            Log.d($this.TAG, "End of the video is reached...");
+            $this.imitateEndingInt(video);
+        };
+
+        video.imitatePosition = function(pos, length) {
+            Log.d($this.TAG, "Changing position of the video...");
+            $this.imitatePositionInt(video, pos, length);
         };
     };
 
@@ -101,7 +106,7 @@ function DummyVideoHandler() {
         }, 100);
     };
 
-    this.imitateEnding = function(video) {
+    this.imitateEndingInt = function(video) {
         var i = 0;
         var $this = this;
         var curTime = video.properties.currentTime;
@@ -110,7 +115,7 @@ function DummyVideoHandler() {
         video.properties.paused = true;
         video.properties.ended = true;
         var interval = setInterval(function() {
-            Log.d($this.TAG, "imitateEnding");
+            Log.d($this.TAG, "imitateEndingInt");
 
             var urlChanged = location.href != url;
 
@@ -121,6 +126,37 @@ function DummyVideoHandler() {
                 video.properties.currentTime = curTime;
                 video.properties.paused = false;
                 video.properties.ended = false;
+                return;
+            } else {
+                i++;
+            }
+
+            video.listeners['pause'][0]({type: 'pause', isTrusted: true});
+            video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
+        }, 100);
+    };
+
+    this.imitatePositionInt = function(video, pos, length) {
+        var i = 0;
+        var $this = this;
+        var curTime = video.properties.currentTime;
+        var duration = video.properties.duration;
+        var url = location.href;
+        video.properties.currentTime = pos;
+        video.properties.duration = length;
+        video.properties.paused = true;
+        var interval = setInterval(function() {
+            Log.d($this.TAG, "imitatePositionInt");
+
+            var urlChanged = location.href != url;
+
+            if (i >= 3 || urlChanged) {
+                clearInterval(interval);
+
+                // do cleanup, prepare for playing
+                // video.properties.currentTime = curTime;
+                // video.properties.duration = duration;
+                // video.properties.paused = false;
                 return;
             } else {
                 i++;

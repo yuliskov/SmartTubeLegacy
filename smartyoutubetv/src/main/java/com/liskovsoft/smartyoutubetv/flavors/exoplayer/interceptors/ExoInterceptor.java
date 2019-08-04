@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -15,8 +14,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
-import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
@@ -29,22 +26,25 @@ public class ExoInterceptor extends RequestInterceptor {
     private final TwoFragmentManager mFragmentsManager;
     private final OnMediaFoundCallback mExoCallback;
     private final ExoNextInterceptor mNextInterceptor;
+    private final HistoryInterceptor mHistoryInterceptor;
     private final SmartPreferences mPrefs;
     private final ActionsSender mSender;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     private final boolean mUnplayableVideoFix;
     public static final String URL_VIDEO_DATA = "get_video_info";
-    public static final String URL_TRACKING_DATA = "watchtime";
-    private static final String PARAM_ACCESS_TOKEN = "access_token";
 
-    public ExoInterceptor(Context context, DelayedCommandCallInterceptor delayedInterceptor, ExoNextInterceptor nextInterceptor) {
+    public ExoInterceptor(Context context,
+                          DelayedCommandCallInterceptor delayedInterceptor,
+                          ExoNextInterceptor nextInterceptor,
+                          HistoryInterceptor historyInterceptor) {
         super(context);
-
+        
         mContext = context;
         mFragmentsManager = (TwoFragmentManager) context;
         mDelayedInterceptor = delayedInterceptor;
         mNextInterceptor = nextInterceptor;
+        mHistoryInterceptor = historyInterceptor;
         mManager = new BackgroundActionManager();
         mPrefs = SmartPreferences.instance(mContext);
         mSender = new ActionsSender(mContext, this);
@@ -68,16 +68,6 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        //url = unplayableVideoFix(url);
-
-        if (url.contains(URL_TRACKING_DATA)) {
-            mExoCallback.onRealTrackingUrlFound(Uri.parse(url));
-
-            // block url
-            //return new WebResourceResponse(null, null, null);
-            return null;
-        }
-
         mCurrentUrl = url;
 
         if (mManager.cancelPlayback(url)) {
@@ -95,23 +85,6 @@ public class ExoInterceptor extends RequestInterceptor {
         parseAndOpenExoPlayer();
 
         return null;
-    }
-
-    /**
-     * Fix severe signature bug on non-guest account (not mine case though).<br/>
-     * <a href="https://smartyoutubetv.github.io/#comment-4292180604">Thread with details</a>
-     * @param url input
-     * @return transformed
-     */
-    private String unplayableVideoFix(String url) {
-        if (!mUnplayableVideoFix) {
-            return url;
-        }
-
-        MyQueryString myQuery = MyQueryStringFactory.parse(url);
-        myQuery.remove(PARAM_ACCESS_TOKEN);
-
-        return myQuery.toString();
     }
 
     // We also try looking in get_video_info since it may contain different dashmpd
@@ -156,5 +129,9 @@ public class ExoInterceptor extends RequestInterceptor {
         intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
         mSender.bindActions(intent);
         mManager.onClose();
+    }
+
+    public void setPosition(float position) {
+        mHistoryInterceptor.setPosition(position);
     }
 }

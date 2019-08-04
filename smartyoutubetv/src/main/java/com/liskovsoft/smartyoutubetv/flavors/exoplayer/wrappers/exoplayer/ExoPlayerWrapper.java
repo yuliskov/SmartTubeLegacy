@@ -33,8 +33,6 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
-    private final YouTubeTracker mTracker;
-    private final YouTubeHistoryUpdater mTracker2;
     private GenericInfo mInfo;
     private String mSpec;
     private Sample mSample;
@@ -92,8 +90,6 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         // bind onPlayerAction callback
         mFragmentsManager.setPlayerListener(this);
-        mTracker = new YouTubeTracker(mContext);
-        mTracker2 = new YouTubeHistoryUpdater(mContext);
 
         mPauseBrowser = () -> {
             if (mBlockHandlers) {
@@ -221,36 +217,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
 
         if (!showOverlay) {
-            //updateHistory2(intent);
             mManager.onClose();
         }
 
+        mInterceptor.setPosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
         mActionSender.bindActions(intent, mMetadata);
-    }
-
-    private void updateHistory2(Intent intent) {
-        if (mRealTrackingUrl == null) {
-            return;
-        }
-
-        mTracker2.sync(
-                mRealTrackingUrl.toString(),
-                intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
-                intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
-        );
-    }
-
-    private void updateHistory(Intent intent) {
-        if (mTrackingUrl == null) {
-            return;
-        }
-
-        mTracker.track(
-                mTrackingUrl.toString(),
-                mInterceptor.getCurrentUrl(),
-                intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 60),
-                intent.getFloatExtra(ExoPlayerFragment.VIDEO_LENGTH, 60)
-        );
     }
 
     private void clearPendingEvents() {
