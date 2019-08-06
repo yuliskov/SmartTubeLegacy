@@ -85,6 +85,11 @@ public class KeyHandler {
             mFragment.getExoPlayerView().showController(); // reset controller auto-hide timeout
         }
 
+        //// Fix focus lost after Suggestions
+        //if (mFragment.getExoPlayerView().findFocus() == null) {
+        //    mFragment.getExoPlayerView().findViewById(R.id.exo_suggestions).requestFocus();
+        //}
+
         // If the event was not handled then see if the player view can handle it as a media key event.
         return mFragment.getExoPlayerView().dispatchMediaKeyEvent(event);
     }

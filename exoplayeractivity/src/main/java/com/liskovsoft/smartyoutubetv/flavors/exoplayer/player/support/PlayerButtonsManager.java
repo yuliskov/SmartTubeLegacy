@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -161,6 +163,8 @@ public class PlayerButtonsManager {
         } else if (isShareButton) {
             displayShareDialog();
         } else if (isUserPageButton || isSuggestions) {
+            fixSuggestionFocusLost();
+
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             mPlayerFragment.onPlayerAction();
@@ -169,6 +173,11 @@ public class PlayerButtonsManager {
         } else if (isBackButton) {
             mPlayerFragment.onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
         }
+    }
+
+    private void fixSuggestionFocusLost() {
+        // wait till previously queued keys are being handled
+        new Handler().postDelayed(mExoPlayerView::hideController, 500);
     }
 
     @TargetApi(17)
