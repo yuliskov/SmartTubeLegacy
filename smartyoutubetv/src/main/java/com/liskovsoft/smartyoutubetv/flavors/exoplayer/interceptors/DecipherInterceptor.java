@@ -4,7 +4,7 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.CipherUtils;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.DecipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeEvent;
 import com.squareup.otto.Subscribe;
@@ -52,7 +52,7 @@ public class DecipherInterceptor extends RequestInterceptor {
         }
 
         InputStream is = response.body().byteStream();
-        mJSDecipherCode = CipherUtils.extractDecipherCode(is);
+        mJSDecipherCode = DecipherUtils.extractDecipherCode(is);
     }
 
     @Subscribe

@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser;
 import android.net.Uri;
 import com.liskovsoft.sharedutils.TestHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.CipherUtils;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.DecipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
@@ -91,7 +91,7 @@ public class SimpleYouTubeInfoParserTest {
         String result = "var EQ={F2:function(a,b){a.splice(0,b)},\n" + "Xy:function(a,b){var c=a[0];a[0]=a[b%a.length];a[b]=c},\n" + "LN:function" +
                 "(a){a.reverse()}};\n" + "function decipherSignature(a){a=a.split(\"\");EQ.LN(a,23);EQ.F2(a,2);EQ.Xy(a,1);EQ.F2(a,3);EQ.Xy(a,11);EQ.Xy(a,9);EQ.F2" +
                 "(a,2);return a.join(\"\")}";
-        String jsCode = CipherUtils.extractDecipherCode(is);
+        String jsCode = DecipherUtils.extractDecipherCode(is);
         assertEquals(result, jsCode);
     }
 

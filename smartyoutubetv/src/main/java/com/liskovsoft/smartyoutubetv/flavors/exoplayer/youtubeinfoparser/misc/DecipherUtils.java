@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
  * Files: <em>"tv-player.js"</em> or <em>"tv-player-ias.js"</em><br/>
  * Pattern: a.split("") ... a.join("")
  */
-public class CipherUtils {
+public class DecipherUtils {
+    // Don't remove var part! It is used inside the decipher function.
     private static final String decipherPattern =
             "var [_$A-Za-z]{2}=\\{.*\\n.*\\n.*\\nfunction [_$A-Za-z]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}";
 
