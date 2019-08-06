@@ -205,6 +205,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     private void onPlayerAction(Intent result) {
+        fixSuggestionFocusLost();
+
         if (mPlayer != null) {
             result.putExtra(VIDEO_LENGTH, (float) mPlayer.getDuration() / 1_000);
             result.putExtra(VIDEO_POSITION, (float) mPlayer.getCurrentPosition() / 1_000);
@@ -213,6 +215,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (getActivity() != null) {
             ((PlayerListener) getActivity()).onPlayerAction(result);
         }
+    }
+
+    private void fixSuggestionFocusLost() {
+        if (mSimpleExoPlayerView == null) {
+            return;
+        }
+
+        // wait till previously queued keys are being handled
+        new Handler().postDelayed(mSimpleExoPlayerView::hideController, 500);
     }
 
     protected void syncButtonStates() {

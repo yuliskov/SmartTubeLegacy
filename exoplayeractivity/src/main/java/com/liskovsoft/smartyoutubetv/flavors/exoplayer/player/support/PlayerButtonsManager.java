@@ -162,22 +162,15 @@ public class PlayerButtonsManager {
             mPrefs.setCheckedState(id, isChecked);
         } else if (isShareButton) {
             displayShareDialog();
-        } else if (isUserPageButton || isSuggestions) {
-            fixSuggestionFocusLost();
-
+        } else if (isUserPageButton || isSuggestions || isFavorites) {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             mPlayerFragment.onPlayerAction();
-        } else if (isNextButton || isPrevButton || isFavorites) {
+        } else if (isNextButton || isPrevButton) {
             mPlayerFragment.onPlayerAction();
         } else if (isBackButton) {
             mPlayerFragment.onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
         }
-    }
-
-    private void fixSuggestionFocusLost() {
-        // wait till previously queued keys are being handled
-        new Handler().postDelayed(mExoPlayerView::hideController, 500);
     }
 
     @TargetApi(17)
