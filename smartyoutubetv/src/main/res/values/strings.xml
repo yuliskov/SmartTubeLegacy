@@ -51,7 +51,7 @@
     <string name="codec_selector_title">Select codec</string>
     <string name="restart_app_msg">You need to restart app in order the changes to apply</string>
     <string name="tip_show_main_screen">To open Settings press BACK right here</string>
-    <string name="tip_solve_problem">Have problems? Try to select another Launcher</string>
+    <string name="tip_solve_problem">Problems? Try to select another Launcher</string>
     <string name="tip_disable_updates">To disable Updates press BACK right here</string>
     <string name="large_btn_title_main">Main</string>
     <string name="large_btn_title_alt">Alt</string>
