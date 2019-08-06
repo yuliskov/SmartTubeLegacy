@@ -53,4 +53,8 @@ public final class CommonParams {
     public String[] getOldPackageNames() {
         return mParser.getArray("old_package_names");
     }
+
+    public boolean isMainPagePersistent() {
+        return mParser.getBoolean("main_page_persistent");
+    }
 }
