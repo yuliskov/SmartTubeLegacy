@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
 /**
  * YouTube's decipher routine tools<br/>
  * Routine can have any form<br/>
- * Main file: <em>"tv-player.js"</em> or <em>"tv-player-ias.js"</em><br/>
- * Searched marks: a.split("") ... a.join("")
+ * Files: <em>"tv-player.js"</em> or <em>"tv-player-ias.js"</em><br/>
+ * Pattern: a.split("") ... a.join("")
  */
 public class CipherUtils {
     private static final String decipherPattern =
-            "var\\ [A-Za-z]{2}\\=\\{.*\\n.*\\n.*\\nfunction\\ [_$A-Za-z]{2}\\(a\\)\\{.*\\;return\\ a\\.join\\(\\\"\\\"\\)\\}";
+            "var [_$A-Za-z]{2}=\\{.*\\n.*\\n.*\\nfunction [_$A-Za-z]{2}\\(a\\)\\{.*a\\.split\\(\"\"\\).*;return a\\.join\\(\"\"\\)\\}";
 
     public static String extractDecipherCode(InputStream is) {
         Scanner scanner = new Scanner(is);
@@ -21,7 +21,7 @@ public class CipherUtils {
         if (jsCode == null) {
             return null;
         }
-        String cleaned = jsCode.replaceFirst("function\\ [_$A-Za-z]{2}", "function decipherSignature");
+        String cleaned = jsCode.replaceFirst("function [_$A-Za-z]{2}", "function decipherSignature");
         return cleaned;
     }
 }
