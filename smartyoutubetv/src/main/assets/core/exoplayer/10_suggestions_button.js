@@ -131,7 +131,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.closeSuggestions = function() {
-        if (this.alreadyHidden) {
+        if (this.alreadyHidden || YouTubeUtils.isPlayerControlsClosed()) {
             return;
         }
 
