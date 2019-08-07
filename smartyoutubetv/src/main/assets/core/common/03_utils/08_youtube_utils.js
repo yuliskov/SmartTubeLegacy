@@ -209,7 +209,5 @@ var YouTubeUtils = {
 
     isPageOpened: function(elementOrSelector) {
         return !Utils.hasClass(Utils.$(elementOrSelector), YouTubeClasses.HIDDEN);
-    },
-
-
+    }
 };

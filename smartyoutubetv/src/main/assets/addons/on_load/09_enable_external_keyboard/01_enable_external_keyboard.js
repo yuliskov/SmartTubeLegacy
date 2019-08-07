@@ -10,16 +10,17 @@ function EnableExternalKeyboardAddon() {
     this.TAG = 'EnableExternalKeyboardAddon';
 
     this.run = function() {
-        this.enableExternalKeyboard3();
+        this.enableExternalKeyboard();
     };
 
-    this.enableExternalKeyboard3 = function() {
+    this.enableExternalKeyboard = function() {
         var $this = this;
 
         var handler = function(e) {
             Log.d($this.TAG, "Search page keyboard focused");
 
             $this.enableSearchInputField();
+            $this.hideKeyboardOnSubmit();
 
             EventUtils.removeListener(
                 YouTubeSelectors.SEARCH_KEYBOARD,
@@ -62,6 +63,16 @@ function EnableExternalKeyboardAddon() {
         EventUtils.triggerEvent(searchInput, DefaultEvents.KEY_UP, null);
 
         this.initDone = true;
+    };
+
+    this.hideKeyboardOnSubmit = function() {
+        EventUtils.addListener(YouTubeSelectors.SEARCH_INPUT_FIELD, DefaultEvents.KEY_UP, function(e) {
+            if (e.keyCode == DefaultKeys.ENTER) {
+                // move focus out of input field
+                // by clicking on 'search' button
+                EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
+            }
+        });
     };
 }
 
