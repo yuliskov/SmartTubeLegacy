@@ -85,11 +85,11 @@ android {
         }
         V720 {
             matchingFallbacks = ['lite']
-            versionCode 999 // don't auto-update
+            versionCode 9999 // disable auto-update
         }
         V1080 {
             matchingFallbacks = ['lite']
-            versionCode 999 // don't auto-update
+            versionCode 9999 // disable auto-update
         }
         Vkids {
             matchingFallbacks = ['lite']
@@ -103,6 +103,11 @@ android {
             matchingFallbacks = ['lite']
             applicationId "com.adnotam.smartyoutubetv"
         }
+        Vkemerovo {
+            // vermax uhd250x/300x 1GB ram
+            matchingFallbacks = ['lite']
+            versionCode 9999 // disable auto-update
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
@@ -115,9 +120,7 @@ android {
             def version = variant.versionName
 
             def newApkName = sprintf("%s_%s_v%s_%s.apk", [project, flavor, version, buildType])
-
-            // old gradle 3.3:
-            // output.outputFile = new File(output.outputFile.parent, newApkName)
+            
             // gradle 4.6 migration
             output.outputFileName = new File(newApkName)
         }
@@ -165,16 +168,6 @@ dependencies {
 
     implementation project.properties.gsonVersion
     implementation project.properties.jsonPathVersion
-
-//    // view dependencies: gradlew -q smartyoutubetv:dependencies
-//    // Details: https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.ResolutionStrategy.html
-//    configurations.all {
-//        resolutionStrategy {
-//            // resolve conflicts
-//            force project.properties.asmVersion
-//            force project.properties.mediaCompatVersion
-//        }
-//    }
 
     implementation project.properties.nanoHttpdVersion
     implementation project.properties.voiceOverlayVersion

@@ -34,9 +34,7 @@ public abstract class BaseLoadingManager implements LoadingManager {
     @Override
     public void hide() {
         new Handler(mContext.getMainLooper())
-                .postDelayed(() -> {
-                    getRootView().setVisibility(View.GONE);
-                }, 500);
+                .postDelayed(() -> getRootView().setVisibility(View.GONE), 500);
     }
 
     @Override

@@ -61,7 +61,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String BUTTON_BACK = "button_back";
     public static final String BUTTON_SUGGESTIONS = "button_suggestions";
     public static final String VIDEO_DATE = "video_date";
-    public static final String SCREEN_WIDTH = "screen_width";
     public static final String VIDEO_TITLE = "video_title";
     public static final String VIDEO_AUTHOR = "video_author";
     public static final String VIDEO_VIEW_COUNT = "video_views";
@@ -72,8 +71,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String STORYBOARD_SPEC = "storyboard_spec";
     public static final String VIDEO_LENGTH = "video_length";
     public static final String VIDEO_POSITION = "video_position";
-    private static final float TEXT_SIZE_SMALL = 14;
-    private static final float SCREEN_WIDTH_SMALL = 640;
 
     private long mPosition;
     private int mInterfaceVisibilityState = View.INVISIBLE;
@@ -138,18 +135,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 )
         );
     }
-
-    //protected void initializeUiScale() {
-    //    int width = getIntent().getIntExtra(SCREEN_WIDTH, 0);
-    //
-    //    if (getIntent() == null || width == 0) {
-    //        return;
-    //    }
-    //
-    //    float scaledWidth = width * TEXT_SIZE_SMALL / SCREEN_WIDTH_SMALL;
-    //
-    //    mLoadingView.setTextSize(scaledWidth);
-    //}
 
     protected void initializeTrackSelector() {
         TrackSelection.Factory trackSelectionFactory =
@@ -239,15 +224,14 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mStateManager.persistState(); // player about to crash
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initializePlayer();
-        } else {
-            showToast(R.string.storage_permission_denied);
-            // finish();
-        }
-    }
+    //@Override
+    //public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    //    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    //        initializePlayer();
+    //    } else {
+    //        showToast(R.string.storage_permission_denied);
+    //    }
+    //}
 
     // OnClickListener methods
 
@@ -372,25 +356,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         setIntent(intent);
         syncButtonStates(); // onCheckedChanged depends on this
         initializePlayer();
-        //initializeUiScale();
     }
 
     private boolean isStateIntent(Intent intent) {
         return intent.getAction() == null;
-    }
-
-    protected void pausePlayer() {
-        if (mPlayer != null) {
-            mPosition = mPlayer.getCurrentPosition();
-            mPlayer.setPlayWhenReady(false);
-        }
-    }
-
-    protected void resumePlayer() {
-        if (mPlayer != null) {
-            mPlayer.seekTo(mPosition);
-            mPlayer.setPlayWhenReady(true);
-        }
     }
 
     /**

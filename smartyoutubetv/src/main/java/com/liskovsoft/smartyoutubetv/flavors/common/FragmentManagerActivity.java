@@ -59,7 +59,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         super.onCreate(savedInstanceState);
 
-
         initPermissions();
 
         setupFontSize();

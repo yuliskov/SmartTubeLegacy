@@ -32,31 +32,12 @@ public class TipsLoadingManager extends BaseLoadingManager {
         showMessage(mTips[next]);
     }
 
-    /**
-     * Dynamically load main view since it may not be initialized yet.
-     * @return root view
-     */
-    private View getRootView() {
-        return mContext.findViewById(R.id.loading_message);
-    }
-
     @Override
     public void show() {
         if (mShowTips) {
             showRandomTip();
-            getRootView().setVisibility(View.VISIBLE);
         }
 
         super.show();
-    }
-
-    @Override
-    public void hide() {
-        if (mShowTips) {
-            new Handler(mContext.getMainLooper())
-                    .postDelayed(() -> getRootView().setVisibility(View.GONE), 500);
-        }
-
-        super.hide();
     }
 }
