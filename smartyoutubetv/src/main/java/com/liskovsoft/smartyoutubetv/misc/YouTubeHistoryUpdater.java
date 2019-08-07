@@ -40,7 +40,7 @@ public class YouTubeHistoryUpdater {
 
         // only for testing
         if (length == 0) {
-            length = Float.parseFloat(result.get(LEN));
+            length = result.getFloat(LEN);
         }
 
         if (position == 0) {

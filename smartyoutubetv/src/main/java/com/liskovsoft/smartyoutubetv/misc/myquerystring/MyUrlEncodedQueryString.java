@@ -51,6 +51,12 @@ public class MyUrlEncodedQueryString implements MyQueryString {
     }
 
     @Override
+    public float getFloat(String key) {
+        String val = get(key);
+        return val != null ? Float.parseFloat(val) : 0;
+    }
+
+    @Override
     public void set(String key, String value) {
         mQueryString.set(key, value);
     }
