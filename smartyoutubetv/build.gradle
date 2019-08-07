@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 649
-        versionName "6.17.69"
+        versionCode 650
+        versionName "6.17.70"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
@@ -120,7 +120,7 @@ android {
             def version = variant.versionName
 
             def newApkName = sprintf("%s_%s_v%s_%s.apk", [project, flavor, version, buildType])
-            
+
             // gradle 4.6 migration
             output.outputFileName = new File(newApkName)
         }
