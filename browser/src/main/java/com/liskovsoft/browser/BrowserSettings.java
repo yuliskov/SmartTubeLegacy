@@ -109,7 +109,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_ENABLE_JAVASCRIPT, true);
     }
 
-    // TODO: Cache
     public PluginState getPluginState() {
         String state = mPrefs.getString(PREF_PLUGIN_STATE, "ON");
         return PluginState.valueOf(state);
@@ -213,7 +212,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getInt(PREF_TEXT_ZOOM, 100);
     }
 
-    // TODO: Cache
     public ZoomDensity getDefaultZoom() {
         String zoom = mPrefs.getString(PREF_DEFAULT_ZOOM, ZoomDensity.MEDIUM.name());
         return ZoomDensity.valueOf(zoom);
