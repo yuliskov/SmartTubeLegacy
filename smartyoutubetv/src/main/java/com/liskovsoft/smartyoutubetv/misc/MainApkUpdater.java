@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -10,6 +11,7 @@ import edu.mit.mobile.android.appupdater.AppUpdateChecker;
 import edu.mit.mobile.android.appupdater.OnUpdateDialog;
 
 public class MainApkUpdater {
+    private static final String TAG = MainApkUpdater.class.getSimpleName();
     private final Context mContext;
     private static final long UPDATE_CHECK_DELAY_MS = 3000;
     private boolean mIsStableChecked;
@@ -58,6 +60,11 @@ public class MainApkUpdater {
     }
 
     private void runUpdateChecker(String[] updateUrls) {
+        if (updateUrls == null) {
+            Log.d(TAG, "Oops... can't start update. Url list seems empty.");
+            return;
+        }
+
         OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
         AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrls, dialog);
         // to minimize server payload use forceCheckForUpdatesIfStalled()
