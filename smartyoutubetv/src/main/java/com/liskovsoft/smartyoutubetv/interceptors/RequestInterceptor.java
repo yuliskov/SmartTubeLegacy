@@ -3,8 +3,10 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import okhttp3.MediaType;
 import okhttp3.Response;
@@ -60,6 +62,11 @@ public abstract class RequestInterceptor {
 
     protected WebResourceResponse appendResponse(String url, InputStream toAppend) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) {
+            MessageHelpers.showLongMessageEndPause(mContext, R.string.fix_clock_msg);
+        }
+
         InputStream responseStream = response.body().byteStream();
         return createResponse(response.body().contentType(), Helpers.appendStream(responseStream, toAppend));
     }
