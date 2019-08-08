@@ -272,7 +272,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void initPermissions() {
-        if (BuildConfig.DEBUG) { // avoid error on genymotion emulator (NoSuchField error)
+        if (BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("Vkemerovo")) { // avoid error on genymotion emulator (NoSuchField error)
             return;
         }
 
