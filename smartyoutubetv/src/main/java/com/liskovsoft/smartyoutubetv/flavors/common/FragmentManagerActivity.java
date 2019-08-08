@@ -4,18 +4,15 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
-import com.liskovsoft.smartyoutubetv.misc.AnalogStickTranslator;
+import com.liskovsoft.smartyoutubetv.misc.AppVersionChecker;
 import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -45,6 +42,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
     private GlobalKeyHandler mKeyHandler;
+    private AppVersionChecker mAppVersionChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +64,16 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         setupVoiceSearch();
 
         makeActivityHorizontal();
+
         hideTitleBar();
 
         mLoadingManager = new TipsLoadingManager(this);
         mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
+
+        mAppVersionChecker = new AppVersionChecker(this);
+        mAppVersionChecker.run();
     }
 
     @Override
@@ -237,6 +239,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mVoiceBridge = new VoiceSearchBusBridge(this);
     }
 
+    /**
+     * Received data from voice dialog
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ActivityResult result = mResultMap.get(requestCode);

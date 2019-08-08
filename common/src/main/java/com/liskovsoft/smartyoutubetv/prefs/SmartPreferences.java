@@ -5,15 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
-public final class SmartPreferences {
+public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
     private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
-    private static final String BOOTSTRAP_AUTOFRAMERATE_CHECKED = "display_rate_switch";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECK = "bootstrapUpdateCheck";
-    private static final String BOOTSTRAP_OLD_UI_CHECKED = "bootstrapOldUIChecked";
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
     private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
@@ -39,6 +37,7 @@ public final class SmartPreferences {
     public static final String GLOBAL_AFR_FIX_STATE_DISABLED = "afr_fix_state_disabled";
     private static final String IS_APP_JUST_INSTALLED = "is_app_just_installed";
     private static final String BACK_PRESS_EXIT = "back_press_exit";
+    private static final String PREVIOUS_APP_VERSION_CODE = "previous_app_version_code";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -46,8 +45,6 @@ public final class SmartPreferences {
     public static final String VP9 = "vp9";
     public static final String NONE = "";
     private static SmartPreferences sInstance;
-    private Context mContext;
-    private SharedPreferences mPrefs;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -56,235 +53,170 @@ public final class SmartPreferences {
     }
 
     private SmartPreferences(Context context) {
-        mContext = context.getApplicationContext();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        super(context);
     }
 
     public void setSelectedFormat(String fmt) {
-        mPrefs.edit()
-                .putString(VIDEO_FORMAT_NAME, fmt)
-                .apply();
+        putString(VIDEO_FORMAT_NAME, fmt);
     }
 
     public String getSelectedFormat() {
-        String name = mPrefs.getString(VIDEO_FORMAT_NAME, "Auto");
+        String name = getString(VIDEO_FORMAT_NAME, "Auto");
         return name;
     }
 
     public void setBootstrapActivityName(String name) {
-        mPrefs.edit()
-                .putString(BOOTSTRAP_ACTIVITY_NAME, name)
-                .apply();
+        putString(BOOTSTRAP_ACTIVITY_NAME, name);
     }
 
     public String getBootstrapActivityName() {
-        String name = mPrefs.getString(BOOTSTRAP_ACTIVITY_NAME, null);
+        String name = getString(BOOTSTRAP_ACTIVITY_NAME, null);
         return name;
     }
 
-    public void resetBootstrapActivityName() {
-        mPrefs.edit().remove(BOOTSTRAP_ACTIVITY_NAME).apply();
-    }
-
     public boolean getBootstrapSaveSelection() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_CHECKBOX_CHECKED, true);
+        boolean isChecked = getBoolean(BOOTSTRAP_CHECKBOX_CHECKED, true);
         return isChecked;
     }
 
     public void setBootstrapSaveSelection(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_CHECKBOX_CHECKED, isChecked)
-                .apply();
-    }
-
-    public boolean getBootstrapAutoframerate() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, false);
-        return isChecked;
-    }
-
-    public void setBootstrapAutoframerate(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_AUTOFRAMERATE_CHECKED, isChecked)
-                .apply();
+        putBoolean(BOOTSTRAP_CHECKBOX_CHECKED, isChecked);
     }
 
     public void setPreferredLanguage(String name) {
-        mPrefs.edit()
-                .putString(BOOTSTRAP_SELECTED_LANGUAGE, name)
-                .apply();
+        putString(BOOTSTRAP_SELECTED_LANGUAGE, name);
     }
 
     public String getPreferredLanguage() {
-        String name = mPrefs.getString(BOOTSTRAP_SELECTED_LANGUAGE, "");
+        String name = getString(BOOTSTRAP_SELECTED_LANGUAGE, "");
         return name;
     }
 
     public void setPreferredCodec(String name) {
-        mPrefs.edit()
-                .putString(PREFERRED_CODEC, name)
-                .apply();
+        putString(PREFERRED_CODEC, name);
     }
 
     public String getPreferredCodec() {
-        return mPrefs.getString(PREFERRED_CODEC, "");
+        return getString(PREFERRED_CODEC, "");
     }
 
     public String getBootstrapUpdateCheck() {
-        return mPrefs.getString(BOOTSTRAP_UPDATE_CHECK, UPDATE_CHECK_STABLE);
+        return getString(BOOTSTRAP_UPDATE_CHECK, UPDATE_CHECK_STABLE);
     }
 
     public void setBootstrapUpdateCheck(String releaseType) {
-        mPrefs.edit()
-                .putString(BOOTSTRAP_UPDATE_CHECK, releaseType)
-                .apply();
-    }
-
-    public boolean getBootstrapOldUI() {
-        boolean isChecked = mPrefs.getBoolean(BOOTSTRAP_OLD_UI_CHECKED, false);
-        return isChecked;
-    }
-
-    public void setBootstrapOldUI(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_OLD_UI_CHECKED, isChecked)
-                .apply();
+        putString(BOOTSTRAP_UPDATE_CHECK, releaseType);
     }
 
     public void setEnableEndCards(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_END_CARDS, isChecked)
-                .apply();
+        putBoolean(BOOTSTRAP_END_CARDS, isChecked);
     }
 
     public boolean getEnableEndCards() {
-        return mPrefs.getBoolean(BOOTSTRAP_END_CARDS, true);
+        return getBoolean(BOOTSTRAP_END_CARDS, true);
     }
 
     public void setEnableOKPause(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(BOOTSTRAP_OK_PAUSE, isChecked)
-                .apply();
+        putBoolean(BOOTSTRAP_OK_PAUSE, isChecked);
     }
 
     public boolean getEnableOKPause() {
-        return mPrefs.getBoolean(BOOTSTRAP_OK_PAUSE, true);
+        return getBoolean(BOOTSTRAP_OK_PAUSE, true);
     }
 
     public void setUnplayableVideoFix(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(UNPLAYABLE_VIDEO_FIX, isChecked)
-                .apply();
+        putBoolean(UNPLAYABLE_VIDEO_FIX, isChecked);
     }
 
     public boolean getUnplayableVideoFix() {
-        return mPrefs.getBoolean(UNPLAYABLE_VIDEO_FIX, false);
+        return getBoolean(UNPLAYABLE_VIDEO_FIX, false);
     }
 
     public void setLockLastLauncher(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(LOCK_LAST_LAUNCHER, isChecked)
-                .apply();
+        putBoolean(LOCK_LAST_LAUNCHER, isChecked);
     }
 
     public boolean getLockLastLauncher() {
-        return mPrefs.getBoolean(LOCK_LAST_LAUNCHER, false);
+        return getBoolean(LOCK_LAST_LAUNCHER, false);
     }
 
     public void setBootPage(String name) {
-        mPrefs.edit()
-                .putString(BOOT_PAGE, name)
-                .apply();
+        putString(BOOT_PAGE, name);
     }
 
     public String getBootPage() {
-        return mPrefs.getString(BOOT_PAGE, DEFAULT_PAGE);
+        return getString(BOOT_PAGE, DEFAULT_PAGE);
     }
 
     public void setGlobalAfrFixState(String state) {
-        mPrefs.edit()
-                .putString(GLOBAL_AFR_FIX_STATE, state)
-                .apply();
+        putString(GLOBAL_AFR_FIX_STATE, state);
     }
 
     public String getGlobalAfrFixState() {
-        return mPrefs.getString(GLOBAL_AFR_FIX_STATE, GLOBAL_AFR_FIX_STATE_DISABLED);
+        return getString(GLOBAL_AFR_FIX_STATE, GLOBAL_AFR_FIX_STATE_DISABLED);
     }
 
     public void setAuthorizationHeader(String header) {
-        mPrefs.edit()
-                .putString(AUTHORIZATION_HEADER, header)
-                .apply();
+        putString(AUTHORIZATION_HEADER, header);
     }
 
     public String getAuthorizationHeader() {
-        return mPrefs.getString(AUTHORIZATION_HEADER, null);
+        return getString(AUTHORIZATION_HEADER, null);
     }
 
     public void setCookieHeader(String header) {
-        mPrefs.edit()
-                .putString(COOKIE_HEADER, header)
-                .apply();
+        putString(COOKIE_HEADER, header);
     }
 
     public String getCookieHeader() {
-        return mPrefs.getString(COOKIE_HEADER, null);
+        return getString(COOKIE_HEADER, null);
     }
 
     public void setUseExternalPlayer(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(USE_EXTERNAL_PLAYER, isChecked)
-                .apply();
+        putBoolean(USE_EXTERNAL_PLAYER, isChecked);
     }
 
     public boolean getUseExternalPlayer() {
-        return mPrefs.getBoolean(USE_EXTERNAL_PLAYER, false);
+        return getBoolean(USE_EXTERNAL_PLAYER, false);
     }
 
     public void setFixAspectRatio(boolean isChecked) {
-        mPrefs.edit()
-                .putBoolean(FIX_ASPECT_RATIO, isChecked)
-                .apply();
+        putBoolean(FIX_ASPECT_RATIO, isChecked);
     }
 
     public boolean getFixAspectRatio() {
-        return mPrefs.getBoolean(FIX_ASPECT_RATIO, false);
+        return getBoolean(FIX_ASPECT_RATIO, false);
     }
 
     public int getLogType() {
-        return mPrefs.getInt(LOG_TYPE, Log.LOG_TYPE_SYSTEM);
+        return getInt(LOG_TYPE, Log.LOG_TYPE_SYSTEM);
     }
 
     public void setLogType(int type) {
-        mPrefs.edit()
-                .putInt(LOG_TYPE, type)
-                .apply();
+        putInt(LOG_TYPE, type);
     }
 
     public void setPlaybackWorking(int state) {
-        mPrefs.edit()
-                .putInt(PLAYBACK_WORKING_KEY, state)
-                .apply();
+        putInt(PLAYBACK_WORKING_KEY, state);
     }
 
     public int getPlaybackWorking() {
-        return mPrefs.getInt(PLAYBACK_WORKING_KEY, PLAYBACK_UNKNOWN);
+        return getInt(PLAYBACK_WORKING_KEY, PLAYBACK_UNKNOWN);
     }
 
     public boolean getEnableAnimatedPreviews() {
-        return mPrefs.getBoolean(ANIMATED_PREVIEWS, false);
+        return getBoolean(ANIMATED_PREVIEWS, false);
     }
 
     public void setEnableAnimatedPreviews(boolean enable) {
-        mPrefs.edit()
-                .putBoolean(ANIMATED_PREVIEWS, enable)
-                .apply();
+        putBoolean(ANIMATED_PREVIEWS, enable);
     }
 
     public boolean isAppJustInstalled() {
-        boolean justInstalled = mPrefs.getBoolean(IS_APP_JUST_INSTALLED, true);
+        boolean justInstalled = getBoolean(IS_APP_JUST_INSTALLED, true);
 
         if (justInstalled) {
-            mPrefs.edit().putBoolean(IS_APP_JUST_INSTALLED, false).apply();
+            putBoolean(IS_APP_JUST_INSTALLED, false);
         }
 
         Log.d(TAG, "Is app just installed: " + justInstalled);
@@ -293,12 +225,18 @@ public final class SmartPreferences {
     }
 
     public boolean getEnableBackPressExit() {
-        return mPrefs.getBoolean(BACK_PRESS_EXIT, false);
+        return getBoolean(BACK_PRESS_EXIT, false);
     }
 
     public void setEnableBackPressExit(boolean enable) {
-        mPrefs.edit()
-                .putBoolean(BACK_PRESS_EXIT, enable)
-                .apply();
+        putBoolean(BACK_PRESS_EXIT, enable);
+    }
+
+    public int getPreviousAppVersionCode() {
+        return getInt(PREVIOUS_APP_VERSION_CODE, 0);
+    }
+
+    public void setPreviousAppVersionCode(int versionCode) {
+        putInt(PREVIOUS_APP_VERSION_CODE, versionCode);
     }
 }
