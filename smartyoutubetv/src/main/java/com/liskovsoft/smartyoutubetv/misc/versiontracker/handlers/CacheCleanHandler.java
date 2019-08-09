@@ -29,7 +29,7 @@ public class CacheCleanHandler extends Handler {
         for (File cacheDir : mCacheDirs) {
             if (cacheDir.isDirectory()) {
                 Log.d(TAG, "Removing cache: " + cacheDir.getAbsolutePath());
-                FileHelpers.deleteDir(cacheDir);
+                FileHelpers.delete(cacheDir);
             }
         }
     }

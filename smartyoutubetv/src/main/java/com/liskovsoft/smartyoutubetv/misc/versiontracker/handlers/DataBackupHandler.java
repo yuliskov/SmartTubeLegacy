@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
 
 import android.content.Context;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.Handler;
 
@@ -26,6 +27,12 @@ public class DataBackupHandler extends Handler {
     @Override
     public void onUpdate() {
         Log.d(TAG, "App has been updated. Doing data backup...");
+        File backup = new File(mContext.getExternalCacheDir(), "Backup");
+        for (File dataDir : mDataDirs) {
+            if (dataDir.isDirectory()) {
+                FileHelpers.copy(dataDir, backup);
+            }
+        }
     }
 
     @Override
