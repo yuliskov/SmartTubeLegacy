@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
 import androidx.appcompat.app.AlertDialog;
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.Handler;
@@ -63,12 +61,16 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
                 FileHelpers.copy(new File(mBackupDir, dataDir.getName()), dataDir);
             }
         }
+
+        // to apply settings we need to kill the app
+        System.exit(0);
     }
 
     private void askUserPermission() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppDialog);
         builder
                 .setMessage(R.string.do_restore_data_msg)
+                .setTitle(R.string.app_name)
                 .setPositiveButton(R.string.yes_btn, this)
                 .setNegativeButton(R.string.no_btn, this)
                 .show();
@@ -79,7 +81,6 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 //Yes button clicked
-                MessageHelpers.showMessage(mContext, R.string.restoring_data_msg);
                 restoreData();
                 break;
 
