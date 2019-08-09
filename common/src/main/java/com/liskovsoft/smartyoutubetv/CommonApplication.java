@@ -28,7 +28,9 @@ public class CommonApplication extends Application {
 
     private DiskLruCache createDiskLruCache() {
         try {
-            File dir = new File(getCacheDir(), "DiskLruCache");
+            // Don't place lru cache in the app's cache dir.
+            // Because it could be deleted any time by cache cleaner.
+            File dir = new File(getFilesDir(), "DiskLruCache");
             return DiskLruCache.open(dir, 1, 1, 1_000_000);
         } catch (IOException e) {
             Log.e(TAG, e);
