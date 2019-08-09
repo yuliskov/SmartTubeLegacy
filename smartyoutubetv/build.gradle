@@ -103,10 +103,10 @@ android {
             matchingFallbacks = ['lite']
             applicationId "com.adnotam.smartyoutubetv"
         }
-        Vkemerovo {
+        Vbolshoetv {
             // vermax uhd250x/300x 1GB ram
             matchingFallbacks = ['lite']
-            versionCode 9999 // disable auto-update
+            versionCode 10051
         }
     }
 

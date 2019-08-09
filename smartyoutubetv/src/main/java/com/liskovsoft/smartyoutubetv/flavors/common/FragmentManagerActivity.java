@@ -12,7 +12,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
-import com.liskovsoft.smartyoutubetv.misc.AppVersionChecker;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTracker;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase;
 import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -42,7 +43,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
     private GlobalKeyHandler mKeyHandler;
-    private AppVersionChecker mAppVersionChecker;
+    private AppVersionTrackerBase mAppVersionChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
 
-        mAppVersionChecker = new AppVersionChecker(this);
+        mAppVersionChecker = new AppVersionTracker(this);
         mAppVersionChecker.run();
     }
 
@@ -272,7 +273,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void initPermissions() {
-        if (BuildConfig.DEBUG || BuildConfig.FLAVOR.equals("Vkemerovo")) { // avoid error on genymotion emulator (NoSuchField error)
+        boolean alreadyGranted = BuildConfig.FLAVOR.equals("Vbolshoetv");
+        if (BuildConfig.DEBUG || alreadyGranted) { // avoid error on genymotion emulator (NoSuchField error)
             return;
         }
 
