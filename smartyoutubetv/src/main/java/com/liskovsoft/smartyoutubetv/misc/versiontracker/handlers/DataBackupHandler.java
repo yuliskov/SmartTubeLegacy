@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
-import androidx.appcompat.app.AlertDialog;
+import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
@@ -19,7 +19,6 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
     private static final String WEBVIEW_SUBDIR = "app_webview";
     private static final String XWALK_SUBDIR = "app_xwalkcore";
     private static final String SHARED_PREFS_SUBDIR = "shared_prefs";
-    private static final String BACKUP_SUBDIR = "data";
     private final File mBackupDir;
 
     public DataBackupHandler(Context context) {
@@ -28,17 +27,14 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, WEBVIEW_SUBDIR));
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, XWALK_SUBDIR));
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, SHARED_PREFS_SUBDIR));
-        mBackupDir = new File(Environment.getExternalStorageDirectory(), BACKUP_SUBDIR + "/" + mContext.getPackageName());
+
+        mBackupDir = new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", mContext.getPackageName()));
     }
 
     @Override
     public void onUpdate() {
-        Log.d(TAG, "App has been updated. Doing data backup...");
-
-        for (File dataDir : mDataDirs) {
-            if (dataDir.isDirectory()) {
-                FileHelpers.copy(dataDir, new File(mBackupDir, dataDir.getName()));
-            }
+        if (isExternalStorageWritable()) {
+            backupData();
         }
     }
 
@@ -49,17 +45,36 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
         }
     }
 
+    private void backupData() {
+        Log.d(TAG, "App has been updated. Doing data backup...");
+
+        if (mBackupDir.isDirectory()) {
+            // remove old backup
+            FileHelpers.delete(mBackupDir);
+        }
+
+        for (File dataDir : mDataDirs) {
+            if (dataDir.isDirectory()) {
+                FileHelpers.copy(dataDir, new File(mBackupDir, dataDir.getName()));
+            }
+        }
+    }
+
     private void restoreData() {
         Log.d(TAG, "App just updated. Restoring data...");
 
         if (!mBackupDir.isDirectory()) {
+            // backup not exists
             return;
         }
 
         for (File dataDir : mDataDirs) {
             if (dataDir.isDirectory()) {
-                FileHelpers.copy(new File(mBackupDir, dataDir.getName()), dataDir);
+                // remove old data
+                FileHelpers.delete(dataDir);
             }
+
+            FileHelpers.copy(new File(mBackupDir, dataDir.getName()), dataDir);
         }
 
         // to apply settings we need to kill the app
@@ -67,13 +82,7 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
     }
 
     private void askUserPermission() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppDialog);
-        builder
-                .setMessage(R.string.do_restore_data_msg)
-                .setTitle(R.string.app_name)
-                .setPositiveButton(R.string.yes_btn, this)
-                .setNegativeButton(R.string.no_btn, this)
-                .show();
+        YesNoDialog.create(mContext, R.string.do_restore_data_msg, this, R.style.AppDialog);
     }
 
     @Override
@@ -88,5 +97,10 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
                 //No button clicked
                 break;
         }
+    }
+
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 }

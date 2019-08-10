@@ -72,8 +72,5 @@
     <string name="force_avc_lite_only">Использовать только AVC кодек (только LITE)</string>
     <string name="force_vp9_lite_only">Использовать только VP9 кодек (только LITE)</string>
     <string name="fix_clock_msg">Время на вашем устройстве выставлено неверно</string>
-    <string name="do_restore_data_msg">Восстановить ранее сохраненные данные?\nПриложение будет закрыто.</string>
-    <string name="yes_btn">Да</string>
-    <string name="no_btn">Нет</string>
-    <string name="restoring_data_msg">Данные восстанавливаются...</string>
+    <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет закрыто.</string>
 </resources>
