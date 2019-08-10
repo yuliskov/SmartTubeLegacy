@@ -212,7 +212,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private void xwalkFix() {
         if (Browser.getEngineType() == EngineType.XWalk && !mXWalkFixDone) {
             Intent intent = new Intent();
-            intent.putExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, true);
+            intent.putExtra("null", true);
             onPlayerAction(intent);
             mXWalkFixDone = true;
         }

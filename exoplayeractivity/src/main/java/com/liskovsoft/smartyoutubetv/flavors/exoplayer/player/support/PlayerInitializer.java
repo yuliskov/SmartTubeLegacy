@@ -1,11 +1,9 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.content.Intent;
-import android.os.Build.VERSION;
 import android.text.Html;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -61,7 +59,9 @@ public class PlayerInitializer {
     }
 
     public String getMainTitle() {
-        return mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
+        Intent intent = mPlayerFragment.getIntent();
+        String title = intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE);
+        return title == null ? mTemplMessage : title;
     }
 
     public String getSecondTitle() {
@@ -75,7 +75,8 @@ public class PlayerInitializer {
 
     private String getAuthor() {
         Intent intent = mPlayerFragment.getIntent();
-        return intent.getStringExtra(ExoPlayerFragment.VIDEO_AUTHOR);
+        String author = intent.getStringExtra(ExoPlayerFragment.VIDEO_AUTHOR);
+        return author == null ? mTemplMessage : author;
     }
 
     /**
