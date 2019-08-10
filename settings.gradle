@@ -1,7 +1,9 @@
 include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common', ':appbackupmanager'
 
-gradle.ext.sharedUtilsRoot = '../SharedUtils'
+// prepare to git submodule
+gradle.ext.sharedUtilsRoot = file('../SharedUtils').exists() ? '../SharedUtils' : './SharedUtils'
 apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
 
-gradle.ext.myVideoTubeRoot = '../MyVideoTube'
+// prepare to git submodule
+gradle.ext.myVideoTubeRoot = file('../MyVideoTube').exists() ? '../MyVideoTube' : './MyVideoTube'
 apply from: new File(gradle.ext.myVideoTubeRoot, 'core_settings.gradle')
