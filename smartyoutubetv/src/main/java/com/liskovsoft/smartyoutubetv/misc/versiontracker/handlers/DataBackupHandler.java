@@ -33,14 +33,14 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
 
     @Override
     public void onUpdate() {
-        if (isExternalStorageWritable()) {
+        if (FileHelpers.isExternalStorageWritable()) {
             backupData();
         }
     }
 
     @Override
     public void onInstall() {
-        if (mBackupDir.isDirectory()) {
+        if (FileHelpers.isExternalStorageReadable() && mBackupDir.isDirectory()) {
             askUserPermission();
         }
     }
@@ -97,10 +97,5 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
                 //No button clicked
                 break;
         }
-    }
-
-    private boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 }
