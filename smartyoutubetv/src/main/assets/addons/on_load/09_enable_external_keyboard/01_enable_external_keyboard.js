@@ -16,38 +16,32 @@ function EnableExternalKeyboardAddon() {
     this.enableExternalKeyboard = function() {
         var $this = this;
 
-        var handler = function(e) {
-            Log.d($this.TAG, "Search page keyboard focused");
-
-            $this.enableSearchInputField();
-            $this.hideKeyboardOnSubmit();
-
-            EventUtils.removeListener(
-                YouTubeSelectors.SEARCH_KEYBOARD,
-                DefaultEvents.KEY_UP,
-                handler);
-        };
-
-        var handler2 = function(e) {
-            Log.d($this.TAG, "Search page suggestions focused");
-
-            $this.enableSearchInputField();
-
-            EventUtils.removeListener(
-                YouTubeSelectors.SEARCH_SUGGESTIONS,
-                DefaultEvents.KEY_UP,
-                handler2);
-        };
-
-        EventUtils.addListener(
+        EventUtils.addListenerOnce(
             YouTubeSelectors.SEARCH_KEYBOARD,
             DefaultEvents.KEY_UP,
-            handler);
+            function(e) {
+                Log.d($this.TAG, "Search page keyboard focused");
+                $this.applyFixes();
+            });
 
-        EventUtils.addListener(
+        EventUtils.addListenerOnce(
             YouTubeSelectors.SEARCH_SUGGESTIONS,
             DefaultEvents.KEY_UP,
-            handler2);
+            function(e) {
+                Log.d($this.TAG, "Search page suggestions focused");
+                $this.applyFixes();
+            });
+    };
+
+    this.applyFixes = function() {
+        if (this.fixesApplied) {
+            return;
+        } else {
+            this.fixesApplied = true;
+        }
+
+        this.enableSearchInputField();
+        this.hideKeyboardOnSubmit();
     };
 
     /**
@@ -66,8 +60,10 @@ function EnableExternalKeyboardAddon() {
     };
 
     this.hideKeyboardOnSubmit = function() {
+        var $this = this;
         EventUtils.addListener(YouTubeSelectors.SEARCH_INPUT_FIELD, DefaultEvents.KEY_UP, function(e) {
             if (e.keyCode == DefaultKeys.ENTER) {
+                Log.d($this.TAG, "User pressed ENTER on soft keyboard");
                 // move focus out of input field
                 // by clicking on 'search' button
                 EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
