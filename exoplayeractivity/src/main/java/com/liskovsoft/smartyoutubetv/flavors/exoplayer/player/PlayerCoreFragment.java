@@ -505,7 +505,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private void showToast(String message) {
-        MessageHelpers.showMessageThrottled(getActivity().getApplicationContext(), message);
+        MessageHelpers.showMessageThrottled(getActivity(), message);
     }
 
     // OnClickListener methods
@@ -529,19 +529,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     // NOTE: dynamically create quality buttons
     private void updateButtonVisibilities() {
-        //mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
-
-        if (mDebugRootView.getChildCount() != 1) { // already initialized
+        if (mPlayer == null) {
             return;
         }
 
         mDebugRootView.removeAllViews();
 
-        mDebugRootView.addView(mRetryButton);
-
-        if (mPlayer == null) {
-            return;
-        }
+        //mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
+        //mDebugRootView.addView(mRetryButton);
 
         MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
         if (mappedTrackInfo == null) {
@@ -587,12 +582,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
         Context context = getActivity();
         if (context != null) {
-            new Handler(context.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    updateButtonVisibilities();
-                }
-            });
+            new Handler(context.getMainLooper()).post(this::updateButtonVisibilities);
         }
 
         if (trackGroups != mLastSeenTrackGroupArray) {
@@ -643,7 +633,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         } else {
             updateResumePosition();
             // show retry button to the options
-            updateButtonVisibilities();
+            //updateButtonVisibilities();
         }
 
         restorePlayback();
@@ -676,7 +666,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        updateButtonVisibilities();
+        //updateButtonVisibilities();
     }
 
     @Override
