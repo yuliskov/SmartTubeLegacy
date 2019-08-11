@@ -58,9 +58,11 @@ public class GlobalKeyHandler {
     private KeyEvent gamepadFix(KeyEvent event) {
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_BUTTON_R1:
+            case KeyEvent.KEYCODE_BUTTON_R2:
                 event = Helpers.newEvent(event, KeyEvent.KEYCODE_DPAD_RIGHT);
                 break;
             case KeyEvent.KEYCODE_BUTTON_L1:
+            case KeyEvent.KEYCODE_BUTTON_L2:
                 event = Helpers.newEvent(event, KeyEvent.KEYCODE_DPAD_LEFT);
                 break;
         }
