@@ -533,15 +533,16 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             return;
         }
 
-        mDebugRootView.removeAllViews();
-
-        //mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
-        //mDebugRootView.addView(mRetryButton);
-
         MappedTrackInfo mappedTrackInfo = mTrackSelector.getCurrentMappedTrackInfo();
+
         if (mappedTrackInfo == null) {
             return;
         }
+
+        mDebugRootView.removeAllViews();
+
+        //mRetryButton.setVisibility(mNeedRetrySource ? View.VISIBLE : View.GONE);
+        mDebugRootView.addView(mRetryButton);
 
         for (int i = 0; i < mappedTrackInfo.length; i++) {
             TrackGroupArray trackGroups = mappedTrackInfo.getTrackGroups(i);
@@ -581,6 +582,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @SuppressWarnings("ReferenceEquality")
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
         Context context = getActivity();
+
         if (context != null) {
             new Handler(context.getMainLooper()).post(this::updateButtonVisibilities);
         }
@@ -595,6 +597,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     showToast(R.string.error_unsupported_audio);
                 }
             }
+
             mLastSeenTrackGroupArray = trackGroups;
         }
     }
