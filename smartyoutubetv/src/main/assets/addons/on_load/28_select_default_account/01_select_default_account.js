@@ -11,7 +11,8 @@ function SelectDefaultAccountAddon() {
         var $this = this;
 
         EventUtils.onLoad(function() {
-            if (Utils.$(YouTubeSelectors.WELCOME_SCREEN_PANEL)) {
+            if (!YouTubeUtils.isUserLogged()) {
+                Log.d($this.TAG, "User isn't logged. Skip selecting default account.");
                 return;
             }
 
@@ -68,4 +69,4 @@ function SelectDefaultAccountAddon() {
     };
 }
 
-// new SelectDefaultAccountAddon().run();
+new SelectDefaultAccountAddon().run();

@@ -14,6 +14,7 @@ var YouTubeUtils = {
     CHANNEL_SIGN: '#/channel',
     CHANNEL_SIGN2: '#/zylon-detail-surface',
     CHANNEL_SIGN3: '#/zylon-surface',
+    ACTIVE_ACCOUNT_KEY: 'yt.leanback.default::active-account',
 
     isComponentDisabled: function(element) {
         var el = element;
@@ -209,5 +210,11 @@ var YouTubeUtils = {
 
     isPageOpened: function(elementOrSelector) {
         return !Utils.hasClass(Utils.$(elementOrSelector), YouTubeClasses.HIDDEN);
+    },
+
+    isUserLogged: function() {
+        var key = localStorage.getItem(this.ACTIVE_ACCOUNT_KEY);
+
+        return key != null;
     }
 };
