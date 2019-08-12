@@ -12,7 +12,7 @@ public class GlobalKeyHandler {
     private final boolean mBackPressExitEnabled;
     private final Handler mHandler;
     private final Runnable mExitAppFn;
-    private static final long BACK_PRESS_DURATION_MS = 2_000;
+    private static final long BACK_PRESS_DURATION_MS = 1_000;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());

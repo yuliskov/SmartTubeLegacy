@@ -55,9 +55,11 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
@@ -121,6 +123,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     private TrackGroupArray mLastSeenTrackGroupArray;
 
     protected TrackSelectionHelper mTrackSelectionHelper;
+    protected long mExtractStartMS;
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -223,6 +226,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             mNeedRetrySource = false;
 
             updateButtonVisibilities();
+
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Video extract starting...");
+                mExtractStartMS = System.currentTimeMillis();
+            }
         }
     }
 
@@ -318,14 +326,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      * @return load control
      */
     private DefaultLoadControl getLoadControl() {
+        int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4;
+        int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
+        int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
+        int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
-                .setBufferDurationsMs(
-        DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4,
-        DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
-                )
+                .setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs)
                 .createDefaultLoadControl();
     }
 

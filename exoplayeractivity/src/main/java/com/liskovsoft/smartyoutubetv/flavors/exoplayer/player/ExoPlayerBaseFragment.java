@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
@@ -72,7 +73,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String VIDEO_LENGTH = "video_length";
     public static final String VIDEO_POSITION = "video_position";
 
-    private long mPosition;
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private boolean mIsDurationSet;
 
@@ -405,6 +405,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        measureLoadTime(playbackState);
+
         restorePlayerStateIfNeeded();
 
         if (playbackState == Player.STATE_ENDED) {
@@ -426,6 +428,14 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         showHideLoadingMessage(playbackState);
 
         super.onPlayerStateChanged(playWhenReady, playbackState);
+    }
+
+    private void measureLoadTime(int playbackState) {
+        if (BuildConfig.DEBUG && (playbackState == Player.STATE_READY) && (mExtractStartMS != 0)) {
+            long extractedWithin = System.currentTimeMillis() - mExtractStartMS;
+            mExtractStartMS = 0;
+            Log.d(TAG, "Video loaded within: " + extractedWithin + " ms");
+        }
     }
 
     /**
