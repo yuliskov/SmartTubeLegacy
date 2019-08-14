@@ -70,6 +70,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
         mCurrentUrl = url;
 
+        // 'next' should not be fired at this point
         if (mManager.cancelPlayback(url)) {
             Log.d(TAG, "Video canceled: " + url);
             //if (mManager.isOpened()) // player is doing playback

@@ -25,26 +25,12 @@ public class BackgroundActionManager {
             return true;
 
         long elapsedTimeAfterClose = System.currentTimeMillis() - mExitTime;
-        Log.d(TAG, "Video closed ms ago: " + elapsedTimeAfterClose);
+        long elapsedTimeAfterCall = System.currentTimeMillis() - mPrevCallTime;
+        Log.d(TAG, "Elapsed time after close: " + elapsedTimeAfterClose);
+        Log.d(TAG, "Elapsed time after call: " + elapsedTimeAfterCall);
 
-        // Search screen and XWalk fix: same video intercepted twice (Why??)
-        //boolean videoClosedRecently = elapsedTimeAfterClose < NO_INTERACTION_TIMEOUT_MS;
-        //if (videoClosedRecently) {
-        //    Log.d(TAG, "Video is closed recently");
-        //    mPrevCallTime = System.currentTimeMillis();
-        //    return true;
-        //}
-
-        // throttle calls
-        //boolean highCallRate = System.currentTimeMillis() - mPrevCallTime < NO_INTERACTION_TIMEOUT_MS;
-        //if (highCallRate) {
-        //    Log.d(TAG, "To high call rate");
-        //    mPrevCallTime = System.currentTimeMillis();
-        //    return true;
-        //}
-
-        // the same video could opened multiple times
         String videoId = MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
+
         if (videoId == null) {
             Log.d(TAG, "Supplied url doesn't contain video info");
             mPrevCallTime = System.currentTimeMillis();
@@ -52,8 +38,9 @@ public class BackgroundActionManager {
         }
 
         boolean sameVideo = videoId.equals(mPrevVideoId);
-        boolean sameVideoClosedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-        if (sameVideo && (sameVideoClosedRecently || mIsOpened)) {
+        boolean closedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        boolean calledRecently = elapsedTimeAfterCall < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        if (sameVideo && (calledRecently || closedRecently || mIsOpened)) {
             Log.d(TAG, "The same video encountered");
             mPrevCallTime = System.currentTimeMillis();
             return true;

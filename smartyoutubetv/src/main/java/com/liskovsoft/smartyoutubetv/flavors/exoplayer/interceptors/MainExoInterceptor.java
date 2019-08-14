@@ -26,13 +26,18 @@ public class MainExoInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
+        if (url.contains("tv-player")) {
+            mCurrentInterceptor = mCipherInterceptor;
+            return true;
+        }
+
         if (url.contains("get_video_info")) {
             mCurrentInterceptor = mExoInterceptor;
             return true;
         }
 
-        if (url.contains("tv-player")) {
-            mCurrentInterceptor = mCipherInterceptor;
+        if (url.contains("youtube.com/youtubei/v1/next")) {
+            mCurrentInterceptor = mExoNextInterceptor;
             return true;
         }
 

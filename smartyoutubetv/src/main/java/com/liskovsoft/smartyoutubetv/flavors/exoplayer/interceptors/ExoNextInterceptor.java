@@ -12,6 +12,9 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
 
+/**
+ * NOTE: 'next' is fired after 'get_video_info'
+ */
 public class ExoNextInterceptor extends RequestInterceptor {
     private static final String TAG = ExoNextInterceptor.class.getSimpleName();
     private static final String URL_NEXT_DATA = "https://www.youtube.com/youtubei/v1/next";
