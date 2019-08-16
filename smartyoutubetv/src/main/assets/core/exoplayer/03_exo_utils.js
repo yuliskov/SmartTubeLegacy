@@ -66,7 +66,7 @@ window.ExoUtils = {
 
         YouTubeUtils.hidePlayerBackground();
         YouTubeUtils.disablePlayerSuggestions();
-        this.preparePlayer();
+        //this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
         var states = {};
@@ -121,7 +121,7 @@ window.ExoUtils = {
     },
 
     syncButtonsReal: function(states) {
-        this.preparePlayer();
+        //this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
         window.lastButtonName = null;

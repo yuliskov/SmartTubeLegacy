@@ -16,7 +16,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Surface;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
@@ -50,6 +49,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedT
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.io.IOException;
 import java.text.NumberFormat;

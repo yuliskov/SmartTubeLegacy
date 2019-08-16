@@ -32,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -45,6 +46,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.util.Locale;
@@ -185,8 +187,9 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         appendVideoInfo();
         appendOtherInfo();
         appendPlayerState();
-        // appendPlayerWindowIndex();
         appendPreferredDisplayModeId();
+        appendPlayerWindowIndex();
+        appendVersion();
 
         mDebugViewGroup.removeCallbacks(this);
         mDebugViewGroup.postDelayed(this, REFRESH_INTERVAL_MS);
@@ -308,6 +311,11 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
 
     private void appendPlayerWindowIndex() {
         appendRow("Window Index", mPlayer.getCurrentWindowIndex());
+    }
+
+    private void appendVersion() {
+        appendRow("ExoPlayer Version", ExoPlayerLibraryInfo.VERSION);
+        appendRow("SmartYouTubeTV Version", AppInfoHelpers.getAppVersion(mContext));
     }
 
     private void appendRow(String name, boolean val) {

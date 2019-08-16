@@ -16,7 +16,7 @@ window.VoiceSearch = {
     SEARCH_PAGE_TAG: 'search',
 
     init: function() {
-        // this.overrideVoiceCaps();
+        //this.overrideVoiceCaps();
 
         if (DeviceUtils.isMicAvailable()) {
             this.addMicListener();
