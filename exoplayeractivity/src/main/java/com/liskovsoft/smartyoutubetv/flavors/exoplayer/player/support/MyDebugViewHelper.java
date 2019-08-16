@@ -237,8 +237,9 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         }
 
         try {
-            MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false, false);
-            //MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false);
+            // Ver 2.10.4
+            //MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false, false);
+            MediaCodecInfo info = MediaCodecUtil.getDecoderInfo(format.sampleMimeType, false);
 
             if (info == null) {
                 return false;
