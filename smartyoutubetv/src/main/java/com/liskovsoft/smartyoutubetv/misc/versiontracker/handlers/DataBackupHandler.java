@@ -33,20 +33,46 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
 
     @Override
     public void onUpdate() {
+        checkPermAndBackup();
+    }
+
+    @Override
+    public void onInstall() {
+        if (mBackupDir.isDirectory()) {
+            checkPermAndProposeRestore();
+        } else {
+            checkPermAndBackup();
+        }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Yes button clicked
+                restoreData();
+                break;
+
+            case DialogInterface.BUTTON_NEGATIVE:
+                //No button clicked
+                break;
+        }
+    }
+
+    private void checkPermAndProposeRestore() {
+        if (FileHelpers.isExternalStorageReadable()) {
+            askUserPermission();
+        }
+    }
+
+    private void checkPermAndBackup() {
         if (FileHelpers.isExternalStorageWritable()) {
             backupData();
         }
     }
 
-    @Override
-    public void onInstall() {
-        if (FileHelpers.isExternalStorageReadable() && mBackupDir.isDirectory()) {
-            askUserPermission();
-        }
-    }
-
     private void backupData() {
-        Log.d(TAG, "App has been updated. Doing data backup...");
+        Log.d(TAG, "App has been updated or installed. Doing data backup...");
 
         if (mBackupDir.isDirectory()) {
             // remove old backup
@@ -64,7 +90,7 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
         Log.d(TAG, "App just updated. Restoring data...");
 
         if (!mBackupDir.isDirectory()) {
-            // backup not exists
+            Log.d(TAG, "Oops. Backup not exists.");
             return;
         }
 
@@ -83,19 +109,5 @@ public class DataBackupHandler extends Handler implements DialogInterface.OnClic
 
     private void askUserPermission() {
         YesNoDialog.create(mContext, R.string.do_restore_data_msg, this, R.style.AppDialog);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-            case DialogInterface.BUTTON_POSITIVE:
-                //Yes button clicked
-                restoreData();
-                break;
-
-            case DialogInterface.BUTTON_NEGATIVE:
-                //No button clicked
-                break;
-        }
     }
 }

@@ -23,14 +23,24 @@ public class CacheCleanHandler extends Handler {
         mCacheDirs.add(new File(mContext.getApplicationInfo().dataDir, XWALK_CACHE_SUBDIR));
     }
 
-    @Override
-    public void onUpdate() {
-        Log.d(TAG, "App has been updated. Removing cache files...");
+    private void clearCache() {
+        Log.d(TAG, "App has been updated or installed. Removing cache files...");
+
         for (File cacheDir : mCacheDirs) {
             if (cacheDir.isDirectory()) {
                 Log.d(TAG, "Removing cache: " + cacheDir.getAbsolutePath());
                 FileHelpers.delete(cacheDir);
             }
         }
+    }
+
+    @Override
+    public void onUpdate() {
+        clearCache();
+    }
+
+    @Override
+    public void onInstall() {
+        clearCache();
     }
 }
