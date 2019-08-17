@@ -178,6 +178,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     public void finish() {
         mActiveFragment.finish();
         super.finish();
+        System.exit(0);
     }
 
     @Override

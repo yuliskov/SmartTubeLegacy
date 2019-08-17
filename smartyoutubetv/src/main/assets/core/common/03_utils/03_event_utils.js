@@ -247,23 +247,23 @@ var EventUtils = {
         }, ' ');
     },
 
-    turnOffEvents: function(video) { // pure function
+    turnOffEvents: function(elem) { // pure function
         var $this = this;
 
-        video.addEventListenerReal = video.addEventListener;
+        elem.addEventListenerReal = elem.addEventListener;
 
-        video.addEventListener = function(type, listener, options) {
-            Log.d($this.TAG, "Add event listener: " + type + " " + listener);
+        elem.addEventListener = function(type, listener, options) {
+            Log.d($this.TAG, "Add fake event listener: " + type + " " + EventUtils.toSelector(elem));
 
-            if (!video.listeners) {
-                video.listeners = {};
+            if (!elem.listeners) {
+                elem.listeners = {};
             }
 
-            if (!video.listeners[type]) {
-                video.listeners[type] = [];
+            if (!elem.listeners[type]) {
+                elem.listeners[type] = [];
             }
 
-            video.listeners[type].push(listener);
+            elem.listeners[type].push(listener);
 
             // events essential for the playback:
             // pause, timeupdate
@@ -273,8 +273,8 @@ var EventUtils = {
 
             // function wrapper(e) {
             //     Log.d($this.TAG, "Calling listener: " + e.type + ", event=" + EventUtils.stringify(e));
-            //     Log.d($this.TAG, "Video: " + Utils.dumpObj(video));
-            //     listener.call(video, e);
+            //     Log.d($this.TAG, "Video: " + Utils.dumpObj(elem));
+            //     listener.call(elem, e);
             // }
             //
             // if (type == 'pause' || type == 'timeupdate') {

@@ -57,6 +57,8 @@ window.ExoUtils = {
      * Used when calling through app boundaries.
      */
     getButtonStates: function() {
+        Log.d(this.TAG, "getButtonStates call time ms: " + Utils.getCurrentTimeMs());
+
         this.getButtonStatesTime = Utils.getCurrentTimeMs();
 
         // 10 second window between 'get' and 'sync'
@@ -105,6 +107,8 @@ window.ExoUtils = {
      * Used when calling through app boundaries.
      */
     syncButtons: function(states) {
+        Log.d(this.TAG, "syncButtons call time ms: " + Utils.getCurrentTimeMs());
+
         this.syncButtonsTime = Utils.getCurrentTimeMs();
 
         // 10 second window between 'get' and 'sync'

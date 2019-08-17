@@ -9,11 +9,13 @@ import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import com.liskovsoft.browser.xwalk.XWalkWebViewAdapter;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import org.xwalk.core.XWalkPreferences;
 
 import java.util.Map;
 
 public class BrowserWebViewFactory implements WebViewFactory {
+    private static final String TAG = BrowserWebViewFactory.class.getSimpleName();
     protected final Context mContext;
     protected Map<String, String> mNextHeaders;
     private final boolean mIsXWalk;
@@ -49,9 +51,11 @@ public class BrowserWebViewFactory implements WebViewFactory {
         WebView w;
 
         if (mIsXWalk) {
+            Log.d(TAG, "Instantiating XWalkView...");
             w = new XWalkWebViewAdapter(mNextHeaders, mContext, attrs, defStyle, privateBrowsing);
         } else {
             // BUGFIX: rare memory leak in WebView
+            Log.d(TAG, "Instantiating WebView...");
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
 
