@@ -91,7 +91,7 @@ function DummyVideoHandler() {
         video.properties.paused = false;
         video.properties.ended = false;
         var interval = setInterval(function() {
-            Log.d($this.TAG, "onVideoSrcChanged");
+            Log.d($this.TAG, "imitatePlaying...");
 
             if (i > 3) {
                 clearInterval(interval);
@@ -115,7 +115,7 @@ function DummyVideoHandler() {
         video.properties.paused = true;
         video.properties.ended = true;
         var interval = setInterval(function() {
-            Log.d($this.TAG, "imitateEndingInt");
+            Log.d($this.TAG, "imitateEndingInt...");
 
             var urlChanged = location.href != url;
 

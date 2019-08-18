@@ -39,9 +39,9 @@ var DeviceUtils = {
         };
     },
 
-    disableCodec: function(codec, force) {
-        if (!codec) {
-            console.log('DeviceUtils::disableCodec: codec is null');
+    disableCodec: function(unwantedCodec) {
+        if (unwantedCodec == null) {
+            Log.d(this.TAG, 'DisableCodec: codec not specified. Exiting...');
             return;
         }
 
@@ -50,30 +50,38 @@ var DeviceUtils = {
         }
 
         if (!window.MediaSource) {
-            console.log('DeviceUtils::disableCodec: MediaSource is null');
+            Log.d(this.TAG, 'DisableCodec: MediaSource is null');
             return;
         }
 
-        console.log('DeviceUtils::disableCodec: ' + codec + ' on ' + window.thisDevice + ' device');
+        Log.d(this.TAG, 'DisableCodec: ' + unwantedCodec + ' on ' + window.thisDevice + ' device');
 
         var $this = this;
 
         function overrideIsTypeSupported(origin, obj) {
             return function(fullCodec) {
-                var supported = origin.call(obj, fullCodec);
-                console.log('DeviceUtils::isTypeSupported ' + fullCodec + ' ' + supported);
+                var supported;
+                var originSupported = origin.call(obj, fullCodec);
 
-                if (force) { // disable even when codec isn't supported by device
-                    if (Utils.contains(fullCodec, codec)) {
-                        return false;
-                    }
-                } else if (
-                    $this.isPlaybackWorking()   &&
-                    !$this.isLive(fullCodec)    &&
-                    !$this.is4KCodec(codec)     &&
-                    Utils.contains(fullCodec, codec)) {
-                    return false;
+                // if (force) { // disable even when codec isn't supported by device
+                //     if (Utils.contains(fullCodec, codec)) {
+                //         return false;
+                //     }
+                // } else if (
+                //     $this.isPlaybackWorking()   &&
+                //     !$this.isLive(fullCodec)    &&
+                //     !$this.is4KCodec(codec)     &&
+                //     Utils.contains(fullCodec, codec)) {
+                //     return false;
+                // }
+
+                if (Utils.contains(fullCodec, unwantedCodec)) {
+                    supported = false;
+                } else {
+                    supported = originSupported;
                 }
+
+                Log.d($this.TAG,'Codec supported: ' + fullCodec + ' ' + supported + ', origin: ' + originSupported);
 
                 return supported;
             }

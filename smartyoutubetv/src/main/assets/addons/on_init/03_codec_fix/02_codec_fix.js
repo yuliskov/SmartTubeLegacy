@@ -15,14 +15,16 @@ function CodecFixAddon() {
      * Obtains device map for WebView or XWalk respectively
      */
     this.findProperConfig = function() {
-        // CodecSelectorAddon usage
-        switch (DeviceUtils.getPreferredCodec()) {
-            case DeviceUtils.AVC:
-                Log.d(this.TAG, "Forcing AVC codec...");
-                return CodecConfig_AVC;
-            case DeviceUtils.VP9:
-                Log.d(this.TAG, "Forcing VP9 codec...");
-                return CodecConfig_VP9;
+        if (!DeviceUtils.isExo()) {
+            // CodecSelectorAddon usage
+            switch (DeviceUtils.getPreferredCodec()) {
+                case DeviceUtils.AVC:
+                    Log.d(this.TAG, "Forcing AVC codec...");
+                    return CodecConfig_AVC;
+                case DeviceUtils.VP9:
+                    Log.d(this.TAG, "Forcing VP9 codec...");
+                    return CodecConfig_VP9;
+            }
         }
 
         if (DeviceUtils.isWebView()) {
@@ -33,7 +35,7 @@ function CodecFixAddon() {
             return CodecConfig_XWalk;
         }
 
-        Log.d(this.TAG, "CodecFixAddon::unknown engine type " + DeviceUtils.getEngineType());
+        Log.d(this.TAG, "Unknown engine type " + DeviceUtils.getEngineType());
         return {};
     };
 
@@ -50,7 +52,7 @@ function CodecFixAddon() {
                 var codecsLen = codecs.length;
                 for (var i = 0; i < codecsLen; i++) {
                     var codec = codecs[i].trim();
-                    DeviceUtils.disableCodec(codec, true);
+                    DeviceUtils.disableCodec(codec);
                 }
                 break;
             }

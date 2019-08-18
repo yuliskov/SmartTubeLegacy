@@ -115,10 +115,11 @@ var EventUtils = {
             return null;
         }
 
+        var tag = el.tagName || '';
         var idPart = el.id ? '#' + el.id : '';
         var cls = el.className ? el.className.trim() : '';
         var classPart = cls ? '.' + cls.split(/[ ]+/).join('.') : '';
-        return idPart + classPart;
+        return tag + idPart + classPart;
     },
 
     triggerEvent: function(elementOrSelector, type, keyCode) {
@@ -139,7 +140,7 @@ var EventUtils = {
             return;
         }
 
-        console.log("EventUtils::triggerEvent: " + el + ' ' + elSelector + ' ' + type + ' ' + keyCode);
+        console.log("EventUtils::triggerEvent: " + elSelector + ' ' + type + ' ' + keyCode);
 
         this._triggerEvent(el, type, keyCode);
     },
