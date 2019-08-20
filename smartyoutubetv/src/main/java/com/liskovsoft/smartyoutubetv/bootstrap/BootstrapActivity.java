@@ -79,7 +79,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
             return;
         }
 
-        String bootstrapActivityName = mPrefs.getBootstrapActivityName();
+        String bootstrapActivityName = mPrefs.getBootActivityName();
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
         boolean activityHasName = bootstrapActivityName != null;
         if (isChecked && activityHasName) {
@@ -102,7 +102,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
             clazz = SmartYouTubeTV1080Activity.class;
         }
 
-        mPrefs.setBootstrapActivityName(clazz.getCanonicalName());
+        mPrefs.setBootActivityName(clazz.getCanonicalName());
         startActivity(this, clazz);
     }
 
@@ -131,7 +131,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
     }
 
     public void lockOtherLaunchers() {
-        String activeLauncherClass = mPrefs.getBootstrapActivityName();
+        String activeLauncherClass = mPrefs.getBootActivityName();
 
         if (activeLauncherClass == null) {
             return;

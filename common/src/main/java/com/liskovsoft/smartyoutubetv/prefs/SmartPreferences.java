@@ -65,11 +65,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return name;
     }
 
-    public void setBootstrapActivityName(String name) {
+    public void setBootActivityName(String name) {
         putString(BOOTSTRAP_ACTIVITY_NAME, name);
     }
 
-    public String getBootstrapActivityName() {
+    public String getBootActivityName() {
         String name = getString(BOOTSTRAP_ACTIVITY_NAME, null);
         return name;
     }

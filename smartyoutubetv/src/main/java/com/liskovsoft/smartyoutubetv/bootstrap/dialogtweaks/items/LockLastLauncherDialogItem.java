@@ -14,7 +14,7 @@ public class LockLastLauncherDialogItem extends DialogItem {
     public LockLastLauncherDialogItem(Context context) {
         super(context.getResources().getString(
                 R.string.tweak_lock_last_launcher,
-                AppInfoHelpers.getActivityLabelRobust(context, SmartPreferences.instance(context).getBootstrapActivityName())),
+                AppInfoHelpers.getActivityLabelRobust(context, SmartPreferences.instance(context).getBootActivityName())),
                 false);
 
         mContext = context;

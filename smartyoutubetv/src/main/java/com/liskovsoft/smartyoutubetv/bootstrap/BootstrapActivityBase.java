@@ -44,7 +44,7 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
     private void initLogger() {
         Context ctx = getApplicationContext();
         SmartPreferences prefs = SmartPreferences.instance(ctx);
-        Log.init(ctx, prefs.getLogType(), AppInfoHelpers.getActivityLabel(ctx, prefs.getBootstrapActivityName()));
+        Log.init(ctx, prefs.getLogType(), AppInfoHelpers.getActivityLabel(ctx, prefs.getBootActivityName()));
     }
 
     private void makeActivityHorizontal() {
