@@ -1,40 +1,16 @@
-function DummyVideoHandler() {
-    this.TAG = 'DummyVideoHandler';
+/**
+ * Imitates the end of the video.
+ */
+function PlaybackEndAddon() {
+    this.TAG = 'PlaybackEndAddon';
 
-    this.onCreate = function(video) {
-        EventUtils.turnOffEvents(video);
-
-        this.redirectProps(video);
+    this.onInit = function(video) {
         this.initProps(video);
-
         this.addAdditionalFunctions(video);
     };
 
-    this.redirectProps = function(video) {
-        EventUtils.turnOffProp(video, 'webkitDecodedFrameCount');
-        EventUtils.turnOffProp(video, 'webkitAudioDecodedByteCount');
-        EventUtils.turnOffProp(video, 'webkitVideoDecodedByteCount');
-        EventUtils.turnOffProp(video, 'networkState');
-        EventUtils.turnOffProp(video, 'readyState');
-        EventUtils.turnOffProp(video, 'paused');
-        EventUtils.turnOffProp(video, 'ended');
-
-        // ??
-        EventUtils.turnOffProp(video, 'videoWidth');
-        EventUtils.turnOffProp(video, 'videoHeight');
-
-        EventUtils.turnOffProp(video, 'baseURI');
-        EventUtils.turnOffProp(video, 'currentSrc');
-
-        EventUtils.turnOffProp(video, 'duration');
-        
-        EventUtils.turnOffProp(video, 'currentTime', true);
-
-        var $this = this;
-        EventUtils.turnOffProp(video, 'src', false, function(val) {
-            Log.d($this.TAG, "Video src changed: " + val);
-            $this.imitatePlaying(video);
-        });
+    this.onSrcChange = function(video) {
+        this.imitatePlaying(video);
     };
 
     this.initProps = function(video) {
@@ -69,19 +45,6 @@ function DummyVideoHandler() {
             Log.d($this.TAG, "Changing position of the video...");
             $this.imitatePositionInt(video, pos, length);
         };
-    };
-
-    /**
-     * NOTE: you will loose original property!
-     */
-    this.onPropChange = function(obj, propName, callback) {
-        Object.defineProperty(obj, propName, {
-            set: function(val) {
-                if (callback) {
-                    callback(val);
-                }
-            }
-        });
     };
 
     this.imitatePlaying = function(video) {

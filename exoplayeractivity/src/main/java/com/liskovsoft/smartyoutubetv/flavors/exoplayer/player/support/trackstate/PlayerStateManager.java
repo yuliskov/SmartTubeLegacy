@@ -100,7 +100,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
         long pos = findProperVideoPosition(title);
 
-        if (pos != C.TIME_UNSET){
+        if (pos != C.TIME_UNSET && pos != 0){
             mPlayer.seekTo(pos);
         }
     }

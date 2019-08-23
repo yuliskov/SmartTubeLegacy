@@ -45,6 +45,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String VP9 = "vp9";
     public static final String NONE = "";
     private static SmartPreferences sInstance;
+    private int mPositionSec;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -238,5 +239,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setPreviousAppVersionCode(int versionCode) {
         putInt(PREVIOUS_APP_VERSION_CODE, versionCode);
+    }
+
+    public void setCurrentVideoPosition(int positionSec) {
+        mPositionSec = positionSec;
+    }
+
+    public long getCurrentVideoPosition() {
+        return mPositionSec;
     }
 }

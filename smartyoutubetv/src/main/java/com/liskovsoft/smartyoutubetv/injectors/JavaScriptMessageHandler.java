@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -15,6 +16,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_AUTHORIZATION_HEADER = "message_authorization_header";
     private final static String MESSAGE_ENABLE_SCREENSAVER = "message_enable_screensaver";
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
+    private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -43,6 +45,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_DISABLE_SCREENSAVER:
                 Helpers.disableScreensaver((Activity) mContext);
+                break;
+            case MESSAGE_VIDEO_POSITION:
+                CommonApplication.getPreferences().setCurrentVideoPosition(Integer.parseInt(content));
                 break;
         }
     }

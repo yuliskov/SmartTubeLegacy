@@ -298,12 +298,12 @@ var EventUtils = {
                 return obj.properties[propName];
             },
             set: function(val) {
-                if (onSet) {
-                    onSet(val);
-                }
-
                 if (persist) {
                     obj.properties[propName] = val;
+                }
+
+                if (onSet) {
+                    onSet(val);
                 }
             }
         });
