@@ -16,7 +16,7 @@ public class GlobalKeyHandler {
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
-        mBackPressExitEnabled = CommonApplication.getPreferences().getEnableBackPressExit();
+        mBackPressExitEnabled = CommonApplication.getPreferences() != null && CommonApplication.getPreferences().getEnableBackPressExit();
         mExitAppFn = () -> {
             MessageHelpers.showMessage(ctx, R.string.close_msg);
             ctx.finish();
