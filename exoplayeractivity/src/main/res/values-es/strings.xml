@@ -1,0 +1,85 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name_exo">Smart YouTube TV 4K</string>
+    <string name="player_options_btn">Opciones</string>
+    
+    <!-- If player_options_off and player_options_on strings is too long,
+    delete "de reproducción " for making it shorter -->
+    
+    <string name="player_options_off">Opciones de reproducción habilitadas</string>
+    <string name="player_options_on">Opciones de reproducción deshabilitadas</string>
+    <string name="options">Opciones</string>
+    <string name="home">Página principal</string>
+    <string name="user_page">Canal</string>
+    <string name="prev_video">Vídeo anterior</string>
+    <string name="next_video">Siguiente vídeo</string>
+    <string name="pause">Pausa</string>
+    <string name="play">Reproducir</string>
+    <string name="dislike">No me gusta</string>
+    <string name="like">Me gusta</string>
+    <string name="stats">Estadísticas</string>
+    <string name="subscribe">Suscrito</string>
+    <string name="quality">Calidad</string>
+    <string name="video">Vídeo</string>
+    <string name="audio">Audio</string>
+    <string name="text">Subtítulos</string>
+    <string name="retry">Volver a intentar</string>
+    <string name="selection_default_none">Por defecto (ninguno)</string>
+    <string name="unexpected_intent_action">Intento de acción no esperada: <xliff:g id="action">%1$s</xliff:g></string>
+    <string name="enable_random_adaptation">Habilitar adaptación aleatoria</string>
+    <string name="error_drm_not_supported">Los contenidos protegidos no son compatibles con niveles de API inferiores a 18</string>
+    <string name="error_drm_unsupported_scheme">Este dispositivo no es compatible con los esquemas DRM requeridos</string>
+    <string name="error_drm_unknown">Ha ocurrido un error desconocido relacionado con DRM</string>
+    <string name="error_no_decoder">Este dispositivo no proporciona un descodificador para <xliff:g id="mime_type">%1$s</xliff:g></string>
+    <string name="error_no_secure_decoder">Este dispositivo no proporciona un descodificador seguro para <xliff:g id="mime_type">%1$s</xliff:g></string>
+    <string name="error_querying_decoders">No ha sido posible buscar los descodificadores del dispositivo</string>
+    <string name="error_instantiating_decoder">No ha sido posible instanciar el descodificador <xliff:g id="decoder_name">%1$s</xliff:g></string>
+    <string name="error_unsupported_video">El archivo incluye vídeo, pero no es posible reproducirlo en este dispositivo</string>
+    <string name="error_unsupported_audio">El archivo incluye audio, pero no es posible reproducirlo en este dispositivo</string>
+    <string name="storage_permission_denied">Permiso denegado para acceder al almacenamiento</string>
+    <string name="selection_disabled">Deshabilitar pista</string>
+    <string name="selection_default">Por defecto</string>
+    <string name="sample_list_load_error">Error al cargar una o más listas de ejemplo</string>
+    <string name="exo_like_desc">Me gusta</string>
+    
+    <!-- If captions is referring to subtitles, the string is Subtítulos.
+         If it is referring to titles, the string should be Títulos. -->
+         
+    <string name="captions">Subtítulos</string>
+    <string name="not_implemented_msg">Aún no está implementado</string>
+    <string name="published">Publicado</string>
+    <string name="view_count">visitas</string>
+    <string name="suggested_videos">Vídeos sugeridos</string>
+    
+    <!-- I don't know what Autoframerate and TrackViewFormat is referring to,
+         but it should be valid -->
+    
+    <string name="enable_autoframerate">Autoframerate</string>
+    <string name="autoframerate_not_supported">Tu dispositivo no soporta Autoframerate</string>
+    <string name="share_video">Compartir vídeo</string>
+    <string name="send_to">Enviar a</string>
+    <string name="track_view_format">TrackViewFormat</string>
+    <string name="hide_playback_errors">Esconder errores de reproducción</string>
+    <string name="no_subtitle_msg">El vídeo no contiene subtítulos</string>
+    <string name="repeat_video">Repetir vídeo</string>
+    <string name="video_speed">Velocidad</string>
+    <string name="select_video_speed">Elegir velocidad del vídeo</string>
+    <string name="normal">Normal</string>
+    <string name="go_back">Ir atrás</string>
+    <string name="btn_restrict_codec">Preestablecido</string>
+    <string name="no_restrictions">Sin restricciones</string>
+    <string name="select_preferred_codec">Elegir preestableciones de vídeo</string>
+    <string name="time_title">Ahora: %1$s</string>
+    <string name="loading_view_message">Cargando...</string>
+    <string name="video_hang_msg">El vídeo no responde... intentando arreglarlo...</string>
+    <string name="enable_video_zoom">Encajar vídeo por anchura</string>
+    <string name="option_zoom_fit_width">Encajar ancho</string>
+    <string name="dialog_video_zoom">Zoom de vídeo</string>
+    <string name="option_zoom_default">Por defecto</string>
+    <string name="option_zoom_fit_height">Encajar altura</string>
+    <string name="btn_video_zoom">Zoom</string>
+    <string name="btn_favorites">Guardar</string>
+    <string name="option_zoom_fit_both">Encajar por anchura o por altura</string>
+    <string name="option_zoom_stretch">Tramo</string>
+    <string name="checkbox_save_speed">Recordar velocidad</string>
+    <string name="toast_format_restricted">No se puede cambiar el formato mientras el preestablecimiento esté activo</string>
+</resources>
