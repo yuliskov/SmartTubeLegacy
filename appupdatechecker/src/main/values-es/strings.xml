@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<resources>
+	    <!-- AppUpdateChecker -->
+	    <!-- 											version_number ↓        ↓ app_name -->
+	    <string name="app_update_new_version">¡Hay una nueva versión disponible (%1$s) de %2$s !</string>
+	    <string name="upgrade">Actualizar</string>
+	    <string name="cancel">Cancelar</string>
+	    <string name="pref_check_updates_title">Buscar actualizaciones</string>
+	    <string name="pref_min_interval_title">Reducir la frecuencia de actualizaciones</string>
+	    <string name="pref_min_interval_summary">Busca actualizaciones en esta frecuencia</string>
+	    <string name="no_external_storage_error">No se puede instalar la actualización. El dispositivo de almacenamiento externo no existe.</string>
+	    <string name="cant_download_msg">No se puede descargar la actualización. Por favor, inténtalo más tarde.</string>
+  </resources>
