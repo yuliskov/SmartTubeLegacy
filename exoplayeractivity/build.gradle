@@ -64,6 +64,7 @@ dependencies {
     implementation project.properties.collectionXVersion
 
     api project.properties.exoplayerVersion
+
     //api project.properties.amazonExoplayerVersion
 
     implementation project.properties.previewSeekBarVersion
@@ -74,6 +75,10 @@ dependencies {
     annotationProcessor project.properties.glideCompilerVersion
 
     implementation project.properties.multiDexVersion
+
+//    implementation('androidx.media:media:1.0.0') {
+//        force = true
+//    }
 
     // include vp9 extensions
     //implementation (project(path: ':exoplayer-extension-vp9'), {

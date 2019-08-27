@@ -164,6 +164,8 @@ dependencies {
     }
     
     implementation project.properties.appCompatXVersion
+    implementation project.properties.mediaXVersion // exoplayer fix
+    implementation project.properties.recycleViewXVersion // exoplayer fix
     implementation project.properties.constraintLayoutXVersion
 
     implementation project.properties.gsonVersion
