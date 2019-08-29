@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
+import android.net.Uri;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -13,12 +14,11 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import java.io.InputStream;
 
 /**
+ * Intercepts url: https://www.youtube.com/youtubei/v1/next?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8<br/>
  * NOTE: 'next' is fired after 'get_video_info'
  */
 public class ExoNextInterceptor extends RequestInterceptor {
     private static final String TAG = ExoNextInterceptor.class.getSimpleName();
-    private static final String URL_NEXT_DATA = "https://www.youtube.com/youtubei/v1/next";
-    private static final String URL_NEXT_DATA_KIDS = "https://www.youtube.com/youtubei/v1/next?key=AIzaSyD91ZYw_MqMcKSG9PSrCy10JHwbk-6Vis4";
     private final Context mContext;
     private final SmartPreferences mPrefs;
     private final LangUpdater mLang;
@@ -31,6 +31,8 @@ public class ExoNextInterceptor extends RequestInterceptor {
     private static final String PLAYLIST_ID = "\"playlistId\":\"%PLAYLIST_ID%\",";
     private static final String VIDEO_ID = "\"videoId\":\"%VIDEO_ID%\",";
     private final String mPostBodyReal;
+    private static final String NEXT_URL = "https://www.youtube.com/youtubei/v1/next";
+    private String mNextUrl = NEXT_URL; // default url (will be changed after next intercept run
 
     public ExoNextInterceptor(Context context) {
         super(context);
@@ -46,15 +48,26 @@ public class ExoNextInterceptor extends RequestInterceptor {
         return true;
     }
 
+    /**
+     * Looking for 'key' params from the next urls:<br/>
+     * https://www.youtube.com/youtubei/v1/next?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8</br>
+     * https://www.youtube.com/youtubei/v1/browse?key=AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8
+     */
     @Override
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video metadata is intercepted successfully");
+
+        String nextUrlKey = Uri.parse(url).getQueryParameter("key");
+
+        if (nextUrlKey != null) {
+            mNextUrl = String.format("%s?key=%s", NEXT_URL, nextUrlKey);
+        }
 
         return null;
     }
 
     public VideoMetadata getMetadata(String videoId, String playlistId) {
-        InputStream response = postUrlData(URL_NEXT_DATA, getBody(videoId, playlistId));
+        InputStream response = postUrlData(mNextUrl, getBody(videoId, playlistId));
 
         if (response == null) {
             return null;
@@ -64,7 +77,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
 
         return metadata;
     }
-    
+
     private String getBody(String videoId, String playlistId) {
         // always presents
         String videoData = VIDEO_ID.replace("%VIDEO_ID%", videoId);

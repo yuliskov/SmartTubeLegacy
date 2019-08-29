@@ -36,7 +36,8 @@ public class MainExoInterceptor extends RequestInterceptor {
             return true;
         }
 
-        if (url.contains("youtube.com/youtubei/v1/next")) {
+        if (url.contains("youtube.com/youtubei/v1/next") ||
+            url.contains("youtube.com/youtubei/v1/browse")) {
             mCurrentInterceptor = mExoNextInterceptor;
             return true;
         }

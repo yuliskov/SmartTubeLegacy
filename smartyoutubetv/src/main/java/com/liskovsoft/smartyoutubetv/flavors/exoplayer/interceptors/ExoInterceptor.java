@@ -31,7 +31,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final ActionsSender mSender;
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
-    private final boolean mUnplayableVideoFix;
     public static final String URL_VIDEO_DATA = "get_video_info";
 
     public ExoInterceptor(Context context,
@@ -49,7 +48,6 @@ public class ExoInterceptor extends RequestInterceptor {
         mPrefs = SmartPreferences.instance(mContext);
         mSender = new ActionsSender(mContext, this);
         
-        mUnplayableVideoFix = mPrefs.getUnplayableVideoFix();
         boolean useExternalPlayer = mPrefs.getUseExternalPlayer();
 
         if (useExternalPlayer) {
@@ -79,9 +77,8 @@ public class ExoInterceptor extends RequestInterceptor {
         }
 
         mExoCallback.onStart();
+        mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(mCurrentUrl), mManager.getPlaylistId(mCurrentUrl)));
         
-        mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(url), mManager.getPlaylistId(url)));
-
         prepareResponseStream(url);
         parseAndOpenExoPlayer();
 
