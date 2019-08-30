@@ -10,6 +10,7 @@ var YouTubeUtils = {
     FIRST_REVISION: 1,
     VIDEO_SIGN: '#/watch/video',
     VIDEO_LIST_SIGN: '#/watch/loading?list',
+    CATALOG_SIGN: '#/surface',
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: '#/channel',
     CHANNEL_SIGN2: '#/zylon-detail-surface',
@@ -216,5 +217,19 @@ var YouTubeUtils = {
         var key = localStorage.getItem(this.ACTIVE_ACCOUNT_KEY);
 
         return key != null;
+    },
+
+    addExitListener: function(callback) {
+        if (callback == null) {
+            return;
+        }
+
+        var $this = this;
+
+        EventUtils.addListener(YouTubeSelectors.OVERLAY_PANEL_CONTAINER, DefaultEvents.FOCUS, function() {
+            if (location.href.indexOf($this.CATALOG_SIGN) >= 0) {
+                callback();
+            }
+        });
     }
 };
