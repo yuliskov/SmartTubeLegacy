@@ -12,6 +12,7 @@ public class GlobalKeyHandler {
     private final boolean mBackPressExitEnabled;
     private final Handler mHandler;
     private final Runnable mExitAppFn;
+    private final Runnable mResetExitFn = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private int mDoubleBackToExitPressedTimes;
@@ -83,18 +84,19 @@ public class GlobalKeyHandler {
             return;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
             return;
         }
 
         if (event.getKeyCode() != KeyEvent.KEYCODE_BACK &&
             event.getKeyCode() != KeyEvent.KEYCODE_B &&
             event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
-            mDoubleBackToExitPressedTimes = 0;
+            mResetExitFn.run();
+            new Handler().removeCallbacks(mResetExitFn);
             return;
         }
 
-        if (mDoubleBackToExitPressedTimes >= 3) {
+        if (mDoubleBackToExitPressedTimes >= 1) {
             // exit action
             mExitAppFn.run();
             return;
@@ -103,7 +105,7 @@ public class GlobalKeyHandler {
         mDoubleBackToExitPressedTimes++;
 
         if (mDoubleBackToExitPressedTimes == 1) {
-            new Handler().postDelayed(() -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;}, 2000);
+            new Handler().postDelayed(mResetExitFn, 1000);
         }
     }
 }
