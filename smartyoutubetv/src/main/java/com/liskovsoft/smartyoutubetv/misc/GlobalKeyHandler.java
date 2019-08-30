@@ -92,7 +92,7 @@ public class GlobalKeyHandler {
             event.getKeyCode() != KeyEvent.KEYCODE_B &&
             event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
             mResetExitFn.run();
-            new Handler().removeCallbacks(mResetExitFn);
+            mHandler.removeCallbacks(mResetExitFn);
             return;
         }
 
@@ -105,7 +105,7 @@ public class GlobalKeyHandler {
         mDoubleBackToExitPressedTimes++;
 
         if (mDoubleBackToExitPressedTimes == 1) {
-            new Handler().postDelayed(mResetExitFn, 1000);
+            mHandler.postDelayed(mResetExitFn, 1000);
         }
     }
 }
