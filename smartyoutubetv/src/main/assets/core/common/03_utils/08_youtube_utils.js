@@ -227,7 +227,12 @@ var YouTubeUtils = {
         var $this = this;
 
         EventUtils.addListener(YouTubeSelectors.OVERLAY_PANEL_CONTAINER, DefaultEvents.FOCUS, function() {
-            if (location.href.indexOf($this.CATALOG_SIGN) >= 0) {
+            Log.d($this.TAG, "Overlay is shown!");
+
+            var rows = Utils.$$(YouTubeSelectors.OVERLAY_PANEL_MENU_ITEM);
+
+            // Since Exit dialog has only one menu item
+            if (rows && rows.length == 1) {
                 callback();
             }
         });

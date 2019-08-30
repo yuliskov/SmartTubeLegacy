@@ -62,6 +62,7 @@ var YouTubeSelectors = {
     MAIN_LOADER: '#loader',
     BUTTON_BACK: '#legend .back',
     OVERLAY_PANEL_CONTAINER: '#overlay-stage',
+    OVERLAY_PANEL_MENU_ITEM: '#overlay-stage .overlay-partials-menu-item',
     OVERLAY_PANEL: '.overlay-action-panel',
     MULTI_ACCOUNT_PANEL: '.overlay-action-panel.overlay-list-with-header',
     WELCOME_SCREEN_PANEL: '.overlay-action-panel.welcome',

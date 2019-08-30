@@ -13,6 +13,8 @@ public class GlobalKeyHandler {
     private final Handler mHandler;
     private final Runnable mExitAppFn;
     private static final long BACK_PRESS_DURATION_MS = 1_000;
+    private boolean mEnableDoubleBackExit;
+    private int mDoubleBackToExitPressedTimes;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
@@ -43,6 +45,8 @@ public class GlobalKeyHandler {
     }
 
     public KeyEvent translateKey(KeyEvent event) {
+        checkBackPressed(event);
+
         return gamepadFix(unknownKeyFix(event));
     }
 
@@ -68,5 +72,38 @@ public class GlobalKeyHandler {
         }
 
         return event;
+    }
+
+    public void checkDoubleBackExit() {
+        mEnableDoubleBackExit = true;
+    }
+
+    private void checkBackPressed(KeyEvent event) {
+        if (!mEnableDoubleBackExit) {
+            return;
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            return;
+        }
+
+        if (event.getKeyCode() != KeyEvent.KEYCODE_BACK &&
+            event.getKeyCode() != KeyEvent.KEYCODE_B &&
+            event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
+            mDoubleBackToExitPressedTimes = 0;
+            return;
+        }
+
+        if (mDoubleBackToExitPressedTimes >= 3) {
+            // exit action
+            mExitAppFn.run();
+            return;
+        }
+
+        mDoubleBackToExitPressedTimes++;
+
+        if (mDoubleBackToExitPressedTimes == 1) {
+            new Handler().postDelayed(() -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;}, 2000);
+        }
     }
 }

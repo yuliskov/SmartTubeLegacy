@@ -17,6 +17,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_ENABLE_SCREENSAVER = "message_enable_screensaver";
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
+    private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -48,6 +49,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_VIDEO_POSITION:
                 CommonApplication.getPreferences().setCurrentVideoPosition(Integer.parseInt(content));
+                break;
+            case MESSAGE_DOUBLE_BACK_EXIT:
+                ((FragmentManager) mContext).onExitDialogShown();
                 break;
         }
     }

@@ -330,4 +330,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private void makeActivityHorizontal() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
+
+    @Override
+    public void onExitDialogShown() {
+        mKeyHandler.checkDoubleBackExit();
+    }
 }
