@@ -84,8 +84,10 @@ var ListenerUtil = {
     },
 
     initModelChangeListener: function() {
-        if (this.initDone)
+        if (this.initDone) {
+            Log.d(this.TAG, "Root listener already initialized.");
             return;
+        }
 
         this.initDone = true;
 
@@ -93,10 +95,14 @@ var ListenerUtil = {
         var surface = Utils.$(YouTubeSelectors.SURFACE_AREA);
 
         if (!surface) { // running on early stage??
+            Log.d(this.TAG, "Can't instantiate root listener: " + YouTubeSelectors.SURFACE_AREA);
+
             this.initDone = false;
+
             setTimeout(function() {
                $this.initModelChangeListener();
             }, 1000);
+
             return;
         }
 
@@ -112,15 +118,21 @@ var ListenerUtil = {
         };
 
         var onModelChanged = function() {
+            Log.d($this.TAG, "Root listener is called. Assume that model is changed.");
+
             if ($this.handlers.length == 0) {
+                Log.d($this.TAG, "No pending handlers. Removing root listener...");
+
                 surface.removeEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
                 $this.initDone = false;
+
                 return;
             }
 
             checkHandlers();
         };
 
+        Log.d(this.TAG, "Adding root listener...");
         surface.addEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
     }
 };
