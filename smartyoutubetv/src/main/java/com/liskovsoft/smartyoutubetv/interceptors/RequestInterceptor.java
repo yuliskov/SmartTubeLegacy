@@ -48,12 +48,22 @@ public abstract class RequestInterceptor {
         return resourceResponse;
     }
 
+    protected WebResourceResponse wrapResponse(String url, InputStream before, InputStream after) {
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) {
+            MessageHelpers.showLongMessageEndPause(mContext, R.string.fix_clock_msg);
+        }
+
+        InputStream responseStream = response.body().byteStream();
+        return createResponse(response.body().contentType(), Helpers.appendStream(Helpers.appendStream(before, responseStream), after));
+    }
+
     protected WebResourceResponse prependResponse(String url, InputStream toPrepend) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
 
         if (response == null) {
-            Log.e(TAG, "Oops... unknown error inside OkHttpHelpers: " + url);
-            return null;
+            MessageHelpers.showLongMessageEndPause(mContext, R.string.fix_clock_msg);
         }
 
         InputStream responseStream = response.body().byteStream();

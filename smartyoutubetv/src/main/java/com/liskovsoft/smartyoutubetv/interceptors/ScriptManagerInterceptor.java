@@ -29,9 +29,9 @@ public class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (Helpers.endsWith(url, FIRST_SCRIPT_NAME)) {
-            return true;
-        }
+        //if (Helpers.endsWith(url, FIRST_SCRIPT_NAME)) {
+        //    return true;
+        //}
 
         if (Helpers.endsWith(url, LAST_SCRIPT_NAME)) {
             return true;
@@ -46,18 +46,30 @@ public class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        if (Helpers.endsWith(url, FIRST_SCRIPT_NAME)) {
+        //if (Helpers.endsWith(url, FIRST_SCRIPT_NAME)) {
+        //    Log.d(TAG, "Begin onInitScripts");
+        //    InputStream onInitScripts = mManager.getOnInitScripts();
+        //    Log.d(TAG, "End onInitScripts");
+        //    return prependResponse(url, onInitScripts);
+        //}
+
+        //if (Helpers.endsWith(url, LAST_SCRIPT_NAME)) {
+        //    Log.d(TAG, "Begin onLoadScript");
+        //    InputStream onLoadScripts = mManager.getOnLoadScripts();
+        //    Log.d(TAG, "End onLoadScript");
+        //    return appendResponse(url, onLoadScripts);
+        //}
+
+        if (Helpers.endsWith(url, LAST_SCRIPT_NAME)) {
             Log.d(TAG, "Begin onInitScripts");
             InputStream onInitScripts = mManager.getOnInitScripts();
             Log.d(TAG, "End onInitScripts");
-            return prependResponse(url, onInitScripts);
-        }
 
-        if (Helpers.endsWith(url, LAST_SCRIPT_NAME)) {
             Log.d(TAG, "Begin onLoadScript");
             InputStream onLoadScripts = mManager.getOnLoadScripts();
             Log.d(TAG, "End onLoadScript");
-            return appendResponse(url, onLoadScripts);
+
+            return wrapResponse(url, onInitScripts, onLoadScripts);
         }
 
         if (Helpers.endsWith(url, LAST_STYLE_NAME)) {
