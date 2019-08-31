@@ -22,7 +22,7 @@ class DisplaySyncHelper implements UhdHelperListener {
     private int mNewMode;
     private int mOriginalModeId;
     // switch not only framerate but resolution too
-    private static final boolean SWITCH_TO_UHD = false;
+    private static final boolean SWITCH_TO_UHD = true;
 
     public DisplaySyncHelper(Activity context) {
         mContext = context;
