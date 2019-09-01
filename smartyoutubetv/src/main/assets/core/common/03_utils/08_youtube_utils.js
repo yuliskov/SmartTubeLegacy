@@ -10,11 +10,9 @@ var YouTubeUtils = {
     FIRST_REVISION: 1,
     VIDEO_SIGN: '#/watch/video',
     VIDEO_LIST_SIGN: '#/watch/loading?list',
-    CATALOG_SIGN: '#/surface',
+    CATALOG_SIGN: ['#/surface', '#/zylon-surface'],
     SEARCH_SIGN: '#/search',
-    CHANNEL_SIGN: '#/channel',
-    CHANNEL_SIGN2: '#/zylon-detail-surface',
-    CHANNEL_SIGN3: '#/zylon-surface',
+    CHANNEL_SIGN: ['#/channel', '#/zylon-detail-surface', '#/zylon-surface'],
     ACTIVE_ACCOUNT_KEY: 'yt.leanback.default::active-account',
 
     isComponentDisabled: function(element) {
@@ -171,10 +169,7 @@ var YouTubeUtils = {
     },
 
     isChannelOpened: function() {
-        var isOpened =
-            location.hash.indexOf(this.CHANNEL_SIGN)  != -1  ||
-            location.hash.indexOf(this.CHANNEL_SIGN2) != -1  ||
-            location.hash.indexOf(this.CHANNEL_SIGN3) != -1;
+        var isOpened = Utils.contains(location.hash, this.CHANNEL_SIGN);
 
         Log.d(this.TAG, "Channel is opened: " + isOpened + ", hash: " + location.hash);
         return isOpened;
@@ -232,7 +227,9 @@ var YouTubeUtils = {
             var rows = Utils.$$(YouTubeSelectors.OVERLAY_PANEL_MENU_ITEM);
 
             // Since Exit dialog has only one menu item
-            if (rows && rows.length == 1) {
+            var isOneRow = rows && rows.length == 1;
+            var isCatalog = Utils.contains(location.href, $this.CATALOG_SIGN);
+            if (isOneRow && isCatalog) {
                 callback();
             }
         });

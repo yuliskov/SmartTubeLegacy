@@ -388,11 +388,44 @@ var Utils = {
     },
 
     /**
-     * Compare special strings.
-     * Returns true even when the second string is empty: this.specCmp('abc', '') == true
+     * True if contains any of supplied substrings<br/>
+     */
+    contains: function(fullSpec, specOrArray, testAll) {
+        if (fullSpec == null || specOrArray == null) {
+            return false;
+        }
+
+        if (this.isArray(specOrArray)) {
+            var result = false;
+
+            for (var i = 0; i < specOrArray.length; i++) {
+                result = this.containsSimple(fullSpec, specOrArray[i]);
+
+                if (result && !testAll) {
+                    break;
+                }
+
+                if (!result && testAll) {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        return this.containsSimple(fullSpec, specOrArray);
+    },
+
+    /**
+     * Compare special strings.<br/>
+     * Returns true even when the second string is empty: this.specCmp('abc', '') == true<br/>
      * Or when strings partially matched: this.specCmp('abc', 'ab') == true
      */
-    contains: function(fullSpec, spec) {
+    containsSimple: function(fullSpec, spec) {
+        if (fullSpec == null || spec == null) {
+            return false;
+        }
+
         fullSpec = fullSpec.toLowerCase();
         spec = spec.toLowerCase();
         return fullSpec.indexOf(spec) >= 0;

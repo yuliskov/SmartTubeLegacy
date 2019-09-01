@@ -370,18 +370,10 @@ public class MyXWalkUpdater {
         }
 
         if (mUpdateListener != null) {
-            mDownloadCommand = new Runnable() {
-                @Override
-                public void run() {
-                    downloadXWalkApk();
-                }
-            };
-            mCancelCommand = new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "MyXWalkUpdater cancelled");
-                    mUpdateListener.onXWalkUpdateCancelled();
-                }
+            mDownloadCommand = this::downloadXWalkApk;
+            mCancelCommand = () -> {
+                Log.d(TAG, "MyXWalkUpdater cancelled");
+                mUpdateListener.onXWalkUpdateCancelled();
             };
 
             mDialogManager.showInitializationError(status, mCancelCommand, mDownloadCommand);
