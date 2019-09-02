@@ -6,7 +6,7 @@
     <string name="upgrade">Mise à jour</string>
     <string name="cancel">Annuler</string>
     <string name="pref_check_updates_title">Vérifier la mise à jours</string>
-    <string name="pref_min_interval_title">Fréquence de mise à jour minimale</string>
+    <string name="pref_min_interval_title">Fréquence minimale de mise à jour</string>
     <string name="pref_min_interval_summary">Vérifie les mises à jour</string>
     <string name="no_external_storage_error">Impossible d\'installer la mise à jour. Le stockage externe n\'existe pas.</string>
     <string name="cant_download_msg">Impossible de télécharger la mise à jour. S\'il vous plaît, essayer plus tard.</string>
