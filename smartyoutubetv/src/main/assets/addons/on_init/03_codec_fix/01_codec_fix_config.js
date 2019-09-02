@@ -34,6 +34,7 @@ var CodecConfig_WebView = {
     't95m': '', // (gmail)
     '32T18': '', // FAMILY GENERATION T18 BY (gmail)
     'mt5882': '', // Generic Android on mt5882 (gmail)
+    'Mystery Shell': '', // cheap tv (telegram)
     // 'MiTV4A (matrix)': 'mp4', // amlogic: MiTV4A 43 (4pda)
     // 'MiTV2-40 (hancock)': 'webm', // entrapment: MiTV2 40" (gmail)
     // 'OzoneHD (m201)': 'webm', // 4pda
@@ -66,6 +67,7 @@ var CodecConfig_XWalk = {
     'Amazon Jem (cm_jem)': '', // Kindle Fire HD 8.9 (enable all formats)
     't95m': '', // (gmail)
     '32T18': '', // KTU84M (gmail, thailand)
+    'Mystery Shell': '', // cheap tv (telegram)
     // 'MiTV4A (matrix)': 'mp4', // amlogic: MiTV4A 43 (4pda)
     // 'MiTV3S-43 (hancock)': 'webm', // MiTV3S 43 ???
     // 'MiTV2-40 (hancock)': 'webm', // entrapment: MiTV2 40" (gmail)
