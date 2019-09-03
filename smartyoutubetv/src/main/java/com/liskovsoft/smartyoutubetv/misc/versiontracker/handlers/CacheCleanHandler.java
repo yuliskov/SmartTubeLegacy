@@ -3,12 +3,12 @@ package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.Handler;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.StateHandler;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class CacheCleanHandler extends Handler {
+public class CacheCleanHandler extends StateHandler {
     private static final String TAG = CacheCleanHandler.class.getSimpleName();
     private final Context mContext;
     private final ArrayList<File> mCacheDirs;

@@ -18,7 +18,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mInterceptors = new ArrayList<>();
         //mInterceptors.add(new ContentSecurityPolicyInterceptor(context));
         mInterceptors.add(new PlaybackStatsInterceptor(context));
-        mInterceptors.add(new ScriptManagerInterceptor(context));
+        mInterceptors.add(ScriptManagerInterceptor.create(context));
         mInterceptors.add(new OpenExternalPlayerInterceptor(context));
         mInterceptors.add(new AdAwayInterceptor(context));
     }

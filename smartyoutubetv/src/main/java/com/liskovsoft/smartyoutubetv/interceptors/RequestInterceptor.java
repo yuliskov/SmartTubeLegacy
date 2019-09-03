@@ -92,4 +92,14 @@ public abstract class RequestInterceptor {
 
         return response == null ? null : response.body().byteStream();
     }
+
+    protected Response getResponse(String url) {
+        Response response = OkHttpHelpers.doOkHttpRequest(url);
+
+        if (response == null) {
+            MessageHelpers.showLongMessageEndPause(mContext, R.string.fix_clock_msg);
+        }
+
+        return response;
+    }
 }

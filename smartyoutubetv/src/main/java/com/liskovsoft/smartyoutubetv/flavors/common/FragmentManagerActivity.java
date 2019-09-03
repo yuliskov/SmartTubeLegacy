@@ -75,6 +75,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mAppVersionChecker = new AppVersionTracker(this);
         mAppVersionChecker.run();
+
+        mApkUpdater.start();
     }
 
     @Override
@@ -304,7 +306,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         Log.d(TAG, "App loaded");
         mLoadingDone = true;
         mLoadingManager.hide();
-        mApkUpdater.start();
     }
 
     @Override

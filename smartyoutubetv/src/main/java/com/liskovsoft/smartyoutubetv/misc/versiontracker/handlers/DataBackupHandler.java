@@ -7,12 +7,12 @@ import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.Handler;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.StateHandler;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class DataBackupHandler extends Handler implements DialogInterface.OnClickListener {
+public class DataBackupHandler extends StateHandler implements DialogInterface.OnClickListener {
     private static final String TAG = DataBackupHandler.class.getSimpleName();
     private final Context mContext;
     private final ArrayList<File> mDataDirs;

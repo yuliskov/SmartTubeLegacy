@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class AppVersionTrackerBase {
     private static final String TAG = AppVersionTracker.class.getSimpleName();
-    private final ArrayList<Handler> mHandlers;
+    private final ArrayList<StateHandler> mHandlers;
 
     public AppVersionTrackerBase() {
         mHandlers = new ArrayList<>();
@@ -19,7 +19,7 @@ public class AppVersionTrackerBase {
         SmartPreferences prefs = CommonApplication.getPreferences();
         int code = prefs.getPreviousAppVersionCode();
 
-        for (Handler handler : mHandlers) {
+        for (StateHandler handler : mHandlers) {
             handler.onBoot();
 
             if (code != BuildConfig.VERSION_CODE) {
@@ -41,15 +41,15 @@ public class AppVersionTrackerBase {
         }
     }
 
-    public void addHandler(Handler handler) {
+    public void addHandler(StateHandler handler) {
         mHandlers.add(handler);
     }
 
-    public void removeHandler(Handler handler) {
+    public void removeHandler(StateHandler handler) {
         mHandlers.remove(handler);
     }
 
-    public static abstract class Handler {
+    public static abstract class StateHandler {
         public void onUpdate() {
         }
 

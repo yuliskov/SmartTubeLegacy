@@ -38,6 +38,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String IS_APP_JUST_INSTALLED = "is_app_just_installed";
     private static final String BACK_PRESS_EXIT = "back_press_exit";
     private static final String PREVIOUS_APP_VERSION_CODE = "previous_app_version_code";
+    private static final String BOOT_SUCCEEDED = "boot_succeeded";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -247,5 +248,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public long getCurrentVideoPosition() {
         return mPositionSec;
+    }
+
+    public void setBootSucceeded(boolean succeeded) {
+        putBoolean(BOOT_SUCCEEDED, succeeded);
+    }
+
+    public boolean getBootSucceeded() {
+        return getBoolean(BOOT_SUCCEEDED, true);
     }
 }
