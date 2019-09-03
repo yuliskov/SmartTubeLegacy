@@ -12,9 +12,9 @@ public class AppVersionTracker extends AppVersionTrackerBase {
     public AppVersionTracker(Context context) {
         mContext = context;
 
-        if (context instanceof FragmentManagerActivity) {
-            addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
-        }
+        //if (context instanceof FragmentManagerActivity) {
+        //    addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
+        //}
 
         addHandler(new CacheCleanHandler(context));
         addHandler(new DataBackupHandler(context));
