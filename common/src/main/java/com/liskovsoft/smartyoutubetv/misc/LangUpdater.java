@@ -44,7 +44,13 @@ public class LangUpdater {
      * @return lang code
      */
     public String getPreferredBrowserLocale() {
-        return getPreferredLocale().replace("_", "-").toLowerCase();
+        String locale = getPreferredLocale();
+
+        if (locale == null || locale.isEmpty()) {
+            locale = LangHelper.getDefaultLocale();
+        }
+
+        return locale.replace("_", "-").toLowerCase();
     }
 
     /**

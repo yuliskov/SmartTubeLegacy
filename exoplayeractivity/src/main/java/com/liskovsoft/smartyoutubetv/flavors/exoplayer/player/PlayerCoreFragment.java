@@ -612,6 +612,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
+        boolean isCodecError = false;
 
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
@@ -630,6 +631,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
                 }
             }
+
+            isCodecError = true;
         } else if (e.type == ExoPlaybackException.TYPE_SOURCE) {
             // Response code: 403
             errorString = e.getSourceException().getLocalizedMessage();
@@ -651,7 +654,9 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             //updateButtonVisibilities();
         }
 
-        restorePlayback();
+        if (isCodecError) {
+            restorePlayback();
+        }
     }
 
     /**
