@@ -202,14 +202,18 @@ var EventUtils = {
     },
 
     onLoad: function(callback) {
-        if (!Utils.$(YouTubeSelectors.MAIN_LOADER)) {
-            Log.d(this.TAG, 'app has been loaded');
+        var loader = Utils.$(YouTubeSelectors.MAIN_LOADER);
+
+        if (loader == null) {
+            Log.d(this.TAG, 'Load watcher: App has been loaded.');
             callback && callback();
             return;
         }
 
         var $this = this;
+
         setTimeout(function() {
+            Log.d($this.TAG, 'Load watcher: App still loading... ' + EventUtils.toSelector(loader));
             $this.onLoad(callback);
         }, 500);
     },
