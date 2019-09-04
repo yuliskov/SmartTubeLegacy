@@ -8,7 +8,7 @@ android {
     }
 
     // allow other modules import debug/release configurations
-    publishNonDefault true
+    //publishNonDefault true
 
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion

@@ -630,6 +630,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                     errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
                 }
             }
+        } else if (e.type == ExoPlaybackException.TYPE_SOURCE) {
+            // Response code: 403
+            errorString = e.getSourceException().getLocalizedMessage();
+        } else if (e.type == ExoPlaybackException.TYPE_UNEXPECTED) {
+            errorString = e.getUnexpectedException().getLocalizedMessage();
         }
 
         if (errorString != null && !getHidePlaybackErrors()) {

@@ -30,7 +30,7 @@ android {
     // In the library module's build.gradle, you need a couple extra lines to tell it to
     // export the flavors and which build variant to use by default if not specified when being included from another module:
     defaultPublishConfig "liteDebug"
-    publishNonDefault true
+    //publishNonDefault true
 
     // gradle 4.6 migration: disable dimensions mechanism
     // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
