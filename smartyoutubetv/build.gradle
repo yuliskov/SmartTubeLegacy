@@ -106,7 +106,7 @@ android {
         Vbolshoetv {
             // vermax uhd250x/300x 1GB ram
             matchingFallbacks = ['lite']
-            versionCode 10072
+            versionCode 10078
         }
     }
 
