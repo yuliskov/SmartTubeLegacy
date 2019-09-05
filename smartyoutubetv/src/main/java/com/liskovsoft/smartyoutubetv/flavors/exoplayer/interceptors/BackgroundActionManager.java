@@ -42,7 +42,7 @@ public class BackgroundActionManager {
         boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
 
         if (isXWalk && mSameVideo && (mCalledRecently || mClosedRecently)) {
-            Log.d(TAG, "Cancel playback: Same video accoutered");
+            Log.d(TAG, "Cancel playback: Same video");
             return true;
         }
 
