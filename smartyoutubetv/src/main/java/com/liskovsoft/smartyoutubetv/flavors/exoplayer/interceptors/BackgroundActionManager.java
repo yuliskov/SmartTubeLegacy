@@ -32,16 +32,12 @@ public class BackgroundActionManager {
             return true;
         }
 
-        String videoId = MyUrlEncodedQueryString.parse(mCurrentUrl).get(PARAM_VIDEO_ID);
-
-        if (videoId == null) {
+        if (getVideoId(mCurrentUrl) == null) {
             Log.d(TAG, "Cancel playback: Supplied url doesn't contain video info");
             return true;
         }
 
-        boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
-
-        if (isXWalk && mSameVideo && (mCalledRecently || mClosedRecently)) {
+        if (mSameVideo && (mCalledRecently || mClosedRecently)) {
             Log.d(TAG, "Cancel playback: Same video");
             return true;
         }
