@@ -97,7 +97,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 return;
             }
 
-            boolean pauseBrowser = !mManager.isMirroring(mInterceptor.getCurrentUrl());
+            boolean pauseBrowser = !mManager.isMirroring();
             mFragmentsManager.openExoPlayer(null, pauseBrowser);
         };
 

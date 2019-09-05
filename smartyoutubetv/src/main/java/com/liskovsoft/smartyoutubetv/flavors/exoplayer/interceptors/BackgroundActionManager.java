@@ -1,6 +1,9 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
+import com.liskovsoft.browser.Browser;
+import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
@@ -17,38 +20,31 @@ public class BackgroundActionManager {
      */
     private long mExitTime;
     private long mPrevCallTime;
-    private String mPrevVideoId;
     private boolean mIsOpened;
+    private String mCurrentUrl;
+    private boolean mClosedRecently;
+    private boolean mCalledRecently;
+    private boolean mSameVideo;
 
-    public boolean cancelPlayback(String url) {
-        if (!url.contains(ExoInterceptor.URL_VIDEO_DATA))
+    public boolean cancelPlayback() {
+        if (mCurrentUrl == null || !mCurrentUrl.contains(ExoInterceptor.URL_VIDEO_DATA)) {
+            Log.d(TAG, "Cancel playback: No video data");
             return true;
+        }
 
-        long elapsedTimeAfterClose = System.currentTimeMillis() - mExitTime;
-        long elapsedTimeAfterCall = System.currentTimeMillis() - mPrevCallTime;
-        Log.d(TAG, "Elapsed time after close: " + elapsedTimeAfterClose);
-        Log.d(TAG, "Elapsed time after call: " + elapsedTimeAfterCall);
-
-        String videoId = MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
+        String videoId = MyUrlEncodedQueryString.parse(mCurrentUrl).get(PARAM_VIDEO_ID);
 
         if (videoId == null) {
-            Log.d(TAG, "Supplied url doesn't contain video info");
-            mPrevCallTime = System.currentTimeMillis();
+            Log.d(TAG, "Cancel playback: Supplied url doesn't contain video info");
             return true;
         }
 
-        boolean sameVideo = videoId.equals(mPrevVideoId);
-        boolean closedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-        boolean calledRecently = elapsedTimeAfterCall < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-        if (sameVideo && (calledRecently || closedRecently || mIsOpened)) {
-            Log.d(TAG, "The same video encountered");
-            mPrevCallTime = System.currentTimeMillis();
+        boolean isXWalk = Browser.getEngineType() == EngineType.XWalk;
+
+        if (isXWalk && mSameVideo && (mCalledRecently || mClosedRecently)) {
+            Log.d(TAG, "Cancel playback: Same video accoutered");
             return true;
         }
-
-        mPrevVideoId = videoId;
-        mPrevCallTime = System.currentTimeMillis();
-        mIsOpened = false;
 
         return false;
     }
@@ -66,6 +62,39 @@ public class BackgroundActionManager {
         mIsOpened = false;
     }
 
+    public void init(String url) {
+        measurePrevCallTime();
+        recordUrl(url);
+
+        mCurrentUrl = url;
+    }
+
+    private void recordUrl(String url) {
+        String prevVideoId = getVideoId(mCurrentUrl);
+        String currentVideoId = getVideoId(url);
+
+        if (prevVideoId != null) {
+            mSameVideo = prevVideoId.equals(currentVideoId);
+        }
+
+        if (mSameVideo) {
+            Log.d(TAG, "The same video encountered");
+        }
+    }
+
+    private void measurePrevCallTime() {
+        long elapsedTimeAfterClose = System.currentTimeMillis() - mExitTime;
+        long elapsedTimeAfterCall = System.currentTimeMillis() - mPrevCallTime;
+
+        Log.d(TAG, "Elapsed time after close: " + elapsedTimeAfterClose);
+        Log.d(TAG, "Elapsed time after call: " + elapsedTimeAfterCall);
+
+        mClosedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        mCalledRecently = elapsedTimeAfterCall < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+
+        mPrevCallTime = System.currentTimeMillis();
+    }
+
     public void onOpen() {
         Log.d(TAG, "Video has been opened");
         mIsOpened = true;
@@ -75,7 +104,7 @@ public class BackgroundActionManager {
         return mIsOpened;
     }
 
-    public boolean isMirroring(String url) {
+    private boolean isMirroring(String url) {
         String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR);
 
         if (mirrorDeviceName != null && !mirrorDeviceName.isEmpty()) { // any response is good
@@ -86,11 +115,27 @@ public class BackgroundActionManager {
         return false;
     }
 
+    public boolean isMirroring() {
+        if (mCurrentUrl == null) {
+            return false;
+        }
+
+        return isMirroring(mCurrentUrl);
+    }
+
     public String getVideoId(String url) {
+        if (url == null) {
+            return null;
+        }
+
         return MyUrlEncodedQueryString.parse(url).get(PARAM_VIDEO_ID);
     }
 
     public String getPlaylistId(String url) {
+        if (url == null) {
+            return null;
+        }
+
         return MyUrlEncodedQueryString.parse(url).get(PARAM_PLAYLIST_ID);
     }
 }
