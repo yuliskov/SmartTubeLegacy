@@ -7,11 +7,11 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.util.ArrayList;
 
-public class AppVersionTrackerBase {
-    private static final String TAG = AppVersionTracker.class.getSimpleName();
+public class AppStateWatcherBase {
+    private static final String TAG = AppStateWatcher.class.getSimpleName();
     private final ArrayList<StateHandler> mHandlers;
 
-    public AppVersionTrackerBase() {
+    public AppStateWatcherBase() {
         mHandlers = new ArrayList<>();
     }
 

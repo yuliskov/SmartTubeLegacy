@@ -12,8 +12,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTracker;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcher;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase;
 import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -43,7 +43,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
     private GlobalKeyHandler mKeyHandler;
-    private AppVersionTrackerBase mAppVersionChecker;
+    private AppStateWatcherBase mAppVersionChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
 
-        mAppVersionChecker = new AppVersionTracker(this);
+        mAppVersionChecker = new AppStateWatcher(this);
         mAppVersionChecker.run();
 
         mApkUpdater.start();

@@ -24,12 +24,6 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
         mManager = new MainCachedScriptManager(context);
     }
 
-    public static ScriptManagerInterceptor create(Context context) {
-        boolean success = CommonApplication.getPreferences().getBootSucceeded();
-
-        return success ? new MainScriptManagerInterceptor(context) : new AltScriptManagerInterceptor(context);
-    }
-
     @Override
     public boolean test(String url) {
         if (isFirstScript(url)) {

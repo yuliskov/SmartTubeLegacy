@@ -6,15 +6,15 @@ import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.CacheCleanHand
 import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.DataBackupHandler;
 import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.LoadingCheckHandler;
 
-public class AppVersionTracker extends AppVersionTrackerBase {
+public class AppStateWatcher extends AppStateWatcherBase {
     private final Context mContext;
 
-    public AppVersionTracker(Context context) {
+    public AppStateWatcher(Context context) {
         mContext = context;
 
-        //if (context instanceof FragmentManagerActivity) {
-        //    addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
-        //}
+        if (context instanceof FragmentManagerActivity) {
+            addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
+        }
 
         addHandler(new CacheCleanHandler(context));
         addHandler(new DataBackupHandler(context));

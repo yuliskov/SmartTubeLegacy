@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.StateHandler;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.StateHandler;
 
 import java.io.File;
 import java.util.ArrayList;

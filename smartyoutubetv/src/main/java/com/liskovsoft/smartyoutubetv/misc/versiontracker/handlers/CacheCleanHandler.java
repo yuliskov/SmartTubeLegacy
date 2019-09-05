@@ -3,7 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.StateHandler;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.StateHandler;
 
 import java.io.File;
 import java.util.ArrayList;

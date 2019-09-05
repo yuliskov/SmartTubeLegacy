@@ -1,9 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
 
 import android.os.Handler;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppVersionTrackerBase.StateHandler;
+import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.StateHandler;
 
 public class LoadingCheckHandler extends StateHandler {
     private final FragmentManagerActivity mFragmentManagerActivity;
@@ -14,13 +13,12 @@ public class LoadingCheckHandler extends StateHandler {
 
     @Override
     public void onBoot() {
-        new Handler().postDelayed(this::checkAppLoaded, 60_000);
+        new Handler(mFragmentManagerActivity.getMainLooper()).postDelayed(this::checkAppLoaded, 180_000);
     }
 
     private void checkAppLoaded() {
         if (!mFragmentManagerActivity.isAppLoaded()) {
-            CommonApplication.getPreferences().setBootSucceeded(false);
-            mFragmentManagerActivity.finish();
+            mFragmentManagerActivity.onAppLoaded();
         }
     }
 }
