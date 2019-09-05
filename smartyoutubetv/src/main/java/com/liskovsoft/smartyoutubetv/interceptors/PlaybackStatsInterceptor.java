@@ -7,6 +7,9 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
+/**
+ * Used with conjunction with js DeviceUtils.disableCodec
+ */
 public class PlaybackStatsInterceptor extends RequestInterceptor {
     private static final String DURATION_URL = "youtube.com/gen_204?a=tv_transport&duration=";
     private static final String ERROR_DURATION_URL = "youtube.com/gen_204?a=tv_transport&duration=0&";
