@@ -24,7 +24,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private BrowserFragment mBrowserFragment;
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
-    private boolean mTransparencyDone;
     private boolean mXWalkFixDone;
 
     @Override
@@ -171,16 +170,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private void initBrowserTransparency() {
-        if (mTransparencyDone) {
-            return;
-        }
-
         findViewById(R.id.exo_container).setBackgroundColor(Color.BLACK);
 
         ViewGroup browser = (ViewGroup) mBrowserFragment.getWrapper();
         setTransparencyRecursive(browser);
-
-        mTransparencyDone = true;
     }
 
     private void setTransparencyRecursive(ViewGroup container) {

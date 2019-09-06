@@ -181,6 +181,7 @@ public class Tab implements PictureListener {
 
     public void loadUrl(String url, Map<String, String> headers) {
         if (mMainView != null) {
+            mWebViewClient.mLoadSuccess = true;
             mPageLoadProgress = INITIAL_PROGRESS;
             mInPageLoad = true;
             mCurrentState = new PageState(mContext, false, url, null);
@@ -914,7 +915,7 @@ public class Tab implements PictureListener {
     // -------------------------------------------------------------------------
     // WebViewClient implementation for the main WebView
     // -------------------------------------------------------------------------
-    private WebViewClient mWebViewClient = new MainWindowClient();
+    private MainWindowClient mWebViewClient = new MainWindowClient();
 
     public class MainWindowClient extends WebViewClient {
         boolean mFirstStarted;
@@ -960,8 +961,9 @@ public class Tab implements PictureListener {
         }
 
         private void onLoadSuccess() {
-            if (mLoadSuccess && mListener != null)
+            if (mLoadSuccess && mListener != null) {
                 mListener.onLoadSuccess(Tab.this);
+            }
 
             mLoadSuccess = false;
         }
