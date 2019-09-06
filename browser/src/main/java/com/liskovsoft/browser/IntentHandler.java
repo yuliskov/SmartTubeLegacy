@@ -148,13 +148,19 @@ public class IntentHandler {
                 // No matching application tab, try to find a regular tab
                 // with a matching url.
                 Tab appTab = mTabControl.findTabWithUrl(urlData.mUrl);
+
+                // NewIntent fix (always use current tab)
+                if (appTab == null) {
+                    appTab = mTabControl.getCurrentTab();
+                }
+
                 if (appTab != null) {
                     // Transfer ownership
                     appTab.setAppId(appId);
                     if (current != appTab) {
                         mController.switchToTab(appTab);
                     } else {
-                        // NewIntent fix
+                        // NewIntent fix (always use current tab)
                         mController.reuseTab(appTab, urlData);
                     }
                     // Otherwise, we are already viewing the correct tab.
@@ -165,6 +171,7 @@ public class IntentHandler {
                     // tab. If a new tab is created, it will have "true" for
                     // exit on close.
                     Tab tab = mController.openTab(urlData);
+
                     if (tab != null) {
                         tab.setAppId(appId);
                         if ((intent.getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
