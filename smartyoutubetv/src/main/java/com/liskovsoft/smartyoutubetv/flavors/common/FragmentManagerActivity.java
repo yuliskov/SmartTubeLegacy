@@ -43,7 +43,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
     private GlobalKeyHandler mKeyHandler;
-    private AppStateWatcherBase mAppVersionChecker;
+    private AppStateWatcherBase mAppStateWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
 
-        mAppVersionChecker = new AppStateWatcher(this);
-        mAppVersionChecker.run();
+        mAppStateWatcher = new AppStateWatcher(this);
+        mAppStateWatcher.run();
 
         mApkUpdater.start();
     }
@@ -306,6 +306,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         Log.d(TAG, "App loaded");
         mLoadingDone = true;
         mLoadingManager.hide();
+        mAppStateWatcher.onLoad();
     }
 
     @Override

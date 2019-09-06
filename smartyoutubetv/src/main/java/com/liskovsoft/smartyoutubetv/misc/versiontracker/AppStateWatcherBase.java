@@ -28,14 +28,14 @@ public class AppStateWatcherBase {
                 if (code != 0) {
                     // put cleanup logic here
                     // FileHelpers.deleteCache(mContext);
-                    Log.d(TAG, "App has been updated... Clearing cache...");
+                    Log.d(TAG, "App has been updated... Clearing cache, doing backup...");
 
                     handler.onUpdate();
                 } else {
                     // put restore logic here
                     Log.d(TAG, "App just installed... Restoring data...");
 
-                    handler.onInstall();
+                    handler.onFirstRun();
                 }
             }
         }
@@ -49,14 +49,26 @@ public class AppStateWatcherBase {
         mHandlers.remove(handler);
     }
 
+    public void onLoad() {
+        Log.d(TAG, "App has been loaded... Calling handlers...");
+
+        for (StateHandler handler : mHandlers) {
+            handler.onLoad();
+        }
+    }
+
     public static abstract class StateHandler {
         public void onUpdate() {
         }
 
-        public void onInstall() {
+        public void onFirstRun() {
         }
 
         public void onBoot() {
+        }
+
+        public void onLoad() {
+            
         }
     }
 }

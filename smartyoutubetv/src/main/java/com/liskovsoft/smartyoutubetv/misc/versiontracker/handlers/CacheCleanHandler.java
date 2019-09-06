@@ -40,7 +40,8 @@ public class CacheCleanHandler extends StateHandler {
     }
 
     @Override
-    public void onInstall() {
+    public void onFirstRun() {
+        // app might be upgraded from older version
         clearCache();
     }
 }

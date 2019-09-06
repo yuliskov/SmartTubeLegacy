@@ -6,19 +6,26 @@ import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.Sta
 
 public class LoadingCheckHandler extends StateHandler {
     private final FragmentManagerActivity mFragmentManagerActivity;
+    private final Handler mHandler;
+    private final Runnable mCallback;
 
     public LoadingCheckHandler(FragmentManagerActivity fragmentManagerActivity) {
         mFragmentManagerActivity = fragmentManagerActivity;
+        mHandler = new Handler(mFragmentManagerActivity.getMainLooper());
+        mCallback = this::forceAppLoaded;
     }
 
     @Override
     public void onBoot() {
-        new Handler(mFragmentManagerActivity.getMainLooper()).postDelayed(this::checkAppLoaded, 180_000);
+        mHandler.postDelayed(mCallback, 180_000);
     }
 
-    private void checkAppLoaded() {
-        if (!mFragmentManagerActivity.isAppLoaded()) {
-            mFragmentManagerActivity.onAppLoaded();
-        }
+    @Override
+    public void onLoad() {
+        mHandler.removeCallbacks(mCallback);
+    }
+
+    private void forceAppLoaded() {
+        mFragmentManagerActivity.onAppLoaded();
     }
 }

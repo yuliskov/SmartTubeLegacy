@@ -12,16 +12,18 @@ import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.Sta
 import java.io.File;
 import java.util.ArrayList;
 
-public class DataBackupHandler extends StateHandler implements DialogInterface.OnClickListener {
-    private static final String TAG = DataBackupHandler.class.getSimpleName();
+public class BackupAndRestoreHandler extends StateHandler implements DialogInterface.OnClickListener {
+    private static final String TAG = BackupAndRestoreHandler.class.getSimpleName();
     private final Context mContext;
     private final ArrayList<File> mDataDirs;
     private static final String WEBVIEW_SUBDIR = "app_webview";
     private static final String XWALK_SUBDIR = "app_xwalkcore";
     private static final String SHARED_PREFS_SUBDIR = "shared_prefs";
     private final File mBackupDir;
+    private boolean mIsFirstRun;
+    private boolean mIsUpdate;
 
-    public DataBackupHandler(Context context) {
+    public BackupAndRestoreHandler(Context context) {
         mContext = context;
         mDataDirs = new ArrayList<>();
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, WEBVIEW_SUBDIR));
@@ -33,14 +35,27 @@ public class DataBackupHandler extends StateHandler implements DialogInterface.O
 
     @Override
     public void onUpdate() {
-        checkPermAndBackup();
+        // do backup later, after full load
+        mIsUpdate = true;
     }
 
     @Override
-    public void onInstall() {
-        if (mBackupDir.isDirectory()) {
-            checkPermAndProposeRestore();
-        } else {
+    public void onFirstRun() {
+        // run restore later, after permissions dialog
+        mIsFirstRun = true;
+    }
+
+    @Override
+    public void onLoad() {
+        // permissions dialog should be closed at this point
+        if (mIsFirstRun) {
+            if (mBackupDir.isDirectory()) {
+                checkPermAndProposeRestore();
+            } else {
+                // app might be upgraded from older version
+                checkPermAndBackup();
+            }
+        } else if (mIsUpdate) {
             checkPermAndBackup();
         }
     }
