@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
+package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.StateHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
 import java.io.File;
 import java.util.ArrayList;

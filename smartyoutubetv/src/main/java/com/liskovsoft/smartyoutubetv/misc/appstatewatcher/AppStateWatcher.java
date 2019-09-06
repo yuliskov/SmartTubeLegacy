@@ -1,10 +1,10 @@
-package com.liskovsoft.smartyoutubetv.misc.versiontracker;
+package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.CacheCleanHandler;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.BackupAndRestoreHandler;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers.LoadingCheckHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.CacheCleanHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BackupAndRestoreHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckHandler;
 
 public class AppStateWatcher extends AppStateWatcherBase {
     private final Context mContext;

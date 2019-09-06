@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc.intenttranslator;
+package com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator;
 
 import android.content.Intent;
 

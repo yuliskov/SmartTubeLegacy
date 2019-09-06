@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc.versiontracker;
+package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;

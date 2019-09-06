@@ -1,8 +1,8 @@
-package com.liskovsoft.smartyoutubetv.misc.versiontracker.handlers;
+package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.os.Handler;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
-import com.liskovsoft.smartyoutubetv.misc.versiontracker.AppStateWatcherBase.StateHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
 public class LoadingCheckHandler extends StateHandler {
     private final FragmentManagerActivity mFragmentManagerActivity;
