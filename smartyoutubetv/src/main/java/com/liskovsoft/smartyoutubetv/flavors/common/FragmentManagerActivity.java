@@ -307,6 +307,13 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingDone = true;
         mLoadingManager.hide();
         mAppStateWatcher.onLoad();
+        mVoiceBridge.openSearchPage(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mVoiceBridge.openSearchPage(intent);
     }
 
     @Override

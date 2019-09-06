@@ -1,8 +1,10 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import android.content.Intent;
+import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 import java.util.ArrayList;
 
@@ -58,5 +60,19 @@ public class VoiceSearchBridge implements SearchCallback {
     @Override
     public void openSearchPage(String searchText) {
         mConnector.openSearchPage(searchText);
+    }
+
+    public void openSearchPage(Intent intent) {
+        Uri pageUri = intent.getData();
+
+        if (pageUri == null) {
+            return;
+        }
+
+        String searchString = YouTubeHelpers.extractSearchString(pageUri.toString());
+
+        if (searchString != null) {
+            openSearchPage(searchString);
+        }
     }
 }

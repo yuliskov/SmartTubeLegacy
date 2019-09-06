@@ -48,57 +48,6 @@ class YouTubeIntentTranslator implements IntentTranslator {
         intent.setData(Uri.parse(uriString));
     }
 
-    /**
-     * Extracts channel params
-     * <br/>
-     * Examples of the input/output url:
-     * <pre>
-     * origin: https://www.youtube.com/channel/UCG8jk87DknZ40X_6urApHXA
-     * result: https://www.youtube.com/tv#/channel?c=UCrLG_XHXdF1UK429FQO2Hmw&resume
-     * </pre>
-     * @param url desktop url (see manifest file for the patterns)
-     * @return video params
-     */
-    private String extractChannelParamFromUrl(String url) {
-        String[] patterns = {"channel/[^&\\s]*"};
-        String res = Helpers.runMultiMatcher(url, patterns);
-
-        if (res == null) {
-            Log.w(TAG, "Url isn't a channel: " + url);
-            return null;
-        }
-
-        return res.replace("channel/", "");
-    }
-
-    /**
-     * Extracts video params e.g. <code>v=xtx33RuFCik</code> from url
-     * <br/>
-     * Examples of the input/output url:
-     * <pre>
-     * origin video: https://www.youtube.com/watch?v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv#/watch/video/control?v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv?gl=us&hl=en-us&v=xtx33RuFCik
-     * needed video: https://www.youtube.com/tv?v=xtx33RuFCik
-     *
-     * origin playlist: https://www.youtube.com/playlist?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj
-     * needed playlist: https://www.youtube.com/tv#/watch/video/control?list=PLbl01QFpbBY1XGwNb8SBmoA3hshpK1pZj&resume
-     * </pre>
-     * @param url desktop url (see manifest file for the patterns)
-     * @return video params
-     */
-    private String extractVideoIdParamFromUrl(String url) {
-        String[] patterns = {"list=[^&\\s]*", "v=[^&\\s]*", "youtu.be/[^&\\s]*"};
-        String res = Helpers.runMultiMatcher(url, patterns);
-
-        if (res == null) {
-            Log.w(TAG, "Url isn't a video: " + url);
-            return null;
-        }
-
-        return res.replace("youtu.be/", "v=");
-    }
-
     private Uri transformUri(final Uri uri) {
         if (uri == null) {
             return null;
@@ -106,11 +55,11 @@ class YouTubeIntentTranslator implements IntentTranslator {
 
         String url = uri.toString();
 
-        String videoParam = extractVideoIdParamFromUrl(url);
+        String videoParam = YouTubeHelpers.extractVideoIdParamFromUrl(url);
         String template = VIDEO_TEMPLATE_URL;
 
         if (videoParam == null) {
-            videoParam = extractChannelParamFromUrl(url);
+            videoParam = YouTubeHelpers.extractChannelParamFromUrl(url);
             template = CHANNEL_TEMPLATE_URL;
         }
 
