@@ -5,4 +5,5 @@ import android.content.Intent;
 public interface ServiceFinder {
     String getUrl();
     Intent transformIntent(Intent intent);
+    boolean isDefault(Intent intent);
 }

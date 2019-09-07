@@ -156,6 +156,10 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onNewIntent(Intent intent) {
+        if (mServiceFinder.isDefault(intent)) {
+            return;
+        }
+
         super.onNewIntent(mServiceFinder.transformIntent(intent));
     }
 

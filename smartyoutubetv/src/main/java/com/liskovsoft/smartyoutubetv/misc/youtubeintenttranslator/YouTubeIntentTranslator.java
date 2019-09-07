@@ -55,19 +55,19 @@ class YouTubeIntentTranslator implements IntentTranslator {
 
         String url = uri.toString();
 
-        String videoParam = YouTubeHelpers.extractVideoIdParamFromUrl(url);
+        String resultParam = YouTubeHelpers.extractVideoIdParamFromUrl(url);
         String template = VIDEO_TEMPLATE_URL;
 
-        if (videoParam == null) {
-            videoParam = YouTubeHelpers.extractChannelParamFromUrl(url);
+        if (resultParam == null) {
+            resultParam = YouTubeHelpers.extractChannelParamFromUrl(url);
             template = CHANNEL_TEMPLATE_URL;
         }
 
-        if (videoParam == null) {
+        if (resultParam == null) {
             return Uri.parse(mDefaultUrl);
         }
 
-        String fullUrl = String.format(template, videoParam);
+        String fullUrl = String.format(template, resultParam);
         return Uri.parse(fullUrl);
     }
 }

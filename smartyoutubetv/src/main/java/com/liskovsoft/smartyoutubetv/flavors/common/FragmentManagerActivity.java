@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private boolean mDisableKeyEvents;
     private GlobalKeyHandler mKeyHandler;
     private AppStateWatcherBase mAppStateWatcher;
+    private Uri mUrlData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         mAppStateWatcher = new AppStateWatcher(this);
         mAppStateWatcher.run();
+
+        mUrlData = getIntent().getData();
 
         mApkUpdater.start();
     }
@@ -307,13 +311,14 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingDone = true;
         mLoadingManager.hide();
         mAppStateWatcher.onLoad();
-        mVoiceBridge.openSearchPage(getIntent());
+
+        mVoiceBridge.openSearchPage(mUrlData);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mVoiceBridge.openSearchPage(intent);
+        mVoiceBridge.openSearchPage(intent.getData());
     }
 
     @Override

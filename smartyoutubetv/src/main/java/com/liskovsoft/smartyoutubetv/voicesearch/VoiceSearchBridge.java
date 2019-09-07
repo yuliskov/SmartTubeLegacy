@@ -62,14 +62,12 @@ public class VoiceSearchBridge implements SearchCallback {
         mConnector.openSearchPage(searchText);
     }
 
-    public void openSearchPage(Intent intent) {
-        Uri pageUri = intent.getData();
-
-        if (pageUri == null) {
+    public void openSearchPage(Uri pageUrl) {
+        if (pageUrl == null) {
             return;
         }
 
-        String searchString = YouTubeHelpers.extractSearchString(pageUri.toString());
+        String searchString = YouTubeHelpers.extractSearchString(pageUrl.toString());
 
         if (searchString != null) {
             openSearchPage(searchString);

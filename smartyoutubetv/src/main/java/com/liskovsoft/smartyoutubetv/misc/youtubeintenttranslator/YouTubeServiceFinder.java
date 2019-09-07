@@ -68,4 +68,15 @@ public class YouTubeServiceFinder implements ServiceFinder {
 
         return result;
     }
+
+    @Override
+    public boolean isDefault(Intent intent) {
+        Intent newIntent = transformIntent(intent);
+
+        if (newIntent.getData() != null) {
+            return newIntent.getData().toString().equals(mDefaultUrl);
+        }
+
+        return false;
+    }
 }
