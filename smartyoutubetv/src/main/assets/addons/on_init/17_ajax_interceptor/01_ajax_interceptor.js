@@ -8,14 +8,19 @@ console.log("Scripts::Running script ajax_interceptor.js");
 function AuthInterceptor() {
     this.TAG = 'AuthInterceptor';
     this.AUTHORIZATION_HEADER = 'Authorization';
-    this.shouldIntercept = DeviceUtils.isExo();
 
-    this.intercept = function(name, value) {
+    this.interceptHeader = function(name, value) {
         if (name == this.AUTHORIZATION_HEADER && this.prevValue != value) {
             Log.d(this.TAG, "Found auth header: " + value);
 
             DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTHORIZATION_HEADER, value);
             this.prevValue = value;
+        }
+    };
+
+    this.interceptBody = function(content) {
+        if (content != null && content.indexOf('googleusercontent.com') != -1) {
+            Log.d(this.TAG, "Found auth body: " + content);
         }
     };
 }
@@ -49,6 +54,12 @@ function AjaxInterceptorAddon() {
             return;
         }
 
+        this.setupHeaderInterceptors();
+
+        this.setupBodyInterceptors();
+    };
+
+    this.setupHeaderInterceptors = function() {
         var $this = this;
 
         var origin = window.XMLHttpRequest.prototype.setRequestHeader;
@@ -57,23 +68,42 @@ function AjaxInterceptorAddon() {
             if (arguments.length == 2) {
                 // Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
 
-                var toRemove = null;
-
                 for (var i = 0; i < $this.interceptors.length; i++) {
                     var interceptor = $this.interceptors[i];
-                    if (interceptor.shouldIntercept) {
-                        // arguments[1] = interceptor.intercept(arguments[0], arguments[1]);
-                        interceptor.intercept(arguments[0], arguments[1]);
-                    } else {
-                        toRemove = interceptor;
+                    if (interceptor.interceptHeader) {
+                        interceptor.interceptHeader(arguments[0], arguments[1]);
                     }
                 }
-
-                Utils.removeFromArray($this.interceptors, toRemove);
 
                 if ($this.interceptors.length == 0) {
                     // stop override, no interceptors left
                     window.XMLHttpRequest.prototype.setRequestHeader = origin;
+                }
+            }
+
+            origin.apply(this, arguments);
+        };
+    };
+
+    this.setupBodyInterceptors = function() {
+        var $this = this;
+
+        var origin = window.XMLHttpRequest.prototype.send;
+
+        window.XMLHttpRequest.prototype.send = function() {
+            if (arguments.length == 1) {
+                // Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
+
+                for (var i = 0; i < $this.interceptors.length; i++) {
+                    var interceptor = $this.interceptors[i];
+                    if (interceptor.interceptBody) {
+                        interceptor.interceptBody(arguments[0]);
+                    }
+                }
+
+                if ($this.interceptors.length == 0) {
+                    // stop override, no interceptors left
+                    window.XMLHttpRequest.prototype.send = origin;
                 }
             }
 
