@@ -1,12 +1,11 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
-import com.liskovsoft.smartyoutubetv.prefs.CommonParams;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.util.HashMap;
 
-public class HeaderManager {
+public class KidsHeaderManager {
     private final Context mContext;
     private final SmartPreferences mPrefs;
     private HashMap<String, String> mHeaders;
@@ -16,12 +15,10 @@ public class HeaderManager {
     private static final String PAGE_LABEL = "youtube.ytfe.desktop_20190729_3_RC0";
     private static final String AD_SIGNALS = "dt=1564772449513&flash=0&frm&u_tz=180&u_his=50&u_java=true&u_h=540&u_w=960&u_ah=540&u_aw=960&u_cd=32" +
             "&u_nplug&u_nmime&bc=1&bih=540&biw=960&brdim=0%2C0%2C0%2C0%2C960%2C0%2C960%2C540%2C960%2C540&vis=1&wgl=true&ca_type=image";
-    private String mRootUrl = "https://www.youtube.com/tv";
 
-    public HeaderManager(Context context) {
+    public KidsHeaderManager(Context context) {
         mContext = context;
         mPrefs = SmartPreferences.instance(mContext);
-        mRootUrl = CommonParams.instance(mContext).getMainPageUrl();
 
         initHeaders();
     }
@@ -34,7 +31,7 @@ public class HeaderManager {
     private void initHeaders() {
         mHeaders = new HashMap<>();
 
-        mHeaders.put("Referer", mRootUrl);
+        mHeaders.put("Referer", "https://www.youtube.com/tv/kids");
         mHeaders.put("User-Agent", new UserAgentManager().getUA());
         mHeaders.put("Accept-Language", new LangUpdater(mContext).getPreferredBrowserLocale());
 
@@ -42,10 +39,10 @@ public class HeaderManager {
         mHeaders.put("X-YouTube-Utc-Offset", "180");
 
         // this headers will be changed over time
-        //mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
+        mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
         mHeaders.put("X-YouTube-Page-CL", PAGE_CL);
         mHeaders.put("X-YouTube-Page-Label", PAGE_LABEL);
-        //mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
+        mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
     }
 
     private void updateHeaders() {
