@@ -10,12 +10,14 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
@@ -147,9 +149,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
         // Enable tunneling if supported by the current media and device configuration.
-        //if (Util.SDK_INT >= 21) {
-        //    mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(getActivity())));
-        //}
+        if (Util.SDK_INT >= 21 && getActivity() != null) {
+            mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(getActivity())));
+        }
 
         mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, trackSelectionFactory);
         mEventLogger = new EventLogger(mTrackSelector);
