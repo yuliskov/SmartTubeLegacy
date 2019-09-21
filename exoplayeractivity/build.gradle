@@ -67,8 +67,8 @@ dependencies {
 
     //api project.properties.amazonExoplayerVersion
 
-    implementation project.properties.previewSeekBarVersion
-    implementation project.properties.previewSeekBarExoVersion
+    implementation project.properties.previewSeekBarDevVersion
+    implementation project.properties.previewSeekBarExoDevVersion
 
     implementation project.properties.glideVersion
     annotationProcessor project.properties.annotationXVersion
