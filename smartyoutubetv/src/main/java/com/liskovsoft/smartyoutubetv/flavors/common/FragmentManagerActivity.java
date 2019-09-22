@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -277,9 +278,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
             // Check if the only required permission has been granted
             if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Camera permission has been granted, preview can be displayed
-                MessageHelpers.showMessage(this, "REQUEST_EXTERNAL_STORAGE permission has been granted");
+                Log.d(TAG, "REQUEST_EXTERNAL_STORAGE permission has been granted");
             } else {
-                MessageHelpers.showLongMessage(this, "Unable to grant REQUEST_EXTERNAL_STORAGE permission");
+                Log.e(TAG, "Unable to grant REQUEST_EXTERNAL_STORAGE permission");
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -288,7 +289,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     private void initPermissions() {
         boolean alreadyGranted = BuildConfig.FLAVOR.equals("Vbolshoetv");
-        if (BuildConfig.DEBUG || alreadyGranted) { // avoid error on genymotion emulator (NoSuchField error)
+
+        // avoid error on genymotion emulator (NoSuchField error)
+        if (Helpers.isGenymotion() || alreadyGranted) {
             return;
         }
 
