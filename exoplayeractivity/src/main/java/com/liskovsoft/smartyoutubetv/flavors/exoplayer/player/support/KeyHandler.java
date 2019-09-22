@@ -14,10 +14,33 @@ import java.util.HashMap;
 
 public class KeyHandler {
     private final Activity mActivity;
-    private final PlayerInterface mFragment;
+    private PlayerInterface mFragment;
     private KeyTranslator mTranslator;
     private Boolean mEnableOKPause;
     private HashMap<Integer, Runnable> mActions;
+    private final Runnable mOnToggle = () -> {
+        if (mFragment.getPlayer() != null) {
+            mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
+        }
+
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().hideController();
+        }
+    };
+    private final Runnable mOnPlay = () -> {
+        if (mFragment.getPlayer() != null) {
+            mFragment.getPlayer().setPlayWhenReady(true);
+        }
+    };
+    private final Runnable mOnPause = () -> {
+        if (mFragment.getPlayer() != null) {
+            mFragment.getPlayer().setPlayWhenReady(false);
+        }
+    };
+    @TargetApi(23)
+    private final Runnable mOnNext = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+    @TargetApi(23)
+    private final Runnable mOnPrev = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
 
     public KeyHandler(Activity activity, PlayerInterface playerFragment) {
         mActivity = activity;
@@ -27,16 +50,16 @@ public class KeyHandler {
         initActionMapping();
     }
 
-    @TargetApi(15)
     private void initActionMapping() {
         mActions = new HashMap<>();
 
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, () -> {if (mFragment.getPlayer() != null) mFragment.getPlayer().setPlayWhenReady(true);});
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, () -> {if (mFragment.getPlayer() != null) mFragment.getPlayer().setPlayWhenReady(false);});
-        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_back).callOnClick());
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, () -> {if (mFragment.getPlayer() != null) mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());});
-        mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick());
-        mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick());
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnNext);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnPrev);
     }
 
     public boolean handle(KeyEvent event) {
