@@ -5,12 +5,10 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
-    private static final long NO_INTERACTION_TIMEOUT_MS = 500;
-    private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 2_000;
+    private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000;
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
-    private static final String EMPTY_DURATION = "duration=0";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
