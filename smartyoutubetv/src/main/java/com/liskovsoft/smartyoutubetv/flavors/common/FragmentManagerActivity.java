@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
@@ -195,6 +196,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        CommonApplication.getPreferences().setLastUserInteraction(System.currentTimeMillis());
+
         mKeyHandler.checkLongPressExit(event);
 
         if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
@@ -216,11 +219,15 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        CommonApplication.getPreferences().setLastUserInteraction(System.currentTimeMillis());
+
         return mActiveFragment.dispatchGenericMotionEvent(event) || super.dispatchGenericMotionEvent(event);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
+        CommonApplication.getPreferences().setLastUserInteraction(System.currentTimeMillis());
+
         return super.dispatchTouchEvent(event);
     }
 

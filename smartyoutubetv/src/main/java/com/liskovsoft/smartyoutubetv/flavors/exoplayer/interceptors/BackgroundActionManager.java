@@ -1,9 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
-import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 
 public class BackgroundActionManager {
@@ -13,6 +10,7 @@ public class BackgroundActionManager {
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
+    private static final String EMPTY_DURATION = "duration=0";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
@@ -37,7 +35,7 @@ public class BackgroundActionManager {
             return true;
         }
 
-        if (mSameVideo && (mCalledRecently || mClosedRecently)) {
+        if (mSameVideo && (mIsOpened || mClosedRecently)) {
             Log.d(TAG, "Cancel playback: Same video");
             return true;
         }

@@ -11,6 +11,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsSender;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.BackgroundActionManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
@@ -20,8 +21,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.YouTubeHistoryUpdater;
-import com.liskovsoft.smartyoutubetv.misc.YouTubeTracker;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
@@ -220,7 +219,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             mManager.onClose();
         }
 
-        mInterceptor.setPosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
+        HistoryInterceptor history = mInterceptor.getHistoryInterceptor();
+
+        if (history != null) {
+            history.setPosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
+        }
+
         mActionSender.bindActions(intent, mMetadata);
     }
 

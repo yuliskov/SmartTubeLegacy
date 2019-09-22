@@ -32,6 +32,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     public static final String URL_VIDEO_DATA = "get_video_info";
+    public static final String URL_TV_TRANSPORT = "gen_204";
 
     public ExoInterceptor(Context context,
                           DelayedCommandCallInterceptor delayedInterceptor,
@@ -131,7 +132,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mManager.onClose();
     }
 
-    public void setPosition(float position) {
-        mHistoryInterceptor.setPosition(position);
+    public HistoryInterceptor getHistoryInterceptor() {
+        return mHistoryInterceptor;
     }
 }

@@ -47,6 +47,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String NONE = "";
     private static SmartPreferences sInstance;
     private int mPositionSec;
+    private long mLastUserInteraction;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -256,5 +257,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public boolean getBootSucceeded() {
         return getBoolean(BOOT_SUCCEEDED, true);
+    }
+
+    public long getLastUserInteraction() {
+        return mLastUserInteraction;
+    }
+
+    public void setLastUserInteraction(long time) {
+        mLastUserInteraction = time;
     }
 }
