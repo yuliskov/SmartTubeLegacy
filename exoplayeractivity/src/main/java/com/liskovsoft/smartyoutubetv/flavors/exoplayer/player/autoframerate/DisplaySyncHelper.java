@@ -20,7 +20,8 @@ class DisplaySyncHelper implements UhdHelperListener {
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     private int mNewMode;
-    private int mOriginalModeId;
+    private int mOriginalModeId = -1;
+    private int mLastModeId = -1;
     // switch not only framerate but resolution too
     private static final boolean SWITCH_TO_UHD = true;
 
@@ -311,9 +312,32 @@ class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public void restoreOriginalState() {
+        if (mOriginalModeId == -1) {
+            return;
+        }
+
         getUhdHelper().setPreferredDisplayModeId(
                         mContext.getWindow(),
                         mOriginalModeId,
                         true);
+    }
+
+    public void saveLastState() {
+        DisplayHolder.Mode mode = getUhdHelper().getMode();
+
+        if (mode != null) {
+            mLastModeId = mode.getModeId();
+        }
+    }
+
+    public void restoreLastState() {
+        if (mLastModeId == -1) {
+            return;
+        }
+
+        getUhdHelper().setPreferredDisplayModeId(
+                mContext.getWindow(),
+                mLastModeId,
+                true);
     }
 }

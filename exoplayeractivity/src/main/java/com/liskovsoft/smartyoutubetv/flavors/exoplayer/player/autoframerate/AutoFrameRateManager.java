@@ -11,13 +11,12 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPrefere
 public class AutoFrameRateManager {
     private static final String TAG = AutoFrameRateManager.class.getSimpleName();
     private final Activity mContext;
-    private final SimpleExoPlayer mPlayer;
     private final DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
+    private SimpleExoPlayer mPlayer;
 
-    public AutoFrameRateManager(Activity context, SimpleExoPlayer player) {
+    public AutoFrameRateManager(Activity context) {
         mContext = context;
-        mPlayer = player;
         mSyncHelper = new DisplaySyncHelper(mContext);
         mPrefs = ExoPreferences.instance(mContext);
     }
@@ -75,5 +74,27 @@ public class AutoFrameRateManager {
 
         Log.d(TAG, "Restoring original mode...");
         mSyncHelper.restoreOriginalState();
+    }
+
+    public void saveLastState() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.saveLastState();
+    }
+
+    public void restoreLastState() {
+        if (!getEnabled()) {
+            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
+            return;
+        }
+
+        Log.d(TAG, "Restoring original mode...");
+        mSyncHelper.restoreLastState();
+    }
+
+    public void setPlayer(SimpleExoPlayer player) {
+        mPlayer = player;
     }
 }

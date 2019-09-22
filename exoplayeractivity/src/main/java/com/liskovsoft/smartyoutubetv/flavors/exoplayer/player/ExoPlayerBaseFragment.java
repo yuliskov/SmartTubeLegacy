@@ -94,6 +94,31 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mButtonsManager = new PlayerButtonsManager(this);
         mPlayerInitializer = new PlayerInitializer(this);
         mVideoZoomManager = new VideoZoomManager(getActivity(), mSimpleExoPlayerView);
+
+        if (mAutoFrameRateManager == null) {
+            mAutoFrameRateManager = new AutoFrameRateManager(getActivity());
+        }
+
+        mAutoFrameRateManager.saveOriginalState();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.saveLastState();
+            mAutoFrameRateManager.restoreOriginalState();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.restoreLastState();
+        }
     }
 
     @Override
@@ -110,7 +135,11 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mDebugViewHelper = new MyDebugViewHelper(mPlayer, mDebugViewGroup, getActivity());
 
             // Do not move this code to another place!!! This statement must come after player initialization
-            mAutoFrameRateManager = new AutoFrameRateManager(getActivity(), mPlayer);
+            if (mAutoFrameRateManager == null) {
+                mAutoFrameRateManager = new AutoFrameRateManager(getActivity());
+            }
+
+            mAutoFrameRateManager.setPlayer(mPlayer);
 
             mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
 
@@ -120,7 +149,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (openNewVideo) {
-            mAutoFrameRateManager.saveOriginalState();
+            // mAutoFrameRateManager.saveOriginalState();
             restoreSpeed();
         }
     }
@@ -368,9 +397,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
      * Used when exoplayer's fragment no longer visible (e.g. paused/resumed/stopped/started)
      */
     protected void releasePlayer() {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.restoreOriginalState();
-        }
+        //if (mAutoFrameRateManager != null) {
+        //    mAutoFrameRateManager.restoreOriginalState();
+        //}
 
         if (mPlayer != null) {
             mShouldAutoPlay = mPlayer.getPlayWhenReady(); // save paused state
@@ -387,7 +416,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mDebugViewHelper.stop();
         }
 
-        mAutoFrameRateManager = null;
+        mAutoFrameRateManager.setPlayer(null);
         mPlayer = null;
         mStateManager = null; // force restore state
         mDebugViewHelper = null;
