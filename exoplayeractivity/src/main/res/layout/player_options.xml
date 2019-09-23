@@ -18,7 +18,6 @@
         style="@style/ExoMediaButton2.Share"/>
 
     <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageToggleButton
-        android:visibility="gone"
         android:id="@+id/exo_captions"
         style="@style/ExoMediaButton2.Captions"/>
 

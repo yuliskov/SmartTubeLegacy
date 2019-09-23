@@ -77,6 +77,7 @@ public class GlobalKeyHandler {
 
     public void checkDoubleBackExit() {
         mEnableDoubleBackExit = true;
+        mHandler.postDelayed(mResetExitFn, 1000);
     }
 
     private void checkBackPressed(KeyEvent event) {
@@ -96,7 +97,7 @@ public class GlobalKeyHandler {
             return;
         }
 
-        if (mDoubleBackToExitPressedTimes >= 1) {
+        if (mDoubleBackToExitPressedTimes >= 0) {
             // exit action
             mExitAppFn.run();
             return;
