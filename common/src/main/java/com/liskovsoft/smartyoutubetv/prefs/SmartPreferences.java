@@ -19,8 +19,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
     private static final String GLOBAL_AFR_FIX_STATE = "afrFixState";
-    private static final String AUTHORIZATION_HEADER = "authorization_header";
-    private static final String COOKIE_HEADER = "cookie_header";
     private static final String USE_EXTERNAL_PLAYER = "use_external_player";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
     private static final String LOG_TYPE = "log_type";
@@ -48,6 +46,8 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static SmartPreferences sInstance;
     private int mPositionSec;
     private long mLastUserInteraction;
+    private String mAuthorizationHeader;
+    private String mCookieHeader;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -159,22 +159,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return getString(GLOBAL_AFR_FIX_STATE, GLOBAL_AFR_FIX_STATE_DISABLED);
     }
 
-    public void setAuthorizationHeader(String header) {
-        putString(AUTHORIZATION_HEADER, header);
-    }
-
-    public String getAuthorizationHeader() {
-        return getString(AUTHORIZATION_HEADER, null);
-    }
-
-    public void setCookieHeader(String header) {
-        putString(COOKIE_HEADER, header);
-    }
-
-    public String getCookieHeader() {
-        return getString(COOKIE_HEADER, null);
-    }
-
     public void setUseExternalPlayer(boolean isChecked) {
         putBoolean(USE_EXTERNAL_PLAYER, isChecked);
     }
@@ -265,5 +249,21 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setLastUserInteraction(long time) {
         mLastUserInteraction = time;
+    }
+
+    public void setAuthorizationHeader(String header) {
+        mAuthorizationHeader = header;
+    }
+
+    public String getAuthorizationHeader() {
+        return mAuthorizationHeader;
+    }
+
+    public void setCookieHeader(String header) {
+        mCookieHeader = header;
+    }
+
+    public String getCookieHeader() {
+        return mCookieHeader;
     }
 }
