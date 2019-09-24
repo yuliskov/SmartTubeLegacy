@@ -7,6 +7,7 @@ import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
 import java.io.File;
@@ -119,7 +120,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         }
 
         // to apply settings we need to kill the app
-        System.exit(0);
+        SmartUtils.restartApp(mContext);
     }
 
     private void askUserPermission() {

@@ -72,6 +72,6 @@
     <string name="force_avc_lite_only">Использовать только AVC кодек (только LITE)</string>
     <string name="force_vp9_lite_only">Использовать только VP9 кодек (только LITE)</string>
     <string name="fix_clock_msg">Время на вашем устройстве выставлено неверно</string>
-    <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет закрыто.</string>
+    <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nРаботоспособность приложения не гарантируется.</string>
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
 </resources>

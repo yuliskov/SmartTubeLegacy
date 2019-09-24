@@ -85,7 +85,7 @@
     <string name="force_avc_lite_only">Force AVC codec (LITE only)</string>
     <string name="force_vp9_lite_only">Force VP9 codec (LITE only)</string>
     <string name="fix_clock_msg">Time on your device doesn\'t set correctly</string>
-    <string name="do_restore_data_msg">Restore previously saved data?\nApp will be closed.</string>
+    <string name="do_restore_data_msg">Restore previously saved data?\nNote: App may not work as expected.</string>
     <string name="restoring_data_msg">Restoring data...</string>
     <string name="alt_player_mapping">Remote: alt media-keys mapping</string>
 </resources>

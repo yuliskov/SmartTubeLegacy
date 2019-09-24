@@ -65,15 +65,6 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
         }
     }
 
-    public void restart() {
-        Intent intent = new Intent();
-        intent.setClass(this, BootstrapActivity.class);
-        intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
-        startActivity(intent);
-
-        System.exit(0);
-    }
-
     /**
      * Detect {@link Crashlytics} from the property file. See <em>build.gradle</em>. <a href="https://docs.fabric.io/android/crashlytics/build-tools.html">More info</a>
      */
