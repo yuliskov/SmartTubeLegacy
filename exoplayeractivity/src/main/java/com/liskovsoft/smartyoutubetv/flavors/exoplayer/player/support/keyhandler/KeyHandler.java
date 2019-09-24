@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -47,6 +48,24 @@ public class KeyHandler {
             mFragment.getExoPlayerView().hideController();
         }
     };
+    private final Runnable mOnFastForward = () -> {
+        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
+            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS);
+        }
+
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().hideController();
+        }
+    };
+    private final Runnable mOnRewind = () -> {
+        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
+            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS);
+        }
+
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().hideController();
+        }
+    };
     @TargetApi(23)
     private final Runnable mOnNext = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
     @TargetApi(23)
@@ -77,6 +96,10 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
+
+        // use default behavior from PlayerControlView
+        //mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnFastForward);
+        //mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnRewind);
     }
 
     public boolean handle(KeyEvent event) {
@@ -138,7 +161,7 @@ public class KeyHandler {
         event = applyAdditionalMapping(event);
 
         if (mActions.containsKey(event.getKeyCode())) {
-            if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 mActions.get(event.getKeyCode()).run();
             }
 
