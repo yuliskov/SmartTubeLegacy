@@ -304,6 +304,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_ALLOW_APP_TABS, false);
     }
 
+    public int getMaxTabs() {
+        return mPrefs.getInt(PREF_MAX_TABS, 1);
+    }
 
     // -----------------------------
     // getter/setters for bandwidth_preferences.xml

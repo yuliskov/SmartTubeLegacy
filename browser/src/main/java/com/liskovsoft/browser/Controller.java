@@ -166,8 +166,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
         mUi = ui;
     }
 
-    // NOTE: entry point
     /**
+     * NOTE: entry point!
      * Actually here restoration process begins.
      * @param icicle
      * @param intent
@@ -977,13 +977,17 @@ public class Controller implements UiController, WebViewController, ActivityCont
     protected void reuseTab(Tab appTab, UrlData urlData) {
         // Dismiss the subwindow if applicable.
         dismissSubWindow(appTab);
+
         // Since we might kill the WebView, remove it from the
         // content view first.
         mUi.detachTab(appTab);
+
         // Recreate the main WebView after destroying the old one.
         mTabControl.recreateWebView(appTab);
+
         // TODO: analyze why the remove and add are necessary
         mUi.attachTab(appTab);
+
         if (mTabControl.getCurrentTab() != appTab) {
             switchToTab(appTab);
             loadUrlDataIn(appTab, urlData);

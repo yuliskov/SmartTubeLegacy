@@ -176,4 +176,10 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
         return new WebBackForwardListAdapter(success);
     }
+
+    @Override
+    public void destroy() {
+        mXWalkView.onDestroy();
+        super.destroy();
+    }
 }

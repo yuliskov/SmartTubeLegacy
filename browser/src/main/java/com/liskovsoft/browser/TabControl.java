@@ -5,6 +5,7 @@ import android.webkit.WebView;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class TabControl {
     private final Controller mController;
     private final int mMaxTabs = 99;
     private final ArrayList<Tab> mTabQueue;
+    private final BrowserSettings mSettings;
     private ArrayList<Tab> mTabs;
     private int mCurrentTab;
     private int mTabCount;
@@ -31,6 +33,7 @@ public class TabControl {
         mController = controller;
         mTabs = new ArrayList<>(mMaxTabs);
         mTabQueue = new ArrayList<>(mMaxTabs);
+        mSettings = BrowserSettings.getInstance();
     }
 
     /**
@@ -82,13 +85,30 @@ public class TabControl {
      * @param restoreAll All webviews get restored, not just the current tab
      *        (this does not override handling of incognito tabs)
      */
-    void restoreState(Bundle inState, long currentId, boolean restoreIncognitoTabs, boolean restoreAll) {
+    public void restoreState(Bundle inState, long currentId, boolean restoreIncognitoTabs, boolean restoreAll) {
         if (currentId == -1) {
             return;
         }
+
         long[] ids = inState.getLongArray(POSITIONS);
+
+        if (ids == null) {
+            ids = new long[]{};
+        }
+
+        if (ids.length > 1) {
+            int maxTabs = mSettings.getMaxTabs();
+            if (maxTabs > 0) {
+                int startIndex = ids.length - maxTabs;
+                if (startIndex >= 0) {
+                    Log.d(TAG, "Limiting tabs to " + maxTabs + ", old value: " + ids.length + "...");
+                    ids = Arrays.copyOfRange(ids, startIndex, ids.length);
+                }
+            }
+        }
+
         long maxId = -Long.MAX_VALUE;
-        HashMap<Long, Tab> tabMap = new HashMap<Long, Tab>();
+        HashMap<Long, Tab> tabMap = new HashMap<>();
         for (long id : ids) {
             if (id > maxId) {
                 maxId = id;
@@ -156,11 +176,11 @@ public class TabControl {
      * @return The newly createTab or null if we have reached the maximum
      *         number of open tabs.
      */
-    Tab createNewTab(boolean privateBrowsing) {
+    public Tab createNewTab(boolean privateBrowsing) {
         return createNewTab(null, privateBrowsing);
     }
 
-    public Tab createNewTab(Bundle state, boolean privateBrowsing) {
+    private Tab createNewTab(Bundle state, boolean privateBrowsing) {
         WebView w = createNewWebView();
         Tab t = new Tab(mController, w, state);
         mTabs.add(t);

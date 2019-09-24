@@ -160,7 +160,7 @@ public class IntentHandler {
                     if (current != appTab) {
                         mController.switchToTab(appTab);
                     } else {
-                        // NewIntent fix (always use current tab)
+                        // NOTE: NewIntent fix (always use current tab)
                         mController.reuseTab(appTab, urlData);
                     }
                     // Otherwise, we are already viewing the correct tab.

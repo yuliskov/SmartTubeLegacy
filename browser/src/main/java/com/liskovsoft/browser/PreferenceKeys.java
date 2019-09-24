@@ -32,6 +32,7 @@ public interface PreferenceKeys {
     static final String PREF_SEARCH_ENGINE = "search_engine";
     static final String PREF_WEBSITE_SETTINGS = "website_settings";
     static final String PREF_ALLOW_APP_TABS = "allow_apptabs";
+    static final String PREF_MAX_TABS = "max_tabs";
     static final String PREF_INITIAL_SCALE = "initial_scale";
     static final String PREF_ALLOW_UNIVERSAL_ACCESS_FROM_FILE_URLS = "pref_allow_universal_access_from_file_urls";
     static final String PREF_ALLOW_FILE_ACCESS_FROM_FILE_URLS = "pref_allow_file_access_from_file_urls";
