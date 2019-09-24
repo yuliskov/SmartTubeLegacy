@@ -97,6 +97,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
     public static final int RENDERER_INDEX_SUBTITLE = 2;
+    private static final int UI_SHOW_TIMEOUT_MS = 2_000;
 
     protected EventLogger mEventLogger;
 
@@ -175,6 +176,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         mSimpleExoPlayerView.setControllerVisibilityListener(this);
         // hide ui player by default
         mSimpleExoPlayerView.setControllerAutoShow(false);
+        mSimpleExoPlayerView.setControllerShowTimeoutMs(UI_SHOW_TIMEOUT_MS);
 
         mPlayerTopBar.setVisibility(View.GONE);
     }
