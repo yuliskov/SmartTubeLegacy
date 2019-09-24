@@ -33,10 +33,18 @@ public class KeyHandler {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(true);
         }
+
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().hideController();
+        }
     };
     private final Runnable mOnPause = () -> {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(false);
+        }
+
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().hideController();
         }
     };
     @TargetApi(23)
