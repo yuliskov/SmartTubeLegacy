@@ -18,11 +18,11 @@ public class AltPlayerMappingDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getEnableOKPause();
+        return mPrefs.getAltPlayerMappingEnabled();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setEnableOKPause(checked);
+        mPrefs.setAltPlayerMappingEnabled(checked);
     }
 }
