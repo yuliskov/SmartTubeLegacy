@@ -87,4 +87,5 @@
     <string name="fix_clock_msg">Time on your device doesn\'t set correctly</string>
     <string name="do_restore_data_msg">Restore previously saved data?\nApp will be closed.</string>
     <string name="restoring_data_msg">Restoring data...</string>
+    <string name="alt_player_mapping">Player: alt media-keys mapping</string>
 </resources>

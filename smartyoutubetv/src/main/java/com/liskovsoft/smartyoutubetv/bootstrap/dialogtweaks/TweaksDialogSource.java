@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AltPlayerMappingDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
@@ -51,6 +52,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new BackPressExitDialogItem(mContext));
         mItems.add(new ForceAVCDialogItem(mContext));
         mItems.add(new ForceVP9DialogItem(mContext));
+        mItems.add(new AltPlayerMappingDialogItem(mContext));
     }
 
     @Override

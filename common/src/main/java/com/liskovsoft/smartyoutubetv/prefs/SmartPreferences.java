@@ -37,6 +37,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String BACK_PRESS_EXIT = "back_press_exit";
     private static final String PREVIOUS_APP_VERSION_CODE = "previous_app_version_code";
     private static final String BOOT_SUCCEEDED = "boot_succeeded";
+    private static final String ALT_PLAYER_MAPPING = "alt_player_mapping";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -242,6 +243,16 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public boolean getBootSucceeded() {
         return getBoolean(BOOT_SUCCEEDED, true);
     }
+
+    public void setAltPlayerMappingEnabled(boolean enabled) {
+        putBoolean(ALT_PLAYER_MAPPING, enabled);
+    }
+
+    public boolean getAltPlayerMappingEnabled() {
+        return getBoolean(ALT_PLAYER_MAPPING, false);
+    }
+
+    // NOT PERSISTENT SETTINGS
 
     public long getLastUserInteraction() {
         return mLastUserInteraction;
