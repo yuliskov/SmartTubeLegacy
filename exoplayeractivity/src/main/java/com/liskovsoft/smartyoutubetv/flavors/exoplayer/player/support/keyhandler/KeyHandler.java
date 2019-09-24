@@ -1,10 +1,11 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
@@ -18,6 +19,7 @@ public class KeyHandler {
     private KeyTranslator mTranslator;
     private Boolean mEnableOKPause;
     private HashMap<Integer, Runnable> mActions;
+    private HashMap<Integer, Integer> mAdditionalMapping;
     private final Runnable mOnToggle = () -> {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
@@ -42,12 +44,21 @@ public class KeyHandler {
     @TargetApi(23)
     private final Runnable mOnPrev = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
 
-    public KeyHandler(Activity activity, PlayerInterface playerFragment) {
+    public KeyHandler(Activity activity, PlayerInterface playerFragment, HashMap<Integer, Integer> additionalMapping) {
         mActivity = activity;
         mFragment = playerFragment;
         mTranslator = new PlayerKeyTranslator();
+        mAdditionalMapping = additionalMapping;
 
         initActionMapping();
+    }
+
+    public KeyHandler(Activity activity, PlayerInterface playerFragment) {
+        this(activity, playerFragment, null);
+    }
+
+    protected void setAdditionalMapping(HashMap<Integer, Integer> mapping) {
+        mAdditionalMapping = mapping;
     }
 
     private void initActionMapping() {
@@ -57,9 +68,7 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
-        mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
-        mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnPrev);
     }
 
     public boolean handle(KeyEvent event) {
@@ -118,6 +127,8 @@ public class KeyHandler {
     }
 
     private boolean applyMediaKeys(KeyEvent event) {
+        event = applyAdditionalMapping(event);
+
         if (mActions.containsKey(event.getKeyCode())) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 mActions.get(event.getKeyCode()).run();
@@ -127,6 +138,15 @@ public class KeyHandler {
         }
 
         return false;
+    }
+
+    private KeyEvent applyAdditionalMapping(KeyEvent event) {
+        if (mAdditionalMapping != null &&
+            mAdditionalMapping.containsKey(event.getKeyCode())) {
+            return new KeyEvent(event.getAction(), mAdditionalMapping.get(event.getKeyCode()));
+        }
+
+        return event;
     }
 
     private boolean isMenuKey(KeyEvent event) {
