@@ -4,8 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 
 public class SmartUtils {
@@ -15,9 +16,7 @@ public class SmartUtils {
         intent.setClass(context, BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
 
-        boolean activityExists = intent.resolveActivityInfo(context.getPackageManager(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT) != null;
-
-        if (activityExists) {
+        if (Helpers.isActivityExists(intent, context)) {
             context.startActivity(intent);
             context.finish();
         }
@@ -47,5 +46,9 @@ public class SmartUtils {
         context.startActivity(intent);
 
         System.exit(0);
+    }
+
+    public static boolean isBolshoeTV() {
+        return BuildConfig.FLAVOR.equals("Vbolshoetv");
     }
 }

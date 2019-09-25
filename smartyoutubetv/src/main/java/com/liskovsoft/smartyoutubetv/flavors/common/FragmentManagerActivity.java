@@ -288,7 +288,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     private void initPermissions() {
-        boolean alreadyGranted = BuildConfig.FLAVOR.equals("Vbolshoetv");
+        boolean alreadyGranted = SmartUtils.isBolshoeTV();
 
         // avoid error on genymotion emulator (NoSuchField error)
         if (Helpers.isGenymotion() || alreadyGranted) {
