@@ -13,12 +13,9 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.misc.CacheManager;
-import com.liskovsoft.smartyoutubetv.misc.Constants;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.misc.OldPackageRemover;
-import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.InitializationCallback;
@@ -42,7 +39,6 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
         makeActivityHorizontal();
         hideTitleBar();
         uninstallOldVersions();
-        clearCacheIfNeeded();
     }
 
     private void initLogger() {
@@ -135,16 +131,5 @@ public abstract class BootstrapActivityBase extends AppCompatActivity {
     private void uninstallOldVersions() {
         OldPackageRemover remover = new OldPackageRemover(this);
         remover.remove();
-    }
-
-    private void clearCacheIfNeeded() {
-        if (getIntent() != null &&
-            getIntent().getBooleanExtra(Constants.BOLSHOE_TV_EXTRA_KEY_CLEAR_CACHE, false)) {
-
-            new CacheManager(this).clearCache();
-
-            finish();
-            System.exit(0);
-        }
     }
 }

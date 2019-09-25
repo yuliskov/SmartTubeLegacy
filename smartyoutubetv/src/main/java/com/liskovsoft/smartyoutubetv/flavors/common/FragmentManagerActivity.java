@@ -330,6 +330,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         super.onNewIntent(intent);
         mUrlData = intent.getData();
         mVoiceBridge.openSearchPage(intent.getData());
+
+        mAppStateWatcher.onNewIntent(intent);
     }
 
     @Override

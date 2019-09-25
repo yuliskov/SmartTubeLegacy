@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
+import android.content.Intent;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -57,7 +58,17 @@ public class AppStateWatcherBase {
         }
     }
 
+    public void onNewIntent(Intent intent) {
+        for (StateHandler handler : mHandlers) {
+            handler.onNewIntent(intent);
+        }
+    }
+
     public static abstract class StateHandler {
+        public void onNewIntent(Intent intent) {
+            
+        }
+
         public void onUpdate() {
         }
 
