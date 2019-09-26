@@ -174,8 +174,8 @@ var EventUtils = {
      * @param event desired event
      * @param handler callback
      */
-    addListener: function(selectorOrElement, event, handler) {
-        ListenerUtil.addListener(selectorOrElement, event, handler);
+    addListener: function(selectorOrElement, event, handler, useCapture) {
+        ListenerUtil.addListener(selectorOrElement, event, handler, useCapture);
     },
 
     /**

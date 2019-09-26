@@ -16,6 +16,7 @@ var DeviceUtils = {
     MESSAGE_AUTHORIZATION_HEADER: 'message_authorization_header',
     MESSAGE_ENABLE_SCREENSAVER: "message_enable_screensaver",
     MESSAGE_DISABLE_SCREENSAVER: "message_disable_screensaver",
+    MESSAGE_SEARCH_FIELD_FOCUSED: "message_search_field_focused",
     PLAYBACK_UNKNOWN: 0,
     PLAYBACK_IS_WORKING: 1,
     PLAYBACK_NOT_WORKING: 2,

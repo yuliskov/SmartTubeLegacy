@@ -42,6 +42,8 @@ function EnableExternalKeyboardAddon() {
         }
 
         this.enableSearchInputField();
+        this.showKeyboardOnFocus();
+        this.hideKeyboardOnSubmit();
     };
 
     /**
@@ -59,6 +61,9 @@ function EnableExternalKeyboardAddon() {
         this.initDone = true;
     };
 
+    /**
+     * See: enable_external_keyboard_hook.js
+     */
     this.hideKeyboardOnSubmit = function() {
         var $this = this;
 
@@ -69,6 +74,19 @@ function EnableExternalKeyboardAddon() {
                 // by clicking on 'search' button
                 EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
             }
+        });
+    };
+
+    this.showKeyboardOnFocus = function() {
+        var $this = this;
+
+        EventUtils.addListener(YouTubeSelectors.SEARCH_INPUT_FIELD, DefaultEvents.FOCUS, function(e) {
+            Log.d($this.TAG, "Search field gained focus, showing soft keyboard...");
+
+            // not working!
+            //EventUtils.triggerEnter(YouTubeSelectors.SEARCH_INPUT_FIELD);
+
+            DeviceUtils.sendMessage(DeviceUtils.MESSAGE_SEARCH_FIELD_FOCUSED);
         });
     };
 }

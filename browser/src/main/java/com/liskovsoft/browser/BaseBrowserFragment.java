@@ -48,20 +48,20 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         super.onActivityCreated(icicle);
 
         // this routine is a simple demonstration what you can do with controller
-        if (this.getClass() == BaseBrowserFragment.class) {
-            createController(icicle);
-        }
+        //if (this.getClass() == BaseBrowserFragment.class) {
+        //    createController(icicle);
+        //}
     }
 
-    private void createController(Bundle icicle) {
-        mHeaders = new HashMap<>();
-        mHeaders.put("user-agent", mDefaultUserAgent);
-
-        mController = new SimpleUIController(this);
-        Intent intent = (icicle == null) ? getActivity().getIntent() : null;
-        mController.start(intent);
-        mController.loadUrl(mDefaultHomeUrl, mHeaders);
-    }
+    //private void createController(Bundle icicle) {
+    //    mHeaders = new HashMap<>();
+    //    mHeaders.put("user-agent", mDefaultUserAgent);
+    //
+    //    mController = new SimpleUIController(this);
+    //    Intent intent = (icicle == null) ? getActivity().getIntent() : null;
+    //    mController.start(intent);
+    //    mController.loadUrl(mDefaultHomeUrl, mHeaders);
+    //}
 
 
     protected void setController(Controller controller) {

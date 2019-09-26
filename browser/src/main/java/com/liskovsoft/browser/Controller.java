@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
@@ -121,7 +122,7 @@ public class Controller implements UiController, WebViewController, ActivityCont
         setupBrowserActivity();
     }
 
-    protected void setupBrowserActivity() {
+    private void setupBrowserActivity() {
         // we must set theme before call to setContentView
         mActivity.setTheme(R.style.BrowserTheme);
         // no more layout zooming when soft keyboard popups
@@ -1521,6 +1522,12 @@ public class Controller implements UiController, WebViewController, ActivityCont
         for (EventListener l : mListeners) {
             l.onTabCreated(tab);
         }
+    }
+
+    @Override
+    public void showSoftKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(getCurrentTab().getWebView(), InputMethodManager.SHOW_FORCED);
     }
 
     // End My Custom Methods

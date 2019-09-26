@@ -362,4 +362,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     public void onExitDialogShown() {
         mKeyHandler.checkDoubleBackExit();
     }
+
+    @Override
+    public void onSearchFieldFocused() {
+        mActiveFragment.showSoftKeyboard();
+    }
 }

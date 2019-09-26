@@ -5,6 +5,7 @@ import android.content.Context;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.events.MicClickedEvent;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -18,6 +19,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
+    private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -52,6 +54,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_DOUBLE_BACK_EXIT:
                 ((FragmentManager) mContext).onExitDialogShown();
+                break;
+            case MESSAGE_SEARCH_FIELD_FOCUSED:
+                ((FragmentManager) mContext).onSearchFieldFocused();
                 break;
         }
     }

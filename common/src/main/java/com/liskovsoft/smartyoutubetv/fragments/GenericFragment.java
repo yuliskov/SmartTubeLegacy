@@ -10,6 +10,7 @@ public interface GenericFragment {
     int STATE_RESUMED = 0;
     int STATE_PAUSED = 1;
     void onBackPressed();
+    void showSoftKeyboard();
     void finish();
     boolean onKeyDown(int keyCode, KeyEvent event);
     boolean onKeyLongPress(int keyCode, KeyEvent event);

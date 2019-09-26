@@ -77,6 +77,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         super.onDestroy();
     }
 
+    /**
+     * Entry point for browser related stuff
+     */
     private void createController(Bundle icicle) {
         Intent origin = getActivity().getIntent();
         Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + origin);
@@ -170,7 +173,12 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
     @Override
     public void onBackPressed() {
-        // NOP
+        // NOP, handled in other place
+    }
+
+    @Override
+    public void showSoftKeyboard() {
+        mController.showSoftKeyboard();
     }
 
     //@Override

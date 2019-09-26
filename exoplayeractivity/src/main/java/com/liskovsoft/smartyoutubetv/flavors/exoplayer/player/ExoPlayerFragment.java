@@ -39,6 +39,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     }
 
     @Override
+    public void showSoftKeyboard() {
+        // NOP, since no kbd here
+    }
+
+    @Override
     public void finish() {
         // NOP, since we are using fragments
     }

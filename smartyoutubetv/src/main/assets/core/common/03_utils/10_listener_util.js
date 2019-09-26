@@ -19,13 +19,17 @@ var ListenerUtil = {
      * @param selectorOrElement desired element or selector
      * @param event desired event
      * @param handler callback
+     * @param useCapture enable advanced propagation technique
      */
-    addListener: function(selectorOrElement, event, handler) {
+    addListener: function(selectorOrElement, event, handler, useCapture) {
+        useCapture = useCapture == undefined ? false : useCapture;
+
         this.addRemoveListener({
             selectorOrElement: selectorOrElement,
             event: event,
             handler: handler,
-            type: this.ADD_HANDLER
+            type: this.ADD_HANDLER,
+            useCapture: useCapture
         });
     },
 
@@ -59,10 +63,10 @@ var ListenerUtil = {
             this.addPendingHandler(listenerSpec);
         } else if (listenerSpec.type == this.ADD_HANDLER) {
             Log.d(this.TAG, "Element initialized... add listener to it " + EventUtils.toSelector(container));
-            container.addEventListener(listenerSpec.event, listenerSpec.handler, false);
+            container.addEventListener(listenerSpec.event, listenerSpec.handler, listenerSpec.useCapture);
         } else if (listenerSpec.type == this.REMOVE_HANDLER) {
             Log.d(this.TAG, "Element initialized... remove listener from it " + EventUtils.toSelector(container));
-            container.removeEventListener(listenerSpec.event, listenerSpec.handler, false);
+            container.removeEventListener(listenerSpec.event, listenerSpec.handler, listenerSpec.useCapture);
         }
     },
 

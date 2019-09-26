@@ -100,5 +100,7 @@ public interface UiController {
 
     void onTabCreated(Tab tab);
 
+    void showSoftKeyboard();
+
     // End my custom methods
 }
