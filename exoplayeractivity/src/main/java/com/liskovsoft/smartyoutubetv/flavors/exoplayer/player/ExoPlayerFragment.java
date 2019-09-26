@@ -164,6 +164,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     public void onPauseFragment() {
         mState = GenericFragment.STATE_PAUSED;
 
+        // fragment switched: don't confuse it with onStop/onPause standard events
         releasePlayer();
     }
 

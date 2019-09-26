@@ -2,22 +2,18 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
@@ -128,7 +124,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         boolean needNewPlayer = mPlayer == null;
-        boolean openNewVideo = mNeedRetrySource;
+        //boolean openNewVideo = mNeedRetrySource;
         super.initializePlayer();
 
         if (needNewPlayer) {
@@ -148,10 +144,12 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             initTimelinePreviews();
         }
 
-        if (openNewVideo) {
-            // mAutoFrameRateManager.saveOriginalState();
-            restoreSpeed();
-        }
+        //if (openNewVideo) {
+        //    // mAutoFrameRateManager.saveOriginalState();
+        //    restoreSpeed();
+        //}
+
+        restoreSpeed();
     }
 
     private void initTimelinePreviews() {
@@ -380,6 +378,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             return;
         }
 
+        ExoPreferences prefs = ExoPreferences.instance(getActivity());
+        prefs.setForceRestoreSpeed(false);
+
         releasePlayer(); // dispose player
         mShouldAutoPlay = true; // force autoplay
         mNeedRetrySource = true; // process supplied intent
@@ -579,7 +580,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private void restoreSpeed() {
         ExoPreferences prefs = ExoPreferences.instance(getActivity());
 
-        if (prefs.getRestoreSpeed()) {
+        if (prefs.getRestoreSpeed() || prefs.getForceRestoreSpeed()) {
             mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(prefs.getCurrentSpeed()), 1.0f));
         }
     }

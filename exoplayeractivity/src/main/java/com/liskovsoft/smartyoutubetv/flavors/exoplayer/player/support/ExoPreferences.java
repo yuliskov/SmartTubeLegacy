@@ -25,6 +25,7 @@ public final class ExoPreferences {
     private static final String CURRENT_SPEED = "currentSpeed";
     private static final String RESTORE_SPEED = "restoreSpeed";
     public static final String FORMAT_ANY = "format_any";
+    private boolean mForceRestoreSpeed;
 
     public static ExoPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -207,6 +208,9 @@ public final class ExoPreferences {
     }
 
     public void setCurrentSpeed(String speed) {
+        // restore at least for current video
+        setForceRestoreSpeed(true);
+
         mPrefs.edit()
                 .putString(CURRENT_SPEED, speed)
                 .apply();
@@ -224,5 +228,13 @@ public final class ExoPreferences {
         mPrefs.edit()
                 .putBoolean(RESTORE_SPEED, isChecked)
                 .apply();
+    }
+
+    public boolean getForceRestoreSpeed() {
+        return mForceRestoreSpeed;
+    }
+
+    public void setForceRestoreSpeed(boolean force) {
+        mForceRestoreSpeed = force;
     }
 }
