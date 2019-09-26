@@ -69,4 +69,4 @@ function SelectDefaultAccountAddon() {
     };
 }
 
-new SelectDefaultAccountAddon().run();
+// new SelectDefaultAccountAddon().run();
