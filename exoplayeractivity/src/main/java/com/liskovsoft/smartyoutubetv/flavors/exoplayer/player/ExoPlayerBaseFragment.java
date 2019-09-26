@@ -337,18 +337,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         clock.setText(timeTitle);
     }
 
-    private void updateTitleQualityInfo() {
-        View root = getView();
-
-        if (root == null) {
-            Log.e(TAG, "Fragment's root view is null");
-            return;
-        }
-
-        TextView quality = root.findViewById(R.id.video_quality);
-        quality.setText(PlayerUtil.getVideoQualityLabel(mPlayer));
-    }
-
     private void resetStateOfLayoutToggleButtons() {
         View root = getView();
         if (root == null)
@@ -449,8 +437,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             }
 
             mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
-            mPlayerInitializer.initTimeBar(mPlayer); // set proper time increments
-            updateTitleQualityInfo();
+
+            mPlayerInitializer.initTimeBar(); // set proper time increments
+            mPlayerInitializer.initTitleQualityInfo();
         }
 
         if (mSimpleExoPlayerView != null) {

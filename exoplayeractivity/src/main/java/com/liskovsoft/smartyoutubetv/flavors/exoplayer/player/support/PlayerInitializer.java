@@ -11,12 +11,15 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.TimeBar;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 
 import java.util.Locale;
 
 public class PlayerInitializer {
+    private static final String TAG = PlayerInitializer.class.getSimpleName();
     private final ExoPlayerBaseFragment mPlayerFragment;
     private final PlayerView mExoPlayerView;
     private final View mRootView;
@@ -117,15 +120,15 @@ public class PlayerInitializer {
 
     /**
      * Set different seek time depending on the video length
-     * @param player source of the video params
      */
-    public void initTimeBar(final SimpleExoPlayer player) {
-        if (player == null) {
+    public void initTimeBar() {
+        if (mPlayerFragment.getPlayer() == null) {
+            Log.e(TAG, "Player is null");
             return;
         }
 
         int incrementMS;
-        final long durationMS = player.getDuration();
+        final long durationMS = mPlayerFragment.getPlayer().getDuration();
 
         if (durationMS < 10*60*1000) { // 0 - 10 min
             incrementMS = SEEK_INCREMENT_10MIN_MS;
@@ -167,5 +170,20 @@ public class PlayerInitializer {
         SurfaceView videoSurfaceView = (SurfaceView) mExoPlayerView.getVideoSurfaceView();
         SurfaceManager2 manager = new SurfaceManager2(mPlayerFragment.getActivity(), player);
         videoSurfaceView.getHolder().addCallback(manager);
+    }
+
+    public void initTitleQualityInfo() {
+        if (mRootView == null) {
+            Log.e(TAG, "Fragment's root view is null");
+            return;
+        }
+
+        if (mPlayerFragment.getPlayer() == null) {
+            Log.e(TAG, "Player is null");
+            return;
+        }
+
+        TextView quality = mRootView.findViewById(R.id.video_quality);
+        quality.setText(PlayerUtil.getVideoQualityLabel(mPlayerFragment.getPlayer()));
     }
 }

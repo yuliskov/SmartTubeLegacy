@@ -145,6 +145,9 @@ public final class PlayerUtil extends TrackSelectorUtil {
 
         String codec = PlayerUtil.extractCodec(format);
 
+        boolean isHdr = TrackSelectorUtil.isHdrCodec(format.codecs);
+        String hdrStr = "";
+
         String qualityString;
 
         if (!fps.isEmpty()) {
@@ -152,10 +155,14 @@ public final class PlayerUtil extends TrackSelectorUtil {
         }
 
         if (!codec.isEmpty()) {
-            codec = separator + codec;
+            codec = separator + codec.toUpperCase();
         }
 
-        qualityString = String.format("%s%s%s", resolution, fps, codec);
+        if (isHdr) {
+            hdrStr = separator + "HDR";
+        }
+
+        qualityString = String.format("%s%s%s%s", resolution, fps, codec, hdrStr);
 
         return qualityString;
     }
