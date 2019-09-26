@@ -20,7 +20,7 @@ public class MainScriptManagerInterceptor extends ScriptManagerInterceptor {
     }
 
     protected boolean isFirstScript(String url) {
-        return Helpers.endsWith(url, THIRD_SCRIPT_NAME);
+        return Helpers.endsWith(url, SECOND_SCRIPT_NAME);
     }
 
     protected boolean isLastScript(String url) {

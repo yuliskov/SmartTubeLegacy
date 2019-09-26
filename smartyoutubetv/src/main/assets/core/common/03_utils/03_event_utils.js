@@ -112,7 +112,7 @@ var EventUtils = {
         }
 
         if (!el.tagName) {
-            return null;
+            return el.nodeName;
         }
 
         var tag = el.tagName || '';

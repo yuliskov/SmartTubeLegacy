@@ -11,6 +11,7 @@ function EnableExternalKeyboardAddon() {
 
     this.run = function() {
         this.enableExternalKeyboard();
+        //this.hideKeyboardOnSubmit();
     };
 
     this.enableExternalKeyboard = function() {
@@ -41,7 +42,6 @@ function EnableExternalKeyboardAddon() {
         }
 
         this.enableSearchInputField();
-        this.hideKeyboardOnSubmit();
     };
 
     /**
@@ -61,6 +61,7 @@ function EnableExternalKeyboardAddon() {
 
     this.hideKeyboardOnSubmit = function() {
         var $this = this;
+
         EventUtils.addListener(YouTubeSelectors.SEARCH_INPUT_FIELD, DefaultEvents.KEY_UP, function(e) {
             if (e.keyCode == DefaultKeys.ENTER) {
                 Log.d($this.TAG, "User pressed ENTER on soft keyboard");
