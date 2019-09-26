@@ -98,7 +98,7 @@ var ListenerUtil = {
         var $this = this;
         var surface = Utils.$(YouTubeSelectors.SURFACE_AREA);
 
-        if (!surface) { // running on early stage??
+        if (!surface || YouTubeUtils.isPlayerOpened()) { // running on early stage??
             Log.d(this.TAG, "Can't instantiate root listener: " + YouTubeSelectors.SURFACE_AREA);
 
             this.initDone = false;
