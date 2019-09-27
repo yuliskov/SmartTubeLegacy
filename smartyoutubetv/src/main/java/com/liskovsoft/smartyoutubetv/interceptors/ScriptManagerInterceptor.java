@@ -4,18 +4,18 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 
 public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     private static final String TAG = ScriptManagerInterceptor.class.getSimpleName();
     private final Context mContext;
-    
     private final ScriptManager mManager;
+    private boolean mFirstScriptDone;
 
     public ScriptManagerInterceptor(Context context) {
         super(context);
@@ -48,27 +48,50 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
         InputStream result = response.body().byteStream();
 
         if (isFirstScript(url)) {
-            Log.d(TAG, "Begin onInitScripts");
-            InputStream onInitScripts = mManager.getOnInitScripts();
-            Log.d(TAG, "End onInitScripts");
-            result = Helpers.appendStream(onInitScripts, result);
+            result = applyInit(result);
+            mFirstScriptDone = true;
         }
 
         if (isLastScript(url)) {
-            Log.d(TAG, "Begin onLoadScript");
-            InputStream onLoadScripts = mManager.getOnLoadScripts();
-            Log.d(TAG, "End onLoadScript");
-            result = Helpers.appendStream(result, onLoadScripts);
+            if (!mFirstScriptDone) {
+                result = applyInit(result);
+            }
+
+            result = applyLoad(result);
         }
 
         if (isStyle(url)) {
-            Log.d(TAG, "Begin onStyles");
-            InputStream styles = mManager.getStyles();
-            Log.d(TAG, "End onStyles");
-            result = Helpers.appendStream(result, styles);
+            result = applyStyles(result);
         }
 
         return createResponse(response.body().contentType(), result);
+    }
+
+    @Nullable
+    private InputStream applyInit(InputStream result) {
+        Log.d(TAG, "Begin onInitScripts");
+        InputStream onInitScripts = mManager.getOnInitScripts();
+        Log.d(TAG, "End onInitScripts");
+        result = Helpers.appendStream(onInitScripts, result);
+        return result;
+    }
+
+    @Nullable
+    private InputStream applyLoad(InputStream result) {
+        Log.d(TAG, "Begin onLoadScript");
+        InputStream onLoadScripts = mManager.getOnLoadScripts();
+        Log.d(TAG, "End onLoadScript");
+        result = Helpers.appendStream(result, onLoadScripts);
+        return result;
+    }
+
+    @Nullable
+    private InputStream applyStyles(InputStream result) {
+        Log.d(TAG, "Begin onStyles");
+        InputStream styles = mManager.getStyles();
+        Log.d(TAG, "End onStyles");
+        result = Helpers.appendStream(result, styles);
+        return result;
     }
 
     protected abstract boolean isFirstScript(String url);
