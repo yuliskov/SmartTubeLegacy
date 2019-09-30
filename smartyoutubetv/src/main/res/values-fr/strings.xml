@@ -84,4 +84,8 @@
     <string name="tweak_back_press_exit">Retenir la clé pour sortir</string>
     <string name="force_avc_lite_only">Forcer le codec AVC (LITE uniquement)</string>
     <string name="force_vp9_lite_only">Forcer le codec VP9 (LITE uniquement)</string>
+    <string name="fix_clock_msg">L'heure sur votre appareil \n'a pas correctement réglé</string>
+    <string name="do_restore_data_msg">Restaurer les données précédemment enregistrées?\nL'application doit redémarré.</string>
+    <string name="restoring_data_msg">Restauration des données...</string>
+    <string name="alt_player_mapping">Télécommande: cartographie alt médias-clés</string>
 </resources>
