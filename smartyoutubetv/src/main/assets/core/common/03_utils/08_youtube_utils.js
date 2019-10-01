@@ -233,5 +233,10 @@ var YouTubeUtils = {
                 callback();
             }
         });
+    },
+
+    triggerBack: function() {
+        // EventUtils.triggerEvent(YouTubeSelectors.APP_ROOT, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
     }
 };

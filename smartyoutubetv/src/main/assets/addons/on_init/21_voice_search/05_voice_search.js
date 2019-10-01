@@ -14,13 +14,23 @@ window.VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
+    elementTag: 'DIV',
+    elements: [],
 
     init: function() {
+        // you need to change user-agent too
         //this.overrideVoiceCaps();
 
         if (DeviceUtils.isMicAvailable()) {
-            this.addMicListener();
+            this.overrideVoiceCaps();
+            // this.addMicListener();
+
+            //ElementWrapper.addHandler(this);
         }
+    },
+
+    onCreate: function(elem) {
+        this.elements.push(elem);
     },
 
     addMicListener: function() {
@@ -32,11 +42,36 @@ window.VoiceSearch = {
      * NOTE: App could hang after this
      */
     overrideVoiceCaps: function() {
-        if (window.SpeechRecognition || window.webkitSpeechRecognition) {
-            return;
-        }
+        // if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+        //     return;
+        // }
 
-        window.webkitSpeechRecognition = function() {};
+        var $this = this;
+
+        window.SpeechRecognition = window.webkitSpeechRecognition = function() {
+            this.start = function() {
+                Log.d($this.TAG, "user have clicked on the voice search button");
+                DeviceUtils.sendMessage(DeviceUtils.MESSAGE_MIC_CLICKED);
+
+                if (Utils.hasClass(Utils.$(YouTubeSelectors.VOICE_SEARCH), YouTubeClasses.ELEMENT_FOCUSED)) {
+                    YouTubeUtils.triggerBack();
+                }
+
+                // setTimeout(function() {
+                //     if (Utils.hasClass(Utils.$(YouTubeSelectors.VOICE_SEARCH), YouTubeClasses.ELEMENT_FOCUSED)) {
+                //         YouTubeUtils.triggerBack();
+                //     }
+                // }, 3000);
+
+                //this.onerror && this.onerror({error: ''});
+
+                //window.myspeech = this;
+            };
+
+            this.abort = function() {
+
+            };
+        };
     },
 
     open: function(searchText) {

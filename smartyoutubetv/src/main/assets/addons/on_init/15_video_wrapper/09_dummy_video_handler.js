@@ -1,5 +1,6 @@
 function DummyVideoHandler() {
     this.TAG = 'DummyVideoHandler';
+    this.elementTag = 'video';
     this.addons = [new PlaybackEndAddon(), new VideoPositionAddon()];
 
     this.onCreate = function(video) {

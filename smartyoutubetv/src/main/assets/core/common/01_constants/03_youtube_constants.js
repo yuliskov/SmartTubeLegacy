@@ -37,6 +37,7 @@ var YouTubeConstants = {
  * Selectors for the YouTube elements
  */
 var YouTubeSelectors = {
+    APP_ROOT: '#app-markup',
     PLAYER_EVENTS_RECEIVER: '#watch',
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
     PLAYER_BUTTONS: '#buttons-list',
@@ -73,7 +74,8 @@ var YouTubeSelectors = {
     PLAYER_SUGGESTIONS: '#bottom-half.bottom-half',
     PLAYER_SUGGESTIONS_LIST: 'div.pivot-shelf-list',
     PLAYER_UI_CONTAINER: '#transport-controls',
-    CHANNEL_CONTENT: '.ytlr-tv-browse-renderer'
+    CHANNEL_CONTENT: '.ytlr-tv-browse-renderer',
+    VOICE_SEARCH: '#voice-search'
 };
 
 /**

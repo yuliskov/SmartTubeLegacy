@@ -11,6 +11,9 @@ public class UserAgentManager {
      * New UI
      */
     private final static String LG_SMART_TV = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 42LA660S-ZA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 42LA660S-ZA, wired)";
+    /**
+     * New UI (Voice button enabled)
+     */
     private final static String LG_SMART_TV_VOICE_BUTTON_ENABLED = "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 43LK5760PTA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 43LK5760PTA, wired)";
     /**
      * Old UI (no exit dialog)
@@ -39,7 +42,7 @@ public class UserAgentManager {
         //    return COBALT_CLIENT;
         //}
 
-        return LG_SMART_TV;
+        return LG_SMART_TV_VOICE_BUTTON_ENABLED;
     }
 
     public Map<String, String> getUAHeaders() {
