@@ -14,23 +14,13 @@ window.VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
-    elementTag: 'DIV',
-    elements: [],
 
     init: function() {
-        // you need to change user-agent too
-        //this.overrideVoiceCaps();
+        // NOTE: you need to change user-agent too
 
         if (DeviceUtils.isMicAvailable()) {
             this.overrideVoiceCaps();
-            // this.addMicListener();
-
-            //ElementWrapper.addHandler(this);
         }
-    },
-
-    onCreate: function(elem) {
-        this.elements.push(elem);
     },
 
     addMicListener: function() {
@@ -56,16 +46,6 @@ window.VoiceSearch = {
                 if (Utils.hasClass(Utils.$(YouTubeSelectors.VOICE_SEARCH), YouTubeClasses.ELEMENT_FOCUSED)) {
                     YouTubeUtils.triggerBack();
                 }
-
-                // setTimeout(function() {
-                //     if (Utils.hasClass(Utils.$(YouTubeSelectors.VOICE_SEARCH), YouTubeClasses.ELEMENT_FOCUSED)) {
-                //         YouTubeUtils.triggerBack();
-                //     }
-                // }, 3000);
-
-                //this.onerror && this.onerror({error: ''});
-
-                //window.myspeech = this;
             };
 
             this.abort = function() {
