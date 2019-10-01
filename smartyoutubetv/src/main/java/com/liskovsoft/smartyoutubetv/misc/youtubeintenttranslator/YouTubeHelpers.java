@@ -2,24 +2,40 @@ package com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator;
 
 import android.util.Log;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 
 public class YouTubeHelpers {
     private static final String TAG = YouTubeHelpers.class.getSimpleName();
+    /**
+     * Browser: https://www.youtube.com/results?search_query=twice<br/>
+     * Amazon: youtube://search?query=linkin+park&isVoice=true
+     */
+    private static final String[] SEARCH_KEYS = {"search_query", "query"};
 
     /**
-     * Ex: https://www.youtube.com/results?search_query=twice
+     * Browser: https://www.youtube.com/results?search_query=twice<br/>
+     * Amazon: youtube://search?query=linkin+park&isVoice=true
      */
     public static String extractSearchString(String url) {
-        String[] patterns = {"search_query=[^&\\s]*"};
+        MyQueryString query = MyQueryStringFactory.parse(url);
 
-        String result = Helpers.runMultiMatcher(url, patterns);
+        String result = null;
+
+        for (String key : SEARCH_KEYS) {
+            result = query.get(key);
+
+            if (result != null) {
+                break;
+            }
+        }
 
         if (result == null) {
             Log.w(TAG, "Url isn't a search string: " + url);
             return null;
         }
 
-        return result.replace("search_query=", "");
+        return result;
     }
 
     /**

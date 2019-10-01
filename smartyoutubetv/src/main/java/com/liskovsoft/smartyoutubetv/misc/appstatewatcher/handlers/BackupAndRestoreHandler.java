@@ -12,15 +12,16 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.St
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BackupAndRestoreHandler extends StateHandler implements DialogInterface.OnClickListener {
     private static final String TAG = BackupAndRestoreHandler.class.getSimpleName();
     private final Context mContext;
-    private final ArrayList<File> mDataDirs;
+    private final List<File> mDataDirs;
     private static final String WEBVIEW_SUBDIR = "app_webview";
     private static final String XWALK_SUBDIR = "app_xwalkcore";
     private static final String SHARED_PREFS_SUBDIR = "shared_prefs";
-    private final File mBackupDir;
+    private final List<File> mBackupDirs;
     private boolean mIsFirstRun;
     private boolean mIsUpdate;
 
@@ -31,7 +32,9 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, XWALK_SUBDIR));
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, SHARED_PREFS_SUBDIR));
 
-        mBackupDir = new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", mContext.getPackageName()));
+        mBackupDirs = new ArrayList<>();
+        mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", mContext.getPackageName())));
+        mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", "com.liskovsoft.videomanager")));
     }
 
     @Override
@@ -50,9 +53,17 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     public void onLoad() {
         // permissions dialog should be closed at this point
         if (mIsFirstRun) {
-            if (mBackupDir.isDirectory()) {
-                checkPermAndProposeRestore();
-            } else {
+            boolean backupFound = false;
+
+            for (File backupDir : mBackupDirs) {
+                if (backupDir.isDirectory()) {
+                    backupFound = true;
+                    checkPermAndProposeRestore();
+                    break;
+                }
+            }
+
+            if (!backupFound) {
                 // app might be upgraded from older version
                 checkPermAndBackup();
             }
@@ -90,14 +101,16 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     private void backupData() {
         Log.d(TAG, "App has been updated or installed. Doing data backup...");
 
-        if (mBackupDir.isDirectory()) {
-            // remove old backup
-            FileHelpers.delete(mBackupDir);
+        File currentBackup = mBackupDirs.get(0); // backup to first dir from list
+
+        // remove old backup
+        if (currentBackup.isDirectory()) {
+            FileHelpers.delete(currentBackup);
         }
 
         for (File dataDir : mDataDirs) {
             if (dataDir.isDirectory()) {
-                FileHelpers.copy(dataDir, new File(mBackupDir, dataDir.getName()));
+                FileHelpers.copy(dataDir, new File(currentBackup, dataDir.getName()));
             }
         }
     }
@@ -105,7 +118,16 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     private void restoreData() {
         Log.d(TAG, "App just updated. Restoring data...");
 
-        if (!mBackupDir.isDirectory()) {
+        File currentBackup = null;
+
+        for (File backupDir : mBackupDirs) {
+            if (backupDir.isDirectory()) {
+                currentBackup = backupDir;
+                break;
+            }
+        }
+
+        if (currentBackup == null) {
             Log.d(TAG, "Oops. Backup not exists.");
             return;
         }
@@ -116,7 +138,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
                 FileHelpers.delete(dataDir);
             }
 
-            FileHelpers.copy(new File(mBackupDir, dataDir.getName()), dataDir);
+            FileHelpers.copy(new File(currentBackup, dataDir.getName()), dataDir);
         }
 
         // to apply settings we need to kill the app

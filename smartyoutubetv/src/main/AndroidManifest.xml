@@ -89,6 +89,8 @@
                 <data android:host="m.youtube.com"/>
                 <data android:host="youtu.be"/>
                 <data android:pathPattern=".*"/>
+                <data android:host="search" android:scheme="youtube"/>
+                <data android:host="play" android:scheme="youtube"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

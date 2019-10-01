@@ -113,6 +113,11 @@ android {
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.google.android.youtube.tv"
         }
+        Vamazon {
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.amazon.firetv.youtube"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk

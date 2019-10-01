@@ -83,6 +83,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mUrlData = getIntent().getData();
 
         mApkUpdater.start();
+
+        // for search on app boot see onAppLoaded method
+
+        Log.d(TAG, "onCreate intent: " + getIntent());
     }
 
     @Override
@@ -327,6 +331,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent: " + intent);
+
         super.onNewIntent(intent);
         mUrlData = intent.getData();
         mVoiceBridge.openSearchPage(intent.getData());
