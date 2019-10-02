@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
+import android.os.Handler;
 import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -142,7 +143,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         }
 
         // to apply settings we need to kill the app
-        SmartUtils.restartApp(mContext);
+        new Handler(mContext.getMainLooper()).postDelayed(() -> SmartUtils.restartApp(mContext), 1_000);
     }
 
     private void askUserPermission() {

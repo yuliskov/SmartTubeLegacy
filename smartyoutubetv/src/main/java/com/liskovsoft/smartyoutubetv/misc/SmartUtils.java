@@ -31,12 +31,12 @@ public class SmartUtils {
     }
 
     private static void restartApp(Context context, boolean toBootstrap) {
-        // give a time to settings to compareAndApply
-        new Handler(context.getMainLooper()).postDelayed(() -> SmartUtils.restart(context, toBootstrap), 1_000);
+        SmartUtils.restart(context, toBootstrap);
     }
 
     private static void restart(Context context, boolean toBootstrap) {
         Intent intent = new Intent();
+
         intent.setClass(context, BootstrapActivity.class);
 
         if (toBootstrap) {
@@ -44,6 +44,18 @@ public class SmartUtils {
         }
 
         context.startActivity(intent);
+
+        if (context instanceof Activity) {
+            ((Activity)context).finish();
+        }
+
+        System.exit(0);
+    }
+
+    public static void killApp(Context context) {
+        if (context instanceof Activity) {
+            ((Activity)context).finish();
+        }
 
         System.exit(0);
     }

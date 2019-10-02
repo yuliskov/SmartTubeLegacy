@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.bootstrap.dialoglanguage;
 
+import android.os.Handler;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
@@ -36,7 +37,7 @@ public class LanguageDialogItem extends DialogItem {
 
         mUpdater.setPreferredLocale(mLangCode);
 
-        SmartUtils.restartToBootstrap(mActivity);
+        new Handler(mActivity.getMainLooper()).postDelayed(() -> SmartUtils.restartToBootstrap(mActivity), 1_000);
     }
 
     /**
