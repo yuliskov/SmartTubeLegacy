@@ -15,9 +15,6 @@ public abstract class BaseLoadingManager implements LoadingManager {
         mContext = context;
     }
 
-    @Override
-    public abstract void showRandomTip();
-
     /**
      * Dynamically load main view since it may not be initialized yet.
      * @return root view
