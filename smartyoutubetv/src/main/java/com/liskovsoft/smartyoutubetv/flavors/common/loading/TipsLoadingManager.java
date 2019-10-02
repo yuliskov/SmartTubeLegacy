@@ -1,8 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.common.loading;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.view.View;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.smartyoutubetv.R;
 
@@ -16,7 +14,8 @@ public class TipsLoadingManager extends BaseLoadingManager {
     private final int[] mTips = {
             R.string.tip_show_main_screen,
             R.string.tip_solve_problem,
-            R.string.tip_disable_updates
+            R.string.tip_disable_updates,
+            R.string.tip_hash_in_subscriptions
     };
 
     public TipsLoadingManager(Activity context) {

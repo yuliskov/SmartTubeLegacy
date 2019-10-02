@@ -88,4 +88,5 @@
     <string name="do_restore_data_msg">Restore previously saved data?\nApp will be restarted.</string>
     <string name="restoring_data_msg">Restoring data...</string>
     <string name="alt_player_mapping">Remote: alt media-keys mapping</string>
+    <string name="tip_hash_in_subscriptions">Empty subscriptions? Remove channels beginning hash #</string>
 </resources>
