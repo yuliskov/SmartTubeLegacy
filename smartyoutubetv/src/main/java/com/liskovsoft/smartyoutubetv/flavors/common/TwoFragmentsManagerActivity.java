@@ -216,8 +216,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.onNewIntent(intent);
 
         if (mBrowserFragment != null) {
-            setActiveFragment(mBrowserFragment, true);
             mBrowserFragment.onNewIntent(intent);
         }
+    }
+
+    @Override
+    protected void onSearchQuery() {
+        setActiveFragment(mBrowserFragment, true);
     }
 }

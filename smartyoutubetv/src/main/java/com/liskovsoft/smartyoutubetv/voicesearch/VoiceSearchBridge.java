@@ -62,9 +62,9 @@ public class VoiceSearchBridge implements SearchCallback {
         mConnector.openSearchPage(searchText);
     }
 
-    public void openSearchPage(Uri pageUrl) {
+    public boolean openSearchPage(Uri pageUrl) {
         if (pageUrl == null) {
-            return;
+            return false;
         }
 
         String searchString = YouTubeHelpers.extractSearchString(pageUrl.toString());
@@ -72,5 +72,7 @@ public class VoiceSearchBridge implements SearchCallback {
         if (searchString != null) {
             openSearchPage(searchString);
         }
+
+        return searchString != null;
     }
 }

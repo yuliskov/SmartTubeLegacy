@@ -20,6 +20,8 @@ window.VoiceSearch = {
 
         if (DeviceUtils.isMicAvailable()) {
             this.overrideVoiceCaps();
+        } else {
+            window.SpeechRecognition = window.webkitSpeechRecognition = null;
         }
     },
 

@@ -326,16 +326,22 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mLoadingManager.hide();
         mAppStateWatcher.onLoad();
 
-        mVoiceBridge.openSearchPage(mUrlData);
+        if (mVoiceBridge.openSearchPage(mUrlData)) {
+            onSearchQuery();
+        }
     }
-
+    
     @Override
     protected void onNewIntent(Intent intent) {
         Log.d(TAG, "onNewIntent: " + intent);
 
         super.onNewIntent(intent);
+
         mUrlData = intent.getData();
-        mVoiceBridge.openSearchPage(intent.getData());
+
+        if (mVoiceBridge.openSearchPage(intent.getData())) {
+            onSearchQuery();
+        }
 
         mAppStateWatcher.onNewIntent(intent);
     }
@@ -373,4 +379,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     public void onSearchFieldFocused() {
         mActiveFragment.showSoftKeyboard();
     }
+
+    protected void onSearchQuery() {}
 }
