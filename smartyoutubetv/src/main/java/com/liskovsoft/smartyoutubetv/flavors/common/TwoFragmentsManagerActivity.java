@@ -214,8 +214,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         if (mBrowserFragment != null) {
-            mBrowserFragment.onResumeFragment();
+            setActiveFragment(mBrowserFragment, true);
             mBrowserFragment.onNewIntent(intent);
         }
     }
