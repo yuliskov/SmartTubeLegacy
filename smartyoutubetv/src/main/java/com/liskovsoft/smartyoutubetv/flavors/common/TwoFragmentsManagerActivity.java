@@ -222,6 +222,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onSearchQuery() {
-        setActiveFragment(mBrowserFragment, true);
+        if (getActiveFragment() != mBrowserFragment) {
+            setActiveFragment(mBrowserFragment, true);
+        }
     }
 }
