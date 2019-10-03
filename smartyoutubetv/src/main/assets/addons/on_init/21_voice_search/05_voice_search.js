@@ -43,11 +43,12 @@ window.VoiceSearch = {
         window.SpeechRecognition = window.webkitSpeechRecognition = function() {
             this.start = function() {
                 Log.d($this.TAG, "user have clicked on the voice search button");
+
+                // open my voice dialog
                 DeviceUtils.sendMessage(DeviceUtils.MESSAGE_MIC_CLICKED);
 
-                if (Utils.hasClass(Utils.$(YouTubeSelectors.VOICE_SEARCH), YouTubeClasses.ELEMENT_FOCUSED)) {
-                    YouTubeUtils.triggerBack();
-                }
+                // use hack to close youtube voice dialog
+                this.onerror && this.onerror({error: ''});
             };
 
             this.abort = function() {

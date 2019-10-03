@@ -1,4 +1,5 @@
-/* Always hide internal voice dialog */
-/*#voice-search {*/
-/*    display: none !important;*/
-/*}*/
+/* Users not intended to view youtube voice dialog and popups */
+#voice-search,
+.voice-search-error-toast {
+    display: none !important;
+}
