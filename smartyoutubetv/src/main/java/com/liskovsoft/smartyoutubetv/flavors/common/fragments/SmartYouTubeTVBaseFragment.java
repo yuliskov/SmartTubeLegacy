@@ -29,6 +29,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private UserAgentManager mUAManager;
     private ServiceFinder mServiceFinder;
     private boolean mDoReloadNextTime;
+    private Intent mRecentIntent;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -188,6 +189,8 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
      */
     @Override
     public void onLowMemory() {
+        mRecentIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mController.getCurrentTab().getWebView().getUrl()));
+
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("about:blank")); // release browser memory
@@ -196,10 +199,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
 
         super.onLowMemory();
 
-        if (getState() == GenericFragment.STATE_RESUMED) { // recreate last seen web site
-            mController.handleNewIntent(getActivity().getIntent());
-        } else {
-            mDoReloadNextTime = true;
+        if (getState() == GenericFragment.STATE_RESUMED) { // recreate last seen web page
+            mController.handleNewIntent(mRecentIntent);
+            mRecentIntent = null;
         }
     }
 
@@ -207,9 +209,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     public void onResumeFragment() {
         super.onResumeFragment();
 
-        if (mDoReloadNextTime) {
-            mController.handleNewIntent(getActivity().getIntent());
-            mDoReloadNextTime = false;
+        if (mRecentIntent != null) {
+            mController.handleNewIntent(mRecentIntent);
+            mRecentIntent = null;
         }
     }
 }
