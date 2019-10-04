@@ -101,7 +101,8 @@ var YouTubeClasses = {
 var YouTubeEvents = {
     MODEL_CHANGED_EVENT: 'model:changed',
     COMPONENT_FOCUS_EVENT: 'component-focus',
-    COMPONENT_BLUR_EVENT: 'component-blur'
+    COMPONENT_BLUR_EVENT: 'component-blur',
+    BUTTON_ENTER: 'button-enter'
 };
 
 /**
