@@ -135,7 +135,8 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:label="@string/title_exo_main"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
         </activity>
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
