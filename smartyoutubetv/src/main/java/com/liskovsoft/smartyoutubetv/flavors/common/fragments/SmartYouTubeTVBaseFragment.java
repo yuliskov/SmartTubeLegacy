@@ -15,6 +15,7 @@ import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.keytranslator.BrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.ServiceFinder;
@@ -27,6 +28,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private KeyTranslator mTranslator;
     private UserAgentManager mUAManager;
     private ServiceFinder mServiceFinder;
+    private boolean mDoReloadNextTime;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -181,12 +183,33 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         mController.showSoftKeyboard();
     }
 
-    //@Override
-    //public void onResume() {
-    //    super.onResume();
-    //
-    //    if (getActivity() != null && mController != null && getActivity().getIntent() != null) {
-    //         mController.handleNewIntent(getActivity().getIntent());
-    //    }
-    //}
+    /**
+     * Release browser memory
+     */
+    @Override
+    public void onLowMemory() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("about:blank")); // release browser memory
+
+        mController.handleNewIntent(intent);
+
+        super.onLowMemory();
+
+        if (getState() == GenericFragment.STATE_RESUMED) { // recreate last seen web site
+            mController.handleNewIntent(getActivity().getIntent());
+        } else {
+            mDoReloadNextTime = true;
+        }
+    }
+
+    @Override
+    public void onResumeFragment() {
+        super.onResumeFragment();
+
+        if (mDoReloadNextTime) {
+            mController.handleNewIntent(getActivity().getIntent());
+            mDoReloadNextTime = false;
+        }
+    }
 }
