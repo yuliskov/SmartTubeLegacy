@@ -1,34 +1,30 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
-import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
-import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
-import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
-import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
-import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
-import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
+import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
+import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
@@ -382,16 +378,4 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     protected void onSearchQuery() {}
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-
-        switch (level) {
-            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
-                Log.e(TAG, "Warning: app will be killed soon");
-                mActiveFragment.onMemoryCritical();
-                break;
-        }
-    }
 }

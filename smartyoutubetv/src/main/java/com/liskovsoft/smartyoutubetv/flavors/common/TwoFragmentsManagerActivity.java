@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
+import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -224,6 +225,19 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onSearchQuery() {
         if (getActiveFragment() != mBrowserFragment) {
             setActiveFragment(mBrowserFragment, true);
+        }
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+
+        switch (level) {
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
+                Log.e(TAG, "Warning: app will be killed soon");
+                mBrowserFragment.onMemoryCritical();
+                mPlayerFragment.onMemoryCritical();
+                break;
         }
     }
 }
