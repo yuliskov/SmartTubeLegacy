@@ -388,7 +388,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         super.onTrimMemory(level);
 
         switch (level) {
-            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
                 Log.e(TAG, "Warning: app will be killed soon");
                 mActiveFragment.onMemoryCritical();
                 break;
