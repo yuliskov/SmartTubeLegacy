@@ -83,4 +83,4 @@ var CodecConfig_XWalk = {
 
 var CodecConfig_AVC = {'': 'webm'};
 var CodecConfig_VP9 = {'': 'mp4'};
-var CodecConfig_EXO = {'': ''};
+var CodecConfig_EXO = {'': 'webm,mp4'};

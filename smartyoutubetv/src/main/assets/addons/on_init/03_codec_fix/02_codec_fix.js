@@ -15,16 +15,18 @@ function CodecFixAddon() {
      * Obtains device map for WebView or XWalk respectively
      */
     this.findProperConfig = function() {
-        if (!DeviceUtils.isExo()) {
-            // CodecSelectorAddon usage
-            switch (DeviceUtils.getPreferredCodec()) {
-                case DeviceUtils.AVC:
-                    Log.d(this.TAG, "Forcing AVC codec...");
-                    return CodecConfig_AVC;
-                case DeviceUtils.VP9:
-                    Log.d(this.TAG, "Forcing VP9 codec...");
-                    return CodecConfig_VP9;
-            }
+        if (DeviceUtils.isExo()) {
+            return CodecConfig_EXO;
+        }
+
+        // CodecSelectorAddon usage
+        switch (DeviceUtils.getPreferredCodec()) {
+            case DeviceUtils.AVC:
+                Log.d(this.TAG, "Forcing AVC codec...");
+                return CodecConfig_AVC;
+            case DeviceUtils.VP9:
+                Log.d(this.TAG, "Forcing VP9 codec...");
+                return CodecConfig_VP9;
         }
 
         if (DeviceUtils.isWebView()) {
