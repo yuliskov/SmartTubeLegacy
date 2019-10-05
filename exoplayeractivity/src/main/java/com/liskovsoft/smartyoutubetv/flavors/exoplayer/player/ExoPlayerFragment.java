@@ -208,4 +208,9 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
             //initializeUiScale();
         }
     }
+
+    @Override
+    public void onMemoryCritical() {
+        // NOP
+    }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
@@ -28,8 +29,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     private KeyTranslator mTranslator;
     private UserAgentManager mUAManager;
     private ServiceFinder mServiceFinder;
-    private boolean mDoReloadNextTime;
-    private Intent mRecentIntent;
+    private String mSavedUrl;
 
     @Override
     public void onActivityCreated(Bundle icicle) {
@@ -188,20 +188,19 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
      * Release browser memory
      */
     @Override
-    public void onLowMemory() {
-        mRecentIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mController.getCurrentTab().getWebView().getUrl()));
+    public void onMemoryCritical() {
+        super.onMemoryCritical();
 
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("about:blank")); // release browser memory
+        Log.e(TAG, "App will be killed soon");
 
-        mController.handleNewIntent(intent);
+        WebView webView = mController.getCurrentTab().getWebView();
 
-        super.onLowMemory();
+        if (getState() == GenericFragment.STATE_RESUMED) { // webview is visible
+            webView.reload();
+        } else { // webview not visible
+            mSavedUrl = webView.getUrl();
 
-        if (getState() == GenericFragment.STATE_RESUMED) { // recreate last seen web page
-            mController.handleNewIntent(mRecentIntent);
-            mRecentIntent = null;
+            webView.loadUrl("about:blank"); // release browser memory
         }
     }
 
@@ -209,9 +208,9 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     public void onResumeFragment() {
         super.onResumeFragment();
 
-        if (mRecentIntent != null) {
-            mController.handleNewIntent(mRecentIntent);
-            mRecentIntent = null;
+        if (mSavedUrl != null) {
+            mController.getCurrentTab().getWebView().loadUrl(mSavedUrl);
+            mSavedUrl = null;
         }
     }
 }
