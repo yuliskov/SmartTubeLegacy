@@ -1,5 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
+import android.annotation.TargetApi;
+import android.app.ActivityManager.MemoryInfo;
+import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -100,6 +103,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     protected void setActiveFragment(GenericFragment fragment, boolean pausePrevious) {
+        checkMemory();
+
         if (fragment == null) {
             throw new IllegalStateException("Active fragment can't be null");
         }
@@ -378,4 +383,32 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     protected void onSearchQuery() {}
+
+    @TargetApi(16)
+    private void checkMemory() {
+        MemoryInfo memory = Helpers.getAvailableMemory(this);
+
+        Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
+
+        if (memory.lowMemory) {
+            Log.e(TAG, "Memory is low. Doing some cleanup");
+            onMemoryCritical();
+        }
+
+        Log.flush();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+
+        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
+            Log.e(TAG, "Warning: app will be killed soon");
+            onMemoryCritical();
+        }
+
+        Log.flush();
+    }
+
+    protected void onMemoryCritical() {}
 }

@@ -49,12 +49,8 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
     }
 
     @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-
-        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
-            Log.e(TAG, "Warning: app will be killed soon");
-            mFragment.onMemoryCritical();
-        }
+    protected void onMemoryCritical() {
+        Log.e(TAG, "Warning: app will be killed soon");
+        mFragment.onMemoryCritical();
     }
 }

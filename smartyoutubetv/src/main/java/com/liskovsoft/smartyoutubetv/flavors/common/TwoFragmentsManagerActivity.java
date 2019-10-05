@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
-import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -229,13 +228,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-
-        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
-            Log.e(TAG, "Warning: app will be killed soon");
-            mBrowserFragment.onMemoryCritical();
-            mPlayerFragment.onMemoryCritical();
-        }
+    protected void onMemoryCritical() {
+        Log.e(TAG, "Warning: app will be killed soon");
+        mBrowserFragment.onMemoryCritical();
+        mPlayerFragment.onMemoryCritical();
     }
 }
