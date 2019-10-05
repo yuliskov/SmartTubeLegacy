@@ -52,11 +52,9 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
 
-        switch (level) {
-            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
-                Log.e(TAG, "Warning: app will be killed soon");
-                mFragment.onMemoryCritical();
-                break;
+        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
+            Log.e(TAG, "Warning: app will be killed soon");
+            mFragment.onMemoryCritical();
         }
     }
 }

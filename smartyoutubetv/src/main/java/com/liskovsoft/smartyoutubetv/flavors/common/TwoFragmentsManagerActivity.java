@@ -232,12 +232,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
 
-        switch (level) {
-            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
-                Log.e(TAG, "Warning: app will be killed soon");
-                mBrowserFragment.onMemoryCritical();
-                mPlayerFragment.onMemoryCritical();
-                break;
+        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
+            Log.e(TAG, "Warning: app will be killed soon");
+            mBrowserFragment.onMemoryCritical();
+            mPlayerFragment.onMemoryCritical();
         }
     }
 }
