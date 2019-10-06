@@ -64,18 +64,6 @@ var DeviceUtils = {
                 var supported;
                 var originSupported = origin.call(obj, fullCodec);
 
-                // if (force) { // disable even when codec isn't supported by device
-                //     if (Utils.contains(fullCodec, codec)) {
-                //         return false;
-                //     }
-                // } else if (
-                //     $this.isPlaybackWorking()   &&
-                //     !$this.isLive(fullCodec)    &&
-                //     !$this.is4KCodec(codec)     &&
-                //     Utils.contains(fullCodec, codec)) {
-                //     return false;
-                // }
-
                 if (Utils.contains(fullCodec, unwantedCodec)) {
                     supported = false;
                 } else {

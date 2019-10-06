@@ -51,11 +51,7 @@ function CodecFixAddon() {
             if (DeviceUtils.isMyDevice(device)) {
                 // multiple codecs supported, divided by comma
                 var codecs = deviceMap[device].split(',');
-                var codecsLen = codecs.length;
-                for (var i = 0; i < codecsLen; i++) {
-                    var codec = codecs[i].trim();
-                    DeviceUtils.disableCodec(codec);
-                }
+                DeviceUtils.disableCodec(codecs);
                 break;
             }
         }
