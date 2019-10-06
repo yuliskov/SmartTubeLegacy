@@ -230,6 +230,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onMemoryCritical() {
         Log.e(TAG, "Warning: app will be killed soon");
+
+        if (getActiveFragment() == mBrowserFragment) {
+            mLoadingManager.show();
+        }
+
         mBrowserFragment.onMemoryCritical();
         mPlayerFragment.onMemoryCritical();
     }

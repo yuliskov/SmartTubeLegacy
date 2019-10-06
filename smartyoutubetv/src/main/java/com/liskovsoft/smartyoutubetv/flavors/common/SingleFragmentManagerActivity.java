@@ -51,6 +51,8 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
     @Override
     protected void onMemoryCritical() {
         Log.e(TAG, "Warning: app will be killed soon");
+
+        mLoadingManager.show();
         mFragment.onMemoryCritical();
     }
 }

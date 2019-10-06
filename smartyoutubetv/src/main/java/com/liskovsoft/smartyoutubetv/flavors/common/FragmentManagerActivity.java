@@ -39,7 +39,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private GenericFragment mActiveFragment;
     private GenericFragment mPrevFragment;
     private VoiceSearchBridge mVoiceBridge;
-    private LoadingManager mLoadingManager;
+    protected LoadingManager mLoadingManager;
     private boolean mLoadingDone;
     private MainApkUpdater mApkUpdater;
     private int mRequestCode = 50;
@@ -390,17 +390,21 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
 
-        if (memory.lowMemory) {
-            Log.e(TAG, "Memory is low. Doing some cleanup");
-            onMemoryCritical();
-        }
+        //if (memory.lowMemory) {
+        //    Log.e(TAG, "Memory is low. Doing some cleanup");
+        //    onMemoryCritical();
+        //}
 
-        Log.flush();
+        //Log.flush();
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
+
+        Log.d(TAG, "onTrimMemory");
+
+        checkMemory();
 
         if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
             Log.e(TAG, "Warning: app will be killed soon");
