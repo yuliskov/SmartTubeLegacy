@@ -6,5 +6,5 @@ public interface PlayerEventListener {
     void onAppInit();
     void onPlayerCreated();
     void onPlayerDestroyed();
-    void onPlayerReady();
+    void onPlaybackReady();
 }

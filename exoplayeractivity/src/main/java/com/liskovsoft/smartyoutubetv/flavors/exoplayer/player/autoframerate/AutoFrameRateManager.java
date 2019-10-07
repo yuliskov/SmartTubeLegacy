@@ -4,8 +4,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
 
 public class AutoFrameRateManager implements PlayerEventListener {
-    private final ExoPlayerFragment mPlayerFragment;
-    private AutoFrameRateHelper mAutoFrameRateManager;
+    protected final ExoPlayerFragment mPlayerFragment;
+    protected AutoFrameRateHelper mAutoFrameRateManager;
 
     public AutoFrameRateManager(ExoPlayerFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -52,7 +52,7 @@ public class AutoFrameRateManager implements PlayerEventListener {
     }
 
     @Override
-    public void onPlayerReady() {
+    public void onPlaybackReady() {
         if (mAutoFrameRateManager != null) {
             mAutoFrameRateManager.apply();
         }

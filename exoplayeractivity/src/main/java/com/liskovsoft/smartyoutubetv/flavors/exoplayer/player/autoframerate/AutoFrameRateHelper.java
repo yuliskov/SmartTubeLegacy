@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPrefere
 class AutoFrameRateHelper {
     private static final String TAG = AutoFrameRateHelper.class.getSimpleName();
     private final Activity mContext;
-    private final DisplaySyncHelper mSyncHelper;
+    protected DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
 
@@ -52,10 +52,6 @@ class AutoFrameRateHelper {
 
         mPrefs.setAutoframerateChecked(enabled);
         apply();
-    }
-
-    public int getCurrentModeId() {
-        return mSyncHelper.getCurrentModeId();
     }
 
     public void saveOriginalState() {

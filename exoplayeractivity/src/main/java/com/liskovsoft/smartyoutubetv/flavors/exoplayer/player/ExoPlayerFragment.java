@@ -9,6 +9,7 @@ import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManagerAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandler;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandlerFactory;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
@@ -26,7 +27,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     private KeyHandler mKeyHandler;
 
     public ExoPlayerFragment() {
-        mListener = new AutoFrameRateManager(this);
+        mListener = new AutoFrameRateManagerAlt(this);
         addEventListener(mListener);
     }
 
