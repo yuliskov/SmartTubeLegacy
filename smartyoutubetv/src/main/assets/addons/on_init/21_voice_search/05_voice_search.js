@@ -23,37 +23,19 @@ window.VoiceSearch = {
         } else {
             this.disableBrowserVoiceFunctions();
         }
-
-        // if (DeviceUtils.isMicAvailable()) {
-        //     this.addMicListener();
-        // }
     },
 
     disableBrowserVoiceFunctions: function() {
         window.SpeechRecognition = window.webkitSpeechRecognition = null;
     },
 
-    addMicListener: function() {
-        var $this = this;
-
-        this.disableBrowserVoiceFunctions();
-
-        EventUtils.addListenerOnce(YouTubeSelectors.SEARCH_PAGE, YouTubeEvents.MODEL_CHANGED_EVENT, function() {
-            $this.micButton = new VoiceSearchButton();
-            SearchPageUiManager.insertButton($this.micButton);
-        });
-    },
-
-    /**
-     * NOTE: App could hang after this
-     */
     overrideVoiceCaps: function() {
         // hacks to made app think that there is a voice input
 
-        if (window.environment) {
-            // this line fixes afr issues
-            window.environment.supportsVoiceSearch = true;
-        }
+        // if (window.environment) {
+        //     // this line fixes afr issues
+        //     window.environment.supportsVoiceSearch = true;
+        // }
 
         var $this = this;
 
@@ -72,65 +54,6 @@ window.VoiceSearch = {
 
             };
         };
-    },
-
-    /**
-     * Available only in chrome dev console
-     */
-    enableSearchListener: function() {
-        var $this = this;
-
-        EventUtils.addListenerOnce(YouTubeSelectors.SEARCH_PAGE, YouTubeEvents.MODEL_CHANGED_EVENT, function() {
-            $this.disableMicButtonEvents();
-            $this.addClickHandler();
-        });
-    },
-
-    addClickHandler: function() {
-        Log.d(this.TAG, "Trying to initialize search button");
-
-        var micBtn = Utils.$(YouTubeSelectors.SEARCH_MIC_BUTTON);
-
-        if (!micBtn) {
-            Log.e(this.TAG, "Mic btn not found");
-        } else {
-            EventUtils.addListener(micBtn, DefaultEvents.KEY_UP, function(e) {
-                if (e.keyCode == DefaultKeys.ENTER) {
-                    // open my voice dialog
-                    DeviceUtils.sendMessage(DeviceUtils.MESSAGE_MIC_CLICKED);
-                }
-            });
-        }
-    },
-
-    disableMicButtonEvents: function() {
-        if (!window.getEventListeners) { // Available only in chrome dev console
-            Log.d(this.TAG, "getEventListeners not found");
-            return false;
-        }
-
-        var $this = this;
-
-        var micBtn = Utils.$(YouTubeSelectors.SEARCH_MIC_BUTTON);
-
-        if (micBtn) {
-            var listeners = getEventListeners(micBtn);
-
-            if (listeners) {
-                var btnEnter = listeners[YouTubeEvents.BUTTON_ENTER];
-
-                if (btnEnter && btnEnter.length) {
-                    var btnEnterFirst = btnEnter[0];
-
-                    if (btnEnterFirst) {
-                        micBtn.removeEventListener(YouTubeEvents.BUTTON_ENTER, btnEnterFirst.listener);
-                        Log.d($this.TAG, "Default handler removed successfully");
-                    }
-                }
-            }
-        }
-
-        return true;
     },
 
     open: function(searchText) {
