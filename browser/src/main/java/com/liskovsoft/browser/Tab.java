@@ -192,8 +192,9 @@ public class Tab implements PictureListener {
     }
 
     public void reload() {
-        if (mMainView == null)
+        if (mMainView == null) {
             return;
+        }
 
         String url = mMainView.getUrl();
         loadUrl(url, mWebViewController.getDefaultHeaders());

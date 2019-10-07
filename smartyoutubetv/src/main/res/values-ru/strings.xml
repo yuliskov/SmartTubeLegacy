@@ -75,4 +75,5 @@
     <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет перезапущено.</string>
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
     <string name="tip_hash_in_subscriptions">Пустые подписки? Удалите каналы с хэшем #</string>
+    <string name="tip_show_main_screen_2">Нажмите НАЗАД чтобы открыть Главные Настройки</string>
 </resources>

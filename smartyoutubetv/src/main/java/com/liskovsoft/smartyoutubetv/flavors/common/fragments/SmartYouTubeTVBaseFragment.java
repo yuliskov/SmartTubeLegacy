@@ -189,29 +189,19 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
      */
     @Override
     public void onMemoryCritical() {
-        super.onMemoryCritical();
-
         Log.e(TAG, "App will be killed soon");
 
-        WebView webView = mController.getCurrentTab().getWebView();
-        webView.reload();
-
-        //if (getState() == GenericFragment.STATE_RESUMED) { // webview is visible
-        //    webView.reload();
-        //} else { // webview not visible
-        //    mSavedUrl = webView.getUrl();
-        //
-        //    webView.loadUrl("about:blank"); // release browser memory
-        //}
+        if (getState() == GenericFragment.STATE_PAUSED) {
+            mController.onResume();
+        }
+        
+        mController.getCurrentTab().reload();
     }
 
-    //@Override
-    //public void onResumeFragment() {
-    //    super.onResumeFragment();
-    //
-    //    if (mSavedUrl != null) {
-    //        mController.getCurrentTab().getWebView().loadUrl(mSavedUrl);
-    //        mSavedUrl = null;
-    //    }
-    //}
+    @Override
+    public void onLoad() {
+        if (getState() == GenericFragment.STATE_PAUSED) {
+            mController.onPause();
+        }
+    }
 }

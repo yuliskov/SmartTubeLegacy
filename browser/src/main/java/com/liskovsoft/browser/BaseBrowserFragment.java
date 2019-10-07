@@ -75,11 +75,11 @@ public abstract class BaseBrowserFragment extends Fragment implements BrowserFra
         saveBrowserState(outState);
     }
 
-    @Override
-    public void onMemoryCritical() {
-        // msg 4 future me: this method is not called when app is hidden
-        saveBrowserState(null); // app nearly get killed
-    }
+    //@Override
+    //public void onMemoryCritical() {
+    //    // msg 4 future me: this method is not called when app is hidden
+    //    saveBrowserState(null); // app nearly get killed
+    //}
 
     /**
      * Screen might flash during pause. So doing hard work when ui not visible.

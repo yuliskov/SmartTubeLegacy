@@ -37,4 +37,5 @@
     <string name="title_exo_alt">PRO Додатков.</string>
     <string name="title_webview">LITE Основний</string>
     <string name="title_xwalk">LITE Додатков.</string>
+    <string name="tip_show_main_screen_2">Натисніть НАЗАД щоби відкрите Головні Налаштування</string>
 </resources>

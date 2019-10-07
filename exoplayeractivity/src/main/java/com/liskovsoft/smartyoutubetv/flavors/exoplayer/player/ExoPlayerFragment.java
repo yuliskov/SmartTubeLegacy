@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandler;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandlerFactory;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
@@ -17,11 +18,22 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
  */
 public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
+    private final AutoFrameRateManager mListener;
     private int mState;
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
     private KeyHandler mKeyHandler;
+
+    public ExoPlayerFragment() {
+        mListener = new AutoFrameRateManager(this);
+        addEventListener(mListener);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     // NOTE: entry point to handle keys
     @Override
@@ -211,6 +223,15 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
 
     @Override
     public void onMemoryCritical() {
+        // NOP
+    }
+
+    public AutoFrameRateManager getAutoFrameRateManager() {
+        return mListener;
+    }
+
+    @Override
+    public void onLoad() {
         // NOP
     }
 }

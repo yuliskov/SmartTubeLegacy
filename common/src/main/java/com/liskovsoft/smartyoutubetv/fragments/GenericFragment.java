@@ -26,4 +26,5 @@ public interface GenericFragment {
     View getWrapper();
     void setWrapper(View wrapper);
     void onMemoryCritical();
+    void onLoad();
 }

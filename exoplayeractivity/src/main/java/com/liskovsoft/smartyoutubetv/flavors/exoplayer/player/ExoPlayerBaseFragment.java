@@ -20,11 +20,9 @@ import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultTrackSelector;
@@ -41,7 +39,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -77,9 +77,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     protected PlayerButtonsManager mButtonsManager;
     private PlayerInitializer mPlayerInitializer;
     private MyDebugViewHelper mDebugViewHelper;
-    private AutoFrameRateManager mAutoFrameRateManager;
     private PlayerStateManager mStateManager;
     private VideoZoomManager mVideoZoomManager;
+    private List<PlayerEventListener> mListeners;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -91,20 +91,17 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mPlayerInitializer = new PlayerInitializer(this);
         mVideoZoomManager = new VideoZoomManager(getActivity(), mSimpleExoPlayerView);
 
-        if (mAutoFrameRateManager == null) {
-            mAutoFrameRateManager = new AutoFrameRateManager(getActivity());
+        for (PlayerEventListener listener : mListeners) {
+            listener.onAppInit();
         }
-
-        mAutoFrameRateManager.saveOriginalState();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.saveLastState();
-            mAutoFrameRateManager.restoreOriginalState();
+        for (PlayerEventListener listener : mListeners) {
+            listener.onAppPause();
         }
     }
 
@@ -112,8 +109,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onResume() {
         super.onResume();
 
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.restoreLastState();
+        for (PlayerEventListener listener : mListeners) {
+            listener.onAppResume();
         }
     }
 
@@ -130,12 +127,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (needNewPlayer) {
             mDebugViewHelper = new MyDebugViewHelper(mPlayer, mDebugViewGroup, getActivity());
 
-            // Do not move this code to another place!!! This statement must come after player initialization
-            if (mAutoFrameRateManager == null) {
-                mAutoFrameRateManager = new AutoFrameRateManager(getActivity());
+            for (PlayerEventListener listener : mListeners) {
+                listener.onPlayerCreated();
             }
-
-            mAutoFrameRateManager.setPlayer(mPlayer);
 
             mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
 
@@ -143,11 +137,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             initTimelinePreviews();
         }
-
-        //if (openNewVideo) {
-        //    // mAutoFrameRateManager.saveOriginalState();
-        //    restoreSpeed();
-        //}
 
         restoreSpeed();
     }
@@ -405,7 +394,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mDebugViewHelper.stop();
         }
 
-        mAutoFrameRateManager.setPlayer(null);
+        for (PlayerEventListener listener : mListeners) {
+            listener.onPlayerDestroyed();
+        }
+
         mPlayer = null;
         mStateManager = null; // force restore state
         mDebugViewHelper = null;
@@ -432,8 +424,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (playbackState == Player.STATE_ENDED) {
             onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
         } else if (playbackState == Player.STATE_READY) {
-            if (mAutoFrameRateManager != null) {
-                mAutoFrameRateManager.apply();
+            for (PlayerEventListener listener : mListeners) {
+                listener.onPlayerReady();
             }
 
             mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
@@ -497,10 +489,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private void showHideLoadingMessage(int playbackState) {
         int visibility = playbackState == Player.STATE_READY ? View.GONE : View.VISIBLE;
         mLoadingView.setVisibility(visibility);
-    }
-
-    public AutoFrameRateManager getAutoFrameRateManager() {
-        return mAutoFrameRateManager;
     }
 
     @Override
@@ -587,5 +575,13 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 mPlayer.setPlayWhenReady(mShouldAutoPlay);
             }
         }
+    }
+
+    protected void addEventListener(PlayerEventListener listener) {
+        if (mListeners == null) {
+            mListeners = new ArrayList<>();
+        }
+
+        mListeners.add(listener);
     }
 }

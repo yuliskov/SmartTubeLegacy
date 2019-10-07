@@ -16,6 +16,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.flavors.common.loading.RandomTipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -331,6 +332,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         if (mVoiceBridge.openSearchPage(mUrlData)) {
             onSearchQuery();
         }
+
+        mActiveFragment.onLoad();
     }
     
     @Override
@@ -390,12 +393,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
 
-        //if (memory.lowMemory) {
-        //    Log.e(TAG, "Memory is low. Doing some cleanup");
-        //    onMemoryCritical();
-        //}
-
-        //Log.flush();
+        Log.flush();
     }
 
     @Override
@@ -404,14 +402,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
         Log.d(TAG, "onTrimMemory");
 
-        checkMemory();
-
         if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
             Log.e(TAG, "Warning: app will be killed soon");
             onMemoryCritical();
         }
 
-        Log.flush();
+        checkMemory();
     }
 
     protected void onMemoryCritical() {}

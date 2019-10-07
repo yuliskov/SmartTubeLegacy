@@ -1,100 +1,74 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
-import android.app.Activity;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
 
-public class AutoFrameRateManager {
-    private static final String TAG = AutoFrameRateManager.class.getSimpleName();
-    private final Activity mContext;
-    private final DisplaySyncHelper mSyncHelper;
-    private final ExoPreferences mPrefs;
-    private SimpleExoPlayer mPlayer;
+public class AutoFrameRateManager implements PlayerEventListener {
+    private final ExoPlayerFragment mPlayerFragment;
+    private AutoFrameRateHelper mAutoFrameRateManager;
 
-    public AutoFrameRateManager(Activity context) {
-        mContext = context;
-        mSyncHelper = new DisplaySyncHelper(mContext);
-        mPrefs = ExoPreferences.instance(mContext);
+    public AutoFrameRateManager(ExoPlayerFragment playerFragment) {
+        mPlayerFragment = playerFragment;
     }
 
-    public void apply() {
-        if (!getEnabled()) {
-            Log.d(TAG, "apply: autoframerate not enabled... exiting...");
-            return;
+    @Override
+    public void onAppPause() {
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.saveLastState();
+            mAutoFrameRateManager.restoreOriginalState();
         }
-
-        if (mPlayer == null || mPlayer.getVideoFormat() == null) {
-            Log.e(TAG, "Can't apply mode change: player or format is null");
-            return;
-        }
-
-
-        Format videoFormat = mPlayer.getVideoFormat();
-        float frameRate = videoFormat.frameRate;
-        int width = videoFormat.width;
-        Log.d(TAG, String.format("Applying mode change... Video fps: %s, width: %s", frameRate, width));
-        mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
     }
 
-    public boolean getEnabled() {
-        return mPrefs.getAutoframerateChecked();
+    @Override
+    public void onAppResume() {
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.restoreLastState();
+        }
+    }
+
+    @Override
+    public void onAppInit() {
+        if (mAutoFrameRateManager == null) { // at this moment fragment has been attached to activity
+            mAutoFrameRateManager = new AutoFrameRateHelper(mPlayerFragment.getActivity());
+        }
+
+        mAutoFrameRateManager.saveOriginalState();
+    }
+
+    @Override
+    public void onPlayerCreated() {
+        if (mAutoFrameRateManager == null) { // at this moment fragment has been attached to activity
+            mAutoFrameRateManager = new AutoFrameRateHelper(mPlayerFragment.getActivity());
+        }
+
+        mAutoFrameRateManager.setPlayer(mPlayerFragment.getPlayer()); // new player is crated
+    }
+
+    @Override
+    public void onPlayerDestroyed() {
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.setPlayer(null);
+        }
+    }
+
+    @Override
+    public void onPlayerReady() {
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.apply();
+        }
+    }
+
+    public boolean isEnabled() {
+        if (mAutoFrameRateManager == null) {
+            return false;
+        }
+
+        return mAutoFrameRateManager.getEnabled();
     }
 
     public void setEnabled(boolean enabled) {
-        if (!DisplaySyncHelper.supportsDisplayModeChange()) {
-            MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
-            enabled = false;
+        if (mAutoFrameRateManager != null) {
+            mAutoFrameRateManager.setEnabled(enabled);
         }
-
-        mPrefs.setAutoframerateChecked(enabled);
-        apply();
-    }
-
-    public int getCurrentModeId() {
-        return mSyncHelper.getCurrentModeId();
-    }
-
-    public void saveOriginalState() {
-        if (!getEnabled()) {
-            return;
-        }
-
-        mSyncHelper.saveOriginalState();
-    }
-
-    public void restoreOriginalState() {
-        if (!getEnabled()) {
-            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
-            return;
-        }
-
-        Log.d(TAG, "Restoring original mode...");
-        mSyncHelper.restoreOriginalState();
-    }
-
-    public void saveLastState() {
-        if (!getEnabled()) {
-            return;
-        }
-
-        mSyncHelper.saveLastState();
-    }
-
-    public void restoreLastState() {
-        if (!getEnabled()) {
-            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
-            return;
-        }
-
-        Log.d(TAG, "Restoring original mode...");
-        mSyncHelper.restoreLastState();
-    }
-
-    public void setPlayer(SimpleExoPlayer player) {
-        mPlayer = player;
     }
 }
