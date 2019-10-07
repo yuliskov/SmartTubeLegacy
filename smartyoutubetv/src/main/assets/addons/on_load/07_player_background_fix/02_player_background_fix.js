@@ -8,19 +8,17 @@ console.log("Scripts::Running script player_background_fix2.js");
 
 function PlayerBackgroundFixAddon() {
     this.run = function() {
-        this.replacePlayerBackground();
+        ElementWrapper.addHandler(this);
     };
-    this.replacePlayerBackground = function() {
-        var player = document.getElementsByTagName('video')[0];
-        if (!player) {
-            console.log("PlayerBackgroundFixAddon:: player not exist... waiting for the player...");
-            Utils.postDelayed(this.replacePlayerBackground, this, 500);
-            return;
-        }
 
-        player.poster = "data:image/gif,AAAA"; // transparent image
+    this.onCreate = function(video) {
+        if (video != null) {
+            video.poster = "data:image/gif,AAAA"; // transparent image
+        }
     };
 }
 
-if (DeviceUtils.isWebView() && !DeviceUtils.isExo())
-    new PlayerBackgroundFixAddon().run();
+// if (DeviceUtils.isWebView() && !DeviceUtils.isExo())
+//     new PlayerBackgroundFixAddon().run();
+
+new PlayerBackgroundFixAddon().run();
