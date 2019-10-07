@@ -15,9 +15,9 @@ class AutoFrameRateHelper {
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
 
-    public AutoFrameRateHelper(Activity context) {
+    public AutoFrameRateHelper(Activity context, DisplaySyncHelper syncHelper) {
         mContext = context;
-        mSyncHelper = new DisplaySyncHelper(mContext);
+        mSyncHelper = syncHelper;
         mPrefs = ExoPreferences.instance(mContext);
     }
 

@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListene
 
 public class AutoFrameRateManager implements PlayerEventListener {
     protected final ExoPlayerFragment mPlayerFragment;
-    protected AutoFrameRateHelper mAutoFrameRateManager;
+    protected AutoFrameRateHelper mAutoFrameRateHelper;
 
     public AutoFrameRateManager(ExoPlayerFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -13,62 +13,58 @@ public class AutoFrameRateManager implements PlayerEventListener {
 
     @Override
     public void onAppPause() {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.saveLastState();
-            mAutoFrameRateManager.restoreOriginalState();
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.saveLastState();
+            mAutoFrameRateHelper.restoreOriginalState();
         }
     }
 
     @Override
     public void onAppResume() {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.restoreLastState();
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.restoreLastState();
         }
     }
 
     @Override
     public void onAppInit() {
-        if (mAutoFrameRateManager == null) { // at this moment fragment has been attached to activity
-            mAutoFrameRateManager = new AutoFrameRateHelper(mPlayerFragment.getActivity());
+        if (mAutoFrameRateHelper == null) { // at this moment fragment has been attached to activity
+            mAutoFrameRateHelper = new AutoFrameRateHelper(mPlayerFragment.getActivity(), new DisplaySyncHelper(mPlayerFragment.getActivity()));
         }
 
-        mAutoFrameRateManager.saveOriginalState();
+        mAutoFrameRateHelper.saveOriginalState();
     }
 
     @Override
     public void onPlayerCreated() {
-        if (mAutoFrameRateManager == null) { // at this moment fragment has been attached to activity
-            mAutoFrameRateManager = new AutoFrameRateHelper(mPlayerFragment.getActivity());
-        }
-
-        mAutoFrameRateManager.setPlayer(mPlayerFragment.getPlayer()); // new player is crated
+        mAutoFrameRateHelper.setPlayer(mPlayerFragment.getPlayer()); // new player is crated
     }
 
     @Override
     public void onPlayerDestroyed() {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.setPlayer(null);
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.setPlayer(null);
         }
     }
 
     @Override
     public void onPlaybackReady() {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.apply();
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.apply();
         }
     }
 
     public boolean isEnabled() {
-        if (mAutoFrameRateManager == null) {
+        if (mAutoFrameRateHelper == null) {
             return false;
         }
 
-        return mAutoFrameRateManager.getEnabled();
+        return mAutoFrameRateHelper.getEnabled();
     }
 
     public void setEnabled(boolean enabled) {
-        if (mAutoFrameRateManager != null) {
-            mAutoFrameRateManager.setEnabled(enabled);
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.setEnabled(enabled);
         }
     }
 }
