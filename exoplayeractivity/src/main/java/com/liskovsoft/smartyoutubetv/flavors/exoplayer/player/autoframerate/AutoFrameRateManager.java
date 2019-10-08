@@ -33,6 +33,11 @@ public class AutoFrameRateManager implements PlayerEventListener {
     }
 
     @Override
+    public void onNextTrack() {
+        
+    }
+
+    @Override
     public void onPlaybackReady() {
         if (mAutoFrameRateHelper != null) {
             mAutoFrameRateHelper.apply();

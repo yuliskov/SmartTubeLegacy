@@ -17,6 +17,11 @@ public class AutoFrameRateManagerAlt extends AutoFrameRateManager {
     }
 
     @Override
+    public void onNextTrack() {
+        super.onNextTrack();
+    }
+
+    @Override
     public void onPlayerClosed() {
         super.onPlayerClosed();
 

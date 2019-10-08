@@ -184,6 +184,19 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onPlayerAction(String action) {
+        switch (action) {
+            case ExoPlayerBaseFragment.BUTTON_BACK:
+                for (PlayerEventListener listener : mListeners) {
+                    listener.onPlayerClosed();
+                }
+                break;
+            case ExoPlayerBaseFragment.TRACK_ENDED:
+                for (PlayerEventListener listener : mListeners) {
+                    listener.onNextTrack();
+                }
+                break;
+        }
+
         Intent intent = mButtonsManager.createResultIntent();
         intent.putExtra(action, true);
         onPlayerAction(intent);
@@ -561,12 +574,5 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         mListeners.add(listener);
-    }
-
-    @Override
-    public void onBackPressed() {
-        for (PlayerEventListener listener : mListeners) {
-            listener.onPlayerClosed();
-        }
     }
 }
