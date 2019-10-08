@@ -97,24 +97,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        for (PlayerEventListener listener : mListeners) {
-            listener.onAppPause();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        for (PlayerEventListener listener : mListeners) {
-            listener.onAppResume();
-        }
-    }
-
-    @Override
     public void initializePlayer() {
         if (getIntent() == null || getActivity() == null) {
             return;
@@ -394,10 +376,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mDebugViewHelper.stop();
         }
 
-        for (PlayerEventListener listener : mListeners) {
-            listener.onPlayerDestroyed();
-        }
-
         mPlayer = null;
         mStateManager = null; // force restore state
         mDebugViewHelper = null;
@@ -583,5 +561,12 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         mListeners.add(listener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        for (PlayerEventListener listener : mListeners) {
+            listener.onPlayerClosed();
+        }
     }
 }

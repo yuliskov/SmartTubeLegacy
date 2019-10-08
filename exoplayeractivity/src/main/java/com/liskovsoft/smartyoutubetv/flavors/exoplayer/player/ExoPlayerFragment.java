@@ -48,6 +48,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+
         onPlayerAction(ExoPlayerBaseFragment.BUTTON_BACK);
     }
 

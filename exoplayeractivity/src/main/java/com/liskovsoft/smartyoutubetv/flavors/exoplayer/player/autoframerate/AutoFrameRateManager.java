@@ -12,21 +12,6 @@ public class AutoFrameRateManager implements PlayerEventListener {
     }
 
     @Override
-    public void onAppPause() {
-        if (mAutoFrameRateHelper != null) {
-            mAutoFrameRateHelper.saveLastState();
-            mAutoFrameRateHelper.restoreOriginalState();
-        }
-    }
-
-    @Override
-    public void onAppResume() {
-        if (mAutoFrameRateHelper != null) {
-            mAutoFrameRateHelper.restoreLastState();
-        }
-    }
-
-    @Override
     public void onAppInit() {
         if (mAutoFrameRateHelper == null) { // at this moment fragment has been attached to activity
             mAutoFrameRateHelper = new AutoFrameRateHelper(mPlayerFragment.getActivity(), new DisplaySyncHelper(mPlayerFragment.getActivity()));
@@ -41,7 +26,7 @@ public class AutoFrameRateManager implements PlayerEventListener {
     }
 
     @Override
-    public void onPlayerDestroyed() {
+    public void onPlayerClosed() {
         if (mAutoFrameRateHelper != null) {
             mAutoFrameRateHelper.setPlayer(null);
         }

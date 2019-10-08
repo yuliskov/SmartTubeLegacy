@@ -17,8 +17,8 @@ public class AutoFrameRateManagerAlt extends AutoFrameRateManager {
     }
 
     @Override
-    public void onPlayerDestroyed() {
-        super.onPlayerDestroyed();
+    public void onPlayerClosed() {
+        super.onPlayerClosed();
 
         if (mAutoFrameRateHelper != null) {
             mAutoFrameRateHelper.restoreOriginalState();
