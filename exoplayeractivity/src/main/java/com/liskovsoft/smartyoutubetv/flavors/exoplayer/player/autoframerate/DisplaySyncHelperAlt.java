@@ -2,10 +2,13 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.HashMap;
 
 class DisplaySyncHelperAlt extends DisplaySyncHelper {
+    private static final String TAG = DisplaySyncHelperAlt.class.getSimpleName();
+
     public DisplaySyncHelperAlt(Activity context) {
         super(context);
     }
@@ -29,7 +32,7 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     @Override
     public void restoreOriginalState() {
         if (mNewMode != null && (mNewMode.getPhysicalHeight() > 1080 || mNewMode.getRefreshRate() < 40)) {
-            MessageHelpers.showLongMessage(mContext, "Restoring original state: rate: " + mOriginalMode.getRefreshRate() + ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight());
+            Log.d(TAG, "Restoring original state: rate: " + mOriginalMode.getRefreshRate() + ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight());
             super.restoreOriginalState();
         }
     }
