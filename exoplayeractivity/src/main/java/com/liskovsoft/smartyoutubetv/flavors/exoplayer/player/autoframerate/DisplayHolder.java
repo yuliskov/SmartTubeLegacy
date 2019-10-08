@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Convenience class to hold {@link DisplayHolder} Display object.
  *
  */
-class DisplayHolder {
+public class DisplayHolder {
 
     /**
      * Stub method to create the ModeInstance. In real world we need not to do it here.

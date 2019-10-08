@@ -32,7 +32,10 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     @Override
     public void restoreOriginalState() {
         if (mNewMode != null && (mNewMode.getPhysicalHeight() > 1080 || mNewMode.getRefreshRate() < 40)) {
-            Log.d(TAG, "Restoring original state: rate: " + mOriginalMode.getRefreshRate() + ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight());
+            String msg =
+                    "Restoring original state: rate: " + mOriginalMode.getRefreshRate() +
+                    ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight();
+            Log.d(TAG, msg);
             super.restoreOriginalState();
         }
     }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -74,7 +75,9 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public String getAppVersion() {
-        return AppInfoHelpers.getAppVersion(mContext);
+        String mode = CommonApplication.getPreferences().getDefaultDisplayMode();
+        String modeString = mode == null ? "" : " " + mode;
+        return AppInfoHelpers.getAppVersion(mContext) + modeString;
     }
 
     @JavascriptInterface

@@ -14,7 +14,7 @@ public class BolshoeTVCacheCleanHandler extends StateHandler {
     }
 
     @Override
-    public void onBoot() {
+    public void onInit() {
         checkIntent(mContext.getIntent());
     }
 

@@ -16,7 +16,7 @@ public class LoadingCheckHandler extends StateHandler {
     }
 
     @Override
-    public void onBoot() {
+    public void onInit() {
         mHandler.postDelayed(mCallback, 180_000);
     }
 

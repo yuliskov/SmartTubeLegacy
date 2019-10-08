@@ -48,6 +48,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 import java.util.Locale;
 
@@ -317,6 +318,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private void appendVersion() {
         appendRow("ExoPlayer Version", ExoPlayerLibraryInfo.VERSION);
         appendRow("SmartYouTubeTV Version", AppInfoHelpers.getAppVersion(mContext));
+        appendRow("Default Display Mode", CommonApplication.getPreferences().getDefaultDisplayMode());
     }
 
     private void appendRow(String name, boolean val) {

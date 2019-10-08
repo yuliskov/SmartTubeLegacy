@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 2) Get current display mode<br/>
  * 3) Set preferred mode.
  */
-class UhdHelper {
+public class UhdHelper {
     Context mContext;
     private UhdHelperListener mListener;
     final public static String version = "v1.1";

@@ -21,7 +21,7 @@ public class AppStateWatcherBase {
         int code = prefs.getPreviousAppVersionCode();
 
         for (StateHandler handler : mHandlers) {
-            handler.onBoot();
+            handler.onInit();
 
             if (code != BuildConfig.VERSION_CODE) {
                 prefs.setPreviousAppVersionCode(BuildConfig.VERSION_CODE);
@@ -75,7 +75,7 @@ public class AppStateWatcherBase {
         public void onFirstRun() {
         }
 
-        public void onBoot() {
+        public void onInit() {
         }
 
         public void onLoad() {
