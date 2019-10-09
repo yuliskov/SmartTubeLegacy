@@ -14,6 +14,7 @@ var DeviceUtils = {
     MESSAGE_MIC_CLICKED: 'message_mic_clicked',
     MESSAGE_SYNC_LANG: 'message_sync_lang',
     MESSAGE_AUTHORIZATION_HEADER: 'message_authorization_header',
+    MESSAGE_AUTH_BODY: 'message_auth_body',
     MESSAGE_ENABLE_SCREENSAVER: "message_enable_screensaver",
     MESSAGE_DISABLE_SCREENSAVER: "message_disable_screensaver",
     MESSAGE_SEARCH_FIELD_FOCUSED: "message_search_field_focused",

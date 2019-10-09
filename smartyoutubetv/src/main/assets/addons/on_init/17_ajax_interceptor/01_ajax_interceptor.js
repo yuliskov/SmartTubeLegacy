@@ -21,6 +21,7 @@ function AuthInterceptor() {
     this.interceptBody = function(content) {
         if (content != null && content.indexOf('googleusercontent.com') != -1) {
             Log.d(this.TAG, "Found auth body: " + content);
+            DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTH_BODY, content);
         }
     };
 }

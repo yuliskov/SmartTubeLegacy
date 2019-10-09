@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.events.MicClickedEvent;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
@@ -20,6 +21,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
     private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
+    private final static String MESSAGE_AUTH_BODY = "message_auth_body";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -57,6 +59,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_SEARCH_FIELD_FOCUSED:
                 ((FragmentManager) mContext).onSearchFieldFocused();
+                break;
+            case MESSAGE_AUTH_BODY:
+                GlobalPreferences.instance(mContext).setAuthBody(content);
                 break;
         }
     }
