@@ -19,12 +19,6 @@ public class DisplayModeSaverHandler extends StateHandler {
 
         Mode mode = uhdHelper.getMode();
 
-        if (mode != null) {
-            CommonApplication.getPreferences().setDefaultDisplayMode(
-                    String.format("%sx%s@%s",
-                            mode.getPhysicalWidth(),
-                            mode.getPhysicalHeight(),
-                            mode.getRefreshRate()));
-        }
+        CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mode));
     }
 }

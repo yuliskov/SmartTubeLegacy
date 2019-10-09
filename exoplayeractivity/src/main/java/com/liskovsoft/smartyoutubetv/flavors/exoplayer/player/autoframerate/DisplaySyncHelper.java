@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.view.Window;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
 import java.util.ArrayList;
@@ -177,6 +178,7 @@ class DisplaySyncHelper implements UhdHelperListener {
             }
             else {
                 Log.i(TAG, "Mode changed successfully");
+                CommonApplication.getPreferences().setCurrentDisplayMode(UhdHelper.formatMode(mode));
             }
         }
     }

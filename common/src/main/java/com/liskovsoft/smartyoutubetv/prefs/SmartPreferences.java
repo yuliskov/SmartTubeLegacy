@@ -50,6 +50,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mAuthorizationHeader;
     private String mCookieHeader;
     private String mDefaultDisplayMode;
+    private String mCurrentDisplayMode;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -285,5 +286,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setDefaultDisplayMode(String mode) {
         mDefaultDisplayMode = mode;
+    }
+
+    public String getCurrentDisplayMode() {
+        return mCurrentDisplayMode;
+    }
+
+    public void setCurrentDisplayMode(String mode) {
+        mCurrentDisplayMode = mode;
     }
 }

@@ -319,6 +319,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         appendRow("ExoPlayer Version", ExoPlayerLibraryInfo.VERSION);
         appendRow("SmartYouTubeTV Version", AppInfoHelpers.getAppVersion(mContext));
         appendRow("Default Display Mode", CommonApplication.getPreferences().getDefaultDisplayMode());
+        appendRow("Current Display Mode", CommonApplication.getPreferences().getCurrentDisplayMode());
     }
 
     private void appendRow(String name, boolean val) {

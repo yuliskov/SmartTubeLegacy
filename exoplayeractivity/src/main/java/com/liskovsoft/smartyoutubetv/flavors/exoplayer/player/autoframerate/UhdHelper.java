@@ -15,6 +15,7 @@ import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -511,5 +512,13 @@ public class UhdHelper {
      */
     public void unregisterDisplayModeChangeListener(UhdHelperListener listener) {
         mListener = null;
+    }
+
+    public static String formatMode(Mode mode) {
+        if (mode == null) {
+            return null;
+        }
+
+        return String.format("%sx%s@%s", mode.getPhysicalWidth(), mode.getPhysicalHeight(), mode.getRefreshRate());
     }
 }
