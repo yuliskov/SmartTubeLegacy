@@ -73,10 +73,16 @@ class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private DisplayHolder.Mode findCloserMode(List<DisplayHolder.Mode> modes, float rate) {
-        HashMap<Integer, int[]> relatedRates = getRateMapping();
+    private DisplayHolder.Mode findCloserMode(List<Mode> modes, int videoWidth, float videoFramerate) {
+        HashMap<Integer, int[]> relatedRates;
 
-        int myRate = (int) (rate * 100.0F);
+        if (SWITCH_TO_UHD && videoWidth > 1920) {
+            relatedRates = getUHDRateMapping();
+        } else {
+            relatedRates = getRateMapping();
+        }
+
+        int myRate = (int) (videoFramerate * 100.0F);
         if (myRate >= 2300 && myRate <= 2399) {
             myRate = 2397;
         }
@@ -102,6 +108,10 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
 
         return null;
+    }
+
+    protected HashMap<Integer, int[]> getUHDRateMapping() {
+        return getRateMapping();
     }
 
     protected HashMap<Integer, int[]> getRateMapping() {
@@ -225,7 +235,7 @@ class DisplaySyncHelper implements UhdHelperListener {
                 resultModes = filterSameResolutionModes(modes, mode);
             }
 
-            DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
+            DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoWidth, videoFramerate);
 
             if (closerMode == null) {
                 Log.i(TAG, "Could not find closer refresh rate for " + videoFramerate + "fps");

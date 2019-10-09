@@ -14,6 +14,11 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     }
 
     @Override
+    protected HashMap<Integer, int[]> getUHDRateMapping() {
+        return super.getRateMapping();
+    }
+
+    @Override
     protected HashMap<Integer, int[]> getRateMapping() {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
         relatedRates.put(1500, new int[]{6000, 3000});
