@@ -275,7 +275,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
             return;
         }
 
+        mAppStateWatcher.onActivityResult(requestCode, resultCode, data);
+
         mVoiceBridge.onActivityResult(requestCode, resultCode, data);
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

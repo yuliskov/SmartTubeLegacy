@@ -64,6 +64,12 @@ public class AppStateWatcherBase {
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        for (StateHandler handler : mHandlers) {
+            handler.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     public static abstract class StateHandler {
         public void onNewIntent(Intent intent) {
             
@@ -79,6 +85,10 @@ public class AppStateWatcherBase {
         }
 
         public void onLoad() {
+            
+        }
+
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
             
         }
     }

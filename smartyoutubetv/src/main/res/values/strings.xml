@@ -90,4 +90,8 @@
     <string name="alt_player_mapping">Remote: alt media-keys mapping</string>
     <string name="tip_hash_in_subscriptions">Empty subscriptions? Remove channels beginning hash #</string>
     <string name="tip_show_main_screen_2">Press BACK to open Main Settings</string>
+    <string name="do_install_bridge_apk">Do you want to enable global voice search?\nIt may need to install additional apk.
+    </string>
+    <string name="do_reinstall_bridge_apk">Do you want to enable global voice search?\nIt may need remove original YouTube\nAnd then install additional apk.
+    </string>
 </resources>

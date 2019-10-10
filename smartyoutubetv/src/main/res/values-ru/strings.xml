@@ -76,4 +76,8 @@
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
     <string name="tip_hash_in_subscriptions">Пустые подписки? Удалите каналы с хэшем #</string>
     <string name="tip_show_main_screen_2">Нажмите НАЗАД чтобы открыть Главные Настройки</string>
+    <string name="do_install_bridge_apk">Хотите добавить глобальный поиск?\nДля этого потребуется установить дополнительное апк.
+    </string>
+    <string name="do_reinstall_bridge_apk">Хотите добавить глобальный поиск?\nДля этого потребуется удалить оригинальный YouTube\nИ потом установить дополнительное апк.
+    </string>
 </resources>
