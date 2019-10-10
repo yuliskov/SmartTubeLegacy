@@ -36,7 +36,7 @@ public class AmazonYouTubeBridgeHandler extends StateHandler implements OnClickL
     }
 
     @Override
-    public void onFirstRun() {
+    public void onInit() {
         PackageInfo info = getPackageInfo(AMAZON_YOUTUBE_PKG_NAME);
 
         if (info != null) {
