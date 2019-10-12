@@ -12,7 +12,7 @@ import android.view.Window;
  * To unregister the listener, use
  * {@link UhdHelper#unregisterDisplayModeChangeListener(UhdHelperListener) unregisterDisplayModeChangeListener}
  */
-interface UhdHelperListener {
+public interface UhdHelperListener {
     /**
      * Callback containing the result of the mode change after
      * {@link UhdHelper#setPreferredDisplayModeId(Window, int,boolean) setPreferredDisplayModeId}

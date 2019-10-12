@@ -316,10 +316,10 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     }
 
     private void appendVersion() {
-        appendRow("ExoPlayer Version", ExoPlayerLibraryInfo.VERSION);
-        appendRow("SmartYouTubeTV Version", AppInfoHelpers.getAppVersion(mContext));
         appendRow("Default Display Mode", CommonApplication.getPreferences().getDefaultDisplayMode());
         appendRow("Current Display Mode", CommonApplication.getPreferences().getCurrentDisplayMode());
+        appendRow("ExoPlayer Version", ExoPlayerLibraryInfo.VERSION);
+        appendRow("SmartYouTubeTV Version", AppInfoHelpers.getAppVersion(mContext));
     }
 
     private void appendRow(String name, boolean val) {
@@ -390,41 +390,5 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
             result += "@" + ((int) video.frameRate);
         }
         return result;
-    }
-
-    private String getDisplayResolution() {
-        if (Util.SDK_INT < 23) {
-            WindowManager wm = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-
-            return size.x + "x" + size.y + "@" + Math.round(display.getRefreshRate());
-        } else {
-            Display display = getCurrentDisplay();
-            if (display == null) {
-                return NOT_AVAILABLE;
-            }
-
-            Mode mode = display.getMode();
-            int physicalWidth = mode.getPhysicalWidth();
-            int physicalHeight = mode.getPhysicalHeight();
-            float refreshRate = mode.getRefreshRate();
-
-            return physicalWidth + "x" + physicalHeight + "@" + Math.round(refreshRate);
-        }
-    }
-
-    @TargetApi(17)
-    private android.view.Display getCurrentDisplay() {
-        DisplayManager displayManager = (DisplayManager) mContext.getSystemService(Context.DISPLAY_SERVICE);
-        if (displayManager == null)
-            return null;
-        android.view.Display[] displays = displayManager.getDisplays();
-        if (displays == null || displays.length == 0) {
-            return null;
-        }
-        //assuming the 1st display is the actual display.
-        return displays[0];
     }
 }

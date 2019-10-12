@@ -2,18 +2,22 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
+import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
@@ -520,5 +524,44 @@ public class UhdHelper {
         }
 
         return String.format("%sx%s@%s", mode.getPhysicalWidth(), mode.getPhysicalHeight(), mode.getRefreshRate());
+    }
+
+    public static DisplayHolder.Mode getCurrentMode(Context context) {
+        if (Util.SDK_INT < 23) {
+            WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+            Display display = wm.getDefaultDisplay();
+
+            if (display == null) {
+                return null;
+            }
+
+            Point size = new Point();
+            display.getSize(size);
+
+            return new Mode(0, size.x, size.y, display.getRefreshRate());
+        } else {
+            Display display = getCurrentDisplay(context);
+
+            if (display == null) {
+                return null;
+            }
+
+            Display.Mode mode = display.getMode();
+
+            return new Mode(mode.getModeId(), mode.getPhysicalWidth(), mode.getPhysicalHeight(), mode.getRefreshRate());
+        }
+    }
+
+    @TargetApi(17)
+    private static android.view.Display getCurrentDisplay(Context context) {
+        DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        if (displayManager == null)
+            return null;
+        android.view.Display[] displays = displayManager.getDisplays();
+        if (displays == null || displays.length == 0) {
+            return null;
+        }
+        //assuming the 1st display is the actual display.
+        return displays[0];
     }
 }

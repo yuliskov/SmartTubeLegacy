@@ -192,7 +192,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 break;
             case ExoPlayerBaseFragment.TRACK_ENDED:
                 for (PlayerEventListener listener : mListeners) {
-                    listener.onNextTrack();
+                    listener.onTrackEnded();
                 }
                 break;
         }

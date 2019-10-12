@@ -194,8 +194,10 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         if (getState() == GenericFragment.STATE_PAUSED) {
             mController.onResume();
         }
-        
-        mController.getCurrentTab().reload();
+
+        if (mController.getCurrentTab() != null) {
+            mController.getCurrentTab().reload();
+        }
     }
 
     @Override

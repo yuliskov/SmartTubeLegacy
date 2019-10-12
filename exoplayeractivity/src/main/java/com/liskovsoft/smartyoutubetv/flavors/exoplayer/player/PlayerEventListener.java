@@ -5,5 +5,5 @@ public interface PlayerEventListener {
     void onPlayerCreated();
     void onPlayerClosed();
     void onPlaybackReady();
-    void onNextTrack();
+    void onTrackEnded();
 }

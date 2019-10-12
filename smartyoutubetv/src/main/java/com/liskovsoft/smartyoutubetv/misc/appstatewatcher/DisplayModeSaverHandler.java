@@ -15,9 +15,7 @@ public class DisplayModeSaverHandler extends StateHandler {
 
     @Override
     public void onInit() {
-        UhdHelper uhdHelper = new UhdHelper(mContext);
-
-        Mode mode = uhdHelper.getMode();
+        Mode mode = UhdHelper.getCurrentMode(mContext);
 
         CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mode));
     }

@@ -33,7 +33,7 @@ public class AutoFrameRateManager implements PlayerEventListener {
     }
 
     @Override
-    public void onNextTrack() {
+    public void onTrackEnded() {
         
     }
 
