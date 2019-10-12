@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.LocaleUtility;
+import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManager.MyRequest;

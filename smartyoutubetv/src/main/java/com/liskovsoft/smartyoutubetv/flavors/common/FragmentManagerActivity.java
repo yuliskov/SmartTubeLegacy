@@ -3,9 +3,12 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.annotation.TargetApi;
 import android.app.ActivityManager.MemoryInfo;
 import android.content.ComponentCallbacks2;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -14,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
+import com.liskovsoft.sharedutils.locale.LangHelper;
+import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.RandomTipsLoadingManager;
@@ -33,6 +38,7 @@ import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
@@ -411,6 +417,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         }
 
         checkMemory();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String langCode = new LangUpdater(newBase).getUpdatedLocale();
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, LangHelper.parseLangCode(langCode)));
     }
 
     protected void onMemoryCritical() {}

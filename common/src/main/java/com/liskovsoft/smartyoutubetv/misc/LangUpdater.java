@@ -1,7 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
 import android.content.Context;
-import com.liskovsoft.sharedutils.helpers.LangHelper;
+import com.liskovsoft.sharedutils.locale.LangHelper;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.common.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
@@ -10,24 +11,32 @@ import java.util.LinkedHashMap;
 import java.util.StringTokenizer;
 
 public class LangUpdater {
+    private static final String TAG = LangUpdater.class.getSimpleName();
     private Context mContext;
-    private String mLocale;
 
     public LangUpdater(Context ctx) {
         mContext = ctx;
     }
 
     public void update() {
-        mLocale = LangHelper.guessLocale(mContext);
+        String locale = getUpdatedLocale();
+
+        Log.d(TAG, "Updating locale to " + locale);
+
+        LangHelper.forceLocale(mContext, locale);
+    }
+
+    public String getUpdatedLocale() {
+        String locale = LangHelper.guessLocale(mContext);
 
         String langCode = getPreferredLocale();
 
         // not set or default language selected
         if (langCode != null && !langCode.isEmpty()) {
-            mLocale = langCode;
+            locale = langCode;
         }
 
-        LangHelper.forceLocale(mContext, mLocale);
+        return locale;
     }
 
     /**
