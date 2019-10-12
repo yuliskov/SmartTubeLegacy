@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 import android.app.Activity;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
 import java.util.HashMap;
 
@@ -32,6 +33,15 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
         relatedRates.put(5994, new int[]{5994, 6000, 3000});
         relatedRates.put(6000, new int[]{6000, 3000});
         return relatedRates;
+    }
+
+    @Override
+    public void saveOriginalState() {
+        super.saveOriginalState();
+
+        if (mOriginalMode != null && mOriginalMode.getPhysicalWidth() > 1920) { // default as FHD (always)
+            mOriginalMode = findCloserMode(getUhdHelper().getSupportedModes(), 1920, 60);
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
@@ -123,7 +121,7 @@ public class UhdHelper {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MODE_CHANGED_MSG:
-                    DisplayHolder.Mode mode = getMode();
+                    DisplayHolder.Mode mode = getCurrentMode();
                     if (mode == null) {
                         Log.w(TAG, "Mode query returned null after onDisplayChanged callback");
                         return;
@@ -238,7 +236,7 @@ public class UhdHelper {
      * @return {@link DisplayHolder.Mode Mode}
      * that is currently set on the system or NULL if an error occurred.
      */
-    public DisplayHolder.Mode getMode() {
+    public DisplayHolder.Mode getCurrentMode() {
         android.view.Display currentDisplay = getCurrentDisplay();
         if (currentDisplay == null) {
             return null;
@@ -373,7 +371,7 @@ public class UhdHelper {
             mWorkHandler.sendMessage(mWorkHandler.obtainMessage(SEND_CALLBACK_WITH_SUPPLIED_RESULT, null));
             return;
         }
-        DisplayHolder.Mode currentMode = getMode();
+        DisplayHolder.Mode currentMode = getCurrentMode();
         if (currentMode == null || currentMode.getModeId() == modeId) {
             Log.i(TAG, "Current mode id same as mode id requested or is Null. Aborting.");
             //send and cleanup receivers/callback listeners

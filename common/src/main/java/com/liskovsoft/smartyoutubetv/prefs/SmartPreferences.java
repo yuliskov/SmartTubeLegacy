@@ -38,6 +38,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String PREVIOUS_APP_VERSION_CODE = "previous_app_version_code";
     private static final String BOOT_SUCCEEDED = "boot_succeeded";
     private static final String ALT_PLAYER_MAPPING = "alt_player_mapping";
+    private static final String DISABLE_AMAZON_BRIDGE = "disable_amazon_bridge";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -294,5 +295,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setCurrentDisplayMode(String mode) {
         mCurrentDisplayMode = mode;
+    }
+
+    public void setDisableAmazonBridge(boolean disable) {
+        putBoolean(DISABLE_AMAZON_BRIDGE, disable);
+    }
+
+    public boolean getDisableAmazonBridge() {
+        return getBoolean(DISABLE_AMAZON_BRIDGE, false);
     }
 }

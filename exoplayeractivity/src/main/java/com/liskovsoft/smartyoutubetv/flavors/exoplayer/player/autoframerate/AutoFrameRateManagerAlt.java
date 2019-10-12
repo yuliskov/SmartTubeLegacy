@@ -19,10 +19,6 @@ public class AutoFrameRateManagerAlt extends AutoFrameRateManager {
     @Override
     public void onTrackEnded() {
         super.onTrackEnded();
-
-        if (mAutoFrameRateHelper != null) {
-            mAutoFrameRateHelper.restoreOriginalState();
-        }
     }
 
     @Override

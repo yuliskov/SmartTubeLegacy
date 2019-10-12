@@ -12,6 +12,7 @@ import android.net.Uri;
 import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 import edu.mit.mobile.android.appupdater.downloadmanager.MyDownloadManagerTask;
@@ -37,6 +38,10 @@ public class AmazonYouTubeBridgeHandler extends StateHandler implements OnClickL
 
     @Override
     public void onInit() {
+        if (CommonApplication.getPreferences().getDisableAmazonBridge()) {
+            return;
+        }
+
         PackageInfo info = getPackageInfo(AMAZON_YOUTUBE_PKG_NAME);
 
         if (info != null) {
@@ -98,6 +103,7 @@ public class AmazonYouTubeBridgeHandler extends StateHandler implements OnClickL
                 break;
             case DialogInterface.BUTTON_NEGATIVE:
                 //No button clicked
+                CommonApplication.getPreferences().setDisableAmazonBridge(true);
                 break;
         }
     }
