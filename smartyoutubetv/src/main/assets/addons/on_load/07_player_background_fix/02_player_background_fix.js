@@ -7,6 +7,8 @@
 console.log("Scripts::Running script player_background_fix2.js");
 
 function PlayerBackgroundFixAddon() {
+    this.elementTag = 'video';
+
     this.run = function() {
         ElementWrapper.addHandler(this);
     };
@@ -17,8 +19,5 @@ function PlayerBackgroundFixAddon() {
         }
     };
 }
-
-// if (DeviceUtils.isWebView() && !DeviceUtils.isExo())
-//     new PlayerBackgroundFixAddon().run();
 
 new PlayerBackgroundFixAddon().run();
