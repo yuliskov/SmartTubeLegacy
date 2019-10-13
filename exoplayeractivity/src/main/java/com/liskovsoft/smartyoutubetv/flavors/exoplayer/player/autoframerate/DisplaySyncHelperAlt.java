@@ -37,7 +37,9 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
 
     @Override
     public void restoreOriginalState() {
-        if (mNewMode != null && (mNewMode.getPhysicalHeight() > 1080 || mNewMode.getRefreshRate() < 40)) {
+        Mode currentMode = getUhdHelper().getCurrentMode();
+
+        if (currentMode != null && (currentMode.getPhysicalHeight() > 1080 || currentMode.getRefreshRate() < 40)) {
             if (mOriginalMode != null) {
                 String msg =
                         "Restoring original state: rate: " + mOriginalMode.getRefreshRate() +
