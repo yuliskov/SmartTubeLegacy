@@ -72,24 +72,6 @@ class AutoFrameRateHelper {
         Log.d(TAG, "Restoring original mode...");
         mSyncHelper.restoreOriginalState();
     }
-
-    public void saveLastState() {
-        if (!getEnabled()) {
-            return;
-        }
-
-        mSyncHelper.saveLastState();
-    }
-
-    public void restoreLastState() {
-        if (!getEnabled()) {
-            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
-            return;
-        }
-
-        Log.d(TAG, "Restoring original mode...");
-        mSyncHelper.restoreLastState();
-    }
     
     public void setPlayer(SimpleExoPlayer player) {
         mPlayer = player;

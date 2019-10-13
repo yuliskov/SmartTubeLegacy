@@ -36,19 +36,6 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     }
 
     @Override
-    public void saveOriginalState() {
-        super.saveOriginalState();
-
-        if (mOriginalMode != null && mOriginalMode.getPhysicalWidth() > 1920) { // default as FHD (always)
-            Mode closerMode = findCloserMode(getUhdHelper().getSupportedModes(), 1920, mOriginalMode.getRefreshRate());
-
-            if (closerMode.getPhysicalWidth() == 1920) {
-                mOriginalMode = closerMode;
-            }
-        }
-    }
-
-    @Override
     public void restoreOriginalState() {
         if (mNewMode != null && (mNewMode.getPhysicalHeight() > 1080 || mNewMode.getRefreshRate() < 40)) {
             if (mOriginalMode != null) {

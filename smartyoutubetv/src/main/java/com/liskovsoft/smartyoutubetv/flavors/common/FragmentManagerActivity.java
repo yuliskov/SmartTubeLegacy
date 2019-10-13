@@ -56,8 +56,15 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private AppStateWatcherBase mAppStateWatcher;
     private Uri mUrlData;
 
+    //public FragmentManagerActivity() {
+    //    new GlobalExceptionHandler(this).onInit();
+    //}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mAppStateWatcher = new AppStateWatcher(this);
+        mAppStateWatcher.run();
+
         // fix lang in case activity has been destroyed and then restored
         setupLang();
 
@@ -83,9 +90,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
-
-        mAppStateWatcher = new AppStateWatcher(this);
-        mAppStateWatcher.run();
 
         mUrlData = getIntent().getData();
 

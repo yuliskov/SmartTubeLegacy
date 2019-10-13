@@ -94,4 +94,5 @@
     </string>
     <string name="do_reinstall_bridge_apk">Do you want to enable global voice search?\nIt may need remove original YouTube\nAnd then install additional apk.
     </string>
+    <string name="app_crashed">App crashed.\nCheck for the newer version?</string>
 </resources>

@@ -161,6 +161,8 @@
             android:exported="true">
         </activity>
 
+        <activity android:name=".flavors.common.CrashHandlerActivity"/>
+
         <receiver android:name=".receivers.ClearCacheReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CLEAR_CACHE"/>
