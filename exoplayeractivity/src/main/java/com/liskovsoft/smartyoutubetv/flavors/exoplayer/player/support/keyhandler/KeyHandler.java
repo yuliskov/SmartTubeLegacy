@@ -66,6 +66,8 @@ public class KeyHandler {
             mFragment.getExoPlayerView().hideController();
         }
     };
+    private final Runnable mOnStop = () -> mFragment.onBackPressed();
+
     @TargetApi(23)
     private final Runnable mOnNext = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
     @TargetApi(23)
@@ -96,6 +98,8 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
+
 
         // use default behavior from PlayerControlView
         //mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnFastForward);
