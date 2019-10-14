@@ -297,11 +297,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
         mCurrentDisplayMode = mode;
     }
 
-    public void setDisableAmazonBridge(boolean disable) {
+    public void setDisableYouTubeBridge(boolean disable) {
         putBoolean(DISABLE_AMAZON_BRIDGE, disable);
     }
 
-    public boolean getDisableAmazonBridge() {
+    public boolean getDisableYouTubeBridge() {
         return getBoolean(DISABLE_AMAZON_BRIDGE, false);
     }
 }

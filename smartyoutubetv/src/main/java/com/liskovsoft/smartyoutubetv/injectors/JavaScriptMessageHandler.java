@@ -61,7 +61,7 @@ public class JavaScriptMessageHandler {
                 ((FragmentManager) mContext).onSearchFieldFocused();
                 break;
             case MESSAGE_AUTH_BODY:
-                GlobalPreferences.instance(mContext).setAuthBody(content);
+                GlobalPreferences.instance(mContext).setRawAuthData(content);
                 break;
         }
     }
