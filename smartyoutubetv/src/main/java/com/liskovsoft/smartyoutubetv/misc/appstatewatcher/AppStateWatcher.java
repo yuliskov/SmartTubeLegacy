@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
 import android.app.Activity;
 import android.content.Context;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVYouTubeBridgeHandler;
@@ -17,8 +18,11 @@ public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(Activity context) {
         mContext = context;
 
-        addHandler(new AmazonYouTubeBridgeHandler(context));
-        addHandler(new ATVYouTubeBridgeHandler(context));
+        if (Helpers.isAndroidTVLauncher(context)) {
+            addHandler(new ATVYouTubeBridgeHandler(context));
+        } else if (Helpers.isAmazonFireTVDevice()) {
+            addHandler(new AmazonYouTubeBridgeHandler(context));
+        }
 
         if (context instanceof FragmentManagerActivity) {
             addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
