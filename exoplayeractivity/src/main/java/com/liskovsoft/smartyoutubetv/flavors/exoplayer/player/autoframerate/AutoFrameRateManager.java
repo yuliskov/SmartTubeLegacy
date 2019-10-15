@@ -64,6 +64,7 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
 
     @Override
     public void onModeStart() {
+        mPlayerFragment.playbackDelay(AFR_MSG_HIDE_DELAY);
         mPlayerFragment.showMessage(R.string.changing_video_frame_rate, AFR_MSG_HIDE_DELAY);
     }
 }

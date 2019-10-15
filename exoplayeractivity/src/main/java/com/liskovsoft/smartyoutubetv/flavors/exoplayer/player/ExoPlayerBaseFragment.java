@@ -419,7 +419,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 listener.onPlaybackReady();
             }
 
-            mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
+            //mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
 
             mPlayerInitializer.initTimeBar(); // set proper time increments
             mPlayerInitializer.initTitleQualityInfo();
