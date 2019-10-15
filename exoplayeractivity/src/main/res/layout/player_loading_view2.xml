@@ -8,4 +8,17 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/afr_loading_view"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:layout_gravity="center"
+              android:background="#80000000"
+              android:textColor="@color/white"
+              android:textStyle="normal"
+              android:textAppearance="@style/TextAppearance.AppCompat.Large"
+              android:lines="1"
+              android:visibility="gone"/>
 </merge>

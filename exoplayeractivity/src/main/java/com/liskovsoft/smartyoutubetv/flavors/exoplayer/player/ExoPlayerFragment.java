@@ -2,12 +2,16 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.util.Util;
+import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManagerAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandler;
@@ -234,5 +238,26 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     @Override
     public void onLoad() {
         // NOP
+    }
+
+    public void showMessage(int resId, long hideDelay) {
+        View root = getView();
+
+        if (root == null) {
+            return;
+        }
+
+        TextView afrView = root.findViewById(R.id.afr_loading_view);
+        FragmentActivity activity = getActivity();
+
+        if (afrView != null && activity != null) {
+            afrView.setVisibility(View.VISIBLE);
+            afrView.setText(resId);
+
+            new Handler(activity.getMainLooper()).postDelayed(() -> {
+                afrView.setVisibility(View.GONE);
+                afrView.setText("");
+            }, hideDelay);
+        }
     }
 }

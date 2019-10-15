@@ -70,4 +70,5 @@
     <string name="option_zoom_stretch">Stretch</string>
     <string name="checkbox_save_speed">Remember speed</string>
     <string name="toast_format_restricted">Cannot switch format while preset is active</string>
+    <string name="changing_video_frame_rate">Adjusting video frame rate...</string>
 </resources>

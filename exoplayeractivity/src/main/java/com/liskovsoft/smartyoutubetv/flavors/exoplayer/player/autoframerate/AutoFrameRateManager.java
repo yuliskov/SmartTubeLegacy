@@ -1,9 +1,12 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
+import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateHelper.AutoFrameRateListener;
 
-public class AutoFrameRateManager implements PlayerEventListener {
+public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateListener {
+    private static final long AFR_MSG_HIDE_DELAY = 3_000;
     protected final ExoPlayerFragment mPlayerFragment;
     protected AutoFrameRateHelper mAutoFrameRateHelper;
 
@@ -18,6 +21,7 @@ public class AutoFrameRateManager implements PlayerEventListener {
         }
 
         mAutoFrameRateHelper.saveOriginalState();
+        mAutoFrameRateHelper.setListener(this);
     }
 
     @Override
@@ -56,5 +60,10 @@ public class AutoFrameRateManager implements PlayerEventListener {
         if (mAutoFrameRateHelper != null) {
             mAutoFrameRateHelper.setEnabled(enabled);
         }
+    }
+
+    @Override
+    public void onModeStart() {
+        mPlayerFragment.showMessage(R.string.changing_video_frame_rate, AFR_MSG_HIDE_DELAY);
     }
 }

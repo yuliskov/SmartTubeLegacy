@@ -6,7 +6,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 class AutoFrameRateHelper {
@@ -15,6 +14,7 @@ class AutoFrameRateHelper {
     protected DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
+    private AutoFrameRateListener mListener;
 
     public AutoFrameRateHelper(Activity context, DisplaySyncHelper syncHelper) {
         mContext = context;
@@ -38,7 +38,11 @@ class AutoFrameRateHelper {
         float frameRate = videoFormat.frameRate;
         int width = videoFormat.width;
         Log.d(TAG, String.format("Applying mode change... Video fps: %s, width: %s", frameRate, width));
-        mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
+        boolean result = mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
+
+        if (result && mListener != null) {
+            mListener.onModeStart();
+        }
     }
 
     public boolean getEnabled() {
@@ -75,5 +79,13 @@ class AutoFrameRateHelper {
     
     public void setPlayer(SimpleExoPlayer player) {
         mPlayer = player;
+    }
+
+    public void setListener(AutoFrameRateListener listener) {
+        mListener = listener;
+    }
+
+    interface AutoFrameRateListener {
+        void onModeStart();
     }
 }

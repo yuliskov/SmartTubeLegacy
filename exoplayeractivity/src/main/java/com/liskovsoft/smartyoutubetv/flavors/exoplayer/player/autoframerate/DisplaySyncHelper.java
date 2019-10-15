@@ -235,10 +235,8 @@ class DisplaySyncHelper implements UhdHelperListener {
 
                 if (videoWidth > 1920) {
                     height = UHD_HEIGHT;
-                } else if (videoWidth > 1280) {
-                    height = FHD_HEIGHT;
                 } else {
-                    height = HD_HEIGHT;
+                    height = FHD_HEIGHT;
                 }
 
                 resultModes = filterModes(modes, height);
