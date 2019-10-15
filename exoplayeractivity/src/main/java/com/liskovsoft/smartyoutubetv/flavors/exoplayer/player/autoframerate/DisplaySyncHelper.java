@@ -18,6 +18,9 @@ import java.util.List;
 
 class DisplaySyncHelper implements UhdHelperListener {
     private static final String TAG = DisplaySyncHelper.class.getSimpleName();
+    private static final int UHD_HEIGHT = 2160;
+    private static final int FHD_HEIGHT = 1080;
+    private static final int HD_HEIGHT = 720;
     protected final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
@@ -25,7 +28,6 @@ class DisplaySyncHelper implements UhdHelperListener {
     protected DisplayHolder.Mode mNewMode;
     // switch not only framerate but resolution too
     protected static boolean SWITCH_TO_UHD = true;
-    protected static boolean SWITCH_TO_SD = false;
 
     public DisplaySyncHelper(Activity context) {
         mContext = context;
@@ -53,41 +55,21 @@ class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private ArrayList<DisplayHolder.Mode> filterUHDModes(DisplayHolder.Mode[] oldModes) {
+    private ArrayList<DisplayHolder.Mode> filterModes(DisplayHolder.Mode[] oldModes, int minimalHeight) {
         ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
         int modesNum = oldModes.length;
 
         for (int i = 0; i < modesNum; ++i) {
             DisplayHolder.Mode mode = oldModes[i];
-            Log.i(TAG, "Check fo UHD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
-            if (mode.getPhysicalHeight() >= 2160) {
-                Log.i(TAG, "Found! UHD");
+            if (mode.getPhysicalHeight() >= minimalHeight) {
                 newModes.add(mode);
             }
         }
 
         if (newModes.isEmpty()) {
             Log.i(TAG, "NO UHD MODES FOUND!!");
-        }
-
-        return newModes;
-    }
-
-    private ArrayList<DisplayHolder.Mode> filterSDModes(DisplayHolder.Mode[] oldModes) {
-        ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
-        int modesNum = oldModes.length;
-
-        for (int i = 0; i < modesNum; ++i) {
-            DisplayHolder.Mode mode = oldModes[i];
-            Log.i(TAG, "Check fo SD: " + mode.getPhysicalWidth() + "x" + mode.getPhysicalHeight() + "@" + mode.getRefreshRate());
-            if (mode.getPhysicalHeight() == 720) {
-                Log.i(TAG, "Found! SD");
-                newModes.add(mode);
-            }
-        }
-
-        if (newModes.isEmpty()) {
-            Log.i(TAG, "NO SD MODES FOUND!!");
+        } else {
+            Log.i(TAG, "Found! " + minimalHeight + ": " + newModes);
         }
 
         return newModes;
@@ -101,7 +83,7 @@ class DisplaySyncHelper implements UhdHelperListener {
         return findCloserMode(Arrays.asList(modes), videoWidth, videoFramerate);
     }
 
-    protected DisplayHolder.Mode findCloserMode(List<Mode> modes, int videoWidth, float videoFramerate) {
+    private DisplayHolder.Mode findCloserMode(List<Mode> modes, int videoWidth, float videoFramerate) {
         HashMap<Integer, int[]> relatedRates;
 
         if (SWITCH_TO_UHD && videoWidth > 1920) {
@@ -249,20 +231,20 @@ class DisplaySyncHelper implements UhdHelperListener {
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
 
             if (SWITCH_TO_UHD) { // switch not only framerate but resolution too
-                if (videoWidth > 1920) {
-                    resultModes = filterUHDModes(modes);
-                    if (!resultModes.isEmpty()) {
-                        needResolutionSwitch = true;
-                    }
-                }
-            }
+                int height;
 
-            if (SWITCH_TO_SD) {
-                if (videoWidth <= 1280) {
-                    resultModes = filterSDModes(modes);
-                    if (!resultModes.isEmpty()) {
-                        needResolutionSwitch = true;
-                    }
+                if (videoWidth > 1920) {
+                    height = UHD_HEIGHT;
+                } else if (videoWidth > 1280) {
+                    height = FHD_HEIGHT;
+                } else {
+                    height = HD_HEIGHT;
+                }
+
+                resultModes = filterModes(modes, height);
+
+                if (!resultModes.isEmpty()) {
+                    needResolutionSwitch = true;
                 }
             }
 
