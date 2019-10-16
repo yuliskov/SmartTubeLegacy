@@ -232,7 +232,7 @@ class DisplaySyncHelper implements UhdHelperListener {
                     minHeight = 2160;
                     maxHeight = 5000;
                 } else {
-                    minHeight = 0;
+                    minHeight = 1080;
                     maxHeight = 1080;
                 }
 
