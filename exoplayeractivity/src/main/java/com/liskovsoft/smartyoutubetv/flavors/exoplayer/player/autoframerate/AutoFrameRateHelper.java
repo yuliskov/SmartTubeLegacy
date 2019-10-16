@@ -74,7 +74,12 @@ class AutoFrameRateHelper {
         }
 
         Log.d(TAG, "Restoring original mode...");
-        mSyncHelper.restoreOriginalState();
+
+        boolean result = mSyncHelper.restoreOriginalState(mContext.getWindow());
+
+        if (result && mListener != null) {
+            mListener.onModeStart();
+        }
     }
     
     public void setPlayer(SimpleExoPlayer player) {

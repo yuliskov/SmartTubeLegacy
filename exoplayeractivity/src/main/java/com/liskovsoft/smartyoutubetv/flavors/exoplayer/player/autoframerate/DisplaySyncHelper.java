@@ -300,14 +300,23 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
     }
 
-    public void restoreOriginalState() {
+    public boolean restoreOriginalState(Window window) {
         if (mOriginalMode == null) {
-            return;
+            return false;
+        }
+
+        DisplayHolder.Mode mode = getUhdHelper().getCurrentMode();
+
+        if (mOriginalMode.equals(mode)) {
+            Log.i(TAG, "Do not need to restore mode.");
+            return false;
         }
 
         getUhdHelper().setPreferredDisplayModeId(
-                        mContext.getWindow(),
+                        window,
                         mOriginalMode.getModeId(),
                         true);
+
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
+import android.view.Window;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -36,7 +37,7 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     }
 
     @Override
-    public void restoreOriginalState() {
+    public boolean restoreOriginalState(Window window) {
         Mode currentMode = getUhdHelper().getCurrentMode();
 
         if (currentMode != null && (currentMode.getPhysicalHeight() > 1080 || currentMode.getRefreshRate() < 40)) {
@@ -45,8 +46,10 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
                         "Restoring original state: rate: " + mOriginalMode.getRefreshRate() +
                                 ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight();
                 Log.d(TAG, msg);
-                super.restoreOriginalState();
+                super.restoreOriginalState(window);
             }
         }
+
+        return false;
     }
 }

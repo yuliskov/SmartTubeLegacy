@@ -261,7 +261,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         }
     }
 
-    public void playbackDelay(long delay) {
+    public void startPlaybackDelay(long delay) {
         FragmentActivity activity = getActivity();
 
         if (activity == null) {
