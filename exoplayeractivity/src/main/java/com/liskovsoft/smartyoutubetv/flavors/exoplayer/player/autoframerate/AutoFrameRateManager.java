@@ -88,13 +88,10 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
     @Override
     public void onAppPause() {
         // save last state
-        mAutoFrameRateHelper.saveCurrentState();
-        mAutoFrameRateHelper.restoreOriginalState();
     }
 
     @Override
     public void onAppResume() {
         // restore last state
-        mAutoFrameRateHelper.restoreCurrentState();
     }
 }
