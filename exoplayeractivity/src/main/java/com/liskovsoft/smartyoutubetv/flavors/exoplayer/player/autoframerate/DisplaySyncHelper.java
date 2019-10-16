@@ -18,9 +18,6 @@ import java.util.List;
 
 class DisplaySyncHelper implements UhdHelperListener {
     private static final String TAG = DisplaySyncHelper.class.getSimpleName();
-    private static final int UHD_HEIGHT = 2160;
-    private static final int FHD_HEIGHT = 1080;
-    private static final int HD_HEIGHT = 720;
     private static final int STATE_ORIGINAL = 1;
     private static final int STATE_CURRENT = 2;
     protected final Activity mContext;
@@ -58,44 +55,42 @@ class DisplaySyncHelper implements UhdHelperListener {
         return newModes;
     }
 
-    private ArrayList<DisplayHolder.Mode> filterModes(DisplayHolder.Mode[] oldModes, int minimalHeight) {
+    private ArrayList<DisplayHolder.Mode> filterModes(DisplayHolder.Mode[] oldModes, int minHeight, int maxHeight) {
         ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
         int modesNum = oldModes.length;
 
         for (int i = 0; i < modesNum; ++i) {
             DisplayHolder.Mode mode = oldModes[i];
-            if (mode.getPhysicalHeight() >= minimalHeight) {
+            int height = mode.getPhysicalHeight();
+            if (height >= minHeight && height <= maxHeight) {
                 newModes.add(mode);
             }
         }
 
         if (newModes.isEmpty()) {
-            Log.i(TAG, "NO UHD MODES FOUND!!");
+            Log.i(TAG, "NO MODES FOUND!! " + Arrays.asList(oldModes));
         } else {
-            Log.i(TAG, "Found! " + minimalHeight + ": " + newModes);
+            Log.i(TAG, "FOUND MODES! " + newModes);
         }
 
         return newModes;
     }
 
-    protected DisplayHolder.Mode findCloserMode(Mode[] modes, int videoWidth, float videoFramerate) {
+    protected DisplayHolder.Mode findCloserMode(Mode[] modes, float videoFramerate) {
         if (modes == null) {
             return null;
         }
 
-        return findCloserMode(Arrays.asList(modes), videoWidth, videoFramerate);
+        return findCloserMode(Arrays.asList(modes), videoFramerate);
     }
 
-    private DisplayHolder.Mode findCloserMode(List<Mode> modes, int videoWidth, float videoFramerate) {
+    private DisplayHolder.Mode findCloserMode(List<Mode> modes, float videoFramerate) {
         HashMap<Integer, int[]> relatedRates;
 
-        if (SWITCH_TO_UHD && videoWidth > 1920) {
-            relatedRates = getUHDRateMapping();
-        } else {
-            relatedRates = getRateMapping();
-        }
+        relatedRates = getRateMapping();
 
         int myRate = (int) (videoFramerate * 100.0F);
+
         if (myRate >= 2300 && myRate <= 2399) {
             myRate = 2397;
         }
@@ -121,10 +116,6 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
 
         return null;
-    }
-
-    protected HashMap<Integer, int[]> getUHDRateMapping() {
-        return getRateMapping();
     }
 
     protected HashMap<Integer, int[]> getRateMapping() {
@@ -234,15 +225,18 @@ class DisplaySyncHelper implements UhdHelperListener {
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
 
             if (SWITCH_TO_UHD) { // switch not only framerate but resolution too
-                int height;
+                int minHeight;
+                int maxHeight;
 
                 if (videoWidth > 1920) {
-                    height = UHD_HEIGHT;
+                    minHeight = 2160;
+                    maxHeight = 5000;
                 } else {
-                    height = FHD_HEIGHT;
+                    minHeight = 0;
+                    maxHeight = 1080;
                 }
 
-                resultModes = filterModes(modes, height);
+                resultModes = filterModes(modes, minHeight, maxHeight);
 
                 if (!resultModes.isEmpty()) {
                     needResolutionSwitch = true;
@@ -257,7 +251,7 @@ class DisplaySyncHelper implements UhdHelperListener {
                 resultModes = filterSameResolutionModes(modes, mode);
             }
 
-            DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoWidth, videoFramerate);
+            DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
 
             if (closerMode == null) {
                 Log.i(TAG, "Could not find closer refresh rate for " + videoFramerate + "fps");
