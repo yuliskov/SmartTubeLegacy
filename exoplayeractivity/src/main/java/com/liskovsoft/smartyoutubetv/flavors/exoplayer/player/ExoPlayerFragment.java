@@ -268,8 +268,14 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
             return;
         }
 
-        getPlayer().setPlayWhenReady(false);
+        setPlayWhenReady(false);
 
-        new Handler(activity.getMainLooper()).postDelayed(() -> getPlayer().setPlayWhenReady(true), delay);
+        new Handler(activity.getMainLooper()).postDelayed(() -> setPlayWhenReady(true), delay);
+    }
+
+    private void setPlayWhenReady(boolean playWhenReady) {
+        if (getPlayer() != null) {
+            getPlayer().setPlayWhenReady(playWhenReady);
+        }
     }
 }
