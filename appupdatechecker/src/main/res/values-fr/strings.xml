@@ -5,7 +5,7 @@
     <string name="app_update_new_version">Une nouvelle version (%1$s) est disponible pour %2$s</string>
     <string name="upgrade">Mettre à jour</string>
     <string name="cancel">Annuler</string>
-    <string name="pref_check_updates_title">Vérifier la mise à jours</string>
+    <string name="pref_check_updates_title">Vérifier la mise à jour</string>
     <string name="pref_min_interval_title">Fréquence minimale de mise à jour</string>
     <string name="pref_min_interval_summary">Vérifie les mises à jour</string>
     <string name="no_external_storage_error">Impossible d\'installer la mise à jour. Le stockage externe n\'existe pas.</string>
