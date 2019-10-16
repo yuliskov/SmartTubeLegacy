@@ -39,6 +39,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String BOOT_SUCCEEDED = "boot_succeeded";
     private static final String ALT_PLAYER_MAPPING = "alt_player_mapping";
     private static final String DISABLE_AMAZON_BRIDGE = "disable_amazon_bridge";
+    private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -303,5 +304,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public boolean getDisableYouTubeBridge() {
         return getBoolean(DISABLE_AMAZON_BRIDGE, false);
+    }
+
+    public boolean isAfrDelayEnabled() {
+        return getBoolean(AFR_DELAY_ENABLED, true);
+    }
+
+    public void setAfrDelayEnabled(boolean enabled) {
+        putBoolean(AFR_DELAY_ENABLED, enabled);
     }
 }

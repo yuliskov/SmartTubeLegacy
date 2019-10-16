@@ -71,6 +71,7 @@ import java.util.TreeSet;
     private CheckedTextView mDefaultView;
     private CheckedTextView mEnableRandomAdaptationView;
     private CheckedTextView mAutoframerateView;
+    private CheckedTextView mAutoframerateDelayView;
     private CheckedTextView mHideErrorsView;
     private CheckedTextView[][] mTrackViews;
     private AlertDialog mAlertDialog;
@@ -165,9 +166,11 @@ import java.util.TreeSet;
         // Autoframerate checkbox.
 
         mAutoframerateView = createCheckButton(context, R.string.enable_autoframerate, root);
+        mAutoframerateDelayView = createCheckButton(context, R.string.enable_autoframerate_pause, root);
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_VIDEO) { // is video
             append(mAutoframerateView, root);
+            append(mAutoframerateDelayView, root);
             append(createDivider(context, root), root);
         }
 
@@ -268,8 +271,10 @@ import java.util.TreeSet;
         AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
         if (autoFrameRateManager != null) {
             mAutoframerateView.setChecked(autoFrameRateManager.isEnabled());
+            mAutoframerateDelayView.setChecked(autoFrameRateManager.isDelayEnabled());
         } else {
             mAutoframerateView.setChecked(false);
+            mAutoframerateDelayView.setChecked(false);
         }
 
         mHideErrorsView.setChecked(mPlayerFragment.getHidePlaybackErrors());
@@ -333,6 +338,12 @@ import java.util.TreeSet;
             AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
             if (autoFrameRateManager != null) {
                 autoFrameRateManager.setEnabled(!checked);
+            }
+        } else if (view == mAutoframerateDelayView) {
+            boolean checked = mAutoframerateDelayView.isChecked();
+            AutoFrameRateManager autoFrameRateManager = mPlayerFragment.getAutoFrameRateManager();
+            if (autoFrameRateManager != null) {
+                autoFrameRateManager.setDelayEnabled(!checked);
             }
         } else if (view == mHideErrorsView) {
             boolean checked = mHideErrorsView.isChecked();

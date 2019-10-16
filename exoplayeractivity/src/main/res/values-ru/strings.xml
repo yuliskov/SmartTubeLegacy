@@ -52,4 +52,5 @@
     <string name="checkbox_save_speed">Запомнить скорость</string>
     <string name="toast_format_restricted">Нельзя выбирать формат при активированном пресете</string>
     <string name="changing_video_frame_rate">Настраивается частота кадров...</string>
+    <string name="enable_autoframerate_pause">Frame rate switch delay</string>
 </resources>

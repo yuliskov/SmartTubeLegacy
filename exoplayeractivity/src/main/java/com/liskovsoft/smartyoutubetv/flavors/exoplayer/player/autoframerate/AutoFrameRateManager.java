@@ -4,14 +4,19 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateHelper.AutoFrameRateListener;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateListener {
     private static final long AFR_MSG_HIDE_DELAY = 5_000;
     protected final ExoPlayerFragment mPlayerFragment;
+    private final SmartPreferences mPrefs;
     protected AutoFrameRateHelper mAutoFrameRateHelper;
+    private boolean mAfrDelayEnabled;
 
     public AutoFrameRateManager(ExoPlayerFragment playerFragment) {
         mPlayerFragment = playerFragment;
+        mPrefs = SmartPreferences.instance(playerFragment.getActivity());
+        mAfrDelayEnabled = mPrefs.isAfrDelayEnabled();
     }
 
     @Override
@@ -62,10 +67,22 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         }
     }
 
+    public boolean isDelayEnabled() {
+        return mPrefs.isAfrDelayEnabled();
+    }
+
+    public void setDelayEnabled(boolean enabled) {
+        mPrefs.setAfrDelayEnabled(enabled);
+
+        mAfrDelayEnabled = enabled;
+    }
+
     @Override
     public void onModeStart() {
-        mPlayerFragment.startPlaybackDelay(AFR_MSG_HIDE_DELAY);
-        mPlayerFragment.showMessage(R.string.changing_video_frame_rate, AFR_MSG_HIDE_DELAY);
+        if (mAfrDelayEnabled) {
+            mPlayerFragment.startPlaybackDelay(AFR_MSG_HIDE_DELAY);
+            mPlayerFragment.showMessage(R.string.changing_video_frame_rate, AFR_MSG_HIDE_DELAY);
+        }
     }
 
     @Override

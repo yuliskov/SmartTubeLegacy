@@ -38,7 +38,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new UpdateCheckDialogItem(mContext));
         mItems.add(new BetaUpdateCheckDialogItem(mContext));
         mItems.add(new OkButtonDialogItem(mContext));
-        mItems.add(new EndCardsDialogItem(mContext));
+        //mItems.add(new EndCardsDialogItem(mContext));
         mItems.add(new LogToFileDialogItem(mContext));
         //mItems.add(new UnplayableVideoFixDialogItem(mContext));
         mItems.add(new LockLastLauncherDialogItem(mContext));
