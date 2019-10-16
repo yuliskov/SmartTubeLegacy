@@ -81,6 +81,29 @@ class AutoFrameRateHelper {
             mListener.onModeStart();
         }
     }
+
+    public void saveCurrentState() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.saveCurrentState();
+    }
+
+    public void restoreCurrentState() {
+        if (!getEnabled()) {
+            Log.d(TAG, "restoreCurrentState: autoframerate not enabled... exiting...");
+            return;
+        }
+
+        Log.d(TAG, "Restoring current mode...");
+
+        boolean result = mSyncHelper.restoreCurrentState(mContext.getWindow());
+
+        if (result && mListener != null) {
+            mListener.onModeStart();
+        }
+    }
     
     public void setPlayer(SimpleExoPlayer player) {
         mPlayer = player;

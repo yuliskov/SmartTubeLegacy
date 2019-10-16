@@ -21,11 +21,14 @@ class DisplaySyncHelper implements UhdHelperListener {
     private static final int UHD_HEIGHT = 2160;
     private static final int FHD_HEIGHT = 1080;
     private static final int HD_HEIGHT = 720;
+    private static final int STATE_ORIGINAL = 1;
+    private static final int STATE_CURRENT = 2;
     protected final Activity mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     protected DisplayHolder.Mode mOriginalMode;
     protected DisplayHolder.Mode mNewMode;
+    private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
     protected static boolean SWITCH_TO_UHD = true;
 
@@ -293,29 +296,63 @@ class DisplaySyncHelper implements UhdHelperListener {
     }
 
     public void saveOriginalState() {
-        DisplayHolder.Mode mode = getUhdHelper().getCurrentMode();
+        saveState(STATE_ORIGINAL);
+    }
 
-        if (mode != null) {
-            mOriginalMode = mode;
-        }
+    public void saveCurrentState() {
+        saveState(STATE_CURRENT);
     }
 
     public boolean restoreOriginalState(Window window) {
-        if (mOriginalMode == null) {
+        return restoreState(window, STATE_ORIGINAL);
+    }
+
+    public boolean restoreCurrentState(Window window) {
+        return restoreState(window, STATE_CURRENT);
+    }
+
+    private void saveState(int state) {
+        DisplayHolder.Mode mode = getUhdHelper().getCurrentMode();
+
+        if (mode != null) {
+            switch (state) {
+                case STATE_ORIGINAL:
+                    mOriginalMode = mode;
+                    break;
+                case STATE_CURRENT:
+                    mCurrentMode = mode;
+                    break;
+            }
+        }
+    }
+
+    private boolean restoreState(Window window, int state) {
+        DisplayHolder.Mode modeTmp = null;
+
+        switch (state) {
+            case STATE_ORIGINAL:
+                modeTmp = mOriginalMode;
+                break;
+            case STATE_CURRENT:
+                modeTmp = mCurrentMode;
+                break;
+        }
+
+        if (modeTmp == null) {
             return false;
         }
 
         DisplayHolder.Mode mode = getUhdHelper().getCurrentMode();
 
-        if (mOriginalMode.equals(mode)) {
+        if (modeTmp.equals(mode)) {
             Log.i(TAG, "Do not need to restore mode.");
             return false;
         }
 
         getUhdHelper().setPreferredDisplayModeId(
-                        window,
-                        mOriginalMode.getModeId(),
-                        true);
+                window,
+                modeTmp.getModeId(),
+                true);
 
         return true;
     }

@@ -470,11 +470,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 loading.setVisibility(View.VISIBLE);
             }
         }
-
-        //TimeBar timeBar = rootView.findViewById(R.id.player_view).findViewById(R.id.exo_progress);
-        //timeBar.setEnabled(false);
-        //timeBar.setDuration(C.TIME_UNSET);
-        //timeBar.setPosition(0);
     }
 
     private void showHideLoadingMessage(int playbackState) {
@@ -574,5 +569,23 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         mListeners.add(listener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        for (PlayerEventListener listener : mListeners) {
+            listener.onAppPause();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        for (PlayerEventListener listener : mListeners) {
+            listener.onAppResume();
+        }
     }
 }

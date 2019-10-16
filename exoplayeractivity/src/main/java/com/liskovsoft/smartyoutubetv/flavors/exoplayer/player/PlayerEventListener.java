@@ -6,4 +6,6 @@ public interface PlayerEventListener {
     void onPlayerClosed();
     void onPlaybackReady();
     void onTrackEnded();
+    void onAppPause();
+    void onAppResume();
 }

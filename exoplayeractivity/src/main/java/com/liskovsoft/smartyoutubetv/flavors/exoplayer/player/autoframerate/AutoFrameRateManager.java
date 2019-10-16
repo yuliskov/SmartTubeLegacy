@@ -67,4 +67,17 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         mPlayerFragment.startPlaybackDelay(AFR_MSG_HIDE_DELAY);
         mPlayerFragment.showMessage(R.string.changing_video_frame_rate, AFR_MSG_HIDE_DELAY);
     }
+
+    @Override
+    public void onAppPause() {
+        // save last state
+        mAutoFrameRateHelper.saveCurrentState();
+        mAutoFrameRateHelper.restoreOriginalState();
+    }
+
+    @Override
+    public void onAppResume() {
+        // restore last state
+        mAutoFrameRateHelper.restoreCurrentState();
+    }
 }
