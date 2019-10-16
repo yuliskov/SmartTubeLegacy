@@ -10,6 +10,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -400,11 +402,12 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     protected void onSearchQuery() {}
 
-    @TargetApi(16)
     private void checkMemory() {
         MemoryInfo memory = Helpers.getAvailableMemory(this);
 
-        Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
+        if (VERSION.SDK_INT >= 16) {
+            Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
+        }
 
         Log.flush();
     }
