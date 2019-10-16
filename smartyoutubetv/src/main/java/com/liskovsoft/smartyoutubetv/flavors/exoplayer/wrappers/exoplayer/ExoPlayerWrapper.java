@@ -49,6 +49,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final Handler mHandler;
     private boolean mBlockHandlers;
     private VideoMetadata mMetadata;
+    private boolean mPlayerClosed;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -105,6 +106,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onStart() {
+        mPlayerClosed = false;
         mBlockHandlers = true;
         clearPendingEvents();
         mFragmentsManager.openExoPlayer(null, false);
@@ -157,6 +159,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onDone() {
+        if (mPlayerClosed) {
+            return;
+        }
+
         if (mSample == null || mInfo == null) {
             mManager.onCancel();
             mFragmentsManager.openBrowser(true);
@@ -216,6 +222,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
 
         if (!showOverlay) {
+            mPlayerClosed = true;
             mManager.onClose();
         }
 
