@@ -84,4 +84,14 @@
     <string name="tweak_back_press_exit">Retenir la clé pour sortir</string>
     <string name="force_avc_lite_only">Forcer le codec AVC (LITE uniquement)</string>
     <string name="force_vp9_lite_only">Forcer le codec VP9 (LITE uniquement)</string>
+    <string name="fix_clock_msg">Le temps sur votre appareil n\'est pas correctement réglé</string>
+    <string name="do_restore_data_msg">Restaurer les données précédemment enregistrées?\nL'application va redémarré.</string>
+    <string name="restoring_data_msg">Restauration des données...</string>
+    <string name="alt_player_mapping">Télécommande: cartographie alt media-touche</string>
+    <string name="tip_hash_in_subscriptions">Vider abonnements? Supprimer les canaux commençant par le hachage #</string>
+    <string name="tip_show_main_screen_2">Appuyez sur RETOUR pour ouvrir les paramètres principaux</string>
+    <string name="do_install_bridge_apk">Voulez-vous activer la recherche vocale mondiale?\nIl peut être nécessaire d'installer des apk supplémentaires.
+    </string>
+    <string name="do_reinstall_bridge_apk">Voulez-vous activer la recherche vocale mondiale?\nIl faudra peut etre supprimer l'application originale YouTube\nEt ensuite installer un apk supplémentaire.
+    </string>
 </resources>
