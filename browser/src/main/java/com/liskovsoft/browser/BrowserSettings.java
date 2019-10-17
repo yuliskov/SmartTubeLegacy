@@ -38,6 +38,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     private boolean mNeedsSharedSync;
 
     // TODO: Update UserAgent stuff to more actual versions
+    private static final String LG_SMART_TV_VOICE_BUTTON_ENABLED = "Mozilla/5.0 (Unknown; Linux armv7l) " +
+            "AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; " +
+            "43LK5760PTA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 43LK5760PTA, wired)";
+
     private static final String DESKTOP_USERAGENT = "Mozilla/5.0 (X11; " +
             "Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) " +
             "Chrome/11.0.696.34 Safari/534.24";
@@ -58,13 +62,22 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             "Android 3.1; en-us; Xoom Build/HMJ25) AppleWebKit/534.13 " +
             "(KHTML, like Gecko) Version/4.0 Safari/534.13";
 
-    private static final String USER_AGENTS[] = { null,
+    private static final String USER_AGENTS[] = {
+            LG_SMART_TV_VOICE_BUTTON_ENABLED,
             DESKTOP_USERAGENT,
             IPHONE_USERAGENT,
             IPAD_USERAGENT,
             FROYO_USERAGENT,
             HONEYCOMB_USERAGENT,
     };
+
+    //private static final String USER_AGENTS[] = { null,
+    //        DESKTOP_USERAGENT,
+    //        IPHONE_USERAGENT,
+    //        IPAD_USERAGENT,
+    //        FROYO_USERAGENT,
+    //        HONEYCOMB_USERAGENT,
+    //};
     // Current state of network-dependent settings
     private boolean mLinkPrefetchAllowed = false;
     private SearchEngine mSearchEngine;
@@ -88,7 +101,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
-    
+
     private boolean getPlaybackRequiresGesture() {
         return mPrefs.getBoolean(PREF_PLAYBACK_REQUIRES_GESTURE, false);
     }
