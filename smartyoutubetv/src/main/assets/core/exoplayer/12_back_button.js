@@ -7,7 +7,7 @@ console.log("Scripts::Running core script back_button.js");
 function BackButton(selector, states) {
     this.selector = selector;
     this.retryTimes = 10;
-    this.checkDelayMS = 1000;
+    this.checkDelayMS = 500;
     this.stateless = true;
     this.TAG = 'BackButton';
 
@@ -16,12 +16,13 @@ function BackButton(selector, states) {
             return;
         }
 
-        // fix input lost after opening user channel page
-        //Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER).focus();
-
         this.retryTimes--;
 
         EventUtils.triggerEnter(this.findToggle());
+
+        if (YouTubeUtils.isPlayerClosed()) {
+            return;
+        }
 
         var $this = this;
         setTimeout(function() {
@@ -38,20 +39,7 @@ function BackButton(selector, states) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            var $this = this;
-
             YouTubeUtils.showPlayerBackground();
-
-            // update history position
-            // var pos = states['video_position'];
-            // var len = states['video_length'];
-            // YouTubeUtils.getPlayer().imitatePosition(pos, len);
-            // Log.d(this.TAG, "Current time is set to " + pos + ', ' + len);
-
-            // 'likes not saved' fix
-            // setTimeout(function() {
-            //     $this.pressBackOrRetry();
-            // }, this.checkDelayMS);
 
             this.pressBackOrRetry();
         }
