@@ -92,7 +92,7 @@
     <string name="tip_show_main_screen_2">Press BACK to open Main Settings</string>
     <string name="do_install_bridge_apk">Do you want to enable global voice search?\nIt may need to install additional apk.
     </string>
-    <string name="do_reinstall_bridge_apk">Do you want to enable global voice search?\nIt may need remove original YouTube\nAnd then install additional apk.
+    <string name="do_reinstall_bridge_apk">Do you want to enable global voice search?\nIt may need to remove original YouTube\nAnd then install additional apk.\nNOTE: on some devices ROOT is needed.
     </string>
     <string name="app_crashed">App crashed.\nCheck for the newer version?</string>
 </resources>
