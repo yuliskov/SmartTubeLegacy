@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
@@ -166,11 +167,29 @@ public class PlayerButtonsManager {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             mPlayerFragment.onPlayerAction();
-        } else if (isNextButton || isPrevButton) {
+        } else if (isPrevButton) {
+            if (!restartVideo()) {
+                mPlayerFragment.onPlayerAction();
+            }
+        } else if (isNextButton) {
             mPlayerFragment.onPlayerAction();
         } else if (isBackButton) {
             mPlayerFragment.onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
         }
+    }
+
+    private boolean restartVideo() {
+        SimpleExoPlayer player = mPlayerFragment.getPlayer();
+
+        if (player != null) {
+            long currentPosition = player.getCurrentPosition();
+            if (currentPosition > 5_000) {
+                player.seekTo(0);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @TargetApi(17)
