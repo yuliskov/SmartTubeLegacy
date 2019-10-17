@@ -183,7 +183,7 @@ public class PlayerButtonsManager {
 
         if (player != null) {
             long currentPosition = player.getCurrentPosition();
-            if (currentPosition > 5_000) {
+            if (currentPosition >= 10_000) {
                 player.seekTo(0);
                 return true;
             }
