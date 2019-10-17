@@ -41,8 +41,8 @@ abstract class BridgeHandlerBase extends StateHandler implements OnClickListener
 
         PackageInfo info = getPackageSingnature(getPackageName());
 
-        if (info != null) {
-            if (info.signatures[0].hashCode() != getPackageSignatureHash()) {
+        if (info != null) { // app installed
+            if (Helpers.isUserApp(info) && info.signatures[0].hashCode() != getPackageSignatureHash()) {
                 // official YouTube installed
                 mRemoveOldApkFirst = true;
                 askUserPermissionToReinstallBridgeApk();
