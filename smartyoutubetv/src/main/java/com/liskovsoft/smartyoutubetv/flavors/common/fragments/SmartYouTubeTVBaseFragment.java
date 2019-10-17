@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -96,6 +97,21 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         boolean restoreState = icicle != null && intent.getData() == null;
         mController.start(restoreState ? null : intent);
         setController(mController);
+
+        startWatchDog();
+    }
+
+    private void startWatchDog() {
+        new Handler(getActivity().getMainLooper()).postDelayed(() -> {
+            WebView webView = mController.getCurrentTab().getWebView();
+            if (webView != null) {
+                String url = webView.getUrl();
+                if (!mServiceFinder.checkUrl(url)) {
+                    Log.d(TAG, "Oops, wrong url found. Restoring last safe url... " + url);
+                    webView.loadUrl(mServiceFinder.getUrl());
+                }
+            }
+        }, 5_000);
     }
 
     @Override

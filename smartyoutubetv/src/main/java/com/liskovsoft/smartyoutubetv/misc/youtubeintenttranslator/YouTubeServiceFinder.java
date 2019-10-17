@@ -13,12 +13,14 @@ public class YouTubeServiceFinder implements ServiceFinder {
     private final IntentTranslator mTranslator;
     private String mDefaultUrl;
     private boolean mIsPersistent;
+    private final String mRootUrl;
 
     public YouTubeServiceFinder(Context context) {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
         CommonParams params = CommonParams.instance(mContext);
+        mRootUrl = params.getMainPageUrl();
 
         switch (prefs.getBootPage()) {
             case SmartPreferences.MUSIC_PAGE:
@@ -50,6 +52,12 @@ public class YouTubeServiceFinder implements ServiceFinder {
     @Override
     public String getUrl() {
         return mDefaultUrl;
+    }
+
+    @Override
+    public boolean checkUrl(String url) {
+        Log.d(TAG, "Checking url " + url);
+        return url != null && url.contains(mRootUrl);
     }
 
     @Override
