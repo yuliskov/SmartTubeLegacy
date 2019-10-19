@@ -28,6 +28,7 @@ class DisplaySyncHelper implements UhdHelperListener {
     private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
     protected static boolean SWITCH_TO_UHD = true;
+    private int mModeLength = -1;
 
     public DisplaySyncHelper(Activity context) {
         mContext = context;
@@ -141,6 +142,15 @@ class DisplaySyncHelper implements UhdHelperListener {
         String manufacturerName = Build.MANUFACTURER;
         return (deviceName.startsWith("AFT")
                 && "Amazon".equalsIgnoreCase(manufacturerName));
+    }
+
+    public boolean supportsDisplayModeChangeComplex() {
+        if (mModeLength == -1) {
+            Mode[] supportedModes = getUhdHelper().getSupportedModes();
+            mModeLength = supportedModes == null ? 0 : supportedModes.length;
+        }
+
+        return mModeLength > 1 && supportsDisplayModeChange();
     }
 
     /**
@@ -349,5 +359,9 @@ class DisplaySyncHelper implements UhdHelperListener {
                 true);
 
         return true;
+    }
+
+    public void resetStats() {
+        mModeLength = -1;
     }
 }

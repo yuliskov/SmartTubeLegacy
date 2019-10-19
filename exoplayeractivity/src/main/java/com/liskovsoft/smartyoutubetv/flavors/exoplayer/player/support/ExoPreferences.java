@@ -25,6 +25,7 @@ public final class ExoPreferences {
     private static final String CURRENT_SPEED = "currentSpeed";
     private static final String RESTORE_SPEED = "restoreSpeed";
     public static final String FORMAT_ANY = "format_any";
+    private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
     private boolean mForceRestoreSpeed;
 
     public static ExoPreferences instance(Context ctx) {
@@ -236,5 +237,15 @@ public final class ExoPreferences {
 
     public void setForceRestoreSpeed(boolean force) {
         mForceRestoreSpeed = force;
+    }
+
+    public boolean isAfrDelayEnabled() {
+        return mPrefs.getBoolean(AFR_DELAY_ENABLED, false);
+    }
+
+    public void setAfrDelayEnabled(boolean enabled) {
+        mPrefs.edit()
+                .putBoolean(AFR_DELAY_ENABLED, enabled)
+                .apply();
     }
 }

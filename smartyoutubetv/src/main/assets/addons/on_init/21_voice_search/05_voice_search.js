@@ -18,11 +18,13 @@ window.VoiceSearch = {
     init: function() {
         // NOTE: you need to change user-agent too
 
-        if (DeviceUtils.isMicAvailable()) {
-            this.overrideVoiceCaps();
-        } else {
-            this.disableBrowserVoiceFunctions();
-        }
+        this.overrideVoiceCaps();
+
+        // if (DeviceUtils.isMicAvailable()) {
+        //     this.overrideVoiceCaps();
+        // } else {
+        //     this.disableBrowserVoiceFunctions();
+        // }
     },
 
     disableBrowserVoiceFunctions: function() {

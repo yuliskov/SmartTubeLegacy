@@ -139,7 +139,11 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
                 FileHelpers.delete(dataDir);
             }
 
-            FileHelpers.copy(new File(currentBackup, dataDir.getName()), dataDir);
+            File sourceBackupDir = new File(currentBackup, dataDir.getName());
+
+            if (sourceBackupDir.exists()) {
+                FileHelpers.copy(sourceBackupDir, dataDir);
+            }
         }
 
         // to apply settings we need to kill the app

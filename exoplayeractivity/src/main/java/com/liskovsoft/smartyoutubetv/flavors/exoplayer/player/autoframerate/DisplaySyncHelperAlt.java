@@ -40,20 +40,7 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
         mVideoWidth = videoWidth;
 
-        boolean result = super.syncDisplayMode(window, videoWidth, videoFramerate);
-
-        // check global afr
-        if (!result) {
-            Mode[] supportedModes = getUhdHelper().getSupportedModes();
-
-            if (supportedModes != null && supportedModes.length == 1) { // seems that global afr detected
-                if (!Helpers.nearlyEqual(supportedModes[0].getRefreshRate(), videoFramerate, 1)) {
-                    result = true;
-                }
-            }
-        }
-
-        return result;
+        return super.syncDisplayMode(window, videoWidth, videoFramerate);
     }
 
     @Override

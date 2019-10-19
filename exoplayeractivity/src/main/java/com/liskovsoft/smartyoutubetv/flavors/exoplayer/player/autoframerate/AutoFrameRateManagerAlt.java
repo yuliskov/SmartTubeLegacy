@@ -29,4 +29,11 @@ public class AutoFrameRateManagerAlt extends AutoFrameRateManager {
             mAutoFrameRateHelper.restoreOriginalState();
         }
     }
+
+    @Override
+    public void onAppResume() {
+        super.onAppResume();
+
+        mAutoFrameRateHelper.resetStats();
+    }
 }

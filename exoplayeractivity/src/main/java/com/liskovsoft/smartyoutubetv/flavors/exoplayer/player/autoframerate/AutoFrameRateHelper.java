@@ -46,17 +46,29 @@ class AutoFrameRateHelper {
     }
 
     public boolean getEnabled() {
-        return mPrefs.getAutoframerateChecked();
+        return mSyncHelper.supportsDisplayModeChangeComplex() && mPrefs.getAutoframerateChecked();
     }
 
     public void setEnabled(boolean enabled) {
-        if (!DisplaySyncHelper.supportsDisplayModeChange()) {
+        if (!mSyncHelper.supportsDisplayModeChangeComplex()) {
             MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
             enabled = false;
         }
 
         mPrefs.setAutoframerateChecked(enabled);
         apply();
+    }
+
+    public boolean getDelayEnabled() {
+        return getEnabled() && mPrefs.isAfrDelayEnabled();
+    }
+
+    public void setDelayEnabled(boolean enabled) {
+        if (getEnabled()) {
+            mPrefs.setAfrDelayEnabled(enabled);
+        } else {
+            MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
+        }
     }
 
     public void saveOriginalState() {
@@ -111,6 +123,10 @@ class AutoFrameRateHelper {
 
     public void setListener(AutoFrameRateListener listener) {
         mListener = listener;
+    }
+
+    public void resetStats() {
+        mSyncHelper.resetStats();
     }
 
     interface AutoFrameRateListener {
