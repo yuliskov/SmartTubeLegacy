@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
 import android.view.Window;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
@@ -39,7 +40,20 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
         mVideoWidth = videoWidth;
 
-        return super.syncDisplayMode(window, videoWidth, videoFramerate);
+        boolean result = super.syncDisplayMode(window, videoWidth, videoFramerate);
+
+        // check global afr
+        if (!result) {
+            Mode[] supportedModes = getUhdHelper().getSupportedModes();
+
+            if (supportedModes != null && supportedModes.length == 1) { // seems that global afr detected
+                if (!Helpers.nearlyEqual(supportedModes[0].getRefreshRate(), videoFramerate, 1)) {
+                    result = true;
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
