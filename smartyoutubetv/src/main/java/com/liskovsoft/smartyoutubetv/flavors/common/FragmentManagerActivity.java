@@ -1,16 +1,12 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager.MemoryInfo;
 import android.content.ComponentCallbacks2;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,7 +19,6 @@ import com.liskovsoft.sharedutils.locale.LangHelper;
 import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.flavors.common.loading.RandomTipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -40,7 +35,6 @@ import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();

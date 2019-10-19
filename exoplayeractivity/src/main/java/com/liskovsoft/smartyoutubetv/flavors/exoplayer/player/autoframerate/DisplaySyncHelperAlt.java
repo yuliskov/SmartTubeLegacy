@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 class DisplaySyncHelperAlt extends DisplaySyncHelper {
     private static final String TAG = DisplaySyncHelperAlt.class.getSimpleName();
+    private int mVideoWidth;
 
     public DisplaySyncHelperAlt(Activity context) {
         super(context);
@@ -16,6 +17,10 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
 
     @Override
     protected HashMap<Integer, int[]> getRateMapping() {
+        return SWITCH_TO_UHD && mVideoWidth > 1920 ? super.getRateMapping() : getFHDRateMapping();
+    }
+
+    private HashMap<Integer, int[]> getFHDRateMapping() {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
         relatedRates.put(1500, new int[]{6000, 3000});
         relatedRates.put(2397, new int[]{2397, 2400, 3000, 6000});
@@ -28,6 +33,13 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
         relatedRates.put(5994, new int[]{5994, 6000, 3000});
         relatedRates.put(6000, new int[]{6000, 3000});
         return relatedRates;
+    }
+
+    @Override
+    public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {
+        mVideoWidth = videoWidth;
+
+        return super.syncDisplayMode(window, videoWidth, videoFramerate);
     }
 
     @Override
