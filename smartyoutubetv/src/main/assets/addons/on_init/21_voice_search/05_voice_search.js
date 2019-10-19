@@ -18,13 +18,11 @@ window.VoiceSearch = {
     init: function() {
         // NOTE: you need to change user-agent too
 
-        this.overrideVoiceCaps();
-
-        // if (DeviceUtils.isMicAvailable()) {
-        //     this.overrideVoiceCaps();
-        // } else {
-        //     this.disableBrowserVoiceFunctions();
-        // }
+        if (DeviceUtils.isMicAvailable()) {
+            this.overrideVoiceCaps();
+        } else {
+            this.disableBrowserVoiceFunctions();
+        }
     },
 
     disableBrowserVoiceFunctions: function() {
@@ -33,11 +31,6 @@ window.VoiceSearch = {
 
     overrideVoiceCaps: function() {
         // hacks to made app think that there is a voice input
-
-        // if (window.environment) {
-        //     // this line fixes afr issues
-        //     window.environment.supportsVoiceSearch = true;
-        // }
 
         var $this = this;
 
