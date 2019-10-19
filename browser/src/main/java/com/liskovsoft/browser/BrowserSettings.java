@@ -63,7 +63,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             "(KHTML, like Gecko) Version/4.0 Safari/534.13";
 
     private static final String USER_AGENTS[] = {
-            LG_SMART_TV_VOICE_BUTTON_ENABLED,
+            null,
             DESKTOP_USERAGENT,
             IPHONE_USERAGENT,
             IPAD_USERAGENT,
