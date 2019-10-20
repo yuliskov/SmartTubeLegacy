@@ -70,6 +70,6 @@
     <string name="option_zoom_stretch">Etirer</string>
     <string name="checkbox_save_speed">Rappelez-vous de la vitesse</string>
     <string name="toast_format_restricted">Impossible de basculer le format lorsque la présélection est active</string>
-    <string name="changing_video_frame_rate">Ajustement du débit d\'image vidéo....</string>
+    <string name="changing_video_frame_rate">Ajustement du débit d\'image vidéo %s....</string>
     <string name="enable_autoframerate_pause">Pause video lors de la commutation du débit d\'image</string>
 </resources>

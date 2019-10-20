@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
@@ -240,7 +241,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         // NOP
     }
 
-    public void showMessage(int resId, long hideDelay) {
+    public void showMessage(String message, long hideDelay) {
         View root = getView();
 
         if (root == null) {
@@ -252,7 +253,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
 
         if (afrView != null && activity != null) {
             afrView.setVisibility(View.VISIBLE);
-            afrView.setText(resId);
+            afrView.setText(message);
 
             new Handler(activity.getMainLooper()).postDelayed(() -> {
                 afrView.setVisibility(View.GONE);
@@ -262,20 +263,16 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     }
 
     public void startPlaybackDelay(long delay) {
+        SimpleExoPlayer player = getPlayer();
         FragmentActivity activity = getActivity();
+        PlayerView playerView = getExoPlayerView();
 
-        if (activity == null) {
-            return;
-        }
+        if (player != null && activity != null) {
+            player.setPlayWhenReady(false);
 
-        setPlayWhenReady(false);
-
-        new Handler(activity.getMainLooper()).postDelayed(() -> setPlayWhenReady(true), delay);
-    }
-
-    private void setPlayWhenReady(boolean playWhenReady) {
-        if (getPlayer() != null) {
-            getPlayer().setPlayWhenReady(playWhenReady);
+            new Handler(activity.getMainLooper()).postDelayed(() -> {
+                player.setPlayWhenReady(true);
+            }, delay);
         }
     }
 }

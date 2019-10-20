@@ -21,15 +21,6 @@ public class KeyHandler {
     private Boolean mEnableOKPause;
     private HashMap<Integer, Runnable> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
-    private final Runnable mOnToggle = () -> {
-        if (mFragment.getPlayer() != null) {
-            mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
-        }
-
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().hideController();
-        }
-    };
     private final Runnable mOnPlay = () -> {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(true);
@@ -39,13 +30,22 @@ public class KeyHandler {
             mFragment.getExoPlayerView().hideController();
         }
     };
-    private final Runnable mOnPause = () -> {
-        if (mFragment.getPlayer() != null) {
-            mFragment.getPlayer().setPlayWhenReady(false);
+    private final Runnable mOnToggle = () -> {
+        if (mFragment.getExoPlayerView() != null) {
+            mFragment.getExoPlayerView().setControllerAutoShow(true);
         }
 
+        if (mFragment.getPlayer() != null) {
+            mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
+        }
+    };
+    private final Runnable mOnPause = () -> {
         if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().hideController();
+            mFragment.getExoPlayerView().setControllerAutoShow(true);
+        }
+
+        if (mFragment.getPlayer() != null) {
+            mFragment.getPlayer().setPlayWhenReady(false);
         }
     };
     private final Runnable mOnFastForward = () -> {

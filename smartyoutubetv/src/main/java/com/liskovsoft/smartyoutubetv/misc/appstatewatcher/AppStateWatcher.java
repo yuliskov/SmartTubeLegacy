@@ -10,6 +10,7 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AmazonYouTube
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BackupAndRestoreHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BolshoeTVCacheCleanHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.CacheCleanHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LeanbackHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckHandler;
 
 public class AppStateWatcher extends AppStateWatcherBase {
@@ -37,6 +38,9 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new BackupAndRestoreHandler(context));
 
         addHandler(new DisplayModeSaverHandler(context));
+
+        // update recommendations
+        addHandler(new LeanbackHandler(context));
     }
 
 }
