@@ -11,8 +11,10 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
+import androidx.fragment.app.FragmentActivity;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
+import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -103,16 +105,24 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void startWatchDog() {
-        new Handler(getActivity().getMainLooper()).postDelayed(() -> {
-            WebView webView = mController.getCurrentTab().getWebView();
-            if (webView != null) {
-                String url = webView.getUrl();
-                if (!mServiceFinder.checkUrl(url)) {
-                    Log.d(TAG, "Oops, wrong url found. Restoring last safe url... " + url);
-                    webView.loadUrl(mServiceFinder.getUrl());
+        FragmentActivity activity = getActivity();
+
+        if (activity != null) {
+            new Handler(activity.getMainLooper()).postDelayed(() -> {
+                Tab currentTab = mController.getCurrentTab();
+
+                if (currentTab != null) {
+                    WebView webView = currentTab.getWebView();
+                    if (webView != null) {
+                        String url = webView.getUrl();
+                        if (!mServiceFinder.checkUrl(url)) {
+                            Log.d(TAG, "Oops, wrong url found. Restoring last safe url... " + url);
+                            webView.loadUrl(mServiceFinder.getUrl());
+                        }
+                    }
                 }
-            }
-        }, 5_000);
+            }, 5_000);
+        }
     }
 
     @Override
