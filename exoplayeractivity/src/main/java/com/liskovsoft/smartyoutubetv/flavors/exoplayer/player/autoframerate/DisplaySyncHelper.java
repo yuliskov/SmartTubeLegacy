@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.view.Window;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -151,7 +152,12 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     public boolean supportsDisplayModeChangeComplex() {
         if (mModeLength == -1) {
-            Mode[] supportedModes = getUhdHelper().getSupportedModes();
+            Mode[] supportedModes = null;
+
+            if (VERSION.SDK_INT >= 21) {
+                supportedModes = getUhdHelper().getSupportedModes();
+            }
+
             mModeLength = supportedModes == null ? 0 : supportedModes.length;
         }
 
