@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
+import com.liskovsoft.sharedutils.GlobalConstants;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -25,10 +26,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
+    private boolean mIsStandAlone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        saveStandAlone(getIntent());
         setContentView(R.layout.activity_exo);
         getLoadingManager().show();
 
@@ -155,13 +158,27 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + action);
 
-        boolean doNotPause =
-                action.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false) ||
-                action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
-                action.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
+        if (mIsStandAlone && isClosePlayer(action)) {
+            finish();
+            return;
+        }
+
+        boolean doNotPause = isDoNotPause(action);
+
         setActiveFragment(mBrowserFragment, !doNotPause);
 
         mPlayerListener.onPlayerAction(action);
+    }
+
+    private boolean isClosePlayer(Intent action) {
+        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false);
+    }
+
+    private boolean isDoNotPause(Intent action) {
+        return
+            action.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false)   ||
+            action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
+            action.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
     }
 
     @Override
@@ -213,6 +230,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
+        saveStandAlone(intent);
+
         super.onNewIntent(intent);
 
         if (mBrowserFragment != null) {
@@ -237,5 +256,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         mBrowserFragment.onMemoryCritical();
         mPlayerFragment.onMemoryCritical();
+    }
+
+    private void saveStandAlone(Intent intent) {
+        if (intent != null) {
+            mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+        }
     }
 }
