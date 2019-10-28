@@ -182,4 +182,10 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
         mXWalkView.onDestroy();
         super.destroy();
     }
+
+    @Override
+    public void clearCache(boolean includeDiskFiles) {
+        mXWalkView.clearCache(includeDiskFiles);
+        super.clearCache(includeDiskFiles);
+    }
 }
