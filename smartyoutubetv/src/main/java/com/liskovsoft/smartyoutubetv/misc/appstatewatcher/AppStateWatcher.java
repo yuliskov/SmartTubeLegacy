@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BackupAndRest
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BolshoeTVCacheCleanHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.CacheCleanHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVChannelsHandler;
-import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ForceWebUIHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ForceOldUIHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckHandler;
 
 public class AppStateWatcher extends AppStateWatcherBase {
@@ -41,10 +41,10 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new DisplayModeSaverHandler(context));
 
         // update recommendations
-        addHandler(new ATVChannelsHandler(context));
+        //addHandler(new ATVChannelsHandler(context));
 
         // force new UI
-        addHandler(new ForceWebUIHandler(context));
+        addHandler(new ForceOldUIHandler(context));
     }
 
 }

@@ -22,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionD
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UnplayableVideoFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.MultiDialogSource;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseNewUIDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mContext = context;
 
         mItems = new ArrayList<>();
+        mItems.add(new UseNewUIDialogItem(mContext));
         mItems.add(new SaveSelectionDialogItem(mContext));
         mItems.add(new UpdateCheckDialogItem(mContext));
         mItems.add(new BetaUpdateCheckDialogItem(mContext));

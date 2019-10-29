@@ -81,4 +81,5 @@
     <string name="do_reinstall_bridge_apk">Хотите добавить глобальный поиск?\nДля этого потребуется удалить оригинальный YouTube\nИ потом установить дополнительное апк.
     </string>
     <string name="app_crashed">Сбой в работе программы.\nСкачать обновленную версию?</string>
+    <string name="tweak_use_new_ui">Перейти на новый интерфейс</string>
 </resources>

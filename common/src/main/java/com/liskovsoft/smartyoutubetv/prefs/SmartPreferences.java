@@ -1,8 +1,6 @@
 package com.liskovsoft.smartyoutubetv.prefs;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 public final class SmartPreferences extends SmartPreferencesBase {
@@ -39,6 +37,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String BOOT_SUCCEEDED = "boot_succeeded";
     private static final String ALT_PLAYER_MAPPING = "alt_player_mapping";
     private static final String DISABLE_AMAZON_BRIDGE = "disable_amazon_bridge";
+    private static final String USE_NEW_UI = "use_new_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -303,5 +302,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public boolean getDisableYouTubeBridge() {
         return getBoolean(DISABLE_AMAZON_BRIDGE, false);
+    }
+
+    public boolean getUseNewUI() {
+        return getBoolean(USE_NEW_UI, false);
+    }
+
+    public void setUseNewUI(boolean useNewUI) {
+        putBoolean(USE_NEW_UI, useNewUI);
     }
 }
