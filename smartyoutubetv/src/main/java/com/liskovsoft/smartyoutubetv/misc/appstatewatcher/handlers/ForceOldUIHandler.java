@@ -2,10 +2,10 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.app.Activity;
 import android.webkit.CookieManager;
-import com.liskovsoft.browser.Browser;
-import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
+import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 import org.xwalk.core.XWalkCookieManager;
 
@@ -31,7 +31,7 @@ public class ForceOldUIHandler extends StateHandler {
         }
 
         try {
-            if (Browser.getEngineType() == EngineType.WebView) {
+            if (mContext instanceof SmartYouTubeTV1080Activity || mContext instanceof SmartYouTubeTV4K) {
                 CookieManager.getInstance().setCookie(COOKIE_URL, cookie);
             } else {
                 XWalkCookieManager cookieManager = new XWalkCookieManager();
