@@ -32,8 +32,10 @@ public class ForceOldUIHandler extends StateHandler {
 
         try {
             if (mContext instanceof SmartYouTubeTV1080Activity || mContext instanceof SmartYouTubeTV4K) {
+                Log.d(TAG, "Setting WebView cookie");
                 CookieManager.getInstance().setCookie(COOKIE_URL, cookie);
             } else {
+                Log.d(TAG, "Setting XWalk cookie");
                 XWalkCookieManager cookieManager = new XWalkCookieManager();
                 cookieManager.setCookie(COOKIE_URL, cookie);
             }
