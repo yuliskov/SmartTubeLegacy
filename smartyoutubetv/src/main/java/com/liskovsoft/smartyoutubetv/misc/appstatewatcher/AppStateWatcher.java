@@ -41,7 +41,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new DisplayModeSaverHandler(context));
 
         // update recommendations
-        //addHandler(new ATVChannelsHandler(context));
+        addHandler(new ATVChannelsHandler(context));
 
         // force new UI
         addHandler(new ForceOldUIHandler(context));
