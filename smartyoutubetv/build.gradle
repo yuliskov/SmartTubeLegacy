@@ -154,7 +154,7 @@ dependencies {
     // Common routines
     testImplementation project(path: ':sharedtests')
     implementation project(path: ':sharedutils')
-    origImplementation project(path: ':leanbackassistant')
+    implementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 
