@@ -44,7 +44,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new ATVChannelsHandler(context));
 
         // force new UI
-        addHandler(new ForceOldUIHandler(context));
+        //addHandler(new ForceOldUIHandler(context));
     }
 
 }
