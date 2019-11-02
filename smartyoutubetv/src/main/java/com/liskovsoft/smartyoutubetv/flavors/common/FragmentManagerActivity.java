@@ -402,22 +402,20 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         if (VERSION.SDK_INT >= 16) {
             Log.d(TAG, "Checking memory. Avail: " + memory.availMem + ". Threshold: " + memory.threshold + ". Total: " + memory.totalMem + ". Low: " + memory.lowMemory);
         }
-
-        Log.flush();
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
 
-        Log.d(TAG, "onTrimMemory");
-
-        if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
-            Log.e(TAG, "Warning: app will be killed soon");
-            onMemoryCritical();
-        }
+        Log.d(TAG, "onTrimMemory: " + level);
 
         checkMemory();
+
+        //if (level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE) {
+        //    Log.e(TAG, "Warning: app will be killed soon");
+        //    onMemoryCritical();
+        //}
     }
 
     @Override
