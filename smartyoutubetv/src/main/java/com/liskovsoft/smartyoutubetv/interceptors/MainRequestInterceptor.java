@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.interceptors.scripts.LegacyMainScriptManagerInterceptor;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mInterceptors = new ArrayList<>();
         //mInterceptors.add(new ContentSecurityPolicyInterceptor(context));
         mInterceptors.add(new PlaybackStatsInterceptor(context));
-        mInterceptors.add(new MainScriptManagerInterceptor(context));
+        mInterceptors.add(new LegacyMainScriptManagerInterceptor(context));
         mInterceptors.add(new OpenExternalPlayerInterceptor(context));
         mInterceptors.add(new AdAwayInterceptor(context));
     }

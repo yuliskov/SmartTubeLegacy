@@ -1,9 +1,10 @@
-package com.liskovsoft.smartyoutubetv.interceptors;
+package com.liskovsoft.smartyoutubetv.interceptors.scripts;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 import okhttp3.Response;
