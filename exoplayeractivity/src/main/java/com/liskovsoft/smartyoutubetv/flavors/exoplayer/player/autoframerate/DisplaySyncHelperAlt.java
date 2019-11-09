@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.app.Activity;
 import android.view.Window;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 
@@ -10,6 +9,7 @@ import java.util.HashMap;
 
 class DisplaySyncHelperAlt extends DisplaySyncHelper {
     private static final String TAG = DisplaySyncHelperAlt.class.getSimpleName();
+    private static final float LAGGING_UI_THRESHOLD = 30;
     private int mVideoWidth;
 
     public DisplaySyncHelperAlt(Activity context) {
@@ -47,14 +47,12 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
     public boolean restoreOriginalState(Window window) {
         Mode currentMode = getUhdHelper().getCurrentMode();
 
-        if (currentMode != null && (currentMode.getPhysicalHeight() > 1080 || currentMode.getRefreshRate() < 40)) {
-            if (mOriginalMode != null) {
-                String msg =
-                        "Restoring original state: rate: " + mOriginalMode.getRefreshRate() +
-                                ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight();
-                Log.d(TAG, msg);
-                super.restoreOriginalState(window);
-            }
+        if (currentMode != null && mOriginalMode != null && (currentMode.getPhysicalHeight() != mOriginalMode.getPhysicalHeight() || currentMode.getRefreshRate() < LAGGING_UI_THRESHOLD)) {
+            String msg =
+                    "Restoring original state: rate: " + mOriginalMode.getRefreshRate() +
+                            ", resolution: " + mOriginalMode.getPhysicalWidth() + "x" + mOriginalMode.getPhysicalHeight();
+            Log.d(TAG, msg);
+            super.restoreOriginalState(window);
         }
 
         return false;
