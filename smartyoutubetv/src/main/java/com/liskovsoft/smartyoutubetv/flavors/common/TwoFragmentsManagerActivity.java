@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager.LayoutParams;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -43,6 +44,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         initPlayerFragment();
         // set active but don't move top so loading won't be overlapped
         super.setActiveFragment(mBrowserFragment, true);
+
+        Log.d(TAG, "Enabling screensaver...");
+        getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     protected abstract BrowserFragment getBrowserFragment();

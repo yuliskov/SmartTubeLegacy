@@ -7,9 +7,10 @@ console.log("Scripts::Running script resolution_fix.js");
 function ResolutionFixAddon() {
     this.run = function() {
         var $this = this;
-        setTimeout(function() {
+        // wait till resolution become stable
+        EventUtils.onLoad(function() {
             $this.makeCurrentResolutionPermanent();
-        }, 3000);
+        });
     };
 
     this.makeCurrentResolutionPermanent = function() {

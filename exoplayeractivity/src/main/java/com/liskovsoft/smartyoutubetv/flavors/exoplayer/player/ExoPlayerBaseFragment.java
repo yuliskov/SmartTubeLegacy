@@ -189,11 +189,21 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 for (PlayerEventListener listener : mListeners) {
                     listener.onPlayerClosed();
                 }
+
+                if (mSimpleExoPlayerView != null) {
+                    mSimpleExoPlayerView.setKeepScreenOn(false);
+                }
+
                 break;
             case ExoPlayerBaseFragment.TRACK_ENDED:
                 for (PlayerEventListener listener : mListeners) {
                     listener.onTrackEnded();
                 }
+
+                if (mSimpleExoPlayerView != null) {
+                    mSimpleExoPlayerView.setKeepScreenOn(false);
+                }
+
                 break;
         }
 
