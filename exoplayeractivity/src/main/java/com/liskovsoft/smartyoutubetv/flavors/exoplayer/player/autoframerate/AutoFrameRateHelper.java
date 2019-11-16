@@ -4,6 +4,7 @@ import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -76,6 +77,14 @@ class AutoFrameRateHelper {
         mSyncHelper.saveOriginalState();
     }
 
+    public void applyModeChangeFix() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.applyModeChangeFix(mContext.getWindow());
+    }
+
     public void restoreOriginalState() {
         if (!getEnabled()) {
             Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
@@ -105,7 +114,7 @@ class AutoFrameRateHelper {
 
         mSyncHelper.restoreCurrentState(mContext.getWindow());
     }
-    
+
     public void setPlayer(SimpleExoPlayer player) {
         mPlayer = player;
     }

@@ -23,6 +23,7 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         }
 
         mAutoFrameRateHelper.saveOriginalState();
+        mAutoFrameRateHelper.applyModeChangeFix();
         mAutoFrameRateHelper.setListener(this);
     }
 

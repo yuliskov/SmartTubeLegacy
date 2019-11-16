@@ -274,24 +274,27 @@ class DisplaySyncHelper implements UhdHelperListener {
 
             Log.i(TAG, "Need resolution switch: " + needResolutionSwitch);
 
-            DisplayHolder.Mode mode = mUhdHelper.getCurrentMode();
+            DisplayHolder.Mode currentMode = mUhdHelper.getCurrentMode();
 
             if (!needResolutionSwitch) {
-                resultModes = filterSameResolutionModes(modes, mode);
+                resultModes = filterSameResolutionModes(modes, currentMode);
             }
 
             DisplayHolder.Mode closerMode = findCloserMode(resultModes, videoFramerate);
 
             if (closerMode == null) {
-                Log.i(TAG, "Could not find closer refresh rate for " + videoFramerate + "fps");
+                String msg = "Could not find closer refresh rate for " + videoFramerate + "fps";
+                Log.i(TAG, msg);
+                CommonApplication.getPreferences().setCurrentDisplayMode(String.format("%s (%s)", UhdHelper.formatMode(currentMode), msg));
                 return false;
             }
 
             Log.i(TAG, "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
-            Log.i(TAG, "Current mode: " + mode);
+            Log.i(TAG, "Current mode: " + currentMode);
 
-            if (closerMode.equals(mode)) {
+            if (closerMode.equals(currentMode)) {
                 Log.i(TAG, "Do not need to change mode.");
+                CommonApplication.getPreferences().setCurrentDisplayMode(UhdHelper.formatMode(currentMode));
                 return false;
             }
             
@@ -346,6 +349,7 @@ class DisplaySyncHelper implements UhdHelperListener {
             switch (state) {
                 case STATE_ORIGINAL:
                     mOriginalMode = mode;
+                    CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mode));
                     break;
                 case STATE_CURRENT:
                     mCurrentMode = mode;
@@ -391,5 +395,17 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     public void setListener(AutoFrameRateListener listener) {
         mListener = listener;
+    }
+
+    /**
+     * Set default mode to 1920x1080@50<br/>
+     * Because switch not work with some devices running at 60HZ. Like: UGOOS
+     */
+    public void applyModeChangeFix(Window window) {
+        syncDisplayMode(window, 1080, 50);
+
+        if (mNewMode != null) {
+            CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mNewMode));
+        }
     }
 }

@@ -37,8 +37,6 @@ public class AppStateWatcher extends AppStateWatcherBase {
 
         addHandler(new BackupAndRestoreHandler(context));
 
-        addHandler(new DisplayModeSaverHandler(context));
-
         // update recommendations
         addHandler(new ATVChannelsHandler(context));
     }
