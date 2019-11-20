@@ -82,4 +82,5 @@
     </string>
     <string name="app_crashed">Сбой в работе программы.\nСкачать обновленную версию?</string>
     <string name="tweak_use_new_ui">Перейти на новый интерфейс</string>
+    <string name="tweak_ugoos_afr_fix">Исправление фреймрейта на UGOOS 50Гц</string>
 </resources>

@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -23,7 +24,9 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         }
 
         mAutoFrameRateHelper.saveOriginalState();
-        mAutoFrameRateHelper.applyModeChangeFix();
+        if (CommonApplication.getPreferences().getUgoos50HZFix()) {
+            mAutoFrameRateHelper.applyModeChangeFix();
+        }
         mAutoFrameRateHelper.setListener(this);
     }
 

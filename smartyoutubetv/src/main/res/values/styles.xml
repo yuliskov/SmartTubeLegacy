@@ -6,7 +6,7 @@
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="android:windowBackground">@drawable/default_bg</item>
+        <item name="android:windowBackground">@color/youtube_background</item>
         <!--<item name="android:alertDialogTheme">@style/AppDialog</item>-->
 
         <!-- completely disable button sounds -->

@@ -3,7 +3,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Build.VERSION;
+import android.os.Handler;
 import android.view.Window;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -402,10 +404,23 @@ class DisplaySyncHelper implements UhdHelperListener {
      * Because switch not work with some devices running at 60HZ. Like: UGOOS
      */
     public void applyModeChangeFix(Window window) {
-        syncDisplayMode(window, 1080, 50);
+        if (mOriginalMode != null) {
+            if (mOriginalMode.getRefreshRate() > 55) {
+                setDefaultMode(window, mOriginalMode.getPhysicalWidth(), 50);
+            } else {
+                setDefaultMode(window, mOriginalMode.getPhysicalWidth(), 60);
+            }
+        } else {
+            setDefaultMode(window, 1080, 50);
+        }
+    }
+
+    private void setDefaultMode(Window window, int width, float frameRate) {
+        syncDisplayMode(window, width, frameRate);
 
         if (mNewMode != null) {
-            CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mNewMode));
+            mOriginalMode = mNewMode;
+            CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mOriginalMode));
         }
     }
 }

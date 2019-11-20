@@ -96,4 +96,5 @@
     </string>
     <string name="app_crashed">App crashed.\nCheck for the newer version?</string>
     <string name="tweak_use_new_ui">Use new UI</string>
+    <string name="tweak_ugoos_afr_fix">UGOOS 50HZ fix</string>
 </resources>

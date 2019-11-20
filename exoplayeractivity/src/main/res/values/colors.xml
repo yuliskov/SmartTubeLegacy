@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="youtube_background">#ff2f2f2f</color>
+    <color name="youtube_background">#282828</color>
     <color name="white">#ffffff</color>
     <color name="white_50">#7dffffff</color>
     <color name="white_70">#b2ffffff</color>
