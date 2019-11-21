@@ -28,6 +28,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
     private boolean mIsStandAlone;
+    private long mPauseTime;
+    private long mResumeTime;
+    private long mNewIntentTime;
+    private static final long INSTANT_SEARCH_TIME = 30_000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,7 +237,28 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
+    protected void onPause() {
+        Log.d(TAG, "Pausing...");
+        mPauseTime = System.currentTimeMillis();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "Resuming...");
+        mResumeTime = System.currentTimeMillis();
+
+        checkStandAlone();
+
+        super.onResume();
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "New intent coming...");
+        mNewIntentTime = System.currentTimeMillis();
+
         saveStandAlone(intent);
 
         super.onNewIntent(intent);
@@ -275,6 +300,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private void saveStandAlone(Intent intent) {
         if (intent != null) {
             mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+        }
+    }
+
+    private void checkStandAlone() {
+        boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
+        boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
+        if (isChained && isInstantSwitch) {
+            mIsStandAlone = false;
         }
     }
 }

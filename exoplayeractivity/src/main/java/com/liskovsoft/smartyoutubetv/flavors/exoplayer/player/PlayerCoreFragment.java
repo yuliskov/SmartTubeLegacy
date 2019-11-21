@@ -97,7 +97,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
     public static final int RENDERER_INDEX_SUBTITLE = 2;
-    private static final int UI_SHOW_TIMEOUT_MS = 2_000;
+    private static final int UI_SHOW_TIMEOUT_MS = 5_000;
 
     protected EventLogger mEventLogger;
 
