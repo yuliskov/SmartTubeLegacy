@@ -239,7 +239,16 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.onNewIntent(intent);
 
         if (mBrowserFragment != null) {
+            closePlayer();
             mBrowserFragment.onNewIntent(intent);
+        }
+    }
+
+    private void closePlayer() {
+        if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
+            Intent intent = new Intent();
+            intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+            onPlayerAction(intent);
         }
     }
 
