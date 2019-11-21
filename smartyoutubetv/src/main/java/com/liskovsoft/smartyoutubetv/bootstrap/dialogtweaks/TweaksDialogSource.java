@@ -11,6 +11,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialo
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceVP9DialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.GlobalAfrFixDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HideBootTipsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OkButtonDialogItem;
@@ -36,7 +37,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mContext = context;
 
         mItems = new ArrayList<>();
-        mItems.add(new UseNewUIDialogItem(mContext));
+        //mItems.add(new UseNewUIDialogItem(mContext));
         mItems.add(new SaveSelectionDialogItem(mContext));
         mItems.add(new UpdateCheckDialogItem(mContext));
         mItems.add(new BetaUpdateCheckDialogItem(mContext));
@@ -49,7 +50,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
         //mItems.add(new GlobalAfrFixDialogItem(mContext));
-        mItems.add(new UseExternalPlayerDialogItem(mContext));
+        //mItems.add(new UseExternalPlayerDialogItem(mContext));
         mItems.add(new Ugoos50HZFixDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
@@ -57,6 +58,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ForceAVCDialogItem(mContext));
         mItems.add(new ForceVP9DialogItem(mContext));
         mItems.add(new AltPlayerMappingDialogItem(mContext));
+        mItems.add(new HideBootTipsDialogItem(mContext));
     }
 
     @Override

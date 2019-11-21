@@ -39,6 +39,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String DISABLE_AMAZON_BRIDGE = "disable_amazon_bridge";
     private static final String UGOOS_50HZ_FIX = "UGOOS_50HZ_FIX";
     private static final String USE_NEW_UI = "use_new_ui";
+    private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -313,11 +314,19 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(USE_NEW_UI, useNewUI);
     }
 
+    public boolean getUgoos50HZFix() {
+        return getBoolean(UGOOS_50HZ_FIX, false);
+    }
+
     public void setUgoos50HZFix(boolean checked) {
         putBoolean(UGOOS_50HZ_FIX, checked);
     }
 
-    public boolean getUgoos50HZFix() {
-        return getBoolean(UGOOS_50HZ_FIX, false);
+    public boolean getHideBootTips() {
+        return getBoolean(HIDE_BOOT_TIPS, false);
+    }
+
+    public void setHideBootTips(boolean checked) {
+        putBoolean(HIDE_BOOT_TIPS, checked);
     }
 }
