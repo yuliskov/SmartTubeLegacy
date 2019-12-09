@@ -8,10 +8,11 @@ buildscript {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         //classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
 
         // NOTE: Do not place your application dependencies here; they belong

@@ -9,7 +9,9 @@
         com.google.android.exoplayer2.source.dash,
         com.google.android.exoplayer2.source.hls,
         com.google.android.exoplayer2.source.smoothstreaming,
-        com.google.android.exoplayer2.core"/>
+        com.google.android.exoplayer2.core,
+        com.github.rubensousa.previewseekbar,
+        com.github.rubensousa.previewseekbar.exoplayer"/>
 
     <application>
         <!-- NOTE: exoplayer specific section -->

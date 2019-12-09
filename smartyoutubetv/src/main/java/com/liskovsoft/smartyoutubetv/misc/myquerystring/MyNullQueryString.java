@@ -1,6 +1,6 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 public class MyNullQueryString implements MyQueryString {
     private final String mUrl;
@@ -48,7 +48,7 @@ public class MyNullQueryString implements MyQueryString {
         return false;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String toString() {
         return mUrl;

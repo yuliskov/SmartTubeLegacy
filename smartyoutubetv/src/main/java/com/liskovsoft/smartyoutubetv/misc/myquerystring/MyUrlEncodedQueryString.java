@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
 import android.net.Uri;
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -66,7 +66,7 @@ public class MyUrlEncodedQueryString implements MyQueryString {
         set(key, String.valueOf(value));
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String toString() {
         String path = mParsedUri.getPath();

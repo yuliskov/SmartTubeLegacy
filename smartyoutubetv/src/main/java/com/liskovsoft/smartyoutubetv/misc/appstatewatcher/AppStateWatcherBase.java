@@ -18,6 +18,11 @@ public class AppStateWatcherBase {
 
     public void run() {
         SmartPreferences prefs = CommonApplication.getPreferences();
+
+        if (prefs == null) {
+            return;
+        }
+
         int code = prefs.getPreviousAppVersionCode();
 
         for (StateHandler handler : mHandlers) {

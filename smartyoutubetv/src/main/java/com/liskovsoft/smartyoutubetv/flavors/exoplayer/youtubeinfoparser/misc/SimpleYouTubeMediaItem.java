@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
+import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
         @SerializedName("end")
         String end;
 
-        @NotNull
+        @NonNull
         @Override
         public String toString() {
             if (start == null || end == null) {

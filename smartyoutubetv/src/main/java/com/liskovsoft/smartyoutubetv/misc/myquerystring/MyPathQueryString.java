@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +82,7 @@ public class MyPathQueryString implements MyQueryString {
         mUrl = mUrl.replaceAll(String.format(template, key), "");
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String toString() {
         return mUrl;
