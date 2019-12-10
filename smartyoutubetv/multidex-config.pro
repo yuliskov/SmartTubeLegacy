@@ -1,0 +1,2 @@
+-keep class org.chromium.base.PathUtils
+-keep class org.chromium.base.PathUtils.Holder

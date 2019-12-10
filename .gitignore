@@ -1,3 +1,4 @@
+*.hprof
 /smartyoutubetv/release
 log.txt
 /android.keystore

@@ -59,7 +59,7 @@ buildscript {
         amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.9.6' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.9.6' // https://bintray.com/google/exoplayer/exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.0.0-beta02' // https://github.com/algolia/voice-overlay-android
-        multiDexVersion = 'com.android.support:multidex:1.0.2' // crashlytics fix on Android 4.4
+        multiDexVersion = 'com.android.support:multidex:1.0.3' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
         openPgpVersion = 'org.sufficientlysecure:openpgp-api:9.0'
         mediaCompatVersion = 'com.android.support:support-media-compat:28.0.0'
@@ -93,6 +93,11 @@ allprojects {
         // add lib from github (e.g. exoplayer-amazon-port)
         // should be the last in the list
         maven { url 'https://jitpack.io' }
+
+        // *.aar custom libs
+        //flatDir {
+        //    dirs 'C:\\Users\\Yuriy\\Desktop\\me\\SmartYouTubeTV_proj\\SmartYouTubeTV\\browser\\libs'
+        //}
     }
 
     gradle.projectsEvaluated {

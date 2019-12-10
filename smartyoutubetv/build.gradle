@@ -37,11 +37,15 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 820
-        versionName "6.17.240"
-        multiDexEnabled = true
+        versionCode 823
+        versionName "6.17.243"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
+
+        multiDexEnabled = true
+        // More info: http://myhexaville.com/2017/03/10/android-multidex/
+        //multiDexKeepFile file('multidex-config.txt')
+        //multiDexKeepProguard file('multidex-config.pro')
     }
 
     //signingConfigs {
@@ -106,6 +110,11 @@ android {
         Vbolshoetv {
             // vermax uhd250x/300x 1GB ram
             matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+        }
+        Vbolshoetv2 {
+            // NV501
+            matchingFallbacks = ['full']
             versionCode 9400 + defaultConfig.versionCode
         }
         Vfakeyoutube {

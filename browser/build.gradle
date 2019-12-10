@@ -17,7 +17,6 @@ android {
         versionName "6.4.7"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -70,7 +69,11 @@ dependencies {
 
     // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
     liteApi project.properties.xwalkSharedLibraryVersion
-    fullApi(project.properties.xwalkCoreLibraryVersion, {
-        exclude group: 'com.android.support', module: 'support-v4'
-    })
+    fullApi project.properties.xwalkCoreLibraryVersion
+
+    //liteApi project(':xwalk_shared_library-23.53.589.4')
+    //fullApi project(':xwalk_core_library-23.53.589.4-arm')
+
+    //liteApi(name: 'xwalk_shared_library-23.53.589.4', ext: 'aar')
+    //fullApi(name: 'xwalk_core_library-23.53.589.4-arm', ext: 'aar')
 }
