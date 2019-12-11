@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 823
-        versionName "6.17.243"
+        versionCode 824
+        versionName "6.17.244"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -116,6 +116,9 @@ android {
             // NV501
             matchingFallbacks = ['full']
             versionCode 9400 + defaultConfig.versionCode
+            ndk {
+                abiFilters "armeabi-v7a", ""
+            }
         }
         Vfakeyoutube {
             matchingFallbacks = ['lite']

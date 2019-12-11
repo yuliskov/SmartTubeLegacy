@@ -96,7 +96,7 @@ allprojects {
 
         // *.aar custom libs
         //flatDir {
-        //    dirs 'C:\\Users\\Yuriy\\Desktop\\me\\SmartYouTubeTV_proj\\SmartYouTubeTV\\browser\\libs'
+        //    dirs 'libs'
         //}
     }
 
