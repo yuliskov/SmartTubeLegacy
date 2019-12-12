@@ -1,6 +1,6 @@
 /* Font fix on the welcome screen */
-#overlay-header .title,
-#overlay-header .subtitle {
+.who-fullscreen-zero .overlay-partials-header .title,
+.who-fullscreen-zero .overlay-partials-header .subtitle {
     font-size: 2rem !important;
 }
 

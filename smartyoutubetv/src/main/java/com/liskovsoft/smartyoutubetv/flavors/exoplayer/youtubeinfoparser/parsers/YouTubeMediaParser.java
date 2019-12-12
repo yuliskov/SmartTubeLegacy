@@ -270,7 +270,7 @@ public class YouTubeMediaParser {
         // NOTE: parser not working properly here, use url
         // NOTE: raw live format could crash exoplayer
 
-        // parser don't work as expected on this moment
+        //// parser don't work as expected on this moment
         //SimpleMPDParser parser = new SimpleMPDParser(dashContent);
         //mNewMediaItems = parser.parse();
     }

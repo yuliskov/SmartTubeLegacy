@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -21,6 +22,7 @@ public class KeyHandler {
     private Boolean mEnableOKPause;
     private HashMap<Integer, Runnable> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
+    private boolean mAutoShowPlayerUI;
     private final Runnable mOnPlay = () -> {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(true);
@@ -32,7 +34,7 @@ public class KeyHandler {
     };
     private final Runnable mOnToggle = () -> {
         if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().setControllerAutoShow(true);
+            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
         }
 
         if (mFragment.getPlayer() != null) {
@@ -41,7 +43,7 @@ public class KeyHandler {
     };
     private final Runnable mOnPause = () -> {
         if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().setControllerAutoShow(true);
+            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
         }
 
         if (mFragment.getPlayer() != null) {
@@ -49,21 +51,21 @@ public class KeyHandler {
         }
     };
     private final Runnable mOnFastForward = () -> {
+        if (mFragment.getExoPlayerView() != null && mAutoShowPlayerUI) {
+            mFragment.getExoPlayerView().showController();
+        }
+
         if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
             mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS);
         }
-
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().hideController();
-        }
     };
     private final Runnable mOnRewind = () -> {
-        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
-            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS);
+        if (mFragment.getExoPlayerView() != null && mAutoShowPlayerUI) {
+            mFragment.getExoPlayerView().showController();
         }
 
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().hideController();
+        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
+            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS);
         }
     };
     private final Runnable mOnStop = () -> mFragment.onBackPressed();
@@ -78,6 +80,7 @@ public class KeyHandler {
         mFragment = playerFragment;
         mTranslator = new PlayerKeyTranslator();
         mAdditionalMapping = additionalMapping;
+        mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
 
         initActionMapping();
     }
@@ -99,11 +102,8 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
-
-
-        // use default behavior from PlayerControlView
-        //mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnFastForward);
-        //mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnRewind);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnFastForward);
+        mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnRewind);
     }
 
     public boolean handle(KeyEvent event) {

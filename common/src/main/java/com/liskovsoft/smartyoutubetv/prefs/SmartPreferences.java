@@ -40,6 +40,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String UGOOS_50HZ_FIX = "UGOOS_50HZ_FIX";
     private static final String USE_NEW_UI = "use_new_ui";
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
+    private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -328,5 +329,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setHideBootTips(boolean checked) {
         putBoolean(HIDE_BOOT_TIPS, checked);
+    }
+
+    public boolean getAutoShowPlayerUI() {
+        return getBoolean(AUTO_SHOW_PLAYER_UI, true);
+    }
+
+    public void setAutoShowPlayerUI(boolean checked) {
+        putBoolean(AUTO_SHOW_PLAYER_UI, checked);
     }
 }

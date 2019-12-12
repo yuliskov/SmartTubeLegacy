@@ -98,4 +98,5 @@
     <string name="tweak_use_new_ui">Use new UI</string>
     <string name="tweak_ugoos_afr_fix">UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Hide boot tips</string>
+    <string name="tweak_auto_show_player_ui">Auto show player UI</string>
 </resources>

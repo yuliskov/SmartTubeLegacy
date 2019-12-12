@@ -1,30 +1,25 @@
 package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 
 import android.content.Context;
+import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.MultiDialogSource;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AltPlayerMappingDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EndCardsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceVP9DialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.GlobalAfrFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HideBootTipsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OkButtonDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenSubscriptionsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenWatchLaterDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UnplayableVideoFixDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
-import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.MultiDialogSource;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseNewUIDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +54,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ForceVP9DialogItem(mContext));
         mItems.add(new AltPlayerMappingDialogItem(mContext));
         mItems.add(new HideBootTipsDialogItem(mContext));
+        mItems.add(new AutoShowPlayerUIDialogItem(mContext));
     }
 
     @Override
