@@ -3,12 +3,17 @@ package com.liskovsoft.browser.addons;
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.webkit.WebSettings;
 import com.liskovsoft.browser.BrowserWebView;
+import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.Map;
 
 public class HeadersBrowserWebView extends BrowserWebView {
+    private static final String TAG = HeadersBrowserWebView.class.getSimpleName();
     protected Map<String, String> mHeaders;
     private WebSettings mSettings;
 
@@ -52,5 +57,11 @@ public class HeadersBrowserWebView extends BrowserWebView {
 
         mSettings = new HeadersWebSettingsDecorator(mHeaders, super.getSettings());
         return mSettings;
+    }
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        Log.d(TAG, "WebView: Soft keyboard has appeared on the screen");
+        return super.onCreateInputConnection(outAttrs);
     }
 }

@@ -113,7 +113,7 @@ android {
             versionCode 9400 + defaultConfig.versionCode
         }
         Vbolshoetv2 {
-            // NV501
+            // Eltex NV-501
             matchingFallbacks = ['full']
             versionCode 9400 + defaultConfig.versionCode
             ndk {
@@ -124,6 +124,24 @@ android {
             matchingFallbacks = ['lite']
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.google.android.youtube.tv"
+        }
+        Vnovotelecom {
+            // Eltex NV-310 (MIPS!!!)
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.novotelecom.smartyoutubetv"
+        }
+        Vnovotelecom2 {
+            // Eltex NV-310 (MIPS!!!)
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.novotelecom.smartyoutubetv"
+        }
+        Vistargroups {
+            // Istargroups.com
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.istargroups.smartyoutubetv"
         }
     }
 
@@ -166,7 +184,8 @@ dependencies {
     // Common routines
     testImplementation project(path: ':sharedtests')
     implementation project(path: ':sharedutils')
-    implementation project(path: ':leanbackassistant')
+    // ATV INSTALL_FAILED_CONFLICTING_PROVIDER fix
+    origImplementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 

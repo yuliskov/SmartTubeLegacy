@@ -58,7 +58,8 @@ var YouTubeSelectors = {
     SEARCH_KEYBOARD_GRID: '#keyboard-grid',
     SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
     SEARCH_RESULTS_ROW: '#search-results',
-    SURFACE_AREA: ['#zylon-surface', '#surface'],
+    // TODO: new item
+    SURFACE_AREA: ['#browse', '#zylon-surface', '#surface'],
     SURFACE_AREA_CONTENT: '#surface-content',
     MAIN_LOADER: '#loader',
     BUTTON_BACK: '#legend .back',

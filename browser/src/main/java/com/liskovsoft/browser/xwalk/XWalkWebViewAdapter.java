@@ -5,15 +5,20 @@ import android.graphics.Paint;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.webkit.*;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import com.liskovsoft.browser.addons.HeadersWebSettingsDecorator;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import org.xwalk.core.XWalkView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class XWalkWebViewAdapter extends HeadersBrowserWebView {
+    private static final String TAG = XWalkWebViewAdapter.class.getSimpleName();
     private final XWalkView mXWalkView;
     private final XWalkUIClientAdapter mXWalkUiClient;
     private XWalkResourceClientAdapter mResourceClient;
@@ -187,5 +192,17 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     public void clearCache(boolean includeDiskFiles) {
         mXWalkView.clearCache(includeDiskFiles);
         super.clearCache(includeDiskFiles);
+    }
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        Log.d(TAG, "XWalkView: Soft keyboard has appeared on the screen");
+        return mXWalkView.onCreateInputConnection(outAttrs);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.d(TAG, "XWalkView: Dispatching key " + event);
+        return mXWalkView.dispatchKeyEvent(event);
     }
 }

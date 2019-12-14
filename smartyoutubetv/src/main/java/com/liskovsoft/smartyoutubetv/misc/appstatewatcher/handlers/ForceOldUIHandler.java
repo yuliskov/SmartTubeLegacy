@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.webkit.CookieManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -33,10 +34,12 @@ public class ForceOldUIHandler extends StateHandler {
                 Log.d(TAG, "Setting WebView cookie");
                 CookieManager.getInstance().setCookie(COOKIE_URL, cookie);
             } else {
-                // NOTE: early initialization breaks embedding of XWalk core
-                //Log.d(TAG, "Setting XWalk cookie");
-                //XWalkCookieManager cookieManager = new XWalkCookieManager();
-                //cookieManager.setCookie(COOKIE_URL, cookie);
+                // NOTE: early initialization could break embedding of XWalk core
+                new Handler(mContext.getMainLooper()).postDelayed(() -> {
+                    Log.d(TAG, "Setting XWalk cookie");
+                    XWalkCookieManager cookieManager = new XWalkCookieManager();
+                    cookieManager.setCookie(COOKIE_URL, cookie);
+                }, 1000);
             }
         } catch (Exception e) {
             // WebView not installed?
