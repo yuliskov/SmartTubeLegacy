@@ -217,6 +217,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         clearPendingEvents();
 
         boolean closePlayer =
+                intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
                 intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false);

@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 825
-        versionName "6.17.245"
+        versionCode 829
+        versionName "6.17.249"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -87,11 +87,11 @@ android {
         orig {
             matchingFallbacks = ['lite']
         }
-        V720 {
+        Vlitemain {
             matchingFallbacks = ['lite']
             versionCode 9999 // disable auto-update
         }
-        V1080 {
+        Vlitealt {
             matchingFallbacks = ['lite']
             versionCode 9999 // disable auto-update
         }
@@ -103,15 +103,15 @@ android {
             matchingFallbacks = ['lite']
             applicationIdSuffix ".live"
         }
-        Vadnotam {
-            matchingFallbacks = ['lite']
-            applicationId "com.adnotam.smartyoutubetv"
-        }
-        Vbolshoetv {
-            // vermax uhd250x/300x 1GB ram
-            matchingFallbacks = ['lite']
-            versionCode 9400 + defaultConfig.versionCode
-        }
+        // Vadnotam {
+        //    matchingFallbacks = ['lite']
+        //    applicationId "com.adnotam.smartyoutubetv"
+        // }
+        // Vbolshoetv {
+        //    // vermax uhd250x/300x 1GB ram
+        //    matchingFallbacks = ['lite']
+        //    versionCode 9400 + defaultConfig.versionCode
+        // }
         Vbolshoetv2 {
             // Eltex NV-501
             matchingFallbacks = ['full']
@@ -120,23 +120,23 @@ android {
                 abiFilters "armeabi-v7a", ""
             }
         }
-        Vfakeyoutube {
-            matchingFallbacks = ['lite']
-            versionCode 9400 + defaultConfig.versionCode
-            applicationId "com.google.android.youtube.tv"
-        }
+        // Vfakeyoutube {
+        //    matchingFallbacks = ['lite']
+        //    versionCode 9400 + defaultConfig.versionCode
+        //    applicationId "com.google.android.youtube.tv"
+        // }
         Vnovotelecom {
             // Eltex NV-310 (MIPS!!!)
             matchingFallbacks = ['lite']
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.novotelecom.smartyoutubetv"
         }
-        Vnovotelecom2 {
-            // Eltex NV-310 (MIPS!!!)
-            matchingFallbacks = ['lite']
-            versionCode 9400 + defaultConfig.versionCode
-            applicationId "com.novotelecom.smartyoutubetv"
-        }
+        // Vnovotelecom2 {
+        //    // Eltex NV-310 (MIPS!!!)
+        //    matchingFallbacks = ['lite']
+        //    versionCode 9400 + defaultConfig.versionCode
+        //    applicationId "com.novotelecom.smartyoutubetv"
+        // }
         Vistargroups {
             // Istargroups.com
             matchingFallbacks = ['lite']
