@@ -65,7 +65,7 @@ dependencies {
 
     api project.properties.exoplayerVersion
 
-    //api project.properties.amazonExoplayerVersion
+    // api project.properties.amazonExoplayerVersion
 
     implementation project.properties.previewSeekBarDevVersion
     implementation project.properties.previewSeekBarExoDevVersion

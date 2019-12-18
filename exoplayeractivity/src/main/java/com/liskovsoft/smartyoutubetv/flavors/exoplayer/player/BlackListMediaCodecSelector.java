@@ -16,10 +16,10 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
     final static String[] BLACKLISTEDCODECS = {"OMX.google.h264.decoder", "OMX.Nvidia.vp9.decoder", "OMX.google.vp9.decoder", "OMX.MTK.VIDEO.DECODER.VP9", "OMX.amlogic.vp9.decoder"};
 
     @Override
-    public List<MediaCodecInfo> getDecoderInfos(String mimeType, boolean requiresSecureDecoder) throws MediaCodecUtil.DecoderQueryException {
+    public List<MediaCodecInfo> getDecoderInfos(String mimeType, boolean requiresSecureDecoder, boolean requiresTunnelingDecoder) throws MediaCodecUtil.DecoderQueryException {
 
         List<MediaCodecInfo> codecInfos = MediaCodecUtil.getDecoderInfos(
-                mimeType, requiresSecureDecoder);
+                mimeType, requiresSecureDecoder, requiresTunnelingDecoder);
         // filter codecs based on blacklist template
         List<MediaCodecInfo> filteredCodecInfos = new ArrayList<>();
         for (MediaCodecInfo codecInfo: codecInfos) {

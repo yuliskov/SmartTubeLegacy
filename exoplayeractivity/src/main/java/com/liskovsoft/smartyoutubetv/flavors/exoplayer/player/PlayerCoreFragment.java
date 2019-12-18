@@ -623,17 +623,21 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             if (cause instanceof DecoderInitializationException) {
                 // Special case for decoder initialization failures.
                 DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
-                if (decoderInitializationException.decoderName == null) {
-                    if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
-                        errorString = getString(R.string.error_querying_decoders);
-                    } else if (decoderInitializationException.secureDecoderRequired) {
-                        errorString = getString(R.string.error_no_secure_decoder, decoderInitializationException.mimeType);
-                    } else {
-                        errorString = getString(R.string.error_no_decoder, decoderInitializationException.mimeType);
-                    }
-                } else {
-                    errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
-                }
+
+                errorString = decoderInitializationException.diagnosticInfo;
+
+                // Ver. 2.9.6
+                //if (decoderInitializationException.decoderName == null) {
+                //    if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
+                //        errorString = getString(R.string.error_querying_decoders);
+                //    } else if (decoderInitializationException.secureDecoderRequired) {
+                //        errorString = getString(R.string.error_no_secure_decoder, decoderInitializationException.mimeType);
+                //    } else {
+                //        errorString = getString(R.string.error_no_decoder, decoderInitializationException.mimeType);
+                //    }
+                //} else {
+                //    errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
+                //}
             }
 
             isCodecError = true;

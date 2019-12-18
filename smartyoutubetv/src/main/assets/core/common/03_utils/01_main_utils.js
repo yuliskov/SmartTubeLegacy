@@ -26,7 +26,7 @@ var Utils = {
     },
 
     isNodeList: function(obj) {
-        return NodeList.prototype.isPrototypeOf(obj);
+        return NodeList && NodeList.prototype.isPrototypeOf(obj);
     },
 
     isString: function(obj) {

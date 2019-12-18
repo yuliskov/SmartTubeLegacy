@@ -22,28 +22,11 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
         mStateManager = new PlayerStateManagerBase(context);
     }
 
-    // Ver 2.9.6
-    @Nullable
-    @Override
-    protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-                                              Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
-
-        // Restore state before video starts playing
-        boolean isAuto = !params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups);
-
-        if (isAuto && !mAlreadyRestored) {
-            mAlreadyRestored = true;
-            restoreVideoTrack(groups);
-        }
-
-        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
-    }
-
-    // Ver 2.10.4
+    //// Ver 2.9.6
     //@Nullable
     //@Override
-    //protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-    //                                          Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
+    //protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
+    //                                          Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
     //
     //    // Restore state before video starts playing
     //    boolean isAuto = !params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups);
@@ -53,8 +36,25 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
     //        restoreVideoTrack(groups);
     //    }
     //
-    //    return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
+    //    return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
     //}
+
+    // Ver 2.10.4
+    @Nullable
+    @Override
+    protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
+                                              Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
+
+        // Restore state before video starts playing
+        boolean isAuto = !params.hasSelectionOverride(ExoPlayerFragment.RENDERER_INDEX_VIDEO, groups);
+
+        if (isAuto && !mAlreadyRestored) {
+            mAlreadyRestored = true;
+            restoreVideoTrack(groups);
+        }
+
+        return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
+    }
 
     private void restoreVideoTrack(TrackGroupArray groups) {
         MyFormat format = mStateManager.findPreferredVideoFormat(groups);

@@ -256,12 +256,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d(TAG, "New intent coming...");
+        super.onNewIntent(intent);
+
+        if (intent != null && Intent.ACTION_MAIN.equals(intent.getAction())) {
+            Log.d(TAG, "Ignoring new intent... " + intent);
+            return;
+        }
+
+        Log.d(TAG, "New intent coming... " + intent);
         mNewIntentTime = System.currentTimeMillis();
 
         saveStandAlone(intent);
-
-        super.onNewIntent(intent);
 
         if (mBrowserFragment != null) {
             closePlayer();

@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionEventListener;
 import com.google.android.exoplayer2.metadata.Metadata;
+import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
 import com.google.android.exoplayer2.metadata.emsg.EventMessage;
 import com.google.android.exoplayer2.metadata.id3.ApicFrame;
@@ -59,7 +60,7 @@ import java.util.Locale;
  * Logs player events using {@link Log}.
  */
 /* package */ final class EventLogger implements ExoPlayer.EventListener, AudioRendererEventListener, VideoRendererEventListener,
-        AdaptiveMediaSourceEventListener, ExtractorMediaSource.EventListener, DefaultDrmSessionEventListener, MetadataRenderer.Output {
+        AdaptiveMediaSourceEventListener, ExtractorMediaSource.EventListener, DefaultDrmSessionEventListener, MetadataOutput /*MetadataRenderer.Output*/ {
 
     private static final String TAG = "EventLogger";
     private static final int MAX_TIMELINE_ITEM_LINES = 3;
