@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 829
-        versionName "6.17.249"
+        versionCode 837
+        versionName "6.17.257"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -143,6 +143,11 @@ android {
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.istargroups.smartyoutubetv"
         }
+        Vrtarmenia {
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.rtarmenia.smartyoutubetv"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
@@ -165,6 +170,33 @@ android {
         abortOnError true
         lintConfig rootProject.file('lint.xml')
     }
+
+    // FIX: Product Flavor: Duplicate class found.
+    // Create common folder for duplicate classes.
+    // More info: https://stackoverflow.com/questions/37439120/product-flavor-duplicate-class-found
+    sourceSets {
+        Vlitemain {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vlitealt {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vkids {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vlive {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vnovotelecom {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vistargroups {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vrtarmenia {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+    }
 }
 
 dependencies {
@@ -184,6 +216,7 @@ dependencies {
     // Common routines
     testImplementation project(path: ':sharedtests')
     implementation project(path: ':sharedutils')
+
     // ATV INSTALL_FAILED_CONFLICTING_PROVIDER fix
     origImplementation project(path: ':leanbackassistant')
 

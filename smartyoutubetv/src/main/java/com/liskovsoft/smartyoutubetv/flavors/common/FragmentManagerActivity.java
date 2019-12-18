@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.app.ActivityManager.MemoryInfo;
-import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.PermissionManager;
 import com.liskovsoft.sharedutils.locale.LangHelper;
@@ -25,12 +25,13 @@ import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
-import com.liskovsoft.smartyoutubetv.misc.GlobalKeyHandler;
+import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
@@ -58,6 +59,8 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setupLog();
+
         mAppStateWatcher = new AppStateWatcher(this);
         mAppStateWatcher.run();
 
@@ -425,4 +428,10 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     protected void onMemoryCritical() {}
+
+    private void setupLog() {
+        // used mainly on custom builds (no bootstrap activity)
+        SmartPreferences prefs = CommonApplication.getPreferences();
+        Log.init(this, prefs.getLogType(), AppInfoHelpers.getActivityLabel(this, prefs.getBootActivityName()));
+    }
 }

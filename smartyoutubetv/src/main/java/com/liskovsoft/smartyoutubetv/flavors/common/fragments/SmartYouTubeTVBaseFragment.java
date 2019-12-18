@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
 import androidx.fragment.app.FragmentActivity;
 import com.liskovsoft.browser.Browser;
@@ -21,10 +20,10 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
-import com.liskovsoft.smartyoutubetv.keytranslator.BrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
-import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.ServiceFinder;
+import com.liskovsoft.smartyoutubetv.misc.keyhandler.MediaBrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeServiceFinder;
 
 public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
@@ -72,7 +71,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
     }
 
     private void initKeys() {
-        mTranslator = new BrowserKeyTranslator();
+        mTranslator = new MediaBrowserKeyTranslator();
     }
 
     private void initYouTubeServices() {

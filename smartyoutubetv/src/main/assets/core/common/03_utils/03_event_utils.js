@@ -122,7 +122,17 @@ var EventUtils = {
         return tag + idPart + classPart;
     },
 
-    triggerEvent: function(elementOrSelector, type, keyCode) {
+    triggerEvent: function(elementOrArrayOrSelector, type, keyCode) {
+        if (Utils.isArray(elementOrArrayOrSelector) || Utils.isNodeList(elementOrArrayOrSelector)) {
+            for (var i = 0; i < elementOrArrayOrSelector.length; i++) {
+                this._triggerEventInt(elementOrArrayOrSelector[i], type, keyCode);
+            }
+        } else {
+            this._triggerEventInt(elementOrArrayOrSelector, type, keyCode);
+        }
+    },
+
+    _triggerEventInt: function(elementOrSelector, type, keyCode) {
         if (Utils.isArray(elementOrSelector)) {
             console.log("EventUtils::triggerEvent: arrays not supported: " + elementOrSelector);
             return;
@@ -311,6 +321,10 @@ var EventUtils = {
                 }
             }
         });
+    },
+
+    handleKeyPressMessage: function(data) {
+        this.triggerEvent(Utils.$$(YouTubeSelectors.FOCUSED_ELEMENT), DefaultEvents[data.action], DefaultKeys[data.keyCode]);
     }
 };
 

@@ -11,7 +11,11 @@ var DefaultKeys = {
     RIGHT: 39,
     ENTER: 13,
     ESC: 27,
-    TAB: 9
+    TAB: 9,
+    MEDIA_PLAY_PAUSE: 179,
+    MEDIA_STOP: 178,
+    KEYCODE_MEDIA_FAST_FORWARD: 228,
+    KEYCODE_MEDIA_REWIND: 227
 };
 
 var DefaultEvents = {

@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.app.Activity;
 import android.os.Handler;

@@ -197,6 +197,14 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     // getter/setters for lab_preferences.xml
     // -----------------------------
 
+    public boolean getSavePassword() {
+        return mPrefs.getBoolean(PREF_SAVE_PASSWORD, false);
+    }
+
+    public boolean getSaveFormData() {
+        return mPrefs.getBoolean(PREF_SAVE_FORM_DATA, false);
+    }
+
     public boolean useQuickControls() {
         return mPrefs.getBoolean(PREF_ENABLE_QUICK_CONTROLS, true);
     }
@@ -401,6 +409,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             // NOTE: 'autoplay' fix on WebView engine
             settings.setMediaPlaybackRequiresUserGesture(getPlaybackRequiresGesture());
         }
+
+        settings.setSaveFormData(getSaveFormData());
+        settings.setSavePassword(getSavePassword());
     }
 
     public WebStorageSizeManager getWebStorageSizeManager() {

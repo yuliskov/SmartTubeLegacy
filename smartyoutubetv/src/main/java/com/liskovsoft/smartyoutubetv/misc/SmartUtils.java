@@ -4,12 +4,21 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
 
 public class SmartUtils {
+    public static final String KEYCODE_MEDIA_PLAY_PAUSE = "MEDIA_PLAY_PAUSE";
+    public static final String KEYCODE_MEDIA_STOP = "MEDIA_STOP";
+    public static final String KEYCODE_MEDIA_FAST_FORWARD = "KEYCODE_MEDIA_FAST_FORWARD";
+    public static final String KEYCODE_MEDIA_REWIND = "KEYCODE_MEDIA_REWIND";
+    public static final String KEY_DOWN = "KEY_DOWN";
+    public static final String KEY_UP = "KEY_UP";
+    public static final String KEYCODE_RIGHT = "RIGHT";
+    public static final String KEYCODE_LEFT = "LEFT";
+
     @SuppressLint("WrongConstant")
     public static void returnToLaunchersDialog(Activity context) {
         Intent intent = new Intent();
@@ -62,5 +71,42 @@ public class SmartUtils {
 
     public static boolean isBolshoeTV() {
         return BuildConfig.FLAVOR.equals("Vbolshoetv");
+    }
+
+    public static void sendMessage(String messageId, String messageData) {
+        new SendMessageCommand(messageId, messageData).call();
+    }
+
+    /**
+     * Converts number of objects to string that may be parsed as JSON object
+     */
+    public static String toJsonString(String... params) {
+        StringBuilder result = new StringBuilder();
+
+        result.append("{");
+
+        for (int i = 0; i < params.length; i++) {
+            if (i == 0) {
+                result.append("\"");
+                result.append(params[i]);
+                result.append("\"");
+            } else if (i % 2 != 0) {
+                result.append(":");
+
+                result.append("\"");
+                result.append(params[i]);
+                result.append("\"");
+            } else {
+                result.append(",");
+
+                result.append("\"");
+                result.append(params[i]);
+                result.append("\"");
+            }
+        }
+
+        result.append("}");
+
+        return result.toString();
     }
 }

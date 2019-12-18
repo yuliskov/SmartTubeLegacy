@@ -75,7 +75,8 @@ var YouTubeSelectors = {
     PLAYER_SUGGESTIONS_LIST: 'div.pivot-shelf-list',
     PLAYER_UI_CONTAINER: '#transport-controls',
     CHANNEL_CONTENT: '.ytlr-tv-browse-renderer',
-    VOICE_SEARCH: '#voice-search'
+    VOICE_SEARCH: '#voice-search',
+    FOCUSED_ELEMENT: '.focused'
 };
 
 /**

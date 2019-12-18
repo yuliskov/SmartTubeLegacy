@@ -25,6 +25,10 @@ var Utils = {
         return Object.prototype.toString.call(obj) === '[object Array]';
     },
 
+    isNodeList: function(obj) {
+        return NodeList.prototype.isPrototypeOf(obj);
+    },
+
     isString: function(obj) {
         return Object.prototype.toString.call(obj) === "[object String]";
     },

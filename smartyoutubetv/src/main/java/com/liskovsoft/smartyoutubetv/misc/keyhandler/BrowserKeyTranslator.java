@@ -1,6 +1,7 @@
-package com.liskovsoft.smartyoutubetv.keytranslator;
+package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 
 import java.util.HashMap;
 import java.util.Map;

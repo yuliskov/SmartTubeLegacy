@@ -8,8 +8,9 @@ import java.util.Map;
 public abstract class KeyTranslator {
     private static final String TAG = KeyTranslator.class.getSimpleName();
     private static final KeyEvent EMPTY_EVENT = new KeyEvent(0, 0);
-    private static final int UNDEFINED = 0;
+    private static final int UNDEFINED = -1;
     private int mDownFired = 0;
+    private boolean mDownPressed;
 
     /**
      * Ignore non-paired key up events
@@ -18,6 +19,16 @@ public abstract class KeyTranslator {
      * @return is ignored
      */
     private boolean isEventIgnored(KeyEvent event) {
+        return false;
+    }
+
+    /**
+     * Ignore non-paired key up events
+     *
+     * @param event event
+     * @return is ignored
+     */
+    private boolean isEventIgnoredOld(KeyEvent event) {
         mDownFired = mDownFired < 0 ? 0 : mDownFired; // do reset sometimes
 
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -34,8 +45,10 @@ public abstract class KeyTranslator {
     }
 
     public KeyEvent doTranslateKeys(KeyEvent event) {
+        Log.d(TAG, "Received key: " + event);
+
         if (isEventIgnored(event)) {
-            Log.d(TAG, "Event is ignored: " + event);
+            Log.d(TAG, "Key is ignored: " + event);
             return EMPTY_EVENT;
         }
 
@@ -57,9 +70,7 @@ public abstract class KeyTranslator {
             return origin;
         }
 
-        Log.d(TAG, "Translating from " + origin.getKeyCode() + " to " + toKeyCode);
-
-        return new KeyEvent(
+        KeyEvent newKey = new KeyEvent(
                 origin.getDownTime(),
                 origin.getEventTime(),
                 origin.getAction(),
@@ -71,6 +82,10 @@ public abstract class KeyTranslator {
                 origin.getFlags(),
                 origin.getSource()
         );
+
+        Log.d(TAG, "Translating to " + newKey);
+
+        return newKey;
     }
 
     protected abstract Map<Integer, Integer> getKeyMapping();
