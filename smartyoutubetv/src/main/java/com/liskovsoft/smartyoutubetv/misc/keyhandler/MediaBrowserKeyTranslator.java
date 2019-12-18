@@ -56,6 +56,7 @@ public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
 
         // disable media keys
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_UNKNOWN);
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_UNKNOWN);
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_UNKNOWN);
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_UNKNOWN);
