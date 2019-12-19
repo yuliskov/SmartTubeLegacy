@@ -11,6 +11,7 @@ console.log("Scripts::Running script codec_fix_config.js");
  * Config for the WebView browser's engine (1th launcher)
  */
 var CodecConfig_WebView = {
+    //'G6A110 (G6A110)': '', // UNOIPTV (gmail)
     'Quad core A33 (astar_yh)': 'mp4', // adnotam's device
     'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
     // 'MiBOX4 (oneday)': 'mp4', // disqus: MiBox S
@@ -51,6 +52,7 @@ var CodecConfig_WebView = {
  * Config for the CrossWalk browser's engine (2nd launcher)
  */
 var CodecConfig_XWalk = {
+    'G6A110 (G6A110)': '', // UNOIPTV (gmail)
     'Quad core A33 (astar_yh)': 'mp4', // adnotam's device
     'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)

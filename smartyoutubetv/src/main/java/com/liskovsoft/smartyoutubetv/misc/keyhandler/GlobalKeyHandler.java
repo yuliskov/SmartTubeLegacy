@@ -48,7 +48,7 @@ public class GlobalKeyHandler {
     public KeyEvent translateKey(KeyEvent event) {
         checkBackPressed(event);
 
-        return gamepadFix(unknownKeyFix(event));
+        return gamepadFix(event);
     }
 
     private KeyEvent unknownKeyFix(KeyEvent event) {
