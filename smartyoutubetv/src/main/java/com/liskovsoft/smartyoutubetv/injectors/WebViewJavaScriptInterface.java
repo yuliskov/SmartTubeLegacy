@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.injectors;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -158,6 +159,12 @@ public class WebViewJavaScriptInterface {
         if (mContext instanceof Activity) {
             MessageHelpers.showMessageThrottled(mContext, mContext.getResources().getString(R.string.exit_msg));
         }
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public int getApiLevel() {
+        return VERSION.SDK_INT;
     }
 
     @JavascriptInterface

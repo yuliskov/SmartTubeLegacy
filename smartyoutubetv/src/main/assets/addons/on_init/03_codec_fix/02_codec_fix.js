@@ -29,6 +29,11 @@ function CodecFixAddon() {
                 return CodecConfig_VP9;
         }
 
+        // unlock all codecs on newer devices
+        if (DeviceUtils.getApiLevel() >= 21) {
+            return CodecConfig_Android5;
+        }
+
         if (DeviceUtils.isWebView()) {
             return CodecConfig_WebView;
         }
@@ -38,6 +43,7 @@ function CodecFixAddon() {
         }
 
         Log.d(this.TAG, "Unknown engine type " + DeviceUtils.getEngineType());
+
         return {};
     };
 

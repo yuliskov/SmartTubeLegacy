@@ -83,4 +83,5 @@ var CodecConfig_XWalk = {
 
 var CodecConfig_AVC = {'': 'webm'};
 var CodecConfig_VP9 = {'': 'mp4'};
-var CodecConfig_EXO = {'': 'webm,mp4'}; // remove all 4K, FHD, HD options
+var CodecConfig_EXO = {'': 'webm,mp4'}; // remove all 4K, FHD, HD options (minimum resolution)
+var CodecConfig_Android5 = {'': ''}; // unlock all codecs

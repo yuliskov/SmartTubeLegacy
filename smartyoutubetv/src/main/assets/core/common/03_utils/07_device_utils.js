@@ -42,7 +42,7 @@ var DeviceUtils = {
     },
 
     disableCodec: function(unwantedCodec) {
-        if (unwantedCodec == null) {
+        if (!unwantedCodec || unwantedCodec == '') {
             Log.d(this.TAG, 'DisableCodec: codec not specified. Exiting...');
             return;
         }
@@ -86,6 +86,10 @@ var DeviceUtils = {
         }
 
         return window.app;
+    },
+
+    getApiLevel: function() {
+        return this.getApp().getApiLevel();
     },
 
     getEngineType: function() {
