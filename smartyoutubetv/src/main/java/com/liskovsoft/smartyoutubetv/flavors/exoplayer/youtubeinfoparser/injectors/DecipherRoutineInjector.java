@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesDoneEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.DecipherOnlySignaturesEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeDoneEvent;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DecipherRoutineInjector extends ResourceInjectorBase {
+    private static final String TAG = DecipherRoutineInjector.class.getSimpleName();
     private String mCombinedSignatures;
     private ArrayList<String> mSignatures;
     private String mDecipherRoutine;
@@ -43,12 +45,25 @@ public class DecipherRoutineInjector extends ResourceInjectorBase {
             return;
         }
 
-        Browser.getBus().post(new GetDecipherCodeEvent());
+        if (mDecipherCode == null) {
+            Browser.getBus().post(new GetDecipherCodeEvent());
+        } else {
+            startDeciphering();
+        }
     }
 
     @Subscribe
     public void getDecipherCodeDone(GetDecipherCodeDoneEvent event) {
         mDecipherCode = event.getCode();
+
+        startDeciphering();
+    }
+
+    private void startDeciphering() {
+        if (mDecipherCode == null) {
+            Log.e(TAG, "Decipher code not found!");
+            return;
+        }
 
         extractSignatures();
         combineSignatures();

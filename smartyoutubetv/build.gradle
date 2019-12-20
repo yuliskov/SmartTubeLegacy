@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 849
-        versionName "6.17.269"
+        versionCode 850
+        versionName "6.17.270"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -148,6 +148,11 @@ android {
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.rtarmenia.smartyoutubetv"
         }
+        Vrtarmenia2 {
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.rtarmenia.smartyoutubetv2"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
@@ -194,6 +199,9 @@ android {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }
         Vrtarmenia {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vrtarmenia2 {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }
     }

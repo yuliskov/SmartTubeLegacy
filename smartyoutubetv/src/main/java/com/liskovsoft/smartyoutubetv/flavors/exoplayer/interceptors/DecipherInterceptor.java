@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.browser.Browser;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.DecipherUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.events.GetDecipherCodeDoneEvent;
@@ -17,6 +18,7 @@ import java.io.InputStream;
  * intercepts "tv-player.js", "tv-player-ias.js"
  */
 public class DecipherInterceptor extends RequestInterceptor {
+    private static final String TAG = DecipherInterceptor.class.getSimpleName();
     private String mJSDecipherCode;
 
     public DecipherInterceptor(Context context) {
@@ -32,6 +34,8 @@ public class DecipherInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
+        Log.d(TAG, "Intercepting decipher code...");
+
         if (mJSDecipherCode != null) { // run once
             return null;
         }

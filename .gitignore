@@ -1,8 +1,4 @@
-/smartyoutubetv/src/Vbolshoetv
-/smartyoutubetv/src/Vbolshoetv2
-/smartyoutubetv/src/Vnovotelecom
-/smartyoutubetv/src/Vnovotelecom2
-/smartyoutubetv/src/Vistargroups
+/smartyoutubetv/src/V*
 *.hprof
 /smartyoutubetv/release
 log.txt
