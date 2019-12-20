@@ -30,8 +30,9 @@ public class MainRequestInterceptor extends RequestInterceptor {
     }
 
     /**
-     * all interceptors are called<br/>
-     * first non-null response is the result of all intercept operation
+     * Calling interceptors until encountering non-null response.<br/>
+     * So, interceptors order is important!<br/>
+     * It's critical for Ad blocking, for example.
      */
     @Override
     public WebResourceResponse intercept(String url) {
@@ -40,12 +41,12 @@ public class MainRequestInterceptor extends RequestInterceptor {
         WebResourceResponse result = null;
 
         for (RequestInterceptor interceptor : mInterceptors) {
-            // all interceptors are called
-            // first non-null response is the result of all intercept operation
             if (interceptor.test(url)) {
-                WebResourceResponse tmpResult = interceptor.intercept(url);
-                if (result == null) {
-                    result = tmpResult;
+                result = interceptor.intercept(url);
+
+                // Stop calling interceptors when encountering non-null response.
+                if (result != null) {
+                    break;
                 }
             }
         }
