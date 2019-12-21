@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
@@ -14,6 +16,8 @@ public class SmartUtils {
     public static final String KEYCODE_MEDIA_STOP = "MEDIA_STOP";
     public static final String KEYCODE_MEDIA_FAST_FORWARD = "KEYCODE_MEDIA_FAST_FORWARD";
     public static final String KEYCODE_MEDIA_REWIND = "KEYCODE_MEDIA_REWIND";
+    public static final String KEYCODE_MEDIA_NEXT = "KEYCODE_MEDIA_NEXT";
+    public static final String KEYCODE_MEDIA_PREVIOUS = "KEYCODE_MEDIA_PREVIOUS";
     public static final String KEY_DOWN = "KEY_DOWN";
     public static final String KEY_UP = "KEY_UP";
     public static final String KEYCODE_RIGHT = "RIGHT";

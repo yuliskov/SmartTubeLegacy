@@ -100,7 +100,9 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
+        mActions.put(KeyEvent.KEYCODE_CHANNEL_DOWN, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
+        mActions.put(KeyEvent.KEYCODE_CHANNEL_UP, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
         mActions.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, mOnFastForward);
         mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnRewind);

@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
     private static final String KEY_PRESS_MESSAGE = "key_press_message";
-    private int mPrevKeyCode;
 
     @Override
     public KeyEvent doTranslateKeys(KeyEvent event) {
@@ -24,10 +23,14 @@ public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
                 break;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 sendMessage(SmartUtils.KEYCODE_MEDIA_REWIND, event);
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_CHANNEL_DOWN:
+                sendMessage(SmartUtils.KEYCODE_MEDIA_NEXT, event);
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+            case KeyEvent.KEYCODE_CHANNEL_UP:
+                sendMessage(SmartUtils.KEYCODE_MEDIA_PREVIOUS, event);
                 break;
         }
-
-        mPrevKeyCode = event.getKeyCode();
 
         return super.doTranslateKeys(event);
     }
@@ -60,6 +63,8 @@ public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_UNKNOWN);
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_UNKNOWN);
         keyMapping.put(KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, KeyEvent.KEYCODE_UNKNOWN);
 
         return keyMapping;
     }

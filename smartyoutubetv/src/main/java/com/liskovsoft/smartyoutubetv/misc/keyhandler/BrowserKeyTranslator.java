@@ -1,12 +1,21 @@
 package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.view.KeyEvent;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BrowserKeyTranslator extends KeyTranslator {
+    public static KeyTranslator create() {
+        if (CommonApplication.getPreferences().getAltPlayerMappingEnabled()) {
+            return new AltMediaBrowserKeyTranslator();
+        } else {
+            return new MediaBrowserKeyTranslator();
+        }
+    }
+
     @Override
     protected Map<Integer, Integer> getKeyMapping() {
         Map<Integer, Integer> keyMapping = new HashMap<>();

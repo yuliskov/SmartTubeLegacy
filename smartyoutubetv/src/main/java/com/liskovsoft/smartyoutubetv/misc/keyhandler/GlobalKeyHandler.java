@@ -5,10 +5,12 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 
 public class GlobalKeyHandler {
+    private static final String TAG = GlobalKeyHandler.class.getSimpleName();
     private final boolean mBackPressExitEnabled;
     private final Handler mHandler;
     private final Runnable mExitAppFn;
@@ -16,6 +18,7 @@ public class GlobalKeyHandler {
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private int mDoubleBackToExitPressedTimes;
+    private int mDownPressed;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
@@ -46,6 +49,11 @@ public class GlobalKeyHandler {
     }
 
     public KeyEvent translateKey(KeyEvent event) {
+        if (ignoreEvent(event)) {
+            Log.d(TAG, "Oops. Seems phantom key received. Ignoring... " + event);
+            return Helpers.newEvent(event, KeyEvent.KEYCODE_UNKNOWN);
+        }
+
         checkBackPressed(event);
 
         return gamepadFix(event);
@@ -108,5 +116,46 @@ public class GlobalKeyHandler {
         if (mDoubleBackToExitPressedTimes == 1) {
             mHandler.postDelayed(mResetExitFn, 1000);
         }
+    }
+
+    /**
+     * Ignore non-paired key up events
+     */
+    private boolean ignoreEvent(KeyEvent event) {
+        mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            mDownPressed++;
+            return false;
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
+            mDownPressed--;
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Ignore non-paired key up events
+     *
+     * @param event event
+     * @return is ignored
+     */
+    private boolean isEventIgnoredOld(KeyEvent event) {
+        mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            mDownPressed++;
+            return false;
+        }
+
+        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
+            mDownPressed--;
+            return false;
+        }
+
+        return true;
     }
 }
