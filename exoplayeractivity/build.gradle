@@ -37,6 +37,9 @@ android {
     productFlavors {
         lite {}
         full {}
+        Vkids {
+            matchingFallbacks = ['lite']
+        }
     }
 
     lintOptions {

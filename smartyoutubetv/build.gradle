@@ -96,7 +96,7 @@ android {
             versionCode 9999 // disable auto-update
         }
         Vkids {
-            matchingFallbacks = ['lite']
+            matchingFallbacks = ['Vkids', 'lite']
             applicationIdSuffix ".kids"
         }
         Vlive {
