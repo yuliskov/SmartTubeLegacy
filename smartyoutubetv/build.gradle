@@ -153,6 +153,11 @@ android {
             versionCode 9400 + defaultConfig.versionCode
             applicationId "com.rtarmenia.smartyoutubetv2"
         }
+        Vunoiptv {
+            matchingFallbacks = ['lite']
+            versionCode 9400 + defaultConfig.versionCode
+            applicationId "com.unoiptv.smartyoutubetv"
+        }
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
@@ -202,6 +207,9 @@ android {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }
         Vrtarmenia2 {
+            java.srcDirs('src/commonSrc/appWatcher/java')
+        }
+        Vunoiptv {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }
     }

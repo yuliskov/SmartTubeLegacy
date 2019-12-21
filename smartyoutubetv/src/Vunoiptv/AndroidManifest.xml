@@ -40,7 +40,7 @@
                   android:icon="@mipmap/ic_launcher_main"
                   android:label="@string/app_name"
                   android:launchMode="singleTask"
-                  android:name="com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity"
+                  android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K"
                   android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -32,6 +32,7 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_120MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_180MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 10 * 1000;
+    private static final int AUTHOR_MAX_LENGTH = 30;
 
     public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -68,7 +69,8 @@ public class PlayerInitializer {
     }
 
     public String getSecondTitle() {
-        String secondTitle = String.format("%s      %s      %s",
+        // limit max size by 30 chars e.g. '%.30s'
+        String secondTitle = String.format("%." + AUTHOR_MAX_LENGTH + "s      %s      %s",
                 getAuthor(),
                 getPublishDate(),
                 getViewCount());
