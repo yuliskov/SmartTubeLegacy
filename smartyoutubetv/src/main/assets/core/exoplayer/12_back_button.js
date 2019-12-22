@@ -18,7 +18,14 @@ function BackButton(selector, states) {
 
         this.retryTimes--;
 
-        EventUtils.triggerEnter(this.findToggle());
+        var backBtn = this.findToggle();
+
+        if (backBtn) {
+            EventUtils.triggerEnter(backBtn);
+        } else {
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
 
         if (YouTubeUtils.isPlayerClosed()) {
             return;

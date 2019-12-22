@@ -79,21 +79,21 @@ ExoButton.fromSelector = function(selector, states) {
 
     function createButton(selector, states) {
         Log.d(TAG, "fromSelector: create button " + selector);
-        switch (selector) {
-            case PlayerActivityMapping.TRACK_ENDED:
-            case PlayerActivityMapping.BUTTON_NEXT:
+        switch (selector.toString()) {
+            case PlayerActivityMapping.TRACK_ENDED.toString():
+            case PlayerActivityMapping.BUTTON_NEXT.toString():
                 return new TrackEndFakeButton(selector, states);
-            case PlayerActivityMapping.BUTTON_SUGGESTIONS:
+            case PlayerActivityMapping.BUTTON_SUGGESTIONS.toString():
                 return new SuggestionsFakeButton(selector);
-            case PlayerActivityMapping.BUTTON_FAVORITES:
+            case PlayerActivityMapping.BUTTON_FAVORITES.toString():
                 return new FavoriteButton(selector);
-            case PlayerActivityMapping.BUTTON_USER_PAGE:
+            case PlayerActivityMapping.BUTTON_USER_PAGE.toString():
                 return new ChannelButton(selector);
-            case PlayerActivityMapping.BUTTON_BACK:
+            case PlayerActivityMapping.BUTTON_BACK.toString():
                 return new BackButton(selector, states);
-            case PlayerActivityMapping.BUTTON_PREV:
+            case PlayerActivityMapping.BUTTON_PREV.toString():
                 return new NextPrevButton(selector);
-            case PlayerActivityMapping.VIDEO_CANCELED:
+            case PlayerActivityMapping.VIDEO_CANCELED.toString():
                 return new VideoCanceledButton(selector);
             // default:
             //     // all other buttons is processed here

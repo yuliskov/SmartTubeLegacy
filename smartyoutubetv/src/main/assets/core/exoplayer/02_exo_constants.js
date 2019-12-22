@@ -22,10 +22,10 @@ var PlayerActivity = {
 // java constants in js code
 var PlayerActivityMapping = {
     VIDEO_CANCELED: 'video_canceled',
-    BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
-    BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
-    BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
-    BUTTON_USER_PAGE: ['.transport-channel-button', '.pivot-channel-tile'],
+    // BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
+    // BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
+    // BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
+    BUTTON_USER_PAGE: YouTubeSelectors.PLAYER_CHANNEL_BUTTON,
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
     BUTTON_NEXT: ['.skip-forward-button', '.new-skip-forward-button', '.icon-player-next.button'],
@@ -33,5 +33,5 @@ var PlayerActivityMapping = {
     BUTTON_SUGGESTIONS: 'button_suggestions', // fake button (use internal logic)
     BUTTON_FAVORITES: '.material-icon-playlist-add',
     TRACK_ENDED: 'track_ended', // fake button (use internal logic)
-    BUTTON_BACK: '#legend .back' // should be the last
+    BUTTON_BACK: YouTubeSelectors.BUTTON_BACK // should be the last
 };

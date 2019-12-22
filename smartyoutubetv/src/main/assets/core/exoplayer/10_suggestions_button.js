@@ -80,6 +80,8 @@ function SuggestionsFakeButton(selector) {
     this.callDelayMS = 500;
     this.stateless = true;
 
+    Log.d(this.TAG, "Creating " + this.TAG);
+
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
         if (suggestionsShown || !YouTubeUtils.isPlayerOpened()) {
@@ -99,6 +101,7 @@ function SuggestionsFakeButton(selector) {
         // we assume that no interface currently shown
         // press multiple times util suggestion will have focus
         EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.DOWN);
 
         var $this = this;
         this.openTimeout = setTimeout(function() {
@@ -137,6 +140,7 @@ function SuggestionsFakeButton(selector) {
 
         Log.d(this.TAG, "closeSuggestions");
         
+        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
         EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
 
         this.alreadyHidden = true;

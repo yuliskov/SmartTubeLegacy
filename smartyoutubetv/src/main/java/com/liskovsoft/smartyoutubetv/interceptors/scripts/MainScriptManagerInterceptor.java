@@ -13,7 +13,7 @@ public class MainScriptManagerInterceptor extends ScriptManagerInterceptor {
     private static final String[] FIRST_SCRIPT_NAME = {"live.js"};
     private static final String[] SECOND_SCRIPT_NAME = {"app-prod.js"};
     private static final String[] THIRD_SCRIPT_NAME = {"tv-player.js", "tv-player-ias.js"};
-    private static final String[] MAIN_STYLE_NAME = {"airstream-prod-css.css"};
+    private static final String[] MAIN_STYLE_NAME = {"airstream-prod-css.css", "kids-prod.css"};
 
     public MainScriptManagerInterceptor(Context context) {
         super(context);

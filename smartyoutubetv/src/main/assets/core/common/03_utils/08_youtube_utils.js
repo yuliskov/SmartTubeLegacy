@@ -40,6 +40,12 @@ var YouTubeUtils = {
      */
     hidePlayerBackground: function() {
         Utils.$('body').style.backgroundImage = 'initial';
+
+        // NOTE: for kids
+        var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        if (playerEventsRoot) {
+            playerEventsRoot.style.backgroundColor = 'initial';
+        }
     },
 
     /**
@@ -47,20 +53,26 @@ var YouTubeUtils = {
      */
     showPlayerBackground: function() {
         Utils.$('body').style.backgroundImage = '';
+
+        // NOTE: for kids
+        var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        if (playerEventsRoot) {
+            playerEventsRoot.style.backgroundColor = '';
+        }
     },
 
     /**
      * For other hidden ui parts see exoplayer.css
      */
     enablePlayerSuggestions: function() {
-        Utils.show(YouTubeSelectors.PLAYER_SUGGESTIONS);
+        Utils.show(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST);
     },
 
     /**
      * For other hidden ui parts see exoplayer.css
      */
     disablePlayerSuggestions: function() {
-        Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS);
+        Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST);
     },
 
     getPlayerRevision: function() {
@@ -142,7 +154,7 @@ var YouTubeUtils = {
     },
 
     isPlayerClosed: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.NO_MODEL);
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN); // NOTE: changed for kids
     },
 
     isPlayerControlsClosed: function() {

@@ -43,7 +43,7 @@ var YouTubeSelectors = {
     PLAYER_BUTTONS: '#buttons-list',
     PLAYER_BUTTONS_CONTAINER: '#buttons-list > .new-list-container',
     PLAYER_SUBS_BUTTON: ['.material-icon-closed-caption.transport-controls-toggle-button', '.icon-player-closedcaptions.transport-controls-toggle-button'],
-    PLAYER_CHANNEL_BUTTON: '.transport-channel-button.transport-controls-button',
+    PLAYER_CHANNEL_BUTTON: ['.transport-channel-button', '.pivot-channel-tile'],
     PLAYER_PREV_BUTTON: '.material-icon-skip-previous',
     PLAYER_PLAY_BUTTON: ['.material-icon-play-arrow', '.icon-player-play'],
     PLAYER_MORE_BUTTON: '#transport-more-button',
@@ -58,10 +58,13 @@ var YouTubeSelectors = {
     SEARCH_KEYBOARD_GRID: '#keyboard-grid',
     SEARCH_KEYBOARD_SPACE: '#keyboard-spacebar',
     SEARCH_RESULTS_ROW: '#search-results',
-    SURFACE_AREA: ['#zylon-surface', '#surface'],
+    // NOTE: '#browse' - for Kids only
+    // NOTE: '#zylon-surface', '#surface' - for Main app only
+    SURFACE_AREA: ['#zylon-surface', '#surface', '#browse'],
     SURFACE_AREA_CONTENT: '#surface-content',
     MAIN_LOADER: '#loader',
-    BUTTON_BACK: '#legend .back',
+    // NOTE: '#legend .back' - origin, '.back-button' - kids
+    BUTTON_BACK: ['#legend .back', '.back-button'],
     OVERLAY_PANEL_CONTAINER: '#overlay-stage',
     OVERLAY_PANEL_MENU_ITEM: '#overlay-stage .overlay-partials-menu-item',
     OVERLAY_PANEL: '.overlay-action-panel',
@@ -71,9 +74,11 @@ var YouTubeSelectors = {
     PLAYER_VIDEO_DETAILS: '.player-video-details',
     PLAYER_VIEW_COUNT: '.view-count-label',
     PLAYER_NEW_TITLE: '.watch-title-tray',
-    PLAYER_SUGGESTIONS: '#bottom-half.bottom-half',
-    PLAYER_SUGGESTIONS_LIST: 'div.pivot-shelf-list',
-    PLAYER_UI_CONTAINER: '#transport-controls',
+    //PLAYER_SUGGESTIONS: '#bottom-half.bottom-half',
+    // NOTE: 'div.pivot-shelf-list' - original, '#pivot-list' - kids
+    PLAYER_SUGGESTIONS_LIST: ['div.pivot-shelf-list', '#pivot-list'],
+    // NOTE: '#transport-controls' - original, '.transport-controls' - kids
+    PLAYER_UI_CONTAINER: ['#transport-controls', '.transport-controls'],
     CHANNEL_CONTENT: '.ytlr-tv-browse-renderer',
     VOICE_SEARCH: '#voice-search',
     FOCUSED_ELEMENT: '.focused'
