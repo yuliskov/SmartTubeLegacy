@@ -21,14 +21,13 @@ function PlaybackEndAddon() {
         video.properties.readyState = 4;
         video.properties.paused = false;
 
-        // ??
         video.properties.videoWidth = 1280;
-        video.properties.videoHeight = 1280;
+        video.properties.videoHeight = 720;
 
         video.properties.baseURI = 'https://www.youtube.com/tv#/watch/video/idle?v=bR66Yyj3p48&resume';
         video.properties.currentSrc = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
 
-        video.properties.duration = 749;
+        video.properties.duration = 74;
 
         // video.properties.currentTime = 21.665161;
         video.properties.src = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';

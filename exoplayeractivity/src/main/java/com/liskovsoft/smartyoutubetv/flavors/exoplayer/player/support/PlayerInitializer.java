@@ -32,7 +32,7 @@ public class PlayerInitializer {
     private static final int SEEK_INCREMENT_120MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_180MIN_MS = 10 * 1000;
     private static final int SEEK_INCREMENT_MORE_180MIN_MS = 10 * 1000;
-    private static final int AUTHOR_MAX_LENGTH = 30;
+    private static final int AUTHOR_MAX_LENGTH = 25;
 
     public PlayerInitializer(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;

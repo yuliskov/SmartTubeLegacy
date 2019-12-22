@@ -1,7 +1,16 @@
-function DummyVideoHandler() {
+/**
+ * Description:<br/>
+ * Overrides volume property<br/>
+ * Adds useful methods to video api<br/>
+ * This methods have usage only in exoplayer context
+ */
+
+console.log("Scripts::Running dummy_video_handler.js");
+
+function DummyVideoHandler(addons) {
     this.TAG = 'DummyVideoHandler';
     this.elementTag = 'video';
-    this.addons = [new PlaybackEndAddon(), new VideoPositionAddon()];
+    this.addons = addons;
 
     this.onCreate = function(video) {
         EventUtils.turnOffEvents(video);
@@ -81,4 +90,8 @@ function DummyVideoHandler() {
             }
         });
     };
+}
+
+if (DeviceUtils.isExo()) {
+    ElementWrapper.addHandler(new DummyVideoHandler([new PlaybackEndAddon(), new VideoPositionAddon()]));
 }
