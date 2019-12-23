@@ -82,8 +82,9 @@
     <string name="close_msg">App closed!</string>
     <string name="global_afr_fix_warning">This may cause autoplay to work incorrectly</string>
     <string name="tweak_back_press_exit">Hold back key to exit</string>
-    <string name="force_avc_lite_only">Force AVC codec (LITE only)</string>
-    <string name="force_vp9_lite_only">Force VP9 codec (LITE only)</string>
+    <string name="force_all_codecs_lite_only">LITE: Unlock all codecs (4K)</string>
+    <string name="force_avc_lite_only">LITE: Force AVC codec (1080p)</string>
+    <string name="force_vp9_lite_only">LITE: Force VP9 codec (4K)</string>
     <string name="fix_clock_msg">Time on your device doesn\'t set correctly</string>
     <string name="do_restore_data_msg">Restore previously saved data?\nApp will be restarted.</string>
     <string name="restoring_data_msg">Restoring data...</string>
@@ -99,5 +100,4 @@
     <string name="tweak_ugoos_afr_fix">UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Hide boot tips</string>
     <string name="tweak_auto_show_player_ui">Auto show player UI</string>
-    <string name="force_all_codecs_lite_only">Unlock all codecs on LITE</string>
 </resources>

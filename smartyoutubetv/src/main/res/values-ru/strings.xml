@@ -69,8 +69,9 @@
     <string name="close_msg">Приложение закрыто!</string>
     <string name="global_afr_fix_warning">Это опция может повлиять на автовоспроизведение</string>
     <string name="tweak_back_press_exit">Удерживайте НАЗАД чтобы закрыть приложение</string>
-    <string name="force_avc_lite_only">Использовать только AVC кодек на LITE</string>
-    <string name="force_vp9_lite_only">Использовать только VP9 кодек на LITE</string>
+    <string name="force_all_codecs_lite_only">LITE: Разблокировать все кодеки (4K)</string>
+    <string name="force_avc_lite_only">LITE: Использовать только AVC (1080p)</string>
+    <string name="force_vp9_lite_only">LITE: Использовать только VP9 (4K)</string>
     <string name="fix_clock_msg">Время на вашем устройстве выставлено неверно</string>
     <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет перезапущено.</string>
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
@@ -85,5 +86,4 @@
     <string name="tweak_ugoos_afr_fix">Исправление фреймрейта на UGOOS 50Гц</string>
     <string name="tweak_hide_boot_tips">Убрать подсказки (во время загрузки)</string>
     <string name="tweak_auto_show_player_ui">Отображать интерфейс плеера при нажатии на медиа-клавиши</string>
-    <string name="force_all_codecs_lite_only">Разблокировать все кодеки на LITE</string>
 </resources>
