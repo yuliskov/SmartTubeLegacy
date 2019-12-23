@@ -30,9 +30,9 @@ function CodecFixAddon() {
         }
 
         // unlock all codecs on newer devices
-        if (DeviceUtils.getApiLevel() >= 21) {
-            return CodecConfig_Android5;
-        }
+        // if (DeviceUtils.getApiLevel() >= 21) {
+        //     return CodecConfig_Android5;
+        // }
 
         if (DeviceUtils.isWebView()) {
             return CodecConfig_WebView;
