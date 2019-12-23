@@ -7,7 +7,7 @@
     <string name="bootstrap_main_title">Выберите версию YouTube</string>
     <string name="starting_popup">Запуск из главного лаунчера</string>
     <string name="save_selection">Запомнить</string>
-    <string name="bootstrap_bottom_title">Отличаются стабильностью работы на конкр. девайсе</string>
+    <string name="bootstrap_bottom_title">Main и Alt отличаются стабильностью работы</string>
     <string name="tip_show_main_screen">Чтобы открыть настройки, нажмите НАЗАД прямо здесь</string>
     <string name="app_name_720">1080 Основной</string>
     <string name="app_name_1080">1080 Дополнит.</string>
@@ -29,10 +29,10 @@
     <string name="tip_endcards">Подсказки перед окончанием видео (только 1080)</string>
     <string name="tip_language">Язык приложения</string>
     <string name="tip_update_check">Сообщать о выходе новых версий</string>
-    <string name="webview_tip">До 1080р, остановитесь на нем, если все работает</string>
-    <string name="xwalk_tip">До 1080р, выберите его в случае проблем</string>
-    <string name="exo_tip">До 4К, остановитесь на нем, если все работает</string>
-    <string name="exo_alt_tip">До 4К, выберите его в случае проблем</string>
+    <string name="webview_tip">Ограниченное количество форматов. Обычная.</string>
+    <string name="xwalk_tip">Ограниченное количество форматов. С исправлениями.</string>
+    <string name="exo_tip">Огромное количество форматов. Обычная.</string>
+    <string name="exo_alt_tip">Огромное количество форматов. С исправлениями.</string>
     <string name="exit_msg">Нажмите Назад еще раз чтобы выйти из приложения</string>
     <string name="error_host_lookup">Нет интернета: %s</string>
     <string name="error_unknown">Ошибка соединения: %s</string>
@@ -42,12 +42,8 @@
     <string name="tip_disable_updates">Чтобы отключить обновления нажмите НАЗАД прямо здесь</string>
     <string name="large_btn_title_main">Основной</string>
     <string name="large_btn_title_alt">Дополнит.</string>
-    <string name="title_exo_main">PRO Основной</string>
-    <string name="title_exo_alt">PRO Дополнит.</string>
-    <string name="title_webview">LITE Основной</string>
-    <string name="title_xwalk">LITE Дополнит.</string>
     <string name="tweaks">Настройки</string>
-    <string name="tip_tweaks">Различные мелкие настройки</string>
+    <string name="tip_tweaks">Дополнительные настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
     <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
     <string name="tweak_update_check">Проверять обновление стабильных версий</string>
@@ -76,7 +72,7 @@
     <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет перезапущено.</string>
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
     <string name="tip_hash_in_subscriptions">Пустые подписки? Удалите каналы с хэшем #</string>
-    <string name="tip_show_main_screen_2">Нажмите НАЗАД чтобы открыть Главные Настройки</string>
+    <string name="tip_show_main_screen_2">Нажмите НАЗАД чтобы перейти к настройкам</string>
     <string name="do_install_bridge_apk">Хотите добавить глобальный поиск?\nДля этого потребуется установить дополнительное апк.
     </string>
     <string name="do_reinstall_bridge_apk">Хотите добавить глобальный поиск?\nДля этого потребуется удалить оригинальный YouTube\nИ потом установить дополнительное апк.

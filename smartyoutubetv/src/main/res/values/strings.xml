@@ -41,16 +41,16 @@
     <string name="tip_endcards">Enable tips before the end of the video (1080 only)</string>
     <string name="tip_language">Change language</string>
     <string name="tip_update_check">Check for the updates</string>
-    <string name="webview_tip">Up to 1080p on most of the devices</string>
-    <string name="xwalk_tip">Up to 1080p and more stable work</string>
-    <string name="exo_tip">Up to 4K on most of the devices</string>
-    <string name="exo_alt_tip">Up to 4K and more stable work</string>
+    <string name="webview_tip">Limited number of formats. Regular.</string>
+    <string name="xwalk_tip">Limited number of formats. With fixes.</string>
+    <string name="exo_tip">Vast number of formats. Regular.</string>
+    <string name="exo_alt_tip">Vast number of formats. With fixes.</string>
     <string name="exit_msg">Press back again to exit from the app</string>
     <string name="error_host_lookup">No internet connection: %s</string>
     <string name="error_unknown">Connection error: %s</string>
     <string name="codec_selector_title">Select codec</string>
     <string name="restart_app_msg">You need to restart app in order the changes to apply</string>
-    <string name="tip_show_main_screen">To open Settings press BACK right here</string>
+    <string name="tip_show_main_screen">Press BACK if you want to choose launcher</string>
     <string name="tip_solve_problem">Problems? Try to select another Launcher</string>
     <string name="tip_disable_updates">To disable Updates press BACK right here</string>
     <string name="large_btn_title_main">Main</string>
@@ -59,8 +59,8 @@
     <string name="title_exo_alt">PRO Alt</string>
     <string name="title_webview">LITE Main</string>
     <string name="title_xwalk">LITE Alt</string>
-    <string name="tweaks">Tweaks</string>
-    <string name="tip_tweaks">Various app tweaks here</string>
+    <string name="tweaks">Settings</string>
+    <string name="tip_tweaks">Additional settings</string>
     <string name="tweak_remember_launcher">Remember selected launcher</string>
     <string name="tweak_ok_button_fix">OK pauses video immediately</string>
     <string name="tweak_update_check">Check for the STABLE updates</string>
@@ -90,7 +90,7 @@
     <string name="restoring_data_msg">Restoring data...</string>
     <string name="alt_player_mapping">Remote: alt media-keys mapping</string>
     <string name="tip_hash_in_subscriptions">Empty subscriptions? Remove channels beginning hash #</string>
-    <string name="tip_show_main_screen_2">Press BACK to open Main Settings</string>
+    <string name="tip_show_main_screen_2">Press BACK to open app settings</string>
     <string name="do_install_bridge_apk">Do you want to enable global voice search?\nIt may need to install additional apk.
     </string>
     <string name="do_reinstall_bridge_apk">Do you want to enable global voice search?\nIt may need to remove original YouTube\nAnd then install additional apk.
