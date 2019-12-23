@@ -107,11 +107,11 @@ android {
         //    matchingFallbacks = ['lite']
         //    applicationId "com.adnotam.smartyoutubetv"
         // }
-        // Vbolshoetv {
-        //    // vermax uhd250x/300x 1GB ram
-        //    matchingFallbacks = ['lite']
-        //    versionCode 9400 + defaultConfig.versionCode
-        // }
+        Vbolshoetv {
+           // vermax uhd250x/300x 1GB ram
+           matchingFallbacks = ['lite']
+           versionCode 9400 + defaultConfig.versionCode
+        }
         Vbolshoetv2 {
             // Eltex NV-501
             matchingFallbacks = ['full']
