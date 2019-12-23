@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Smart YouTube TV</string>
     <string name="next_clicked">Cliquez sur le bouton suivant!</string>
@@ -98,6 +99,5 @@
     <string name="tweak_use_new_ui">Utiliser une nouvelle interface utilisateur</string>
     <string name="tweak_ugoos_afr_fix">Correction de UGOOS 50HZ</string>
     <string name="tweak_hide_boot_tips">Masquer les conseils de démarrage</string>
-    <string name="tweak_auto_show_player_ui">Montrer automatiquement le lecteur de l'interface utilisateur</string>
-</resources>
+    <string name="tweak_auto_show_player_ui">Montrer automatiquement le lecteur de l\'interface utilisateur</string>
 </resources>
