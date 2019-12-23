@@ -46,6 +46,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final int PLAYBACK_NOT_WORKING = 2;
     public static final String AVC = "avc";
     public static final String VP9 = "vp9";
+    public static final String ALL_CODECS = "all_codecs";
     public static final String NONE = "";
     private static SmartPreferences sInstance;
     private int mPositionSec;

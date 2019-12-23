@@ -23,6 +23,7 @@ public class KeyHandler {
     private HashMap<Integer, Runnable> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
+    private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
     private final Runnable mOnPlay = () -> {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(true);
@@ -56,7 +57,7 @@ public class KeyHandler {
         }
 
         if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
-            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() + PlayerControlView.DEFAULT_FAST_FORWARD_MS);
+            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
         }
     };
     private final Runnable mOnRewind = () -> {
@@ -65,7 +66,7 @@ public class KeyHandler {
         }
 
         if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
-            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - PlayerControlView.DEFAULT_REWIND_MS);
+            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
         }
     };
     private final Runnable mOnStop = () -> mFragment.onBackPressed();

@@ -11,6 +11,7 @@ console.log("Scripts::Running script codec_fix_config.js");
  * Config for the WebView browser's engine (1th launcher)
  */
 var CodecConfig_WebView = {
+    'MIBOX3 (once)': 'webm',
     //'G6A110 (G6A110)': '', // UNOIPTV (gmail)
     'Quad core A33 (astar_yh)': 'mp4', // adnotam's device
     'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus

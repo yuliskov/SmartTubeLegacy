@@ -21,6 +21,9 @@ function CodecFixAddon() {
 
         // CodecSelectorAddon usage
         switch (DeviceUtils.getPreferredCodec()) {
+            case DeviceUtils.ALL_CODECS:
+                Log.d(this.TAG, "Unlocking all codecs...");
+                return CodecConfig_Android5;
             case DeviceUtils.AVC:
                 Log.d(this.TAG, "Forcing AVC codec...");
                 return CodecConfig_AVC;
@@ -28,11 +31,6 @@ function CodecFixAddon() {
                 Log.d(this.TAG, "Forcing VP9 codec...");
                 return CodecConfig_VP9;
         }
-
-        // unlock all codecs on newer devices
-        // if (DeviceUtils.getApiLevel() >= 21) {
-        //     return CodecConfig_Android5;
-        // }
 
         if (DeviceUtils.isWebView()) {
             return CodecConfig_WebView;

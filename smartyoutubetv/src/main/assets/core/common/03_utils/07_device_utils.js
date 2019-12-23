@@ -8,6 +8,7 @@ var DeviceUtils = {
     TAG: 'DeviceUtils',
     VP9: 'vp9',
     AVC: 'avc',
+    ALL_CODECS: 'all_codecs',
     WEBVIEW: 'WebView',
     XWALK: 'XWalk',
     MESSAGE_APP_LOADED: 'message_app_loaded',

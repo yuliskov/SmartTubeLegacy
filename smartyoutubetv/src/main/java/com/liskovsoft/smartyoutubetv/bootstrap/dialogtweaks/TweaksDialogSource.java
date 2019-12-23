@@ -9,6 +9,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitD
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAllCodecsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceVP9DialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HideBootTipsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
@@ -50,6 +51,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new BackPressExitDialogItem(mContext));
+        mItems.add(new ForceAllCodecsDialogItem(mContext));
         mItems.add(new ForceAVCDialogItem(mContext));
         mItems.add(new ForceVP9DialogItem(mContext));
         mItems.add(new AltPlayerMappingDialogItem(mContext));
