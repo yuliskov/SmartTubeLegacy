@@ -21,8 +21,13 @@ div#spinner,
 
 div.player,
 div.loader-container,
-body {
+body, html {
     background-color: transparent !important;
+}
+
+/* For Kids only */
+#watch {
+    background-color: initial !important;
 }
 
 video {

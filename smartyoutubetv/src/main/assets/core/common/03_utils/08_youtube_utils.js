@@ -42,10 +42,10 @@ var YouTubeUtils = {
         Utils.$('body').style.backgroundImage = 'initial';
 
         // NOTE: for kids
-        var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        if (playerEventsRoot) {
-            playerEventsRoot.style.backgroundColor = 'initial';
-        }
+        // var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        // if (playerEventsRoot) {
+        //     playerEventsRoot.style.backgroundColor = 'initial';
+        // }
     },
 
     /**
@@ -55,10 +55,10 @@ var YouTubeUtils = {
         Utils.$('body').style.backgroundImage = '';
 
         // NOTE: for kids
-        var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        if (playerEventsRoot) {
-            playerEventsRoot.style.backgroundColor = '';
-        }
+        // var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        // if (playerEventsRoot) {
+        //     playerEventsRoot.style.backgroundColor = '';
+        // }
     },
 
     /**
