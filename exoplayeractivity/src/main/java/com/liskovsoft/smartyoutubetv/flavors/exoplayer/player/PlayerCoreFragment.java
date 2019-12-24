@@ -33,7 +33,6 @@ import com.google.android.exoplayer2.drm.HttpMediaDrmCallback;
 import com.google.android.exoplayer2.drm.UnsupportedDrmException;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
-import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -224,7 +223,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             mLastSeenTrackGroupArray = null;
 
-            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
+            //mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent));
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);
