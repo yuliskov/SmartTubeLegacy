@@ -52,9 +52,11 @@ public class ParserUtils {
                 .jsonProvider(new GsonJsonProvider())
                 .build();
 
-        return JsonPath
-                .using(conf)
-                .parse(jsonInfo);
+        try {
+            return JsonPath.using(conf).parse(jsonInfo);
+        } catch (Exception e) {
+            throw new IllegalStateException("Malformed json: " + jsonInfo, e);
+        }
     }
 
     public static String extractString(String jsonPath, DocumentContext parser) {

@@ -9,6 +9,7 @@ import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import java.io.InputStream;
 
@@ -46,7 +47,14 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Response response = getResponse(url);
 
-        InputStream result = response.body().byteStream();
+        ResponseBody body = response.body();
+
+        if (body == null) {
+            Log.e(TAG, "Can't inject custom scripts into " + url + ". Response is empty.");
+            return null;
+        }
+
+        InputStream result = body.byteStream();
 
         if (isFirstScript(url)) {
             result = applyInit(result);

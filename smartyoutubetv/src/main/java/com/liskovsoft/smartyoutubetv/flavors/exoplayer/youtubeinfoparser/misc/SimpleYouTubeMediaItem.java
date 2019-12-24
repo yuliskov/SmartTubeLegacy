@@ -319,4 +319,17 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
         return ITag.compare(getITag(), item.getITag());
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(
+                "{Url: %s, Source url: %s, Signature: %s, Clen: %s, Size: %s, ITag: %s}",
+                getUrl(),
+                getSourceURL(),
+                getSignature(),
+                getClen(),
+                getSize(),
+                getITag());
+    }
 }

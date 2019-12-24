@@ -533,7 +533,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         String len = extractDurationFromTrack();
 
         if (len == null) {
-            throw new IllegalStateException("Video doesn't have a duration. Size of the video list: " + mMP4Videos.size());
+            throw new IllegalStateException("Videos in the list doesn't have a duration. Content: " + mMP4Videos);
         }
 
         mInfo.setLengthSeconds(len);
