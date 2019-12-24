@@ -230,7 +230,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         HistoryInterceptor history = mInterceptor.getHistoryInterceptor();
 
         if (history != null) {
-            history.setPosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
+            history.updatePosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
         }
 
         mActionSender.bindActions(intent, mMetadata);

@@ -24,14 +24,16 @@ public class YouTubeHistoryUpdater {
     }
 
     public void sync(String trackingUrl, float position, float length) {
-        Log.d(TAG, String.format("Start history updating: %s, %s, %s", trackingUrl, position, length));
+        Log.d(TAG, String.format("Start history updating: %s, position: %s, length: %s", trackingUrl, position, length));
         HashMap<String, String> headers = mManager.getHeaders();
         final String fullTrackingUrl = processUrl(trackingUrl, position, length);
-        Log.d(TAG, "Full tracking url: " + fullTrackingUrl);
-        Log.d(TAG, "Tracking headers: " + headers);
+        Log.d(TAG, "Composed tracking url: " + fullTrackingUrl);
+        //Log.d(TAG, "Tracking headers: " + headers);
         new Thread(() -> {  // avoid NetworkOnMainThreadException
             Response response = OkHttpHelpers.doGetOkHttpRequest(fullTrackingUrl, headers);
-            Log.d(TAG, "Tracking response: " + response);
+            if (!response.isSuccessful()) {
+                Log.e(TAG, "Bad tracking response: " + response);
+            }
         }).start();
     }
 

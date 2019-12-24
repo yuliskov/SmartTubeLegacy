@@ -9,6 +9,7 @@ public class HistoryInterceptor extends RequestInterceptor {
     private final Context mContext;
     private final YouTubeHistoryUpdater mTracker;
     private float mPosition;
+    private String mUrl;
 
     public HistoryInterceptor(Context context) {
         super(context);
@@ -23,13 +24,17 @@ public class HistoryInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        mTracker.sync(url, mPosition, 0);
+        mUrl = url;
 
         // block url
         return new WebResourceResponse(null, null, null);
     }
 
-    public void setPosition(float position) {
+    public void updatePosition(float position) {
         mPosition = position;
+
+        if (mUrl != null) {
+            mTracker.sync(mUrl, mPosition, 0);
+        }
     }
 }
