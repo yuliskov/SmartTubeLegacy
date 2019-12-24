@@ -26,7 +26,7 @@ body, html {
 }
 
 /* For Kids only */
-#watch {
+#watch:not(.post-play) {
     background-color: initial !important;
 }
 

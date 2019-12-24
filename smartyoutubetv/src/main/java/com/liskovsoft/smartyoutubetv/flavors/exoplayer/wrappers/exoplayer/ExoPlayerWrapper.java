@@ -32,6 +32,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
+    private final HistoryInterceptor mHistory;
     private GenericInfo mInfo;
     private String mSpec;
     private Sample mSample;
@@ -81,6 +82,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     public ExoPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
+        mHistory = interceptor.getHistoryInterceptor();
 
         mFragmentsManager = interceptor.getFragmentsManager();
         mManager = interceptor.getBackgroundActionManager();
@@ -202,7 +204,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 Helpers.mergeIntents(playerIntent, mMetadata.toIntent());
             }
 
-            mManager.onOpen(); // about to open new video
+            mManager.onOpen(); // notify that we about to open new video
+
+            if (mHistory != null) {
+                mHistory.onStart(); // notify that we about to open new video
+            }
         }
 
         mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
@@ -227,10 +233,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             mManager.onClose();
         }
 
-        HistoryInterceptor history = mInterceptor.getHistoryInterceptor();
-
-        if (history != null) {
-            history.updatePosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
+        if (mHistory != null) {
+            mHistory.updatePosition(intent.getFloatExtra(ExoPlayerFragment.VIDEO_POSITION, 0));
         }
 
         mActionSender.bindActions(intent, mMetadata);

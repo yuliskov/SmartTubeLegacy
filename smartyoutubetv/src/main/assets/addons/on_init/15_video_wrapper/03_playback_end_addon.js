@@ -3,6 +3,7 @@
  */
 function PlaybackEndAddon() {
     this.TAG = 'PlaybackEndAddon';
+    this.videoId = '';
 
     this.onInit = function(video) {
         this.initProps(video);
@@ -10,7 +11,25 @@ function PlaybackEndAddon() {
     };
 
     this.onSrcChange = function(video) {
+        // isn't right place to detect new video
+
         this.imitatePlaying(video);
+
+        // if (this.checkUrlChanged()) {
+        //     this.imitatePlaying(video);
+        // }
+    };
+
+    this.checkUrlChanged = function() {
+        var params = Utils.getQueryParams(location.href);
+
+        if (params.v && params.v != this.videoId) {
+            Log.d(this.TAG, "Video id is changed!");
+            this.videoId = params.v;
+            return true;
+        }
+
+        return false;
     };
 
     this.initProps = function(video) {
@@ -27,7 +46,7 @@ function PlaybackEndAddon() {
         video.properties.baseURI = 'https://www.youtube.com/tv#/watch/video/idle?v=bR66Yyj3p48&resume';
         video.properties.currentSrc = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
 
-        video.properties.duration = 74;
+        video.properties.duration = 10000;
 
         // video.properties.currentTime = 21.665161;
         video.properties.src = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
@@ -35,6 +54,12 @@ function PlaybackEndAddon() {
 
     this.addAdditionalFunctions = function(video) {
         var $this = this;
+
+        video.imitatePlaying = function() {
+            Log.d($this.TAG, "Pretending that there is a video playback. Needed to make suggestions working.");
+            $this.imitatePlaying(video);
+        };
+
         video.imitateEnding = function() {
             Log.d($this.TAG, "End of the video is reached...");
             $this.imitateEndingInt(video);

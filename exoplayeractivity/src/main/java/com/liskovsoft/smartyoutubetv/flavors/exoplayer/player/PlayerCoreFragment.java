@@ -2,6 +2,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,11 +47,13 @@ import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -179,6 +183,28 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         mSimpleExoPlayerView.setControllerShowTimeoutMs(UI_SHOW_TIMEOUT_MS);
 
         mPlayerTopBar.setVisibility(View.GONE);
+
+        configureSubtitleView();
+    }
+
+    private void configureSubtitleView() {
+        if (mSimpleExoPlayerView != null) {
+            SubtitleView subtitleView = mSimpleExoPlayerView.getSubtitleView();
+
+            if (subtitleView != null) {
+                // disable default style
+                subtitleView.setApplyEmbeddedStyles(false);
+
+                int defaultSubtitleColor = Color.argb(255, 218, 218, 218);
+                int outlineColor = Color.argb(255, 43, 43, 43);
+                CaptionStyleCompat style =
+                        new CaptionStyleCompat(defaultSubtitleColor,
+                                Color.TRANSPARENT, Color.TRANSPARENT,
+                                CaptionStyleCompat.EDGE_TYPE_OUTLINE,
+                                outlineColor, Typeface.DEFAULT);
+                subtitleView.setStyle(style);
+            }
+        }
     }
 
     public void setIntent(Intent intent) {

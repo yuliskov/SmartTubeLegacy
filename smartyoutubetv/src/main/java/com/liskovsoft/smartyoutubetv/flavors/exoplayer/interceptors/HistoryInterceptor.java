@@ -2,10 +2,12 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.YouTubeHistoryUpdater;
 
 public class HistoryInterceptor extends RequestInterceptor {
+    private static final String TAG = HistoryInterceptor.class.getSimpleName();
     private final Context mContext;
     private final YouTubeHistoryUpdater mTracker;
     private float mPosition;
@@ -24,6 +26,8 @@ public class HistoryInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
+        Log.d(TAG, "On url: " + url);
+
         mUrl = url;
 
         // block url
@@ -36,5 +40,9 @@ public class HistoryInterceptor extends RequestInterceptor {
         if (mUrl != null) {
             mTracker.sync(mUrl, mPosition, 0);
         }
+    }
+
+    public void onStart() {
+        mUrl = null;
     }
 }

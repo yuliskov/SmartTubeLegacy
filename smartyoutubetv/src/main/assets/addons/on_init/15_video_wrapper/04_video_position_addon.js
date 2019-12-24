@@ -7,7 +7,7 @@ function VideoPositionAddon() {
 
     this.onSrcChange = function(video) {
         // reset time
-        Log.d(this.TAG, "Video opened");
+        Log.d(this.TAG, "New video opened??");
         DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, 0);
     };
 

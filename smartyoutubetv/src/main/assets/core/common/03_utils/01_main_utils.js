@@ -433,6 +433,24 @@ var Utils = {
         fullSpec = fullSpec.toLowerCase();
         spec = spec.toLowerCase();
         return fullSpec.indexOf(spec) >= 0;
+    },
+
+    getQueryParams: function(qs) {
+        if (!qs) {
+            return null;
+        }
+
+        qs = qs.split('+').join(' ');
+
+        var params = {},
+            tokens,
+            re = /([^=?&]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        return params;
     }
 };
 
