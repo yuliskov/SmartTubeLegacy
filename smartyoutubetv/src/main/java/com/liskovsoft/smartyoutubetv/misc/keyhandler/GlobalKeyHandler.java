@@ -18,7 +18,7 @@ public class GlobalKeyHandler {
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private int mDoubleBackToExitPressedTimes;
-    private int mDownPressed;
+    private boolean mDownPressed;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
@@ -119,18 +119,16 @@ public class GlobalKeyHandler {
     }
 
     /**
-     * Ignore non-paired key up events
+     * Ignore unpaired ACTION_UP events
      */
     private boolean ignoreEvent(KeyEvent event) {
-        mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
-
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mDownPressed++;
+            mDownPressed = true;
             return false;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
-            mDownPressed--;
+        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed) {
+            mDownPressed = false;
             return false;
         }
 
@@ -143,19 +141,19 @@ public class GlobalKeyHandler {
      * @param event event
      * @return is ignored
      */
-    private boolean isEventIgnoredOld(KeyEvent event) {
-        mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
-
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mDownPressed++;
-            return false;
-        }
-
-        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
-            mDownPressed--;
-            return false;
-        }
-
-        return true;
-    }
+    //private boolean isEventIgnoredOld(KeyEvent event) {
+    //    mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
+    //
+    //    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+    //        mDownPressed++;
+    //        return false;
+    //    }
+    //
+    //    if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
+    //        mDownPressed--;
+    //        return false;
+    //    }
+    //
+    //    return true;
+    //}
 }
