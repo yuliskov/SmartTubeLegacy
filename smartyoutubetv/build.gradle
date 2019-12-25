@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 861
-        versionName "6.17.281"
+        versionCode 862
+        versionName "6.17.282"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -137,12 +137,12 @@ android {
         //    versionCode 9400 + defaultConfig.versionCode
         //    applicationId "com.novotelecom.smartyoutubetv"
         // }
-        Vistargroups {
-            // Istargroups.com
-            matchingFallbacks = ['lite']
-            versionCode 9400 + defaultConfig.versionCode
-            applicationId "com.istargroups.smartyoutubetv"
-        }
+        // Vistargroups {
+        //     // Istargroups.com
+        //     matchingFallbacks = ['lite']
+        //     versionCode 9400 + defaultConfig.versionCode
+        //     applicationId "com.istargroups.smartyoutubetv"
+        // }
         Vrtarmenia {
             matchingFallbacks = ['lite']
             versionCode 9400 + defaultConfig.versionCode
@@ -200,9 +200,9 @@ android {
         Vnovotelecom {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }
-        Vistargroups {
-            java.srcDirs('src/commonSrc/appWatcher/java')
-        }
+        // Vistargroups {
+        //     java.srcDirs('src/commonSrc/appWatcher/java')
+        // }
         Vrtarmenia {
             java.srcDirs('src/commonSrc/appWatcher/java')
         }

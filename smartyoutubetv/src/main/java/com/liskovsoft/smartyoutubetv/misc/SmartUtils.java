@@ -24,15 +24,17 @@ public class SmartUtils {
     public static final String KEYCODE_LEFT = "LEFT";
 
     @SuppressLint("WrongConstant")
-    public static void returnToLaunchersDialog(Activity context) {
+    public static void returnToLaunchersDialogOrExit(Activity context) {
         Intent intent = new Intent();
         intent.setClass(context, BootstrapActivity.class);
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
 
         if (Helpers.isActivityExists(intent, context)) {
             context.startActivity(intent);
-            context.finish();
         }
+
+        // Exit from the app in either case
+        context.finish();
     }
 
     public static void restartToBootstrap(Context context) {

@@ -223,8 +223,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             mLastSeenTrackGroupArray = null;
 
-            //mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
-            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent));
+            mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);

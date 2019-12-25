@@ -226,7 +226,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
         event = mKeyHandler.translateKey(event);
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
-            SmartUtils.returnToLaunchersDialog(this);
+            SmartUtils.returnToLaunchersDialogOrExit(this);
             return true;
         }
 
