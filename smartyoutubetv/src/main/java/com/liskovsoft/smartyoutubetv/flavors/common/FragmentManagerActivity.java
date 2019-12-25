@@ -217,16 +217,21 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
             return true;
         }
 
-        Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
-
         event = mKeyHandler.translateKey(event);
 
+        if (event == null) { // event is ignored
+            return false;
+        }
+
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
+            Log.d(TAG, "Back pressed. Exiting from the app...");
             SmartUtils.returnToLaunchersDialogOrExit(this);
             return true;
         }
 
-        mEvent = event; // give a choice to modify this event in the middle of the pipeline
+        Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
+
+        mEvent = event; // give a ability to modify this event in the middle of the pipeline
         return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
     }
 

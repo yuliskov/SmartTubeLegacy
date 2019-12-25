@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.KeyEvent;
+import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -48,10 +49,11 @@ public class GlobalKeyHandler {
         }
     }
 
+    @Nullable
     public KeyEvent translateKey(KeyEvent event) {
         if (ignoreEvent(event)) {
             Log.d(TAG, "Oops. Seems phantom key received. Ignoring... " + event);
-            return Helpers.newEvent(event, KeyEvent.KEYCODE_UNKNOWN);
+            return null;
         }
 
         checkBackPressed(event);
@@ -119,9 +121,14 @@ public class GlobalKeyHandler {
     }
 
     /**
-     * Ignore unpaired ACTION_UP events
+     * Ignore unpaired ACTION_UP events<br/>
+     * Ignore UNKNOWN key codes
      */
     private boolean ignoreEvent(KeyEvent event) {
+        if (event == null || event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN) {
+            return true;
+        }
+
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             mDownPressed = true;
             return false;
