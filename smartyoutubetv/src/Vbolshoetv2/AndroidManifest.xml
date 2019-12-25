@@ -38,7 +38,6 @@
         <activity android:alwaysRetainTaskState="true"
                   android:configChanges="keyboard|keyboardHidden|locale|orientation|screenSize"
                   android:icon="@mipmap/ic_launcher_main"
-                  android:label="@string/app_name"
                   android:launchMode="singleTask"
                   android:name="com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt"
                   android:windowSoftInputMode="adjustResize">

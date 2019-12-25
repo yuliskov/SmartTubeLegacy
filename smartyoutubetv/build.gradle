@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 862
-        versionName "6.17.282"
+        versionCode 863
+        versionName "6.17.283"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -185,32 +185,36 @@ android {
     // Create common folder for duplicate classes.
     // More info: https://stackoverflow.com/questions/37439120/product-flavor-duplicate-class-found
     sourceSets {
+        def commonDirs = ['src/commonSrc/appWatcher/java', 'src/commonSrc/crashHandler/java']
+        orig {
+            java.srcDirs('src/commonSrc/crashHandler/java')
+        }
         Vlitemain {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vlitealt {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vkids {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vlive {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vnovotelecom {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         // Vistargroups {
         //     java.srcDirs('src/commonSrc/appWatcher/java')
         // }
         Vrtarmenia {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vrtarmenia2 {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
         Vunoiptv {
-            java.srcDirs('src/commonSrc/appWatcher/java')
+            java.srcDirs(commonDirs)
         }
     }
 }

@@ -37,7 +37,7 @@ import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
 
-public abstract class FragmentManagerActivity extends AppCompatActivity implements FragmentManager {
+public abstract class FragmentManagerActivity extends CrashHandlerActivity implements FragmentManager {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
@@ -52,10 +52,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     private GlobalKeyHandler mKeyHandler;
     private AppStateWatcherBase mAppStateWatcher;
     private Uri mUrlData;
-
-    //public FragmentManagerActivity() {
-    //    new GlobalExceptionHandler(this).onInit();
-    //}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,8 +316,6 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     @Override
     protected void onPause() {
         super.onPause();
-
-        // int a = 1/0;
 
         Log.flush();
     }
