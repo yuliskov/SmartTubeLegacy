@@ -59,7 +59,7 @@ import java.util.Locale;
 /**
  * Logs player events using {@link Log}.
  */
-/* package */ final class EventLogger implements ExoPlayer.EventListener, AudioRendererEventListener, VideoRendererEventListener,
+/* package */ final class MyEventLogger implements ExoPlayer.EventListener, AudioRendererEventListener, VideoRendererEventListener,
         AdaptiveMediaSourceEventListener, ExtractorMediaSource.EventListener, DefaultDrmSessionEventListener, MetadataOutput /*MetadataRenderer.Output*/ {
 
     private static final String TAG = "EventLogger";
@@ -78,7 +78,7 @@ import java.util.Locale;
     private final Timeline.Period mPeriod;
     private final long mStartTimeMs;
 
-    public EventLogger(MappingTrackSelector trackSelector) {
+    public MyEventLogger(MappingTrackSelector trackSelector) {
         this.mTrackSelector = trackSelector;
         mWindow = new Timeline.Window();
         mPeriod = new Timeline.Period();

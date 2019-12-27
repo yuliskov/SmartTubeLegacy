@@ -39,7 +39,7 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
         return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
     }
 
-    //// Ver 2.10.4
+    // Ver 2.10.4
     //@Nullable
     //@Override
     //protected TrackSelection.Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,

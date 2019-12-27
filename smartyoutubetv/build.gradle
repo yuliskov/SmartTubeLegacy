@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 864
-        versionName "6.17.284"
+        versionCode 867
+        versionName "6.17.287"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -151,7 +151,7 @@ android {
         Vrtarmenia2 {
             matchingFallbacks = ['lite']
             versionCode 9400 + defaultConfig.versionCode
-            applicationId "com.rtarmenia.smartyoutubetv2"
+            applicationId "com.google.android.youtube.tv"
         }
         Vunoiptv {
             matchingFallbacks = ['lite']
@@ -190,31 +190,31 @@ android {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
         Vlitemain {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vlitealt {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vkids {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vlive {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vnovotelecom {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         // Vistargroups {
         //     java.srcDirs('src/commonSrc/appWatcher/java')
         // }
         Vrtarmenia {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vrtarmenia2 {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
         Vunoiptv {
-            java.srcDirs(commonDirs)
+            java.srcDirs = commonDirs
         }
     }
 }

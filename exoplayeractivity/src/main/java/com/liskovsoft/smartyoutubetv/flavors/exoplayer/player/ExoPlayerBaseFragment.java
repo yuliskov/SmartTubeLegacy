@@ -70,6 +70,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String STORYBOARD_SPEC = "storyboard_spec";
     public static final String VIDEO_LENGTH = "video_length";
     public static final String VIDEO_POSITION = "video_position";
+    public static final String PERCENT_WATCHED = "percent_watched";
 
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private boolean mIsDurationSet;
@@ -152,7 +153,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         //}
 
         mTrackSelectionHelper = new TrackSelectionHelper(mTrackSelector, trackSelectionFactory);
-        mEventLogger = new EventLogger(mTrackSelector);
+        mEventLogger = new MyEventLogger(mTrackSelector);
     }
 
     public void showDebugView(final boolean show) {

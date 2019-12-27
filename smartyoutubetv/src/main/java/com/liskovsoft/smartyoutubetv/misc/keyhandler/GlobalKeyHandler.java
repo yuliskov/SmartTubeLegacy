@@ -80,6 +80,9 @@ public class GlobalKeyHandler {
             case KeyEvent.KEYCODE_BUTTON_L2:
                 event = Helpers.newEvent(event, KeyEvent.KEYCODE_DPAD_LEFT);
                 break;
+            case KeyEvent.KEYCODE_BUTTON_A:
+                event = Helpers.newEvent(event, KeyEvent.KEYCODE_DPAD_CENTER);
+                break;
         }
 
         return event;

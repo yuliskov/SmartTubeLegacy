@@ -42,6 +42,9 @@ public class JsonNextParser {
             ".videoMetadataRenderer.likeStatus";
     private static final String CHANNEL_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
             ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.channelId";
+    // NOTE: PERCENT_WATCHED not working for current video
+    private static final String PERCENT_WATCHED = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
+            ".videoMetadataRenderer.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched";
     private static final String LIKE_STATUS_LIKE = "LIKE";
     private static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     private static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
@@ -92,6 +95,7 @@ public class JsonNextParser {
         videoMetadata.setLiked(LIKE_STATUS_LIKE.equals(likeStatus));
         videoMetadata.setDisliked(LIKE_STATUS_DISLIKE.equals(likeStatus));
         videoMetadata.setChannelId(str(CHANNEL_ID));
+        videoMetadata.setPercentWatched(integer(PERCENT_WATCHED));
 
         return videoMetadata;
     }
@@ -103,6 +107,23 @@ public class JsonNextParser {
         nextVideoMetadata.setPlaylistId(str(NEXT_VIDEO_PLAYLIST_ID));
 
         return nextVideoMetadata;
+    }
+
+    private Integer integer(String... paths) {
+        Integer result = null;
+
+        for (String path : paths) {
+            result = ParserUtils.extractInt(path, mParser);
+            if (result != null) {
+                break;
+            }
+        }
+
+        if (result == null) {
+            Log.e(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
+        }
+
+        return result;
     }
 
     private Boolean bool(String... paths) {
@@ -153,6 +174,7 @@ public class JsonNextParser {
         private String mVideoId;
         private String mChannelId;
         private String mPlaylistId;
+        private Integer mPercentWatched;
 
         private VideoMetadata mNextVideo;
 
@@ -268,6 +290,14 @@ public class JsonNextParser {
             mPlaylistId = playlistId;
         }
 
+        public Integer getPercentWatched() {
+            return mPercentWatched;
+        }
+
+        public void setPercentWatched(Integer percentWatched) {
+            mPercentWatched = percentWatched;
+        }
+
         public Intent toIntent() {
             Intent intent = new Intent();
             intent.putExtra(ExoPlayerFragment.VIDEO_TITLE, mTitle);
@@ -277,6 +307,7 @@ public class JsonNextParser {
             intent.putExtra(ExoPlayerFragment.BUTTON_LIKE, mLiked);
             intent.putExtra(ExoPlayerFragment.BUTTON_DISLIKE, mDisliked);
             intent.putExtra(ExoPlayerFragment.BUTTON_SUBSCRIBE, mSubscribed);
+            intent.putExtra(ExoPlayerFragment.PERCENT_WATCHED, mPercentWatched);
 
             return intent;
         }

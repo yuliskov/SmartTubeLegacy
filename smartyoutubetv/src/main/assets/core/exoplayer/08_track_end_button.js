@@ -5,17 +5,17 @@ function TrackEndFakeButton(selector, states) {
     this.selector = selector;
     this.stateless = true;
 
-    this.pressNextButton = function() {
-        Log.d(this.TAG, "Something is wrong, do workaround: switch to the next track");
-        var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
-        btn.setChecked(true);
-    };
-
-    this.pressBackButton = function() {
-        Log.d(this.TAG, "Something is wrong, do workaround: switching back");
-        var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_BACK);
-        btn.setChecked(true);
-    };
+    // this.pressNextButton = function() {
+    //     Log.d(this.TAG, "Something is wrong, do workaround: switch to the next track");
+    //     var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_NEXT);
+    //     btn.setChecked(true);
+    // };
+    //
+    // this.pressBackButton = function() {
+    //     Log.d(this.TAG, "Something is wrong, do workaround: switching back");
+    //     var btn = ExoButton.fromSelector(PlayerActivityMapping.BUTTON_BACK);
+    //     btn.setChecked(true);
+    // };
 
     this.getChecked = function() {
         return null; // not exists

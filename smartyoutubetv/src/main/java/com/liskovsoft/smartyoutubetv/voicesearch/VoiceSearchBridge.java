@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class VoiceSearchBridge implements SearchCallback {
     private final VoiceSearchConnector mConnector;
     private final ArrayList<VoiceDialog> mDialogs;
+    private boolean mDialogOpen;
 
     public VoiceSearchBridge(AppCompatActivity activity) {
         mConnector = new VoiceSearchConnector();
@@ -30,11 +31,13 @@ public class VoiceSearchBridge implements SearchCallback {
                 event.getKeyCode() == KeyEvent.KEYCODE_SEARCH ||
                 event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_Y;
 
-        if (isSearchKey) {
-            boolean isUp = event.getAction() == KeyEvent.ACTION_UP;
+        if (isSearchKey && !mDialogOpen) {
+            boolean isUp = event.getAction() == KeyEvent.ACTION_DOWN; // user holding button
+
             if (isUp) { // remove on up action only
                 displaySpeechRecognizers();
             }
+
             return true;
         }
 
@@ -44,12 +47,15 @@ public class VoiceSearchBridge implements SearchCallback {
     protected void displaySpeechRecognizers() {
         for (VoiceDialog dialog : mDialogs) {
             if (dialog.displaySpeechRecognizer()) { // fist successful attempt is used
+                mDialogOpen = true;
                 break;
             }
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mDialogOpen = false;
+
         for (VoiceDialog dialog : mDialogs) {
             if (dialog instanceof ActivityListener) {
                 ((ActivityListener) dialog).onActivityResult(requestCode, resultCode, data);

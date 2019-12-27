@@ -57,6 +57,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
@@ -102,7 +103,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_SUBTITLE = 2;
     private static final int UI_SHOW_TIMEOUT_MS = 5_000;
 
-    protected EventLogger mEventLogger;
+    protected MyEventLogger mEventLogger;
 
     protected SimpleExoPlayer mPlayer;
     protected DefaultTrackSelector mTrackSelector;
@@ -230,6 +231,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             mPlayer.setAudioDebugListener(mEventLogger);
             mPlayer.setVideoDebugListener(mEventLogger);
             mPlayer.setMetadataOutput(mEventLogger);
+
+            if (BuildConfig.DEBUG) {
+                mPlayer.addAnalyticsListener(new EventLogger(mTrackSelector));
+            }
 
             mSimpleExoPlayerView.setPlayer(mPlayer);
             mPlayer.setPlayWhenReady(false); // give a chance to switch/restore track before play

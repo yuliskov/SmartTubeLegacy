@@ -59,6 +59,10 @@ public class ParserUtils {
         }
     }
 
+    public static Integer extractInt(String jsonPath, DocumentContext parser) {
+        return ParserUtils.<Integer>extractType(jsonPath, parser);
+    }
+
     public static String extractString(String jsonPath, DocumentContext parser) {
         return ParserUtils.<String>extractType(jsonPath, parser);
     }
