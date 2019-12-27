@@ -23,12 +23,15 @@ function VideoPositionWatcherAddon() {
             if (e.keyCode == DefaultKeys.ENTER) {
                 var bar = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_PROGRESS_BAR);
 
-                if (bar && bar.style) {
+                if (bar && bar.style && bar.style.width) {
                     var widthTemp = bar.style.width;
                     var widthPercents = parseInt(widthTemp);
 
                     Log.d($this.TAG, "Opening video. Position is " + widthPercents + "%");
                     DeviceUtils.sendMessage($this.MESSAGE_VIDEO_POSITION, widthPercents);
+                } else {
+                    Log.d($this.TAG, "Opening video. Position data not found!");
+                    DeviceUtils.sendMessage($this.MESSAGE_VIDEO_POSITION, 0);
                 }
             }
         }, true);
