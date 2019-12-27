@@ -1,8 +1,9 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.misc.youtubeutils;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;
@@ -53,7 +54,7 @@ public class YouTubeHistoryUpdater {
         result.set(LEN, length);
         // watch time in seconds
         result.set(CMT, position);
-        result.set(ST, position); // ???
+        result.set(ST, position); // the same. why?
         //result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
         result.set(ET, position);
         //result.set(ET, String.format("%s,%s", 0, watched));

@@ -3,6 +3,11 @@ package com.liskovsoft.smartyoutubetv.prefs;
 import android.content.Context;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
@@ -41,6 +46,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String USE_NEW_UI = "use_new_ui";
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
+    private static final String CURRENT_VIDEO_POSITION = "current_video_position";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -236,6 +242,8 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setCurrentVideoPosition(int positionSec) {
         mPositionSec = positionSec;
+
+        runListeners(CURRENT_VIDEO_POSITION);
     }
 
     public long getCurrentVideoPosition() {
@@ -338,5 +346,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setAutoShowPlayerUI(boolean checked) {
         putBoolean(AUTO_SHOW_PLAYER_UI, checked);
+    }
+
+    public void onSetCurrentVideoPosition(Runnable listener) {
+        if (listener != null) {
+            addListener(CURRENT_VIDEO_POSITION, listener);
+        }
     }
 }

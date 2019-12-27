@@ -8,12 +8,12 @@ function VideoPositionAddon() {
     this.onSrcChange = function(video) {
         // reset time
         Log.d(this.TAG, "New video opened??");
-        DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, 0);
+        //DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, 0);
     };
 
     this.onCurrentTime = function(video) {
         // update time
         Log.d(this.TAG, "Video position changed to " + video.properties.currentTime);
-        DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, video.properties.currentTime);
+        //DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, video.properties.currentTime);
     };
 }

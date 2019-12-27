@@ -1,16 +1,14 @@
-package com.liskovsoft.smartyoutubetv.misc;
+package com.liskovsoft.smartyoutubetv.misc.youtubeutils;
 
 import android.content.Context;
-import android.os.Handler;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 import okhttp3.Response;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class YouTubeTracker {
     private static final String TAG = YouTubeTracker.class.getSimpleName();

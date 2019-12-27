@@ -396,7 +396,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mActiveFragment.showSoftKeyboard();
     }
 
-    protected void onSearchQuery() {}
+    public void onSearchQuery() {}
 
     private void checkMemory() {
         MemoryInfo memory = Helpers.getAvailableMemory(this);

@@ -11,6 +11,8 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
@@ -35,6 +37,12 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
+
+        CommonApplication.getPreferences().onSetCurrentVideoPosition(this::onSetCurrentVideoPosition);
+    }
+
+    private void onSetCurrentVideoPosition() {
+        Log.d(TAG, "Real position changed to " + CommonApplication.getPreferences().getCurrentVideoPosition());
     }
 
     /**
