@@ -16,7 +16,7 @@ function EnableExternalKeyboardHookAddon() {
     this.hideKeyboardOnSubmit = function() {
         var $this = this;
 
-        // There is a handler that blocks others. Run before it!
+        // There is a handler that blocks others. We should run before it.
         // Note: running on capture phase
         EventUtils.addListener(document, DefaultEvents.KEY_DOWN, function(e) {
             Log.d($this.TAG, "User pressed " + e.keyCode);

@@ -38,7 +38,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         mPlayer = player;
         mSelector = selector;
 
-        CommonApplication.getPreferences().onSetCurrentVideoPosition(this::onSetCurrentVideoPosition);
+        //CommonApplication.getPreferences().onSetCurrentVideoPosition(this::onSetCurrentVideoPosition);
     }
 
     private void onSetCurrentVideoPosition() {
@@ -104,12 +104,22 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     }
 
     private void restoreTrackPosition() {
-        String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
+        long posPercents = CommonApplication.getPreferences().getCurrentVideoPosition();
 
-        long pos = findProperVideoPosition(title);
+        Log.d(TAG, "Real position of the video in percents: " + posPercents);
 
-        if (pos != C.TIME_UNSET && pos != 0){
-            mPlayer.seekTo(pos);
+        long posMs;
+
+        if (posPercents == 0) { // app just started, video opened
+            String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
+
+            posMs = findProperVideoPosition(title);
+        } else {
+            posMs = (mPlayer.getDuration() / 100) * posPercents;
+        }
+
+        if (posMs != C.TIME_UNSET && posMs != 0){
+            mPlayer.seekTo(posMs);
         }
     }
 

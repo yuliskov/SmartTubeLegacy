@@ -1,5 +1,6 @@
 /**
  * Notifies about video position change.
+ * Moved to 25_video_position_watcher
  */
 function VideoPositionAddon() {
     this.TAG = 'VideoPositionAddon';
