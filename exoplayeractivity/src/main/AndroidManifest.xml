@@ -11,7 +11,8 @@
         com.google.android.exoplayer2.source.smoothstreaming,
         com.google.android.exoplayer2.core,
         com.github.rubensousa.previewseekbar,
-        com.github.rubensousa.previewseekbar.exoplayer"/>
+        com.github.rubensousa.previewseekbar.exoplayer,
+        com.google.android.exoplayer2.ext.vp9"/>
 
     <application>
         <!-- NOTE: exoplayer specific section -->

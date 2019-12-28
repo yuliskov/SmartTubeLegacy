@@ -11,7 +11,14 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <!-- NOTE: use older sdk -->
-    <uses-sdk tools:overrideLibrary="org.xwalk.core, com.algolia.instantsearch.voice, androidx.leanback, androidx.tvprovider, com.github.rubensousa.previewseekbar, com.github.rubensousa.previewseekbar.exoplayer"/>
+    <uses-sdk tools:overrideLibrary="
+        org.xwalk.core,
+        com.algolia.instantsearch.voice,
+        androidx.leanback, androidx.tvprovider,
+        com.github.rubensousa.previewseekbar,
+        com.github.rubensousa.previewseekbar.exoplayer,
+        com.google.android.exoplayer2.ext.vp9,
+        com.google.android.exoplayer2.testutil"/>
 
     <!-- Leanback required fields -->
     <uses-feature

@@ -9,3 +9,8 @@ apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
 // prepare to git submodule
 gradle.ext.myVideoTubeRoot = new File(rootDir, '../MyVideoTube').exists() ? new File(rootDir, '../MyVideoTube') : new File(rootDir, './MyVideoTube')
 apply from: new File(gradle.ext.myVideoTubeRoot, 'core_settings.gradle')
+
+// exoplayer extension
+gradle.ext.exoplayerRoot = new File(rootDir, '../ExoPlayer2.11.1')
+gradle.ext.exoplayerModulePrefix = 'exoplayer-'
+apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')

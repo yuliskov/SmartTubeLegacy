@@ -55,7 +55,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String ALL_CODECS = "all_codecs";
     public static final String NONE = "";
     private static SmartPreferences sInstance;
-    private int mPositionSec;
+    private int mPositionSec = -1;
     private long mLastUserInteraction;
     private String mAuthorizationHeader;
     private String mCookieHeader;

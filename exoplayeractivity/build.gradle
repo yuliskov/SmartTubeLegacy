@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
     compileOptions {
@@ -84,7 +85,7 @@ dependencies {
 //    }
 
     // include vp9 extensions
-    //implementation (project(path: ':exoplayer-extension-vp9'), {
-    //    transitive = false
-    //})
+    implementation (project(path: ':exoplayer-extension-vp9'), {
+       transitive = false
+    })
 }
