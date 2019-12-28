@@ -42,7 +42,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
-        mRestored = new ArrayList<>();
+        mRestored = playerFragment.getRestoreData();
     }
 
     /**
@@ -299,13 +299,5 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(trackGroupAndIndex.first, trackGroupAndIndex.second);
         mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(rendererIndex, trackGroupArray, override));
-    }
-
-    public void setPlayer(SimpleExoPlayer player) {
-        mPlayer = player;
-    }
-
-    public void setSelector(DefaultTrackSelector trackSelector) {
-        mSelector = trackSelector;
     }
 }

@@ -81,6 +81,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private PlayerStateManager mStateManager;
     private VideoZoomManager mVideoZoomManager;
     private List<PlayerEventListener> mListeners;
+    private List<String> mRestore;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -114,12 +115,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 listener.onPlayerCreated();
             }
 
-            if (mStateManager == null) {
-                mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
-            }
-
-            mStateManager.setPlayer(mPlayer);
-            mStateManager.setSelector(mTrackSelector);
+            mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
 
             mPlayerInitializer.initVideoTitle();
 
@@ -603,5 +599,13 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         for (PlayerEventListener listener : mListeners) {
             listener.onAppResume();
         }
+    }
+
+    public List<String> getRestoreData() {
+        if (mRestore == null) {
+            mRestore = new ArrayList<>();
+        }
+
+        return mRestore;
     }
 }
