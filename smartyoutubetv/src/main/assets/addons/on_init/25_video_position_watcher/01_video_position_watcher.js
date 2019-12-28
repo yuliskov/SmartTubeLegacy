@@ -31,7 +31,7 @@ function VideoPositionWatcherAddon() {
                     DeviceUtils.sendMessage($this.MESSAGE_VIDEO_POSITION, widthPercents);
                 } else {
                     Log.d($this.TAG, "Opening video. Position data not found!");
-                    DeviceUtils.sendMessage($this.MESSAGE_VIDEO_POSITION, 0);
+                    DeviceUtils.sendMessage($this.MESSAGE_VIDEO_POSITION, -1);
                 }
             }
         }, true);

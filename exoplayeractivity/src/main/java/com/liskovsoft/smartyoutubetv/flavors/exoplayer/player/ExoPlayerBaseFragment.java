@@ -114,7 +114,12 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 listener.onPlayerCreated();
             }
 
-            mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
+            if (mStateManager == null) {
+                mStateManager = new PlayerStateManager(this, mPlayer, mTrackSelector);
+            }
+
+            mStateManager.setPlayer(mPlayer);
+            mStateManager.setSelector(mTrackSelector);
 
             mPlayerInitializer.initVideoTitle();
 

@@ -17,6 +17,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragm
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerCoreFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Restores saved position, quality and subtitles of the video
  */
@@ -29,20 +32,17 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     private static final long MAX_START_DURATION_MILLIS = 30 * 1000; // don't save if video just starts playing < 30 sec
     private static final long DECODER_INIT_TIME_MS = 1_000;
     private final ExoPlayerBaseFragment mPlayerFragment;
-    private final SimpleExoPlayer mPlayer;
-    private final DefaultTrackSelector mSelector;
+    private SimpleExoPlayer mPlayer;
+    private DefaultTrackSelector mSelector;
+    private List<String> mRestored;
 
     public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
         super(playerFragment.getActivity());
+
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
-
-        //CommonApplication.getPreferences().onSetCurrentVideoPosition(this::onSetCurrentVideoPosition);
-    }
-
-    private void onSetCurrentVideoPosition() {
-        Log.d(TAG, "Real position changed to " + CommonApplication.getPreferences().getCurrentVideoPosition());
+        mRestored = new ArrayList<>();
     }
 
     /**
@@ -51,6 +51,11 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreState() {
+        if (mPlayer == null || mSelector == null) {
+            Log.d(TAG, "Not fully initialized!");
+            return;
+        }
+
         restoreVideoTrack();
         restoreAudioTrack();
         restoreSubtitleTrack();
@@ -63,6 +68,11 @@ public class PlayerStateManager extends PlayerStateManagerBase {
      * All earlier calls might produce an error because {@link MappedTrackInfo#getTrackGroups(int) getTrackGroups} could be null
      */
     public void restoreStatePartially() {
+        if (mPlayer == null || mSelector == null) {
+            Log.d(TAG, "Not fully initialized!");
+            return;
+        }
+
         restoreVideoTrack();
     }
 
@@ -110,15 +120,17 @@ public class PlayerStateManager extends PlayerStateManagerBase {
 
         long posMs;
 
-        if (posPercents == 0) { // app just started, video opened
-            String title = mPlayerFragment.getMainTitle() + mPlayer.getDuration(); // create something like hash
+        long duration = mPlayer.getDuration();
+        String title = mPlayerFragment.getMainTitle() + duration; // create something like hash
 
+        if (posPercents < 0 || posPercents > 97 || mRestored.contains(title)) { // app just started, video opened
             posMs = findProperVideoPosition(title);
         } else {
-            posMs = (mPlayer.getDuration() / 100) * posPercents;
+            posMs = (duration / 100) * posPercents;
+            mRestored.add(title); // restore from web once, then use local data
         }
 
-        if (posMs != C.TIME_UNSET && posMs != 0){
+        if (posMs > 0 && posMs < (duration - MAX_TRAIL_DURATION_MILLIS)) {
             mPlayer.seekTo(posMs);
         }
     }
@@ -198,6 +210,11 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     }
 
     public void persistState() {
+        if (mPlayer == null || mSelector == null) {
+            Log.d(TAG, "Not fully initialized!");
+            return;
+        }
+
         Format videoFormat = mPlayer.getVideoFormat();
         Format audioFormat = mPlayer.getAudioFormat();
 
@@ -282,5 +299,13 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         TrackGroupArray trackGroupArray = info.getTrackGroups(rendererIndex);
         SelectionOverride override = new SelectionOverride(trackGroupAndIndex.first, trackGroupAndIndex.second);
         mSelector.setParameters(mSelector.buildUponParameters().setSelectionOverride(rendererIndex, trackGroupArray, override));
+    }
+
+    public void setPlayer(SimpleExoPlayer player) {
+        mPlayer = player;
+    }
+
+    public void setSelector(DefaultTrackSelector trackSelector) {
+        mSelector = trackSelector;
     }
 }
