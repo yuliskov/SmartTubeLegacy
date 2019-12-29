@@ -71,6 +71,11 @@ dependencies {
 
     // api project.properties.amazonExoplayerVersion
 
+    // include vp9 extensions
+    // implementation (project(path: ':exoplayer-extension-vp9'), {
+    //     transitive = false
+    // })
+
     implementation project.properties.previewSeekBarDevVersion
     implementation project.properties.previewSeekBarExoDevVersion
 
@@ -83,9 +88,4 @@ dependencies {
 //    implementation('androidx.media:media:1.0.0') {
 //        force = true
 //    }
-
-    // include vp9 extensions
-    implementation (project(path: ':exoplayer-extension-vp9'), {
-       transitive = false
-    })
 }

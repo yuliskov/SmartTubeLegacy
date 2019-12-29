@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Random;
 
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
@@ -24,6 +26,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private static final int TYPE_DASH_URL = 1;
     private static final int TYPE_HLS_URL = 2;
     private static final String MPD_FILE_NAME = "tmp_video.mpd";
+    private static final String VLC_PACKAGE_NAME = "org.videolan.vlc";
+    private static final String PLAYER_ACTIVITY_NAME = "org.videolan.vlc.gui.video.VideoPlayerActivity";
     private final File mMpdFile;
     private int mContentType;
     private Uri mDashUrl;
@@ -60,12 +64,13 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     @Override
     public void onResult(int resultCode, Intent data) {
-        Log.d(TAG, "External player is closed: " + resultCode + " " + data);
+        Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + data);
         mInterceptor.closePlayer();
     }
 
     /**
-     * <a href="https://wiki.videolan.org/Android_Player_Intents/">Create VLC intent</a>
+     * <a href="https://wiki.videolan.org/Android_Player_Intents/">VLC intent</a><br/>
+     * <a href="http://mx.j2inter.com/api">MX Player intent</a>
      */
     private void openInVLCPlayer() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -85,12 +90,20 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
                 break;
         }
 
-        intent.setPackage("org.videolan.vlc");
-        //intent.setComponent(new ComponentName("org.videolan.vlc", "org.videolan.vlc.gui.video.VideoPlayerActivity"));
+        // VLC extras
+        intent.putExtra("title", "Untitled");
+        //intent.putExtra("subtitles_location", "path/to/subtitles");
+        intent.putExtra("from_start", true);
+        intent.putExtra("position", 0); // from beginning
+        //intent.putExtra("extra_duration", 800);
+
+        //intent.setPackage(VLC_PACKAGE_NAME);
+        //intent.setComponent(new ComponentName(VLC_PACKAGE_NAME, PLAYER_ACTIVITY_NAME));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // merge new activity with current one
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // merge new activity with current one
 
         try {
+            Log.d(TAG, "Starting external player...");
             ((FragmentManager)mContext).startActivityForResult(intent, this);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();

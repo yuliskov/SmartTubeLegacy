@@ -31,7 +31,6 @@ import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
 import com.google.android.exoplayer2.drm.HttpMediaDrmCallback;
 import com.google.android.exoplayer2.drm.UnsupportedDrmException;
-import com.google.android.exoplayer2.ext.vp9.VpxLibrary;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
@@ -227,7 +226,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
 
-            Log.d(TAG, "High Bit Depth supported ? " + VpxLibrary.isHighBitDepthSupported());
+            //Log.d(TAG, "High Bit Depth supported ? " + VpxLibrary.isHighBitDepthSupported());
 
             mPlayer.addListener(this);
             mPlayer.addListener(mEventLogger);

@@ -6,6 +6,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import java.util.Comparator;
 
 public class MediaItemComparator implements Comparator<MediaItem> {
+    /**
+     * NOTE: Descendant sorting (better on top). High quality playback on external player.
+     */
     @Override
     public int compare(MediaItem leftItem, MediaItem rightItem) {
         if (leftItem.getGlobalSegmentList() != null ||
@@ -19,10 +22,10 @@ public class MediaItemComparator implements Comparator<MediaItem> {
         int leftItemHeight = leftItem.getSize() == null ? 0 : parseInt(MediaItemUtils.getHeight(leftItem));
         int rightItemHeight = rightItem.getSize() == null ? 0 : parseInt(MediaItemUtils.getHeight(rightItem));
 
-        int delta = leftItemHeight - rightItemHeight;
+        int delta = rightItemHeight - leftItemHeight;
 
         if (delta == 0) {
-            delta = leftItemBitrate - rightItemBitrate;
+            delta = rightItemBitrate - leftItemBitrate;
         }
 
         return delta;

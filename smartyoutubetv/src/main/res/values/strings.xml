@@ -75,8 +75,8 @@
     <string name="toast_remove_old_package">Package name has been changed. Please remove old app versions.</string>
     <string name="tweak_history_fix">Enable history fix</string>
     <string name="tweak_open_watch_later">Boot strict to Watch Later</string>
-    <string name="tweak_open_externally">Use external player</string>
-    <string name="message_install_vlc_player">Please install VLC player</string>
+    <string name="tweak_open_externally">PRO: Open video with external player</string>
+    <string name="message_install_vlc_player">You need to install VLC player</string>
     <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
     <string name="tweak_animated_previews">Enable animated previews</string>
     <string name="close_msg">App closed!</string>
@@ -97,7 +97,7 @@
     </string>
     <string name="app_crashed">App crashed.\nCheck for the newer version?</string>
     <string name="tweak_use_new_ui">Use new UI</string>
-    <string name="tweak_ugoos_afr_fix">UGOOS 50HZ fix</string>
+    <string name="tweak_ugoos_afr_fix">PRO: UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Hide boot tips</string>
     <string name="tweak_auto_show_player_ui">Auto show player UI</string>
 </resources>

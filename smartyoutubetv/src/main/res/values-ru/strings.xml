@@ -58,7 +58,7 @@
     <string name="toast_remove_old_package">Имя пакета было изменено. Пожалуйста, удалите предыдущие версии приложения.</string>
     <string name="tweak_history_fix">Исправлять историю</string>
     <string name="tweak_open_watch_later">Загружаться в раздел Просмотреть позже</string>
-    <string name="tweak_open_externally">Использовать внешний плеер</string>
+    <string name="tweak_open_externally">PRO: Открывать видео через внешний плеер</string>
     <string name="message_install_vlc_player">Для проигрывания нужен VLC плеер</string>
     <string name="tweak_fix_aspect">Исправление соотношения сторон и зума</string>
     <string name="tweak_animated_previews">Анимированные превью</string>
@@ -79,7 +79,7 @@
     </string>
     <string name="app_crashed">Сбой в работе программы.\nСкачать обновленную версию?</string>
     <string name="tweak_use_new_ui">Перейти на новый интерфейс</string>
-    <string name="tweak_ugoos_afr_fix">Исправление фреймрейта на UGOOS 50Гц</string>
+    <string name="tweak_ugoos_afr_fix">PRO: Исправление фреймрейта на UGOOS 50Гц</string>
     <string name="tweak_hide_boot_tips">Убрать подсказки (во время загрузки)</string>
     <string name="tweak_auto_show_player_ui">Отображать интерфейс плеера при нажатии на медиа-клавиши</string>
 </resources>

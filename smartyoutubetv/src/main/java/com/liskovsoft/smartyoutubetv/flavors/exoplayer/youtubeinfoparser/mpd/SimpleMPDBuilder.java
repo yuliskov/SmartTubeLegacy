@@ -115,10 +115,11 @@ public class SimpleMPDBuilder implements MPDBuilder {
             writeLiveHeaderSegmentList();
         }
 
-        writeMediaTagsForGroup(mMP4Audios);
-        writeMediaTagsForGroup(mMP4Videos);
-        writeMediaTagsForGroup(mWEBMAudios);
+        // write high quality formats first
         writeMediaTagsForGroup(mWEBMVideos);
+        writeMediaTagsForGroup(mWEBMAudios);
+        writeMediaTagsForGroup(mMP4Videos);
+        writeMediaTagsForGroup(mMP4Audios);
         writeMediaTagsForGroup(mSubs);
     }
 
