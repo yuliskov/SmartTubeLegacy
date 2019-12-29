@@ -56,6 +56,11 @@ public class GlobalKeyHandler {
             return null;
         }
 
+        if (isReservedKey(event)) {
+            Log.d(TAG, "Found globally reserved key. Ignoring..." + event);
+            return null;
+        }
+
         checkBackPressed(event);
 
         return gamepadFix(event);
@@ -143,6 +148,15 @@ public class GlobalKeyHandler {
         }
 
         return true;
+    }
+
+    private boolean isReservedKey(KeyEvent event) {
+        // ambilight button
+        //if (event.getKeyCode() == KeyEvent.KEYCODE_SVC_EXIT) {
+        //    return true;
+        //}
+
+        return false;
     }
 
     /**
