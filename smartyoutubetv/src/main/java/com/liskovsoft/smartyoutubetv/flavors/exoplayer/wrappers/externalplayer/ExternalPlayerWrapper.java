@@ -1,14 +1,15 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.liskovsoft.smartyoutubetv.R;
+import android.os.FileUriExposedException;
+import androidx.annotation.RequiresApi;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
@@ -16,8 +17,8 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Random;
 
+@RequiresApi(24)
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
     private final Context mContext;
@@ -36,7 +37,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mContext = context;
         mInterceptor = interceptor;
-        mMpdFile = new File(FileHelpers.getCacheDir(mContext), MPD_FILE_NAME);
+        mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
     }
 
     @Override
@@ -77,7 +78,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
         switch (mContentType) {
             case TYPE_DASH_CONTENT:
-                intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), "video/*");
+                // NOTE: Don't use parseFile or you will get FileUriExposedException
+                intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/*");
                 break;
             case TYPE_DASH_URL:
                 intent.setDataAndType(mDashUrl, "video/*"); // mpd
@@ -106,8 +108,13 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Log.d(TAG, "Starting external player...");
             ((FragmentManager)mContext).startActivityForResult(intent, this);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
             MessageHelpers.showMessage(mContext, R.string.message_install_vlc_player);
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            mInterceptor.closePlayer();
+        } catch (FileUriExposedException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
             mInterceptor.closePlayer();
         }
     }
