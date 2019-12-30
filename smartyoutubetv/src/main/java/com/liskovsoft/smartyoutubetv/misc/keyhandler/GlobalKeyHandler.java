@@ -151,10 +151,12 @@ public class GlobalKeyHandler {
     }
 
     private boolean isReservedKey(KeyEvent event) {
-        // ambilight button
-        //if (event.getKeyCode() == KeyEvent.KEYCODE_SVC_EXIT) {
-        //    return true;
-        //}
+        // Philips ambilight button
+        int KEYCODE_SVC_EXIT = 319;
+
+        if (event.getKeyCode() == KEYCODE_SVC_EXIT) {
+            return true;
+        }
 
         return false;
     }
