@@ -93,6 +93,9 @@ function PlaybackEndAddon() {
         }, 100);
     };
 
+    /**
+     * VIDEO EVENTS: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement#Events
+     */
     this.imitateEndingInt = function(video) {
         var i = 0;
         var $this = this;
@@ -109,7 +112,7 @@ function PlaybackEndAddon() {
             if (i >= 3 || urlChanged) {
                 clearInterval(interval);
 
-                // do cleanup, prepare for playing
+                // do cleanup, prepare for the next video
                 video.properties.currentTime = curTime;
                 video.properties.paused = false;
                 video.properties.ended = false;
@@ -120,6 +123,7 @@ function PlaybackEndAddon() {
 
             video.listeners['pause'][0]({type: 'pause', isTrusted: true});
             video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
+            video.listeners['ended'][0]({type: 'ended', isTrusted: true});
         }, 100);
     };
 
@@ -149,6 +153,7 @@ function PlaybackEndAddon() {
                 i++;
             }
 
+            video.listeners['durationchange'][0]({type: 'durationchange', isTrusted: true});
             video.listeners['pause'][0]({type: 'pause', isTrusted: true});
             video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
         }, 100);
