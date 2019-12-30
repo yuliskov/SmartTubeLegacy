@@ -37,6 +37,4 @@ function MediaCapsOverrideAddon() {
     };
 }
 
-if (DeviceUtils.isExo()) {
-    new MediaCapsOverrideAddon().run();
-}
+new MediaCapsOverrideAddon().run();

@@ -72,9 +72,9 @@ dependencies {
     // api project.properties.amazonExoplayerVersion
 
     // include vp9 extensions
-    implementation (project(path: ':exoplayer-extension-vp9'), {
-        transitive = false
-    })
+    // implementation (project(path: ':exoplayer-extension-vp9'), {
+    //     transitive = false
+    // })
 
     implementation project.properties.previewSeekBarDevVersion
     implementation project.properties.previewSeekBarExoDevVersion

@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.common.loading;
 import android.app.Activity;
 import android.os.Handler;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;

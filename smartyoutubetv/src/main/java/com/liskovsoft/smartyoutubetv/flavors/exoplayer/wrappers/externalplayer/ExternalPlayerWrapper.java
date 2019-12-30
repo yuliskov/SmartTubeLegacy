@@ -18,7 +18,6 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import java.io.File;
 import java.io.InputStream;
 
-@RequiresApi(24)
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
     private final Context mContext;
@@ -112,7 +111,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mInterceptor.closePlayer();
-        } catch (FileUriExposedException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mInterceptor.closePlayer();
