@@ -78,7 +78,7 @@ function PlaybackEndAddon() {
             setTimeout(function() {
                 Log.d($this.TAG, "Check locking..." + fn);
                 $this.checkLocking(fn);
-            }, 100);
+            }, 3000);
         } else {
             fn();
             PlaybackEndAddon.locked = true;
