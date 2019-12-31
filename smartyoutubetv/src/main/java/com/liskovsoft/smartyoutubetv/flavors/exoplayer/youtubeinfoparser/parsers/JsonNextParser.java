@@ -9,42 +9,31 @@ import java.util.Arrays;
 
 public class JsonNextParser {
     private static final String TAG = JsonNextParser.class.getSimpleName();
-    private static final String VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.title.runs[0].text";
-    private static final String VIDEO_AUTHOR = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
-            ".videoOwnerRenderer.title.runs[0].text";
-    private static final String VIEW_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.shortViewCountText.runs[0].text";
-    private static final String VIEW_COUNT_FULL = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.viewCountText.runs[0].text";
-    private static final String LIKES_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.likesCount.runs[0].text";
-    private static final String DISLIKES_COUNT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
-            ".contents[0].videoMetadataRenderer.dislikesCount.runs[0].text";
-    private static final String DESCRIPTION = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.description.runs[0].text";
-    private static final String PUBLISHED_DATE = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
-            ".contents[0].videoMetadataRenderer.publishedTimeText.runs[0].text";
-    private static final String PUBLISHED_DATE_FULL = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer" +
-            ".contents[0].videoMetadataRenderer.dateText.runs[0].text";
-    private static final String VIDEO_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.videoId";
-    private static final String NEXT_VIDEO_ID = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
-            ".maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId";
-    private static final String NEXT_VIDEO_ID_2 = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
-            ".autoplayEndpointRenderer.endpoint.watchEndpoint.videoId";
-    private static final String NEXT_VIDEO_PLAYLIST_ID = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
-            ".autoplayEndpointRenderer.endpoint.watchEndpoint.playlistId";
-    private static final String NEXT_VIDEO_TITLE = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer" +
-            ".maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text";
-    private static final String IS_SUBSCRIBED = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
-            ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.subscribed";
-    private static final String LIKE_STATUS = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.likeStatus";
-    private static final String CHANNEL_ID = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0]" +
-            ".videoOwnerRenderer.subscribeButton.subscribeButtonRenderer.channelId";
+    private static final String VIDEO_DATA_ROOT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer";
+    private static final String VIDEO_DATA_ROOT2 = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer.pivotVideoRenderer";
+    private static final String VIDEO_OWNER_ROOT = "$.contents.singleColumnWatchNextResults.results.results.contents[1].itemSectionRenderer.contents[0].videoOwnerRenderer";
+    private static final String NEXT_VIDEO_DATA_ROOT = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer";
+    private static final String VIDEO_TITLE =           VIDEO_DATA_ROOT + ".title.runs[0].text";
+    private static final String VIEW_COUNT =            VIDEO_DATA_ROOT + ".shortViewCountText.runs[0].text";
+    private static final String VIEW_COUNT_FULL =       VIDEO_DATA_ROOT + ".viewCountText.runs[0].text";
+    private static final String LIKES_COUNT =           VIDEO_DATA_ROOT + ".likesCount.runs[0].text";
+    private static final String DISLIKES_COUNT =        VIDEO_DATA_ROOT + ".dislikesCount.runs[0].text";
+    private static final String DESCRIPTION =           VIDEO_DATA_ROOT + ".description.runs[0].text";
+    private static final String PUBLISHED_DATE =        VIDEO_DATA_ROOT + ".publishedTimeText.runs[0].text";
+    private static final String PUBLISHED_DATE_FULL =   VIDEO_DATA_ROOT + ".dateText.runs[0].text";
+    private static final String VIDEO_ID =              VIDEO_DATA_ROOT + ".videoId";
+    private static final String LIKE_STATUS =           VIDEO_DATA_ROOT + ".likeStatus";
     // NOTE: PERCENT_WATCHED not working for current video
-    private static final String PERCENT_WATCHED = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0]" +
-            ".videoMetadataRenderer.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched";
+    private static final String PERCENT_WATCHED =       VIDEO_DATA_ROOT + ".thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched";
+    private static final String VIDEO_AUTHOR =  VIDEO_OWNER_ROOT + ".title.runs[0].text";
+    private static final String IS_SUBSCRIBED = VIDEO_OWNER_ROOT + ".subscribeButton.subscribeButtonRenderer.subscribed";
+    private static final String CHANNEL_ID =    VIDEO_OWNER_ROOT + ".subscribeButton.subscribeButtonRenderer.channelId";
+    // Video duration example: "4:27"
+    private static final String VIDEO_DURATION =    VIDEO_DATA_ROOT2 + ".lengthText.runs[0].text";
+    private static final String NEXT_VIDEO_ID =             NEXT_VIDEO_DATA_ROOT + ".maybeHistoryEndpointRenderer.endpoint.watchEndpoint.videoId";
+    private static final String NEXT_VIDEO_ID_2 =           NEXT_VIDEO_DATA_ROOT + ".autoplayEndpointRenderer.endpoint.watchEndpoint.videoId";
+    private static final String NEXT_VIDEO_PLAYLIST_ID =    NEXT_VIDEO_DATA_ROOT + ".autoplayEndpointRenderer.endpoint.watchEndpoint.playlistId";
+    private static final String NEXT_VIDEO_TITLE =          NEXT_VIDEO_DATA_ROOT + ".maybeHistoryEndpointRenderer.item.previewButtonRenderer.title.runs[0].text";
     private static final String LIKE_STATUS_LIKE = "LIKE";
     private static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     private static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";

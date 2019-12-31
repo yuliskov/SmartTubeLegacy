@@ -69,6 +69,8 @@ dependencies {
 
     api project.properties.exoplayerVersion
 
+    // implementation project.properties.exoplayerVP9ExtensionVersion
+
     // api project.properties.amazonExoplayerVersion
 
     // include vp9 extensions

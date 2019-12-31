@@ -127,6 +127,9 @@ function PlaybackEndAddon() {
         }, 100);
     };
 
+    /**
+     * VIDEO EVENTS: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement#Events
+     */
     this.imitatePositionInt = function(video, pos, length) {
         var i = 0;
         var $this = this;

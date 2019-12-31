@@ -22,6 +22,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mInterceptors.add(new OpenExternalPlayerInterceptor(context));
         mInterceptors.add(new PlaybackStatsInterceptor(context));
         mInterceptors.add(new LegacyMainScriptManagerInterceptor(context));
+        //mInterceptors.add(new AllUrlsInterceptor(context));
     }
 
     @Override
@@ -45,6 +46,7 @@ public class MainRequestInterceptor extends RequestInterceptor {
                 result = interceptor.intercept(url);
 
                 // Stop calling interceptors when encountering non-null response.
+                // Usually last interception in the list
                 if (result != null) {
                     break;
                 }
