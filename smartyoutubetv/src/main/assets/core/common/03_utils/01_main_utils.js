@@ -451,6 +451,12 @@ var Utils = {
         }
 
         return params;
+    },
+
+    printProps: function(obj) {
+        for (var key in obj) {
+            console.log(key + " " + obj[key]);
+        }
     }
 };
 
