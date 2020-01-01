@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstat
 
 import android.os.Handler;
 import android.util.Pair;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -34,7 +33,7 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     private final ExoPlayerBaseFragment mPlayerFragment;
     private SimpleExoPlayer mPlayer;
     private DefaultTrackSelector mSelector;
-    private List<String> mRestored;
+    private static List<String> sRestored = new ArrayList<>();
 
     public PlayerStateManager(ExoPlayerBaseFragment playerFragment, SimpleExoPlayer player, DefaultTrackSelector selector) {
         super(playerFragment.getActivity());
@@ -42,7 +41,6 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         mPlayerFragment = playerFragment;
         mPlayer = player;
         mSelector = selector;
-        mRestored = playerFragment.getRestoreData();
     }
 
     /**
@@ -123,11 +121,11 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         long duration = mPlayer.getDuration();
         String title = mPlayerFragment.getMainTitle() + duration; // create something like hash
 
-        if (posPercents < 0 || posPercents > 97 || mRestored.contains(title)) { // app just started, video opened
+        if (posPercents < 0 || posPercents > 97 || sRestored.contains(title)) { // app just started, video opened
             posMs = findProperVideoPosition(title);
         } else {
             posMs = (duration / 100) * posPercents;
-            mRestored.add(title); // restore from web once, then use local data
+            sRestored.add(title); // restore from web once, then use local data
         }
 
         if (posMs > 0 && posMs < (duration - MAX_TRAIL_DURATION_MILLIS)) {

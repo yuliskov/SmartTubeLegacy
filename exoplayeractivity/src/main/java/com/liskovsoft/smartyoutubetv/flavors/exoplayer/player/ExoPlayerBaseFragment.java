@@ -600,12 +600,4 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             listener.onAppResume();
         }
     }
-
-    public List<String> getRestoreData() {
-        if (mRestore == null) {
-            mRestore = new ArrayList<>();
-        }
-
-        return mRestore;
-    }
 }
