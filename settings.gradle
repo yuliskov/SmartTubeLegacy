@@ -1,4 +1,4 @@
-include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common'
+include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common', ':exoplayer-extension-vp9'
 
 def rootDir = settingsDir
 
@@ -11,6 +11,6 @@ gradle.ext.myVideoTubeRoot = new File(rootDir, '../MyVideoTube').exists() ? new 
 apply from: new File(gradle.ext.myVideoTubeRoot, 'core_settings.gradle')
 
 // exoplayer extensions
-gradle.ext.exoplayerRoot = new File(rootDir, '../ExoPlayer2.11.1')
-gradle.ext.exoplayerModulePrefix = 'exoplayer-'
-apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')
+// gradle.ext.exoplayerRoot = new File(rootDir, '../ExoPlayer2.11.1')
+// gradle.ext.exoplayerModulePrefix = 'exoplayer-'
+// apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')

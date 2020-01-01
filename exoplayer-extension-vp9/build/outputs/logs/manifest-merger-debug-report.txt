@@ -1,0 +1,33 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:17:1-36:12
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:17:1-36:12
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:17:1-36:12
+	package
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:19:11-58
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:18:11-57
+	xmlns:android
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:17:11-69
+uses-feature#0x00020000
+ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:21:3-51
+	android:glEsVersion
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:21:17-49
+uses-sdk
+ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+	tools:overrideLibrary
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+	android:targetSdkVersion
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml:23:3-34:53
+		INJECTED from C:\Users\Yuriy\Desktop\me\SmartYouTubeTV_proj\SmartYouTubeTV\exoplayer-extension-vp9\src\main\AndroidManifest.xml

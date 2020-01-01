@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion project.properties.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion project.properties.minSdkVersion
+        targetSdkVersion project.properties.targetSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    sourceSets.main {
+        jniLibs.srcDir 'src/main/libs'
+        jni.srcDirs = [] // Disable the automatic ndk-build call by Android Studio.
+    }
+
+    testOptions.unitTests.includeAndroidResources = true
+}
+
+dependencies {
+    implementation project.properties.exoplayerCoreVersion
+    implementation project.properties.annotationXVersion
+}

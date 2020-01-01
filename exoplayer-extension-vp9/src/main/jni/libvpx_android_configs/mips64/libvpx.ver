@@ -1,0 +1,28 @@
+{ global:
+vpx_codec_vp9_dx_algo;
+vpx_codec_vp9_dx;
+vpx_codec_build_config;
+vpx_codec_control_;
+vpx_codec_destroy;
+vpx_codec_err_to_string;
+vpx_codec_error;
+vpx_codec_error_detail;
+vpx_codec_get_caps;
+vpx_codec_iface_name;
+vpx_codec_version;
+vpx_codec_version_extra_str;
+vpx_codec_version_str;
+vpx_img_alloc;
+vpx_img_flip;
+vpx_img_free;
+vpx_img_set_rect;
+vpx_img_wrap;
+vpx_codec_dec_init_ver;
+vpx_codec_decode;
+vpx_codec_get_frame;
+vpx_codec_get_stream_info;
+vpx_codec_peek_stream_info;
+vpx_codec_register_put_frame_cb;
+vpx_codec_register_put_slice_cb;
+vpx_codec_set_frame_buffer_functions;
+local: *; };
