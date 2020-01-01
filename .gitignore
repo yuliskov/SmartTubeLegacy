@@ -28,6 +28,7 @@ tmp/
 /.idea/libraries
 .DS_Store
 /build
+build
 /captures
 .externalNativeBuild
 fabric.properties
