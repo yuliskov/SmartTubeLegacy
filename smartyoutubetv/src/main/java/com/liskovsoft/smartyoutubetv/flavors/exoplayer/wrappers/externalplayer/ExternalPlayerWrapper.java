@@ -79,6 +79,11 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     @Override
+    public int getMinVideoBitrate() {
+        return 1_500_000;
+    }
+
+    @Override
     public void onDone() {
         if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_360p.equals(mPrefs.getUseExternalPlayer())) {
             mMpdContent = null;

@@ -45,9 +45,26 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onMediaItem(MediaItem mediaItem) {
-            mMPDBuilder.append(mediaItem);
+            if (isItemAllowed(mediaItem)) {
+                mMPDBuilder.append(mediaItem);
+            }
 
             mUrlListBuilder.append(mediaItem);
+        }
+
+        private boolean isItemAllowed(MediaItem mediaItem) {
+            if (mMediaFoundCallback.getMinVideoBitrate() > 0 &&
+                mediaItem != null &&
+                mediaItem.getType() != null &&
+                mediaItem.getType().contains("video") &&
+                mediaItem.getBitrate() != null) {
+
+                int bitrate = Integer.parseInt(mediaItem.getBitrate());
+
+                return bitrate > mMediaFoundCallback.getMinVideoBitrate();
+            }
+
+            return true;
         }
 
         @Override
