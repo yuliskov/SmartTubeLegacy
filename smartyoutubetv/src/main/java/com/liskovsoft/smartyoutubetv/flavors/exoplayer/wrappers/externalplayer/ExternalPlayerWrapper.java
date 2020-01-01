@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
@@ -14,6 +15,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.File;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private static final String PLAYER_ACTIVITY_NAME = "org.videolan.vlc.gui.video.VideoPlayerActivity";
     private final File mMpdFile;
     private final UserAgentManager mUAManager;
+    private final SmartPreferences mPrefs;
     private Uri mDashUrl;
     private Uri mHlsUrl;
     private VideoMetadata mMetadata;
@@ -39,6 +42,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mContext = context;
         mInterceptor = interceptor;
         mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
+        mPrefs = CommonApplication.getPreferences();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     @Override
     public void onDone() {
-        if (mUrlList != null) {
+        if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_360p.equals(mPrefs.getUseExternalPlayer())) {
             mMpdContent = null;
             mHlsUrl = null;
             mDashUrl = null;
@@ -117,13 +121,13 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         if (mMpdContent != null) {
             FileHelpers.streamToFile(mMpdContent, mMpdFile);
             // NOTE: Don't use parseFile or you will get FileUriExposedException
-            intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/*");
+            intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/mp4");
         } else if (mDashUrl != null) {
-            intent.setDataAndType(mDashUrl, "video/*"); // mpd
+            intent.setDataAndType(mDashUrl, "video/mp4"); // mpd
         } else if (mHlsUrl != null) {
-            intent.setDataAndType(mHlsUrl, "application/x-mpegURL"); // m3u8
+            intent.setDataAndType(mHlsUrl, "video/mp4"); // m3u8
         } else if (mUrlList != null) {
-            intent.setDataAndType(Uri.parse(mUrlList.get(0)), "video/*");
+            intent.setDataAndType(Uri.parse(mUrlList.get(0)), "video/mp4");
         } else {
             Log.d(TAG, "Unrecognized content type");
         }

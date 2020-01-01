@@ -22,7 +22,10 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
     private static final String GLOBAL_AFR_FIX_STATE = "afrFixState";
-    private static final String USE_EXTERNAL_PLAYER = "use_external_player";
+    private static final String USE_EXTERNAL_PLAYER = "use_external_player2";
+    public static final String USE_EXTERNAL_PLAYER_NONE = "use_external_player_none";
+    public static final String USE_EXTERNAL_PLAYER_4K = "use_external_player_4k";
+    public static final String USE_EXTERNAL_PLAYER_360p = "use_external_player_360p";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
     private static final String LOG_TYPE = "log_type";
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
@@ -172,12 +175,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return getString(GLOBAL_AFR_FIX_STATE, GLOBAL_AFR_FIX_STATE_DISABLED);
     }
 
-    public void setUseExternalPlayer(boolean isChecked) {
-        putBoolean(USE_EXTERNAL_PLAYER, isChecked);
+    public void setUseExternalPlayer(String type) {
+        putString(USE_EXTERNAL_PLAYER, type);
     }
 
-    public boolean getUseExternalPlayer() {
-        return getBoolean(USE_EXTERNAL_PLAYER, false);
+    public String getUseExternalPlayer() {
+        return getString(USE_EXTERNAL_PLAYER, USE_EXTERNAL_PLAYER_NONE);
     }
 
     public void setFixAspectRatio(boolean isChecked) {

@@ -18,11 +18,11 @@ public class UseExternalPlayerDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getUseExternalPlayer();
+        return SmartPreferences.USE_EXTERNAL_PLAYER_4K.equals(mPrefs.getUseExternalPlayer());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setUseExternalPlayer(checked);
+        mPrefs.setUseExternalPlayer(checked ? SmartPreferences.USE_EXTERNAL_PLAYER_4K : SmartPreferences.USE_EXTERNAL_PLAYER_NONE);
     }
 }
