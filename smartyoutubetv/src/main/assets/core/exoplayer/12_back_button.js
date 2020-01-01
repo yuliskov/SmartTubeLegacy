@@ -49,6 +49,8 @@ function BackButton(selector, states) {
             YouTubeUtils.showPlayerBackground();
 
             this.pressBackOrRetry();
+
+            YouTubeUtils.getPlayer().backPressed();
         }
     };
 }

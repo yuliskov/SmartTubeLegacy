@@ -351,8 +351,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private RenderersFactory getRenderersFactory() {
         DefaultRenderersFactory factory = new MyDefaultRenderersFactory(getActivity());
-        //factory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
-        factory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+        factory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+        //factory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
         //factory.setMediaCodecSelector(new BlackListMediaCodecSelector());
         return factory;
     }

@@ -11,13 +11,11 @@ function PlaybackEndAddon() {
     };
 
     this.onSrcChange = function(video) {
-        // isn't right place to detect new video
-
-        this.imitatePlaying(video);
-
-        // if (this.checkUrlChanged()) {
-        //     this.imitatePlaying(video);
-        // }
+        // Src may be changed after video is closed.
+        // Ignore such events.
+        if (YouTubeUtils.isPlayerOpened()) {
+            this.imitatePlaying(video);
+        }
     };
 
     this.checkUrlChanged = function() {
@@ -68,6 +66,11 @@ function PlaybackEndAddon() {
         video.imitatePosition = function(pos, length) {
             Log.d($this.TAG, "Changing position of the video...");
             $this.imitatePositionIntCheck(video, pos, length);
+        };
+
+        video.backPressed = function() {
+            Log.d($this.TAG, "User pressed back button...");
+            PlaybackEndAddon.playbackStarted = false;
         };
     };
 
