@@ -83,8 +83,8 @@ function PlaybackEndAddon() {
                 $this.checkLocking(fn);
             }, 3000);
         } else {
-            fn();
             PlaybackEndAddon.locked = true;
+            fn();
         }
     };
 
