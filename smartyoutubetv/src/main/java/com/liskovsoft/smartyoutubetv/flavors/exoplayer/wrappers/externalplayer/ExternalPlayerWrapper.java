@@ -4,8 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.FileUriExposedException;
-import androidx.annotation.RequiresApi;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -19,23 +17,22 @@ import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
     private final Context mContext;
     private final ExoInterceptor mInterceptor;
-    private static final int TYPE_DASH_CONTENT = 0;
-    private static final int TYPE_DASH_URL = 1;
-    private static final int TYPE_HLS_URL = 2;
     private static final String MPD_FILE_NAME = "tmp_video.mpd";
     private static final String VLC_PACKAGE_NAME = "org.videolan.vlc";
     private static final String PLAYER_ACTIVITY_NAME = "org.videolan.vlc.gui.video.VideoPlayerActivity";
     private final File mMpdFile;
     private final UserAgentManager mUAManager;
-    private int mContentType;
     private Uri mDashUrl;
     private Uri mHlsUrl;
     private VideoMetadata mMetadata;
+    private List<String> mUrlList;
+    private InputStream mMpdContent;
 
     public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mUAManager = new UserAgentManager();
@@ -45,21 +42,23 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     @Override
-    public void onDashMPDFound(InputStream mpdContent) {
-        FileHelpers.streamToFile(mpdContent, mMpdFile);
-        mContentType = TYPE_DASH_CONTENT;
+    public void onStart() {
+        cleanup();
     }
 
     @Override
-    public void onDashUrlFound(Uri dashUrl) {
-        mDashUrl = dashUrl;
-        mContentType = TYPE_DASH_URL;
+    public void onDashMPDFound(InputStream mpdContent) {
+        mMpdContent = mpdContent;
     }
+
+    //@Override
+    //public void onDashUrlFound(Uri dashUrl) {
+    //    mDashUrl = dashUrl;
+    //}
 
     @Override
     public void onHLSFound(Uri hlsUrl) {
         mHlsUrl = hlsUrl;
-        mContentType = TYPE_HLS_URL;
     }
 
     @Override
@@ -67,9 +66,32 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mMetadata = metadata;
     }
 
+    /**
+     * Plain low quality formats.
+     */
+    @Override
+    public void onUrlListFound(List<String> uriList) {
+        mUrlList = uriList;
+    }
+
     @Override
     public void onDone() {
-        openInVLCPlayer();
+        if (mUrlList != null) {
+            mMpdContent = null;
+            mHlsUrl = null;
+            mDashUrl = null;
+        }
+
+        openExternalPlayer();
+        cleanup();
+    }
+
+    private void cleanup() {
+        mDashUrl = null;
+        mHlsUrl = null;
+        mUrlList = null;
+        mMetadata = null;
+        mMpdContent = null;
     }
 
     @Override
@@ -82,34 +104,29 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
      * <a href="https://wiki.videolan.org/Android_Player_Intents/">VLC intent</a><br/>
      * <a href="http://mx.j2inter.com/api">MX Player intent</a>
      */
-    private void openInVLCPlayer() {
-        Intent intent = createIntent();
+    private void openExternalPlayer() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
 
+        initIntent(intent);
         prepareIntent(intent);
 
         openPlayer(intent);
     }
 
-    private Intent createIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        switch (mContentType) {
-            case TYPE_DASH_CONTENT:
-                // NOTE: Don't use parseFile or you will get FileUriExposedException
-                intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/*");
-                break;
-            case TYPE_DASH_URL:
-                intent.setDataAndType(mDashUrl, "video/*"); // mpd
-                break;
-            case TYPE_HLS_URL:
-                intent.setDataAndType(mHlsUrl, "application/x-mpegURL"); // m3u8
-                break;
-            default:
-                Log.d(TAG, "Unrecognized content type");
-                break;
+    private void initIntent(Intent intent) {
+        if (mMpdContent != null) {
+            FileHelpers.streamToFile(mMpdContent, mMpdFile);
+            // NOTE: Don't use parseFile or you will get FileUriExposedException
+            intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/*");
+        } else if (mDashUrl != null) {
+            intent.setDataAndType(mDashUrl, "video/*"); // mpd
+        } else if (mHlsUrl != null) {
+            intent.setDataAndType(mHlsUrl, "application/x-mpegURL"); // m3u8
+        } else if (mUrlList != null) {
+            intent.setDataAndType(Uri.parse(mUrlList.get(0)), "video/*");
+        } else {
+            Log.d(TAG, "Unrecognized content type");
         }
-
-        return intent;
     }
 
     private void prepareIntent(Intent intent) {

@@ -24,6 +24,7 @@ import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final HistoryInterceptor mHistory;
     private GenericInfo mInfo;
     private String mSpec;
-    private Sample mSample;
+    private InputStream mMpdContent;
+    private Uri mHlsUrl;
     private Uri mTrackingUrl;
     private Uri mRealTrackingUrl;
     private final Context mContext;
@@ -51,6 +53,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private boolean mBlockHandlers;
     private VideoMetadata mMetadata;
     private boolean mPlayerClosed;
+    private Uri mDashUrl;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -114,24 +117,19 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mFragmentsManager.openExoPlayer(null, false);
     }
 
-    @Override
-    public void onDashUrlFound(Uri dashUrl) {
-        mSample = SampleHelpers.buildFromMpdUri(dashUrl);
-    }
+    //@Override
+    //public void onDashUrlFound(Uri dashUrl) {
+    //    mDashUrl = dashUrl;
+    //}
 
     @Override
     public void onHLSFound(final Uri hlsUrl) {
-        mSample = SampleHelpers.buildFromHlsUri(hlsUrl);
+        mHlsUrl = hlsUrl;
     }
 
     @Override
     public void onDashMPDFound(final InputStream mpdContent) {
-        mSample = SampleHelpers.buildFromMPDPlaylist(mpdContent);
-    }
-
-    @Override
-    public void onUrlListFound(final List<String> urlList) {
-        mSample = SampleHelpers.buildFromList(urlList);
+        mMpdContent = mpdContent;
     }
 
     @Override
@@ -162,10 +160,22 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onDone() {
         if (mPlayerClosed) {
+            cleanup();
             return;
         }
 
-        if (mSample == null || mInfo == null) {
+        Sample sample = null;
+
+        if (mDashUrl != null) {
+            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
+        } else if (mHlsUrl != null) {
+            sample = SampleHelpers.buildFromHlsUri(mHlsUrl);
+        } else if (mMpdContent != null) {
+            sample = SampleHelpers.buildFromMPDPlaylist(mMpdContent);
+        }
+
+        if (sample == null || mInfo == null) {
+            cleanup();
             mManager.onCancel();
             mFragmentsManager.openBrowser(true);
             return;
@@ -173,9 +183,15 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Log.d(TAG, "Video info has been parsed... opening exoplayer...");
 
-        Intent exoIntent = createExoIntent(mSample, mInfo);
+        Intent exoIntent = createExoIntent(sample, mInfo);
         prepareAndOpenExoPlayer(exoIntent);
-        mSample = null;
+        cleanup();
+    }
+
+    private void cleanup() {
+        mDashUrl = null;
+        mHlsUrl = null;
+        mMpdContent = null;
         mSpec = null;
     }
 

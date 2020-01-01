@@ -101,6 +101,14 @@ public class JsonInfoParser {
         return ParserUtils.extractString(JSON_INFO_STORY_SPEC, mParser);
     }
 
+    public List<MediaItem> extractLowQualityFormats() {
+        if (mParser == null) {
+            return null;
+        }
+
+        return extractMediaItems(JSON_INFO_REGULAR_FORMATS);
+    }
+
     public class Subtitle {
         /**
          * Example: "https://www.youtube.com/api/timedtext?caps=&key=yt…&sparams=caps%2Cv%2Cxorp%2Cexpire&lang=en&name=en"

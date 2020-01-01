@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd;
 
 import android.util.Xml;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
@@ -32,6 +33,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String MIME_MP4_VIDEO = "video/mp4";
     private static final String NULL_INDEX_RANGE = "0-0";
     private static final String NULL_CONTENT_LENGTH = "0";
+    private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
     private final GenericInfo mInfo;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
@@ -514,49 +516,56 @@ public class SimpleMPDBuilder implements MPDBuilder {
      * <br/>
      * {@link GenericInfo#getLengthSeconds() GenericInfo#getLengthSeconds()}
      */
-    private void ensureRequiredFieldsAreSet() {
-        ensureLengthIsSet();
+    private boolean ensureRequiredFieldsAreSet() {
+        return ensureLengthIsSet();
     }
 
     /**
      * MPD file is not valid without duration
      */
-    private void ensureLengthIsSet() {
+    private boolean ensureLengthIsSet() {
         if (mInfo == null) {
-            throw new IllegalStateException("GenericInfo not initialized");
+            //throw new IllegalStateException("GenericInfo not initialized");
+            Log.e(TAG, "GenericInfo not initialized");
+            return false;
         }
 
         if (mInfo.getLengthSeconds() != null) {
-            return;
+            return true;
         }
 
         // try to get duration from video url
         String len = extractDurationFromTrack();
 
         if (len == null) {
-            throw new IllegalStateException("Videos in the list doesn't have a duration. Content: " + mMP4Videos);
+            //throw new IllegalStateException("Videos in the list doesn't have a duration. Content: " + mMP4Videos);
+            Log.e(TAG, "Videos in the list doesn't have a duration. Content: " + mMP4Videos);
+            return false;
         }
 
         mInfo.setLengthSeconds(len);
+        return true;
     }
 
     @Override
     public InputStream build() {
-        ensureRequiredFieldsAreSet();
+        if (ensureRequiredFieldsAreSet()) {
+            writePrologue();
 
-        writePrologue();
+            writeMediaTags();
 
-        writeMediaTags();
+            writeEpilogue();
 
-        writeEpilogue();
+            return FileHelpers.toStream(mWriter.toString());
+        }
 
-        return FileHelpers.toStream(mWriter.toString());
+        return null;
     }
 
     @Override
     public boolean isEmpty() {
-        return mMP4Videos.size() == 0 && mWEBMVideos.size() == 0
-                && mMP4Audios.size() == 0 && mWEBMAudios.size() == 0;
+        return (mMP4Videos.size() == 0 && mWEBMVideos.size() == 0
+                && mMP4Audios.size() == 0 && mWEBMAudios.size() == 0) || !ensureRequiredFieldsAreSet();
     }
 
     private boolean isLive() {

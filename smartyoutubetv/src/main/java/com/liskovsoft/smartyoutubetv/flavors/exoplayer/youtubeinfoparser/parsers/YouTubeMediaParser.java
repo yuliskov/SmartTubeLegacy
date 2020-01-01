@@ -22,7 +22,8 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Parses input (get_video_info) to {@link MediaItem}
+ * Parses input (get_video_info) to {@link MediaItem}<br/>
+ * For more info see {@link JsonInfoParser}
  */
 public class YouTubeMediaParser {
     private static final String TAG = YouTubeMediaParser.class.getSimpleName();
@@ -134,6 +135,13 @@ public class YouTubeMediaParser {
 
             if (items != null) {
                 list.addAll(items);
+            }
+
+            // Simple formats with integrated video and audio (360p for music, 720p for other content).
+            List<MediaItem> items2 = mParser.extractLowQualityFormats();
+
+            if (items2 != null) {
+                list.addAll(items2);
             }
         }
 

@@ -96,13 +96,20 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onStorySpecFound(mSpec);
             }
 
-            if (mHlsUrl != null) { // live stream usually
+            if (mHlsUrl != null) { // Live streams
                 mMediaFoundCallback.onHLSFound(mHlsUrl);
-            } else if (mDashUrl != null) { // dash live stream, contains more formats (has playback problems)
+            }
+
+            if (mDashUrl != null) { // BROKEN: Live streams (more formats, has errors)
                 mMediaFoundCallback.onDashUrlFound(mDashUrl);
-            } else if (!mMPDBuilder.isEmpty()) {
+            }
+
+            if (!mMPDBuilder.isEmpty()) { // Regular videos (4K)
                 mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
-            } else if (!mUrlListBuilder.isEmpty()) { // fallback to the simple formats
+            }
+
+            // Low quality videos
+            if (!mUrlListBuilder.isEmpty()) {
                 mMediaFoundCallback.onUrlListFound(mUrlListBuilder.buildUriList());
             }
 

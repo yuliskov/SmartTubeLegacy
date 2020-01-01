@@ -13,7 +13,7 @@ public class SimpleUrlListBuilder implements UrlListBuilder {
     private final Set<MediaItem> mVideos;
 
     public SimpleUrlListBuilder() {
-        MediaItemComparator comp = new MediaItemComparator();
+        MediaItemComparator comp = new MediaItemComparator(MediaItemComparator.ORDER_ASCENDANT);
         mVideos = new TreeSet<>(comp);
     }
 
