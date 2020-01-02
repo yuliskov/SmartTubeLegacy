@@ -4,6 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import com.liskovsoft.m3uparser.m3u.M3UParser;
+import com.liskovsoft.m3uparser.m3u.models.Playlist;
+import com.liskovsoft.m3uparser.m3u.models.Stream;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -138,7 +141,15 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         } else if (mDashUrl != null) {
             intent.setDataAndType(mDashUrl, "video/mp4"); // mpd
         } else if (mHlsUrl != null) {
-            intent.setDataAndType(mHlsUrl, "video/mp4"); // m3u8
+            M3UParser parser = new M3UParser();
+            Playlist pl = parser.parse(mHlsUrl);
+
+            // find FHD stream
+            if (pl.getStreams() != null && pl.getStreams().size() > 0) {
+                mHlsUrl = pl.getStreams().get(pl.getStreams().size() - 1).uri;
+            }
+
+            intent.setDataAndType(mHlsUrl, "application/x-mpegURL"); // m3u8
         } else if (mUrlList != null) {
             intent.setDataAndType(Uri.parse(mUrlList.get(0)), "video/mp4");
         } else {
