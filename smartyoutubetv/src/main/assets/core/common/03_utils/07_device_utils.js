@@ -135,6 +135,10 @@ var DeviceUtils = {
         return this.getApp().isExo();
     },
 
+    logToFileEnabled: function() {
+        return this.getApp().logToFileEnabled();
+    },
+
     /**
      * YouTube's 4K videos encoded exclusively in WEBM codec
      */

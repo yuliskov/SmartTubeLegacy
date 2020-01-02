@@ -27,6 +27,11 @@ var ElementWrapper = {
     applyWrapping: function() {
         var $this = this;
 
+        // wrapper already established
+        if (document.createElementReal) {
+            return;
+        }
+
         document.createElementReal = document.createElement;
 
         document.createElement = function(tagName) {

@@ -6,10 +6,10 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
@@ -107,7 +107,7 @@ public class WebViewJavaScriptInterface {
 
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
-    private void reloadTab() {
+    public void reloadTab() {
         Handler handler = new Handler(mContext.getMainLooper());
         handler.post(() -> {
             for (Tab tab : mTabs) {
@@ -215,5 +215,11 @@ public class WebViewJavaScriptInterface {
     public int getPlaybackWorking() {
         SmartPreferences prefs = SmartPreferences.instance(mContext);
         return prefs.getPlaybackWorking();
+    }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean logToFileEnabled() {
+        return Log.getLogType() == Log.LOG_TYPE_FILE;
     }
 }
