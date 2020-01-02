@@ -33,7 +33,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         @Override
         public void onGenericInfo(GenericInfo info) {
             if (mMPDBuilder == null) {
-                mMPDBuilder = new SimpleMPDBuilder(info);
+                mMPDBuilder = new SimpleMPDBuilder(info, mMediaFoundCallback.getVLCFix());
             }
 
             if (mUrlListBuilder == null) {
@@ -45,26 +45,9 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
         @Override
         public void onMediaItem(MediaItem mediaItem) {
-            if (isItemAllowed(mediaItem)) {
-                mMPDBuilder.append(mediaItem);
-            }
+            mMPDBuilder.append(mediaItem);
 
             mUrlListBuilder.append(mediaItem);
-        }
-
-        private boolean isItemAllowed(MediaItem mediaItem) {
-            if (mMediaFoundCallback.getMinVideoBitrate() > 0 &&
-                mediaItem != null &&
-                mediaItem.getType() != null &&
-                mediaItem.getType().contains("video") &&
-                mediaItem.getBitrate() != null) {
-
-                int bitrate = Integer.parseInt(mediaItem.getBitrate());
-
-                return bitrate > mMediaFoundCallback.getMinVideoBitrate();
-            }
-
-            return true;
         }
 
         @Override

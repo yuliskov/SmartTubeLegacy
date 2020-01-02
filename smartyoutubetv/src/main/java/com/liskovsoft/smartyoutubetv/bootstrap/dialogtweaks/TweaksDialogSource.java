@@ -21,8 +21,9 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenWatchLater
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerLQDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayer4KDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerFHDDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerSDDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,9 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
         //mItems.add(new GlobalAfrFixDialogItem(mContext));
-        mItems.add(new UseExternalPlayerDialogItem(mContext));
-        mItems.add(new UseExternalPlayerLQDialogItem(mContext));
+        mItems.add(new UseExternalPlayer4KDialogItem(mContext));
+        mItems.add(new UseExternalPlayerFHDDialogItem(mContext));
+        mItems.add(new UseExternalPlayerSDDialogItem(mContext));
         mItems.add(new Ugoos50HZFixDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));

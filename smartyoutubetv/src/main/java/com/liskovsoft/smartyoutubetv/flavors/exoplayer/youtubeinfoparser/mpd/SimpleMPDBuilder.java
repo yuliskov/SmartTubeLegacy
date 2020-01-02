@@ -35,6 +35,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
     private final GenericInfo mInfo;
+    private final boolean mVLCFix;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
@@ -49,6 +50,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     public SimpleMPDBuilder(GenericInfo info) {
+        this(info, false);
+    }
+
+    public SimpleMPDBuilder(GenericInfo info, boolean VLCFix) {
+        mVLCFix = VLCFix;
+
         mInfo = info;
         MediaItemComparator comp = new MediaItemComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -117,12 +124,21 @@ public class SimpleMPDBuilder implements MPDBuilder {
             writeLiveHeaderSegmentList();
         }
 
-        // write high quality formats first
-        writeMediaTagsForGroup(mWEBMVideos);
-        writeMediaTagsForGroup(mWEBMAudios);
-        writeMediaTagsForGroup(mMP4Videos);
-        writeMediaTagsForGroup(mMP4Audios);
-        writeMediaTagsForGroup(mSubs);
+        if (mVLCFix) {
+            // VLC can't play VP9
+            writeMediaTagsForGroup(mMP4Videos);
+            writeMediaTagsForGroup(mMP4Audios);
+            writeMediaTagsForGroup(mWEBMVideos);
+            writeMediaTagsForGroup(mWEBMAudios);
+            writeMediaTagsForGroup(mSubs);
+        } else {
+            // MXPlayer fix: write high quality formats first
+            writeMediaTagsForGroup(mWEBMVideos);
+            writeMediaTagsForGroup(mWEBMAudios);
+            writeMediaTagsForGroup(mMP4Videos);
+            writeMediaTagsForGroup(mMP4Audios);
+            writeMediaTagsForGroup(mSubs);
+        }
     }
 
     private void writeLiveHeaderSegmentList() {
@@ -180,6 +196,11 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 continue;
             }
             writeMediaItemTag(item);
+
+            // VLC fix: limit to max quality
+            if (mVLCFix) {
+                break;
+            }
         }
 
         writeMediaListEpilogue();

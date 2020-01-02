@@ -58,8 +58,8 @@
     <string name="toast_remove_old_package">Имя пакета было изменено. Пожалуйста, удалите предыдущие версии приложения.</string>
     <string name="tweak_history_fix">Исправлять историю</string>
     <string name="tweak_open_watch_later">Загружаться в раздел Просмотреть позже</string>
-    <string name="tweak_open_externally">PRO: Открывать видео через внешний плеер (4K)</string>
-    <string name="tweak_open_externally_lq">PRO: Открывать видео через внешний плеер (360p)</string>
+    <string name="tweak_open_externally">PRO: Открывать видео через внешний плеер</string>
+    <string name="tweak_open_externally_lq">PRO: Открывать видео через внешний плеер (SD)</string>
     <string name="message_install_vlc_player">Для проигрывания нужен VLC плеер</string>
     <string name="tweak_fix_aspect">Исправление соотношения сторон и зума</string>
     <string name="tweak_animated_previews">Анимированные превью</string>

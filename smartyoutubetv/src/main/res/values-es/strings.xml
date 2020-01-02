@@ -94,7 +94,7 @@
     <string name="toast_remove_old_package">Package name has been changed. Please remove old app versions.</string>
     <string name="tweak_history_fix">Enable history fix</string>
     <string name="tweak_open_watch_later">Boot strict to Watch Later</string>
-    <string name="tweak_open_externally">PRO: Use external player (4K)</string>
+    <string name="tweak_open_externally">PRO: Use external player</string>
     <string name="message_install_vlc_player">Please install VLC player</string>
     <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
     <string name="tweak_animated_previews">Enable animated previews</string>

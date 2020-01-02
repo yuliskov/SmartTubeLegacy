@@ -5,12 +5,12 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class UseExternalPlayerDialogItem extends DialogItem {
+public class UseExternalPlayer4KDialogItem extends DialogItem {
     private final Context mContext;
     private final SmartPreferences mPrefs;
 
-    public UseExternalPlayerDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally), false);
+    public UseExternalPlayer4KDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (4K)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);

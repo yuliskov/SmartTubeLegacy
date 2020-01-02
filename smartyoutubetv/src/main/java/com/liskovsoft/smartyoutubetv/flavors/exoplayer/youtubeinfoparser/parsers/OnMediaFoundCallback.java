@@ -18,8 +18,8 @@ public abstract class OnMediaFoundCallback {
     public void onStorySpecFound(String spec) {}
     public void onInfoFound(GenericInfo info){}
     public void onMetadata(VideoMetadata metadata){}
-    public int getMinVideoBitrate() { // filter out by bitrate
-        return 0;
+    public boolean getVLCFix() {
+        return false;
     }
 
     public abstract void onDone(); // Required!!!

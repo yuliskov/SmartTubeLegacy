@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
@@ -31,6 +32,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private final File mMpdFile;
     private final UserAgentManager mUAManager;
     private final SmartPreferences mPrefs;
+    private final HistoryInterceptor mHistory;
     private Uri mDashUrl;
     private Uri mHlsUrl;
     private VideoMetadata mMetadata;
@@ -43,10 +45,12 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mInterceptor = interceptor;
         mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
         mPrefs = CommonApplication.getPreferences();
+        mHistory = interceptor.getHistoryInterceptor();
     }
 
     @Override
     public void onStart() {
+        mHistory.onStart();
         cleanup();
     }
 
@@ -79,13 +83,16 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     @Override
-    public int getMinVideoBitrate() {
-        return 1_500_000;
+    public boolean getVLCFix() {
+        // Fix LQ playback in external players.
+        // Remain one item in the list.
+        // Put avc on top
+        return SmartPreferences.USE_EXTERNAL_PLAYER_FHD.equals(mPrefs.getUseExternalPlayer());
     }
 
     @Override
     public void onDone() {
-        if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_360p.equals(mPrefs.getUseExternalPlayer())) {
+        if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_SD.equals(mPrefs.getUseExternalPlayer())) {
             mMpdContent = null;
             mHlsUrl = null;
             mDashUrl = null;
@@ -107,6 +114,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     public void onResult(int resultCode, Intent data) {
         Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + data);
         mInterceptor.closePlayer();
+        mHistory.updatePosition(0);
     }
 
     /**
