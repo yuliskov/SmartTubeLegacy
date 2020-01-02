@@ -93,6 +93,6 @@ var DomDumper = {
     }
 };
 
-if (DeviceUtils.logToFileEnabled()) {
-    DomDumper.init();
-}
+// if (DeviceUtils.logToFileEnabled()) {
+//     DomDumper.init();
+// }

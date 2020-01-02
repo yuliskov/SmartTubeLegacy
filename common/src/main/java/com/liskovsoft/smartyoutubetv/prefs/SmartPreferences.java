@@ -3,11 +3,6 @@ package com.liskovsoft.smartyoutubetv.prefs;
 import android.content.Context;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'

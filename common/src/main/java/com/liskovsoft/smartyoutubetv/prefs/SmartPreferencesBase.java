@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.liskovsoft.smartyoutubetv.common.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ public class SmartPreferencesBase {
     public SmartPreferencesBase(Context context) {
         mContext = context.getApplicationContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String defaultPrefsName = context.getPackageName() + "_preferences";
+        PreferenceManager.setDefaultValues(context, defaultPrefsName, Context.MODE_PRIVATE, R.xml.smart_preferences, false);
         mListeners = new HashMap<>();
     }
 
