@@ -147,9 +147,20 @@ public class Controller implements UiController, WebViewController, ActivityCont
         } catch (Exception e) {
             // User should select Chrome WebView provider in Developer Options
             // Android TV Developer Options: http://corochann.com/how-to-enable-developer-mode-in-android-tv-216.html
-            MessageHelpers.showLongMessage(mActivity, R.string.select_webview_provider_msg);
-            // Try to remove package with wrong architecture
+            // You can choose your WebView provider by enabling Developer Options and selecting WebView implementation.
+            // You can use any compatible Chrome version (Dev, Beta or Stable) that is installed on your device or the standalone Webview APK to act
+            // as the WebView implementation.
+
+            // 1) Show message that webview should be uninstalled
+            String msg = mActivity.getResources().getString(R.string.select_webview_provider_msg);
+            MessageHelpers.showLongMessage(mActivity, msg + "\n" + e.getMessage());
+
+            // 2) Remove webview package with wrong architecture
             Helpers.removePackage(mActivity, "com.google.android.webview");
+
+            // 3) Install webview from ApkMirror:
+            // https://www.apkmirror.com/apk/google-inc/android-system-webview/
+
             Log.d(TAG, e);
             e.printStackTrace();
         }
