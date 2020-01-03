@@ -51,7 +51,7 @@ public class YouTubeMediaParser {
         mContent = content;
         mId = new Random().nextInt();
 
-        if (Log.getLogType() == Log.LOG_TYPE_FILE) {
+        if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {
             Log.d(TAG, content);
         }
 

@@ -220,6 +220,6 @@ public class WebViewJavaScriptInterface {
     @JavascriptInterface
     @org.xwalk.core.JavascriptInterface
     public boolean logToFileEnabled() {
-        return Log.getLogType() == Log.LOG_TYPE_FILE;
+        return Log.getLogType().equals(Log.LOG_TYPE_FILE);
     }
 }

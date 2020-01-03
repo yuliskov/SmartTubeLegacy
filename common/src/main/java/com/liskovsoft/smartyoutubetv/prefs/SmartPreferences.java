@@ -23,7 +23,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String USE_EXTERNAL_PLAYER_FHD = "use_external_player_fhd";
     public static final String USE_EXTERNAL_PLAYER_SD = "use_external_player_sd";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
-    private static final String LOG_TYPE = "log_type";
+    private static final String LOG_TYPE = "log_type2";
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
     private static final String ANIMATED_PREVIEWS = "animated_previews";
     public static final String MUSIC_PAGE = "music_page";
@@ -187,12 +187,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return getBoolean(FIX_ASPECT_RATIO, false);
     }
 
-    public int getLogType() {
-        return getInt(LOG_TYPE, Log.LOG_TYPE_SYSTEM);
+    public String getLogType() {
+        return getString(LOG_TYPE, Log.LOG_TYPE_SYSTEM);
     }
 
-    public void setLogType(int type) {
-        putInt(LOG_TYPE, type);
+    public void setLogType(String type) {
+        putString(LOG_TYPE, type);
     }
 
     public void setPlaybackWorking(int state) {
