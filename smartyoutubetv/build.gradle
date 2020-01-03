@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 902
-        versionName "6.17.322"
+        versionCode 903
+        versionName "6.17.323"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -85,6 +85,9 @@ android {
 
     productFlavors {
         orig {
+            matchingFallbacks = ['lite']
+        }
+        Vtesting {
             matchingFallbacks = ['lite']
         }
         Vlitemain {
@@ -188,6 +191,9 @@ android {
         def commonDirs = ['src/commonSrc/appWatcher/java', 'src/commonSrc/crashHandler/java']
         orig {
             java.srcDirs('src/commonSrc/crashHandler/java')
+        }
+        Vtesting {
+            java.srcDirs = commonDirs
         }
         Vlitemain {
             java.srcDirs = commonDirs
