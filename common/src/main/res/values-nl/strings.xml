@@ -1,0 +1,5 @@
+<resources>
+    <string name="system_lang">Standaard</string>
+    <string name="log_stored_in_path">Log bewaard in: %s</string>
+    <string name="log_to_file_started">Logging gestart: %s</string>
+</resources>
