@@ -34,7 +34,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, SHARED_PREFS_SUBDIR));
 
         mBackupDirs = new ArrayList<>();
-        mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", mContext.getPackageName())));
+        mBackupDirs.add(new File(FileHelpers.getBackupDir(mContext), "Backup"));
         mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", "com.liskovsoft.videomanager")));
     }
 

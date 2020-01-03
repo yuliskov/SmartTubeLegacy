@@ -34,6 +34,7 @@ import androidx.appcompat.view.ActionMode;
 import com.liskovsoft.browser.IntentHandler.UrlData;
 import com.liskovsoft.browser.UI.ComboViews;
 import com.liskovsoft.browser.xwalk.XWalkInitHandler;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
@@ -147,6 +148,8 @@ public class Controller implements UiController, WebViewController, ActivityCont
             // User should select Chrome WebView provider in Developer Options
             // Android TV Developer Options: http://corochann.com/how-to-enable-developer-mode-in-android-tv-216.html
             MessageHelpers.showLongMessage(mActivity, R.string.select_webview_provider_msg);
+            // Try to remove package with wrong architecture
+            Helpers.removePackage(mActivity, "com.google.android.webview");
             Log.d(TAG, e);
             e.printStackTrace();
         }
