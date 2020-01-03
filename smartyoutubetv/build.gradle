@@ -37,8 +37,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 903
-        versionName "6.17.323"
+        versionCode 904
+        versionName "6.17.324"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -89,6 +89,7 @@ android {
         }
         Vtesting {
             matchingFallbacks = ['lite']
+            applicationIdSuffix ".testing"
         }
         Vlitemain {
             matchingFallbacks = ['lite']

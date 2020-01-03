@@ -46,7 +46,7 @@
     <string name="xwalk_tip">Beperkt aantal formaten. Met fixes.</string>
     <string name="exo_tip">Uitgebreid aantal formaten. Normaal.</string>
     <string name="exo_alt_tip">Uitgebreid aantal formaten. Met fixes.</string>
-    <string name="exit_msg">Nogmaals op de BACK-toets klikken om de app af te sluiten</string>
+    <string name="exit_msg">Nogmaals op de BACK-toets drukken om de app af te sluiten</string>
     <string name="error_host_lookup">Géén internet verbinding: %s</string>
     <string name="error_unknown">Fout bij verbinding: %s</string>
     <string name="codec_selector_title">Codec selecteren</string>
@@ -61,7 +61,7 @@
     <string name="title_webview">LITE Main</string>
     <string name="title_xwalk">LITE Alt</string>
     <string name="tweaks">Instellingen</string>
-    <string name="tip_tweaks">Extra instellingen</string>
+    <string name="tip_tweaks">Instellingen wijzigen</string>
     <string name="tweak_remember_launcher">Geselecteerde launcher onthouden</string>
     <string name="tweak_ok_button_fix">OK-toets pauzeert de video onmiddellijk</string>
     <string name="tweak_update_check">Controleren op STABIELE updates</string>

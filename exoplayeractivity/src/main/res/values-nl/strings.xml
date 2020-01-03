@@ -13,7 +13,7 @@
     <string name="dislike">Niet leuk</string>
     <string name="like">Leuk</string>
     <string name="stats">Stats</string>
-    <string name="subscribe">Geabonneerd</string>
+    <string name="subscribe">Abonneren</string>
     <string name="quality">Kwaliteit</string>
     <string name="video">Video</string>
     <string name="audio">Audio</string>
@@ -43,12 +43,12 @@
     <string name="suggested_videos">Gesuggereerde video\'s</string>
     <string name="enable_autoframerate">Autoframerate</string>
     <string name="autoframerate_not_supported">Je apparaat ondersteunt Autoframerate niet</string>
-    <string name="share_video">Video Delen</string>
+    <string name="share_video">Delen</string>
     <string name="send_to">Verzenden naar</string>
     <string name="track_view_format">Track Beeldformaat</string>
     <string name="hide_playback_errors">Playback fouten verbergen</string>
     <string name="no_subtitle_msg">Video bevat geen ondertitels</string>
-    <string name="repeat_video">Video herhalen</string>
+    <string name="repeat_video">Herhalen</string>
     <string name="video_speed">Snelheid</string>
     <string name="select_video_speed">Video snelheid selecteren</string>
     <string name="normal">Normaal</string>
