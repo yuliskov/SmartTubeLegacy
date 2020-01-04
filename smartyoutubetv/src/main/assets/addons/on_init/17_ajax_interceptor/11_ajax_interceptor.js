@@ -5,45 +5,9 @@
 
 console.log("Scripts::Running script ajax_interceptor.js");
 
-function AuthInterceptor() {
-    this.TAG = 'AuthInterceptor';
-    this.AUTHORIZATION_HEADER = 'Authorization';
-
-    this.interceptHeader = function(name, value) {
-        if (name == this.AUTHORIZATION_HEADER && this.prevValue != value) {
-            Log.d(this.TAG, "Found auth header: " + value);
-
-            DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTHORIZATION_HEADER, value);
-            this.prevValue = value;
-        }
-    };
-
-    this.interceptBody = function(content) {
-        if (content != null && content.indexOf('googleusercontent.com') != -1) {
-            Log.d(this.TAG, "Found auth body: " + content);
-            DeviceUtils.sendMessage(DeviceUtils.MESSAGE_AUTH_BODY, content);
-        }
-    };
-}
-
-// function UserAgentInterceptor() {
-//     this.TAG = 'UserAgentInterceptor';
-//     this.USER_AGENT_HEADER = 'User-Agent';
-//     this.CHROME_USER_AGENT = 'Mozilla/5.0 (SMART-TV; X11; Linux armv7l) AppleWebKit/537.42 (KHTML, like Gecko) Chromium/25.0.1349.2 Chrome/25.0.1349.2 Safari/537.42';
-//     this.shouldIntercept = true;
-//
-//     this.intercept = function(name, value) {
-//         if (name == this.USER_AGENT_HEADER) {
-//             value = this.CHROME_USER_AGENT;
-//         }
-//
-//         return value;
-//     };
-// }
-
-function AjaxInterceptorAddon() {
+function AjaxInterceptorAddon(interceptors) {
     this.TAG = 'AjaxInterceptorAddon';
-    this.interceptors = [new AuthInterceptor()];
+    this.interceptors = interceptors ? interceptors : [];
 
     this.run = function() {
         this.overrideSetHeaders();
@@ -55,9 +19,35 @@ function AjaxInterceptorAddon() {
             return;
         }
 
+        this.setupOpenInterceptors();
+
         this.setupHeaderInterceptors();
 
         this.setupBodyInterceptors();
+    };
+
+    this.setupOpenInterceptors = function() {
+        var $this = this;
+
+        var origin = window.XMLHttpRequest.prototype.open;
+
+        window.XMLHttpRequest.prototype.open = function() {
+            if (arguments.length == 3) {
+                for (var i = 0; i < $this.interceptors.length; i++) {
+                    var interceptor = $this.interceptors[i];
+                    if (interceptor.interceptOpen) {
+                        interceptor.interceptOpen(arguments[0], arguments[1], arguments[2]);
+                    }
+                }
+
+                if ($this.interceptors.length == 0) {
+                    // stop override, no interceptors left
+                    window.XMLHttpRequest.prototype.open = origin;
+                }
+            }
+
+            origin.apply(this, arguments);
+        };
     };
 
     this.setupHeaderInterceptors = function() {
@@ -114,5 +104,5 @@ function AjaxInterceptorAddon() {
 }
 
 if (DeviceUtils.isExo()) {
-    new AjaxInterceptorAddon().run();
+    new AjaxInterceptorAddon([new AuthInterceptor(), new CastingInterceptor()]).run();
 }

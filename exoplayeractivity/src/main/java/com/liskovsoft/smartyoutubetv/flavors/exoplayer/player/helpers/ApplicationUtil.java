@@ -1,7 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
 import android.content.Context;
-//import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -17,11 +17,11 @@ public class ApplicationUtil {
         return new DefaultDataSourceFactory(context, bandwidthMeter, buildHttpDataSourceFactory(context, bandwidthMeter));
     }
 
-    //public static HttpDataSource.Factory buildHttpDataSourceFactoryNew(Context context, DefaultBandwidthMeter bandwidthMeter) {
-    //    return new OkHttpDataSourceFactory(OkHttpHelpers.createOkHttpClient(), USER_AGENT_MANAGER.getUA(), bandwidthMeter);
-    //}
-
     public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
-        return new DefaultHttpDataSourceFactory(USER_AGENT_MANAGER.getUA(), bandwidthMeter);
+        return new OkHttpDataSourceFactory(OkHttpHelpers.createOkHttpClient(), USER_AGENT_MANAGER.getUA(), bandwidthMeter);
     }
+
+    //public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
+    //    return new DefaultHttpDataSourceFactory(USER_AGENT_MANAGER.getUA(), bandwidthMeter);
+    //}
 }
