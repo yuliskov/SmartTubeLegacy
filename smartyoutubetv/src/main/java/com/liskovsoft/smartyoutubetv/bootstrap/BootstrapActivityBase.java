@@ -32,9 +32,8 @@ public abstract class BootstrapActivityBase extends ExceptionBootstrapActivity {
     }
 
     private void initLogger() {
-        Context ctx = getApplicationContext();
-        SmartPreferences prefs = SmartPreferences.instance(ctx);
-        Log.init(ctx, prefs.getLogType(), AppInfoHelpers.getActivityLabel(ctx, prefs.getBootActivityName()));
+        SmartPreferences prefs = SmartPreferences.instance(this);
+        Log.init(this, prefs.getLogType(), AppInfoHelpers.getActivityLabel(getApplicationContext(), prefs.getBootActivityName()));
     }
 
     private void makeActivityHorizontal() {

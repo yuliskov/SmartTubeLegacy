@@ -11,10 +11,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.PermissionManager;
+import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.locale.LangHelper;
 import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -294,7 +293,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PermissionManager.REQUEST_EXTERNAL_STORAGE) {
+        if (requestCode == PermissionHelpers.REQUEST_EXTERNAL_STORAGE) {
             // Check if the only required permission has been granted
             if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Camera permission has been granted, preview can be displayed
@@ -315,7 +314,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
             return;
         }
 
-        PermissionManager.verifyStoragePermissions(this);
+        PermissionHelpers.verifyStoragePermissions(this);
     }
 
     @Override
