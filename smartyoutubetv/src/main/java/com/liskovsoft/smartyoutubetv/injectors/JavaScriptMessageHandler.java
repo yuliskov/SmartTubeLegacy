@@ -22,6 +22,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
     private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
     private final static String MESSAGE_AUTH_BODY = "message_auth_body";
+    private final static String MESSAGE_POST_DATA = "message_post_data";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -62,6 +63,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_AUTH_BODY:
                 GlobalPreferences.instance(mContext).setRawAuthData(content);
+                break;
+            case MESSAGE_POST_DATA:
+                CommonApplication.getPreferences().setPostData(content);
                 break;
         }
     }

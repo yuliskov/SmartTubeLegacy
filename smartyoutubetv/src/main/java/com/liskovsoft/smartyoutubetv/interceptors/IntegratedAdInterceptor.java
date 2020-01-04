@@ -4,6 +4,7 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 import java.io.InputStream;
 
@@ -21,7 +22,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        InputStream urlData = getUrlData(url);
+        InputStream urlData = postUrlData(url, CommonApplication.getPreferences().getPostData());
 
         String content = "Empty response";
 

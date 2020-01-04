@@ -60,6 +60,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mCookieHeader;
     private String mDefaultDisplayMode;
     private String mCurrentDisplayMode;
+    private String mPostData;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -351,5 +352,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
         if (listener != null) {
             addListener(CURRENT_VIDEO_POSITION, listener);
         }
+    }
+
+    public void setPostData(String content) {
+        mPostData = content;
+    }
+
+    public String getPostData() {
+        return mPostData;
     }
 }
