@@ -20,7 +20,7 @@ public class LogToFileDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getLogType() == Log.LOG_TYPE_FILE;
+        return mPrefs.getLogType().equals(Log.LOG_TYPE_FILE);
     }
 
     @Override
