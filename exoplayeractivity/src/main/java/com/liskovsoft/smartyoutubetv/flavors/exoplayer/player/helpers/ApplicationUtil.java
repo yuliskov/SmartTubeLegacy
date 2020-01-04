@@ -18,7 +18,7 @@ public class ApplicationUtil {
     }
 
     public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
-        return new OkHttpDataSourceFactory(OkHttpHelpers.createOkHttpClient(), USER_AGENT_MANAGER.getUA(), bandwidthMeter);
+        return new OkHttpDataSourceFactory(OkHttpHelpers.getOkHttpClient(), USER_AGENT_MANAGER.getUA(), bandwidthMeter);
     }
 
     //public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {

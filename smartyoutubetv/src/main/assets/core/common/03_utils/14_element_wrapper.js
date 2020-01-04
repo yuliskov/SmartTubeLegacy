@@ -35,6 +35,8 @@ var ElementWrapper = {
         document.createElementReal = document.createElement;
 
         document.createElement = function(tagName) {
+            Log.d($this.TAG, tagName);
+
             var elem = document.createElementReal(tagName);
 
             for (var i = 0; i < $this.handlers.length; i++) {
