@@ -31,23 +31,7 @@ function PlaybackEndAddon() {
     };
 
     this.initProps = function(video) {
-        video.properties.webkitDecodedFrameCount = 500;
-        video.properties.webkitAudioDecodedByteCount = 203004;
-        video.properties.webkitVideoDecodedByteCount = 2898507;
-        video.properties.networkState = 2;
-        video.properties.readyState = 4;
-        video.properties.paused = false;
-
-        video.properties.videoWidth = 1280;
-        video.properties.videoHeight = 720;
-
-        video.properties.baseURI = 'https://www.youtube.com/tv#/watch/video/idle?v=bR66Yyj3p48&resume';
-        video.properties.currentSrc = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
-
-        video.properties.duration = 1000000;
-
-        // video.properties.currentTime = 21.665161;
-        video.properties.src = 'blob:https://www.youtube.com/2abe4fbe-1ff7-456c-9dc5-a28539e2035d';
+        PlaybackStateUtil.justCreated(video);
     };
 
     this.addAdditionalFunctions = function(video) {
@@ -71,6 +55,8 @@ function PlaybackEndAddon() {
         video.backPressed = function() {
             Log.d($this.TAG, "User pressed back button...");
             PlaybackEndAddon.playbackStarted = false;
+
+            PlaybackStateUtil.videoClosed(video);
         };
     };
 
@@ -99,9 +85,8 @@ function PlaybackEndAddon() {
     this.imitatePlaying = function(video) {
         var i = 0;
         var $this = this;
-        video.properties.currentTime = 0;
-        video.properties.paused = false;
-        video.properties.ended = false;
+
+        PlaybackStateUtil.startPlaying(video);
 
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitatePlaying: duration: " + video.duration + ", currentTime: " + video.currentTime);
@@ -142,11 +127,10 @@ function PlaybackEndAddon() {
     this.imitateEndingInt = function(video) {
         var i = 0;
         var $this = this;
-        var curTime = video.properties.currentTime;
         var url = location.href;
-        video.properties.currentTime = video.properties.duration;
-        video.properties.paused = true;
-        video.properties.ended = true;
+
+        PlaybackStateUtil.endReached(video);
+
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitateEndingInt: duration: " + video.duration + ", currentTime: " + video.currentTime);
 
@@ -159,10 +143,8 @@ function PlaybackEndAddon() {
                 PlaybackEndAddon.locked = false; // reset lock!!!
                 PlaybackEndAddon.playbackStarted = false;
 
-                // do cleanup, prepare for the next video
-                video.properties.currentTime = curTime;
-                video.properties.paused = false;
-                video.properties.ended = false;
+                PlaybackStateUtil.videoClosed(video);
+
                 return;
             } else {
                 i++;

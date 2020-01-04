@@ -10,10 +10,10 @@ function AjaxInterceptorAddon(interceptors) {
     this.interceptors = interceptors ? interceptors : [];
 
     this.run = function() {
-        this.overrideSetHeaders();
+        this.bindInterceptors();
     };
 
-    this.overrideSetHeaders = function() {
+    this.bindInterceptors = function() {
         if (!window.XMLHttpRequest) {
             Log.e(this.TAG, "Can't override: XMLHttpRequest isn't exist");
             return;
@@ -104,5 +104,5 @@ function AjaxInterceptorAddon(interceptors) {
 }
 
 if (DeviceUtils.isExo()) {
-    new AjaxInterceptorAddon([new AuthInterceptor(), new CastingInterceptor()]).run();
+    new AjaxInterceptorAddon([new AuthInterceptor()]).run();
 }
