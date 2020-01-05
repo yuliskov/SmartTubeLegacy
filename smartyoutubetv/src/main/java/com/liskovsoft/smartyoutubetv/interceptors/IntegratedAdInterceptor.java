@@ -22,7 +22,8 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        InputStream urlData = postUrlData(url, CommonApplication.getPreferences().getPostData());
+        String postData = CommonApplication.getPreferences().getPostData();
+        InputStream urlData = postUrlData(url, postData);
 
         String content = "Empty response";
 
@@ -30,7 +31,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             content = Helpers.toString(urlData);
         }
 
-        Log.d(TAG, "Url: " + url + ", Response: " + content);
+        Log.d(TAG, "Url: " + url + ", Post Data: " + postData + ", Response: " + content);
 
         return null;
     }
