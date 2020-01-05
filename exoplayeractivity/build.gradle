@@ -69,7 +69,7 @@ dependencies {
 
     api project.properties.exoplayerVersion
 
-    implementation project.properties.exoplayerOkHttpVersion
+    // implementation project.properties.exoplayerOkHttpVersion
 
     // api project.properties.amazonExoplayerVersion
 
