@@ -67,11 +67,11 @@ dependencies {
     implementation project.properties.constraintLayoutXVersion
     implementation project.properties.collectionXVersion
 
-    api project.properties.exoplayerVersion
+    // api project.properties.exoplayerVersion
 
     // implementation project.properties.exoplayerOkHttpVersion
 
-    // api project.properties.amazonExoplayerVersion
+    api project.properties.amazonExoplayerVersion
 
     // include vp9 extension
     // NOTE: NoSuchMethodError when using 'transitive' prop
