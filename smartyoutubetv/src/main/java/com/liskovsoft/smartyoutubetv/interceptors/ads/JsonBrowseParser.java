@@ -30,8 +30,6 @@ public class JsonBrowseParser {
     public InputStream build() {
         if (mRemoveMustHead && ParserUtils.contains(TV_MASTHEAD_SECTION, mParser)) {
             mParser.delete(TV_MASTHEAD_SECTION_ROOT);
-        } else {
-            return mContent;
         }
 
         return Helpers.toStream(mParser.jsonString());
