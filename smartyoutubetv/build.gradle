@@ -234,8 +234,8 @@ dependencies {
     // example: assertThat(newEmployees).hasSize(6).contains(frodo, sam);
     testImplementation project.properties.assertJVersion
     testImplementation project.properties.robolectricVersion
-    testImplementation project.properties.robolectricMultidexVersion
-    testImplementation project.properties.robolectricSupportV4Version
+    //testImplementation project.properties.robolectricMultidexVersion
+    //testImplementation project.properties.robolectricSupportV4Version
     testImplementation project.properties.commonsIOVersion
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

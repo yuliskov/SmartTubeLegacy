@@ -42,6 +42,8 @@ public class ParserUtils {
     }
 
     public static DocumentContext createJsonInfoParser(String jsonInfo) {
+        // NOTE: Use String as input. InputStreams do not work!!!!
+
         if (jsonInfo == null) {
             return null;
         }
@@ -57,6 +59,10 @@ public class ParserUtils {
         } catch (Exception e) {
             throw new IllegalStateException("Malformed json: " + jsonInfo, e);
         }
+    }
+
+    public static boolean contains(String jsonPath, DocumentContext parser) {
+        return ParserUtils.<Object>extractType(jsonPath, parser) != null;
     }
 
     public static Integer extractInt(String jsonPath, DocumentContext parser) {

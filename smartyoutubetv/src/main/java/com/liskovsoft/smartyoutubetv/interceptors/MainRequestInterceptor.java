@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.AdAwayInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.IntegratedAdInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.scripts.LegacyMainScriptManagerInterceptor;
 
 import java.util.ArrayList;
