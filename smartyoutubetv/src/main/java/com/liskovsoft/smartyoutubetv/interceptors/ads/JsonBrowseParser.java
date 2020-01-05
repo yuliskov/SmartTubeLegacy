@@ -10,12 +10,10 @@ public class JsonBrowseParser {
     private static final String TV_MASTHEAD_SECTION_ROOT = "$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[0]";
     private static final String TV_MASTHEAD_SECTION = TV_MASTHEAD_SECTION_ROOT + ".tvMastheadRenderer";
     private final DocumentContext mParser;
-    private final InputStream mContent;
     private boolean mRemoveMustHead;
 
     public JsonBrowseParser(InputStream content) {
         mParser = ParserUtils.createJsonInfoParser(Helpers.toString(content));
-        mContent = content;
     }
 
     public static JsonBrowseParser parse(InputStream content) {
