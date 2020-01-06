@@ -27,14 +27,17 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         String postData = CommonApplication.getPreferences().getPostData();
         InputStream urlData = postUrlData(url, postData);
 
-        String content = "Empty response";
         WebResourceResponse response = null;
 
-        if (Log.getLogType().equals(Log.LOG_TYPE_FILE) && urlData != null) {
-            content = Helpers.toString(urlData);
+        if (urlData == null) {
+            Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
         }
 
-        Log.d(TAG, "Url: " + url + ", Post Data: " + postData + ", Response: " + content);
+        if (Log.getLogType().equals(Log.LOG_TYPE_FILE) && urlData != null) {
+            String content = Helpers.toString(urlData);
+            Log.d(TAG, "Url: " + url + ". Post Data: " + postData + ". Response: " + content);
+            urlData = Helpers.toStream(content);
+        }
 
         if (urlData != null) {
             Log.d(TAG, "Searching and removing tv masthead section...");
