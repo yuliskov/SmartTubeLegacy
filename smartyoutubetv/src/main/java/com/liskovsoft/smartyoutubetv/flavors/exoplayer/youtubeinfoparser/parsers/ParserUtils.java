@@ -11,10 +11,12 @@ import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 
+import java.io.InputStream;
+
 public class ParserUtils {
     private static final String TAG = ParserUtils.class.getSimpleName();
 
-    public static String extractParam(String content, String queryParam) {
+    public static String extractParam(String queryParam, String content) {
         Uri videoInfo = parseUri(content);
         String value = videoInfo.getQueryParameter(queryParam);
 
@@ -41,7 +43,7 @@ public class ParserUtils {
         return queryString.isEmpty();
     }
 
-    public static DocumentContext createJsonInfoParser(String jsonInfo) {
+    public static <T> DocumentContext createJsonInfoParser(T jsonInfo) {
         // NOTE: Use String as input. InputStreams do not work!!!!
 
         if (jsonInfo == null) {
@@ -55,7 +57,17 @@ public class ParserUtils {
                 .build();
 
         try {
-            return JsonPath.using(conf).parse(jsonInfo);
+            DocumentContext jsonPath;
+
+            if (jsonInfo instanceof InputStream) {
+                jsonPath = JsonPath.using(conf).parse((InputStream) jsonInfo, "UTF-8");
+            } else if (jsonInfo instanceof String) {
+                jsonPath = JsonPath.using(conf).parse((String) jsonInfo);
+            } else {
+                throw new IllegalStateException("Can't create parser. Unknown input type: " + jsonInfo.getClass().getSimpleName());
+            }
+
+            return jsonPath;
         } catch (Exception e) {
             throw new IllegalStateException("Malformed json: " + jsonInfo, e);
         }
@@ -85,10 +97,19 @@ public class ParserUtils {
         try {
             result = parser.read(jsonPath, typeRef);
         } catch (PathNotFoundException e) {
-            String msg = "It is ok. JSON content doesn't contains param: " + jsonPath;
+            String msg = "Can't get value. JSON content doesn't contains param: " + jsonPath;
             Log.d(TAG, msg);
         }
 
         return result;
+    }
+
+    public static void delete(String jsonPath, DocumentContext parser) {
+        try {
+            parser.delete(jsonPath);
+        } catch (PathNotFoundException e) {
+            String msg = "Can't delete value. JSON content doesn't contains param: " + jsonPath;
+            Log.d(TAG, msg);
+        }
     }
 }

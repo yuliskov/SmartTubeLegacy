@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class JsonBrowseParserTest {

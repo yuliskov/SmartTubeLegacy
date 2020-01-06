@@ -24,7 +24,7 @@ public class JsonInfoParser {
     private final DocumentContext mParser;
 
     public JsonInfoParser(String content) {
-        String jsonInfo = ParserUtils.extractParam(content, JSON_INFO);
+        String jsonInfo = ParserUtils.extractParam(JSON_INFO, content);
         mParser = ParserUtils.createJsonInfoParser(jsonInfo);
     }
 

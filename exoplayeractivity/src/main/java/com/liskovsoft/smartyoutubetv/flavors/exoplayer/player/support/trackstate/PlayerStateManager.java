@@ -114,6 +114,9 @@ public class PlayerStateManager extends PlayerStateManagerBase {
     private void restoreTrackPosition() {
         long posPercents = CommonApplication.getPreferences().getCurrentVideoPosition();
 
+        // prevent from restoring same data on two different video
+        CommonApplication.getPreferences().setCurrentVideoPosition(-1);
+
         Log.d(TAG, "Real position of the video in percents: " + posPercents);
 
         long posMs;

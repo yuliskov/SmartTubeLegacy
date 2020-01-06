@@ -70,7 +70,7 @@ public class YouTubeMediaParser {
     }
 
     private void extractHlsUrl() {
-        String url = ParserUtils.extractParam(mContent, HLS_URL);
+        String url = ParserUtils.extractParam(HLS_URL, mContent);
 
         if (url == null) {
             url = mParser.extractHlsUrl();
@@ -87,7 +87,7 @@ public class YouTubeMediaParser {
     }
 
     private void extractDashMPDUrl() {
-        String url = ParserUtils.extractParam(mContent, DASH_MPD_URL);
+        String url = ParserUtils.extractParam(DASH_MPD_URL, mContent);
 
         if (url == null) {
             url = mParser.extractDashUrl();
@@ -101,7 +101,7 @@ public class YouTubeMediaParser {
         List<MediaItem> list = new ArrayList<>();
         List<String> items = new ArrayList<>();
 
-        String formats = ParserUtils.extractParam(content, queryParam);
+        String formats = ParserUtils.extractParam(queryParam, content);
 
         // stream may not contain formats
         if (formats != null) {
