@@ -29,10 +29,6 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
         WebResourceResponse response = null;
 
-        if (urlData == null) {
-            Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
-        }
-
         if (Log.getLogType().equals(Log.LOG_TYPE_FILE) && urlData != null) {
             String content = Helpers.toString(urlData);
             Log.d(TAG, "Url: " + url + ". Post Data: " + postData + ". Response: " + content);
@@ -42,6 +38,8 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         if (urlData != null) {
             Log.d(TAG, "Searching and removing tv masthead section...");
             response = createResponse(MediaType.parse("application/json"), JsonBrowseParser.parse(urlData).removeMustHead().build());
+        } else {
+            Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
         }
 
         return response;
