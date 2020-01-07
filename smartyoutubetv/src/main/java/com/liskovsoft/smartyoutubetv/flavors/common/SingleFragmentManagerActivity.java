@@ -23,7 +23,7 @@ public abstract class SingleFragmentManagerActivity extends FragmentManagerActiv
 
         initBrowserFragment();
         setupEvents();
-        Helpers.disableScreensaver(this);
+        //Helpers.disableScreensaver(this);
     }
 
     private void setupEvents() {

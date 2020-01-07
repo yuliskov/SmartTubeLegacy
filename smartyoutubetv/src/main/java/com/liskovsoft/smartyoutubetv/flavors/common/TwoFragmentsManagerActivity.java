@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.GlobalConstants;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -50,7 +51,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.setActiveFragment(mBrowserFragment, true);
 
         Log.d(TAG, "Enabling screensaver...");
-        getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Helpers.enableScreensaver(this);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
