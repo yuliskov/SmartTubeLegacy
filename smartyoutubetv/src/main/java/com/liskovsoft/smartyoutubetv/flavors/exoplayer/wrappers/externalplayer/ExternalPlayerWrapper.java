@@ -41,6 +41,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private VideoMetadata mMetadata;
     private List<String> mUrlList;
     private InputStream mMpdContent;
+    private static final String MIME_MP4 = "video/mp4";
+    private static final String MIME_HLS = "application/x-mpegURL";
 
     public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mUAManager = new UserAgentManager();
@@ -136,10 +138,12 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private void initIntent(Intent intent) {
         if (mMpdContent != null) {
             FileHelpers.streamToFile(mMpdContent, mMpdFile);
-            // NOTE: Don't use parseFile or you will get FileUriExposedException
-            intent.setDataAndType(Uri.parse(mMpdFile.toString()), "video/mp4");
+            // NOTE: Don't use fromFile or you will get FileUriExposedException
+            intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
+            // VLC fix
+            //intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
         } else if (mDashUrl != null) {
-            intent.setDataAndType(mDashUrl, "video/mp4"); // mpd
+            intent.setDataAndType(mDashUrl, MIME_MP4); // mpd
         } else if (mHlsUrl != null) {
             M3UParser parser = new M3UParser();
             Playlist pl = parser.parse(mHlsUrl);
@@ -149,9 +153,9 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
                 mHlsUrl = pl.getStreams().get(pl.getStreams().size() - 1).uri;
             }
 
-            intent.setDataAndType(mHlsUrl, "application/x-mpegURL"); // m3u8
+            intent.setDataAndType(mHlsUrl, MIME_HLS); // m3u8
         } else if (mUrlList != null) {
-            intent.setDataAndType(Uri.parse(mUrlList.get(0)), "video/mp4");
+            intent.setDataAndType(Uri.parse(mUrlList.get(0)), MIME_MP4);
         } else {
             Log.d(TAG, "Unrecognized content type");
         }
@@ -183,7 +187,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Log.d(TAG, "Starting external player...");
             ((FragmentManager)mContext).startActivityForResult(intent, this);
         } catch (ActivityNotFoundException e) {
-            MessageHelpers.showMessage(mContext, R.string.message_install_vlc_player);
+            MessageHelpers.showMessage(mContext, R.string.message_install_player);
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mInterceptor.closePlayer();

@@ -83,4 +83,5 @@
     <string name="tweak_ugoos_afr_fix">PRO: Исправление фреймрейта на UGOOS 50Гц</string>
     <string name="tweak_hide_boot_tips">Убрать подсказки (во время загрузки)</string>
     <string name="tweak_auto_show_player_ui">Отображать интерфейс плеера при нажатии на медиа-клавиши</string>
+    <string name="message_install_player">Пожалуйста установите MXPlayer или VLC</string>
 </resources>

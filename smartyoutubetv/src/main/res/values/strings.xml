@@ -101,4 +101,5 @@
     <string name="tweak_hide_boot_tips">Hide boot tips</string>
     <string name="tweak_auto_show_player_ui">Auto show player UI</string>
     <string name="tweak_open_externally_lq">PRO: Open video with external player (SD)</string>
+    <string name="message_install_player">Please install MXPlayer or VLC</string>
 </resources>
