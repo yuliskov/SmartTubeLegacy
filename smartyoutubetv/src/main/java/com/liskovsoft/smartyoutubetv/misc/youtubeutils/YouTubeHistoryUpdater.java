@@ -32,7 +32,7 @@ public class YouTubeHistoryUpdater {
         //Log.d(TAG, "Tracking headers: " + headers);
         new Thread(() -> {  // avoid NetworkOnMainThreadException
             Response response = OkHttpHelpers.doGetOkHttpRequest(fullTrackingUrl, headers);
-            if (!response.isSuccessful()) {
+            if (response == null || !response.isSuccessful()) {
                 Log.e(TAG, "Bad tracking response: " + response);
             }
         }).start();

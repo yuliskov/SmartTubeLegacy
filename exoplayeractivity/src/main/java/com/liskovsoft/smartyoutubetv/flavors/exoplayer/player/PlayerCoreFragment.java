@@ -363,12 +363,12 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      */
     private DefaultLoadControl getLoadControl() {
         int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS * 4;
-        int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 4;
+        int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
         int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
         int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
         return new DefaultLoadControl.Builder()
                 //.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
-                .setBufferDurationsMs(bufferForPlaybackAfterRebufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs)
+                //.setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs)
                 .createDefaultLoadControl();
     }
 

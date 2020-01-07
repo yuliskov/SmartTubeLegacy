@@ -73,7 +73,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
             return null;
         }
 
-        VideoMetadata metadata = new JsonNextParser(Helpers.toString(response)).extractVideoMetadata();
+        VideoMetadata metadata = new JsonNextParser(response).extractVideoMetadata();
 
         return metadata;
     }

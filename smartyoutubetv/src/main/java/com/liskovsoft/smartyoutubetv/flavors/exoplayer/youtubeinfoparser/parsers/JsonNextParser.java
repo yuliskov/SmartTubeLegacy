@@ -5,6 +5,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class JsonNextParser {
@@ -39,7 +40,7 @@ public class JsonNextParser {
     private static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
     private final DocumentContext mParser;
 
-    public JsonNextParser(String nextContent) {
+    public <T> JsonNextParser(T nextContent) {
         mParser = ParserUtils.createJsonInfoParser(nextContent);
     }
 

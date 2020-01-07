@@ -25,6 +25,12 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         String postData = CommonApplication.getPreferences().getPostData();
+
+        if (postData == null) {
+            Log.e(TAG, "Error. Post body is empty! Url: " + url);
+            return null;
+        }
+
         InputStream urlData = postUrlData(url, postData);
 
         WebResourceResponse response = null;
