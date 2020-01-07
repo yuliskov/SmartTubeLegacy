@@ -1,0 +1,5 @@
+<resources>
+    <string name="system_lang">Standard</string>
+    <string name="log_stored_in_path">Přihlášení v: %s</string>
+    <string name="log_to_file_started">Protokolování v: %s</string>
+</resources>
