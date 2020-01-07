@@ -96,7 +96,7 @@
     </string>
     <string name="do_reinstall_bridge_apk">Voulez-vous activer la recherche vocale mondiale?\nIl faudra peut etre supprimer l\'application originale YouTube\nEt ensuite installer un apk supplémentaire.
     </string>
-    <string name="app_crashed">App crashed.\nVérifier si une nouvelle version existe?</string>
+    <string name="app_crashed">App crashed.\nVérifier si une version plus récente existe?</string>
     <string name="tweak_use_new_ui">Utiliser une nouvelle interface utilisateur</string>
     <string name="tweak_ugoos_afr_fix">Correction de UGOOS 50HZ</string>
     <string name="tweak_hide_boot_tips">Masquer les conseils de démarrage</string>
