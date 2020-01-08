@@ -12,6 +12,8 @@ import java.io.InputStream;
 
 public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String TAG = IntegratedAdInterceptor.class.getSimpleName();
+    private static final String HOME_PAGE_ID = "\"browseId\":\"default\"";
+    private static final String BROWSE_URL = "/youtubei/v1/browse";
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
@@ -19,7 +21,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        return url.contains("/youtubei/v1/browse");
+        return url.contains(BROWSE_URL);
     }
 
     @Override
@@ -28,6 +30,11 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
         if (postData == null) {
             Log.e(TAG, "Error. Post body is empty! Url: " + url);
+            return null;
+        }
+
+        if (!postData.contains(HOME_PAGE_ID)) {
+            Log.e(TAG, "Not Home page. Skip filtering! Url: " + url);
             return null;
         }
 
