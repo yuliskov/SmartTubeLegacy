@@ -10,6 +10,7 @@ import com.liskovsoft.m3uparser.m3u.models.Stream;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
@@ -20,6 +21,7 @@ import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import okhttp3.Response;
 
 import java.io.File;
 import java.io.InputStream;
@@ -132,7 +134,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         initIntent(intent);
         prepareIntent(intent);
 
-        openPlayer(intent);
+        openInKodi();
+        //openPlayer(intent);
     }
 
     private void initIntent(Intent intent) {
@@ -191,6 +194,25 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mInterceptor.closePlayer();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            mInterceptor.closePlayer();
+        }
+    }
+
+    private void openInKodi() {
+        try {
+            Intent intent = new Intent();
+            intent.setClassName("org.xbmc.kodi", "org.xbmc.kodi.Splash");
+
+            Log.d(TAG, "Starting Kodi...");
+            ((FragmentManager)mContext).startActivityForResult(intent, this);
+
+            Response response = OkHttpHelpers.doPostOkHttpRequest("http://localhost:8080/jsonrpc", null, "{\"jsonrpc\":\"2.0\",\"id\":\"1\"," +
+                    "\"method\":\"Player.Open\"," + "\"params\":{\"item\":{\"file\":\"/storage/emulated/0/Download/kodi-youtube-test.strm\"}}}",
+                    "Content-Type: application/json");
+            Log.d(TAG, response);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
