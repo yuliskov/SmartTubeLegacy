@@ -21,6 +21,10 @@ public class JsonBrowseParser {
         return new JsonBrowseParser(content);
     }
 
+    public boolean canRemoveMustHead() {
+        return ParserUtils.exists(TV_MASTHEAD_SECTION, mParser);
+    }
+
     public JsonBrowseParser removeMustHead() {
         mRemoveMustHead = true;
 

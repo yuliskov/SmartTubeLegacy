@@ -112,4 +112,14 @@ public class ParserUtils {
             Log.d(TAG, msg);
         }
     }
+
+    public static boolean exists(String jsonPath, DocumentContext parser) {
+        try {
+            return parser.read(jsonPath) != null;
+        } catch (PathNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
