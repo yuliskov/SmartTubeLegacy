@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
+import android.os.Handler;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -32,6 +33,12 @@ public class HistoryInterceptor extends RequestInterceptor {
 
         mUrl = url;
 
+        // MIBox Mini delayed history fix:
+        // History url received after video has been closed
+        if (mPosition != 0) {
+            updatePosition(mPosition);
+        }
+
         //notifyPositionChange();
 
         // block url
@@ -47,6 +54,8 @@ public class HistoryInterceptor extends RequestInterceptor {
     }
 
     public void updatePosition(float position) {
+        Log.d(TAG, "Updating position. Position: " + position + ". Url: " + mUrl);
+
         mPosition = position;
 
         if (mUrl != null) {
@@ -56,5 +65,6 @@ public class HistoryInterceptor extends RequestInterceptor {
 
     public void onStart() {
         mUrl = null;
+        mPosition = 0;
     }
 }
