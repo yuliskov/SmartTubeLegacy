@@ -76,7 +76,7 @@
     <string name="toast_remove_old_package">Le nom du paquet a été changé. Veuillez supprimer les anciennes versions de l\'application.</string>
     <string name="tweak_history_fix">Activer le correctif de l\'historique</string>
     <string name="tweak_open_watch_later">Démarrage à Regarder plus tard</string>
-    <string name="tweak_open_externally">PRO: Utiliser un lecteur externe</string>
+    <string name="tweak_open_externally">Utiliser un lecteur externe</string>
     <string name="message_install_vlc_player">S\'il vous plaît installer le lecteur VLC</string>
     <string name="tweak_fix_aspect">Activer les proportions et la correction de zoom</string>
     <string name="tweak_animated_previews">Activer les aperçus animés</string>
