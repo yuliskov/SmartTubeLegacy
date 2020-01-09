@@ -22,6 +22,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String USE_EXTERNAL_PLAYER_4K = "use_external_player_4k";
     public static final String USE_EXTERNAL_PLAYER_FHD = "use_external_player_fhd";
     public static final String USE_EXTERNAL_PLAYER_SD = "use_external_player_sd";
+    public static final String USE_EXTERNAL_PLAYER_KODI = "use_external_player_kodi";
     private static final String FIX_ASPECT_RATIO = "fix_aspect_ratio";
     private static final String LOG_TYPE = "log_type2";
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";

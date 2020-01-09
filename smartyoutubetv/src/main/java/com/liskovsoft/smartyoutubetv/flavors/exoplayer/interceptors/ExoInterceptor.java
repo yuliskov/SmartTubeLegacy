@@ -52,7 +52,7 @@ public class ExoInterceptor extends RequestInterceptor {
         boolean useExternalPlayer = !SmartPreferences.USE_EXTERNAL_PLAYER_NONE.equals(mPrefs.getUseExternalPlayer());
 
         if (useExternalPlayer) {
-            mExoCallback = new ExternalPlayerWrapper(mContext, this);
+            mExoCallback = ExternalPlayerWrapper.create(mContext, this);
         } else {
             mExoCallback = new ExoPlayerWrapper(mContext, this);
         }

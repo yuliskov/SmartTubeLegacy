@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import com.liskovsoft.m3uparser.m3u.M3UParser;
 import com.liskovsoft.m3uparser.m3u.models.Playlist;
-import com.liskovsoft.m3uparser.m3u.models.Stream;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
@@ -21,7 +19,6 @@ import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import okhttp3.Response;
 
 import java.io.File;
 import java.io.InputStream;
@@ -29,8 +26,8 @@ import java.util.List;
 
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
     private static final String TAG = ExternalPlayerWrapper.class.getSimpleName();
-    private final Context mContext;
-    private final ExoInterceptor mInterceptor;
+    protected final Context mContext;
+    protected final ExoInterceptor mInterceptor;
     private static final String MPD_FILE_NAME = "tmp_video.mpd";
     private static final String VLC_PACKAGE_NAME = "org.videolan.vlc";
     private static final String PLAYER_ACTIVITY_NAME = "org.videolan.vlc.gui.video.VideoPlayerActivity";
@@ -40,19 +37,27 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private final HistoryInterceptor mHistory;
     private Uri mDashUrl;
     private Uri mHlsUrl;
-    private VideoMetadata mMetadata;
+    protected VideoMetadata mMetadata;
     private List<String> mUrlList;
     private InputStream mMpdContent;
     private static final String MIME_MP4 = "video/mp4";
     private static final String MIME_HLS = "application/x-mpegURL";
 
-    public ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
+    protected ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mUAManager = new UserAgentManager();
         mContext = context;
         mInterceptor = interceptor;
         mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
         mPrefs = CommonApplication.getPreferences();
         mHistory = interceptor.getHistoryInterceptor();
+    }
+
+    public static OnMediaFoundCallback create(Context context, ExoInterceptor interceptor) {
+        if (SmartPreferences.USE_EXTERNAL_PLAYER_KODI.equals(CommonApplication.getPreferences().getUseExternalPlayer())) {
+            return new KodiPlayerWrapper(context, interceptor);
+        }
+
+        return new ExternalPlayerWrapper(context, interceptor);
     }
 
     @Override
@@ -128,14 +133,13 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
      * <a href="https://wiki.videolan.org/Android_Player_Intents/">VLC intent</a><br/>
      * <a href="http://mx.j2inter.com/api">MX Player intent</a>
      */
-    private void openExternalPlayer() {
+    protected void openExternalPlayer() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
         initIntent(intent);
         prepareIntent(intent);
 
-        openInKodi();
-        //openPlayer(intent);
+        openPlayer(intent);
     }
 
     private void initIntent(Intent intent) {
@@ -194,25 +198,6 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mInterceptor.closePlayer();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
-            mInterceptor.closePlayer();
-        }
-    }
-
-    private void openInKodi() {
-        try {
-            Intent intent = new Intent();
-            intent.setClassName("org.xbmc.kodi", "org.xbmc.kodi.Splash");
-
-            Log.d(TAG, "Starting Kodi...");
-            ((FragmentManager)mContext).startActivityForResult(intent, this);
-
-            Response response = OkHttpHelpers.doPostOkHttpRequest("http://localhost:8080/jsonrpc", null, "{\"jsonrpc\":\"2.0\",\"id\":\"1\"," +
-                    "\"method\":\"Player.Open\"," + "\"params\":{\"item\":{\"file\":\"/storage/emulated/0/Download/kodi-youtube-test.strm\"}}}",
-                    "Content-Type: application/json");
-            Log.d(TAG, response);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();

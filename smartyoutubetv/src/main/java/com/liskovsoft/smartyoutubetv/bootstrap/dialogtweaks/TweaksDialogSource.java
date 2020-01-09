@@ -23,6 +23,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDi
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayer4KDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerFHDDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerKodiDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerSDDialogItem;
 
 import java.util.ArrayList;
@@ -49,9 +50,6 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
         //mItems.add(new GlobalAfrFixDialogItem(mContext));
-        mItems.add(new UseExternalPlayer4KDialogItem(mContext));
-        mItems.add(new UseExternalPlayerFHDDialogItem(mContext));
-        mItems.add(new UseExternalPlayerSDDialogItem(mContext));
         mItems.add(new Ugoos50HZFixDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
@@ -62,6 +60,10 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new AltPlayerMappingDialogItem(mContext));
         mItems.add(new HideBootTipsDialogItem(mContext));
         mItems.add(new AutoShowPlayerUIDialogItem(mContext));
+        mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
+        mItems.add(new UseExternalPlayer4KDialogItem(mContext));
+        mItems.add(new UseExternalPlayerFHDDialogItem(mContext));
+        mItems.add(new UseExternalPlayerSDDialogItem(mContext));
     }
 
     @Override
