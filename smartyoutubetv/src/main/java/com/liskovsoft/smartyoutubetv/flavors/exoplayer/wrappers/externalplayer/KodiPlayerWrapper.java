@@ -3,8 +3,10 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 import android.content.Context;
 import android.content.Intent;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import okhttp3.Response;
@@ -69,7 +71,11 @@ public class KodiPlayerWrapper extends ExternalPlayerWrapper {
                 }
             }
 
-            Log.d(TAG, response);
+            if (response == null) {
+                MessageHelpers.showLongMessage(mContext, R.string.message_enable_web_server);
+            } else {
+                Log.d(TAG, response);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

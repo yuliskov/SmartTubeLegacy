@@ -146,9 +146,9 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         if (mMpdContent != null) {
             FileHelpers.streamToFile(mMpdContent, mMpdFile);
             // NOTE: Don't use fromFile or you will get FileUriExposedException
-            intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
+            //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
             // VLC fix
-            //intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
+            intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
         } else if (mDashUrl != null) {
             intent.setDataAndType(mDashUrl, MIME_MP4); // mpd
         } else if (mHlsUrl != null) {
