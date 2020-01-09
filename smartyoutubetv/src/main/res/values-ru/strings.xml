@@ -85,4 +85,5 @@
     <string name="tweak_auto_show_player_ui">Отображать интерфейс плеера при нажатии на медиа-клавиши</string>
     <string name="message_install_player">Пожалуйста установите MXPlayer или VLC</string>
     <string name="message_enable_web_server">Вы должны активировать Web Server в настройках Kodi</string>
+    <string name="message_install_kodi">Похоже, что Kodi не установлен</string>
 </resources>

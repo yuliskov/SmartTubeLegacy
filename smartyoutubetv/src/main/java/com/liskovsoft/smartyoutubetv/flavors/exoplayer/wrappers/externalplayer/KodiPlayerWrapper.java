@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer;
 import android.content.Context;
 import android.content.Intent;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
@@ -32,6 +33,11 @@ public class KodiPlayerWrapper extends ExternalPlayerWrapper {
 
     protected void openExternalPlayer() {
         try {
+            if (!Helpers.isPackageExists(mContext, "org.xbmc.kodi")) {
+                MessageHelpers.showLongMessage(mContext, R.string.message_install_kodi);
+                return;
+            }
+
             Intent intent = new Intent();
             intent.setClassName("org.xbmc.kodi", "org.xbmc.kodi.Splash");
 
