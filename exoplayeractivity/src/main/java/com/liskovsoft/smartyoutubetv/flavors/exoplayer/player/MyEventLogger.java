@@ -79,7 +79,7 @@ import java.util.Locale;
     private final long mStartTimeMs;
 
     public MyEventLogger(MappingTrackSelector trackSelector) {
-        this.mTrackSelector = trackSelector;
+        mTrackSelector = trackSelector;
         mWindow = new Timeline.Window();
         mPeriod = new Timeline.Period();
         mStartTimeMs = SystemClock.elapsedRealtime();

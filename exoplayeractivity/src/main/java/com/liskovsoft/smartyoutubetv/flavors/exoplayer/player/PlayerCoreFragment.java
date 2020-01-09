@@ -156,7 +156,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         // shouldAutoPlay = true;
         clearResumePosition();
-        mMediaDataSourceFactory = buildDataSourceFactory(true);
+        mMediaDataSourceFactory = buildDataSourceFactory(false);
         mMainHandler = new Handler();
 
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {

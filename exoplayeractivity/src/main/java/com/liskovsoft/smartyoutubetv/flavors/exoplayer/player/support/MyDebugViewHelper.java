@@ -271,6 +271,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
                 counters.droppedBufferCount + counters.skippedOutputBufferCount
                     + "/" +
                     counters.renderedOutputBufferCount);
+        appendRow("Buffer size (seconds)", (int)(mPlayer.getBufferedPosition() - mPlayer.getCurrentPosition()) / 1_000);
     }
 
     private void appendPlayerState() {
