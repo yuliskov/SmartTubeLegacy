@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:minWidth="80dp"
+              android:minWidth="0dp"
               android:layout_width="wrap_content"
               android:layout_height="@dimen/toggle_button_wrapper_height"
               android:gravity="center_horizontal"

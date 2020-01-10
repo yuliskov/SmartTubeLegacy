@@ -42,6 +42,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
     protected LinearLayout mToggleButtonWrapper;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
     private boolean mIsDisabled;
+    private int mSpace;
 
     public interface OnCheckedChangeListener {
         void onCheckedChanged(ToggleButtonBase button, boolean isChecked);
@@ -74,7 +75,9 @@ public abstract class ToggleButtonBase extends LinearLayout {
             mTextOff = a.getString(R.styleable.ToggleButtonBase_textOff);
             mDescText = a.getString(R.styleable.ToggleButtonBase_desc);
             mBindToId = a.getResourceId(R.styleable.ToggleButtonBase_bindTo, 0);
-            //mMinWidth = a.getResourceId(R.styleable.ToggleButtonBase_left_right_space, 0);
+            mSpace = a.getDimensionPixelSize(R.styleable.ToggleButtonBase_left_right_space, 0);
+            Log.d(TAG, "Space: " + mSpace);
+
             String handlerName = a.getString(R.styleable.ToggleButtonBase_onCheckedChanged);
             if (handlerName != null) {
                 setOnCheckedChangeListener(new DeclaredOnCheckedChangeListener(this, handlerName));
@@ -139,7 +142,9 @@ public abstract class ToggleButtonBase extends LinearLayout {
         mTextButton = (Button) findViewById(R.id.text_button);
         mToggleButtonWrapper = (LinearLayout) findViewById(R.id.toggle_button_wrapper);
 
-        //mToggleButtonWrapper.setMinimumWidth(xxx);
+        if (mSpace > 0) {
+            mToggleButtonWrapper.setPadding(mSpace, 0, mSpace, 0);
+        }
     }
 
     private void applyCommonProps() {
