@@ -389,6 +389,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         if (mPlayer != null) {
             mShouldAutoPlay = mPlayer.getPlayWhenReady(); // save paused state
             updateResumePosition(); // save position
+            mPlayer.setPlayWhenReady(false);
             mPlayer.release();
             resetUiState();
         }

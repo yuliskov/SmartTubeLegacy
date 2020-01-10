@@ -99,8 +99,13 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
 
     private void checkPermAndBackup() {
         boolean isUerAuth = CommonApplication.getPreferences().getAuthorizationHeader() != null;
-        if (FileHelpers.isExternalStorageWritable() && isUerAuth) {
-            backupData();
+
+        if (isUerAuth) {
+            if (FileHelpers.isExternalStorageWritable()) {
+                backupData();
+            }
+        } else {
+            Log.d(TAG, "User not authorized. Cancelling backup...");
         }
     }
 
