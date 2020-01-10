@@ -9,6 +9,7 @@
         <attr name="desc" format="string"/>
         <attr name="bindTo" format="reference"/>
         <attr name="onCheckedChanged" format="string"/>
+        <attr name="left_right_space" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="LayoutToggleButton">

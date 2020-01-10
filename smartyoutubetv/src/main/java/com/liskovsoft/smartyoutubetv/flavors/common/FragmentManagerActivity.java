@@ -70,8 +70,6 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
         super.onCreate(savedInstanceState);
 
-        initPermissions();
-
         setupFontSize();
 
         setupVoiceSearch();
@@ -304,17 +302,6 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    private void initPermissions() {
-        boolean alreadyGranted = SmartUtils.isBolshoeTV();
-
-        // avoid error on genymotion emulator (NoSuchField error)
-        if (Helpers.isGenymotion() || alreadyGranted) {
-            return;
-        }
-
-        PermissionHelpers.verifyStoragePermissions(this);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.Handler;
 import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
@@ -36,6 +37,8 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         mBackupDirs = new ArrayList<>();
         mBackupDirs.add(new File(FileHelpers.getBackupDir(mContext), "Backup"));
         mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", "com.liskovsoft.videomanager")));
+
+        PermissionHelpers.verifyStoragePermissions(context);
     }
 
     @Override

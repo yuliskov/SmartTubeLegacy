@@ -75,10 +75,6 @@ public class SmartUtils {
         System.exit(0);
     }
 
-    public static boolean isBolshoeTV() {
-        return BuildConfig.FLAVOR.equals("Vbolshoetv");
-    }
-
     public static void sendMessage(String messageId, String messageData) {
         new SendMessageCommand(messageId, messageData).call();
     }

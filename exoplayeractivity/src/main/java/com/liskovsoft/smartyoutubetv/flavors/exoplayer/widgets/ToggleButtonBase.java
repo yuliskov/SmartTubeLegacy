@@ -74,6 +74,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
             mTextOff = a.getString(R.styleable.ToggleButtonBase_textOff);
             mDescText = a.getString(R.styleable.ToggleButtonBase_desc);
             mBindToId = a.getResourceId(R.styleable.ToggleButtonBase_bindTo, 0);
+            //mMinWidth = a.getResourceId(R.styleable.ToggleButtonBase_left_right_space, 0);
             String handlerName = a.getString(R.styleable.ToggleButtonBase_onCheckedChanged);
             if (handlerName != null) {
                 setOnCheckedChangeListener(new DeclaredOnCheckedChangeListener(this, handlerName));
@@ -137,6 +138,8 @@ public abstract class ToggleButtonBase extends LinearLayout {
         mImageButton = (ImageButton) findViewById(R.id.image_button);
         mTextButton = (Button) findViewById(R.id.text_button);
         mToggleButtonWrapper = (LinearLayout) findViewById(R.id.toggle_button_wrapper);
+
+        //mToggleButtonWrapper.setMinimumWidth(xxx);
     }
 
     private void applyCommonProps() {

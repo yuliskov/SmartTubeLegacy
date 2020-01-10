@@ -38,21 +38,6 @@
         <item name="android:layout_marginLeft">@dimen/toggle_button_padding</item>
         <item name="android:layout_marginRight">@dimen/toggle_button_padding</item>
     </style>
-
-    <style name="ExoMediaButton2.Speed">
-        <item name="onCheckedChanged">onCheckedChanged</item>
-        <item name="desc">@string/video_speed</item>
-        <item name="imageOff">@mipmap/btn_speed</item>
-        <item name="imageOn">@mipmap/btn_speed</item>
-        <item name="android:contentDescription">@string/video_speed</item>
-    </style>
-    <style name="ExoMediaButton2.Repeat">
-        <item name="onCheckedChanged">onCheckedChanged</item>
-        <item name="desc">@string/repeat_video</item>
-        <item name="imageOff">@mipmap/btn_repeat_off</item>
-        <item name="imageOn">@mipmap/btn_repeat_on</item>
-        <item name="android:contentDescription">@string/repeat_video</item>
-    </style>
     <style name="ExoMediaButton2.Next">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/next_video</item>
@@ -99,6 +84,25 @@
         <item name="desc">@string/btn_favorites</item>
         <item name="imageOff">@mipmap/btn_favorites</item>
         <item name="imageOn">@mipmap/btn_favorites</item>
+        <item name="left_right_space">5dp</item>
+    </style>
+
+    <style name="ExoMediaButton2.Speed">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/video_speed</item>
+        <item name="imageOff">@mipmap/btn_speed</item>
+        <item name="imageOn">@mipmap/btn_speed</item>
+        <item name="android:contentDescription">@string/video_speed</item>
+        <item name="left_right_space">5dp</item>
+    </style>
+
+    <style name="ExoMediaButton2.Repeat">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/repeat_video</item>
+        <item name="imageOff">@mipmap/btn_repeat_off</item>
+        <item name="imageOn">@mipmap/btn_repeat_on</item>
+        <item name="android:contentDescription">@string/repeat_video</item>
+        <item name="left_right_space">5dp</item>
     </style>
 
     <style name="ExoMediaButton2.User">
