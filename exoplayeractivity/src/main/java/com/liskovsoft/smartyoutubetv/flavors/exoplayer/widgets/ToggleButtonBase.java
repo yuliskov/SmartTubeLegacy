@@ -76,7 +76,6 @@ public abstract class ToggleButtonBase extends LinearLayout {
             mDescText = a.getString(R.styleable.ToggleButtonBase_desc);
             mBindToId = a.getResourceId(R.styleable.ToggleButtonBase_bindTo, 0);
             mSpace = a.getDimensionPixelSize(R.styleable.ToggleButtonBase_left_right_space, 0);
-            Log.d(TAG, "Space: " + mSpace);
 
             String handlerName = a.getString(R.styleable.ToggleButtonBase_onCheckedChanged);
             if (handlerName != null) {

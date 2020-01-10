@@ -8,6 +8,7 @@ import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
@@ -97,7 +98,8 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     }
 
     private void checkPermAndBackup() {
-        if (FileHelpers.isExternalStorageWritable()) {
+        boolean isUerAuth = CommonApplication.getPreferences().getAuthorizationHeader() != null;
+        if (FileHelpers.isExternalStorageWritable() && isUerAuth) {
             backupData();
         }
     }
