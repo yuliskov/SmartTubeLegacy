@@ -84,8 +84,16 @@ function SuggestionsFakeButton(selector) {
 
     this.tryToOpenSuggestions = function() {
         var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
-        if (suggestionsShown || !YouTubeUtils.isPlayerOpened()) {
-            Log.d(this.TAG, "Success. Suggestions already has been shown or player is closed!");
+
+        if (suggestionsShown) {
+            Log.d(this.TAG, "Success. Suggestions has been shown!");
+            // Empty suggestions fix
+            YouTubeUtils.getPlayer() && YouTubeUtils.getPlayer().imitatePlaying();
+            return;
+        }
+ 
+        if (!YouTubeUtils.isPlayerOpened()) {
+            Log.d(this.TAG, "Error. Player is closed. Can't show the suggestions.");
             return;
         }
 

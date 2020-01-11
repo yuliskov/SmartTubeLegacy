@@ -15,6 +15,8 @@ function PlaybackEndAddon() {
         // Ignore such events.
         if (YouTubeUtils.isPlayerOpened()) {
             this.imitatePlaying(video);
+        } else {
+            Log.d(this.TAG, "Player closed. Ignore src change event!");
         }
     };
 
