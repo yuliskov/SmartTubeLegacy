@@ -92,7 +92,7 @@
     <string name="restoring_data_msg">Obnovit...</string>
     <string name="alt_player_mapping">Dálkové ovládání: mapování ALT mediálního klíče</string>
     <string name="tip_hash_in_subscriptions">Vymazat předplatné? Odebrat kanály začínající hashem #</string>
-    <string name="tip_show_main_screen_2">BACK-toets indrukken om de instellingen van de app te openen</string>
+    <string name="tip_show_main_screen_2">Stisknutím tlačítka ZPĚT otevřete nastavení aplikace</string>
     <string name="do_install_bridge_apk">Chcete povolit globální hlasové vyhledávání?\nMůže být nutné nainstalovat další apk.</string>
     <string name="do_reinstall_bridge_apk">Chcete povolit globální hlasové vyhledávání?\nůže být nutné odstranit původní aplikaci Youtube.\nA potom nainstalovat další apk.</string>
     <string name="app_crashed">Aplikace selhala.\nZkontrolujte novější verzi?</string>
