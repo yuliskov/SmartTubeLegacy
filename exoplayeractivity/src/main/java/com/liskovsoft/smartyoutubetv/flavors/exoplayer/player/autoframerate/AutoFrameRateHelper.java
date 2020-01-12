@@ -4,10 +4,8 @@ import android.app.Activity;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplaySyncHelper.AutoFrameRateListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
@@ -64,6 +62,22 @@ class AutoFrameRateHelper {
     public void setDelayEnabled(boolean enabled) {
         if (getEnabled()) {
             mPrefs.setAfrDelayEnabled(enabled);
+        } else {
+            MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
+        }
+    }
+
+    public long getDelayTime() {
+        if (getEnabled()) {
+            return mPrefs.getAfrDelayTime();
+        }
+
+        return 0;
+    }
+
+    public void setDelayTime(long pauseMS) {
+        if (getEnabled()) {
+            mPrefs.setAfrDelayTime(pauseMS);
         } else {
             MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
         }

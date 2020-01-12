@@ -9,7 +9,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.Disp
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplaySyncHelper.AutoFrameRateListener;
 
 public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateListener {
-    private static final long AFR_MSG_HIDE_DELAY = 5_000;
     protected final ExoPlayerFragment mPlayerFragment;
     protected AutoFrameRateHelper mAutoFrameRateHelper;
 
@@ -82,14 +81,28 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         }
     }
 
+    public long getDelayTime() {
+        if (mAutoFrameRateHelper == null) {
+            return 0;
+        }
+
+        return mAutoFrameRateHelper.getDelayTime();
+    }
+
+    public void setDelayTime(long pauseMS) {
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.setDelayTime(pauseMS);
+        }
+    }
+
     @Override
     public void onModeStart(Mode newMode) {
         if (isDelayEnabled() && newMode != null) {
-            mPlayerFragment.startPlaybackDelay(AFR_MSG_HIDE_DELAY);
+            mPlayerFragment.startPlaybackDelay(getDelayTime());
 
             String modeStr = String.format("%sx%s@%s", newMode.getPhysicalWidth(), newMode.getPhysicalHeight(), Helpers.formatFloat(newMode.getRefreshRate()));
             String msg = mPlayerFragment.getResources().getString(R.string.changing_video_frame_rate, modeStr);
-            mPlayerFragment.showMessage(msg, AFR_MSG_HIDE_DELAY);
+            mPlayerFragment.showMessage(msg, getDelayTime());
         }
     }
 

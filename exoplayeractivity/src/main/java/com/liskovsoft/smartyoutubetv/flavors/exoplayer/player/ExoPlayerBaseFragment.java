@@ -20,6 +20,7 @@ import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
@@ -273,6 +274,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             SingleChoiceSelectorDialog.create(context, new RestrictFormatDialogSource(context), R.style.AppDialog);
         } else if (view.getId() == R.id.btn_video_zoom) {
             SingleChoiceSelectorDialog.create(context, new VideoZoomDialogSource(context, mVideoZoomManager), R.style.AppDialog);
+        } else if (view.getId() == R.id.btn_afr) {
+            CombinedChoiceSelectorDialog.create(context, new AfrDialogSource((ExoPlayerFragment) this), R.style.AppDialog);
         }
     }
 
@@ -284,6 +287,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         addRestrictCodecButton();
         addVideoZoomButton();
+        addAfrButton();
     }
 
     private void addRestrictCodecButton() {
@@ -298,6 +302,14 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         TextToggleButton button = new TextToggleButton(getActivity());
         button.setId(R.id.btn_video_zoom);
         button.setText(R.string.btn_video_zoom);
+        button.setOnClickListener(this);
+        mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
+    }
+
+    private void addAfrButton() {
+        TextToggleButton button = new TextToggleButton(getActivity());
+        button.setId(R.id.btn_afr);
+        button.setText(R.string.btn_afr);
         button.setOnClickListener(this);
         mDebugRootView.addView(button, mDebugRootView.getChildCount() - 1);
     }

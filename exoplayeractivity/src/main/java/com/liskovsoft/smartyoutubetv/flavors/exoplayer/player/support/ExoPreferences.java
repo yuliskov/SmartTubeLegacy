@@ -28,6 +28,7 @@ public final class ExoPreferences {
     private static final String RESTORE_SPEED = "restoreSpeed";
     public static final String FORMAT_ANY = "format_any";
     private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
+    private static final String AFR_SWITCH_PAUSE_TIME = "afr_switch_pause_time";
     private boolean mForceRestoreSpeed;
 
     public static ExoPreferences instance(Context ctx) {
@@ -250,5 +251,15 @@ public final class ExoPreferences {
         mPrefs.edit()
                 .putBoolean(AFR_DELAY_ENABLED, enabled)
                 .apply();
+    }
+
+    public void setAfrDelayTime(long pauseMS) {
+        mPrefs.edit()
+                .putLong(AFR_SWITCH_PAUSE_TIME, pauseMS)
+                .apply();
+    }
+
+    public long getAfrDelayTime() {
+        return mPrefs.getLong(AFR_SWITCH_PAUSE_TIME, 5_000);
     }
 }

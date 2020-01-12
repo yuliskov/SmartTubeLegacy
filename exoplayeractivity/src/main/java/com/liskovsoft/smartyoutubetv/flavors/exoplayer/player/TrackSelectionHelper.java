@@ -157,6 +157,7 @@ import java.util.TreeSet;
         // Code error checkbox.
 
         mHideErrorsView = createCheckButton(context, R.string.hide_playback_errors, root);
+        mHideErrorsView.setVisibility(View.GONE);
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_VIDEO) { // is video
             append(mHideErrorsView, root);
@@ -166,7 +167,9 @@ import java.util.TreeSet;
         // Autoframerate checkbox.
 
         mAutoframerateView = createCheckButton(context, R.string.enable_autoframerate, root);
+        mAutoframerateView.setVisibility(View.GONE);
         mAutoframerateDelayView = createCheckButton(context, R.string.enable_autoframerate_pause, root);
+        mAutoframerateDelayView.setVisibility(View.GONE);
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_VIDEO) { // is video
             append(mAutoframerateView, root);
