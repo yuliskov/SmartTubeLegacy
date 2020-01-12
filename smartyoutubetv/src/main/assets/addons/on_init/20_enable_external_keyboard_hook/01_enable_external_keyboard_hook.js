@@ -19,7 +19,7 @@ function EnableExternalKeyboardHookAddon() {
         // There is a handler that blocks others. We should run before it.
         // Note: running on capture phase
         EventUtils.addListener(document, DefaultEvents.KEY_DOWN, function(e) {
-            Log.d($this.TAG, "User pressed " + e.keyCode);
+            Log.d($this.TAG, "User pressed down " + e.keyCode);
 
             if (e.keyCode == DefaultKeys.TAB) {
                 Log.d($this.TAG, "User pressed ENTER/NEXT on soft keyboard");

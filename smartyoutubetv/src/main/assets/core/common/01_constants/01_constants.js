@@ -31,6 +31,7 @@ var DefaultEvents = {
     PLAYER_SUSPEND: 'suspend',
     KEY_UP: 'keyup',
     KEY_DOWN: 'keydown',
+    KEY_PRESS: 'keypress',
     HASH_CHANGE: 'hashchange',
     FOCUS: 'focus',
     FOCUS_IN: 'focusin',
