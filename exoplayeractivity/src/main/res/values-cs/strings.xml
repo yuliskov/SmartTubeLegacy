@@ -19,7 +19,7 @@
     <string name="audio">Audio</string>
     <string name="text">Titulky</string>
     <string name="retry">Opakovat</string>
-    <string name="selection_default_none">Standard (není)</string>
+    <string name="selection_default_none">Výchozí (není)</string>
     <string name="unexpected_intent_action">Neočekávaná akce: <xliff:g id="action">%1$s</xliff:g></string>
     <string name="enable_random_adaptation">Aktivovat náhodné nastavení</string>
     <string name="error_drm_not_supported">Chráněný obsah není podporován na úrovních API pod 18 </string>
@@ -33,14 +33,14 @@
     <string name="error_unsupported_audio">Média obsahují zvuk, ale nelze je tomto zařízení přehrát</string>
     <string name="storage_permission_denied">Přístup k úložišti zařízení není povolen</string>
     <string name="selection_disabled">Výber zakázán</string>
-    <string name="selection_default">Standard</string>
+    <string name="selection_default">Výchozí</string>
     <string name="sample_list_load_error">Nepodařilo se nahrát jeden nebo více seznamů</string>
     <string name="exo_like_desc">Líbí</string>
     <string name="captions">Titulky</string>
     <string name="not_implemented_msg">Dosud neimplementováno</string>
     <string name="published">Publikováno</string>
     <string name="view_count">Počet zobrazení</string>
-    <string name="suggested_videos">Navrhovaná videa</string>
+    <string name="suggested_videos">Doporučená videa</string>
     <string name="enable_autoframerate">Automatická snímková frekvence</string>
     <string name="autoframerate_not_supported">Není podporována automatická snímková frekvence</string>
     <string name="share_video">Sdílet</string>
@@ -53,7 +53,7 @@
     <string name="select_video_speed">Výběr rychlosti videa</string>
     <string name="normal">Normalní</string>
     <string name="go_back">Zpět</string>
-    <string name="btn_restrict_codec">Přednastavené</string>
+    <string name="btn_restrict_codec">Volba kodeku</string>
     <string name="no_restrictions">Bez omezení</string>
     <string name="select_preferred_codec">Výběr předvolby videa</string>
     <string name="time_title">Nyní: %1$s</string>
@@ -62,12 +62,12 @@
     <string name="enable_video_zoom">Aktivace zvětšení videa</string>
     <string name="option_zoom_fit_width">Upravit šířku</string>
     <string name="dialog_video_zoom">Zvětšení videa</string>
-    <string name="option_zoom_default">Standard</string>
+    <string name="option_zoom_default">Výchozí</string>
     <string name="option_zoom_fit_height">Upravit výšku</string>
     <string name="btn_video_zoom">Zvětšení</string>
     <string name="btn_favorites">Uložit</string>
     <string name="option_zoom_fit_both">Upravit šířku a výšku</string>
-    <string name="option_zoom_stretch">Úsek</string>
+    <string name="option_zoom_stretch">Roztáhnout</string>
     <string name="checkbox_save_speed">Uložit rychlost</string>
     <string name="toast_format_restricted">Nelze změnit velikost, protože je aktivována předvolba</string>
     <string name="changing_video_frame_rate">Upravit frekvenci snímkování %s...</string>
