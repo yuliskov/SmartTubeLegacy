@@ -101,4 +101,8 @@
     <string name="tweak_ugoos_afr_fix">Correction de UGOOS 50HZ</string>
     <string name="tweak_hide_boot_tips">Masquer les conseils de démarrage</string>
     <string name="tweak_auto_show_player_ui">Montrer automatiquement le lecteur de l\'interface utilisateur</string>
+    <string name="tweak_open_externally_lq">PRO: Ouvrir la vidéo avec un lecteur externe (SD)</string>
+    <string name="message_install_player">S'il vous plaît installer MXPlayer ou VLC</string>
+    <string name="message_enable_web_server">S'il vous plaît activer le serveur Web dans les paramètres de Kodi</string>
+    <string name="message_install_kodi">Il semble que Kodi n'ait pas été installé</string>
 </resources>
