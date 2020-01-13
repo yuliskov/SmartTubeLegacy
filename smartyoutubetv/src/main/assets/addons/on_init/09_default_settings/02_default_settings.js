@@ -8,11 +8,13 @@ console.log("Scripts::Running script default_settings.js");
 function DefaultSettingsAddon() {
     this.run = function() {
         this.applySettings();
+        this.applyFlags();
     };
 
     this.applySettings = function() {
-        if (!localStorage)
+        if (!localStorage) {
             return;
+        }
 
         var keys = Object.keys(DefaultSettingsData);
         for (var idx in keys) {
@@ -21,6 +23,15 @@ function DefaultSettingsAddon() {
             if (!localStorage.getItem(key)) // only if not exists
                 localStorage.setItem(key, value);
         }
+    };
+
+    this.applyFlags = function() {
+        if (!window.environment) {
+            return;
+        }
+
+        window.environment.feature_switches.limited_memory = true;
+        window.environment.feature_switches.limited_animation = true;
     };
 }
 

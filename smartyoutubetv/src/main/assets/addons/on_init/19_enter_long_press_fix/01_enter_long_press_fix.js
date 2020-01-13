@@ -62,3 +62,5 @@ function EnterLongPressFixAddon() {
 }
 
 // new EnterLongPressFixAddon().run();
+
+window.environment && (window.environment.flags.enable_animated_thumbnails_on_atv = true);
