@@ -50,20 +50,20 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
         mItems.add(new OpenWatchLaterDialogItem(mContext));
         //mItems.add(new GlobalAfrFixDialogItem(mContext));
-        mItems.add(new Ugoos50HZFixDialogItem(mContext));
-        mItems.add(new FixAspectDialogItem(mContext));
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new BackPressExitDialogItem(mContext));
         mItems.add(new ForceAllCodecsDialogItem(mContext));
         mItems.add(new ForceAVCDialogItem(mContext));
         mItems.add(new ForceVP9DialogItem(mContext));
-        mItems.add(new AltPlayerMappingDialogItem(mContext));
-        mItems.add(new HideBootTipsDialogItem(mContext));
+        //mItems.add(new HideBootTipsDialogItem(mContext));
         mItems.add(new AutoShowPlayerUIDialogItem(mContext));
-        mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
+        //mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
         mItems.add(new UseExternalPlayer4KDialogItem(mContext));
         mItems.add(new UseExternalPlayerFHDDialogItem(mContext));
         mItems.add(new UseExternalPlayerSDDialogItem(mContext));
+        mItems.add(new Ugoos50HZFixDialogItem(mContext));
+        mItems.add(new FixAspectDialogItem(mContext));
+        mItems.add(new AltPlayerMappingDialogItem(mContext));
     }
 
     @Override

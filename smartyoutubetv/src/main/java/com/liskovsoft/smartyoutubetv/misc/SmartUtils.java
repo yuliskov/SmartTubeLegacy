@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
 
@@ -30,6 +31,7 @@ public class SmartUtils {
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
 
         if (Helpers.isActivityExists(intent, context)) {
+            CommonApplication.getPreferences().setHideBootTips(true);
             context.startActivity(intent);
         }
 
