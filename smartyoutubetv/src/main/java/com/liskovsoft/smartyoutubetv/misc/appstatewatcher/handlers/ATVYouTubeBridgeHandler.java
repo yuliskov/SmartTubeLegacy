@@ -30,9 +30,7 @@ public class ATVYouTubeBridgeHandler extends BridgeHandlerBase {
     }
 
     @Override
-    public void onInit() {
-        if (Helpers.isAndroidTVLauncher(mContext)) {
-            super.onInit();
-        }
+    protected boolean checkLauncher() {
+        return Helpers.isAndroidTVLauncher(mContext);
     }
 }

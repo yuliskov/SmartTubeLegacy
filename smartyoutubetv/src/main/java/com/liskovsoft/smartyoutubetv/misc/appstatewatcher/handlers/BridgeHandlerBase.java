@@ -22,6 +22,7 @@ abstract class BridgeHandlerBase extends StateHandler implements OnClickListener
     private static final String TAG = BridgeHandlerBase.class.getSimpleName();
     private final Activity mContext;
     private boolean mRemoveOldApkFirst;
+    private boolean mIsFirstRun;
     private DownloadListener listener = new DownloadListener() {
         @Override
         public void onDownloadCompleted(Uri uri) {
@@ -32,14 +33,27 @@ abstract class BridgeHandlerBase extends StateHandler implements OnClickListener
     public BridgeHandlerBase(Activity context) {
         mContext = context;
     }
+    
+    @Override
+    public void onFirstRun() {
+        mIsFirstRun = true;
+    }
 
     @Override
-    public void onInit() {
+    public void onLoad() {
+        if (!checkLauncher()) {
+            return;
+        }
+
         if (CommonApplication.getPreferences().getDisableYouTubeBridge()) {
             return;
         }
 
-        PackageInfo info = getPackageSingnature(getPackageName());
+        if (mIsFirstRun) { // do not scare user when the app just installed
+            return;
+        }
+
+        PackageInfo info = getPackageSignature(getPackageName());
 
         if (info != null) { // bridge installed
             if (Helpers.isUserApp(info) && info.signatures[0].hashCode() != getPackageSignatureHash()) {
@@ -60,7 +74,7 @@ abstract class BridgeHandlerBase extends StateHandler implements OnClickListener
         YesNoDialog.create(mContext, R.string.do_reinstall_bridge_apk, this, R.style.AppDialog);
     }
 
-    private PackageInfo getPackageSingnature(String pkgName) {
+    private PackageInfo getPackageSignature(String pkgName) {
         PackageManager manager = mContext.getPackageManager();
         PackageInfo packageInfo = null;
 
@@ -108,4 +122,5 @@ abstract class BridgeHandlerBase extends StateHandler implements OnClickListener
     protected abstract String getPackageName();
     protected abstract String getPackageUrl();
     protected abstract int getPackageSignatureHash();
+    protected abstract boolean checkLauncher();
 }

@@ -18,11 +18,8 @@ public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(Activity context) {
         mContext = context;
 
-        if (Helpers.isAndroidTVLauncher(context)) {
-            addHandler(new ATVYouTubeBridgeHandler(context));
-        } else if (Helpers.isAmazonFireTVDevice()) {
-            addHandler(new AmazonYouTubeBridgeHandler(context));
-        }
+        addHandler(new ATVYouTubeBridgeHandler(context));
+        addHandler(new AmazonYouTubeBridgeHandler(context));
 
         if (context instanceof FragmentManagerActivity) {
             addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));

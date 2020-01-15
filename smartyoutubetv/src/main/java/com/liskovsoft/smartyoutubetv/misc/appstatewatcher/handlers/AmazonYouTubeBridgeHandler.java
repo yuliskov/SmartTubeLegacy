@@ -28,9 +28,7 @@ public class AmazonYouTubeBridgeHandler extends BridgeHandlerBase {
     }
 
     @Override
-    public void onInit() {
-        if (Helpers.isAmazonFireTVDevice()) {
-            super.onInit();
-        }
+    protected boolean checkLauncher() {
+        return Helpers.isAmazonFireTVDevice();
     }
 }
