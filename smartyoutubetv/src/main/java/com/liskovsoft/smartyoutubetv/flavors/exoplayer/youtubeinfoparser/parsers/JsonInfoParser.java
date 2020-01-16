@@ -21,6 +21,7 @@ public class JsonInfoParser {
     private static final String JSON_INFO_ALL_SUBS = "$.captions.playerCaptionsTracklistRenderer.captionTracks";
     private static final String JSON_INFO_SINGLE_SUB_URL = "$.captions.playerCaptionsTracklistRenderer.captionTracks[0].baseUrl";
     private static final String JSON_INFO_STORY_SPEC = "$.storyboards.playerStoryboardSpecRenderer.spec";
+    private static final String JSON_INFO_VIDEO_LENGTH = "$.videoDetails.lengthSeconds";
     private final DocumentContext mParser;
 
     public JsonInfoParser(String content) {
@@ -62,26 +63,14 @@ public class JsonInfoParser {
     }
 
     public String extractHlsUrl() {
-        if (mParser == null) {
-            return null;
-        }
-
         return ParserUtils.extractString(JSON_INFO_HLS_URL, mParser);
     }
 
     public String extractTrackingUrl() {
-        if (mParser == null) {
-            return null;
-        }
-
         return ParserUtils.extractString(JSON_INFO_TRACKING_URL, mParser);
     }
 
     public String extractDashUrl() {
-        if (mParser == null) {
-            return null;
-        }
-
         return ParserUtils.extractString(JSON_INFO_DASH_URL, mParser);
     }
 
@@ -94,10 +83,6 @@ public class JsonInfoParser {
     }
 
     public String extractStorySpec() {
-        if (mParser == null) {
-            return null;
-        }
-
         return ParserUtils.extractString(JSON_INFO_STORY_SPEC, mParser);
     }
 
@@ -107,6 +92,10 @@ public class JsonInfoParser {
         }
 
         return extractMediaItems(JSON_INFO_REGULAR_FORMATS);
+    }
+
+    public String extractDurationMs() {
+        return ParserUtils.extractString(JSON_INFO_VIDEO_LENGTH, mParser);
     }
 
     public class Subtitle {

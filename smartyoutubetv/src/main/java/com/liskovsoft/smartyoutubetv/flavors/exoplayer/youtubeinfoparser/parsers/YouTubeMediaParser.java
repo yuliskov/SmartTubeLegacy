@@ -61,12 +61,18 @@ public class YouTubeMediaParser {
     public GenericInfo extractGenericInfo() {
         GenericInfo info = new SimpleYouTubeGenericInfo();
         Uri videoInfo = ParserUtils.parseUri(mContent);
-        info.setLengthSeconds(videoInfo.getQueryParameter(GenericInfo.LENGTH_SECONDS));
+        info.setLengthSeconds(getDuration(videoInfo));
         info.setTitle(videoInfo.getQueryParameter(GenericInfo.TITLE));
         info.setAuthor(videoInfo.getQueryParameter(GenericInfo.AUTHOR));
         info.setViewCount(videoInfo.getQueryParameter(GenericInfo.VIEW_COUNT));
         info.setTimestamp(videoInfo.getQueryParameter(GenericInfo.TIMESTAMP));
         return info;
+    }
+
+    private String getDuration(Uri videoInfo) {
+        String duration = videoInfo.getQueryParameter(GenericInfo.LENGTH_SECONDS);
+        // new video_info format: video len moved to the nested JSON object
+        return duration == null ? mParser.extractDurationMs() : duration;
     }
 
     private void extractHlsUrl() {

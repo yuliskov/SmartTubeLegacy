@@ -90,6 +90,11 @@ public class ParserUtils {
     }
 
     private static <T> T extractType(String jsonPath, DocumentContext parser) {
+        if (parser == null) {
+            Log.e(TAG, "Can't extract JSON value. Parser is null");
+            return null;
+        }
+
         TypeRef<T> typeRef = new TypeRef<T>() {};
 
         T result = null;
