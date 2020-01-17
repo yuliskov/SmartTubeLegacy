@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import java.util.List;
 
 public class SimpleYouTubeMediaItem implements MediaItem {
+    private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
     private class Range {
         @SerializedName("start")
         String start;
@@ -62,6 +63,11 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     private String mSourceURL;
     private List<String> mSegmentUrlList;
     private List<String> mGlobalSegmentList;
+    /**
+     * New format type FORMAT_STREAM_TYPE_OTF or null
+     */
+    @SerializedName("type")
+    private String mFormat;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -309,6 +315,16 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @Override
     public void setGlobalSegmentList(List<String> segments) {
         mGlobalSegmentList = segments;
+    }
+
+    @Override
+    public String getFormat() {
+        return mFormat;
+    }
+
+    @Override
+    public boolean isOTF() {
+        return mFormat != null && mFormat.equals(FORMAT_STREAM_TYPE_OTF);
     }
 
     @Override

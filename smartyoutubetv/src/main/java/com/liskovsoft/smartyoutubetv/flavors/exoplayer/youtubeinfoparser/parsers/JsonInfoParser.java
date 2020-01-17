@@ -293,6 +293,8 @@ public class JsonInfoParser {
         void setLmt(String lmt);
         String getQualityLabel();
         void setQualityLabel(String qualityLabel);
+        String getFormat();
+        boolean isOTF();
 
         // Other/Regular
         String getQuality();

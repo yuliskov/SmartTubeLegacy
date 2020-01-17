@@ -31,8 +31,9 @@ public class SpeedDialogSource implements CombinedDialogSource {
         mItems.add(new SpeedDialogItem("1.5", "1.5", mPlayer, mPrefs));
         mItems.add(new SpeedDialogItem("1.75", "1.75", mPlayer, mPrefs));
         mItems.add(new SpeedDialogItem("2", "2.0", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("3", "3.0", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("4", "4.0", mPlayer, mPrefs));
+        mItems.add(new SpeedDialogItem("2.25", "2.25", mPlayer, mPrefs));
+        mItems.add(new SpeedDialogItem("2.5", "2.5", mPlayer, mPrefs));
+        mItems.add(new SpeedDialogItem("2.75", "2.75", mPlayer, mPrefs));
 
         if (mPlayer != null) {
             SpeedDialogItem.sCurrentSpeed = String.valueOf(mPlayer.getPlaybackParameters().speed);

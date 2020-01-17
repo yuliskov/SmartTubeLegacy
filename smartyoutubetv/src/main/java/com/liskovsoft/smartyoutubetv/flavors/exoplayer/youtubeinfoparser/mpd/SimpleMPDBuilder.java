@@ -187,6 +187,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
             firstItem = item;
             break;
         }
+
         writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
 
         // Representation
@@ -195,6 +196,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 writeGlobalSegmentList(item);
                 continue;
             }
+
             writeMediaItemTag(item);
 
             // VLC fix: limit to max quality
@@ -309,7 +311,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     @Override
     public void append(MediaItem mediaItem) {
-        if (!MediaItemUtils.isDash(mediaItem)) {
+        // NOTE: FORMAT_STREAM_TYPE_OTF not supported
+        if (!MediaItemUtils.isDash(mediaItem) || mediaItem.isOTF()) {
             return;
         }
 
