@@ -261,18 +261,4 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
             }, hideDelay);
         }
     }
-
-    public void startPlaybackDelay(long delay) {
-        SimpleExoPlayer player = getPlayer();
-        FragmentActivity activity = getActivity();
-        PlayerView playerView = getExoPlayerView();
-
-        if (player != null && activity != null) {
-            player.setPlayWhenReady(false);
-
-            new Handler(activity.getMainLooper()).postDelayed(() -> {
-                player.setPlayWhenReady(true);
-            }, delay);
-        }
-    }
 }
