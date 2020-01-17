@@ -609,9 +609,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 item.getUrl().contains("live=1") ||
                 item.getUrl().contains("yt_live_broadcast");
 
-        if (isLive) {
-            throw new IllegalStateException("Live item shouldn't be there");
-        }
+        //if (isLive) {
+        //    throw new IllegalStateException("Live item shouldn't be there");
+        //}
 
         return isLive;
     }
