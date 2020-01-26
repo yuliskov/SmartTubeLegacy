@@ -47,6 +47,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
     private static final String CURRENT_VIDEO_POSITION = "current_video_position";
+    private static final String USER_IS_LOGGED = "user_is_logged";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -62,6 +63,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mDefaultDisplayMode;
     private String mCurrentDisplayMode;
     private String mPostData;
+    private boolean mUserLogged;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -267,6 +269,46 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return getBoolean(ALT_PLAYER_MAPPING, false);
     }
 
+    public void setDisableYouTubeBridge(boolean disable) {
+        putBoolean(DISABLE_AMAZON_BRIDGE, disable);
+    }
+
+    public boolean getDisableYouTubeBridge() {
+        return getBoolean(DISABLE_AMAZON_BRIDGE, false);
+    }
+
+    public boolean getUseNewUI() {
+        return getBoolean(USE_NEW_UI, false);
+    }
+
+    public void setUseNewUI(boolean useNewUI) {
+        putBoolean(USE_NEW_UI, useNewUI);
+    }
+
+    public boolean getUgoos50HZFix() {
+        return getBoolean(UGOOS_50HZ_FIX, false);
+    }
+
+    public void setUgoos50HZFix(boolean checked) {
+        putBoolean(UGOOS_50HZ_FIX, checked);
+    }
+
+    public boolean getHideBootTips() {
+        return getBoolean(HIDE_BOOT_TIPS, false);
+    }
+
+    public void setHideBootTips(boolean checked) {
+        putBoolean(HIDE_BOOT_TIPS, checked);
+    }
+
+    public boolean getAutoShowPlayerUI() {
+        return getBoolean(AUTO_SHOW_PLAYER_UI, true);
+    }
+
+    public void setAutoShowPlayerUI(boolean checked) {
+        putBoolean(AUTO_SHOW_PLAYER_UI, checked);
+    }
+
     // NOT PERSISTENT SETTINGS
 
     public long getLastUserInteraction() {
@@ -309,46 +351,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
         mCurrentDisplayMode = mode;
     }
 
-    public void setDisableYouTubeBridge(boolean disable) {
-        putBoolean(DISABLE_AMAZON_BRIDGE, disable);
-    }
-
-    public boolean getDisableYouTubeBridge() {
-        return getBoolean(DISABLE_AMAZON_BRIDGE, false);
-    }
-
-    public boolean getUseNewUI() {
-        return getBoolean(USE_NEW_UI, false);
-    }
-
-    public void setUseNewUI(boolean useNewUI) {
-        putBoolean(USE_NEW_UI, useNewUI);
-    }
-
-    public boolean getUgoos50HZFix() {
-        return getBoolean(UGOOS_50HZ_FIX, false);
-    }
-
-    public void setUgoos50HZFix(boolean checked) {
-        putBoolean(UGOOS_50HZ_FIX, checked);
-    }
-
-    public boolean getHideBootTips() {
-        return getBoolean(HIDE_BOOT_TIPS, false);
-    }
-
-    public void setHideBootTips(boolean checked) {
-        putBoolean(HIDE_BOOT_TIPS, checked);
-    }
-
-    public boolean getAutoShowPlayerUI() {
-        return getBoolean(AUTO_SHOW_PLAYER_UI, true);
-    }
-
-    public void setAutoShowPlayerUI(boolean checked) {
-        putBoolean(AUTO_SHOW_PLAYER_UI, checked);
-    }
-
     public void onSetCurrentVideoPosition(Runnable listener) {
         if (listener != null) {
             addListener(CURRENT_VIDEO_POSITION, listener);
@@ -361,5 +363,17 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public String getPostData() {
         return mPostData;
+    }
+
+    public void setUserLogged(boolean userLogged) {
+        putBoolean(USER_IS_LOGGED, userLogged);
+    }
+
+    public boolean isUserLogged() {
+        return getBoolean(USER_IS_LOGGED, false);
+    }
+
+    public void sync() {
+        setUserLogged(getAuthorizationHeader() != null);
     }
 }

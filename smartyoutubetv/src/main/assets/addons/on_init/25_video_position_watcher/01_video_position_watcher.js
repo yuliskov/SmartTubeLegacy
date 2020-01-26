@@ -1,4 +1,5 @@
 /**
+ * Video sync history fix<br/>
  * Notifies about video position change.
  */
 

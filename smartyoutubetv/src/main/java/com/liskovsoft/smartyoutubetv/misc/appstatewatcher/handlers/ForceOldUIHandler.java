@@ -16,17 +16,20 @@ public class ForceOldUIHandler extends StateHandler {
     private static final String NEW_UI_COOKIE = "VISITOR_INFO1_LIVE=cp3UVuEA3l4; path=/; domain=.youtube.com; expires=Sat, 25-Apr-2025 15:42:26 GMT; httponly";
     private static final String OLD_UI_COOKIE = "VISITOR_INFO1_LIVE=ErVksiAQ6pg; path=/; domain=.youtube.com; expires=Sat, 25-Apr-2025 15:42:26 GMT; httponly";
     private static final String COOKIE_URL = "https://www.youtube.com";
-    private final boolean mUseNewUI;
     private final Activity mContext;
     private static final long XWALK_INIT_DELAY_MS = 3_000;
 
     public ForceOldUIHandler(Activity context) {
         mContext = context;
-        mUseNewUI = CommonApplication.getPreferences().getUseNewUI();
     }
 
     @Override
     public void onInit() {
+        if (!CommonApplication.getPreferences().isUserLogged()) {
+            Log.d(TAG, "User is not logged. Don't force OldUI...");
+            return;
+        }
+
         String cookie = OLD_UI_COOKIE;
 
         try {
@@ -51,14 +54,5 @@ public class ForceOldUIHandler extends StateHandler {
             Log.d(TAG, e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private String findCookie() {
-        String cookie = OLD_UI_COOKIE;
-
-        if (mUseNewUI) {
-            cookie = NEW_UI_COOKIE;
-        }
-        return cookie;
     }
 }

@@ -10,7 +10,6 @@ function DefaultSettingsAddon() {
         this.applySettings();
         this.applyFlags();
     };
-
     this.applySettings = function() {
         if (!localStorage) {
             return;

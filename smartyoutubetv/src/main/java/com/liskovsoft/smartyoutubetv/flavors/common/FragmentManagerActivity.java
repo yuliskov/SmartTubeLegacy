@@ -195,6 +195,8 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     public void finish() {
         mActiveFragment.finish();
         super.finish();
+
+        CommonApplication.getPreferences().sync();
         System.exit(0);
     }
 
@@ -308,6 +310,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onPause() {
         super.onPause();
 
+        CommonApplication.getPreferences().sync();
         Log.flush();
     }
 
