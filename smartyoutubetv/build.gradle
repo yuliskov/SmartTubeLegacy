@@ -147,11 +147,11 @@ android {
         //     versionCode 9400 + defaultConfig.versionCode
         //     applicationId "com.istargroups.smartyoutubetv"
         // }
-        Vrtarmenia {
-            matchingFallbacks = ['lite']
-            versionCode 9400 + defaultConfig.versionCode
-            applicationId "com.rtarmenia.smartyoutubetv"
-        }
+        // Vrtarmenia {
+        //     matchingFallbacks = ['lite']
+        //     versionCode 9400 + defaultConfig.versionCode
+        //     applicationId "com.rtarmenia.smartyoutubetv"
+        // }
         Vrtarmenia2 {
             matchingFallbacks = ['lite']
             versionCode 9400 + defaultConfig.versionCode
@@ -214,9 +214,9 @@ android {
         // Vistargroups {
         //     java.srcDirs('src/commonSrc/appWatcher/java')
         // }
-        Vrtarmenia {
-            java.srcDirs = commonDirs
-        }
+        // Vrtarmenia {
+        //     java.srcDirs = commonDirs
+        // }
         Vrtarmenia2 {
             java.srcDirs = commonDirs
         }
