@@ -32,7 +32,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
     private static final String VIDEO_ID = "\"videoId\":\"%VIDEO_ID%\",";
     private final String mPostBodyReal;
     private static final String NEXT_URL = "https://www.youtube.com/youtubei/v1/next";
-    private String mNextUrl = NEXT_URL; // default url (will be changed after next intercept run
+    private String mNextUrl;
 
     public ExoNextInterceptor(Context context) {
         super(context);
@@ -55,25 +55,29 @@ public class ExoNextInterceptor extends RequestInterceptor {
      */
     @Override
     public WebResourceResponse intercept(String url) {
-        Log.d(TAG, "Video metadata is intercepted successfully");
+        Log.d(TAG, "Video metadata is intercepted successfully: " + url);
 
-        String nextUrlKey = Uri.parse(url).getQueryParameter("key");
+        if (mNextUrl == null) { // run once
+            String nextUrlKey = Uri.parse(url).getQueryParameter("key");
 
-        if (nextUrlKey != null) {
-            mNextUrl = String.format("%s?key=%s", NEXT_URL, nextUrlKey);
+            if (nextUrlKey != null) { // key found, save it
+                mNextUrl = String.format("%s?key=%s", NEXT_URL, nextUrlKey);
+            }
         }
 
         return null;
     }
 
     public VideoMetadata getMetadata(String videoId, String playlistId) {
-        InputStream response = postUrlData(mNextUrl, getBody(videoId, playlistId));
+        VideoMetadata metadata = null;
 
-        if (response == null) {
-            return null;
+        if (mNextUrl != null) {
+            InputStream response = postUrlData(mNextUrl, getBody(videoId, playlistId));
+
+            if (response != null) {
+                metadata = new JsonNextParser(response).extractVideoMetadata();
+            }
         }
-
-        VideoMetadata metadata = new JsonNextParser(response).extractVideoMetadata();
 
         return metadata;
     }
