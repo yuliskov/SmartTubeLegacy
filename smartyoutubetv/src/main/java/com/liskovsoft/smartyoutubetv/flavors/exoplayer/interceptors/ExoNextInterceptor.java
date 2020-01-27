@@ -62,6 +62,8 @@ public class ExoNextInterceptor extends RequestInterceptor {
 
             if (nextUrlKey != null) { // key found, save it
                 mNextUrl = String.format("%s?key=%s", NEXT_URL, nextUrlKey);
+            } else {
+                mNextUrl = NEXT_URL; // It's ok. User is logged in. No key used.
             }
         }
 
