@@ -64,6 +64,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mCurrentDisplayMode;
     private String mPostData;
     private boolean mUserLogged;
+    private boolean mWake;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -375,5 +376,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void sync() {
         setUserLogged(getAuthorizationHeader() != null);
+    }
+
+    public void setDeviceWake(boolean isWake) {
+        mWake = isWake;
+    }
+
+    public boolean getDeviceWake() {
+        return mWake;
     }
 }

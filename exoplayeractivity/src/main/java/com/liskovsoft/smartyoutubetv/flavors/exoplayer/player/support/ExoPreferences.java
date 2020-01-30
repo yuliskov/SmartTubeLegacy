@@ -244,7 +244,7 @@ public final class ExoPreferences {
     }
 
     public boolean isAfrDelayEnabled() {
-        return mPrefs.getBoolean(AFR_DELAY_ENABLED, false);
+        return mPrefs.getBoolean(AFR_DELAY_ENABLED, true);
     }
 
     public void setAfrDelayEnabled(boolean enabled) {

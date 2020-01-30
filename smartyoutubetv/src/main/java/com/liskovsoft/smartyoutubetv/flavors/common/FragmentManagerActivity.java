@@ -24,12 +24,11 @@ import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
-import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
-import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
+import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
@@ -44,7 +43,6 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     private VoiceSearchBridge mVoiceBridge;
     protected LoadingManager mLoadingManager;
     private boolean mLoadingDone;
-    private MainApkUpdater mApkUpdater;
     private int mRequestCode = 50;
     private HashMap<Integer, ActivityResult> mResultMap;
     private boolean mDisableKeyEvents;
@@ -79,13 +77,10 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         hideTitleBar();
 
         mLoadingManager = new TipsLoadingManager(this);
-        mApkUpdater = new MainApkUpdater(this);
         mResultMap = new HashMap<>();
         mKeyHandler = new GlobalKeyHandler(this);
 
         mUrlData = getIntent().getData();
-
-        mApkUpdater.start();
 
         // for search on app boot see onAppLoaded method
 
@@ -320,6 +315,8 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
         Helpers.makeActivityFullscreen(this);
         Helpers.makeActivityHorizontal(this);
+
+        mAppStateWatcher.onResume();
     }
 
     @Override

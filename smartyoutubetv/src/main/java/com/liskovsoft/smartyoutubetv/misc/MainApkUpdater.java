@@ -33,6 +33,7 @@ public class MainApkUpdater {
     }
 
     public void start() {
+        Log.d(TAG, "Running update checker");
         checkForUpdatesAfterDelay();
     }
 

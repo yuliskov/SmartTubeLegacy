@@ -1,19 +1,36 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import com.liskovsoft.smartyoutubetv.receivers.DeviceWakeReceiver;
 
 import java.util.ArrayList;
 
 public class AppStateWatcherBase {
-    private static final String TAG = AppStateWatcher.class.getSimpleName();
+    private static final String TAG = AppStateWatcherBase.class.getSimpleName();
     private final ArrayList<StateHandler> mHandlers;
+    private final Activity mContext;
 
-    public AppStateWatcherBase() {
+    public AppStateWatcherBase(Activity context) {
+        mContext = context;
         mHandlers = new ArrayList<>();
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+        try {
+            IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+            DeviceWakeReceiver mReceiver = new DeviceWakeReceiver();
+            mContext.registerReceiver(mReceiver, intentFilter);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "Oops. Receiver already registered. " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void run() {
@@ -24,6 +41,8 @@ public class AppStateWatcherBase {
         }
 
         int code = prefs.getPreviousAppVersionCode();
+
+        Log.d(TAG, "App just started... Calling handlers...");
 
         for (StateHandler handler : mHandlers) {
             handler.onInit();
@@ -64,6 +83,8 @@ public class AppStateWatcherBase {
     }
 
     public void onNewIntent(Intent intent) {
+        Log.d(TAG, "New intent received... Calling handlers...");
+
         for (StateHandler handler : mHandlers) {
             handler.onNewIntent(intent);
         }
@@ -72,6 +93,17 @@ public class AppStateWatcherBase {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         for (StateHandler handler : mHandlers) {
             handler.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void onResume() {
+        if (CommonApplication.getPreferences().getDeviceWake()) {
+            CommonApplication.getPreferences().setDeviceWake(false);
+            Log.d(TAG, "Device is waking up... Calling handlers...");
+
+            for (StateHandler handler : mHandlers) {
+                handler.onWake();
+            }
         }
     }
 
@@ -91,6 +123,10 @@ public class AppStateWatcherBase {
 
         public void onLoad() {
             
+        }
+
+        public void onWake() {
+
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
