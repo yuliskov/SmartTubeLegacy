@@ -219,6 +219,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && !mLoadingDone) {
             Log.d(TAG, "Back pressed. Exiting from the app...");
+            mAppStateWatcher.onExit();
             SmartUtils.returnToLaunchersDialogOrExit(this);
             return true;
         }

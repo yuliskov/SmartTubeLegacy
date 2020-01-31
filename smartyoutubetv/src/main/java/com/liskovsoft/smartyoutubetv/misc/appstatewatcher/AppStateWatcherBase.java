@@ -15,20 +15,33 @@ public class AppStateWatcherBase {
     private static final String TAG = AppStateWatcherBase.class.getSimpleName();
     private final ArrayList<StateHandler> mHandlers;
     private final Activity mContext;
+    private DeviceWakeReceiver mReceiver;
 
     public AppStateWatcherBase(Activity context) {
         mContext = context;
         mHandlers = new ArrayList<>();
+        
         registerReceiver();
+    }
+
+    private void unregisterReceiver() {
+        if (mReceiver != null) {
+            try {
+                mContext.unregisterReceiver(mReceiver);
+            } catch (IllegalArgumentException e) {
+                Log.d(TAG, "Oops. Receiver not registered.");
+                e.printStackTrace();
+            }
+        }
     }
 
     private void registerReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-            DeviceWakeReceiver mReceiver = new DeviceWakeReceiver();
+            mReceiver = new DeviceWakeReceiver(this);
             mContext.registerReceiver(mReceiver, intentFilter);
         } catch (IllegalArgumentException e) {
-            Log.d(TAG, "Oops. Receiver already registered. " + e.getMessage());
+            Log.d(TAG, "Oops. Receiver already registered.");
             e.printStackTrace();
         }
     }
@@ -97,14 +110,19 @@ public class AppStateWatcherBase {
     }
 
     public void onResume() {
-        if (CommonApplication.getPreferences().getDeviceWake()) {
-            CommonApplication.getPreferences().setDeviceWake(false);
-            Log.d(TAG, "Device is waking up... Calling handlers...");
 
-            for (StateHandler handler : mHandlers) {
-                handler.onWake();
-            }
+    }
+
+    public void onWake() {
+        Log.d(TAG, "Device waking up... Calling handlers...");
+
+        for (StateHandler handler : mHandlers) {
+            handler.onWake();
         }
+    }
+
+    public void onExit() {
+        unregisterReceiver();
     }
 
     public static abstract class StateHandler {
