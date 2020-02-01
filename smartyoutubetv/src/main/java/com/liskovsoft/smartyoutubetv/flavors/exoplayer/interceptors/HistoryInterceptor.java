@@ -42,7 +42,7 @@ public class HistoryInterceptor extends RequestInterceptor {
         //notifyPositionChange();
 
         // block url
-        return new WebResourceResponse(null, null, null);
+        return emptyResponse();
     }
 
     private void notifyPositionChange() {

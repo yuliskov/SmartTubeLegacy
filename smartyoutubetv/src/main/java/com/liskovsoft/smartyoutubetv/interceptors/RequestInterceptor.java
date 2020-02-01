@@ -102,4 +102,8 @@ public abstract class RequestInterceptor {
 
         return response;
     }
+
+    protected WebResourceResponse emptyResponse() {
+        return new WebResourceResponse(null, null, null);
+    }
 }

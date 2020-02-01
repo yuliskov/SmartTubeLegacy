@@ -11,6 +11,7 @@ public class MainExoInterceptor extends RequestInterceptor {
     private final DelayedCommandCallInterceptor mDoOnPlayEndInterceptor;
     private final ExoNextInterceptor mExoNextInterceptor;
     private final HistoryInterceptor mHistoryInterceptor;
+    private final ScreenMirrorInterceptor mScreenMirrorInterceptor;
     private RequestInterceptor mCurrentInterceptor;
 
     public MainExoInterceptor(Context context) {
@@ -22,6 +23,7 @@ public class MainExoInterceptor extends RequestInterceptor {
         mCipherInterceptor = new DecipherInterceptor(context);
         mHistoryInterceptor = new HistoryInterceptor(context);
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor, mExoNextInterceptor, mHistoryInterceptor);
+        mScreenMirrorInterceptor = new ScreenMirrorInterceptor(context);
     }
 
     @Override
@@ -57,6 +59,11 @@ public class MainExoInterceptor extends RequestInterceptor {
             return true;
         }
 
+        if (url.contains("/api/lounge/bc/bind?device=LOUNGE_SCREEN")) {
+            mCurrentInterceptor = mScreenMirrorInterceptor;
+            return true;
+        }
+
         return false;
     }
 
@@ -68,7 +75,7 @@ public class MainExoInterceptor extends RequestInterceptor {
 
         if (mCurrentInterceptor == null) {
             // block url
-            return new WebResourceResponse(null, null, null);
+            return emptyResponse();
         }
 
         return mCurrentInterceptor.intercept(url);

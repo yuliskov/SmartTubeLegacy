@@ -56,9 +56,9 @@ buildscript {
         stethoVersion = 'com.facebook.stetho:stetho:1.5.0' // Chrome Dev Tools
         stethoDevVersion = 'com.github.facebook.stetho:stetho:6d148f20b96ecb29320cced6617830eda8af0426' // Chrome Dev Tools
         nanoHttpdVersion = 'org.nanohttpd:nanohttpd:2.3.1'
-        amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.9.6' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
-        amazonExoplayerCoreVersion = 'com.amazon.android:exoplayer-core:2.9.6'
-        amazonExoplayerOkHttpVersion = 'com.amazon.android:extension-okhttp:2.9.6'
+        amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.10.6' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
+        amazonExoplayerCoreVersion = 'com.amazon.android:exoplayer-core:2.10.6'
+        amazonExoplayerOkHttpVersion = 'com.amazon.android:extension-okhttp:2.10.6'
         exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.11.1' // https://bintray.com/google/exoplayer/exoplayer
         exoplayerCoreVersion = 'com.google.android.exoplayer:exoplayer-core:2.11.1' // https://bintray.com/google/exoplayer/exoplayer
         exoplayerOkHttpVersion = 'com.google.android.exoplayer:extension-okhttp:2.11.1' // version should be the same as exoplayer

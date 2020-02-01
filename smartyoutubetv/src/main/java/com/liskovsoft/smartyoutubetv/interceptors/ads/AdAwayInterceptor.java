@@ -24,6 +24,6 @@ public class AdAwayInterceptor extends RequestInterceptor {
     @Override
     public WebResourceResponse intercept(String url) {
         // block url
-        return new WebResourceResponse(null, null, null);
+        return emptyResponse();
     }
 }
