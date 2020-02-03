@@ -38,7 +38,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        InputStream urlData = postUrlData(url, postData);
+        InputStream urlData = postJsonData(url, postData);
 
         WebResourceResponse response = null;
 

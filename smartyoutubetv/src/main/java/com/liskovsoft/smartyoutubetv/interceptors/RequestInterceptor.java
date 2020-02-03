@@ -87,12 +87,6 @@ public abstract class RequestInterceptor {
         return response == null ? null : response.body().byteStream();
     }
 
-    protected InputStream postUrlData(String url, String body) {
-        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
-
-        return response == null ? null : response.body().byteStream();
-    }
-
     protected Response getResponse(String url) {
         Response response = OkHttpHelpers.doOkHttpRequest(url);
 
@@ -105,5 +99,27 @@ public abstract class RequestInterceptor {
 
     protected WebResourceResponse emptyResponse() {
         return new WebResourceResponse(null, null, null);
+    }
+
+    protected InputStream postJsonData(String url, String body) {
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
+
+        return response == null ? null : response.body().byteStream();
+    }
+
+    protected WebResourceResponse postFormData(String url, String body) {
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/x-www-form-urlencoded");
+
+        WebResourceResponse result = null;
+
+        if (response != null) {
+            if (response.body() != null) {
+                result = createResponse(response.body().contentType(), response.body().byteStream());
+            } else {
+                result = emptyResponse();
+            }
+        }
+
+        return result;
     }
 }

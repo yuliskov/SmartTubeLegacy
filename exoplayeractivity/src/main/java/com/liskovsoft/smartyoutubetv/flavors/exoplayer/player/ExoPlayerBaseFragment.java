@@ -24,6 +24,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDia
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed.SpeedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.zoom.VideoZoomDialogSource;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExoIntent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDebugViewHelper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultTrackSelector;
@@ -371,19 +372,31 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             mPlayerInitializer.initVideoTitle();
             syncButtonStates();
-            return;
+            syncPlayerState();
+        } else {
+            ExoPreferences prefs = ExoPreferences.instance(getActivity());
+            prefs.setForceRestoreSpeed(false);
+
+            releasePlayer(); // dispose player
+            mShouldAutoPlay = true; // force autoplay
+            mNeedRetrySource = true; // process supplied intent
+            clearResumePosition(); // restore position will be done later from the app storage
+            setIntent(intent);
+            syncButtonStates(); // onCheckedChanged depends on this
+            initializePlayer();
         }
+    }
 
-        ExoPreferences prefs = ExoPreferences.instance(getActivity());
-        prefs.setForceRestoreSpeed(false);
+    private void syncPlayerState() {
+        ExoIntent exoIntent = ExoIntent.parse(getIntent());
 
-        releasePlayer(); // dispose player
-        mShouldAutoPlay = true; // force autoplay
-        mNeedRetrySource = true; // process supplied intent
-        clearResumePosition(); // restore position will be done later from the app storage
-        setIntent(intent);
-        syncButtonStates(); // onCheckedChanged depends on this
-        initializePlayer();
+        if (exoIntent.getPositionSec() != -1) {
+            int positionMs = exoIntent.getPositionSec() * 1000;
+
+            if (Math.abs(mPlayer.getCurrentPosition() - positionMs) > 1_000) {
+                mPlayer.seekTo(positionMs);
+            }
+        }
     }
 
     private boolean isStateIntent(Intent intent) {

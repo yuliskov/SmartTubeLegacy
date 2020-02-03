@@ -4,15 +4,18 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExoIntent;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class ScreenMirrorInterceptor extends RequestInterceptor {
     private static final String TAG = ScreenMirrorInterceptor.class.getSimpleName();
     private final SmartPreferences mPrefs;
+    private final MainExoInterceptor mExoRootInterceptor;
 
-    public ScreenMirrorInterceptor(Context context) {
+    public ScreenMirrorInterceptor(Context context, MainExoInterceptor exoRootInterceptor) {
         super(context);
+        mExoRootInterceptor = exoRootInterceptor;
         mPrefs = CommonApplication.getPreferences();
     }
 
@@ -30,9 +33,15 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
         WebResourceResponse res = null;
 
-        //if (postData != null && postData.contains("req0_state=2")) {
-        //    res = emptyResponse();
-        //}
+        LoungeData loungeData = LoungeData.parse(postData);
+
+        if (loungeData.getState() == LoungeData.STATE_PAUSED) {
+            loungeData.setState(LoungeData.STATE_PLAYING);
+            res = postFormData(url, loungeData.toString());
+            ExoIntent exoIntent = new ExoIntent();
+            exoIntent.setPositionSec(loungeData.getCurrentTime());
+            mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+        }
 
         return res;
     }

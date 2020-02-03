@@ -260,6 +260,6 @@ public final class ExoPreferences {
     }
 
     public long getAfrDelayTime() {
-        return mPrefs.getLong(AFR_SWITCH_PAUSE_TIME, 5_000);
+        return mPrefs.getLong(AFR_SWITCH_PAUSE_TIME, 3_000);
     }
 }

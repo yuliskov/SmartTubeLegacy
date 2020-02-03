@@ -2,6 +2,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
+import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 
 public class MainExoInterceptor extends RequestInterceptor {
@@ -23,7 +25,7 @@ public class MainExoInterceptor extends RequestInterceptor {
         mCipherInterceptor = new DecipherInterceptor(context);
         mHistoryInterceptor = new HistoryInterceptor(context);
         mExoInterceptor = new ExoInterceptor(context, mDoOnPlayEndInterceptor, mExoNextInterceptor, mHistoryInterceptor);
-        mScreenMirrorInterceptor = new ScreenMirrorInterceptor(context);
+        mScreenMirrorInterceptor = new ScreenMirrorInterceptor(context, this);
     }
 
     @Override
@@ -79,5 +81,13 @@ public class MainExoInterceptor extends RequestInterceptor {
         }
 
         return mCurrentInterceptor.intercept(url);
+    }
+
+    public ExoInterceptor getExoInterceptor() {
+        return mExoInterceptor;
+    }
+
+    public TwoFragmentManager getTwoFragmentManager() {
+        return (TwoFragmentManager) mContext;
     }
 }

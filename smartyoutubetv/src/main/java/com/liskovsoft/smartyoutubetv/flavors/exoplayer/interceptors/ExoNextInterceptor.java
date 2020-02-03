@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
@@ -74,7 +73,7 @@ public class ExoNextInterceptor extends RequestInterceptor {
         VideoMetadata metadata = null;
 
         if (mNextUrl != null) {
-            InputStream response = postUrlData(mNextUrl, getBody(videoId, playlistId));
+            InputStream response = postJsonData(mNextUrl, getBody(videoId, playlistId));
 
             if (response != null) {
                 metadata = new JsonNextParser(response).extractVideoMetadata();
