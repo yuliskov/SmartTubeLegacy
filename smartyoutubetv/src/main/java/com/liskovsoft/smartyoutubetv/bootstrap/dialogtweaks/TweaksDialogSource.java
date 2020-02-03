@@ -55,7 +55,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ForceAllCodecsDialogItem(mContext));
         mItems.add(new ForceAVCDialogItem(mContext));
         mItems.add(new ForceVP9DialogItem(mContext));
-        //mItems.add(new HideBootTipsDialogItem(mContext));
+        mItems.add(new HideBootTipsDialogItem(mContext));
         mItems.add(new AutoShowPlayerUIDialogItem(mContext));
         //mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
         mItems.add(new UseExternalPlayer4KDialogItem(mContext));

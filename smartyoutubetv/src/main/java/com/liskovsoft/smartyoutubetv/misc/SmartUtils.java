@@ -31,7 +31,6 @@ public class SmartUtils {
         intent.putExtra(BootstrapActivity.SKIP_RESTORE, true);
 
         if (Helpers.isActivityExists(intent, context)) {
-            CommonApplication.getPreferences().setHideBootTips(true);
             context.startActivity(intent);
         }
 
