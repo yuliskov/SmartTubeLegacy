@@ -28,7 +28,6 @@ function DummyVideoHandler(addons) {
         EventUtils.turnOffProp(video, 'webkitVideoDecodedByteCount');
         EventUtils.turnOffProp(video, 'networkState');
         EventUtils.turnOffProp(video, 'readyState');
-        EventUtils.turnOffProp(video, 'paused');
         EventUtils.turnOffProp(video, 'ended');
 
         // ??
@@ -39,7 +38,26 @@ function DummyVideoHandler(addons) {
         EventUtils.turnOffProp(video, 'currentSrc');
 
         EventUtils.turnOffProp(video, 'duration');
-        
+
+        // EventUtils.turnOffProp(video, 'paused');
+
+        EventUtils.turnOffMethod(video, 'play', false, function(val) {
+            Log.d($this.TAG, "On paused changed " + val);
+            video.properties.paused = false;
+            $this.onPausedChangeAddons(video);
+        });
+
+        EventUtils.turnOffMethod(video, 'pause', false, function(val) {
+            Log.d($this.TAG, "On paused changed " + val);
+            video.properties.paused = true;
+            $this.onPausedChangeAddons(video);
+        });
+
+        EventUtils.turnOffProp(video, 'paused', false, function(val) {
+            Log.d($this.TAG, "On paused changed " + val);
+            $this.onPausedChangeAddons(video);
+        });
+
         EventUtils.turnOffProp(video, 'currentTime', true, function(val) {
             Log.d($this.TAG, "On set currentTime " + val);
             $this.onCurrentTimeAddons(video);
@@ -74,6 +92,15 @@ function DummyVideoHandler(addons) {
             var addon = this.addons[i];
             if (addon.onSrcChange) {
                 addon.onSrcChange(video);
+            }
+        }
+    };
+
+    this.onPausedChangeAddons = function(video) {
+        for (var i = 0; i < this.addons.length; i++) {
+            var addon = this.addons[i];
+            if (addon.onPausedChange) {
+                addon.onPausedChange(video);
             }
         }
     };

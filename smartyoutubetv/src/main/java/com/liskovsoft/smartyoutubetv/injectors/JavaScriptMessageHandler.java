@@ -19,6 +19,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_ENABLE_SCREENSAVER = "message_enable_screensaver";
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
+    private final static String MESSAGE_VIDEO_PAUSED = "message_video_paused";
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
     private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
     private final static String MESSAGE_AUTH_BODY = "message_auth_body";
@@ -54,6 +55,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_VIDEO_POSITION:
                 CommonApplication.getPreferences().setCurrentVideoPosition(Integer.parseInt(content));
+                break;
+            case MESSAGE_VIDEO_PAUSED:
+                CommonApplication.getPreferences().setCurrentVideoPaused(Boolean.parseBoolean(content));
                 break;
             case MESSAGE_DOUBLE_BACK_EXIT:
                 ((FragmentManager) mContext).onExitDialogShown();

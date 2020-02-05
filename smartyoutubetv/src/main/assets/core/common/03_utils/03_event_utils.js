@@ -323,6 +323,25 @@ var EventUtils = {
         });
     },
 
+    turnOffMethod: function(obj, methodName, persist, onSet) { // pure function
+        if (!obj.methods) {
+            obj.methods = {};
+        }
+
+        if (obj[methodName]) {
+            obj.methods[methodName] = obj[methodName];
+            obj[methodName] = function() {
+                if (onSet) {
+                    onSet.apply(null, arguments);
+                }
+
+                if (persist) {
+                    return obj.methods[methodName].apply(obj, arguments);
+                }
+            }
+        }
+    },
+
     handleKeyPressMessage: function(data) {
         this.triggerEvent(Utils.$$(YouTubeSelectors.FOCUSED_ELEMENT), DefaultEvents[data.action], DefaultKeys[data.keyCode]);
     }

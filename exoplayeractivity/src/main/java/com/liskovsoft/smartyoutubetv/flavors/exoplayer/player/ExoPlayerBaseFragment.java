@@ -388,14 +388,18 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     private void syncPlayerState() {
-        ExoIntent exoIntent = ExoIntent.parse(getIntent());
+        if (mPlayer != null) {
+            ExoIntent exoIntent = ExoIntent.parse(getIntent());
 
-        if (exoIntent.getPositionSec() != -1) {
-            int positionMs = exoIntent.getPositionSec() * 1000;
+            if (exoIntent.getPositionSec() != -1) {
+                int positionMs = exoIntent.getPositionSec() * 1000;
 
-            if (Math.abs(mPlayer.getCurrentPosition() - positionMs) > 1_000) {
-                mPlayer.seekTo(positionMs);
+                if (Math.abs(mPlayer.getCurrentPosition() - positionMs) > 1_000) {
+                    mPlayer.seekTo(positionMs);
+                }
             }
+
+            mPlayer.setPlayWhenReady(!exoIntent.getPaused());
         }
     }
 

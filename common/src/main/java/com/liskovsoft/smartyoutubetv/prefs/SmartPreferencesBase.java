@@ -53,7 +53,7 @@ public class SmartPreferencesBase {
         return mPrefs.getString(key, defVal);
     }
 
-    protected void addListener(String valueId, Runnable listener) {
+    public void addListener(String valueId, Runnable listener) {
         List<Runnable> listeners = mListeners.get(valueId);
 
         if (listeners == null) {

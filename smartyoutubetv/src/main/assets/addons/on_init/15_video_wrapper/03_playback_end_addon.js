@@ -4,6 +4,7 @@
 function PlaybackEndAddon() {
     this.TAG = 'PlaybackEndAddon';
     this.videoId = '';
+    this.playbackStrategy = PlaybackStrategy1;
 
     this.onInit = function(video) {
         this.initProps(video);
@@ -33,7 +34,7 @@ function PlaybackEndAddon() {
     };
 
     this.initProps = function(video) {
-        PlaybackStateUtil.justCreated(video);
+        this.playbackStrategy.initProps(video);
     };
 
     this.addAdditionalFunctions = function(video) {
@@ -58,7 +59,7 @@ function PlaybackEndAddon() {
             Log.d($this.TAG, "User pressed back button...");
             PlaybackEndAddon.playbackStarted = false;
 
-            PlaybackStateUtil.videoClosed(video);
+            $this.playbackStrategy.videoClosed(video);
         };
     };
 
@@ -88,7 +89,7 @@ function PlaybackEndAddon() {
         var i = 0;
         var $this = this;
 
-        PlaybackStateUtil.startPlaying(video);
+        this.playbackStrategy.startPlaying(video);
 
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitatePlaying: duration: " + video.duration + ", currentTime: " + video.currentTime);
@@ -103,10 +104,7 @@ function PlaybackEndAddon() {
                 i++;
             }
 
-            video.properties.currentTime++;
-
-            video.listeners['pause'][0]({type: 'pause', isTrusted: true});
-            video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
+            $this.playbackStrategy.playIncrement(video);
         }, 100);
     };
 
@@ -131,7 +129,7 @@ function PlaybackEndAddon() {
         var $this = this;
         var url = location.href;
 
-        PlaybackStateUtil.endReached(video);
+        this.playbackStrategy.endReached(video);
 
         var interval = setInterval(function() {
             Log.d($this.TAG, "imitateEndingInt: duration: " + video.duration + ", currentTime: " + video.currentTime);
@@ -145,22 +143,14 @@ function PlaybackEndAddon() {
                 PlaybackEndAddon.locked = false; // reset lock!!!
                 PlaybackEndAddon.playbackStarted = false;
 
-                PlaybackStateUtil.videoClosed(video);
+                $this.playbackStrategy.videoClosed(video);
 
                 return;
             } else {
                 i++;
             }
 
-            // test
-            //video.listeners['play'][0]({type: 'play', isTrusted: true});
-            //video.listeners['progress'][0]({type: 'progress', isTrusted: true});
-
-            video.listeners['pause'][0]({type: 'pause', isTrusted: true});
-            // imitate ending, note that currentTime should be equals to duration
-            video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
-
-            //video.listeners['ended'][0]({type: 'ended', isTrusted: true});
+            $this.playbackStrategy.endPlayback(video);
         }, 100);
     };
 

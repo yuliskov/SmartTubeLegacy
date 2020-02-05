@@ -12,6 +12,9 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
     private static final String TAG = ScreenMirrorInterceptor.class.getSimpleName();
     private final SmartPreferences mPrefs;
     private final MainExoInterceptor mExoRootInterceptor;
+    private boolean mPrevPaused;
+    private long mStartPlayMS;
+    private int mDelta;
 
     public ScreenMirrorInterceptor(Context context, MainExoInterceptor exoRootInterceptor) {
         super(context);
@@ -33,17 +36,51 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
         WebResourceResponse res = null;
 
-        LoungeData loungeData = LoungeData.parse(postData);
+        LoungeData loungeData = LoungeData.parse(postData, url);
 
         if (loungeData.getState() == LoungeData.STATE_PAUSED) {
-            loungeData.setState(LoungeData.STATE_PLAYING);
+            if (!mPrefs.getCurrentVideoPaused()) {
+                loungeData.setState(LoungeData.STATE_PLAYING);
+            }
+
+            calcPausedPosition(loungeData);
+
             res = postFormData(url, loungeData.toString());
             ExoIntent exoIntent = new ExoIntent();
             exoIntent.setPositionSec(loungeData.getCurrentTime());
+            exoIntent.setPaused(mPrefs.getCurrentVideoPaused());
             mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+
+            mPrevPaused = mPrefs.getCurrentVideoPaused();
         }
 
         return res;
     }
 
+    /**
+     * Remember, html video object always paused.<br/>
+     * So position isn't tracked here.
+     */
+    private void calcPausedPosition(LoungeData loungeData) {
+        if (!mPrevPaused && !mPrefs.getCurrentVideoPaused()) {
+            mDelta = 0;
+        }
+
+        if (mPrevPaused && mPrefs.getCurrentVideoPaused()) {
+            mDelta = 0;
+        }
+
+        if (!mPrevPaused && mPrefs.getCurrentVideoPaused()) {
+            mDelta += (int) (System.currentTimeMillis() - mStartPlayMS) / 1000;
+            loungeData.setCurrentTime(loungeData.getCurrentTime() + mDelta); // set real position here
+        }
+
+        if (mPrevPaused && !mPrefs.getCurrentVideoPaused()) {
+            loungeData.setCurrentTime(loungeData.getCurrentTime() + mDelta);
+        }
+
+        if (!mPrefs.getCurrentVideoPaused()) {
+            mStartPlayMS = System.currentTimeMillis();
+        }
+    }
 }

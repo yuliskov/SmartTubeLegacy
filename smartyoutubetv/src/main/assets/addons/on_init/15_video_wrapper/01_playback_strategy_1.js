@@ -2,9 +2,9 @@
  * Imitates different state of the video tag.
  */
 
-console.log("Scripts::Running playback_state_util.js");
+console.log("Scripts::Running playback_strategy_1.js");
 
-var PlaybackStateUtil = {
+var PlaybackStrategy1 = {
     curTime: 0,
     defaultDuration: 1000000,
     defaultWidth: 1280,
@@ -17,7 +17,7 @@ var PlaybackStateUtil = {
     defaultAudioDecodedByteCount: 203004,
     defaultVideoDecodedByteCount: 2898507,
 
-    justCreated: function(video) {
+    initProps: function(video) {
         video.properties.webkitDecodedFrameCount = this.defaultDecodedFrameCount;
         video.properties.webkitAudioDecodedByteCount = this.defaultAudioDecodedByteCount;
         video.properties.webkitVideoDecodedByteCount = this.defaultVideoDecodedByteCount;
@@ -34,17 +34,6 @@ var PlaybackStateUtil = {
         video.properties.duration = this.defaultDuration;
 
         // video.properties.currentTime = 21.665161;
-        video.properties.src = this.defaultSrc;
-    },
-
-    startPlaying: function(video) {
-        video.properties.currentTime = 0;
-        video.properties.paused = false;
-        video.properties.ended = false;
-
-        // NEW
-        video.properties.duration = this.defaultDuration;
-        video.properties.currentSrc = this.defaultSrc;
         video.properties.src = this.defaultSrc;
     },
 
@@ -68,5 +57,39 @@ var PlaybackStateUtil = {
         video.properties.paused = true;
         video.properties.currentSrc = "";
         video.properties.src = "";
+    },
+
+    endPlayback: function(video) {
+        // test
+        //video.listeners['play'][0]({type: 'play', isTrusted: true});
+        //video.listeners['progress'][0]({type: 'progress', isTrusted: true});
+
+        video.listeners['pause'][0]({type: 'pause', isTrusted: true});
+        // imitate ending, note that currentTime should be equals to duration
+        video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
+
+        //video.listeners['ended'][0]({type: 'ended', isTrusted: true});
+    },
+
+    startPlaying: function(video) {
+        video.properties.currentTime = 0;
+        video.properties.paused = false;
+        video.properties.ended = false;
+
+        // NEW
+        video.properties.duration = this.defaultDuration;
+        video.properties.currentSrc = this.defaultSrc;
+        video.properties.src = this.defaultSrc;
+
+        // setTimeout(function() {
+        //     video.listeners['playing'][0]({type: 'playing', isTrusted: true});
+        // }, 10000)
+    },
+
+    playIncrement: function(video) {
+        video.properties.currentTime++;
+        // video.listeners['playing'][0]({type: 'playing', isTrusted: true});
+        video.listeners['pause'][0]({type: 'pause', isTrusted: true});
+        video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
     }
 };

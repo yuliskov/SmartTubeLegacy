@@ -34,6 +34,11 @@ public class MyNullQueryString implements MyQueryString {
     }
 
     @Override
+    public void set(String key, int value) {
+
+    }
+
+    @Override
     public void set(String key, float value) {
         
     }
