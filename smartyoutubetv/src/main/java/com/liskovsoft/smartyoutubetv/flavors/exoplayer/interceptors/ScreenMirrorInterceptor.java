@@ -29,29 +29,31 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
+        WebResourceResponse res = null;
+
         String postData = mPrefs.getPostData();
 
         Log.d(TAG, url);
         Log.d(TAG, postData);
 
-        WebResourceResponse res = null;
+        if (mPrefs.isMirrorEnabled()) {
+            LoungeData loungeData = LoungeData.parse(postData, url);
 
-        LoungeData loungeData = LoungeData.parse(postData, url);
+            if (loungeData.getState() == LoungeData.STATE_PAUSED) {
+                if (!mPrefs.getCurrentVideoPaused()) {
+                    loungeData.setState(LoungeData.STATE_PLAYING);
+                }
 
-        if (loungeData.getState() == LoungeData.STATE_PAUSED) {
-            if (!mPrefs.getCurrentVideoPaused()) {
-                loungeData.setState(LoungeData.STATE_PLAYING);
+                calcPausedPosition(loungeData);
+
+                res = postFormData(url, loungeData.toString());
+                ExoIntent exoIntent = new ExoIntent();
+                exoIntent.setPositionSec(loungeData.getCurrentTime());
+                exoIntent.setPaused(mPrefs.getCurrentVideoPaused());
+                mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+
+                mPrevPaused = mPrefs.getCurrentVideoPaused();
             }
-
-            calcPausedPosition(loungeData);
-
-            res = postFormData(url, loungeData.toString());
-            ExoIntent exoIntent = new ExoIntent();
-            exoIntent.setPositionSec(loungeData.getCurrentTime());
-            exoIntent.setPaused(mPrefs.getCurrentVideoPaused());
-            mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
-
-            mPrevPaused = mPrefs.getCurrentVideoPaused();
         }
 
         return res;

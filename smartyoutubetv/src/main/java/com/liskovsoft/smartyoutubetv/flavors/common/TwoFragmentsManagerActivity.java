@@ -138,6 +138,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         // fragment already attached, so only reorder it
         wrapper.bringToFront();
+
+        // NOTE: fix accidental focus loss on some devices (rare case)
+        wrapper.requestFocus();
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
