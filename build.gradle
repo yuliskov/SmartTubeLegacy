@@ -59,9 +59,9 @@ buildscript {
         amazonExoplayerVersion = 'com.amazon.android:exoplayer:2.10.6' // https://bintray.com/exo-support-amzn/amazon-exoplayer-port/exoplayer
         amazonExoplayerCoreVersion = 'com.amazon.android:exoplayer-core:2.10.6'
         amazonExoplayerOkHttpVersion = 'com.amazon.android:extension-okhttp:2.10.6'
-        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.11.1' // https://bintray.com/google/exoplayer/exoplayer
-        exoplayerCoreVersion = 'com.google.android.exoplayer:exoplayer-core:2.11.1' // https://bintray.com/google/exoplayer/exoplayer
-        exoplayerOkHttpVersion = 'com.google.android.exoplayer:extension-okhttp:2.11.1' // version should be the same as exoplayer
+        exoplayerVersion = 'com.google.android.exoplayer:exoplayer:2.10.8' // https://bintray.com/google/exoplayer/exoplayer
+        exoplayerCoreVersion = 'com.google.android.exoplayer:exoplayer-core:2.10.8' // https://bintray.com/google/exoplayer/exoplayer
+        exoplayerOkHttpVersion = 'com.google.android.exoplayer:extension-okhttp:2.10.8' // version should be the same as exoplayer
         voiceOverlayVersion = 'com.algolia.instantsearch:voice:1.0.0-beta02' // https://github.com/algolia/voice-overlay-android
         multiDexVersion = 'com.android.support:multidex:1.0.3' // crashlytics fix on Android 4.4
         resGuardVersion = 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.15'
