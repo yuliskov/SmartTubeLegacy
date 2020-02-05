@@ -270,6 +270,10 @@ var DeviceUtils = {
 
     isGlobalAfrFixEnabled: function() {
         return this.getApp().isGlobalAfrFixEnabled();
+    },
+
+    isMirrorEnabled: function() {
+        return this.getApp().isMirrorEnabled();
     }
 };
 

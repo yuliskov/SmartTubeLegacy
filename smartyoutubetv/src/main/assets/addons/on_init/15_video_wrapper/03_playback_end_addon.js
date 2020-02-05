@@ -1,6 +1,9 @@
 /**
  * Imitates the end of the video.
  */
+
+console.log("Scripts::Running playback_end_addon.js");
+
 function PlaybackEndAddon() {
     this.TAG = 'PlaybackEndAddon';
     this.videoId = '';

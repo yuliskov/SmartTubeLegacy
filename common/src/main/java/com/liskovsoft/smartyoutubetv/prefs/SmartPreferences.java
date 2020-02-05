@@ -66,6 +66,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mPostData;
     private boolean mUserLogged;
     private boolean mVideoPaused;
+    private boolean mMirrorEnabled;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -381,5 +382,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void sync() {
         setUserLogged(getAuthorizationHeader() != null);
+    }
+
+    public boolean isMirrorEnabled() {
+        return mMirrorEnabled;
+    }
+
+    public void setMirrorEnabled(boolean enabled) {
+        mMirrorEnabled = enabled;
     }
 }

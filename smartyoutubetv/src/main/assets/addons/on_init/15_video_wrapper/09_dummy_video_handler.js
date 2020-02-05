@@ -120,5 +120,5 @@ function DummyVideoHandler(addons) {
 }
 
 if (DeviceUtils.isExo()) {
-    ElementWrapper.addHandler(new DummyVideoHandler([new PlaybackEndAddon(), new VideoPositionAddon()]));
+    ElementWrapper.addHandler(new DummyVideoHandler([new PlaybackEndAddon(), new ScreenMirrorAddon()]));
 }

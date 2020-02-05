@@ -24,7 +24,7 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        return true;
+        return mPrefs.isMirrorEnabled();
     }
 
     @Override

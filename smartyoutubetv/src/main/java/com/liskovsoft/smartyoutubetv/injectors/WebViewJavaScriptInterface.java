@@ -222,4 +222,10 @@ public class WebViewJavaScriptInterface {
     public boolean logToFileEnabled() {
         return Log.getLogType().equals(Log.LOG_TYPE_FILE);
     }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean isMirrorEnabled() {
+        return CommonApplication.getPreferences().isMirrorEnabled();
+    }
 }

@@ -80,15 +80,11 @@ var PlaybackStrategy1 = {
         video.properties.duration = this.defaultDuration;
         video.properties.currentSrc = this.defaultSrc;
         video.properties.src = this.defaultSrc;
-
-        // setTimeout(function() {
-        //     video.listeners['playing'][0]({type: 'playing', isTrusted: true});
-        // }, 10000)
     },
 
     playIncrement: function(video) {
         video.properties.currentTime++;
-        // video.listeners['playing'][0]({type: 'playing', isTrusted: true});
+        // magically but without pause other functions won't work
         video.listeners['pause'][0]({type: 'pause', isTrusted: true});
         video.listeners['timeupdate'][0]({type: 'timeupdate', isTrusted: true});
     }

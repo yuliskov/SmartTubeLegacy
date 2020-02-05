@@ -8,6 +8,7 @@ import android.os.Looper;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ActionsSender;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.BackgroundActionManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
@@ -227,6 +228,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             }
         }
 
+        CommonApplication.getPreferences().setMirrorEnabled(mManager.isMirroring());
         mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
 
         // give the browser time to initialization
