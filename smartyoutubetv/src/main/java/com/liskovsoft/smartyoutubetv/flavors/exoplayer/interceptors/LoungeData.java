@@ -12,10 +12,12 @@ public class LoungeData {
     public static final int STATE_UNDEFINED = -1;
     private static final String KEY_STATE = "req0_state";
     private static final String KEY_CURRENT_TIME = "req0_currentTime";
+    private static final String KEY_DURATION = "req0_duration";
     private int mState = STATE_UNDEFINED;
     private int mCurrentTime;
     private String mUrl;
     private MyQueryString mQueryString;
+    private int mDuration;
 
     public static LoungeData parse(String postData, String url) {
         LoungeData loungeData = new LoungeData();
@@ -24,6 +26,7 @@ public class LoungeData {
             MyQueryString myQueryString = MyQueryStringFactory.parse(postData);
             String state = myQueryString.get(KEY_STATE);
             String currentTime = myQueryString.get(KEY_CURRENT_TIME);
+            String duration = myQueryString.get(KEY_DURATION);
 
             loungeData.mQueryString = myQueryString;
 
@@ -33,6 +36,10 @@ public class LoungeData {
 
             if (Helpers.isNumeric(currentTime)) {
                 loungeData.mCurrentTime = Integer.parseInt(currentTime);
+            }
+
+            if (Helpers.isNumeric(duration)) {
+                loungeData.mDuration = Integer.parseInt(duration);
             }
         }
 
@@ -49,6 +56,10 @@ public class LoungeData {
         if (currentTime >= -1) {
             mCurrentTime = currentTime;
         }
+    }
+
+    public int getDuration() {
+        return mDuration;
     }
 
     public int getState() {
@@ -71,6 +82,7 @@ public class LoungeData {
         if (mQueryString != null) {
             mQueryString.set(KEY_STATE, mState);
             mQueryString.set(KEY_CURRENT_TIME, mCurrentTime);
+            mQueryString.set(KEY_DURATION, mDuration);
             result = mQueryString.toString();
         }
 

@@ -14,8 +14,11 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
     protected AutoFrameRateHelper mAutoFrameRateHelper;
     private Handler mHandler;
     private final Runnable mPlayerPlay = () -> {
-        if (mPlayerFragment != null && mPlayerFragment.getPlayer() != null) {
-            mPlayerFragment.getPlayer().setPlayWhenReady(true);
+        if (mPlayerFragment != null) {
+            mPlayerFragment.setAfrApplying(false);
+            if (mPlayerFragment.getPlayer() != null) {
+                mPlayerFragment.getPlayer().setPlayWhenReady(true);
+            }
         }
     };
 
@@ -129,6 +132,7 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
     private void startPlaybackDelay(long delay) {
         if (mPlayerFragment.getPlayer() != null) {
             mPlayerFragment.getPlayer().setPlayWhenReady(false);
+            mPlayerFragment.setAfrApplying(true);
 
             mHandler.postDelayed(mPlayerPlay, delay);
         }

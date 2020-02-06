@@ -256,13 +256,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return mPositionSec;
     }
 
-    public void setCurrentVideoPaused(boolean paused) {
+    public void setHtmlVideoPaused(boolean paused) {
         mVideoPaused = paused;
 
         runListeners(CURRENT_VIDEO_PAUSED);
     }
 
-    public boolean getCurrentVideoPaused() {
+    public boolean getHtmlVideoPaused() {
         return mVideoPaused;
     }
 

@@ -84,6 +84,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private VideoZoomManager mVideoZoomManager;
     private List<PlayerEventListener> mListeners;
     private List<String> mRestore;
+    private boolean mIsAfrApplying;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -393,13 +394,17 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
             if (exoIntent.getPositionSec() != -1) {
                 int positionMs = exoIntent.getPositionSec() * 1000;
+                long newPosMS = Math.abs(mPlayer.getCurrentPosition() - positionMs);
 
-                if (Math.abs(mPlayer.getCurrentPosition() - positionMs) > 1_000) {
+                if (newPosMS > 1_000 && newPosMS < mPlayer.getDuration()) {
                     mPlayer.seekTo(positionMs);
                 }
             }
 
-            mPlayer.setPlayWhenReady(!exoIntent.getPaused());
+            // afr auto-pause time fix
+            if (!mIsAfrApplying) {
+                mPlayer.setPlayWhenReady(!exoIntent.getPaused());
+            }
         }
     }
 
@@ -629,5 +634,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         for (PlayerEventListener listener : mListeners) {
             listener.onAppResume();
         }
+    }
+
+    public void setAfrApplying(boolean applying) {
+        mIsAfrApplying = applying;
     }
 }

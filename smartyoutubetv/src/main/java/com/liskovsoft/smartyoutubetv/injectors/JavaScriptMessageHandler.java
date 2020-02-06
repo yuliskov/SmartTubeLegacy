@@ -57,7 +57,7 @@ public class JavaScriptMessageHandler {
                 CommonApplication.getPreferences().setCurrentVideoPosition(Integer.parseInt(content));
                 break;
             case MESSAGE_VIDEO_PAUSED:
-                CommonApplication.getPreferences().setCurrentVideoPaused(Boolean.parseBoolean(content));
+                CommonApplication.getPreferences().setHtmlVideoPaused(Boolean.parseBoolean(content));
                 break;
             case MESSAGE_DOUBLE_BACK_EXIT:
                 ((FragmentManager) mContext).onExitDialogShown();
