@@ -228,4 +228,10 @@ public class WebViewJavaScriptInterface {
     public boolean isMirrorEnabled() {
         return CommonApplication.getPreferences().isMirrorEnabled();
     }
+
+    @JavascriptInterface
+    @org.xwalk.core.JavascriptInterface
+    public boolean isBrowserInBackground() {
+        return CommonApplication.getPreferences().isBrowserInBackground();
+    }
 }

@@ -274,6 +274,10 @@ var DeviceUtils = {
 
     isMirrorEnabled: function() {
         return this.getApp().isMirrorEnabled();
+    },
+
+    isBrowserInBackground: function() {
+        return this.getApp().isBrowserInBackground();
     }
 };
 

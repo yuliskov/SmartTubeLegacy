@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
@@ -402,8 +404,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             }
 
             // afr auto-pause time fix
-            if (!mIsAfrApplying) {
-                mPlayer.setPlayWhenReady(!exoIntent.getPaused());
+            if (!mIsAfrApplying && getActivity() != null) {
+                KeyHelpers.press(getActivity(), exoIntent.getPaused() ? KeyEvent.KEYCODE_MEDIA_PAUSE : KeyEvent.KEYCODE_MEDIA_PLAY);
             }
         }
     }

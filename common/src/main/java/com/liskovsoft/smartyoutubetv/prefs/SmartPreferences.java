@@ -67,6 +67,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private boolean mUserLogged;
     private boolean mVideoPaused;
     private boolean mMirrorEnabled;
+    private boolean mIsBrowserInBackground;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -390,5 +391,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setMirrorEnabled(boolean enabled) {
         mMirrorEnabled = enabled;
+    }
+
+
+    public boolean isBrowserInBackground() {
+        return mIsBrowserInBackground;
+    }
+
+    public void setBrowserInBackground(boolean inBackground) {
+        mIsBrowserInBackground = inBackground;
     }
 }

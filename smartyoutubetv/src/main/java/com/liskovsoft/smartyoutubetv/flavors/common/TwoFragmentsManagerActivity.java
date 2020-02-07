@@ -14,6 +14,7 @@ import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.sharedutils.GlobalConstants;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -84,6 +85,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         if (mBrowserFragment == null || mPlayerFragment == null) {
             Log.d(TAG, "Can't set active fragment. Some of them is null");
             return;
+        }
+
+        if (fragment instanceof PlayerFragment) {
+            CommonApplication.getPreferences().setBrowserInBackground(true);
         }
 
         // if other fragment not initialized - skip remove

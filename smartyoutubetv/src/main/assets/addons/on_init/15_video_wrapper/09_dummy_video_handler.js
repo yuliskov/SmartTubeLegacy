@@ -37,18 +37,18 @@ function DummyVideoHandler(addons) {
         EventUtils.turnOffProp(video, 'baseURI');
         EventUtils.turnOffProp(video, 'currentSrc');
 
-        EventUtils.turnOffProp(video, 'duration');
+        // EventUtils.turnOffProp(video, 'duration');
 
         // EventUtils.turnOffProp(video, 'paused');
 
-        EventUtils.turnOffMethod(video, 'play', false, function(val) {
-            Log.d($this.TAG, "On paused changed " + val);
+        EventUtils.turnOffMethod(video, 'play', false, function() {
+            Log.d($this.TAG, "On paused changed " + false);
             video.properties.paused = false;
             $this.onPausedChangeAddons(video);
         });
 
-        EventUtils.turnOffMethod(video, 'pause', false, function(val) {
-            Log.d($this.TAG, "On paused changed " + val);
+        EventUtils.turnOffMethod(video, 'pause', false, function() {
+            Log.d($this.TAG, "On paused changed " + true);
             video.properties.paused = true;
             $this.onPausedChangeAddons(video);
         });
@@ -61,6 +61,11 @@ function DummyVideoHandler(addons) {
         EventUtils.turnOffProp(video, 'currentTime', true, function(val) {
             Log.d($this.TAG, "On set currentTime " + val);
             $this.onCurrentTimeAddons(video);
+        });
+
+        EventUtils.turnOffProp(video, 'duration', false, function(val) {
+            Log.d($this.TAG, "On set duration " + val);
+            $this.onDurationAddons(video);
         });
 
         EventUtils.turnOffProp(video, 'src', true, function(val) {
@@ -83,6 +88,15 @@ function DummyVideoHandler(addons) {
             var addon = this.addons[i];
             if (addon.onCurrentTime) {
                 addon.onCurrentTime(video);
+            }
+        }
+    };
+
+    this.onDurationAddons = function(video) {
+        for (var i = 0; i < this.addons.length; i++) {
+            var addon = this.addons[i];
+            if (addon.onDuration) {
+                addon.onDuration(video);
             }
         }
     };

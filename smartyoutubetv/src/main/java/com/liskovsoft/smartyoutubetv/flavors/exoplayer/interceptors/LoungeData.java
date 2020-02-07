@@ -6,18 +6,22 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 
 public class LoungeData {
+    public static final int STATE_UNDETECTED = 0;
     public static final int STATE_PLAYING = 1;
     public static final int STATE_PAUSED = 2;
     public static final int STATE_IDLE = 3;
+    public static final int STATE_READY = 4;
     public static final int STATE_UNDEFINED = -1;
     private static final String KEY_STATE = "req0_state";
     private static final String KEY_CURRENT_TIME = "req0_currentTime";
     private static final String KEY_DURATION = "req0_duration";
+    private static final String KEY_SEEKABLE_END_TIME = "req0_seekableEndTime";
     private int mState = STATE_UNDEFINED;
     private int mCurrentTime;
     private String mUrl;
     private MyQueryString mQueryString;
     private int mDuration;
+    private int mEndTime;
 
     public static LoungeData parse(String postData, String url) {
         LoungeData loungeData = new LoungeData();
@@ -27,6 +31,7 @@ public class LoungeData {
             String state = myQueryString.get(KEY_STATE);
             String currentTime = myQueryString.get(KEY_CURRENT_TIME);
             String duration = myQueryString.get(KEY_DURATION);
+            String endTime = myQueryString.get(KEY_SEEKABLE_END_TIME);
 
             loungeData.mQueryString = myQueryString;
 
@@ -40,6 +45,10 @@ public class LoungeData {
 
             if (Helpers.isNumeric(duration)) {
                 loungeData.mDuration = Integer.parseInt(duration);
+            }
+
+            if (Helpers.isNumeric(duration)) {
+                loungeData.mEndTime = Integer.parseInt(endTime);
             }
         }
 
@@ -60,6 +69,18 @@ public class LoungeData {
 
     public int getDuration() {
         return mDuration;
+    }
+
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
+
+    public int getEndTime() {
+        return mEndTime;
+    }
+
+    public void setEndTime(int endTime) {
+        mEndTime = endTime;
     }
 
     public int getState() {
@@ -83,6 +104,7 @@ public class LoungeData {
             mQueryString.set(KEY_STATE, mState);
             mQueryString.set(KEY_CURRENT_TIME, mCurrentTime);
             mQueryString.set(KEY_DURATION, mDuration);
+            mQueryString.set(KEY_SEEKABLE_END_TIME, mEndTime);
             result = mQueryString.toString();
         }
 
