@@ -29,7 +29,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         String postData = CommonApplication.getPreferences().getPostData();
 
         if (postData == null) {
-            Log.e(TAG, "Error. Post body is empty! Url: " + url);
+            Log.e(TAG, "Post body is empty! Skipping url: " + url);
             return null;
         }
 
