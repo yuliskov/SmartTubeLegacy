@@ -11,11 +11,12 @@ console.log("Scripts::Running script codec_fix_config.js");
  * Config for the WebView browser's engine (1th launcher)
  */
 var CodecConfig_WebView = {
+    'AFTMM (mantis)': '', // Fire TV Stick 4K 2018
+    'MiBOX4 (oneday)': '', // MiBox S
     'MIBOX3 (once)': 'webm',
     //'G6A110 (G6A110)': '', // UNOIPTV (gmail)
     'Quad core A33 (astar_yh)': 'mp4', // adnotam's device
     'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
-    // 'MiBOX4 (oneday)': 'mp4', // disqus: MiBox S
     'MiBOX3_PRO (once)': 'mp4', // mt8173 (disqus), fix hangs on video loads
     // 'amlogic': 'mp4', // be careful: not all amlogic devices have troubles playing mp4 (issue #162)
     'Hi3798CV100 (Hi3798CV100)': 'mp4', // github issue #176
@@ -53,6 +54,8 @@ var CodecConfig_WebView = {
  * Config for the CrossWalk browser's engine (2nd launcher)
  */
 var CodecConfig_XWalk = {
+    'AFTMM (mantis)': '', // Fire TV Stick 4K 2018
+    'MiBOX4 (oneday)': '', // MiBox S
     'G6A110 (G6A110)': '', // UNOIPTV (gmail)
     'Quad core A33 (astar_yh)': 'mp4', // adnotam's device
     'Rombica Smart Box Ultra HD v002 (SBQ_S0812)': 'mp4', // disqus
