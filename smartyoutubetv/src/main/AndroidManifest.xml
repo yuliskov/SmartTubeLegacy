@@ -62,7 +62,7 @@
         <!-- allow to use repacked XWalk's apk -->
         <meta-data android:name="xwalk_verify" android:value="disable" />
 
-        <!-- NOTE: DIAL integration for Amazon TV (cause hangs on Fire TV devices???) -->
+        <!-- NOTE: Screen Mirror (e.g. DIAL) for Amazon TV -->
         <meta-data
             android:name="whisperplay"
             android:resource="@xml/whisperplay"/>
