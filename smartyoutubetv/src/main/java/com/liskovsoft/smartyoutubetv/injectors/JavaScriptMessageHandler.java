@@ -24,6 +24,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
     private final static String MESSAGE_AUTH_BODY = "message_auth_body";
     private final static String MESSAGE_POST_DATA = "message_post_data";
+    private final static String MESSAGE_HIGH_CONTRAST_ENABLED = "message_high_contrast_enabled";
     private final Context mContext;
 
     public JavaScriptMessageHandler(Context context) {
@@ -70,6 +71,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_POST_DATA:
                 CommonApplication.getPreferences().setPostData(content);
+                break;
+            case MESSAGE_HIGH_CONTRAST_ENABLED:
+                CommonApplication.getPreferences().setHighContrastEnabled(Boolean.parseBoolean(content));
                 break;
         }
     }

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.LoadingManager;
 
@@ -13,6 +15,14 @@ public abstract class BaseLoadingManager implements LoadingManager {
 
     public BaseLoadingManager(Activity context) {
         mContext = context;
+        checkHighContrast();
+    }
+
+    private void checkHighContrast() {
+        boolean highContrastEnabled = CommonApplication.getPreferences().isHighContrastEnabled();
+        if (highContrastEnabled && getRootView() != null) {
+            getRootView().setBackgroundColor(ContextCompat.getColor(mContext, R.color.youtube_background_high_contrast));
+        }
     }
 
     /**
@@ -26,6 +36,7 @@ public abstract class BaseLoadingManager implements LoadingManager {
     @Override
     public void show() {
         getRootView().setVisibility(View.VISIBLE);
+        checkHighContrast();
     }
 
     @Override
