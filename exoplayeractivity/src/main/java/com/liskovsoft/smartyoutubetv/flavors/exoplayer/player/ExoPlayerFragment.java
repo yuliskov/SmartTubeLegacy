@@ -174,6 +174,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     }
 
     @Override
+    public void close() {
+         onPlayerAction(ExoPlayerFragment.BUTTON_BACK);
+    }
+
+    @Override
     public int getState() {
         return mState;
     }

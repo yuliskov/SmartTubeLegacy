@@ -21,6 +21,8 @@ public abstract class BaseLoadingManager implements LoadingManager {
     private void checkHighContrast() {
         boolean highContrastEnabled = CommonApplication.getPreferences().isHighContrastEnabled();
         if (highContrastEnabled && getRootView() != null) {
+            //mContext.getWindow().setBackgroundDrawable(null);
+            //mContext.getWindow().setBackgroundDrawableResource(R.color.youtube_background_high_contrast);
             getRootView().setBackgroundColor(ContextCompat.getColor(mContext, R.color.youtube_background_high_contrast));
         }
     }

@@ -1,15 +1,13 @@
 package com.liskovsoft.smartyoutubetv.flavors.common;
 
-import android.content.ComponentCallbacks2;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
 
 public abstract class SingleFragmentManagerActivity extends FragmentManagerActivity {
     private static final String TAG = SingleFragmentManagerActivity.class.getSimpleName();

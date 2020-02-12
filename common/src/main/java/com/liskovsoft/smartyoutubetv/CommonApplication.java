@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv;
 
 import android.app.Application;
 import android.content.Context;
+import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.liskovsoft.sharedutils.mylogger.Log;

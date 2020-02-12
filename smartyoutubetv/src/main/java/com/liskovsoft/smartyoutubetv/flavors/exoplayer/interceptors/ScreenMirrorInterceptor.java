@@ -36,44 +36,47 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
         Log.d(TAG, url);
         Log.d(TAG, postData);
 
-        if (mPrefs.isMirrorEnabled()) {
-            LoungeData loungeData = LoungeData.parse(postData, url);
+        if (mPrefs.isMirrorEnabled() && postData != null) {
+            if (postData.contains("req0__sc=onAutoplayModeChanged&req0_autoplayMode=UNSUPPORTED")) {
+                mExoRootInterceptor.getTwoFragmentManager().closeExoPlayer();
+            } else {
+                LoungeData loungeData = LoungeData.parse(postData, url);
 
-            //if (loungeData.getState() == LoungeData.STATE_UNDETECTED) {
-            //    return emptyResponse();
-            //}
-
-            if (loungeData.getState() != LoungeData.STATE_UNDEFINED) {
-                if (loungeData.getState() == LoungeData.STATE_PAUSED &&
-                    !mPrefs.getHtmlVideoPaused()) {
-                    loungeData.setState(LoungeData.STATE_PLAYING);
-                }
-
-                calcPausedPosition(loungeData);
-
-                if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
-                    loungeData.setCurrentTime(0);
-                }
-
-                // progress bar full fix
-                //if (loungeData.getDuration() == 0) {
-                //    loungeData.setDuration(10);
-                //    loungeData.setEndTime(10);
+                //if (loungeData.getState() == LoungeData.STATE_UNDETECTED) {
+                //    return emptyResponse();
                 //}
 
-                res = postFormData(url, loungeData.toString());
+                if (loungeData.getState() != LoungeData.STATE_UNDEFINED) {
+                    if (loungeData.getState() == LoungeData.STATE_PAUSED &&
+                            !mPrefs.getHtmlVideoPaused()) {
+                        loungeData.setState(LoungeData.STATE_PLAYING);
+                    }
 
-                if (loungeData.getState() == LoungeData.STATE_PAUSED ||
-                    loungeData.getState() == LoungeData.STATE_PLAYING) {
-                    ExoIntent exoIntent = new ExoIntent();
-                    exoIntent.setPositionSec(loungeData.getCurrentTime());
-                    exoIntent.setPaused(mPrefs.getHtmlVideoPaused());
-                    mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+                    calcPausedPosition(loungeData);
+
+                    if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
+                        loungeData.setCurrentTime(0);
+                    }
+
+                    // progress bar full fix
+                    //if (loungeData.getDuration() == 0) {
+                    //    loungeData.setDuration(10);
+                    //    loungeData.setEndTime(10);
+                    //}
+
+                    res = postFormData(url, loungeData.toString());
+
+                    if (loungeData.getState() == LoungeData.STATE_PAUSED ||
+                            loungeData.getState() == LoungeData.STATE_PLAYING) {
+                        ExoIntent exoIntent = new ExoIntent();
+                        exoIntent.setPositionSec(loungeData.getCurrentTime());
+                        exoIntent.setPaused(mPrefs.getHtmlVideoPaused());
+                        mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+                    }
+
+                    mPrevPaused = mPrefs.getHtmlVideoPaused();
                 }
-
-                mPrevPaused = mPrefs.getHtmlVideoPaused();
             }
-
         }
 
         return res;

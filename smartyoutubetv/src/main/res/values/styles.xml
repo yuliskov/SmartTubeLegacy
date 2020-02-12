@@ -6,10 +6,15 @@
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="android:windowBackground">@color/youtube_background</item>
+        <!--  Transparent color -->
+        <item name="android:windowBackground">@null</item>
         <!--<item name="android:alertDialogTheme">@style/AppDialog</item>-->
 
         <!-- completely disable button sounds -->
+        <item name="android:soundEffectsEnabled">false</item>
+    </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/youtube_background_high_contrast</item>
         <item name="android:soundEffectsEnabled">false</item>
     </style>
     <style name="buttonStyle">

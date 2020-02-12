@@ -164,6 +164,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
+    public void closeExoPlayer() {
+        runOnUiThread(()->{
+            Log.d(TAG, "Closing player");
+            mPlayerFragment.close();
+        });
+    }
+
+    @Override
     public void setPlayerListener(PlayerListener listener) {
         mPlayerListener = listener;
     }

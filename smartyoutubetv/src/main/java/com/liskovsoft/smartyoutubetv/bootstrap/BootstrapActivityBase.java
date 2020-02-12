@@ -1,14 +1,16 @@
 package com.liskovsoft.smartyoutubetv.bootstrap;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
+import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.smartyoutubetv.misc.OldPackageRemover;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
