@@ -16,12 +16,16 @@ public class LoungeData {
     private static final String KEY_CURRENT_TIME = "req0_currentTime";
     private static final String KEY_DURATION = "req0_duration";
     private static final String KEY_SEEKABLE_END_TIME = "req0_seekableEndTime";
+    private static final String KEY_EVENT = "req0__sc";
+    private static final String KEY_MODE = "req0_autoplayMode";
     private int mState = STATE_UNDEFINED;
     private int mCurrentTime;
     private String mUrl;
     private MyQueryString mQueryString;
     private int mDuration;
     private int mEndTime;
+    private String mEvent;
+    private String mMode;
 
     public static LoungeData parse(String postData, String url) {
         LoungeData loungeData = new LoungeData();
@@ -32,6 +36,8 @@ public class LoungeData {
             String currentTime = myQueryString.get(KEY_CURRENT_TIME);
             String duration = myQueryString.get(KEY_DURATION);
             String endTime = myQueryString.get(KEY_SEEKABLE_END_TIME);
+            String event = myQueryString.get(KEY_EVENT);
+            String mode = myQueryString.get(KEY_MODE);
 
             loungeData.mQueryString = myQueryString;
 
@@ -50,6 +56,9 @@ public class LoungeData {
             if (Helpers.isNumeric(duration)) {
                 loungeData.mEndTime = Integer.parseInt(endTime);
             }
+
+            loungeData.mEvent = event;
+            loungeData.mMode = mode;
         }
 
         loungeData.mUrl = url;
@@ -93,6 +102,10 @@ public class LoungeData {
 
     public String getUrl() {
         return mUrl;
+    }
+
+    public boolean isDisconnected() {
+        return "onAutoplayModeChanged".equals(mEvent) && "UNSUPPORTED".equals(mMode);
     }
 
     @NonNull

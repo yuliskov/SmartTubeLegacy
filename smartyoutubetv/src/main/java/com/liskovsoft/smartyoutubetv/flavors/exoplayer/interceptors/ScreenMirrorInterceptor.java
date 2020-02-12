@@ -37,15 +37,11 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
         Log.d(TAG, postData);
 
         if (mPrefs.isMirrorEnabled() && postData != null) {
-            if (postData.contains("req0__sc=onAutoplayModeChanged&req0_autoplayMode=UNSUPPORTED")) {
+            LoungeData loungeData = LoungeData.parse(postData, url);
+
+            if (loungeData.isDisconnected()) {
                 mExoRootInterceptor.getTwoFragmentManager().closeExoPlayer();
             } else {
-                LoungeData loungeData = LoungeData.parse(postData, url);
-
-                //if (loungeData.getState() == LoungeData.STATE_UNDETECTED) {
-                //    return emptyResponse();
-                //}
-
                 if (loungeData.getState() != LoungeData.STATE_UNDEFINED) {
                     if (loungeData.getState() == LoungeData.STATE_PAUSED &&
                             !mPrefs.getHtmlVideoPaused()) {
@@ -57,12 +53,6 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
                     if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
                         loungeData.setCurrentTime(0);
                     }
-
-                    // progress bar full fix
-                    //if (loungeData.getDuration() == 0) {
-                    //    loungeData.setDuration(10);
-                    //    loungeData.setEndTime(10);
-                    //}
 
                     res = postFormData(url, loungeData.toString());
 
