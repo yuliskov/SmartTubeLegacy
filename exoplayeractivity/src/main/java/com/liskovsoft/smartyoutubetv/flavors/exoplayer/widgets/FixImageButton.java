@@ -30,6 +30,7 @@ public class FixImageButton extends ImageButton {
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.d(TAG, "FixImageButton->click: " + event);
 
+        // OK pause fix for the first video
         if (mFirstRun) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 KeyEvent downEvent = KeyHelpers.newEvent(KeyEvent.ACTION_DOWN, event.getKeyCode());
