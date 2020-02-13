@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class FixImageButton extends ImageButton {
     private static final String TAG = FixImageButton.class.getSimpleName();
@@ -32,7 +33,8 @@ public class FixImageButton extends ImageButton {
 
         // OK pause fix for the first video
         if (mFirstRun) {
-            if (event.getAction() == KeyEvent.ACTION_UP) {
+            boolean okPause = SmartPreferences.instance(getContext()).getEnableOKPause();
+            if (okPause && event.getAction() == KeyEvent.ACTION_UP) {
                 KeyEvent downEvent = KeyHelpers.newEvent(KeyEvent.ACTION_DOWN, event.getKeyCode());
                 super.dispatchKeyEvent(downEvent);
             }
