@@ -2,7 +2,7 @@
 <whisperplay>
     <dial>
         <application>
-            <dialid>Smart YouTube TV</dialid>
+            <dialid>YouTube</dialid>
             <startAction>android.intent.action.MAIN</startAction>
         </application>
     </dial>

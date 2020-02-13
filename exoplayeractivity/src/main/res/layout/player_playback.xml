@@ -25,7 +25,7 @@
             android:id="@id/exo_play"
             style="@style/ExoMediaButton2.Play"/>
 
-        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.FixImageButton
             android:id="@id/exo_pause"
             style="@style/ExoMediaButton2.Pause"/>
 

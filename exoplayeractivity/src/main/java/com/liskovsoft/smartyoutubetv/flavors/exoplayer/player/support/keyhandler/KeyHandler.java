@@ -161,7 +161,7 @@ public class KeyHandler {
         //}
 
         // If the event was not handled then see if the player view can handle it as a media key event.
-        return mFragment.getExoPlayerView().dispatchMediaKeyEvent(event);
+        return mFragment.getExoPlayerView().dispatchKeyEvent(event);
     }
 
     private boolean applyMediaKeys(KeyEvent event) {
