@@ -104,5 +104,5 @@ function AjaxInterceptorAddon(interceptors) {
 }
 
 if (DeviceUtils.isExo()) {
-    new AjaxInterceptorAddon([new AuthInterceptor(), new ScreenMirrorInterceptor(), new IntegratedAdInterceptor()]).run();
+    new AjaxInterceptorAddon([new AuthInterceptor(), new PostDataInterceptor()]).run();
 }

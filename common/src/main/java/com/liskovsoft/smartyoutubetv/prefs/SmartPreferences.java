@@ -65,7 +65,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mDefaultDisplayMode;
     private String mCurrentDisplayMode;
     private String mPostData;
-    private long mPostDataTimeMS;
     private boolean mUserLogged;
     private boolean mVideoPaused;
     private boolean mMirrorEnabled;
@@ -369,17 +368,9 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setPostData(String content) {
         mPostData = content;
-        mPostDataTimeMS = System.currentTimeMillis();
     }
 
     public String getPostData() {
-        if (mPostData != null) {
-            boolean isActual = (System.currentTimeMillis() - mPostDataTimeMS) <= 1_000;
-            if (!isActual) {
-                mPostData = null;
-            }
-        }
-
         return mPostData;
     }
 
