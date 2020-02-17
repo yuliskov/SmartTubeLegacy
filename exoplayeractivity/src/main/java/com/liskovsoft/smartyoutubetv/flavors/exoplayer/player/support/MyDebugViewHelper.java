@@ -16,14 +16,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Point;
-import android.hardware.display.DisplayManager;
 import android.util.TypedValue;
-import android.view.Display;
-import android.view.Display.Mode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +55,7 @@ import java.util.Locale;
  */
 public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private static final int REFRESH_INTERVAL_MS = 1000;
-    private static final float TEXT_SIZE_SP = 10;
+    private float mTextSize = 15;
 
     private final SimpleExoPlayer mPlayer;
     private final ViewGroup mDebugViewGroup;
@@ -80,6 +74,7 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
         mPlayer = player;
         mDebugViewGroup = viewGroup;
         mContext = ctx;
+        mTextSize = ctx.getResources().getDimension(R.dimen.debug_text_size);
         inflate();
     }
 
@@ -352,21 +347,21 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private TextView createTextView(String name) {
         TextView textView = new TextView(mContext);
         textView.setText(name);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
+        textView.setTextSize(mTextSize);
         return textView;
     }
 
     private TextView createTextView(boolean val) {
         TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
+        textView.setTextSize(mTextSize);
         return textView;
     }
 
     private TextView createTextView(int val) {
         TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_SP);
+        textView.setTextSize(mTextSize);
         return textView;
     }
 

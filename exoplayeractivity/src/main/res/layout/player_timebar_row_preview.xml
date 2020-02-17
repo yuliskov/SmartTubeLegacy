@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:layoutDirection="ltr"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +22,7 @@
         <TextView android:id="@id/exo_position"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:textSize="14sp"
+                  android:textSize="@dimen/player_time_bar_text_size"
                   android:textStyle="bold"
                   android:paddingLeft="4dp"
                   android:paddingRight="4dp"
@@ -32,9 +31,12 @@
 
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.previewtimebar.PreviewTimeBar
             android:id="@id/exo_progress"
-            android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="26dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:scrubber_enabled_size="@dimen/player_time_bar_scrubber_size"
+            app:scrubber_dragged_size="@dimen/player_time_bar_scrubber_dragged_size"
+            app:bar_height="@dimen/player_time_bar_height"
             app:played_color="@color/red"
             app:unplayed_color="@color/white_50"
             app:buffered_color="@color/white"
@@ -44,7 +46,7 @@
         <TextView android:id="@id/exo_duration"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:textSize="14sp"
+                  android:textSize="@dimen/player_time_bar_text_size"
                   android:textStyle="bold"
                   android:paddingLeft="4dp"
                   android:paddingRight="4dp"
@@ -75,7 +77,7 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"/>
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

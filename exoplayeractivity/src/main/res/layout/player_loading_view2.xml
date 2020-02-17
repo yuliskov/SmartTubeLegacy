@@ -5,7 +5,10 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_large_holo"
-        style="?android:attr/progressBarStyleLarge"
+        android:minWidth="@dimen/loading_spinner_size"
+        android:minHeight="@dimen/loading_spinner_size"
+        android:maxWidth="@dimen/loading_spinner_size"
+        android:maxHeight="@dimen/loading_spinner_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

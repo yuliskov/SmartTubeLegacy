@@ -14,7 +14,7 @@
               android:layout_height="wrap_content"
               android:paddingLeft="4dp"
               android:paddingRight="4dp"
-              android:textSize="20sp"
+              android:textSize="@dimen/player_top_bar_text_size"
               tools:ignore="SmallSp"
               android:textColor="@color/white"
               android:maxLines="1"/>
@@ -28,7 +28,7 @@
             <TextView android:id="@+id/video_title2"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:textSize="14sp"
+                      android:textSize="@dimen/player_top_bar_text_size2"
                       android:textColor="@color/white_70"
                       tools:ignore="SmallSp"
                       android:maxLines="1"/>
@@ -36,7 +36,7 @@
                       android:paddingLeft="30dp"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:textSize="14sp"
+                      android:textSize="@dimen/player_top_bar_text_size2"
                       android:textColor="@color/white_70"
                       tools:ignore="SmallSp"
                       android:maxLines="1"/>
@@ -44,7 +44,7 @@
         <TextView android:id="@+id/clock"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:textSize="14sp"
+                  android:textSize="@dimen/player_top_bar_text_size2"
                   android:textColor="@color/white_70"
                   tools:ignore="SmallSp"
                   android:maxLines="1"

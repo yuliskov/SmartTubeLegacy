@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_text_size">20dp</dimen>
+    <dimen name="loading_spinner_size">100dip</dimen>
+</resources>

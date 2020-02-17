@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 
 import android.os.Handler;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -16,8 +17,11 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
     private final Runnable mPlayerPlay = () -> {
         if (mPlayerFragment != null) {
             mPlayerFragment.setAfrApplying(false);
-            if (mPlayerFragment.getPlayer() != null) {
-                mPlayerFragment.getPlayer().setPlayWhenReady(true);
+            SimpleExoPlayer player = mPlayerFragment.getPlayer();
+            if (player != null) {
+                long position = player.getCurrentPosition();
+                player.setPlayWhenReady(true);
+                player.seekTo(position); // audio sync fix?
             }
         }
     };
