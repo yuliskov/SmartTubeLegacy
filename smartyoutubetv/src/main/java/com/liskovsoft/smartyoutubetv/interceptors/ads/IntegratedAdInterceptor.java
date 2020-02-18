@@ -14,14 +14,20 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String TAG = IntegratedAdInterceptor.class.getSimpleName();
     private static final String HOME_PAGE_ID = "\"browseId\":\"default\"";
     private static final String BROWSE_URL = "/youtubei/v1/browse";
+    private final boolean mAdBlockEnabled;
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
+        mAdBlockEnabled = CommonApplication.getPreferences().getAdBlockEnabled();
     }
 
     @Override
     public boolean test(String url) {
-        return url.contains(BROWSE_URL);
+        if (mAdBlockEnabled) {
+            return url.contains(BROWSE_URL);
+        } else {
+            return false;
+        }
     }
 
     @Override

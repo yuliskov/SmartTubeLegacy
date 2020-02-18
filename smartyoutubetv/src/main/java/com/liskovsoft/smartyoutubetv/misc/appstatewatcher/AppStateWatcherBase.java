@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -109,6 +110,12 @@ public class AppStateWatcherBase {
         }
     }
 
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (StateHandler handler : mHandlers) {
+            handler.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     public void onResume() {
 
     }
@@ -148,6 +155,10 @@ public class AppStateWatcherBase {
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            
+        }
+
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
             
         }
     }

@@ -50,7 +50,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
     private static final String USER_IS_LOGGED = "user_is_logged";
     private static final String HIGH_CONTRAST_ENABLED = "high_contrast_enabled";
-    private static final String VIDEO_OPEN_TIME = "video_open_time";
+    private static final String AD_BLOCK_ENABLED = "ad_block_enabled";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -70,6 +70,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private boolean mVideoPaused;
     private boolean mMirrorEnabled;
     private boolean mIsBrowserInBackground;
+    private long mVideOpenTimeMS;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -413,10 +414,18 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public void setVideoOpenTime(long timeMs) {
-        putLong(VIDEO_OPEN_TIME, timeMs);
+        mVideOpenTimeMS = timeMs;
     }
 
     public long getVideoOpenTime() {
-        return getLong(VIDEO_OPEN_TIME, 0);
+        return mVideOpenTimeMS;
+    }
+
+    public boolean getAdBlockEnabled() {
+        return getBoolean(AD_BLOCK_ENABLED, true);
+    }
+
+    public void setAdBlockEnabled(boolean enabled) {
+        putBoolean(AD_BLOCK_ENABLED, enabled);
     }
 }

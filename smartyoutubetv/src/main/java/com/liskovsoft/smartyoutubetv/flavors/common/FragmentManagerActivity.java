@@ -302,6 +302,8 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        mAppStateWatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

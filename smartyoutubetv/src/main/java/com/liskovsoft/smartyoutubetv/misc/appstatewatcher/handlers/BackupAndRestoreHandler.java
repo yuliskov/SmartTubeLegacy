@@ -1,9 +1,13 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
+import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.dialogs.YesNoDialog;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
@@ -27,6 +31,8 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     private final List<File> mBackupDirs;
     private boolean mIsFirstRun;
     private boolean mIsUpdate;
+    private boolean mStoragePermissionGranted;
+    private Runnable mPendingHandler;
 
     public BackupAndRestoreHandler(Context context) {
         mContext = context;
@@ -39,7 +45,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         mBackupDirs.add(new File(FileHelpers.getBackupDir(mContext), "Backup"));
         mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", "com.liskovsoft.videomanager")));
 
-        PermissionHelpers.verifyStoragePermissions(context);
+        //PermissionHelpers.verifyStoragePermissions(context);
     }
 
     @Override
@@ -82,7 +88,12 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 //Yes button clicked
-                restoreData();
+                if (PermissionHelpers.hasStoragePermissions(mContext)) {
+                    restoreData();
+                } else {
+                    mPendingHandler = this::restoreData;
+                    verifyStoragePermissionsAndReturn();
+                }
                 break;
 
             case DialogInterface.BUTTON_NEGATIVE:
@@ -102,7 +113,12 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
 
         if (isUerAuth) {
             if (FileHelpers.isExternalStorageWritable()) {
-                backupData();
+                if (PermissionHelpers.hasStoragePermissions(mContext)) {
+                    backupData();
+                } else {
+                    mPendingHandler = this::backupData;
+                    verifyStoragePermissionsAndReturn();
+                }
             }
         } else {
             Log.d(TAG, "User not authorized. Cancelling backup...");
@@ -162,5 +178,23 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
 
     private void askUserPermission() {
         YesNoDialog.create(mContext, R.string.do_restore_data_msg, this, R.style.AppDialog);
+    }
+
+    private void verifyStoragePermissionsAndReturn() {
+        PermissionHelpers.verifyStoragePermissions(mContext);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionHelpers.REQUEST_EXTERNAL_STORAGE) {
+            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "REQUEST_EXTERNAL_STORAGE permission has been granted");
+
+                if (mPendingHandler != null) {
+                    mPendingHandler.run();
+                    mPendingHandler = null;
+                }
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AltPlayerMappi
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EnableAdBlockDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAllCodecsDialogItem;
@@ -23,7 +24,6 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDi
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayer4KDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerFHDDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerKodiDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UseExternalPlayerSDDialogItem;
 
 import java.util.ArrayList;
@@ -64,6 +64,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new Ugoos50HZFixDialogItem(mContext));
         mItems.add(new FixAspectDialogItem(mContext));
         mItems.add(new AltPlayerMappingDialogItem(mContext));
+        mItems.add(new EnableAdBlockDialogItem(mContext));
     }
 
     @Override
