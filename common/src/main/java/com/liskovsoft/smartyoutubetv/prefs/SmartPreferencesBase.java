@@ -33,6 +33,16 @@ public class SmartPreferencesBase {
         return mPrefs.getInt(key, defVal);
     }
 
+    protected void putLong(String key, long val) {
+        mPrefs.edit()
+                .putLong(key, val)
+                .apply();
+    }
+
+    protected long getLong(String key, long defVal) {
+        return mPrefs.getLong(key, defVal);
+    }
+
     protected void putBoolean(String key, boolean val) {
         mPrefs.edit()
                 .putBoolean(key, val)

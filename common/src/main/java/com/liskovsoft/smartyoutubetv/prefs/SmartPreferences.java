@@ -50,6 +50,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
     private static final String USER_IS_LOGGED = "user_is_logged";
     private static final String HIGH_CONTRAST_ENABLED = "high_contrast_enabled";
+    private static final String VIDEO_OPEN_TIME = "video_open_time";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -409,5 +410,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setHighContrastEnabled(boolean enabled) {
         putBoolean(HIGH_CONTRAST_ENABLED, enabled);
+    }
+
+    public void setVideoOpenTime(long timeMs) {
+        putLong(VIDEO_OPEN_TIME, timeMs);
+    }
+
+    public long getVideoOpenTime() {
+        return getLong(VIDEO_OPEN_TIME, 0);
     }
 }

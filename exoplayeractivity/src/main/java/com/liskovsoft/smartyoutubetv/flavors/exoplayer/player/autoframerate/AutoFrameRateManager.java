@@ -19,9 +19,8 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
             mPlayerFragment.setAfrApplying(false);
             SimpleExoPlayer player = mPlayerFragment.getPlayer();
             if (player != null) {
-                long position = player.getCurrentPosition();
                 player.setPlayWhenReady(true);
-                player.seekTo(position); // audio sync fix?
+                player.seekTo(player.getCurrentPosition() + 1_000); // audio sync fix?
             }
         }
     };

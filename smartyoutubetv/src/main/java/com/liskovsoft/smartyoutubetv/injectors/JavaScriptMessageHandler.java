@@ -25,10 +25,13 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_AUTH_BODY = "message_auth_body";
     private final static String MESSAGE_POST_DATA = "message_post_data";
     private final static String MESSAGE_HIGH_CONTRAST_ENABLED = "message_high_contrast_enabled";
+    private final static String MESSAGE_VIDEO_OPEN_TIME = "message_video_open_time";
     private final Context mContext;
+    private final SmartPreferences mPrefs;
 
     public JavaScriptMessageHandler(Context context) {
         mContext = context;
+        mPrefs = CommonApplication.getPreferences();
     }
 
     public void handleMessage(String message, String content) {
@@ -55,10 +58,10 @@ public class JavaScriptMessageHandler {
                 Helpers.disableScreensaver((Activity) mContext);
                 break;
             case MESSAGE_VIDEO_POSITION:
-                CommonApplication.getPreferences().setCurrentVideoPosition(Integer.parseInt(content));
+                mPrefs.setCurrentVideoPosition(Integer.parseInt(content));
                 break;
             case MESSAGE_VIDEO_PAUSED:
-                CommonApplication.getPreferences().setHtmlVideoPaused(Boolean.parseBoolean(content));
+                mPrefs.setHtmlVideoPaused(Boolean.parseBoolean(content));
                 break;
             case MESSAGE_DOUBLE_BACK_EXIT:
                 ((FragmentManager) mContext).onExitDialogShown();
@@ -70,10 +73,13 @@ public class JavaScriptMessageHandler {
                 GlobalPreferences.instance(mContext).setRawAuthData(content);
                 break;
             case MESSAGE_POST_DATA:
-                CommonApplication.getPreferences().setPostData(content);
+                mPrefs.setPostData(content);
                 break;
             case MESSAGE_HIGH_CONTRAST_ENABLED:
-                CommonApplication.getPreferences().setHighContrastEnabled(Boolean.parseBoolean(content));
+                mPrefs.setHighContrastEnabled(Boolean.parseBoolean(content));
+                break;
+            case MESSAGE_VIDEO_OPEN_TIME:
+                mPrefs.setVideoOpenTime((long) Float.parseFloat(content));
                 break;
         }
     }

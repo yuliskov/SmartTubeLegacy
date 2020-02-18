@@ -461,7 +461,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         restorePlayerStateIfNeeded();
 
-        if (playbackState == Player.STATE_ENDED) {
+        if (playbackState == Player.STATE_ENDED && playWhenReady) {
             onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
         } else if (playbackState == Player.STATE_READY) {
             for (PlayerEventListener listener : mListeners) {

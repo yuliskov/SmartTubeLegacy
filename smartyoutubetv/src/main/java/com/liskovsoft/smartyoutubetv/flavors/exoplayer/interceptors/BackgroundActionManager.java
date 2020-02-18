@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
@@ -21,6 +23,11 @@ public class BackgroundActionManager {
     private boolean mClosedRecently;
     private boolean mCalledRecently;
     private boolean mSameVideo;
+    private final SmartPreferences mPrefs;
+
+    public BackgroundActionManager() {
+        mPrefs = CommonApplication.getPreferences();
+    }
 
     public boolean cancelPlayback() {
         if (mCurrentUrl == null || !mCurrentUrl.contains(ExoInterceptor.URL_VIDEO_DATA)) {
@@ -37,6 +44,15 @@ public class BackgroundActionManager {
             Log.d(TAG, "Cancel playback: Same video");
             return true;
         }
+
+        //if (!isMirroring()) {
+        //    long prevOpenInterval = System.currentTimeMillis() - mPrefs.getVideoOpenTime();
+        //
+        //    if (prevOpenInterval > SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS) {
+        //        Log.d(TAG, "Cancel playback: User didn't clicked on the video");
+        //        return true;
+        //    }
+        //}
 
         return false;
     }
