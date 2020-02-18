@@ -38,7 +38,7 @@
     <!-- End ImageToggleButton -->
 
     <Button
-        android:padding="5dp"
+        android:padding="@dimen/toggle_button_padding2"
         android:maxLines="1"
         android:clickable="false"
         android:textSize="@dimen/toggle_button_text_size"

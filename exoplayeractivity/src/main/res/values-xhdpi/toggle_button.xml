@@ -6,5 +6,6 @@
     <dimen name="toggle_button_wrapper_width">60dp</dimen>
     <dimen name="toggle_button_wrapper_height">60dp</dimen>
     <dimen name="toggle_button_padding">10dp</dimen>
+    <dimen name="toggle_button_padding2">5dp</dimen>
     <dimen name="toggle_button_text_size">12sp</dimen>
 </resources>
