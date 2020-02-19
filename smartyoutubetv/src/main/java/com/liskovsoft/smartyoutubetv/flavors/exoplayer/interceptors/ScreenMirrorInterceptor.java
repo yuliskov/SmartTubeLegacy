@@ -15,6 +15,7 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
     private boolean mPrevPaused;
     private long mStartPlayMS;
     private int mDelta;
+    private LoungeData mPrevLoungeData;
 
     public ScreenMirrorInterceptor(Context context, MainExoInterceptor exoRootInterceptor) {
         super(context);
@@ -43,33 +44,43 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
                 mExoRootInterceptor.getTwoFragmentManager().closeExoPlayer();
             } else {
                 if (loungeData.getState() != LoungeData.STATE_UNDEFINED) {
-                    if (loungeData.getState() == LoungeData.STATE_PAUSED &&
-                            !mPrefs.getHtmlVideoPaused()) {
-                        loungeData.setState(LoungeData.STATE_PLAYING);
-                    }
+                    fixLoungeState(loungeData);
 
                     calcPausedPosition(loungeData);
 
-                    if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
-                        loungeData.setCurrentTime(0);
-                    }
+                    fixLoungeTime(loungeData);
 
-                    res = postFormData(url, loungeData.toString());
+                    res = postFormData(loungeData.getUrl(), loungeData.toString());
 
-                    if (loungeData.getState() == LoungeData.STATE_PAUSED ||
-                            loungeData.getState() == LoungeData.STATE_PLAYING) {
-                        ExoIntent exoIntent = new ExoIntent();
-                        exoIntent.setPositionSec(loungeData.getCurrentTime());
-                        exoIntent.setPaused(mPrefs.getHtmlVideoPaused());
-                        mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
-                    }
-
-                    mPrevPaused = mPrefs.getHtmlVideoPaused();
+                    syncPlayer(loungeData);
                 }
             }
         }
 
         return res;
+    }
+
+    private void fixLoungeTime(LoungeData loungeData) {
+        if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
+            loungeData.setCurrentTime(0);
+        }
+    }
+
+    private void syncPlayer(LoungeData loungeData) {
+        if (loungeData.getState() == LoungeData.STATE_PAUSED ||
+            loungeData.getState() == LoungeData.STATE_PLAYING) {
+            ExoIntent exoIntent = new ExoIntent();
+            exoIntent.setPositionSec(loungeData.getCurrentTime());
+            exoIntent.setPaused(mPrefs.getHtmlVideoPaused());
+            mExoRootInterceptor.getTwoFragmentManager().openExoPlayer(exoIntent.toIntent(), false);
+        }
+    }
+
+    private void fixLoungeState(LoungeData loungeData) {
+        if (loungeData.getState() == LoungeData.STATE_PAUSED &&
+                !mPrefs.getHtmlVideoPaused()) {
+            loungeData.setState(LoungeData.STATE_PLAYING);
+        }
     }
 
     /**
@@ -97,5 +108,7 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
         if (!mPrefs.getHtmlVideoPaused()) {
             mStartPlayMS = System.currentTimeMillis();
         }
+
+        mPrevPaused = mPrefs.getHtmlVideoPaused();
     }
 }

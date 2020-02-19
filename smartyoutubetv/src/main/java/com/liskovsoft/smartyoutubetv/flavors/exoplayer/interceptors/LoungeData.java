@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
@@ -119,6 +120,19 @@ public class LoungeData {
             mQueryString.set(KEY_DURATION, mDuration);
             mQueryString.set(KEY_SEEKABLE_END_TIME, mEndTime);
             result = mQueryString.toString();
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        boolean result = false;
+
+        if (obj instanceof LoungeData) {
+            LoungeData newObj = (LoungeData) obj;
+
+            result = (getState() == newObj.getState()) && (getCurrentTime() == newObj.getCurrentTime()) && (getDuration() == newObj.getDuration());
         }
 
         return result;
