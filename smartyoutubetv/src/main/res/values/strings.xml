@@ -26,6 +26,7 @@
     <string name="ukrainian_lang">Українська</string>
     <string name="russian_lang">Русский</string>
     <string name="chinese_lang">中文</string>
+    <string name="nederlands_lang">Nederlands</string>
     <string name="autoframerate">Autoframerate</string>
     <string name="german_lang">Deutsch</string>
     <string name="returning_to_the_video">Returning to the opened video</string>
@@ -105,5 +106,6 @@
     <string name="message_enable_web_server">Please enable Web Server in Kodi settings</string>
     <string name="message_install_kodi">Seems that Kodi wasn\'t installed</string>
     <string name="enable_ad_block">Enable ad block</string>
-    <string name="ad_blocking_permissions">This app can filter ads and other content to improve user experience.\nAre you agree to do that?</string>
+    <string name="ad_blocking_permissions">This app can filter ads and other content to improve user experience.\nDo you agree to do that?</string>
+    <string name="player_ui_show_timeout">Pro: Decrease player ui show timeout</string>
 </resources>

@@ -54,7 +54,6 @@ import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.EventLogger;
@@ -64,6 +63,7 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
@@ -101,7 +101,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
     public static final int RENDERER_INDEX_SUBTITLE = 2;
-    private static final int UI_SHOW_TIMEOUT_MS = 5_000;
+    private static final int UI_SHOW_TIMEOUT_LONG_MS = 5_000;
+    private static final int UI_SHOW_TIMEOUT_SHORT_MS = 3_000;
 
     protected MyEventLogger mEventLogger;
 
@@ -180,7 +181,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         mSimpleExoPlayerView.setControllerVisibilityListener(this);
         // hide ui player by default
         mSimpleExoPlayerView.setControllerAutoShow(false);
-        mSimpleExoPlayerView.setControllerShowTimeoutMs(UI_SHOW_TIMEOUT_MS);
+        boolean decreaseTimeout = CommonApplication.getPreferences().getDecreasePlayerUITimeout();
+        mSimpleExoPlayerView.setControllerShowTimeoutMs(decreaseTimeout ? UI_SHOW_TIMEOUT_SHORT_MS : UI_SHOW_TIMEOUT_LONG_MS);
 
         mPlayerTopBar.setVisibility(View.GONE);
 

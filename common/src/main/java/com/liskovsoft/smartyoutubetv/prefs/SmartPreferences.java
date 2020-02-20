@@ -55,6 +55,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String AD_BLOCK_ENABLED = "ad_block_enabled";
     public static final String AD_BLOCK_DISABLED = "ad_block_disabled";
     public static final String AD_BLOCK_UNDEFINED = "ad_block_undefined";
+    private static final String DECREASE_PLAYER_UI_TIMEOUT = "decrease_player_ui_timeout";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -452,5 +453,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setAdBlockStatus(String adBlockEnabled) {
         putString(AD_BLOCK_STATUS, adBlockEnabled);
+    }
+
+    public boolean getDecreasePlayerUITimeout() {
+        return getBoolean(DECREASE_PLAYER_UI_TIMEOUT, false);
+    }
+
+    public void setDecreasePlayerUITimeout(boolean checked) {
+        putBoolean(DECREASE_PLAYER_UI_TIMEOUT, checked);
     }
 }

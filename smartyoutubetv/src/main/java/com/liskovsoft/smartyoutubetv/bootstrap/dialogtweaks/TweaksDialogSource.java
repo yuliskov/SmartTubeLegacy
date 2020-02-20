@@ -19,6 +19,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OkButtonDialog
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenSubscriptionsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenWatchLaterDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.PlayerUIShowTimeoutDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.SaveSelectionDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.Ugoos50HZFixDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDialogItem;
@@ -65,6 +66,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new FixAspectDialogItem(mContext));
         mItems.add(new AltPlayerMappingDialogItem(mContext));
         mItems.add(new EnableAdBlockDialogItem(mContext));
+        mItems.add(new PlayerUIShowTimeoutDialogItem(mContext));
     }
 
     @Override
