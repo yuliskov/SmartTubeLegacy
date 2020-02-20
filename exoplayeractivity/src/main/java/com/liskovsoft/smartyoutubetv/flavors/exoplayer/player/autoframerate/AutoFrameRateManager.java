@@ -16,12 +16,11 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
     private Handler mHandler;
     private final Runnable mPlayerPlay = () -> {
         if (mPlayerFragment != null) {
-            mPlayerFragment.setAfrApplying(false);
             SimpleExoPlayer player = mPlayerFragment.getPlayer();
             if (player != null) {
                 player.setPlayWhenReady(true);
-                player.seekTo(player.getCurrentPosition() + 1_000); // audio sync fix?
             }
+            mPlayerFragment.setAfrApplying(false);
         }
     };
 
@@ -134,8 +133,8 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
 
     private void startPlaybackDelay(long delay) {
         if (mPlayerFragment.getPlayer() != null) {
-            mPlayerFragment.getPlayer().setPlayWhenReady(false);
             mPlayerFragment.setAfrApplying(true);
+            mPlayerFragment.getPlayer().setPlayWhenReady(false);
 
             mHandler.postDelayed(mPlayerPlay, delay);
         }

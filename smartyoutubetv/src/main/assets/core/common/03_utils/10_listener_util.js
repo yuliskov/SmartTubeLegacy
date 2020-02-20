@@ -49,7 +49,8 @@ var ListenerUtil = {
     },
 
     addRemoveListener: function(listenerSpec) {
-        if (!EventUtils.toSelector(listenerSpec.selectorOrElement)) {
+        var isWindow = listenerSpec.selectorOrElement instanceof Window;
+        if (!isWindow && !EventUtils.toSelector(listenerSpec.selectorOrElement)) {
             Log.e(this.TAG, "can't " + listenerSpec.type + ": selector or element is: " + listenerSpec.selectorOrElement);
             return;
         }
@@ -58,7 +59,7 @@ var ListenerUtil = {
 
         var container = this.getContainer(listenerSpec.selectorOrElement);
 
-        if (!container || !container.children || (!container.children.length && container.tagName.toUpperCase() == 'DIV')) {
+        if (!isWindow && (!container || !container.children || (!container.children.length && container.tagName.toUpperCase() == 'DIV'))) {
             Log.d(this.TAG, "Can't " + listenerSpec.type + ": element " + EventUtils.toSelector(listenerSpec.selectorOrElement) + " not initialized... waiting...");
             this.addPendingHandler(listenerSpec);
         } else if (listenerSpec.type == this.ADD_HANDLER) {

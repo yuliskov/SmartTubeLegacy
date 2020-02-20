@@ -112,7 +112,7 @@ var EventUtils = {
         }
 
         if (!el.tagName) {
-            return el.nodeName;
+            return el.nodeName || '#window';
         }
 
         var tag = el.tagName || '';

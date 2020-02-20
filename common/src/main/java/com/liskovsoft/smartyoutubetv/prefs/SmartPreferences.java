@@ -447,7 +447,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public String getAdBlockStatus() {
-        return getString(AD_BLOCK_STATUS, AD_BLOCK_UNDEFINED);
+        return getString(AD_BLOCK_STATUS, AD_BLOCK_ENABLED);
     }
 
     public void setAdBlockStatus(String adBlockEnabled) {
