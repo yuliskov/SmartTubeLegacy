@@ -18,6 +18,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_AUTHORIZATION_HEADER = "message_authorization_header";
     private final static String MESSAGE_ENABLE_SCREENSAVER = "message_enable_screensaver";
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
+    private final static String MESSAGE_VIDEO_OPENED = "message_video_opened";
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
     private final static String MESSAGE_VIDEO_PAUSED = "message_video_paused";
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
@@ -56,6 +57,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_DISABLE_SCREENSAVER:
                 Helpers.disableScreensaver((Activity) mContext);
+                break;
+            case MESSAGE_VIDEO_OPENED:
+                mPrefs.setNewVideoSrc(content);
                 break;
             case MESSAGE_VIDEO_POSITION:
                 mPrefs.setCurrentVideoPosition(Integer.parseInt(content));

@@ -67,8 +67,10 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
     }
 
     private void syncPlayer(LoungeData loungeData) {
-        if (loungeData.getState() == LoungeData.STATE_PAUSED ||
-            loungeData.getState() == LoungeData.STATE_PLAYING) {
+        boolean stateActual = (System.currentTimeMillis() - mPrefs.getLastVideoActionTimeMS()) < 1_000;
+        Log.d(TAG, "syncPlayer: State is actual? " + stateActual);
+        if (stateActual && (loungeData.getState() == LoungeData.STATE_PAUSED ||
+            loungeData.getState() == LoungeData.STATE_PLAYING)) {
             ExoIntent exoIntent = new ExoIntent();
             exoIntent.setPositionSec(loungeData.getCurrentTime());
             exoIntent.setPaused(mPrefs.getHtmlVideoPaused());

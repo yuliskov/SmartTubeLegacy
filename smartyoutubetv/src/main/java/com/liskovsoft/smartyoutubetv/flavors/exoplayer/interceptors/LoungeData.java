@@ -6,6 +6,8 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
 
+import java.net.URISyntaxException;
+
 public class LoungeData {
     public static final int STATE_UNDETECTED = 0;
     public static final int STATE_PLAYING = 1;
@@ -32,39 +34,54 @@ public class LoungeData {
         LoungeData loungeData = new LoungeData();
 
         if (postData != null) {
-            MyQueryString myQueryString = MyQueryStringFactory.parse(postData);
-            String state = myQueryString.get(KEY_STATE);
-            String currentTime = myQueryString.get(KEY_CURRENT_TIME);
-            String duration = myQueryString.get(KEY_DURATION);
-            String endTime = myQueryString.get(KEY_SEEKABLE_END_TIME);
-            String event = myQueryString.get(KEY_EVENT);
-            String mode = myQueryString.get(KEY_MODE);
+            MyQueryString myQueryString = getMyQueryStringData(postData);
 
-            loungeData.mQueryString = myQueryString;
+            if (myQueryString != null) {
+                String state = myQueryString.get(KEY_STATE);
+                String currentTime = myQueryString.get(KEY_CURRENT_TIME);
+                String duration = myQueryString.get(KEY_DURATION);
+                String endTime = myQueryString.get(KEY_SEEKABLE_END_TIME);
+                String event = myQueryString.get(KEY_EVENT);
+                String mode = myQueryString.get(KEY_MODE);
 
-            if (Helpers.isNumeric(state)) {
-                loungeData.mState = Integer.parseInt(state);
+                loungeData.mQueryString = myQueryString;
+
+                if (Helpers.isNumeric(state)) {
+                    loungeData.mState = Integer.parseInt(state);
+                }
+
+                if (Helpers.isNumeric(currentTime)) {
+                    loungeData.mCurrentTime = (int) Float.parseFloat(currentTime);
+                }
+
+                if (Helpers.isNumeric(duration)) {
+                    loungeData.mDuration = (int) Float.parseFloat(duration);
+                }
+
+                if (Helpers.isNumeric(duration)) {
+                    loungeData.mEndTime = (int) Float.parseFloat(endTime);
+                }
+
+                loungeData.mEvent = event;
+                loungeData.mMode = mode;
             }
-
-            if (Helpers.isNumeric(currentTime)) {
-                loungeData.mCurrentTime = Integer.parseInt(currentTime);
-            }
-
-            if (Helpers.isNumeric(duration)) {
-                loungeData.mDuration = Integer.parseInt(duration);
-            }
-
-            if (Helpers.isNumeric(duration)) {
-                loungeData.mEndTime = Integer.parseInt(endTime);
-            }
-
-            loungeData.mEvent = event;
-            loungeData.mMode = mode;
         }
 
         loungeData.mUrl = url;
 
         return loungeData;
+    }
+
+    private static MyQueryString getMyQueryStringData(String postData) {
+        MyQueryString result = null;
+
+        try {
+            result = MyQueryStringFactory.parse(postData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public int getCurrentTime() {

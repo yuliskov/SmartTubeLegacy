@@ -46,6 +46,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String USE_NEW_UI = "use_new_ui";
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
+    public static final String NEW_VIDEO_OPENED = "new_video_opened";
     public static final String CURRENT_VIDEO_POSITION = "current_video_position";
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
     private static final String USER_IS_LOGGED = "user_is_logged";
@@ -70,7 +71,9 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private boolean mVideoPaused;
     private boolean mMirrorEnabled;
     private boolean mIsBrowserInBackground;
-    private long mVideOpenTimeMS;
+    private long mVideoOpenTimeMS;
+    private String mVideoSrc;
+    private long mVideoActionTimeMS;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -250,8 +253,26 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putInt(PREVIOUS_APP_VERSION_CODE, versionCode);
     }
 
+    public long getLastVideoActionTimeMS() {
+        long result = mVideoActionTimeMS;
+        mVideoActionTimeMS = 0;
+        return result;
+    }
+
+    public void setNewVideoSrc(String src) {
+        mVideoSrc = src;
+        mVideoActionTimeMS = System.currentTimeMillis();
+
+        runListeners(NEW_VIDEO_OPENED);
+    }
+
+    public String getNewVideoSrc() {
+        return mVideoSrc;
+    }
+
     public void setCurrentVideoPosition(int positionSec) {
         mPositionSec = positionSec;
+        mVideoActionTimeMS = System.currentTimeMillis();
 
         runListeners(CURRENT_VIDEO_POSITION);
     }
@@ -262,6 +283,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setHtmlVideoPaused(boolean paused) {
         mVideoPaused = paused;
+        mVideoActionTimeMS = System.currentTimeMillis();
 
         runListeners(CURRENT_VIDEO_PAUSED);
     }
@@ -414,11 +436,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public void setVideoOpenTime(long timeMs) {
-        mVideOpenTimeMS = timeMs;
+        mVideoOpenTimeMS = timeMs;
     }
 
     public long getVideoOpenTime() {
-        return mVideOpenTimeMS;
+        return mVideoOpenTimeMS;
     }
 
     public boolean getAdBlockEnabled() {
