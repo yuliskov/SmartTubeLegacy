@@ -18,11 +18,11 @@ public class EnableAdBlockDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getAdBlockEnabled();
+        return SmartPreferences.AD_BLOCK_ENABLED.equals(mPrefs.getAdBlockStatus());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setAdBlockEnabled(checked);
+        mPrefs.setAdBlockStatus(checked ? SmartPreferences.AD_BLOCK_ENABLED : SmartPreferences.AD_BLOCK_DISABLED);
     }
 }

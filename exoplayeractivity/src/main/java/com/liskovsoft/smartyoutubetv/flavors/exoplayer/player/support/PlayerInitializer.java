@@ -69,7 +69,7 @@ public class PlayerInitializer {
 
     public String getSecondTitle() {
         // limit max size by 30 chars e.g. '%.30s'
-        String secondTitle = String.format("%.25s      %.25s      %.20s",
+        String secondTitle = String.format("%.20s      %.30s      %.20s",
                 getAuthor(),
                 getPublishDate(),
                 getViewCount());

@@ -4,6 +4,7 @@ import android.app.Activity;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVChannelsHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVYouTubeBridgeHandler;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AdBlockPermissionsHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AmazonYouTubeBridgeHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ApkUpdaterHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BackupAndRestoreHandler;
@@ -13,6 +14,8 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckH
 public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(Activity context) {
         super(context);
+
+        addHandler(new AdBlockPermissionsHandler(context));
 
         addHandler(new ApkUpdaterHandler(context));
 

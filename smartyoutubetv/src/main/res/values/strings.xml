@@ -105,4 +105,5 @@
     <string name="message_enable_web_server">Please enable Web Server in Kodi settings</string>
     <string name="message_install_kodi">Seems that Kodi wasn\'t installed</string>
     <string name="enable_ad_block">Enable ad block</string>
+    <string name="ad_blocking_permissions">This app can filter ads and other content to improve user experience.\nAre you agree to do that?</string>
 </resources>

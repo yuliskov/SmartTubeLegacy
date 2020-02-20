@@ -51,7 +51,10 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
     private static final String USER_IS_LOGGED = "user_is_logged";
     private static final String HIGH_CONTRAST_ENABLED = "high_contrast_enabled";
-    private static final String AD_BLOCK_ENABLED = "ad_block_enabled";
+    public static final String AD_BLOCK_STATUS = "ad_block_status";
+    public static final String AD_BLOCK_ENABLED = "ad_block_enabled";
+    public static final String AD_BLOCK_DISABLED = "ad_block_disabled";
+    public static final String AD_BLOCK_UNDEFINED = "ad_block_undefined";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -443,11 +446,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return mVideoOpenTimeMS;
     }
 
-    public boolean getAdBlockEnabled() {
-        return getBoolean(AD_BLOCK_ENABLED, true);
+    public String getAdBlockStatus() {
+        return getString(AD_BLOCK_STATUS, AD_BLOCK_UNDEFINED);
     }
 
-    public void setAdBlockEnabled(boolean enabled) {
-        putBoolean(AD_BLOCK_ENABLED, enabled);
+    public void setAdBlockStatus(String adBlockEnabled) {
+        putString(AD_BLOCK_STATUS, adBlockEnabled);
     }
 }

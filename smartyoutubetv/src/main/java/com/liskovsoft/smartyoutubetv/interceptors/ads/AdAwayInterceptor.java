@@ -5,6 +5,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class AdAwayInterceptor extends RequestInterceptor {
     private final AdAwayClient mClient;
@@ -14,7 +15,7 @@ public class AdAwayInterceptor extends RequestInterceptor {
         super(context);
 
         mClient = new AdAwayClient(context);
-        mAdBlockEnabled = CommonApplication.getPreferences().getAdBlockEnabled();
+        mAdBlockEnabled = SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
     }
 
     @Override
