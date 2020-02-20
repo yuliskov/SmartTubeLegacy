@@ -29,7 +29,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     private View mWrapper;
     private boolean mIsAttached;
     private Intent mPendingIntent;
-    private KeyHandler mKeyHandler;
 
     public ExoPlayerFragment() {
         mListener = new AutoFrameRateManagerAlt(this);
@@ -44,10 +43,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     // NOTE: entry point to handle keys
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (mKeyHandler == null) {
-            mKeyHandler = KeyHandlerFactory.create(getActivity(), this);
-        }
-
         return mKeyHandler.handle(event);
     }
 

@@ -33,6 +33,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDefaultT
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerButtonsManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInitializer;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.VideoZoomManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandler;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.KeyHandlerFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.trackstate.PlayerStateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.LayoutToggleButton;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
@@ -80,6 +82,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private boolean mIsDurationSet;
 
     protected PlayerButtonsManager mButtonsManager;
+    protected KeyHandler mKeyHandler;
     private PlayerInitializer mPlayerInitializer;
     private MyDebugViewHelper mDebugViewHelper;
     private PlayerStateManager mStateManager;
@@ -97,6 +100,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mButtonsManager = new PlayerButtonsManager(this);
         mPlayerInitializer = new PlayerInitializer(this);
         mVideoZoomManager = new VideoZoomManager(getActivity(), mSimpleExoPlayerView);
+        mKeyHandler = KeyHandlerFactory.create(getActivity(), this);
 
         for (PlayerEventListener listener : mListeners) {
             listener.onAppInit();
@@ -399,13 +403,13 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
                 long newPosMS = Math.abs(mPlayer.getCurrentPosition() - positionMs);
 
                 if (newPosMS > 1_000 && newPosMS < mPlayer.getDuration()) {
-                    mPlayer.seekTo(positionMs);
+                    mKeyHandler.seekTo(positionMs);
                 }
             }
 
             // afr auto-pause time fix
             if (!mIsAfrApplying && getActivity() != null) {
-                KeyHelpers.press(getActivity(), exoIntent.getPaused() ? KeyEvent.KEYCODE_MEDIA_PAUSE : KeyEvent.KEYCODE_MEDIA_PLAY);
+                mKeyHandler.pause(exoIntent.getPaused());
             }
         }
     }

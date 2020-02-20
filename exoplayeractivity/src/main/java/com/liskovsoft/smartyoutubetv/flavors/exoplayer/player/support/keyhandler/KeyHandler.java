@@ -4,7 +4,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
@@ -24,15 +26,6 @@ public class KeyHandler {
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
-    private final Runnable mOnPlay = () -> {
-        if (mFragment.getPlayer() != null) {
-            mFragment.getPlayer().setPlayWhenReady(true);
-        }
-
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().hideController();
-        }
-    };
     private final Runnable mOnToggle = () -> {
         if (mFragment.getExoPlayerView() != null) {
             mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
@@ -42,31 +35,33 @@ public class KeyHandler {
             mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
         }
     };
-    private final Runnable mOnPause = () -> {
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
-        }
+    private final Runnable mOnPlay = () -> {
+        SimpleExoPlayer player = mFragment.getPlayer();
+        PlayerView playerView = mFragment.getExoPlayerView();
 
-        if (mFragment.getPlayer() != null) {
-            mFragment.getPlayer().setPlayWhenReady(false);
+
+        if (playerView != null && player != null && !player.getPlayWhenReady()) {
+            player.setPlayWhenReady(true);
+            playerView.hideController();
+        }
+    };
+    private final Runnable mOnPause = () -> {
+        SimpleExoPlayer player = mFragment.getPlayer();
+        PlayerView playerView = mFragment.getExoPlayerView();
+
+        if (playerView != null && player != null && player.getPlayWhenReady()) {
+            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
+            player.setPlayWhenReady(false);
         }
     };
     private final Runnable mOnFastForward = () -> {
-        if (mFragment.getExoPlayerView() != null && mAutoShowPlayerUI) {
-            mFragment.getExoPlayerView().showController();
-        }
-
-        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
-            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
+        if (mFragment.getPlayer() != null) {
+            seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
         }
     };
     private final Runnable mOnRewind = () -> {
-        if (mFragment.getExoPlayerView() != null && mAutoShowPlayerUI) {
-            mFragment.getExoPlayerView().showController();
-        }
-
-        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
-            mFragment.getPlayer().seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
+        if (mFragment.getPlayer() != null) {
+            seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
         }
     };
     private final Runnable mOnStop = () -> mFragment.onBackPressed();
@@ -287,5 +282,23 @@ public class KeyHandler {
         mEnableOKPause = SmartPreferences.instance(mActivity).getEnableOKPause();
 
         return mEnableOKPause;
+    }
+
+    public void seekTo(long positionMs) {
+        if (mFragment.getExoPlayerView() != null && mAutoShowPlayerUI) {
+            mFragment.getExoPlayerView().showController();
+        }
+
+        if (mFragment.getPlayer() != null && mFragment.getPlayer().isCurrentWindowSeekable()) {
+            mFragment.getPlayer().seekTo(positionMs);
+        }
+    }
+
+    public void pause(boolean paused) {
+        if (paused) {
+            mOnPause.run();
+        } else {
+            mOnPlay.run();
+        }
     }
 }
