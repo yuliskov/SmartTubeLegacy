@@ -23,7 +23,7 @@
     <string name="language">Taal</string>
     <string name="language_dialog_title">Taal selecteren</string>
     <string name="english_lang">Engels</string>
-    <string name="ukrainian_lang">Oekraпens</string>
+    <string name="ukrainian_lang">Oekra�ens</string>
     <string name="russian_lang">Russisch</string>
     <string name="chinese_lang">Chinees</string>
     <string name="autoframerate">Autoframerate</string>
@@ -47,7 +47,7 @@
     <string name="exo_tip">Uitgebreid aantal formaten. Normaal.</string>
     <string name="exo_alt_tip">Uitgebreid aantal formaten. Met fixes.</string>
     <string name="exit_msg">Nogmaals op de BACK-toets drukken om de app af te sluiten</string>
-    <string name="error_host_lookup">Gййn internet verbinding: %s</string>
+    <string name="error_host_lookup">Geen internet verbinding: %s</string>
     <string name="error_unknown">Fout bij verbinding: %s</string>
     <string name="codec_selector_title">Codec selecteren</string>
     <string name="restart_app_msg">Je moet de app heropstarten om de wijzigingen toe te passen</string>
@@ -98,11 +98,12 @@
     <string name="tweak_use_new_ui">Nieuwe User-Interface gebruiken</string>
     <string name="tweak_ugoos_afr_fix">PRO: UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Tips bij opstarten verbergen</string>
-    <string name="tweak_auto_show_player_ui">User-Interface van player automatisch weergeven</string>
+    <string name="tweak_auto_show_player_ui">UI player automatisch weergeven</string>
     <string name="tweak_open_externally_lq">PRO: Video openen met externe player (SD)</string>
     <string name="message_install_player">MX Player of VLC installeren</string>
     <string name="message_enable_web_server">Web Server in Kodi instellingen inschakelen</string>
     <string name="message_install_kodi">Kodi is blijkbaar niet geinstalleerd</string>
     <string name="enable_ad_block">Ad Block inschakelen</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
+    <string name="player_ui_show_timeout">PRO: Timeout weergeven bij verkleinen UI player</string>
 </resources>
