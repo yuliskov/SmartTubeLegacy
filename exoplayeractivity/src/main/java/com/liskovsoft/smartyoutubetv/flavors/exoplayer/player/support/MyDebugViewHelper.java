@@ -347,21 +347,21 @@ public final class MyDebugViewHelper implements Runnable, Player.EventListener {
     private TextView createTextView(String name) {
         TextView textView = new TextView(mContext);
         textView.setText(name);
-        textView.setTextSize(mTextSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         return textView;
     }
 
     private TextView createTextView(boolean val) {
         TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
-        textView.setTextSize(mTextSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         return textView;
     }
 
     private TextView createTextView(int val) {
         TextView textView = new TextView(mContext);
         textView.setText(String.valueOf(val));
-        textView.setTextSize(mTextSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         return textView;
     }
 
