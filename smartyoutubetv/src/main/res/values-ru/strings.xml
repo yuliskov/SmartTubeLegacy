@@ -88,5 +88,5 @@
     <string name="message_install_kodi">Похоже, что Kodi не установлен</string>
     <string name="enable_ad_block">Включить блокировку рекламы</string>
     <string name="ad_blocking_permissions">Данное приложение может фильтровать рекламу и другой контент.\nДаёте ли вы разрешение на это?</string>
-    <string name="player_ui_show_timeout">Pro: Уменьшить время скрытия инфопанели плеера</string>
+    <string name="player_ui_show_timeout">PRO: Уменьшить время отображения инфопанели плеера</string>
 </resources>
