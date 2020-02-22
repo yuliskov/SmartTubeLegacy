@@ -20,6 +20,7 @@ public class AppStateWatcherBase {
     private final Activity mContext;
     private DeviceWakeReceiver mReceiver;
     private boolean mLocked;
+    private boolean mInProgress;
 
     public AppStateWatcherBase(Activity context) {
         mContext = context;
@@ -139,10 +140,20 @@ public class AppStateWatcherBase {
     public void setLock(boolean locked) {
         if (mLocked != locked) {
             mLocked = locked;
-            if (!mLocked) {
+            if (!mLocked && !mInProgress) {
+                mInProgress = true;
+                List<StateHandler> toDelete = new ArrayList<>();
                 for (StateHandler handler : mAfterLockHandlers) {
+                    if (mLocked) {
+                        break;
+                    }
                     handler.onAfterLock();
+                    toDelete.add(handler);
                 }
+                for (StateHandler handler : toDelete) {
+                    mAfterLockHandlers.remove(handler);
+                }
+                mInProgress = false;
             }
         }
     }
