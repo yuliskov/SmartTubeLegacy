@@ -11,16 +11,20 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.receivers.DeviceWakeReceiver;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppStateWatcherBase {
     private static final String TAG = AppStateWatcherBase.class.getSimpleName();
-    private final ArrayList<StateHandler> mHandlers;
+    private final List<StateHandler> mHandlers;
+    private final List<StateHandler> mAfterLockHandlers;
     private final Activity mContext;
     private DeviceWakeReceiver mReceiver;
+    private boolean mLocked;
 
     public AppStateWatcherBase(Activity context) {
         mContext = context;
         mHandlers = new ArrayList<>();
+        mAfterLockHandlers = new ArrayList<>();
         
         registerReceiver();
     }
@@ -132,6 +136,29 @@ public class AppStateWatcherBase {
         unregisterReceiver();
     }
 
+    public void setLock(boolean locked) {
+        if (mLocked != locked) {
+            mLocked = locked;
+            if (!mLocked) {
+                for (StateHandler handler : mAfterLockHandlers) {
+                    handler.onAfterLock();
+                }
+            }
+        }
+    }
+
+    public boolean getLock() {
+        return mLocked;
+    }
+
+    public void addRunAfterLock(StateHandler handler) {
+        if (mLocked) {
+            mAfterLockHandlers.add(handler);
+        } else {
+            handler.onAfterLock();
+        }
+    }
+
     public static abstract class StateHandler {
         public void onNewIntent(Intent intent) {
             
@@ -159,6 +186,10 @@ public class AppStateWatcherBase {
         }
 
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            
+        }
+
+        public void onAfterLock() {
             
         }
     }

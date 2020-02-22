@@ -15,7 +15,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(Activity context) {
         super(context);
 
-        addHandler(new AdBlockPermissionsHandler(context));
+        addHandler(new AdBlockPermissionsHandler(context, this));
 
         addHandler(new ApkUpdaterHandler(context));
 
@@ -28,7 +28,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
 
         addHandler(new CacheCleanHandler(context));
 
-        addHandler(new BackupAndRestoreHandler(context));
+        addHandler(new BackupAndRestoreHandler(context, this));
 
         // update recommendations
         addHandler(new ATVChannelsHandler(context));

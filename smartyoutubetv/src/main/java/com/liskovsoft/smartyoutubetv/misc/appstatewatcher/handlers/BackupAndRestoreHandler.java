@@ -1,9 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
@@ -15,6 +13,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
 import java.io.File;
@@ -24,6 +23,7 @@ import java.util.List;
 public class BackupAndRestoreHandler extends StateHandler implements DialogInterface.OnClickListener {
     private static final String TAG = BackupAndRestoreHandler.class.getSimpleName();
     private final Context mContext;
+    private final AppStateWatcherBase mAppStateWatcher;
     private final List<File> mDataDirs;
     private static final String WEBVIEW_SUBDIR = "app_webview";
     private static final String XWALK_SUBDIR = "app_xwalkcore";
@@ -31,11 +31,11 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     private final List<File> mBackupDirs;
     private boolean mIsFirstRun;
     private boolean mIsUpdate;
-    private boolean mStoragePermissionGranted;
     private Runnable mPendingHandler;
 
-    public BackupAndRestoreHandler(Context context) {
+    public BackupAndRestoreHandler(Context context, AppStateWatcherBase appStateWatcher) {
         mContext = context;
+        mAppStateWatcher = appStateWatcher;
         mDataDirs = new ArrayList<>();
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, WEBVIEW_SUBDIR));
         mDataDirs.add(new File(mContext.getApplicationInfo().dataDir, XWALK_SUBDIR));
@@ -44,8 +44,6 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
         mBackupDirs = new ArrayList<>();
         mBackupDirs.add(new File(FileHelpers.getBackupDir(mContext), "Backup"));
         mBackupDirs.add(new File(Environment.getExternalStorageDirectory(), String.format("data/%s/Backup", "com.liskovsoft.videomanager")));
-
-        //PermissionHelpers.verifyStoragePermissions(context);
     }
 
     @Override
@@ -62,6 +60,11 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
 
     @Override
     public void onLoad() {
+        mAppStateWatcher.addRunAfterLock(this);
+    }
+
+    @Override
+    public void onAfterLock() {
         // permissions dialog should be closed at this point
         if (mIsFirstRun) {
             boolean backupFound = false;
@@ -100,6 +103,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
                 //No button clicked
                 break;
         }
+        mAppStateWatcher.setLock(false);
     }
 
     private void checkPermAndProposeRestore() {
@@ -177,6 +181,7 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
     }
 
     private void askUserPermission() {
+        mAppStateWatcher.setLock(true);
         YesNoDialog.create(mContext, R.string.do_restore_data_msg, this, R.style.AppDialog);
     }
 
