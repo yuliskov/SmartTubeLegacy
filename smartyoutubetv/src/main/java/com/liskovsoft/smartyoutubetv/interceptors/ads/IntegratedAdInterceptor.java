@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import okhttp3.MediaType;
 
@@ -19,7 +20,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
-        mAdBlockEnabled = SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
+        mAdBlockEnabled = SmartUtils.isAdBlockEnabled(context);
     }
 
     @Override

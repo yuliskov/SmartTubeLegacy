@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.MainExoInter
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.webview.interceptors.OpenPlayerIntentInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private RequestInterceptor mInterceptor;
@@ -16,12 +17,9 @@ public class OpenExternalPlayerInterceptor extends RequestInterceptor {
         super(context);
 
         mContext = context;
-        boolean isWebView = mContext instanceof SmartYouTubeTV1080Activity;
-        boolean isXWalk = mContext instanceof SmartYouTubeTV1080AltActivity;
-        boolean isExo = mContext instanceof TwoFragmentsManagerActivity;
-        if (isWebView || isXWalk) {
+        if (SmartUtils.isWebView(mContext) || SmartUtils.isXWalk(mContext)) {
             mInterceptor = new OpenPlayerIntentInterceptor(mContext);
-        } else if (isExo) {
+        } else if (SmartUtils.isExo(mContext)) {
             mInterceptor = new MainExoInterceptor(mContext);
         }
     }

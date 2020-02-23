@@ -10,7 +10,11 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
+import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
+import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
+import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class SmartUtils {
     public static final String KEYCODE_MEDIA_PLAY_PAUSE = "MEDIA_PLAY_PAUSE";
@@ -111,5 +115,29 @@ public class SmartUtils {
         result.append("}");
 
         return result.toString();
+    }
+
+    public static boolean isWebView(Context context) {
+        return context instanceof SmartYouTubeTV1080Activity;
+    }
+
+    public static boolean isXWalk(Context context) {
+        return context instanceof SmartYouTubeTV1080AltActivity;
+    }
+
+    public static boolean isExo(Context context) {
+        return context instanceof TwoFragmentsManagerActivity;
+    }
+
+    public static boolean isAdBlockEnabled(Context context) {
+        boolean adBlockEnabled;
+
+        if (SmartUtils.isExo(context)) {
+            adBlockEnabled = true;
+        } else {
+            adBlockEnabled = SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
+        }
+
+        return adBlockEnabled;
     }
 }
