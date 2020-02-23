@@ -7,6 +7,8 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AltPlayerMappi
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ChannelsCloseAppDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LowerPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EnableAdBlockDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.FixAspectDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ForceAVCDialogItem;
@@ -67,6 +69,8 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new AltPlayerMappingDialogItem(mContext));
         mItems.add(new EnableAdBlockDialogItem(mContext));
         mItems.add(new PlayerUIShowTimeoutDialogItem(mContext));
+        mItems.add(new ChannelsCloseAppDialogItem(mContext));
+        mItems.add(new LowerPlayerBufferTypeDialogItem(mContext));
     }
 
     @Override

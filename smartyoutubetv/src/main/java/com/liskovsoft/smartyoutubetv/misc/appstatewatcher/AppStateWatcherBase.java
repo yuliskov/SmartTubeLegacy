@@ -16,7 +16,7 @@ import java.util.List;
 public class AppStateWatcherBase {
     private static final String TAG = AppStateWatcherBase.class.getSimpleName();
     private final List<StateHandler> mHandlers;
-    private final List<StateHandler> mAfterLockHandlers;
+    private final List<Runnable> mAfterLockHandlers;
     private final Activity mContext;
     private DeviceWakeReceiver mReceiver;
     private boolean mLocked;
@@ -142,15 +142,15 @@ public class AppStateWatcherBase {
             mLocked = locked;
             if (!mLocked && !mInProgress) {
                 mInProgress = true;
-                List<StateHandler> toDelete = new ArrayList<>();
-                for (StateHandler handler : mAfterLockHandlers) {
+                List<Runnable> toDelete = new ArrayList<>();
+                for (Runnable handler : mAfterLockHandlers) {
                     if (mLocked) {
                         break;
                     }
-                    handler.onAfterLock();
+                    handler.run();
                     toDelete.add(handler);
                 }
-                for (StateHandler handler : toDelete) {
+                for (Runnable handler : toDelete) {
                     mAfterLockHandlers.remove(handler);
                 }
                 mInProgress = false;
@@ -162,11 +162,11 @@ public class AppStateWatcherBase {
         return mLocked;
     }
 
-    public void addRunAfterLock(StateHandler handler) {
+    public void addRunAfterLock(Runnable handler) {
         if (mLocked) {
             mAfterLockHandlers.add(handler);
         } else {
-            handler.onAfterLock();
+            handler.run();
         }
     }
 
@@ -197,10 +197,6 @@ public class AppStateWatcherBase {
         }
 
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            
-        }
-
-        public void onAfterLock() {
             
         }
     }

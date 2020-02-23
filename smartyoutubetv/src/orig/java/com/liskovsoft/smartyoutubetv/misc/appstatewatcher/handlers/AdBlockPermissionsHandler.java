@@ -23,11 +23,10 @@ public class AdBlockPermissionsHandler extends StateHandler implements OnClickLi
 
     @Override
     public void onInit() {
-        mAppStateWatcher.addRunAfterLock(this);
+        mAppStateWatcher.addRunAfterLock(this::runDialog);
     }
 
-    @Override
-    public void onAfterLock() {
+    private void runDialog() {
         boolean undefined = SmartPreferences.AD_BLOCK_UNDEFINED.equals(mPrefs.getAdBlockStatus());
         if (undefined) {
             showPermissionsDialog();

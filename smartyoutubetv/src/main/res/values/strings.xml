@@ -108,4 +108,6 @@
     <string name="enable_ad_block">Enable ad block</string>
     <string name="ad_blocking_permissions">This app can filter ads and other content to improve user experience.\nDo you agree to do that?</string>
     <string name="player_ui_show_timeout">Pro: Decrease player ui show timeout</string>
+    <string name="channels_close_app">Android TV Channels: close app on back</string>
+    <string name="lower_player_buffer">PRO: Lower player buffer</string>
 </resources>

@@ -60,11 +60,10 @@ public class BackupAndRestoreHandler extends StateHandler implements DialogInter
 
     @Override
     public void onLoad() {
-        mAppStateWatcher.addRunAfterLock(this);
+        mAppStateWatcher.addRunAfterLock(this::runDialog);
     }
 
-    @Override
-    public void onAfterLock() {
+    private void runDialog() {
         // permissions dialog should be closed at this point
         if (mIsFirstRun) {
             boolean backupFound = false;

@@ -17,10 +17,10 @@ public class AppStateWatcher extends AppStateWatcherBase {
 
         addHandler(new AdBlockPermissionsHandler(context, this));
 
-        addHandler(new ApkUpdaterHandler(context));
+        addHandler(new ApkUpdaterHandler(context, this));
 
-        addHandler(new ATVYouTubeBridgeHandler(context));
-        addHandler(new AmazonYouTubeBridgeHandler(context));
+        addHandler(new ATVYouTubeBridgeHandler(context, this));
+        addHandler(new AmazonYouTubeBridgeHandler(context, this));
 
         if (context instanceof FragmentManagerActivity) {
             addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));

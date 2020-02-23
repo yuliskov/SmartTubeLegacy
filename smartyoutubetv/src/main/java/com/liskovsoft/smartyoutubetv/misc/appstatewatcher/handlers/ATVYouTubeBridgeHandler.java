@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.app.Activity;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
 
 public class ATVYouTubeBridgeHandler extends BridgeHandlerBase {
     private static final int ATV_YOUTUBE_PKG_HASH = 1430778939;
@@ -9,8 +10,8 @@ public class ATVYouTubeBridgeHandler extends BridgeHandlerBase {
     private static final String ATV_BRIDGE_PKG_URL = "https://github.com/yuliskov/SmartYouTubeTV/releases/download/stable/ATV_SYTV_Bridge.apk";
     private final Activity mContext;
 
-    public ATVYouTubeBridgeHandler(Activity context) {
-        super(context);
+    public ATVYouTubeBridgeHandler(Activity context, AppStateWatcher appStateWatcher) {
+        super(context, appStateWatcher);
         mContext = context;
     }
 

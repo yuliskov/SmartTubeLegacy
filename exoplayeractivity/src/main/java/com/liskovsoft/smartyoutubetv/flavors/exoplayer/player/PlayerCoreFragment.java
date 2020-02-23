@@ -364,14 +364,18 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      * @return load control
      */
     private DefaultLoadControl getLoadControl() {
-        int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
-        int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
-        int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
-        int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
-        return new DefaultLoadControl.Builder()
-                //.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
-                .setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs)
-                .createDefaultLoadControl();
+        DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
+
+        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM)) {
+            int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
+            int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
+            int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
+            int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
+            //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
+            baseBuilder.setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs);
+        }
+
+        return baseBuilder.createDefaultLoadControl();
     }
 
     private DrmSessionManager<FrameworkMediaCrypto> getDrmManager(Intent intent) {

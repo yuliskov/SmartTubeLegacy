@@ -304,20 +304,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    //@Override
-    //protected void onMemoryCritical() {
-    //    Log.e(TAG, "Warning: app will be killed soon");
-    //
-    //    if (getActiveFragment() == mBrowserFragment) {
-    //        mLoadingManager.show();
-    //    }
-    //
-    //    mBrowserFragment.onMemoryCritical();
-    //    mPlayerFragment.onMemoryCritical();
-    //}
-
     private void saveStandAlone(Intent intent) {
-        if (intent != null) {
+        if (intent != null && CommonApplication.getPreferences().getChannelsCloseApp()) {
             mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
         }
     }

@@ -56,6 +56,11 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String AD_BLOCK_DISABLED = "ad_block_disabled";
     public static final String AD_BLOCK_UNDEFINED = "ad_block_undefined";
     private static final String DECREASE_PLAYER_UI_TIMEOUT = "decrease_player_ui_timeout";
+    private static final String CHANNELS_CLOSE_APP = "channels_close_app";
+    private static final String PLAYER_BUFFER_TYPE = "player_buffer_type";
+    public static final String PLAYER_BUFFER_TYPE_LOW = "player_buffer_type_low";
+    public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
+    public static final String PLAYER_BUFFER_TYPE_BIG = "player_buffer_type_big";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -461,5 +466,21 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setDecreasePlayerUITimeout(boolean checked) {
         putBoolean(DECREASE_PLAYER_UI_TIMEOUT, checked);
+    }
+
+    public boolean getChannelsCloseApp() {
+        return getBoolean(CHANNELS_CLOSE_APP, false);
+    }
+
+    public void setChannelsCloseApp(boolean checked) {
+        putBoolean(CHANNELS_CLOSE_APP, checked);
+    }
+
+    public String getPlayerBufferType() {
+        return getString(PLAYER_BUFFER_TYPE, PLAYER_BUFFER_TYPE_MEDIUM);
+    }
+
+    public void setPlayerBufferType(String playerBufferType) {
+        putString(PLAYER_BUFFER_TYPE, playerBufferType);
     }
 }
