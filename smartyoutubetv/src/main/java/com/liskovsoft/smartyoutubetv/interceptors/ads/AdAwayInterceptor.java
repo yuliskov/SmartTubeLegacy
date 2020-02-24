@@ -14,7 +14,12 @@ public class AdAwayInterceptor extends RequestInterceptor {
         super(context);
 
         mClient = new AdAwayClient(context);
-        mAdBlockEnabled = SmartUtils.isAdBlockEnabled(context);
+
+        if (SmartUtils.isExo(context)) {
+            mAdBlockEnabled = true; // adview doesn't work on Pro
+        } else {
+            mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
+        }
     }
 
     @Override

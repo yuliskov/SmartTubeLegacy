@@ -43,11 +43,6 @@
         android:supportsRtl="true"
         tools:node="replace">
 
-        <!-- NOTE: DIAL integration for Amazon TV -->
-        <meta-data
-            android:name="whisperplay"
-            android:resource="@xml/whisperplay"/>
-
         <!-- Root (bootstrap) Activity -->
         <!-- NOTE: avoid setting launchMode on such activity or it'll not be transparent in stack -->
         <activity android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"

@@ -33,8 +33,6 @@
                  android:supportsRtl="true"
                  android:theme="@style/AppTheme"
                  tools:node="replace">
-        <meta-data android:name="whisperplay"
-                   android:resource="@xml/whisperplay"/>
         <activity android:alwaysRetainTaskState="true"
                   android:configChanges="keyboard|keyboardHidden|locale|orientation|screenSize"
                   android:icon="@mipmap/ic_launcher_main"

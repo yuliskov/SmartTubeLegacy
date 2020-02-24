@@ -129,15 +129,7 @@ public class SmartUtils {
         return context instanceof TwoFragmentsManagerActivity;
     }
 
-    public static boolean isAdBlockEnabled(Context context) {
-        boolean adBlockEnabled;
-
-        if (SmartUtils.isExo(context)) {
-            adBlockEnabled = true;
-        } else {
-            adBlockEnabled = SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
-        }
-
-        return adBlockEnabled;
+    public static boolean isAdBlockEnabled() {
+        return SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
     }
 }

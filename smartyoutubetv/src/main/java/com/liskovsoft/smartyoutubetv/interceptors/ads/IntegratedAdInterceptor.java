@@ -7,11 +7,13 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
-import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import okhttp3.MediaType;
 
 import java.io.InputStream;
 
+/**
+ * Intercepts Ad banner situations.
+ */
 public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String TAG = IntegratedAdInterceptor.class.getSimpleName();
     private static final String HOME_PAGE_ID = "\"browseId\":\"default\"";
@@ -20,7 +22,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
-        mAdBlockEnabled = SmartUtils.isAdBlockEnabled(context);
+        mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
     }
 
     @Override

@@ -2,6 +2,7 @@
 <whisperplay>
     <dial>
         <application>
+            <!-- WARN: Don't change dialid value! -->
             <dialid>YouTube</dialid>
             <startAction>android.intent.action.MAIN</startAction>
         </application>

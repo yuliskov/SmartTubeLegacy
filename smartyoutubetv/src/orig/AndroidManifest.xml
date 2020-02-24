@@ -62,6 +62,9 @@
         <!-- allow to use repacked XWalk's apk -->
         <meta-data android:name="xwalk_verify" android:value="disable" />
 
+        <!-- NOTE: Screen Mirror (e.g. DIAL) for Amazon TV -->
+        <meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>
+
         <!-- Root (bootstrap) Activity -->
         <!-- NOTE: avoid setting launchMode or you will get new activity every time from launcher -->
         <!-- NOTE: also, you'll got problems with activity restarting (System.exit) -->
@@ -164,7 +167,8 @@
             android:exported="true">
         </activity>
 
-        <activity
+        <activity-alias
+            android:targetActivity=".bootstrap.BootstrapActivity"
             android:name=".bootstrap.BootstrapActivityAmazon"
             android:allowTaskReparenting="true"
             android:taskAffinity="com.liskovsoft.smartyoutubetv"
@@ -173,7 +177,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
-        </activity>
+        </activity-alias>
 
         <receiver android:name=".receivers.ClearCacheReceiver" android:exported="true">
             <intent-filter>
