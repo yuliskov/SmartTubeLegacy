@@ -10,7 +10,6 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil
 public final class ExoPreferences {
     private static final String SHARED_PREFERENCES_NAME = ExoPreferences.class.getName();
     private static ExoPreferences sInstance;
-    private final Context mContext;
     private SharedPreferences mPrefs;
     private static final String SELECTED_TRACK_ID = "selectedTrackId";
     private static final String SELECTED_TRACK_HEIGHT = "selectedTrackHeight";
@@ -37,10 +36,9 @@ public final class ExoPreferences {
         return sInstance;
     }
 
-    public ExoPreferences(Context context) {
-        mContext = context.getApplicationContext();
+    private ExoPreferences(Context context) {
         mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.exo_preferences, false);
+        PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.exo_preferences, true);
     }
 
     public String getSelectedTrackId() {

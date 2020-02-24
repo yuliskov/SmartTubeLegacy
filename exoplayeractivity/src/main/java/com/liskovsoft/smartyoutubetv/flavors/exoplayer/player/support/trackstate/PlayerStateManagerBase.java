@@ -25,7 +25,7 @@ public class PlayerStateManagerBase {
     private String mDefaultSubtitleLang;
 
     public PlayerStateManagerBase(Context context) {
-        mPrefs = new ExoPreferences(context);
+        mPrefs = ExoPreferences.instance(context);
     }
 
     public MyFormat findProperAudioFormat(TrackGroupArray groupArray) {

@@ -101,13 +101,13 @@ public class AppUpdateChecker {
         mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         // defaults are kept in the preference file for ease of tweaking
         // TODO put this on a thread somehow
-        PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.preferences, true);
     }
 
     // min interval is stored as a string so a preference editor could potentially edit it using a text edit widget
 
     public int getMinInterval() {
-        return Integer.valueOf(mPrefs.getString(PREF_MIN_INTERVAL, "60"));
+        return Integer.parseInt(mPrefs.getString(PREF_MIN_INTERVAL, "60"));
     }
 
     public void setMinInterval(int minutes) {

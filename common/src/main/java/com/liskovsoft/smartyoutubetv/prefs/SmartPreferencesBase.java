@@ -19,7 +19,7 @@ public class SmartPreferencesBase {
         mContext = context.getApplicationContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String defaultPrefsName = context.getPackageName() + "_preferences";
-        PreferenceManager.setDefaultValues(context, defaultPrefsName, Context.MODE_PRIVATE, R.xml.smart_preferences, false);
+        PreferenceManager.setDefaultValues(context, defaultPrefsName, Context.MODE_PRIVATE, R.xml.smart_preferences, true);
         mListeners = new HashMap<>();
     }
 
