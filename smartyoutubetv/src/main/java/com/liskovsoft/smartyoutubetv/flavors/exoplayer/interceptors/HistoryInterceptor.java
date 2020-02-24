@@ -34,10 +34,9 @@ public class HistoryInterceptor extends RequestInterceptor {
         mUrl = url;
 
         // MIBox Mini delayed history fix:
-        // History url received after video has been closed
-        if (mPosition != 0) {
-            updatePosition(mPosition);
-        }
+        // History url received after video has been closed.
+        // Also, this can help to active history for some other devices.
+        updatePosition(mPosition);
 
         //notifyPositionChange();
 
