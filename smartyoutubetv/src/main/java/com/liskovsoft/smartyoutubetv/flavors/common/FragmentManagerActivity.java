@@ -86,7 +86,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
         // for search on app boot see onAppLoaded method
 
-        Log.d(TAG, "onCreate intent: " + getIntent());
+        Log.d(TAG, "onCreate intent: " + getIntent().toUri(0)); // print all extras
     }
 
     @Override

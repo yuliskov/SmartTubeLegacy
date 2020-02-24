@@ -45,6 +45,7 @@ class YouTubeIntentTranslator implements IntentTranslator {
         }
 
         String uriString = String.format(VIDEO_TEMPLATE_URL, dialParam);
+        Log.d(TAG, "Received amazon casting url: " + uriString);
         intent.setData(Uri.parse(uriString));
     }
 
