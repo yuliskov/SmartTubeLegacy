@@ -272,18 +272,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if (intent != null && Intent.ACTION_MAIN.equals(intent.getAction())) {
-            Log.d(TAG, "Ignoring new intent... " + intent);
-            return;
-        }
+        Log.d(TAG, "New intent is coming... " + intent);
 
-        Log.d(TAG, "New intent coming... " + intent);
         mNewIntentTime = System.currentTimeMillis();
 
         saveStandAlone(intent);
 
         if (mBrowserFragment != null) {
-            closePlayer();
+            if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+                Log.d(TAG, "Close player when handling channel url.");
+                closePlayer();
+            }
+
             mBrowserFragment.onNewIntent(intent);
         }
     }
