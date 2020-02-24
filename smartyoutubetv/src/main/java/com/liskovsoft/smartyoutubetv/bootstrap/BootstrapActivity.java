@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.dialogs.MultiChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
@@ -26,10 +27,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class BootstrapActivity extends BootstrapActivityBase {
+    private static final String TAG = BootstrapActivity.class.getSimpleName();
     public static final String FROM_BOOTSTRAP = "FROM_BOOTSTRAP";
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
-    private HashMap<Integer, Class> mLauncherMapping;
+    private HashMap<Integer, Class<?>> mLauncherMapping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
     }
 
     public void selectFlavour(View view) {
-        Class clazz = mLauncherMapping.get(view.getId());
+        Class<?> clazz = mLauncherMapping.get(view.getId());
 
         if (clazz == null) {
             clazz = SmartYouTubeTV1080Activity.class;
@@ -117,18 +119,20 @@ public class BootstrapActivity extends BootstrapActivityBase {
         intent.setClassName(ctx, clazz);
 
         try {
+            Log.d(TAG, "Starting from intent: " + intent.toUri(0));
             startActivity(intent);
         } catch (ActivityNotFoundException e) { // activity's name changed (choose again)
             e.printStackTrace();
         }
     }
 
-    private void startActivity(Context ctx, Class clazz) {
+    private void startActivity(Context ctx, Class<?> clazz) {
         Intent intent = getIntent(); // modify original intent
         // NOTE: make activity transparent (non-reachable from launcher or from resent list)
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
 
+        Log.d(TAG, "Starting from intent: " + intent.toUri(0));
         startActivity(intent);
     }
 
@@ -141,9 +145,9 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
         boolean doLock = mPrefs.getLockLastLauncher();
 
-        for (Entry<Integer, Class> entry : mLauncherMapping.entrySet()) {
-            Class clazz = entry.getValue();
-            boolean isActiveClass = clazz.getCanonicalName().equals(activeLauncherClass);
+        for (Entry<Integer, Class<?>> entry : mLauncherMapping.entrySet()) {
+            Class<?> clazz = entry.getValue();
+            boolean isActiveClass = activeLauncherClass.equals(clazz.getCanonicalName());
             BootstrapButtonBase view = findViewById(entry.getKey());
 
             if (doLock && !isActiveClass) {

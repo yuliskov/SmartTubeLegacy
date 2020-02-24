@@ -168,7 +168,8 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
         </activity>
-        <activity
+        <activity-alias
+            android:targetActivity=".bootstrap.BootstrapActivity"
             android:name=".bootstrap.BootstrapActivityAmazon"
             android:allowTaskReparenting="true"
             android:taskAffinity="com.liskovsoft.smartyoutubetv"
@@ -177,7 +178,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
-        </activity>
+        </activity-alias>
 
         <receiver android:name=".receivers.ClearCacheReceiver" android:exported="true">
             <intent-filter>
