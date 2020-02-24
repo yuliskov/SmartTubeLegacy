@@ -169,7 +169,7 @@
 
         <activity-alias
             android:targetActivity=".bootstrap.BootstrapActivity"
-            android:name=".bootstrap.BootstrapActivityAmazon"
+            android:name=".bootstrap.AmazonBootstrapActivity"
             android:allowTaskReparenting="true"
             android:taskAffinity="com.liskovsoft.smartyoutubetv"
             android:launchMode="singleTask"
