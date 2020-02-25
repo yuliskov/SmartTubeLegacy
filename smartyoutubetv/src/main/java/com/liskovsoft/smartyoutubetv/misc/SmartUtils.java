@@ -130,6 +130,6 @@ public class SmartUtils {
     }
 
     public static boolean isAdBlockEnabled() {
-        return SmartPreferences.AD_BLOCK_ENABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
+        return !SmartPreferences.AD_BLOCK_DISABLED.equals(CommonApplication.getPreferences().getAdBlockStatus());
     }
 }
