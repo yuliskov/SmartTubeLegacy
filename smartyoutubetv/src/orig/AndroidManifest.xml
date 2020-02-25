@@ -155,21 +155,10 @@
         <!-- End Flavours -->
 
         <!-- Amazon Launcher for official YouTube -->
-        <activity
-            android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
-            android:allowTaskReparenting="true"
-            android:taskAffinity="com.liskovsoft.smartyoutubetv"
-            android:launchMode="singleTask"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_main"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-        </activity>
-
+        <!-- WARN: for compatibility with bridge try to not rename the activity -->
         <activity-alias
             android:targetActivity=".bootstrap.BootstrapActivity"
-            android:name=".bootstrap.AmazonBootstrapActivity"
+            android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
             android:allowTaskReparenting="true"
             android:taskAffinity="com.liskovsoft.smartyoutubetv"
             android:launchMode="singleTask"

@@ -151,19 +151,6 @@
         </activity>
         <!-- End Flavours -->
 
-        <!-- Amazon Launcher for official YouTube -->
-        <activity
-            android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
-            android:allowTaskReparenting="true"
-            android:taskAffinity="com.liskovsoft.smartyoutubetv"
-            android:launchMode="singleTask"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_main"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-        </activity>
-
         <receiver android:name=".receivers.ClearCacheReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CLEAR_CACHE"/>
