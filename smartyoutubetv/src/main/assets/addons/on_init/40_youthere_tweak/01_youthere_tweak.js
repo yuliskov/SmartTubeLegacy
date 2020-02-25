@@ -29,11 +29,9 @@ function YouThereTweakAddon() {
                 $this.oldInterval = setInterval(function() {
                     Log.d($this.TAG, "Running tick code");
                     // show player ui
-                    EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+                    YouTubeUtils.openPlayerControls();
                     // hide player ui
-                    if (!YouTubeUtils.isPlayerControlsClosed()) {
-	                    EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
-                    }
+                    YouTubeUtils.closePlayerControls();
                 }, $this.INTERVAL_MS);
             }
         }, true);

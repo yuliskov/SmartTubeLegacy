@@ -41,7 +41,7 @@ function OverlayButton(selector) {
 
         Log.d(this.TAG, "closing player controls");
 
-        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        YouTubeUtils.closePlayerControls();
 
         this.closeTimeout = setTimeout(function() {
             $this.closePlayerControlsAndSend();

@@ -250,5 +250,21 @@ var YouTubeUtils = {
     triggerBack: function() {
         // EventUtils.triggerEvent(YouTubeSelectors.APP_ROOT, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
+    },
+
+    openPlayerControls: function() {
+        if (this.isPlayerOpened()) {
+            Log.d(this.TAG, "Showing player ui...");
+            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+        }
+    },
+
+    closePlayerControls: function() {
+        if (!this.isPlayerControlsClosed()) {
+            Log.d(this.TAG, "Closing player ui...");
+
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
     }
 };
