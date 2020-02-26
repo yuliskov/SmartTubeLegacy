@@ -262,7 +262,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putInt(PREVIOUS_APP_VERSION_CODE, versionCode);
     }
 
-    public long getLastVideoActionTimeMS() {
+    public long getLastUserActionTimeMS() {
         long result = mVideoActionTimeMS;
         mVideoActionTimeMS = 0;
         return result;

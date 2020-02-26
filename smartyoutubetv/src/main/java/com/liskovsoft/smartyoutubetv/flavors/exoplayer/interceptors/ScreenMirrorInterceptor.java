@@ -61,13 +61,16 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
     }
 
     private void fixLoungeTime(LoungeData loungeData) {
-        if (loungeData.getCurrentTime() >= loungeData.getDuration()) {
+        // 1) Old video data fix.
+        // 2) New video shift fix.
+        if (loungeData.getCurrentTime() >= loungeData.getDuration() ||
+            loungeData.getCurrentTime() <= 10) {
             loungeData.setCurrentTime(0);
         }
     }
 
     private void syncPlayer(LoungeData loungeData) {
-        boolean stateActual = (System.currentTimeMillis() - mPrefs.getLastVideoActionTimeMS()) < 1_000;
+        boolean stateActual = (System.currentTimeMillis() - mPrefs.getLastUserActionTimeMS()) < 1_000;
         Log.d(TAG, "syncPlayer: State is actual? " + stateActual);
         if (stateActual && (loungeData.getState() == LoungeData.STATE_PAUSED ||
             loungeData.getState() == LoungeData.STATE_PLAYING)) {
