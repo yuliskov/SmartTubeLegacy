@@ -27,8 +27,9 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (mAdBlockEnabled) {
-            return url.contains(BROWSE_URL);
+        if (url.contains(BROWSE_URL)) {
+            Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
+            return mAdBlockEnabled;
         } else {
             return false;
         }
