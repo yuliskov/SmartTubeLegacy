@@ -105,4 +105,6 @@ function AjaxInterceptorAddon(interceptors) {
 
 if (DeviceUtils.isExo()) {
     new AjaxInterceptorAddon([new AuthInterceptor(), new PostDataInterceptor()]).run();
+} else {
+    new AjaxInterceptorAddon([new PostDataInterceptor()]).run();
 }
