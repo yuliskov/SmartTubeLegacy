@@ -23,12 +23,12 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     public IntegratedAdInterceptor(Context context) {
         super(context);
         mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
+        Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
     }
 
     @Override
     public boolean test(String url) {
         if (url.contains(BROWSE_URL)) {
-            Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
             return mAdBlockEnabled;
         } else {
             return false;
@@ -45,7 +45,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         }
 
         if (!postData.contains(HOME_PAGE_ID)) {
-            Log.e(TAG, "Not Home page. Skip filtering! Url: " + url);
+            Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
             return null;
         }
 

@@ -22,12 +22,13 @@ public class AdAwayInterceptor extends RequestInterceptor {
         } else {
             mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
         }
+
+        Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
     }
 
     @Override
     public boolean test(String url) {
         if (mClient.isAd(url)) {
-            Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
             return mAdBlockEnabled;
         } else {
             return false;
