@@ -320,37 +320,48 @@ public abstract class BaseUi implements UI {
         }
         View container = tab.getViewContainer();
         View mainView  = tab.getWebView();
-        mainView = findProperView(mainView);
+        mainView = findRealWebView(mainView);
 
         // Attach the WebView to the container and then attach the
         // container to the content view.
-        FrameLayout wrapper =
-                (FrameLayout) container.findViewById(R.id.webview_wrapper);
-        ViewGroup parent = (ViewGroup) mainView.getParent();
-        if (parent != wrapper) {
-            if (parent != null) {
-                parent.removeView(mainView);
+        FrameLayout wrapper = container.findViewById(R.id.webview_wrapper);
+        ViewGroup viewParent = (ViewGroup) mainView.getParent();
+
+        if (viewParent != wrapper) {
+            if (viewParent != null) {
+                viewParent.removeView(mainView);
             }
+
+            // remove previously attached tab views
+            wrapper.removeAllViews();
+
             wrapper.addView(mainView);
 
             // TODO: find a better place
             // NOTE: now you can add loading widget before WebView
             mUiController.onTabCreated(tab);
         }
-        parent = (ViewGroup) container.getParent();
-        if (parent != mContentView) {
-            if (parent != null) {
-                parent.removeView(container);
+
+        ViewGroup containerParent = (ViewGroup) container.getParent();
+
+        if (containerParent != mContentView) {
+            if (containerParent != null) {
+                containerParent.removeView(container);
             }
+
+            // remove previously attached container views
+            mContentView.removeAllViews();
+
             mContentView.addView(container, COVER_SCREEN_PARAMS);
         }
     }
 
     // TODO: replace with polymorphism
-    private View findProperView(View mainView) {
+    private View findRealWebView(View mainView) {
         if (mainView instanceof XWalkWebViewAdapter) {
             mainView = ((XWalkWebViewAdapter) mainView).getXWalkView();
         }
+
         return mainView;
     }
 
