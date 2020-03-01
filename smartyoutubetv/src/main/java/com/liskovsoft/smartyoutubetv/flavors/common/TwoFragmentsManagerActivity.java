@@ -34,6 +34,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private long mResumeTime;
     private long mNewIntentTime;
     private static final long INSTANT_SEARCH_TIME = 30_000;
+    private ViewGroup mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +144,58 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         // fragment already attached, so only reorder it
         wrapper.bringToFront();
+    }
+
+    private void moveToTop2(GenericFragment fragment) {
+        if (!isInitialized(fragment)) {
+            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
+            return;
+        }
+
+        Log.d(TAG, "Moving fragment to top: " + fragment.getClass().getSimpleName());
+
+        if (mContainer == null) {
+            mContainer = findViewById(R.id.exo_container);
+        }
+
+        View wrapper = fragment.getWrapper();
+
+        if (wrapper != null) {
+            mContainer.bringChildToFront(wrapper);
+            mContainer.forceLayout();
+        }
+    }
+
+    private void moveToTopNew(GenericFragment fragment) {
+        if (!isInitialized(fragment)) {
+            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
+            return;
+        }
+
+        Log.d(TAG, "Moving fragment to top: " + fragment.getClass().getSimpleName());
+
+        if (mContainer == null) {
+            mContainer = findViewById(R.id.exo_container);
+        }
+
+        View wrapper = fragment.getWrapper();
+
+        if (!isTopAlready(wrapper)) {
+            mContainer.removeView(wrapper);
+            mContainer.addView(wrapper);
+        }
+    }
+
+    private boolean isTopAlready(View wrapper) {
+        if (mContainer != null) {
+            int index = mContainer.indexOfChild(wrapper);
+            if (index != -1) {
+                int childCount = mContainer.getChildCount();
+                return childCount == (index + 1);
+            }
+        }
+
+        return false;
     }
 
     private static boolean containsChild(ViewGroup container, View view) {
