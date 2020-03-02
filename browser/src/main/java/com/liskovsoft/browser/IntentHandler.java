@@ -66,17 +66,21 @@ public class IntentHandler {
         }
 
         Tab current = mTabControl.getCurrentTab();
+
         // When a tab is closed on exit, the current tab index is set to -1.
         // Reset before proceed as Browser requires the current tab to be set.
         if (current == null) {
             // Try to reset the tab in case the index was incorrect.
             current = mTabControl.getTab(0);
+
             if (current == null) {
-                // No tabs at all so just ignore this intent.
-                return;
+                // No tabs at all so just create new one.
+                current = mTabControl.createNewTab(false);
             }
+
             mController.setActiveTab(current);
         }
+
         final String action = intent.getAction();
         final int flags = intent.getFlags();
         if ((Intent.ACTION_MAIN.equals(action) && uri == null)  ||

@@ -356,32 +356,37 @@ public abstract class BaseUi implements UI {
         }
     }
 
-    // TODO: replace with polymorphism
+    private void removeTabFromContentView(Tab tab) {
+        // Remove the container that contains the main WebView.
+        View mainView = tab.getWebView();
+        mainView = findRealWebView(mainView);
+
+        View container = tab.getViewContainer();
+
+        if (mainView == null) {
+            return;
+        }
+
+        // Remove the container from the content and then remove the
+        // WebView from the container. This will trigger a focus change
+        // needed by WebView.
+        FrameLayout wrapper = container.findViewById(R.id.webview_wrapper);
+        wrapper.removeView(mainView);
+        mContentView.removeView(container);
+
+        // TODO: Tab could be detached or removed. Is this the same thing?
+        tab.setListener(null);
+    }
+
+    /**
+     * TODO: replace with polymorphism
+     */
     private View findRealWebView(View mainView) {
         if (mainView instanceof XWalkWebViewAdapter) {
             mainView = ((XWalkWebViewAdapter) mainView).getXWalkView();
         }
 
         return mainView;
-    }
-
-    private void removeTabFromContentView(Tab tab) {
-        // Remove the container that contains the main WebView.
-        WebView mainView = tab.getWebView();
-        View container = tab.getViewContainer();
-        if (mainView == null) {
-            return;
-        }
-        // Remove the container from the content and then remove the
-        // WebView from the container. This will trigger a focus change
-        // needed by WebView.
-        FrameLayout wrapper =
-                (FrameLayout) container.findViewById(R.id.webview_wrapper);
-        wrapper.removeView(mainView);
-        mContentView.removeView(container);
-
-        // TODO: Tab could be detached or removed. Is this the same thing?
-        tab.setListener(null);
     }
 
     @Override

@@ -17,16 +17,12 @@ import com.liskovsoft.browser.Tab;
 import com.liskovsoft.browser.addons.MainBrowserFragment;
 import com.liskovsoft.browser.addons.SimpleUIController;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.events.ControllerEventListener;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.keyhandler.AmazonKeyHandler;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
-import com.liskovsoft.smartyoutubetv.misc.keyhandler.AltMediaBrowserKeyTranslator;
-import com.liskovsoft.smartyoutubetv.misc.keyhandler.BrowserKeyTranslator;
-import com.liskovsoft.smartyoutubetv.misc.keyhandler.MediaBrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
+import com.liskovsoft.smartyoutubetv.misc.keyhandler.BrowserKeyTranslator;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.ServiceFinder;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeServiceFinder;
 
