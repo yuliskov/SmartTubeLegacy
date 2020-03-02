@@ -46,14 +46,14 @@
     <string name="xwalk_tip">Beperkt aantal formaten. Met fixes.</string>
     <string name="exo_tip">Uitgebreid aantal formaten. Normaal.</string>
     <string name="exo_alt_tip">Uitgebreid aantal formaten. Met fixes.</string>
-    <string name="exit_msg">Nogmaals op de BACK-toets drukken om de app af te sluiten</string>
+    <string name="exit_msg">BACK-toets nogmaals indrukken om app te sluiten</string>
     <string name="error_host_lookup">Geen internet verbinding: %s</string>
     <string name="error_unknown">Fout bij verbinding: %s</string>
     <string name="codec_selector_title">Codec selecteren</string>
     <string name="restart_app_msg">Je moet de app heropstarten om de wijzigingen toe te passen</string>
-    <string name="tip_show_main_screen">Op de BACK-toets klikken om je launcher te selecteren</string>
+    <string name="tip_show_main_screen">BACK-toets indrukken om launcher te selecteren</string>
     <string name="tip_solve_problem">Problemen? Probeer een andere launcher</string>
-    <string name="tip_disable_updates">Om updates uit te schakelen, hier op de BACK-toets klikken</string>
+    <string name="tip_disable_updates">BACK-toets indrukken om updates uit te schakelen</string>
     <string name="large_btn_title_main">Main</string>
     <string name="large_btn_title_alt">Alt</string>
     <string name="title_exo_main">PRO Main</string>
@@ -82,7 +82,7 @@
     <string name="tweak_animated_previews">Geanimeerde previews inschakelen</string>
     <string name="close_msg">App afgesloten!</string>
     <string name="global_afr_fix_warning">Dit kan de autoplay functie verstoren</string>
-    <string name="tweak_back_press_exit">BACK-toets ingedrukt houden om af te sluiten</string>
+    <string name="tweak_back_press_exit">App sluiten met BACK-toets (ingedrukt houden)</string>
     <string name="force_all_codecs_lite_only">LITE: Alle codecs ontgrendelen (4K)</string>
     <string name="force_avc_lite_only">LITE: AVC codec forceren (1080p)</string>
     <string name="force_vp9_lite_only">LITE: VP9 codec forceren (4K)</string>
@@ -91,7 +91,7 @@
     <string name="restoring_data_msg">Gegevens herstellen...</string>
     <string name="alt_player_mapping">Afstandsbediening: ALT-media-toetsen toewijzen</string>
     <string name="tip_hash_in_subscriptions">Abonnementen verwijderen? Kanalen verwijderen beginnend met hash #</string>
-    <string name="tip_show_main_screen_2">BACK-toets indrukken om de instellingen van de app te openen</string>
+    <string name="tip_show_main_screen_2">BACK-toets indrukken om app instellingen te openen</string>
     <string name="do_install_bridge_apk">Wil je stem-gestuurd-zoeken inschakelen?\nInstallatie van een bijkomende app kan noodzakelijk zijn.</string>
     <string name="do_reinstall_bridge_apk">Wil je stem-gestuurd-zoeken inschakelen?\nVermijderen van de originele YouTube-app kan noodzakelijk zijn.\nEn installatie van een bijkomende app.</string>
     <string name="app_crashed">App is gecrashed.\nControleren op een nieuwere versie?</string>
@@ -106,6 +106,6 @@
     <string name="enable_ad_block">Ad Block inschakelen</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
-    <string name="channels_close_app">Android TV Kanalen: App afsluiten met BACK-toets</string>
+    <string name="channels_close_app">Android TV Kanalen: App sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Bufferen van player verminderen</string>
 </resources>
