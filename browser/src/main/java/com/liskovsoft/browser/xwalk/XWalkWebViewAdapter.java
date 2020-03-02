@@ -1,14 +1,20 @@
 package com.liskovsoft.browser.xwalk;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
-import android.webkit.*;
+import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import com.liskovsoft.browser.addons.HeadersWebSettingsDecorator;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -204,5 +210,41 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.d(TAG, "XWalkView: Dispatching key " + event);
         return mXWalkView.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void bringToFront() {
+        if (mXWalkView != null) {
+            mXWalkView.bringToFront();
+        }
+    }
+
+    @Override
+    public void bringChildToFront(View child) {
+        if (mXWalkView != null) {
+            mXWalkView.bringChildToFront(child);
+        }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void requestLayout() {
+        if (mXWalkView != null) {
+            mXWalkView.requestLayout();
+        }
+    }
+
+    @Override
+    public void forceLayout() {
+        if (mXWalkView != null) {
+            mXWalkView.forceLayout();
+        }
+    }
+
+    @Override
+    public void invalidate() {
+        if (mXWalkView != null) {
+            mXWalkView.invalidate();
+        }
     }
 }
