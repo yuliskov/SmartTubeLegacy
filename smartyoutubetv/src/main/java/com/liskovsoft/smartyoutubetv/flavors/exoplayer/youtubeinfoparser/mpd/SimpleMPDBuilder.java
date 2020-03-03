@@ -316,6 +316,8 @@ public class SimpleMPDBuilder implements MPDBuilder {
             return;
         }
 
+        //fixOTF(mediaItem);
+
         Set<MediaItem> placeholder = null;
         String mimeType = extractMimeType(mediaItem);
         if (mimeType != null) {
@@ -609,10 +611,18 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 item.getUrl().contains("live=1") ||
                 item.getUrl().contains("yt_live_broadcast");
 
-        //if (isLive) {
-        //    throw new IllegalStateException("Live item shouldn't be there");
-        //}
-
         return isLive;
+    }
+
+    private void fixOTF(MediaItem mediaItem) {
+        if (mediaItem.isOTF()) {
+            if (mediaItem.getUrl() != null) {
+                // exo: fix 404 code
+                mediaItem.setUrl(mediaItem.getUrl() + "&sq=7");
+                //mediaItem.setInit("0-740");
+                //mediaItem.setIndex("741-2296");
+                //mediaItem.setClen("105557711");
+            }
+        }
     }
 }
