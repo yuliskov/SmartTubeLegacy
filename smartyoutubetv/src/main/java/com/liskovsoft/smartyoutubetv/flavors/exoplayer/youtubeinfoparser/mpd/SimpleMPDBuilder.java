@@ -312,7 +312,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     @Override
     public void append(MediaItem mediaItem) {
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
-        if (!MediaItemUtils.isDash(mediaItem) || mediaItem.isOTF()) {
+        if (!MediaItemUtils.isDash(mediaItem)) {
             return;
         }
 
@@ -398,15 +398,19 @@ public class SimpleMPDBuilder implements MPDBuilder {
             attribute("", "audioSamplingRate", ITag.getAudioRateByTag(item.getITag()));
         }
 
-        startTag("", "BaseURL");
+        if (item.isOTF()) {
+            writeSegmentTemplate(item);
+        } else {
+            startTag("", "BaseURL");
 
-        if (item.getClen() != null && !item.getClen().equals(NULL_CONTENT_LENGTH)) {
-            attribute("", "yt:contentLength", item.getClen());
+            if (item.getClen() != null && !item.getClen().equals(NULL_CONTENT_LENGTH)) {
+                attribute("", "yt:contentLength", item.getClen());
+            }
+
+            text(item.getUrl());
+
+            endTag("", "BaseURL");
         }
-
-        text(item.getUrl());
-
-        endTag("", "BaseURL");
 
         // SegmentList tag
         if (isLive()) {
@@ -624,5 +628,42 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 //mediaItem.setClen("105557711");
             }
         }
+    }
+
+    private void writeSegmentTemplate(MediaItem item) {
+        //<SegmentTemplate timescale="90000" media="&sq=$Number%06d$" startNumber="0">
+        //  <SegmentTimeline>
+        //    <S t="0" d="180000" r="394"/>
+        //    <S t="71100000" d="46800" r="0"/>
+        //  </SegmentTimeline>
+        //</SegmentTemplate>
+
+        startTag("", "SegmentTemplate");
+
+        attribute("", "timescale", "90000");
+        attribute("", "media", item.getUrl() + "&sq=$Number$");
+        attribute("", "startNumber", "0");
+
+        startTag("", "SegmentTimeline");
+
+        startTag("", "S");
+
+        attribute("", "t", "0");
+        attribute("", "d", "180000");
+        attribute("", "r", "394");
+
+        endTag("", "S");
+
+        startTag("", "S");
+
+        attribute("", "t", "71100000");
+        attribute("", "d", "46800");
+        attribute("", "r", "0");
+
+        endTag("", "S");
+
+        endTag("", "SegmentTimeline");
+
+        endTag("", "SegmentTemplate");
     }
 }
