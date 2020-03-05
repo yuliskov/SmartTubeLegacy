@@ -640,17 +640,17 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         startTag("", "SegmentTemplate");
 
-        attribute("", "timescale", "90000");
+        attribute("", "timescale", "90000"); // units per second
         attribute("", "media", item.getUrl() + "&sq=$Number$");
         attribute("", "startNumber", "0");
 
         startTag("", "SegmentTimeline");
 
-        startTag("", "S");
+        startTag("", "S"); // segment set
 
-        attribute("", "t", "0");
-        attribute("", "d", "180000");
-        attribute("", "r", "394");
+        attribute("", "t", "0"); // start time (units)
+        attribute("", "d", "180000"); // duration (units)
+        attribute("", "r", "394"); // repeat counts
 
         endTag("", "S");
 
