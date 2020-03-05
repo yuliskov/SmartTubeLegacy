@@ -631,7 +631,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     }
 
     private void writeSegmentTemplate(MediaItem item) {
-        //<SegmentTemplate timescale="90000" media="&sq=$Number%06d$" startNumber="0">
+        //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>
         //    <S t="0" d="180000" r="394"/>
         //    <S t="71100000" d="46800" r="0"/>
@@ -652,15 +652,15 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "d", "180000"); // duration (units)
         attribute("", "r", "394"); // repeat counts
 
-        endTag("", "S");
-
-        startTag("", "S");
-
-        attribute("", "t", "71100000");
-        attribute("", "d", "46800");
-        attribute("", "r", "0");
-
-        endTag("", "S");
+        //endTag("", "S");
+        //
+        //startTag("", "S");
+        //
+        //attribute("", "t", "71100000");
+        //attribute("", "d", "46800");
+        //attribute("", "r", "0");
+        //
+        //endTag("", "S");
 
         endTag("", "SegmentTimeline");
 
