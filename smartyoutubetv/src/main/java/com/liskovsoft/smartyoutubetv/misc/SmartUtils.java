@@ -4,19 +4,22 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.KeyEvent;
+import android.os.Handler;
+import android.webkit.CookieManager;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import org.xwalk.core.XWalkCookieManager;
 
 public class SmartUtils {
+    private static final String TAG = SmartUtils.class.getSimpleName();
     public static final String KEYCODE_MEDIA_PLAY_PAUSE = "MEDIA_PLAY_PAUSE";
     public static final String KEYCODE_MEDIA_STOP = "MEDIA_STOP";
     public static final String KEYCODE_MEDIA_FAST_FORWARD = "KEYCODE_MEDIA_FAST_FORWARD";
@@ -133,5 +136,32 @@ public class SmartUtils {
         String adBlockStatus = CommonApplication.getPreferences().getAdBlockStatus();
 
         return SmartPreferences.AD_BLOCK_ENABLED.equals(adBlockStatus) || SmartPreferences.AD_BLOCK_UNDEFINED.equals(adBlockStatus);
+    }
+
+    public static void setSecureCookie(String cookie, String cookieUrl, Activity context) {
+        final long XWALK_INIT_DELAY_MS = 3_000;
+
+        try {
+            if (context instanceof SmartYouTubeTV1080Activity || context instanceof SmartYouTubeTV4K) {
+                Log.d(TAG, "Setting WebView cookie");
+                CookieManager.getInstance().setCookie(cookieUrl, cookie);
+            } else {
+                // NOTE: early initialization could break embedding of XWalk core
+                new Handler(context.getMainLooper()).postDelayed(() -> {
+                    Log.d(TAG, "Setting XWalk cookie");
+                    XWalkCookieManager cookieManager = new XWalkCookieManager();
+                    try {
+                        cookieManager.setCookie(cookieUrl, cookie);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                }, XWALK_INIT_DELAY_MS);
+            }
+        } catch (Exception e) {
+            // WebView not installed?
+            Log.d(TAG, e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

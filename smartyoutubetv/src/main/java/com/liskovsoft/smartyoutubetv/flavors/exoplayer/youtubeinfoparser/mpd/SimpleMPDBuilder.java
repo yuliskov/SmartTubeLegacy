@@ -641,28 +641,29 @@ public class SimpleMPDBuilder implements MPDBuilder {
         startTag("", "SegmentTemplate");
 
         attribute("", "timescale", "90000"); // units per second
-        attribute("", "media", item.getUrl() + "&sq=$Number$");
+        attribute("", "duration", "180000"); // segment duration (units)
+        attribute("", "media", item.getUrl() + "&sq=$Time$");
         attribute("", "startNumber", "0");
 
-        startTag("", "SegmentTimeline");
-
-        startTag("", "S"); // segment set
-
-        attribute("", "t", "0"); // start time (units)
-        attribute("", "d", "180000"); // duration (units)
-        attribute("", "r", "394"); // repeat counts
-
-        //endTag("", "S");
+        //startTag("", "SegmentTimeline");
         //
-        //startTag("", "S");
+        //startTag("", "S"); // segment set
         //
-        //attribute("", "t", "71100000");
-        //attribute("", "d", "46800");
-        //attribute("", "r", "0");
+        //attribute("", "t", "0"); // start time (units)
+        //attribute("", "d", "180000"); // duration (units)
+        //attribute("", "r", "394"); // repeat counts
         //
         //endTag("", "S");
-
-        endTag("", "SegmentTimeline");
+        //
+        ////startTag("", "S");
+        ////
+        ////attribute("", "t", "71100000");
+        ////attribute("", "d", "46800");
+        ////attribute("", "r", "0");
+        ////
+        ////endTag("", "S");
+        //
+        //endTag("", "SegmentTimeline");
 
         endTag("", "SegmentTemplate");
     }
