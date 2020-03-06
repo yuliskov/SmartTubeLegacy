@@ -630,6 +630,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
     }
 
+    /**
+     * TODO: improve segment calculation
+     */
     private void writeSegmentTemplate(MediaItem item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>
@@ -640,9 +643,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         startTag("", "SegmentTemplate");
 
-        attribute("", "timescale", "90000"); // units per second
-        attribute("", "duration", "180000"); // segment duration (units)
-        attribute("", "media", item.getUrl() + "&sq=$Time$");
+        attribute("", "timescale", "1000"); // units per second
+        attribute("", "duration", "5100"); // segment duration (units)
+        attribute("", "media", item.getUrl() + "&sq=$Number$");
+        attribute("", "initialization", item.getUrl() + "&sq=0"); // contains segments list and durations
         attribute("", "startNumber", "0");
 
         //startTag("", "SegmentTimeline");
@@ -650,18 +654,18 @@ public class SimpleMPDBuilder implements MPDBuilder {
         //startTag("", "S"); // segment set
         //
         //attribute("", "t", "0"); // start time (units)
-        //attribute("", "d", "180000"); // duration (units)
-        //attribute("", "r", "394"); // repeat counts
+        //attribute("", "d", "5067"); // duration (units)
+        //attribute("", "r", "380"); // repeat counts
         //
         //endTag("", "S");
         //
-        ////startTag("", "S");
-        ////
-        ////attribute("", "t", "71100000");
-        ////attribute("", "d", "46800");
-        ////attribute("", "r", "0");
-        ////
-        ////endTag("", "S");
+        //startTag("", "S");
+        //
+        //attribute("", "t", "1925460");
+        //attribute("", "d", "5383");
+        //attribute("", "r", "0");
+        //
+        //endTag("", "S");
         //
         //endTag("", "SegmentTimeline");
 
