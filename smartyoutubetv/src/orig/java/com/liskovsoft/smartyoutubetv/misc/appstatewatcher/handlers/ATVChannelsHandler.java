@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.app.Activity;
 import android.content.Intent;
-import com.liskovsoft.leanbackassistant.channels.RunOnInstallReceiver;
+import com.liskovsoft.leanbackassistant.common.RunOnInstallReceiver;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
