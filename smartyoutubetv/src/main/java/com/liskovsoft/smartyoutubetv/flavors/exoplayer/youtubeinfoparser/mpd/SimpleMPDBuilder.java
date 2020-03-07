@@ -4,6 +4,7 @@ import android.util.Xml;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.OtfSegmentParser.OtfSegment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
@@ -399,7 +400,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         }
 
         if (item.isOTF()) {
-            writeSegmentTemplate(item);
+            writeOtfSegmentTemplate(item);
         } else {
             startTag("", "BaseURL");
 
@@ -633,7 +634,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     /**
      * TODO: improve segment calculation
      */
-    private void writeSegmentTemplate(MediaItem item) {
+    private void writeOtfSegmentTemplateOld(MediaItem item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>
         //    <S t="0" d="180000" r="394"/>
@@ -646,29 +647,57 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "timescale", "1000"); // units per second
         attribute("", "duration", "5100"); // segment duration (units)
         attribute("", "media", item.getUrl() + "&sq=$Number$");
-        attribute("", "initialization", item.getUrl() + "&sq=0"); // contains segments list and durations
+        attribute("", "initialization", item.getUrl() + "&sq=0"); // segments list and durations (required for stream switch!!!)
         attribute("", "startNumber", "0");
 
-        //startTag("", "SegmentTimeline");
-        //
-        //startTag("", "S"); // segment set
-        //
-        //attribute("", "t", "0"); // start time (units)
-        //attribute("", "d", "5067"); // duration (units)
-        //attribute("", "r", "380"); // repeat counts
-        //
-        //endTag("", "S");
-        //
-        //startTag("", "S");
-        //
-        //attribute("", "t", "1925460");
-        //attribute("", "d", "5383");
-        //attribute("", "r", "0");
-        //
-        //endTag("", "S");
-        //
-        //endTag("", "SegmentTimeline");
+        writeOtfSegmentTimeline(item);
 
         endTag("", "SegmentTemplate");
+    }
+    
+    private void writeOtfSegmentTemplate(MediaItem item) {
+        //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
+        //  <SegmentTimeline>
+        //    <S t="0" d="180000" r="394"/>
+        //    <S t="71100000" d="46800" r="0"/>
+        //  </SegmentTimeline>
+        //</SegmentTemplate>
+
+        startTag("", "SegmentTemplate");
+
+        attribute("", "timescale", "1000"); // units per second
+        //attribute("", "duration", "5100"); // segment duration (units)
+        attribute("", "media", item.getUrl() + "&sq=$Number$");
+        attribute("", "initialization", item.getUrl() + "&sq=0"); // segments list and durations (required for stream switch!!!)
+        attribute("", "startNumber", "1");
+
+        writeOtfSegmentTimeline(item);
+
+        endTag("", "SegmentTemplate");
+    }
+
+    private void writeOtfSegmentTimeline(MediaItem item) {
+        List<OtfSegment> segments = OtfSegmentParser.parse(item.getUrl() + "&sq=0");
+
+        if (segments != null && segments.size() > 0) {
+            startTag("", "SegmentTimeline");
+
+            int totalTime = 0;
+
+            for (OtfSegment segment : segments) {
+                startTag("", "S"); // segment set
+
+                attribute("", "t", String.valueOf(totalTime)); // start time (units)
+                attribute("", "d", segment.getDuration()); // duration (units)
+
+                attribute("", "r", segment.getRepeatCount()); // repeat counts
+
+                endTag("", "S");
+
+                totalTime = totalTime + Integer.parseInt(segment.getRepeatCount()) * Integer.parseInt(segment.getDuration());
+            }
+
+            endTag("", "SegmentTimeline");
+        }
     }
 }
