@@ -5,10 +5,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 
-import java.io.InputStream;
-import java.util.Arrays;
-
-public class JsonNextParser {
+public class JsonNextParser extends JsonParserBase {
     private static final String TAG = JsonNextParser.class.getSimpleName();
     private static final String VIDEO_DATA_ROOT = "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer";
     private static final String VIDEO_DATA_ROOT2 = "$.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer.pivotVideoRenderer";
@@ -38,10 +35,18 @@ public class JsonNextParser {
     private static final String LIKE_STATUS_LIKE = "LIKE";
     private static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     private static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
-    private final DocumentContext mParser;
 
+    /**
+     * Parses next json content
+     * @param nextContent json content
+     * @param <T> Could be String or Stream
+     */
     public <T> JsonNextParser(T nextContent) {
-        mParser = ParserUtils.createJsonInfoParser(nextContent);
+        super(nextContent);
+    }
+
+    public JsonNextParser(DocumentContext parser) {
+        super(parser);
     }
 
     public VideoMetadata extractVideoMetadata() {
@@ -97,57 +102,6 @@ public class JsonNextParser {
         nextVideoMetadata.setPlaylistId(str(NEXT_VIDEO_PLAYLIST_ID));
 
         return nextVideoMetadata;
-    }
-
-    private Integer integer(String... paths) {
-        Integer result = null;
-
-        for (String path : paths) {
-            result = ParserUtils.extractInt(path, mParser);
-            if (result != null) {
-                break;
-            }
-        }
-
-        if (result == null) {
-            Log.e(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
-        }
-
-        return result;
-    }
-
-    private Boolean bool(String... paths) {
-        Boolean result = null;
-
-        for (String path : paths) {
-            result = ParserUtils.extractBool(path, mParser);
-            if (result != null) {
-                break;
-            }
-        }
-        
-        if (result == null) {
-            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
-        }
-
-        return result;
-    }
-
-    private String str(String... paths) {
-        String result = null;
-
-        for (String path : paths) {
-            result = ParserUtils.extractString(path, mParser);
-            if (result != null) {
-                break;
-            }
-        }
-
-        if (result == null) {
-            Log.d(TAG, "Oops... seems that video metadata format has been changed: " + Arrays.toString(paths));
-        }
-
-        return result;
     }
 
     public static class VideoMetadata {
@@ -314,8 +268,8 @@ public class JsonNextParser {
             metadata.mPublishedDate = intent.getStringExtra(ExoPlayerFragment.VIDEO_DATE);
             metadata.mLiked =
                     intent.hasExtra(ExoPlayerFragment.BUTTON_LIKE) ?
-                    intent.getBooleanExtra(ExoPlayerFragment.BUTTON_LIKE, false) :
-                    null;
+                            intent.getBooleanExtra(ExoPlayerFragment.BUTTON_LIKE, false) :
+                            null;
             metadata.mDisliked = intent.hasExtra(ExoPlayerFragment.BUTTON_DISLIKE) ?
                     intent.getBooleanExtra(ExoPlayerFragment.BUTTON_DISLIKE, false) :
                     null;

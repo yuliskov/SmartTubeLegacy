@@ -11,6 +11,9 @@ public class SimpleYouTubeGenericInfo implements GenericInfo {
     private String mAuthor;
     private String mViewCount;
     private String mTimestamp;
+    private String mDescription;
+    private String mVideoId;
+    private String mChannelId;
 
     public SimpleYouTubeGenericInfo() {
         mRandrom = new Random();
@@ -64,5 +67,35 @@ public class SimpleYouTubeGenericInfo implements GenericInfo {
     @Override
     public void setTimestamp(String timestamp) {
         mTimestamp = timestamp;
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescription;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    @Override
+    public String getVideoId() {
+        return mVideoId;
+    }
+
+    @Override
+    public void setVideoId(String videoId) {
+        mVideoId = videoId;
+    }
+
+    @Override
+    public String getChannelId() {
+        return mChannelId;
+    }
+
+    @Override
+    public void setChannelId(String channelId) {
+        mChannelId = channelId;
     }
 }

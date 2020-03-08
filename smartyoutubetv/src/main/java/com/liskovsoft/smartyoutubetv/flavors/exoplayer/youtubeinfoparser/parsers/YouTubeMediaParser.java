@@ -376,6 +376,12 @@ public class YouTubeMediaParser {
         void setViewCount(String viewCount);
         String getTimestamp();
         void setTimestamp(String timestamp);
+        String getDescription();
+        void setDescription(String description);
+        String getVideoId();
+        void setVideoId(String videoId);
+        String getChannelId();
+        void setChannelId(String channelId);
     }
 
     /**

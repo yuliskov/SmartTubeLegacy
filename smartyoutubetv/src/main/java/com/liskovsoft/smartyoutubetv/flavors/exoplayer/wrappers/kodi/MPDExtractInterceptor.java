@@ -71,7 +71,7 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
             }
 
             @Override
-            public void onInfoFound(GenericInfo info) {
+            public void onGenericInfoFound(GenericInfo info) {
                 mInfo = info;
             }
 

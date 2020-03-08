@@ -16,7 +16,7 @@ public abstract class OnMediaFoundCallback {
     public void onTrackingUrlFound(Uri trackingUrl) {}
     public void onRealTrackingUrlFound(Uri trackingUrl) {}
     public void onStorySpecFound(String spec) {}
-    public void onInfoFound(GenericInfo info){}
+    public void onGenericInfoFound(GenericInfo info){}
     public void onMetadata(VideoMetadata metadata){}
     public boolean getVLCFix() {
         return false;

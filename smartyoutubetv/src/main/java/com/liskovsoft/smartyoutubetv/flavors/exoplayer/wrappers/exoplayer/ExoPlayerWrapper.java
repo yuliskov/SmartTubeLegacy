@@ -134,7 +134,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     @Override
-    public void onInfoFound(GenericInfo info) {
+    public void onGenericInfoFound(GenericInfo info) {
         mInfo = info;
     }
 

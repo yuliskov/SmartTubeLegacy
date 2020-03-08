@@ -23,8 +23,13 @@ public class SimpleYouTubeInfoManager implements YouTubeInfoVisitable {
     public void accept(YouTubeInfoVisitor visitor) {
         mVisitor = visitor;
 
-        GenericInfo info = mMediaParser.extractGenericInfo();
-        mVisitor.onGenericInfo(info);
+        GenericInfo metadata = mParser.extractVideoMetadata();
+        if (metadata != null) {
+            mVisitor.onGenericInfo(metadata);
+        } else {
+            GenericInfo info = mMediaParser.extractGenericInfo();
+            mVisitor.onGenericInfo(info);
+        }
 
         List<Subtitle> subs = mSubParser.extractAllSubs();
         if (subs != null) {

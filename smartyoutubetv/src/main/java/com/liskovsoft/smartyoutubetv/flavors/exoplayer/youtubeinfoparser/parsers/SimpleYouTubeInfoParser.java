@@ -85,7 +85,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
             // callback on the last loop (resolve problems with async processing)
 
             if (mInfo != null) {
-                mMediaFoundCallback.onInfoFound(mInfo);
+                mMediaFoundCallback.onGenericInfoFound(mInfo);
             }
 
             if (mTrackingUrl != null) {

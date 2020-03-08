@@ -6,6 +6,7 @@ import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.TypeRef;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,17 @@ public class JsonInfoParser {
     private static final String JSON_INFO_STORY_SPEC = "$.storyboards.playerStoryboardSpecRenderer.spec";
     private static final String JSON_INFO_VIDEO_LENGTH = "$.videoDetails.lengthSeconds";
     private final DocumentContext mParser;
+    private final JsonVideoMetadataParser mMetadata;
 
-    public JsonInfoParser(String content) {
-        String jsonInfo = ParserUtils.extractParam(JSON_INFO, content);
+    public JsonInfoParser(String video_info_content) {
+        String jsonInfo = ParserUtils.extractParam(JSON_INFO, video_info_content);
         mParser = ParserUtils.createJsonInfoParser(jsonInfo);
+
+        mMetadata = new JsonVideoMetadataParser(mParser);
+    }
+
+    public GenericInfo extractVideoMetadata() {
+        return mMetadata.extractVideoMetadata();
     }
 
     private List<MediaItem> extractMediaItems(String jsonPath) {
