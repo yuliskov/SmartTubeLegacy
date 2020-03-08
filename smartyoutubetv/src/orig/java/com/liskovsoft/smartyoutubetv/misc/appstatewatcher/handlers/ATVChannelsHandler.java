@@ -15,7 +15,7 @@ public class ATVChannelsHandler extends StateHandler {
 
     @Override
     public void onLoad() {
-        if (Helpers.isATVChannelsSupported(mContext)) {
+        if (Helpers.isATVChannelsSupported(mContext) || Helpers.isATVRecommendationsSupported(mContext)) {
             Intent intent = new Intent(mContext, RunOnInstallReceiver.class);
             mContext.sendBroadcast(intent);
         }
