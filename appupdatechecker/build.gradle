@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
@@ -40,7 +41,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation project.properties.junitVersion
+    testImplementation 'junit:junit:' + junitVersion
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -48,9 +49,9 @@ dependencies {
 
     implementation project(path: ':common')
 
-    implementation project.properties.appCompatXVersion
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
 
-    implementation project.properties.dnsjavaVersion
+    implementation 'dnsjava:dnsjava:' + dnsjavaVersion
 
-    implementation project.properties.okhttpVersion
+    implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
 }

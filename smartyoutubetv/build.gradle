@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -235,16 +236,16 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(project.properties.espressoCoreVersion, {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:' + espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation project.properties.junitVersion
+    testImplementation 'junit:junit:' + junitVersion
     // example: assertThat(newEmployees).hasSize(6).contains(frodo, sam);
-    testImplementation project.properties.assertJVersion
-    testImplementation project.properties.robolectricVersion
+    testImplementation 'org.assertj:assertj-core:' + assertJVersion
+    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
     //testImplementation project.properties.robolectricMultidexVersion
     //testImplementation project.properties.robolectricSupportV4Version
-    testImplementation project.properties.commonsIOVersion
+    testImplementation 'commons-io:commons-io:' + commonsIOVersion
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -263,23 +264,23 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    implementation(project.properties.crashlyticsVersion) { // see top part of this file
+    implementation('com.crashlytics.sdk.android:crashlytics:' + crashlyticsVersion) { // see top part of this file
         transitive = true
     }
-    
-    implementation project.properties.appCompatXVersion
-    implementation project.properties.mediaXVersion // exoplayer fix
-    implementation project.properties.recycleViewXVersion // exoplayer fix
-    implementation project.properties.constraintLayoutXVersion
 
-    implementation project.properties.gsonVersion
-    implementation project.properties.jsonPathVersion
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
+    implementation 'androidx.media:media:' + appCompatXLibraryVersion // exoplayer fix
+    implementation 'androidx.recyclerview:recyclerview:' + appCompatXLibraryVersion // exoplayer fix
+    implementation 'androidx.constraintlayout:constraintlayout:' + constraintLayoutXVersion
 
-    implementation project.properties.nanoHttpdVersion
-    implementation project.properties.voiceOverlayVersion
+    implementation 'com.google.code.gson:gson:' + gsonVersion
+    implementation 'com.jayway.jsonpath:json-path:' + jsonPathVersion
 
-    implementation project.properties.okhttpVersion
-    implementation project.properties.ottoVersion
+    implementation 'org.nanohttpd:nanohttpd:' + nanoHttpdVersion
+    implementation 'com.algolia.instantsearch:voice:' + voiceOverlayVersion
 
-    implementation project.properties.diskLruCacheVersion
+    implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
+    implementation 'com.squareup:otto:' + ottoVersion
+
+    implementation 'com.jakewharton:disklrucache:' + diskLruCacheVersion
 }

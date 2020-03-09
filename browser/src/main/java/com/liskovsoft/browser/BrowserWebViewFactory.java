@@ -59,8 +59,9 @@ public class BrowserWebViewFactory implements WebViewFactory {
             w = new HeadersBrowserWebView(mNextHeaders, mContext.getApplicationContext(), attrs, defStyle, privateBrowsing);
         }
 
+        // moved to cache clear watcher
         // move to another place
-        w.clearCache(true);
+        //w.clearCache(true);
 
         // NOTE: scale moved to: com.liskovsoft.browser.BrowserSettings.getInitialScale()
 

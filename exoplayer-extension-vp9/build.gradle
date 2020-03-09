@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
@@ -24,6 +25,9 @@ android {
 }
 
 dependencies {
-    implementation project.properties.exoplayerCoreVersion
-    implementation project.properties.annotationXVersion
+    // used along with vp9 extension
+    // implementation 'com.amazon.android:exoplayer-core:' + amazonExoplayerVersion
+    implementation 'com.google.android.exoplayer:exoplayer-core:' + exoplayerVersion
+
+    implementation 'androidx.annotation:annotation:' + appCompatXLibraryVersion
 }

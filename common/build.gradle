@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
@@ -35,26 +36,26 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(project.properties.espressoCoreVersion, {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:' + espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation project.properties.junitVersion
-    testImplementation project.properties.robolectricVersion
+    testImplementation 'junit:junit:' + junitVersion
+    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
     implementation project(path: ':sharedutils')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project.properties.appCompatXVersion
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
 
-    implementation project.properties.ottoVersion
-    implementation project.properties.okhttpVersion
+    implementation 'com.squareup:otto:' + ottoVersion
+    implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
 
-    implementation project.properties.gsonVersion
+    implementation 'com.google.code.gson:gson:' + gsonVersion
 
-    implementation project.properties.multiDexVersion
+    implementation 'com.android.support:multidex:' + multiDexVersion
 
     //implementation project.properties.stethoVersion
 
-    implementation project.properties.diskLruCacheVersion
+    implementation 'com.jakewharton:disklrucache:' + diskLruCacheVersion
 }

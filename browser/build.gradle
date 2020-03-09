@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
@@ -47,18 +48,18 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(project.properties.espressoCoreVersion, {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:' + espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation project.properties.junitVersion
+    testImplementation 'junit:junit:' + junitVersion
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project.properties.appCompatXVersion
-    
-    implementation project.properties.okhttpVersion
-    implementation project.properties.ottoVersion
-    implementation project.properties.dnsjavaVersion
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
+
+    implementation 'com.squareup.okhttp3:okhttp:' + okhttpVersion
+    implementation 'com.squareup:otto:' + ottoVersion
+    implementation 'dnsjava:dnsjava:' + dnsjavaVersion
 
     implementation project(path: ':sharedutils')
 
@@ -68,8 +69,8 @@ dependencies {
     implementation project(path: ':appupdatechecker')
 
     // https://download.01.org/crosswalk/releases/crosswalk/android/stable/latest/
-    liteApi project.properties.xwalkSharedLibraryVersion
-    fullApi project.properties.xwalkCoreLibraryVersion
+    liteApi 'org.xwalk:xwalk_shared_library:' + xwalkSharedLibraryVersion
+    fullApi 'org.xwalk:xwalk_core_library:' + xwalkCoreLibraryVersion
 
     //liteApi project(':xwalk_shared_library-23.53.589.4')
     //fullApi project(':xwalk_core_library-23.53.589.4-arm')

@@ -1,3 +1,4 @@
+apply from: '../../SharedUtils/constants.gradle'
 apply plugin: 'com.android.library'
 
 
@@ -50,10 +51,10 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(project.properties.espressoCoreVersion, {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:' + espressoCoreVersion, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation project.properties.junitVersion
+    testImplementation 'junit:junit:' + junitVersion
 
     implementation project(path: ':sharedutils')
 
@@ -63,26 +64,26 @@ dependencies {
     implementation project(path: ':browser')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project.properties.appCompatXVersion
-    implementation project.properties.constraintLayoutXVersion
-    implementation project.properties.collectionXVersion
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
+    implementation 'androidx.constraintlayout:constraintlayout:' + constraintLayoutXVersion
+    implementation 'androidx.collection:collection:' + appCompatXLibraryVersion
 
-    // api project.properties.amazonExoplayerVersion
-    api project.properties.exoplayerVersion
+    api 'com.amazon.android:exoplayer:' + amazonExoplayerVersion
+    // api 'com.google.android.exoplayer:exoplayer:' + exoplayerVersion
 
-    // implementation project.properties.amazonExoplayerOkHttpVersion
-    implementation project.properties.exoplayerOkHttpVersion
+    implementation 'com.amazon.android:extension-okhttp:' + amazonExoplayerVersion
+    // implementation 'com.google.android.exoplayer:extension-okhttp:' + exoplayerVersion
 
     // include vp9 extension
     // NOTE: NoSuchMethodError when using 'transitive' prop
     // implementation project(path: ':exoplayer-extension-vp9')
 
-    implementation project.properties.previewSeekBarDevVersion
-    implementation project.properties.previewSeekBarExoDevVersion
+    implementation 'com.github.yuliskov.PreviewSeekBar:previewseekbar:' + previewSeekBarDevVersion
+    implementation 'com.github.yuliskov.PreviewSeekBar:previewseekbar-exoplayer:' + previewSeekBarExoDevVersion
 
-    implementation project.properties.glideVersion
-    annotationProcessor project.properties.annotationXVersion
-    annotationProcessor project.properties.glideCompilerVersion
+    implementation 'com.github.bumptech.glide:glide:' + glideVersion
+    annotationProcessor 'com.github.bumptech.glide:compiler:' + glideVersion
+    annotationProcessor 'androidx.annotation:annotation:' + appCompatXLibraryVersion
 
-    implementation project.properties.multiDexVersion
+    implementation 'com.android.support:multidex:' + multiDexVersion
 }
