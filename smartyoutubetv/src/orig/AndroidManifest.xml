@@ -71,7 +71,8 @@
         <activity android:name=".bootstrap.BootstrapActivity"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
                   android:windowSoftInputMode="adjustResize"
-                  android:noHistory="true">
+                  android:noHistory="true"
+                  tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

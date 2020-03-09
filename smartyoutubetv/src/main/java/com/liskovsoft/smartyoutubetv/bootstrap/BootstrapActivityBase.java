@@ -17,6 +17,7 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public abstract class BootstrapActivityBase extends ExceptionBootstrapActivity {
     private static final String TAG = BootstrapActivityBase.class.getSimpleName();
+    private static boolean sInitDone;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -24,13 +25,18 @@ public abstract class BootstrapActivityBase extends ExceptionBootstrapActivity {
 
         super.onCreate(icicle);
 
-        initLogger();
-        setupCrashLogs();
+        if (!sInitDone) {
+            initLogger();
+            setupCrashLogs();
+        }
+
         setupFonSize();
         makeActivityFullscreen();
         makeActivityHorizontal();
         hideTitleBar();
         uninstallOldVersions();
+
+        sInitDone = true;
     }
 
     private void initLogger() {

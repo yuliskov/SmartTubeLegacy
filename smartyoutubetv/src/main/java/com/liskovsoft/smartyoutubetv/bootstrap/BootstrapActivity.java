@@ -37,6 +37,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
     protected void onCreate(Bundle savedInstanceState) {
         // do it before view instantiation
         initPrefs();
+
         tryToRestoreLastActivity();
 
         super.onCreate(savedInstanceState);
@@ -162,5 +163,14 @@ public class BootstrapActivity extends BootstrapActivityBase {
                 view.enable();
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "On new intent");
+        super.onNewIntent(intent);
+
+        setIntent(intent);
+        tryToRestoreLastActivity();
     }
 }
