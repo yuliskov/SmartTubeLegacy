@@ -134,7 +134,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     private void moveToTop(GenericFragment fragment) {
         if (!isInitialized(fragment)) {
-            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
+            String className = fragment != null ? fragment.getClass().getSimpleName() : "null";
+            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + className);
             return;
         }
 
@@ -203,7 +204,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private boolean isInitialized(GenericFragment fragment) {
-        return ((Fragment) fragment).getView() != null;
+        return fragment != null && ((Fragment) fragment).getView() != null;
     }
 
     @Override

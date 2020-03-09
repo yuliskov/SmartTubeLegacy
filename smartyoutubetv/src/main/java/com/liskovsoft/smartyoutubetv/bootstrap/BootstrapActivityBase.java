@@ -25,8 +25,9 @@ public abstract class BootstrapActivityBase extends ExceptionBootstrapActivity {
 
         super.onCreate(icicle);
 
+        initLogger();
+
         if (!sInitDone) {
-            initLogger();
             setupCrashLogs();
         }
 
