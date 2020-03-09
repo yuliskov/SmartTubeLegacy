@@ -78,7 +78,9 @@ public class WebViewJavaScriptInterface {
     public String getAppVersion() {
         String mode = CommonApplication.getPreferences().getDefaultDisplayMode();
         String modeString = mode == null ? "" : " " + mode;
-        return AppInfoHelpers.getAppVersion(mContext) + modeString;
+        int dpi = Helpers.getDeviceDpi(mContext);
+        String dpiString = dpi == 0 ? "" : " " + dpi + " dpi";
+        return AppInfoHelpers.getAppVersion(mContext) + modeString + dpiString;
     }
 
     @JavascriptInterface
