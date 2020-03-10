@@ -16,7 +16,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(Activity context) {
         super(context);
 
-        //addHandler(new ForceNewUIHandler(context));
+        addHandler(new ForceNewUIHandler(context));
 
         addHandler(new AdBlockPermissionsHandler(context, this));
 

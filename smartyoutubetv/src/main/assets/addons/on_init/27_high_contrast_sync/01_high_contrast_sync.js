@@ -20,4 +20,4 @@ function HighContrastSyncAddon() {
     };
 }
 
-new HighContrastSyncAddon().run();
+// new HighContrastSyncAddon().run();
