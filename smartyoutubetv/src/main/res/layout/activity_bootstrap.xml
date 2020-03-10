@@ -5,12 +5,12 @@
                 android:layout_height="match_parent"
                 android:background="@color/youtube_background">
 
-    <TextView android:id="@+id/bootstrap_title_message" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginTop="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
+    <TextView android:id="@+id/bootstrap_title_message" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginTop="@dimen/bootstrap_margin_top" android:textSize="@dimen/bootstrap_title_size" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_main_title"/>
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_centerVertical="true" android:layout_centerHorizontal="true">
         <include layout="@layout/bootstrap_launchers_row"/>
 
         <include layout="@layout/bootstrap_buttons_row"/>
     </LinearLayout>
-    <TextView android:id="@+id/tip_text" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="60dp" android:textSize="30sp" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
+    <TextView android:id="@+id/tip_text" android:gravity="center_horizontal" android:maxLines="1" android:layout_marginBottom="@dimen/bootstrap_margin_bottom" android:textSize="@dimen/bootstrap_tip_size" android:textColor="@color/white" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bootstrap_bottom_title"/>
 </RelativeLayout>

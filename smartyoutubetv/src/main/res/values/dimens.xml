@@ -3,4 +3,17 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_size_dp">15dp</dimen>
+    <dimen name="large_button_width">170dp</dimen>
+    <dimen name="large_button_height">110dp</dimen>
+    <dimen name="large_button_image_width">100dp</dimen>
+    <dimen name="large_button_image_height">70dp</dimen>
+    <dimen name="large_button_image_padding_left">50dp</dimen>
+    <dimen name="large_button_image_padding_right">50dp</dimen>
+    <dimen name="large_button_text_size">10sp</dimen>
+    <dimen name="large_button_margin_bottom">20dp</dimen>
+    <dimen name="loading_tips_size">30sp</dimen>
+    <dimen name="bootstrap_title_size">30sp</dimen>
+    <dimen name="bootstrap_margin_top">60dp</dimen>
+    <dimen name="bootstrap_margin_bottom">60dp</dimen>
+    <dimen name="bootstrap_tip_size">30sp</dimen>
 </resources>
