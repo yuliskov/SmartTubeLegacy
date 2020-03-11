@@ -37,15 +37,16 @@ public class BackgroundActionManager {
             return true;
         }
 
+        boolean closedRecently = (System.currentTimeMillis() - mExitTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
-        if (mSameVideo && mIsOpened) {
+        if (mSameVideo && (mIsOpened || closedRecently)) {
             Log.d(TAG, "Cancel playback: Same video.");
             return true;
         }
 
-        boolean closedRecently = (System.currentTimeMillis() - mExitTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
 
-        if (closedRecently) {
+        if (isNotPlaylist && closedRecently) {
             Log.d(TAG, "Cancel playback: Video closed recently.");
             return true;
         }
