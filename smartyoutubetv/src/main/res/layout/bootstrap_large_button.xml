@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- android:background="@drawable/bootstrap_button_selector" -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/bootstrap_button_wrapper"
-              android:layout_width="@dimen/large_button_width" android:layout_height="@dimen/large_button_height"
-              android:gravity="center" android:orientation="vertical" android:weightSum="1"
+              android:layout_width="@dimen/bootstrap_large_button_width"
+              android:layout_height="@dimen/bootstrap_large_button_height"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:weightSum="1"
               android:layout_margin="0dp"
-              android:focusable="true" android:clickable="true" android:descendantFocusability="blocksDescendants">
+              android:focusable="true"
+              android:clickable="true"
+              android:descendantFocusability="blocksDescendants">
     <LinearLayout android:id="@+id/bootstrap_button_content"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -14,21 +20,20 @@
                   android:weightSum="1"
                   android:padding="5dp">
         <ImageView android:id="@+id/bootstrap_button_image"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
                    app:srcCompat="@mipmap/ic_banner_main"
-                   android:paddingLeft="@dimen/large_button_image_padding_left"
-                   android:paddingRight="@dimen/large_button_image_padding_right"
+                   android:padding="@dimen/bootstrap_large_button_image_padding"
                    android:layout_margin="0dp"
                    android:clickable="false"
                    android:focusable="false"
                    android:layout_weight="1"/>
         <TextView android:id="@+id/bootstrap_button_text"
                   android:text="Best fo modelA, modelB"
-                  android:layout_marginBottom="@dimen/large_button_margin_bottom"
+                  android:layout_marginBottom="@dimen/bootstrap_large_button_margin_bottom"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_weight="4"
-                  android:textSize="@dimen/large_button_text_size"/>
+                  android:textSize="@dimen/bootstrap_button_text_size"/>
     </LinearLayout>
 </LinearLayout>

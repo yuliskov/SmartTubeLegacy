@@ -37,7 +37,7 @@
               android:gravity="center_horizontal"
               android:maxLines="1"
               android:layout_marginBottom="60dp"
-              android:textSize="@dimen/loading_tips_size"
+              android:textSize="@dimen/bootstrap_loading_tips_size"
               android:textColor="@color/white"
               android:layout_alignParentBottom="true"
               android:layout_width="match_parent"

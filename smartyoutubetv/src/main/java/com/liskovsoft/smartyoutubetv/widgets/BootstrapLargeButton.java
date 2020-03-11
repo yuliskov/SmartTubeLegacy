@@ -21,9 +21,9 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
     private LinearLayout mContent;
     private ImageView mImage;
     private TextView mText;
-    private final int PADDING = Utils.convertDpToPixel(15, getContext());
-    private float mNormalTextSize;
-    private float mZoomedTextSize;
+    private int mPaddingPx;
+    private float mNormalTextSizeDp;
+    private float mZoomedTextSizeDp;
 
     public BootstrapLargeButton(Context context) {
         super(context);
@@ -59,17 +59,18 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
     }
 
     private void init() {
+        calculateSizes();
         inflate();
         applyDefaultAttributes();
         transferClicks();
         setOnFocus();
-        calculateTextSize();
         setDefaultState();
     }
 
-    private void calculateTextSize() {
-        mNormalTextSize = Utils.convertPixelsToDp(mText.getTextSize(), this.getContext());
-        mZoomedTextSize = mNormalTextSize * 1.3f;
+    private void calculateSizes() {
+        mNormalTextSizeDp = Utils.convertPixelsToDp(getResources().getDimension(R.dimen.bootstrap_button_text_size), getContext());
+        mZoomedTextSizeDp = mNormalTextSizeDp * 1.3f;
+        mPaddingPx = (int) getResources().getDimension(R.dimen.bootstrap_large_button_padding);
     }
 
     private void setDefaultState() {
@@ -104,10 +105,10 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
         super.makeUnfocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextUnfocused);
         mText.setTextColor(Color.DKGRAY);
-        mText.setTextSize(mNormalTextSize);
+        mText.setTextSize(mNormalTextSizeDp);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
         mContent.setBackgroundColor(semitransparentBlack);
-        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
+        mWrapper.setPadding(mPaddingPx, mPaddingPx, mPaddingPx, mPaddingPx);
         setImageColor();
     }
 
@@ -115,7 +116,7 @@ public class BootstrapLargeButton extends BootstrapButtonBase {
         super.makeFocused();
         //text.setTextAppearance(BootstrapBadgeButton.this.getContext(), R.style.BootstrapButtonTextFocused);
         mText.setTextColor(Color.BLACK);
-        mText.setTextSize(mZoomedTextSize);
+        mText.setTextSize(mZoomedTextSizeDp);
         mContent.setBackgroundColor(Color.WHITE);
         mWrapper.setPadding(0, 0, 0, 0);
         resetImageColor();

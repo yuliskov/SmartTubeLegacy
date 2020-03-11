@@ -27,9 +27,9 @@ public class BootstrapTextButton extends BootstrapButtonBase {
     private LinearLayout mWrapper;
     private LinearLayout mContent;
     private CheckBox mChkbox;
-    private final int PADDING = Utils.convertDpToPixel(5, getContext());
-    private float mNormalTextSize;
-    private float mZoomedTextSize;
+    private int mPaddingPx;
+    private float mNormalTextSizeDp;
+    private float mZoomedTextSizeDp;
     private List<OnCheckedChangeListener> mCheckedListeners = new ArrayList<>();
 
     public BootstrapTextButton(Context context) {
@@ -69,17 +69,18 @@ public class BootstrapTextButton extends BootstrapButtonBase {
     }
 
     private void init() {
+        calculateSizes();
         inflate();
         applyDefaultAttributes();
         transferClicks();
         setOnFocus();
-        calculateTextSize();
         setDefaultState();
     }
 
-    private void calculateTextSize() {
-        mNormalTextSize = Utils.convertPixelsToDp(mChkbox.getTextSize(), this.getContext());
-        mZoomedTextSize = mNormalTextSize * 1.3f;
+    private void calculateSizes() {
+        mNormalTextSizeDp = Utils.convertPixelsToDp(getResources().getDimension(R.dimen.bootstrap_button_text_size), getContext());
+        mZoomedTextSizeDp = mNormalTextSizeDp * 1.3f;
+        mPaddingPx = (int) getResources().getDimension(R.dimen.bootstrap_text_button_padding);
     }
 
     private void setDefaultState() {
@@ -119,16 +120,16 @@ public class BootstrapTextButton extends BootstrapButtonBase {
     protected void makeUnfocused() {
         super.makeUnfocused();
         mChkbox.setTextColor(Color.DKGRAY);
-        mChkbox.setTextSize(mNormalTextSize);
+        mChkbox.setTextSize(mNormalTextSizeDp);
         int semitransparentBlack = Color.argb(70, 0, 0, 0);
         mContent.setBackgroundColor(semitransparentBlack);
-        mWrapper.setPadding(PADDING, PADDING, PADDING, PADDING);
+        mWrapper.setPadding(mPaddingPx, mPaddingPx, mPaddingPx, mPaddingPx);
     }
 
     protected void makeFocused() {
         super.makeFocused();
         mChkbox.setTextColor(Color.BLACK);
-        mChkbox.setTextSize(mZoomedTextSize);
+        mChkbox.setTextSize(mZoomedTextSizeDp);
         mContent.setBackgroundColor(Color.WHITE);
         mWrapper.setPadding(0, 0, 0, 0);
     }

@@ -17,11 +17,8 @@ public class BackgroundActionManager {
      * see {@link ExoInterceptor#intercept(String)} method
      */
     private long mExitTime;
-    private long mPrevCallTime;
     private boolean mIsOpened;
     private String mCurrentUrl;
-    private boolean mClosedRecently;
-    private boolean mCalledRecently;
     private boolean mSameVideo;
     private final SmartPreferences mPrefs;
 
@@ -31,28 +28,27 @@ public class BackgroundActionManager {
 
     public boolean cancelPlayback() {
         if (mCurrentUrl == null || !mCurrentUrl.contains(ExoInterceptor.URL_VIDEO_DATA)) {
-            Log.d(TAG, "Cancel playback: No video data");
+            Log.d(TAG, "Cancel playback: No video data.");
             return true;
         }
 
         if (getVideoId(mCurrentUrl) == null) {
-            Log.d(TAG, "Cancel playback: Supplied url doesn't contain video info");
+            Log.d(TAG, "Cancel playback: Supplied url doesn't contain video info.");
             return true;
         }
 
-        if (mSameVideo && (mIsOpened || mClosedRecently)) {
-            Log.d(TAG, "Cancel playback: Same video");
+
+        if (mSameVideo && mIsOpened) {
+            Log.d(TAG, "Cancel playback: Same video.");
             return true;
         }
 
-        //if (!isMirroring()) {
-        //    long prevOpenInterval = System.currentTimeMillis() - mPrefs.getVideoOpenTime();
-        //
-        //    if (prevOpenInterval > SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS) {
-        //        Log.d(TAG, "Cancel playback: User didn't clicked on the video");
-        //        return true;
-        //    }
-        //}
+        boolean closedRecently = (System.currentTimeMillis() - mExitTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+
+        if (closedRecently) {
+            Log.d(TAG, "Cancel playback: Video closed recently.");
+            return true;
+        }
 
         return false;
     }
@@ -71,7 +67,7 @@ public class BackgroundActionManager {
     }
 
     public void init(String url) {
-        measurePrevCallTime();
+        //onInitMeasure();
         recordUrl(url);
 
         mCurrentUrl = url;
@@ -88,19 +84,6 @@ public class BackgroundActionManager {
         if (mSameVideo) {
             Log.d(TAG, "The same video encountered");
         }
-    }
-
-    private void measurePrevCallTime() {
-        long elapsedTimeAfterClose = System.currentTimeMillis() - mExitTime;
-        long elapsedTimeAfterCall = System.currentTimeMillis() - mPrevCallTime;
-
-        Log.d(TAG, "Elapsed time after close: " + elapsedTimeAfterClose);
-        Log.d(TAG, "Elapsed time after call: " + elapsedTimeAfterCall);
-
-        mClosedRecently = elapsedTimeAfterClose < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-        mCalledRecently = elapsedTimeAfterCall < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-
-        mPrevCallTime = System.currentTimeMillis();
     }
 
     public void onOpen() {
