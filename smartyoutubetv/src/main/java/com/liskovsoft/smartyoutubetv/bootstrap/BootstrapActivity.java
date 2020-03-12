@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.dialogs.MultiChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -120,7 +121,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
         intent.setClassName(ctx, clazz);
 
         try {
-            Log.d(TAG, "Starting from intent: " + intent.toUri(0));
+            Log.d(TAG, "Starting from intent: " + Helpers.dumpIntent(intent));
             startActivity(intent);
         } catch (ActivityNotFoundException e) { // activity's name changed (choose again)
             e.printStackTrace();
@@ -133,7 +134,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(ctx, clazz);
 
-        Log.d(TAG, "Starting from intent: " + intent.toUri(0));
+        Log.d(TAG, "Starting from intent: " + Helpers.dumpIntent(intent));
         startActivity(intent);
     }
 

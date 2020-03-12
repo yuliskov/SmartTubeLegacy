@@ -694,7 +694,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
                 endTag("", "S");
 
-                totalTime = totalTime + Integer.parseInt(segment.getRepeatCount()) * Integer.parseInt(segment.getDuration());
+                int segmentDuration = Integer.parseInt(segment.getDuration());
+                int segmentRepeatCount = Integer.parseInt(segment.getRepeatCount()) + 1; // index zero based
+
+                totalTime = totalTime + (segmentRepeatCount * segmentDuration);
             }
 
             endTag("", "SegmentTimeline");

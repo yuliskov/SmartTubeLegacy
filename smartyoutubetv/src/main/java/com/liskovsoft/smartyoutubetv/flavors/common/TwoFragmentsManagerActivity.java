@@ -210,7 +210,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void openExoPlayer(final Intent intent, final boolean pauseBrowser) {
         runOnUiThread(() -> {
-            Log.d(TAG, "opening player for intent=" + intent);
+            Log.d(TAG, "opening player for intent=" + Helpers.dumpIntent(intent));
             setActiveFragment(mPlayerFragment, pauseBrowser);
             mPlayerFragment.openVideo(intent);
             xwalkFix();
@@ -232,7 +232,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public void onPlayerAction(Intent action) {
-        Log.d(TAG, "on receive player action: " + action);
+        Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
         if (mIsStandAlone && isClosePlayer(action)) {
             finish();

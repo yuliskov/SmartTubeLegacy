@@ -3,6 +3,9 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks;
 import android.content.Context;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.MultiDialogSource;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishHistoryDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishRecommendedDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishSubscriptionsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AltPlayerMappingDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
@@ -71,6 +74,9 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new PlayerUIShowTimeoutDialogItem(mContext));
         mItems.add(new ChannelsCloseAppDialogItem(mContext));
         mItems.add(new LowerPlayerBufferTypeDialogItem(mContext));
+        mItems.add(new ATVPublishHistoryDialogItem(mContext));
+        mItems.add(new ATVPublishRecommendedDialogItem(mContext));
+        mItems.add(new ATVPublishSubscriptionsDialogItem(mContext));
     }
 
     @Override
