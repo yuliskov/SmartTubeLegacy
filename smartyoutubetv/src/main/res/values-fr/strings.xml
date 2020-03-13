@@ -105,10 +105,10 @@
     <string name="message_install_player">S\'il vous plaît installer MXPlayer ou VLC</string>
     <string name="message_enable_web_server">S\'il vous plaît activer le serveur Web dans les paramètres de Kodi</string>
     <string name="message_install_kodi">Il semble que Kodi n\'ait pas été installé</string>
-    <string name="enable_ad_block">Activez le bloc d’annonces</string>
+    <string name="enable_ad_block">Activez le blocage d’annonces</string>
     <string name="ad_blocking_permissions">Cette application peut filtrer les annonces et autres contenus pour améliorer l'expérience utilisateur.\nEtes-vous d’accord pour le faire?</string>
     <string name="player_ui_show_timeout">Pro: diminuer le délai d'affichage de l'interface utilisateur du lecteur</string>
-    <string name="channels_close_app">Canaux Android TV: fermer l'application avec le bouton Retour</string>
+    <string name="channels_close_app">Chaînes Android TV: fermer l'application avec le bouton Retour</string>
     <string name="lower_player_buffer">PRO: Tampon de lecture inférieur</string>
     <string name="tweak_publish_history_playlist">Publier la playlist historique aux recommandations</string>
     <string name="tweak_publish_recommended_playlist">Publier la playlist recommandée aux recommandations</string>
