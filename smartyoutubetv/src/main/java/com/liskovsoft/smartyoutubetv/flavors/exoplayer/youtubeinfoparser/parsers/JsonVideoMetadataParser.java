@@ -54,6 +54,7 @@ public class JsonVideoMetadataParser extends JsonParserBase {
         info.setDescription(str(DESCRIPTION));
         info.setVideoId(str(VIDEO_ID));
         info.setChannelId(str(CHANNEL_ID));
+        info.setLengthSeconds(str(LENGTH_SECONDS));
 
         return info;
     }
