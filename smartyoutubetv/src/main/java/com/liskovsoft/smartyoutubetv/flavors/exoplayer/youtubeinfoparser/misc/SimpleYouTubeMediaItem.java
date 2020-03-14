@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SimpleYouTubeMediaItem implements MediaItem {
     private static final String FORMAT_STREAM_TYPE_OTF = "FORMAT_STREAM_TYPE_OTF";
+
     private class Range {
         @SerializedName("start")
         String start;
@@ -68,6 +69,8 @@ public class SimpleYouTubeMediaItem implements MediaItem {
      */
     @SerializedName("type")
     private String mFormat;
+    private String mTemplateMetadataUrl;
+    private String mTemplateSegmentUrl;
 
     public SimpleYouTubeMediaItem(String ITag) {
         mITag = ITag;
@@ -325,6 +328,27 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     @Override
     public boolean isOTF() {
         return mFormat != null && mFormat.equals(FORMAT_STREAM_TYPE_OTF);
+    }
+
+    /**
+     * Contains segments list and durations (required for stream switch!!!)
+     */
+    @Override
+    public String getOtfInitUrl() {
+        if (mTemplateMetadataUrl == null && getUrl() != null) {
+            mTemplateMetadataUrl = getUrl() + "&sq=0";
+        }
+
+        return mTemplateMetadataUrl;
+    }
+
+    @Override
+    public String getOtfTemplateUrl() {
+        if (mTemplateSegmentUrl == null && getUrl() != null) {
+            mTemplateSegmentUrl = getUrl() + "&sq=$Number$";
+        }
+
+        return mTemplateSegmentUrl;
     }
 
     @Override

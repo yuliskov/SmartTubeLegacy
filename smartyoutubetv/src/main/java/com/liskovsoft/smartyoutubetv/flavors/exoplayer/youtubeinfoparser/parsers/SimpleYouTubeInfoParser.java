@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.UrlListBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.SimpleUrlListBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
@@ -13,6 +14,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import java.io.InputStream;
 
 public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
+    private static final String TAG = SimpleYouTubeInfoParser.class.getSimpleName();
     private final String[] mContent;
 
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
@@ -112,6 +114,8 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
             if (!mUrlListBuilder.isEmpty()) {
                 mMediaFoundCallback.onUrlListFound(mUrlListBuilder.buildUriList());
             }
+
+            Log.d(TAG, "Media parsing done!");
 
             mMediaFoundCallback.onDone();
         }

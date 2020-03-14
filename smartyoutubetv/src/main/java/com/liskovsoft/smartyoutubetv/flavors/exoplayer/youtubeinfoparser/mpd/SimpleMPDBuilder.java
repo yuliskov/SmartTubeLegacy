@@ -40,11 +40,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
-    private Set<MediaItem> mMP4Audios;
-    private Set<MediaItem> mMP4Videos;
-    private Set<MediaItem> mWEBMAudios;
-    private Set<MediaItem> mWEBMVideos;
-    private List<Subtitle> mSubs;
+    private final Set<MediaItem> mMP4Audios;
+    private final Set<MediaItem> mMP4Videos;
+    private final Set<MediaItem> mWEBMAudios;
+    private final Set<MediaItem> mWEBMVideos;
+    private final List<Subtitle> mSubs;
+    private final OtfSegmentParser mSegmentParser;
 
     public SimpleMPDBuilder() {
         this(new SimpleYouTubeGenericInfo());
@@ -64,6 +65,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         mWEBMAudios = new TreeSet<>(comp);
         mWEBMVideos = new TreeSet<>(comp);
         mSubs = new ArrayList<>();
+        mSegmentParser = new OtfSegmentParser();
 
         initXmlSerializer();
     }
@@ -195,6 +197,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
         for (MediaItem item : items) {
             if (item.getGlobalSegmentList() != null) {
                 writeGlobalSegmentList(item);
+                continue;
+            }
+
+            if (item.isOTF() && mSegmentParser.parseCached(item.getOtfInitUrl()) == null) {
                 continue;
             }
 
@@ -648,9 +654,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "duration", "5100"); // segment duration (units)
         attribute("", "media", item.getUrl() + "&sq=$Number$");
         attribute("", "initialization", item.getUrl() + "&sq=0"); // segments list and durations (required for stream switch!!!)
-        attribute("", "startNumber", "0");
-
-        writeOtfSegmentTimeline(item);
+        attribute("", "startNumber", "1");
 
         endTag("", "SegmentTemplate");
     }
@@ -663,22 +667,23 @@ public class SimpleMPDBuilder implements MPDBuilder {
         //  </SegmentTimeline>
         //</SegmentTemplate>
 
-        startTag("", "SegmentTemplate");
+        List<OtfSegment> segments = mSegmentParser.parseCached(item.getOtfInitUrl());
 
-        attribute("", "timescale", "1000"); // units per second
-        //attribute("", "duration", "5100"); // segment duration (units)
-        attribute("", "media", item.getUrl() + "&sq=$Number$");
-        attribute("", "initialization", item.getUrl() + "&sq=0"); // segments list and durations (required for stream switch!!!)
-        attribute("", "startNumber", "1");
+        if (segments != null && segments.size() > 0) {
+            startTag("", "SegmentTemplate");
 
-        writeOtfSegmentTimeline(item);
+            attribute("", "timescale", "1000"); // units per second
+            attribute("", "media", item.getOtfTemplateUrl());
+            attribute("", "initialization", item.getOtfInitUrl());
+            attribute("", "startNumber", "1");
 
-        endTag("", "SegmentTemplate");
+            writeOtfSegmentTimeline(segments);
+
+            endTag("", "SegmentTemplate");
+        }
     }
 
-    private void writeOtfSegmentTimeline(MediaItem item) {
-        List<OtfSegment> segments = OtfSegmentParser.parse(item.getUrl() + "&sq=0");
-
+    private void writeOtfSegmentTimeline(List<OtfSegment> segments) {
         if (segments != null && segments.size() > 0) {
             startTag("", "SegmentTimeline");
 

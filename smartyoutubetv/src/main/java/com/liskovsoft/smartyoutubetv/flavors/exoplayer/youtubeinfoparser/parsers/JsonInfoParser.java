@@ -6,6 +6,7 @@ import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.TypeRef;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeMediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.OtfSegmentParser.OtfSegment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
 
 import java.util.ArrayList;
@@ -303,6 +304,8 @@ public class JsonInfoParser {
         void setQualityLabel(String qualityLabel);
         String getFormat();
         boolean isOTF();
+        String getOtfInitUrl();
+        String getOtfTemplateUrl();
 
         // Other/Regular
         String getQuality();

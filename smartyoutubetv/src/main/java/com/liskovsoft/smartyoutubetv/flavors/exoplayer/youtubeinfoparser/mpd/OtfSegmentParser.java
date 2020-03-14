@@ -14,18 +14,48 @@ import java.util.regex.Pattern;
 
 public class OtfSegmentParser {
     private static final String TAG = OtfSegmentParser.class.getSimpleName();
+    private List<OtfSegment> mCachedSegments;
+    private boolean mAlreadyParsed;
 
-    public static List<OtfSegment> parse(String url) {
-        Response response = OkHttpHelpers.doGetOkHttpRequest(url);
-
-        if (response.body() != null) {
-            return parse(response.body().charStream());
+    public List<OtfSegment> parseCached(String url) {
+        if (mCachedSegments == null && !mAlreadyParsed) {
+            mCachedSegments = parse(url);
+            mAlreadyParsed = true;
         }
 
-        return null;
+        return mCachedSegments;
     }
 
-    public static List<OtfSegment> parse(Reader stream) {
+    public List<OtfSegment> parseCached(Reader stream) {
+        if (mCachedSegments == null && !mAlreadyParsed) {
+            mCachedSegments = parse(stream);
+            mAlreadyParsed = true;
+        }
+
+        return mCachedSegments;
+    }
+
+    public List<OtfSegment> parse(String url) {
+        List<OtfSegment> result = null;
+
+        if (url != null) {
+            Response response = OkHttpHelpers.doGetOkHttpRequest(url);
+
+            if (response != null && response.body() != null) {
+                result = parse(response.body().charStream());
+            } else {
+                Log.e(TAG, "Can't parse url " + url + ". Response is empty.");
+            }
+        } else {
+            Log.e(TAG, "Can't parse url. Url is empty.");
+        }
+
+        return result;
+    }
+
+    public List<OtfSegment> parse(Reader stream) {
+        List<OtfSegment> result = null;
+
         BufferedReader bufferedReader = new BufferedReader(stream);
 
         Pattern segmentPattern = Pattern.compile("Segment-Durations-Ms: (.*)");
@@ -35,7 +65,8 @@ public class OtfSegmentParser {
             while ((currentLine = bufferedReader.readLine()) != null) {
                 Matcher segmentPatternMatcher = segmentPattern.matcher(currentLine);
                 if (segmentPatternMatcher.matches()) {
-                    return splitToSegments(segmentPatternMatcher.group(1));
+                    result = splitToSegments(segmentPatternMatcher.group(1));
+                    break;
                 }
             }
         } catch (IOException e) {
@@ -43,13 +74,13 @@ public class OtfSegmentParser {
             e.printStackTrace();
         }
 
-        return null;
+        return result;
     }
 
     /**
      * RegEx test: https://www.freeformatter.com/java-regex-tester.html#ad-output
      */
-    private static List<OtfSegment> splitToSegments(String rawString) {
+    private List<OtfSegment> splitToSegments(String rawString) {
         // Segment-Durations-Ms: 5120(r=192),5700,
 
         ArrayList<OtfSegment> list = new ArrayList<>();
@@ -65,13 +96,16 @@ public class OtfSegmentParser {
                 int findNum = 0;
                 OtfSegment segment = new OtfSegment();
 
+                // example pattern: 5120(r=192)
                 while (segmentPatternMatcher.find()) {
                     findNum++;
-                    if (findNum == 1) {
+                    if (findNum == 1) { // 5120
                         segment.setDuration(segmentPatternMatcher.group(0));
                         list.add(segment); // at least duration should be present
-                    } else if (findNum == 2) {
+                    } else if (findNum == 2) { // 192
                         segment.setRepeatCount(segmentPatternMatcher.group(0));
+                    } else {
+                        break;
                     }
                 }
             }
