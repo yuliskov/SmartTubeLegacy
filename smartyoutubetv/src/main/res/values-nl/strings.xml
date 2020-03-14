@@ -108,4 +108,7 @@
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
     <string name="channels_close_app">Android TV Kanalen: App sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Bufferen van player verminderen</string>
+    <string name="tweak_publish_history_playlist">Geschiedenis playlist weergeven bij Suggesties</string>
+    <string name="tweak_publish_recommended_playlist">Aanbevolen playlist weergeven bij Suggesties</string>
+    <string name="tweak_publish_subscriptions_playlist">Abonnementen playlist weergeven bij Suggesties</string>
 </resources>
