@@ -114,7 +114,17 @@ public class PlayerInitializer {
         }
 
         long no = Long.parseLong(num);
-        String count = String.format(Locale.getDefault(), "%,d", no);
+        String count;
+
+        // Android 7.0 workaround
+        // https://stackoverflow.com/questions/55656107/weird-crashes-java-lang-arithmeticexception-divide-by-zero
+        try {
+            count = String.format(Locale.getDefault(), "%,d", no);
+        } catch (ArithmeticException e) {
+            e.printStackTrace();
+            count = String.format(Locale.US, "%,d", no);
+        }
+
         String views = mPlayerFragment.getString(R.string.view_count);
         return String.format("%s %s", count, views);
     }
