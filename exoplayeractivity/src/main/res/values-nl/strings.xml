@@ -29,15 +29,15 @@
     <string name="error_no_secure_decoder">Dit apparaat heeft geen veilige decoder voor <xliff:g id="mime_type">%1$s</xliff:g></string>
     <string name="error_querying_decoders">Opvragen apparaat decoders onmogelijk</string>
     <string name="error_instantiating_decoder">Bevestiging decoder onmogelijk <xliff:g id="decoder_name">%1$s</xliff:g></string>
-    <string name="error_unsupported_video">Media bevat video\'s, maar afgespelen op dit apparaat onmogelijk</string>
-    <string name="error_unsupported_audio">Media bevat audio, maar afgespelen op dit apparaat onmogelijk</string>
-    <string name="storage_permission_denied">Toegang tot apparaatopslag niet toegestaan</string>
+    <string name="error_unsupported_video">Media bevat video's, maar afspelen op dit apparaat onmogelijk</string>
+    <string name="error_unsupported_audio">Media bevat audio, maar afspelen op dit apparaat onmogelijk</string>
+    <string name="storage_permission_denied">Toegang tot apparaatopslag geweigerd</string>
     <string name="selection_disabled">Selectie uitgeschakeld</string>
     <string name="selection_default">Standaard</string>
-    <string name="sample_list_load_error">Opladen van ��n of meer voorbeeldlijsten mislukt</string>
+    <string name="sample_list_load_error">Opladen van een of meer voorbeeldlijsten mislukt</string>
     <string name="exo_like_desc">Leuk</string>
     <string name="captions">Ondertitels</string>
-    <string name="not_implemented_msg">Nog niet ge�mplementeerd</string>
+    <string name="not_implemented_msg">Nog niet geimplementeerd</string>
     <string name="published">Gepubliceerd</string>
     <string name="view_count">Aantal views</string>
     <string name="suggested_videos">Video Suggesties</string>
