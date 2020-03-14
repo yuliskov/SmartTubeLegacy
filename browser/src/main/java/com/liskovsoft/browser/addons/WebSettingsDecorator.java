@@ -6,6 +6,7 @@ import android.webkit.WebSettings;
 /**
  * TODO: deal with low API in WebSettings methods
  */
+@SuppressWarnings("NewApi")
 public abstract class WebSettingsDecorator extends WebSettings {
     protected WebSettings mWebSettings;
 

@@ -47,12 +47,12 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Response response = getResponse(url);
 
-        ResponseBody body = response.body();
-
-        if (body == null) {
-            Log.e(TAG, "Can't inject custom scripts into " + url + ". Response is empty.");
+        if (response == null || response.body() == null) {
+            Log.e(TAG, "Can't inject custom scripts into " + url + ". Response is empty: " + response);
             return null;
         }
+
+        ResponseBody body = response.body();
 
         InputStream result = body.byteStream();
 
