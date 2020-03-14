@@ -44,7 +44,7 @@ public class OtfSegmentParser {
             if (response != null && response.body() != null) {
                 result = parse(response.body().charStream());
             } else {
-                Log.e(TAG, "Can't parse url " + url + ". Response is empty.");
+                Log.e(TAG, "Can't parse url " + url + ". Response is " + response);
             }
         } else {
             Log.e(TAG, "Can't parse url. Url is empty.");
