@@ -40,7 +40,7 @@
     <string name="not_implemented_msg">Nog niet ge�mplementeerd</string>
     <string name="published">Gepubliceerd</string>
     <string name="view_count">Aantal views</string>
-    <string name="suggested_videos">Gesuggereerde video\'s</string>
+    <string name="suggested_videos">Video Suggesties</string>
     <string name="enable_autoframerate">Autoframerate</string>
     <string name="autoframerate_not_supported">Je apparaat ondersteunt Autoframerate niet</string>
     <string name="share_video">Delen</string>
