@@ -63,7 +63,7 @@ public class BackgroundActionManager {
     }
 
     public void onContinue() {
-        Log.d(TAG, "Video: on next");
+        Log.d(TAG, "Video: on continue");
         mContinueTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;
