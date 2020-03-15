@@ -9,6 +9,7 @@ import com.liskovsoft.m3uparser.m3u.models.Playlist;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
@@ -51,6 +52,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
         mPrefs = CommonApplication.getPreferences();
         mHistory = interceptor.getHistoryInterceptor();
+        PermissionHelpers.verifyStoragePermissions(mContext);
     }
 
     public static OnMediaFoundCallback create(Context context, ExoInterceptor interceptor) {
@@ -158,11 +160,13 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     private void initIntent(Intent intent) {
         if (mMpdContent != null) {
-            FileHelpers.streamToFile(mMpdContent, mMpdFile);
-            // NOTE: Don't use fromFile or you will get FileUriExposedException
-            //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
-            // VLC fix
-            intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
+            if (PermissionHelpers.hasStoragePermissions(mContext)) {
+                FileHelpers.streamToFile(mMpdContent, mMpdFile);
+                // NOTE: Don't use fromFile or you will get FileUriExposedException
+                //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
+                // VLC fix
+                intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
+            }
         } else if (mDashUrl != null) {
             intent.setDataAndType(mDashUrl, MIME_MP4); // mpd
         } else if (mHlsUrl != null) {
