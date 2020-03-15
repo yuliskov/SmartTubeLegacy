@@ -240,15 +240,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mBlockHandlers = true;
         clearPendingEvents();
 
-        boolean closePlayer =
-                intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false);
-
-        if (closePlayer) {
+        if (intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
+            intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
+            intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false)) {
             mPlayerClosed = true;
             mManager.onClose();
+        } else if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false)) {
+            mPlayerClosed = true;
+            mManager.onCancel();
         }
 
         if (mHistory != null) {

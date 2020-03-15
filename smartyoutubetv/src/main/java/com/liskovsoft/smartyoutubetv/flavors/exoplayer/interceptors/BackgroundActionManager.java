@@ -17,6 +17,7 @@ public class BackgroundActionManager {
      * see {@link ExoInterceptor#intercept(String)} method
      */
     private long mExitTime;
+    private long mCancelTime;
     private boolean mIsOpened;
     private String mCurrentUrl;
     private boolean mSameVideo;
@@ -51,6 +52,13 @@ public class BackgroundActionManager {
             return true;
         }
 
+        boolean cancelRecently = (System.currentTimeMillis() - mCancelTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+
+        if (cancelRecently) {
+            Log.d(TAG, "Cancel playback: User cancelled video.");
+            return true;
+        }
+
         return false;
     }
 
@@ -63,6 +71,7 @@ public class BackgroundActionManager {
 
     public void onCancel() {
         Log.d(TAG, "Video is canceled");
+        mCancelTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;
     }

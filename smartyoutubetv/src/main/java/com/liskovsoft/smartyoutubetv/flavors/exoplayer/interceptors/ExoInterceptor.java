@@ -128,7 +128,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
     public void closePlayer() {
         Intent intent = new Intent();
-        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        intent.putExtra(ExoPlayerFragment.BUTTON_NEXT, true);
         mSender.bindActions(intent);
         mManager.onClose();
     }
