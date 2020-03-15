@@ -9,40 +9,59 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OtfSegmentParser {
     private static final String TAG = OtfSegmentParser.class.getSimpleName();
+    private final boolean mCached;
     private List<OtfSegment> mCachedSegments;
     private boolean mAlreadyParsed;
 
-    public List<OtfSegment> parseCached(String url) {
-        if (mCachedSegments == null && !mAlreadyParsed) {
-            mCachedSegments = parse(url);
-            mAlreadyParsed = true;
-        }
-
-        return mCachedSegments;
-    }
-
-    public List<OtfSegment> parseCached(Reader stream) {
-        if (mCachedSegments == null && !mAlreadyParsed) {
-            mCachedSegments = parse(stream);
-            mAlreadyParsed = true;
-        }
-
-        return mCachedSegments;
+    public OtfSegmentParser(boolean cached) {
+        mCached = cached;
     }
 
     public List<OtfSegment> parse(String url) {
+        return parseInt(() -> parseInt(url));
+    }
+
+    public List<OtfSegment> parse(Reader stream) {
+        return parseInt(() -> parseInt(stream));
+    }
+
+    public List<OtfSegment> parseInt(Callable<List<OtfSegment>> callable) {
+        List<OtfSegment> result;
+
+        try {
+            if (mCached) {
+                if (mCachedSegments == null && !mAlreadyParsed) {
+                    mCachedSegments = callable.call();
+                    mAlreadyParsed = true;
+                }
+
+                result = mCachedSegments;
+            } else {
+                result = callable.call();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            result = null;
+        }
+
+        return result;
+    }
+
+    private List<OtfSegment> parseInt(String url) {
         List<OtfSegment> result = null;
 
         if (url != null) {
             Response response = OkHttpHelpers.doGetOkHttpRequest(url);
 
             if (response != null && response.body() != null) {
-                result = parse(response.body().charStream());
+                result = parseInt(response.body().charStream());
             } else {
                 Log.e(TAG, "Can't parse url " + url + ". Response is " + response);
             }
@@ -53,7 +72,7 @@ public class OtfSegmentParser {
         return result;
     }
 
-    public List<OtfSegment> parse(Reader stream) {
+    private List<OtfSegment> parseInt(Reader stream) {
         List<OtfSegment> result = null;
 
         BufferedReader bufferedReader = new BufferedReader(stream);

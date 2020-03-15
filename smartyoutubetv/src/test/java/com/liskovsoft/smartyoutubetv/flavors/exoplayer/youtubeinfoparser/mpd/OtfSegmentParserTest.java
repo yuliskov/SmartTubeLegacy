@@ -20,7 +20,7 @@ public class OtfSegmentParserTest {
     public void parseTest() {
         InputStream inputStream = TestHelpers.openResource("videoplayback.mp4");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        OtfSegmentParser otfSegmentParser = new OtfSegmentParser();
+        OtfSegmentParser otfSegmentParser = new OtfSegmentParser(true);
         List<OtfSegment> list = otfSegmentParser.parse(bufferedReader);
         assertThat(list).isNotEmpty().hasSize(8);
         assertThat(list.get(0).getRepeatCount()).isEqualTo("2");

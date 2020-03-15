@@ -65,7 +65,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         mWEBMAudios = new TreeSet<>(comp);
         mWEBMVideos = new TreeSet<>(comp);
         mSubs = new ArrayList<>();
-        mSegmentParser = new OtfSegmentParser();
+        mSegmentParser = new OtfSegmentParser(true);
 
         initXmlSerializer();
     }
@@ -200,7 +200,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 continue;
             }
 
-            if (item.isOTF() && mSegmentParser.parseCached(item.getOtfInitUrl()) == null) {
+            if (item.isOTF() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
                 continue;
             }
 
@@ -667,7 +667,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         //  </SegmentTimeline>
         //</SegmentTemplate>
 
-        List<OtfSegment> segments = mSegmentParser.parseCached(item.getOtfInitUrl());
+        List<OtfSegment> segments = mSegmentParser.parse(item.getOtfInitUrl());
 
         if (segments != null && segments.size() > 0) {
             startTag("", "SegmentTemplate");
