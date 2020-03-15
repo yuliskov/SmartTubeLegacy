@@ -110,7 +110,7 @@
     <string name="player_ui_show_timeout">Pro: diminuer le délai d\'affichage de l\'interface utilisateur du lecteur</string>
     <string name="channels_close_app">Chaînes Android TV: fermer l\'application avec le bouton Retour</string>
     <string name="lower_player_buffer">PRO: Descendre le tampon de lecture</string>
-    <string name="tweak_publish_history_playlist">Publier la playlist historique aux recommandations</string>
-    <string name="tweak_publish_recommended_playlist">Publier la playlist recommandée aux recommandations</string>
-    <string name="tweak_publish_subscriptions_playlist">Publier la playlist des abonnements aux recommandations</string>
+    <string name="tweak_publish_history_playlist">ATV: Publier la playlist historique aux recommandations</string>
+    <string name="tweak_publish_recommended_playlist">ATV: Publier la playlist recommandée aux recommandations</string>
+    <string name="tweak_publish_subscriptions_playlist">ATV: Publier la playlist des abonnements aux recommandations</string>
 </resources>

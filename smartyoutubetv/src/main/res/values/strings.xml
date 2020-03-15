@@ -110,7 +110,7 @@
     <string name="player_ui_show_timeout">Pro: Decrease player ui show timeout</string>
     <string name="channels_close_app">Android TV Channels: close app on back</string>
     <string name="lower_player_buffer">PRO: Lower player buffer</string>
-    <string name="tweak_publish_history_playlist">Publish History playlist to Recommendations</string>
-    <string name="tweak_publish_recommended_playlist">Publish Recommended playlist to Recommendations</string>
-    <string name="tweak_publish_subscriptions_playlist">Publish Subscriptions playlist to Recommendations</string>
+    <string name="tweak_publish_history_playlist">ATV: Publish History playlist to Recommendations</string>
+    <string name="tweak_publish_recommended_playlist">ATV: Publish Recommended playlist to Recommendations</string>
+    <string name="tweak_publish_subscriptions_playlist">ATV: Publish Subscriptions playlist to Recommendations</string>
 </resources>

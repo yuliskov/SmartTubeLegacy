@@ -91,7 +91,7 @@
     <string name="player_ui_show_timeout">PRO: Уменьшить время отображения инфопанели плеера</string>
     <string name="channels_close_app">Android TV Channels: закрыть приложение после нажатия НАЗАД</string>
     <string name="lower_player_buffer">PRO: Уменьшить буфер плеера</string>
-    <string name="tweak_publish_history_playlist">Публиковать Историю просмотров в Рекомендации</string>
-    <string name="tweak_publish_recommended_playlist">Публиковать Рекомендуемые видео в Рекомендации</string>
-    <string name="tweak_publish_subscriptions_playlist">Публиковать Подписки в Рекомендации</string>
+    <string name="tweak_publish_history_playlist">ATV: Публиковать Историю просмотров в Рекомендации</string>
+    <string name="tweak_publish_recommended_playlist">ATV: Публиковать Рекомендуемые видео в Рекомендации</string>
+    <string name="tweak_publish_subscriptions_playlist">ATV: Публиковать Подписки в Рекомендации</string>
 </resources>
