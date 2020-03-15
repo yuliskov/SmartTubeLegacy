@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
@@ -228,6 +229,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
 
+            enableAudioFocus(mPlayer);
+
             //Log.d(TAG, "High Bit Depth supported ? " + VpxLibrary.isHighBitDepthSupported());
 
             mPlayer.addListener(this);
@@ -267,6 +270,17 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 Log.d(TAG, "Video extract starting...");
                 mExtractStartMS = System.currentTimeMillis();
             }
+        }
+    }
+
+    private void enableAudioFocus(SimpleExoPlayer player) {
+        if (player != null) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.CONTENT_TYPE_MOVIE)
+                    .build();
+
+            player.setAudioAttributes(audioAttributes, true);
         }
     }
 
