@@ -52,7 +52,6 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mMpdFile = new File(FileHelpers.getDownloadDir(mContext), MPD_FILE_NAME);
         mPrefs = CommonApplication.getPreferences();
         mHistory = interceptor.getHistoryInterceptor();
-        PermissionHelpers.verifyStoragePermissions(mContext);
     }
 
     public static OnMediaFoundCallback create(Context context, ExoInterceptor interceptor) {
@@ -67,6 +66,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     public void onStart() {
         mHistory.onStart();
         cleanup();
+        PermissionHelpers.verifyStoragePermissions(mContext);
     }
 
     @Override
@@ -113,7 +113,12 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             mDashUrl = null;
         }
 
-        openExternalPlayer();
+        if (PermissionHelpers.hasStoragePermissions(mContext)) {
+            openExternalPlayer();
+        } else {
+            mInterceptor.closeVideo();
+        }
+
         cleanup();
     }
 
@@ -160,13 +165,11 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     private void initIntent(Intent intent) {
         if (mMpdContent != null) {
-            if (PermissionHelpers.hasStoragePermissions(mContext)) {
-                FileHelpers.streamToFile(mMpdContent, mMpdFile);
-                // NOTE: Don't use fromFile or you will get FileUriExposedException
-                //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
-                // VLC fix
-                intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
-            }
+            FileHelpers.streamToFile(mMpdContent, mMpdFile);
+            // NOTE: Don't use fromFile or you will get FileUriExposedException
+            //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
+            // VLC fix
+            intent.setDataAndType(Uri.parse(mMpdFile.toString()), MIME_MP4);
         } else if (mDashUrl != null) {
             intent.setDataAndType(mDashUrl, MIME_MP4); // mpd
         } else if (mHlsUrl != null) {
