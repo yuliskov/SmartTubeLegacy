@@ -16,7 +16,7 @@ public class BackgroundActionManager {
      * create time window (1sec) where get_video_info isn't allowed<br/>
      * see {@link ExoInterceptor#intercept(String)} method
      */
-    private long mExitTime;
+    private long mContinueTime;
     private long mCancelTime;
     private boolean mIsOpened;
     private String mCurrentUrl;
@@ -38,17 +38,17 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean closedRecently = (System.currentTimeMillis() - mExitTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        boolean continueRecently = (System.currentTimeMillis() - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
-        if (mSameVideo && (mIsOpened || closedRecently)) {
+        if (mSameVideo && (mIsOpened || continueRecently)) {
             Log.d(TAG, "Cancel playback: Same video.");
             return true;
         }
 
         boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
 
-        if (isNotPlaylist && closedRecently) {
-            Log.d(TAG, "Cancel playback: Video closed recently.");
+        if (isNotPlaylist && continueRecently) {
+            Log.d(TAG, "Cancel playback: Video continuation recently.");
             return true;
         }
 
@@ -62,15 +62,15 @@ public class BackgroundActionManager {
         return false;
     }
 
-    public void onClose() {
-        Log.d(TAG, "Video is closed");
-        mExitTime = System.currentTimeMillis();
+    public void onContinue() {
+        Log.d(TAG, "Video: on next");
+        mContinueTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;
     }
 
     public void onCancel() {
-        Log.d(TAG, "Video is canceled");
+        Log.d(TAG, "Video: canceled");
         mCancelTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;

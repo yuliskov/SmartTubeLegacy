@@ -126,11 +126,18 @@ public class ExoInterceptor extends RequestInterceptor {
         return mCurrentUrl;
     }
 
-    public void closePlayer() {
+    public void closeVideo() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        mSender.bindActions(intent);
+        mManager.onCancel();
+    }
+
+    public void jumpToNextVideo() {
         Intent intent = new Intent();
         intent.putExtra(ExoPlayerFragment.BUTTON_NEXT, true);
         mSender.bindActions(intent);
-        mManager.onClose();
+        mManager.onContinue();
     }
 
     public HistoryInterceptor getHistoryInterceptor() {

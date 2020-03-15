@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.liskovsoft.m3uparser.m3u.M3UParser;
 import com.liskovsoft.m3uparser.m3u.models.Playlist;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -124,9 +125,22 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     @Override
     public void onResult(int resultCode, Intent data) {
-        Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + data);
-        mInterceptor.closePlayer();
-        mHistory.updatePosition(0);
+        Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + Helpers.dumpIntent(data));
+
+        if (data != null) {
+            // values: end_by=playback_completion or end_by=user
+            if ("playback_completion".equals(data.getStringExtra("end_by"))) {
+                mInterceptor.jumpToNextVideo();
+            } else {
+                mInterceptor.closeVideo();
+            }
+
+            int positionMs = data.getIntExtra("position", 0);
+            mHistory.updatePosition(positionMs / 1000);
+        } else {
+            mInterceptor.closeVideo();
+            mHistory.updatePosition(0);
+        }
     }
 
     /**
@@ -197,11 +211,11 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             MessageHelpers.showMessage(mContext, R.string.message_install_player);
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            mInterceptor.closePlayer();
+            mInterceptor.closeVideo();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            mInterceptor.closePlayer();
+            mInterceptor.closeVideo();
         }
     }
 }

@@ -52,10 +52,10 @@ public class HistoryInterceptor extends RequestInterceptor {
         }
     }
 
-    public void updatePosition(float position) {
-        Log.d(TAG, "Updating position. Position: " + position + ". Url: " + mUrl);
+    public void updatePosition(float positionSec) {
+        Log.d(TAG, "Updating position. Position: " + positionSec + ". Url: " + mUrl);
 
-        mPosition = position;
+        mPosition = positionSec;
 
         if (mUrl != null) {
             mTracker.sync(mUrl, mPosition, 0);

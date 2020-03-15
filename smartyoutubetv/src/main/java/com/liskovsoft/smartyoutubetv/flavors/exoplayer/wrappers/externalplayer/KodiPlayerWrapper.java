@@ -56,7 +56,7 @@ public class KodiPlayerWrapper extends ExternalPlayerWrapper {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            mInterceptor.closePlayer();
+            mInterceptor.closeVideo();
         }
     }
 

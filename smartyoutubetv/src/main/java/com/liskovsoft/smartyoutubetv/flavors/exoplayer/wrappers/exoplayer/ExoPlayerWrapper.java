@@ -25,9 +25,7 @@ import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerListener {
     private static final String TAG = ExoPlayerWrapper.class.getSimpleName();
@@ -244,7 +242,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
             intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false)) {
             mPlayerClosed = true;
-            mManager.onClose();
+            mManager.onContinue();
         } else if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false)) {
             mPlayerClosed = true;
             mManager.onCancel();
