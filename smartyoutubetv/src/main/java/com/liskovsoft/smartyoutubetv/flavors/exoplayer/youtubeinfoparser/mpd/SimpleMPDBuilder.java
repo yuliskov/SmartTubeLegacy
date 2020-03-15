@@ -185,8 +185,14 @@ public class SimpleMPDBuilder implements MPDBuilder {
             return;
         }
 
+        List<MediaItem> filtered = filterOtfItems(items);
+
+        if (filtered.size() == 0) {
+            return;
+        }
+
         MediaItem firstItem = null;
-        for (MediaItem item : items) {
+        for (MediaItem item : filtered) {
             firstItem = item;
             break;
         }
@@ -194,13 +200,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
         writeMediaListPrologue(String.valueOf(mId++), extractMimeType(firstItem));
 
         // Representation
-        for (MediaItem item : items) {
+        for (MediaItem item : filtered) {
             if (item.getGlobalSegmentList() != null) {
                 writeGlobalSegmentList(item);
-                continue;
-            }
-
-            if (item.isOTF() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
                 continue;
             }
 
@@ -707,5 +709,22 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
             endTag("", "SegmentTimeline");
         }
+    }
+
+    /**
+     * Filter unplayable videos (init block is unavailable - youtube bug)
+     */
+    private List<MediaItem> filterOtfItems(Set<MediaItem> items) {
+        List<MediaItem> result = new ArrayList<>();
+
+        for (MediaItem item : items) {
+            if (item.isOTF() && mSegmentParser.parse(item.getOtfInitUrl()) == null) {
+                continue;
+            }
+
+            result.add(item);
+        }
+
+        return result;
     }
 }
