@@ -53,6 +53,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private VideoMetadata mMetadata;
     private boolean mPlayerClosed;
     private Uri mDashUrl;
+    private Intent mExoIntent;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -110,6 +111,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onStart() {
+        cleanup();
         mPlayerClosed = false;
         mBlockHandlers = true;
         clearPendingEvents();
@@ -154,6 +156,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onMetadata(VideoMetadata metadata) {
         mMetadata = metadata;
+
+        if (metadata != null && mExoIntent != null) { // called async
+            mFragmentsManager.openExoPlayer(metadata.toIntent(), false);
+        }
     }
 
     @Override
@@ -182,9 +188,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Log.d(TAG, "Video info has been parsed... opening exoplayer...");
 
-        Intent exoIntent = createExoIntent(sample, mInfo);
-        prepareAndOpenExoPlayer(exoIntent);
-        cleanup();
+        mExoIntent = createExoIntent(sample, mInfo);
+        prepareAndOpenExoPlayer(mExoIntent);
     }
 
     private void cleanup() {
@@ -192,6 +197,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mHlsUrl = null;
         mMpdContent = null;
         mSpec = null;
+        mExoIntent = null;
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
@@ -241,9 +247,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         if (intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
             intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
             intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false)) {
+            cleanup();
             mPlayerClosed = true;
             mManager.onContinue();
         } else if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false)) {
+            cleanup();
             mPlayerClosed = true;
             mManager.onCancel();
         }

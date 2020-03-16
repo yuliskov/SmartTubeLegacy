@@ -113,9 +113,11 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             mDashUrl = null;
         }
 
-        if (PermissionHelpers.hasStoragePermissions(mContext)) {
+        try {
             openExternalPlayer();
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageHelpers.showLongMessage(mContext, e.getMessage());
             mInterceptor.closeVideo();
         }
 

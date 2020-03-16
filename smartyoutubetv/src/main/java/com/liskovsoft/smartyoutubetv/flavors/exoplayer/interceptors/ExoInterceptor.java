@@ -29,7 +29,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final HistoryInterceptor mHistoryInterceptor;
     private final SmartPreferences mPrefs;
     private final ActionsSender mSender;
-    private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     public static final String URL_VIDEO_DATA = "get_video_info";
     public static final String URL_TV_TRANSPORT = "gen_204";
@@ -77,32 +76,26 @@ public class ExoInterceptor extends RequestInterceptor {
             return null;
         }
 
+        mExoCallback.onStart();
+
         // long running code
         new Thread(() -> {
-            mExoCallback.onStart();
             mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(mCurrentUrl), mManager.getPlaylistId(mCurrentUrl)));
-            prepareResponseStream(url);
-            parseAndOpenExoPlayer();
+        }).start();
+
+        // long running code
+        new Thread(() -> {
+            parseAndOpenExoPlayer(getUrlData(url));
         }).start();
 
         return null;
     }
 
-    // We also try looking in get_video_info since it may contain different dashmpd
-    // URL that points to a DASH manifest with possibly different itag set (some itags
-    // are missing from DASH manifest pointed by webpage's dashmpd, some - from DASH
-    // manifest pointed by get_video_info's dashmpd).
-    // The general idea is to take a union of itags of both DASH manifests (for example
-    // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
-    private void prepareResponseStream(String url) {
-        mResponseStreamSimple = getUrlData(url);
-    }
-
     /**
      * For parsing details see {@link YouTubeMediaParser}
      */
-    private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
+    private void parseAndOpenExoPlayer(InputStream inputStream) {
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(inputStream);
         Log.d(TAG, "Video manifest received");
         dataParser.parse(mExoCallback);
     }
