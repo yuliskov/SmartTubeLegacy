@@ -175,11 +175,15 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !YouTubeUtils.isPlayerClosed()) { // fake btn can only be checked
-            Log.d(this.TAG, "opening suggestions");
-            YouTubeUtils.enablePlayerSuggestions();
-            YouTubeUtils.hidePlayerBackground();
-            this.openSuggestions();
+        if (doChecked) { // fake btn can only be checked
+            if (!YouTubeUtils.isPlayerClosed()) {
+                Log.d(this.TAG, "opening suggestions");
+                YouTubeUtils.enablePlayerSuggestions();
+                YouTubeUtils.hidePlayerBackground();
+                this.openSuggestions();
+            } else {
+                this.sendClose();
+            }
         }
     };
 }
