@@ -6,8 +6,8 @@
     <string name="options">Opties</string>
     <string name="home">Startscherm</string>
     <string name="user_page">Kanaal</string>
-    <string name="prev_video">Vorige video</string>
-    <string name="next_video">Volgende video</string>
+    <string name="prev_video">Vorige</string>
+    <string name="next_video">Volgende</string>
     <string name="pause">Pauze</string>
     <string name="play">Play</string>
     <string name="dislike">Niet leuk</string>
@@ -29,7 +29,7 @@
     <string name="error_no_secure_decoder">Dit apparaat heeft geen veilige decoder voor <xliff:g id="mime_type">%1$s</xliff:g></string>
     <string name="error_querying_decoders">Opvragen apparaat decoders onmogelijk</string>
     <string name="error_instantiating_decoder">Bevestiging decoder onmogelijk <xliff:g id="decoder_name">%1$s</xliff:g></string>
-    <string name="error_unsupported_video">Media bevat video's, maar afspelen op dit apparaat onmogelijk</string>
+    <string name="error_unsupported_video">Media bevat video, maar afspelen op dit apparaat onmogelijk</string>
     <string name="error_unsupported_audio">Media bevat audio, maar afspelen op dit apparaat onmogelijk</string>
     <string name="storage_permission_denied">Toegang tot apparaatopslag geweigerd</string>
     <string name="selection_disabled">Selectie uitgeschakeld</string>
@@ -66,10 +66,10 @@
     <string name="option_zoom_fit_height">Hoogte aanpassen</string>
     <string name="btn_video_zoom">Zoom</string>
     <string name="btn_favorites">Bewaren</string>
-    <string name="option_zoom_fit_both">Breedte of hoogte aanpassen</string>
+    <string name="option_zoom_fit_both">Breedte en hoogte aanpassen</string>
     <string name="option_zoom_stretch">Uitrekken</string>
     <string name="checkbox_save_speed">Snelheid bewaren</string>
     <string name="toast_format_restricted">Formaat wijzigen onmogelijk want preset is geactiveerd</string>
-    <string name="changing_video_frame_rate">Video frame rate aanpassen %s...</string>
+    <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
     <string name="enable_autoframerate_pause">Video pauzeren tijdens aanpassen van framerate</string>
 </resources>
