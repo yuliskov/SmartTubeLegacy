@@ -81,7 +81,6 @@ public class ExoInterceptor extends RequestInterceptor {
         new Thread(() -> {
             mExoCallback.onStart();
             mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(mCurrentUrl), mManager.getPlaylistId(mCurrentUrl)));
-
             prepareResponseStream(url);
             parseAndOpenExoPlayer();
         }).start();

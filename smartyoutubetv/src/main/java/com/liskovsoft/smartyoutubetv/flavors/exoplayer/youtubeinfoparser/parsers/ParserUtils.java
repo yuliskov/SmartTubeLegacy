@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
+import com.google.gson.JsonSyntaxException;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -47,7 +48,7 @@ public class ParserUtils {
         // NOTE: Use String as input. InputStreams do not work!!!!
 
         if (jsonInfo == null) {
-            return null;
+            throw new IllegalStateException("Can't create parser. jsonInfo == null");
         }
 
         Configuration conf = Configuration
@@ -56,9 +57,9 @@ public class ParserUtils {
                 .jsonProvider(new GsonJsonProvider())
                 .build();
 
-        try {
-            DocumentContext jsonPath;
+        DocumentContext jsonPath;
 
+        try {
             if (jsonInfo instanceof InputStream) {
                 jsonPath = JsonPath.using(conf).parse((InputStream) jsonInfo, "UTF-8");
             } else if (jsonInfo instanceof String) {
@@ -66,11 +67,11 @@ public class ParserUtils {
             } else {
                 throw new IllegalStateException("Can't create parser. Unknown input type: " + jsonInfo.getClass().getSimpleName());
             }
-
-            return jsonPath;
-        } catch (Exception e) {
+        } catch (JsonSyntaxException e) {
             throw new IllegalStateException("Malformed json: " + jsonInfo, e);
         }
+
+        return jsonPath;
     }
 
     public static boolean contains(String jsonPath, DocumentContext parser) {

@@ -82,9 +82,15 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream getUrlData(String url) {
+        InputStream result = null;
+
         Response response = OkHttpHelpers.doGetOkHttpRequest(url, mManager.getHeaders());
 
-        return response == null ? null : response.body().byteStream();
+        if (response != null && response.body() != null) {
+            result = response.body().byteStream();
+        }
+
+        return result;
     }
 
     protected Response getResponse(String url) {
@@ -102,9 +108,15 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream postJsonData(String url, String body) {
+        InputStream result = null;
+
         Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
 
-        return response == null ? null : response.body().byteStream();
+        if (response != null && response.body() != null) {
+            result = response.body().byteStream();
+        }
+
+        return result;
     }
 
     protected WebResourceResponse postFormData(String url, String body) {
