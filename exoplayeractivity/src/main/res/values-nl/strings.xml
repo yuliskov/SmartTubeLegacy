@@ -29,7 +29,7 @@
     <string name="error_no_secure_decoder">Dit apparaat heeft geen veilige decoder voor <xliff:g id="mime_type">%1$s</xliff:g></string>
     <string name="error_querying_decoders">Opvragen apparaat decoders onmogelijk</string>
     <string name="error_instantiating_decoder">Bevestiging decoder onmogelijk <xliff:g id="decoder_name">%1$s</xliff:g></string>
-    <string name="error_unsupported_video">Media bevat video\'s, maar afspelen op dit apparaat onmogelijk</string>
+    <string name="error_unsupported_video">Media bevat video's, maar afspelen op dit apparaat onmogelijk</string>
     <string name="error_unsupported_audio">Media bevat audio, maar afspelen op dit apparaat onmogelijk</string>
     <string name="storage_permission_denied">Toegang tot apparaatopslag geweigerd</string>
     <string name="selection_disabled">Selectie uitgeschakeld</string>
