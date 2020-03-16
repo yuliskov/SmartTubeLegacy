@@ -23,7 +23,7 @@
     <string name="language">Taal</string>
     <string name="language_dialog_title">Taal selecteren</string>
     <string name="english_lang">Engels</string>
-    <string name="ukrainian_lang">Oekraпens</string>
+    <string name="ukrainian_lang">Oekraiens</string>
     <string name="russian_lang">Russisch</string>
     <string name="chinese_lang">Chinees</string>
     <string name="autoframerate">Autoframerate</string>
@@ -36,7 +36,7 @@
     <string name="preferred_codec">Voorkeur codec</string>
     <string name="select_preferred_codec">Voorkeur codec en resolutie</string>
     <string name="no_restrictions">Geen beperkingen</string>
-    <string name="old_ui">Vroegere User-Interface</string>
+    <string name="old_ui">Vorige User Interface</string>
     <string name="endcards">Eindgeneriek</string>
     <string name="tip_save_selection">Dit scherm volgende keer niet meer tonen</string>
     <string name="tip_endcards">Tips inschakelen voor het einde van de video (enkel bij 1080)</string>
@@ -73,7 +73,7 @@
     <string name="tweak_open_music">Opstarten met Muziek pagina</string>
     <string name="tweak_open_subscriptions">Opstarten met Abonnementen pagina</string>
     <string name="tweak_global_afx_fix">Globale AFR fix voor Pro</string>
-    <string name="toast_remove_old_package">Pakketnaam is gewijzigd. Verwijder ajb oude versies van de app.</string>
+    <string name="toast_remove_old_package">Pakketnaam is gewijzigd. Verwijder ajb oude versie van de app.</string>
     <string name="tweak_history_fix">Geschiedenis fix inschakelen</string>
     <string name="tweak_open_watch_later">Opstarten met Later bekijken pagina</string>
     <string name="tweak_open_externally">PRO: Video openen met externe player</string>
@@ -95,7 +95,7 @@
     <string name="do_install_bridge_apk">Wil je stem-gestuurd-zoeken inschakelen?\nInstallatie van een bijkomende app kan noodzakelijk zijn.</string>
     <string name="do_reinstall_bridge_apk">Wil je stem-gestuurd-zoeken inschakelen?\nVermijderen van de originele YouTube-app kan noodzakelijk zijn.\nEn installatie van een bijkomende app.</string>
     <string name="app_crashed">App is gecrashed.\nControleren op een nieuwere versie?</string>
-    <string name="tweak_use_new_ui">Nieuwe User-Interface gebruiken</string>
+    <string name="tweak_use_new_ui">Nieuwe User Interface gebruiken</string>
     <string name="tweak_ugoos_afr_fix">PRO: UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Tips bij opstarten verbergen</string>
     <string name="tweak_auto_show_player_ui">UI player automatisch weergeven</string>
