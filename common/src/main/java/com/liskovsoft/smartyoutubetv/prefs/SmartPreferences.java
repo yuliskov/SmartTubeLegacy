@@ -28,6 +28,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
     private static final String ANIMATED_PREVIEWS = "animated_previews";
     public static final String MUSIC_PAGE = "music_page";
+    public static final String HISTORY_PAGE = "history_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
     public static final String WATCH_LATER_PAGE = "watch_later_page";
     public static final String DEFAULT_PAGE = "default_page";

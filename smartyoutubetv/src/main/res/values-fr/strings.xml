@@ -71,7 +71,8 @@
     <string name="tweak_unplayable_video_fix">Correctif pour vidéo injouable</string>
     <string name="tweak_lock_last_launcher">Verrouiller lanceur %s</string>
     <string name="tweak_open_music">Démarrage sur la page Musique</string>
-    <string name="tweak_open_subscriptions">Démarrage sur Abonnements</string>
+    <string name="tweak_open_subscriptions">Démarrage sur la page Abonnements</string>
+    <string name="tweak_open_history">Démarrage sur la page Historique</string>
     <string name="tweak_global_afx_fix">Correction afr globale sur Pro</string>
     <string name="toast_remove_old_package">Le nom du paquet a été changé. Veuillez supprimer les anciennes versions de l\'application.</string>
     <string name="tweak_history_fix">Activer le correctif de l\'historique</string>

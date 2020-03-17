@@ -34,6 +34,10 @@ public class YouTubeServiceFinder implements ServiceFinder {
                 mIsPersistent = true;
                 mDefaultUrl = params.getWatchLaterPageUrl();
                 break;
+            case SmartPreferences.HISTORY_PAGE:
+                mIsPersistent = true;
+                mDefaultUrl = params.getHistoryPageUrl();
+                break;
             case SmartPreferences.DEFAULT_PAGE:
                 mIsPersistent = params.isMainPagePersistent();
                 mDefaultUrl = params.getMainPageUrl();
