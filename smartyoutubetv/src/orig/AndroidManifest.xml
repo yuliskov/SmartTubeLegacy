@@ -72,7 +72,7 @@
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
                   android:windowSoftInputMode="adjustResize"
                   android:noHistory="true"
-                  android:excludeFromRecents="false"
+                  android:excludeFromRecents="true"
                   android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
                   tools:node="replace">
             <intent-filter>
