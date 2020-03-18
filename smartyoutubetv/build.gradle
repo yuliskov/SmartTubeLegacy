@@ -112,19 +112,20 @@ android {
         //    matchingFallbacks = ['lite']
         //    applicationId "com.adnotam.smartyoutubetv"
         // }
-        // Vbolshoetv {
-        //    // vermax uhd250x/300x 1GB ram
-        //    matchingFallbacks = ['lite']
-        //    versionCode 9400 + defaultConfig.versionCode
-        // }
-        Vbolshoetv2 {
-            // Eltex NV-501
-            matchingFallbacks = ['full']
-            versionCode 9400 + defaultConfig.versionCode
-            ndk {
-                abiFilters "armeabi-v7a", ""
-            }
+        Vbolshoetv {
+           // Eltex NV-501
+           // vermax uhd250x/300x 1GB ram
+           matchingFallbacks = ['lite']
+           versionCode 9400 + defaultConfig.versionCode
         }
+        // Vbolshoetv2 {
+        //     // Eltex NV-501
+        //     matchingFallbacks = ['full']
+        //     versionCode 9400 + defaultConfig.versionCode
+        //     ndk {
+        //         abiFilters "armeabi-v7a", ""
+        //     }
+        // }
         // Vfakeyoutube {
         //    matchingFallbacks = ['lite']
         //    versionCode 9400 + defaultConfig.versionCode
