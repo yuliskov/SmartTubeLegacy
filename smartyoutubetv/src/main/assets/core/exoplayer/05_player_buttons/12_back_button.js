@@ -20,7 +20,7 @@ function BackButton(selector, states) {
 
         var backBtn = this.findToggle();
 
-        if (backBtn && this.retryTimes > 1) { // last option is try imitate ESC
+        if (backBtn && this.retryTimes > 1) { // last option is try to imitate ESC
             EventUtils.triggerEnter(backBtn);
         } else {
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);

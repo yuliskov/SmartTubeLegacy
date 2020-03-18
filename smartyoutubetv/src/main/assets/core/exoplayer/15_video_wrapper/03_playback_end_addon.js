@@ -8,6 +8,7 @@ function PlaybackEndAddon() {
     this.TAG = 'PlaybackEndAddon';
     this.videoId = '';
     this.playbackStrategy = PlaybackStrategy1;
+    this.retryTimes = 3;
 
     this.onInit = function(video) {
         this.initProps(video);
@@ -147,6 +148,10 @@ function PlaybackEndAddon() {
                 PlaybackEndAddon.playbackStarted = false;
 
                 $this.playbackStrategy.videoClosed(video);
+
+                if (!urlChanged) { // something went wrong, simple close player
+                    new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);
+                }
 
                 return;
             } else {
