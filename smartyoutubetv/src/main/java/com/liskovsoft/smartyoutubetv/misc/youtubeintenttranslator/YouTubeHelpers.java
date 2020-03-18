@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
@@ -12,6 +14,8 @@ public class YouTubeHelpers {
      * Amazon: youtube://search?query=linkin+park&isVoice=true
      */
     private static final String[] SEARCH_KEYS = {"search_query", "query"};
+    private static final String CHANNEL_URL = "/channel/";
+    private static final String USER_URL = "/user/";
 
     /**
      * Browser: https://www.youtube.com/results?search_query=twice<br/>
@@ -87,5 +91,17 @@ public class YouTubeHelpers {
         }
 
         return result.replace("youtu.be/", "v=");
+    }
+
+    public static boolean isChannelIntent(Intent intent) {
+        boolean result = false;
+
+        if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri data = intent.getData();
+
+            result = data != null && (data.toString().contains(CHANNEL_URL) || data.toString().contains(USER_URL));
+        }
+
+        return result;
     }
 }

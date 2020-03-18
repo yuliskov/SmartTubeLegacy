@@ -2,7 +2,9 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -85,7 +87,12 @@ public class ExoInterceptor extends RequestInterceptor {
 
         // long running code
         new Thread(() -> {
-            parseAndOpenExoPlayer(getUrlData(url));
+            try {
+                parseAndOpenExoPlayer(getUrlData(url));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist " + url);
+            }
         }).start();
 
         return null;

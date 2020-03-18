@@ -22,6 +22,8 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
@@ -333,7 +335,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         saveStandAlone(intent);
 
         if (mBrowserFragment != null) {
-            if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+            if (YouTubeHelpers.isChannelIntent(intent)) {
                 Log.d(TAG, "Close player when handling channel url.");
                 closePlayer();
             }

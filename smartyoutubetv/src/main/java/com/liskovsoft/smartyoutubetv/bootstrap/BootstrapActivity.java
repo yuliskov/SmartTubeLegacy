@@ -80,6 +80,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
     }
 
     private void tryToRestoreLastActivity() {
+        Log.d(TAG, "Restoring last launcher...");
+
         boolean skipRestore = getIntent().getBooleanExtra(SKIP_RESTORE, false);
         if (skipRestore) {
             return;
@@ -116,8 +118,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
         Intent intent = getIntent(); // modify original intent
         // value used in StateUpdater class
         intent.putExtra(FROM_BOOTSTRAP, true);
-        // NOTE: make activity transparent (non-reachable from launcher or resents)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        // Make activity single instance: launchFlags=0x10800000
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.setClassName(ctx, clazz);
 
         try {
@@ -130,8 +132,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void startActivity(Context ctx, Class<?> clazz) {
         Intent intent = getIntent(); // modify original intent
-        // NOTE: make activity transparent (non-reachable from launcher or from resent list)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        // Make activity single instance: launchFlags=0x10800000
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.setClass(ctx, clazz);
 
         Log.d(TAG, "Starting from intent: " + Helpers.dumpIntent(intent));

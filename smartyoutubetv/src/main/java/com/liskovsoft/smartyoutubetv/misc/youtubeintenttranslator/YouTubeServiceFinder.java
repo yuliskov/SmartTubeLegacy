@@ -49,7 +49,7 @@ public class YouTubeServiceFinder implements ServiceFinder {
             mDefaultUrl = params.getMainPageUrl();
         }
 
-        mTranslator = new YouTubeIntentTranslator(mDefaultUrl);
+        mTranslator = new YouTubeIntentTranslator(context, mDefaultUrl);
     }
 
     @Override
