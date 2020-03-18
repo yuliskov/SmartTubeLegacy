@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
@@ -326,6 +328,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
+        closePlayer();
+
+        // wait till exoplayer is closed
+        new Handler(Looper.myLooper())
+           .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
+    }
+
+    private void onNewIntentInt(Intent intent) {
         super.onNewIntent(intent);
 
         Log.d(TAG, "New intent is coming... " + intent);
@@ -335,11 +345,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         saveStandAlone(intent);
 
         if (mBrowserFragment != null) {
-            if (YouTubeHelpers.isChannelIntent(intent)) {
-                Log.d(TAG, "Close player when handling channel url.");
-                closePlayer();
-            }
-
             mBrowserFragment.onNewIntent(intent);
         }
     }
