@@ -116,10 +116,11 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void startActivity(Context ctx, String clazz) {
         Intent intent = getIntent(); // modify original intent
+
         // value used in StateUpdater class
         intent.putExtra(FROM_BOOTSTRAP, true);
-        // Make activity single instance: launchFlags=0x10800000
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
+        // Replace all inherited flags
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClassName(ctx, clazz);
 
@@ -133,8 +134,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void startActivity(Context ctx, Class<?> clazz) {
         Intent intent = getIntent(); // modify original intent
-        // Make activity single instance: launchFlags=0x10800000
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
+        // Replace all inherited flags
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(ctx, clazz);
 

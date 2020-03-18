@@ -172,6 +172,7 @@
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
             android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
             android:noHistory="true"
+            android:excludeFromRecents="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
