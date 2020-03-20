@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
@@ -19,7 +18,6 @@ import com.liskovsoft.sharedutils.locale.LangHelper;
 import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -207,7 +205,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     public boolean dispatchKeyEvent(KeyEvent event) {
         CommonApplication.getPreferences().setLastUserInteraction(System.currentTimeMillis());
 
-        mKeyHandler.checkLongPressExit(event);
+        mKeyHandler.checkShortcut(event);
 
         if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
             return true;
@@ -423,5 +421,10 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         // used mainly on custom builds (no bootstrap activity)
         SmartPreferences prefs = CommonApplication.getPreferences();
         Log.init(this, prefs.getLogType(), AppInfoHelpers.getActivityLabel(this, prefs.getBootActivityName()));
+    }
+
+    @Override
+    public void handleIntent(Intent intent) {
+        onNewIntent(intent);
     }
 }

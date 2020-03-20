@@ -1,6 +1,8 @@
 package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
@@ -9,11 +11,13 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 public class GlobalKeyHandler {
     private static final String TAG = GlobalKeyHandler.class.getSimpleName();
     private final boolean mBackPressExitEnabled;
     private final Handler mHandler;
+    private final Activity mContext;
     private final Runnable mExitAppFn;
     private final Runnable mResetExitFn = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
     private static final long BACK_PRESS_DURATION_MS = 1_000;
@@ -23,6 +27,7 @@ public class GlobalKeyHandler {
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
+        mContext = ctx;
         mBackPressExitEnabled = CommonApplication.getPreferences() != null && CommonApplication.getPreferences().getEnableBackPressExit();
         mExitAppFn = () -> {
             MessageHelpers.showMessage(ctx, R.string.close_msg);
@@ -30,7 +35,24 @@ public class GlobalKeyHandler {
         };
     }
 
-    public void checkLongPressExit(KeyEvent event) {
+    public void checkShortcut(KeyEvent event) {
+        checkLongPressExit(event);
+        checkSearchKey(event);
+    }
+
+    /**
+     * Handle searches on the bluetooth keyboard.
+     */
+    private void checkSearchKey(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_SLASH && event.getAction() == KeyEvent.ACTION_UP) {
+            if (mContext instanceof FragmentManager) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://empty.url?search_query=shortcut_pressed"));
+                ((FragmentManager) mContext).handleIntent(intent);
+            }
+        }
+    }
+
+    private void checkLongPressExit(KeyEvent event) {
         if (!mBackPressExitEnabled) {
             return;
         }

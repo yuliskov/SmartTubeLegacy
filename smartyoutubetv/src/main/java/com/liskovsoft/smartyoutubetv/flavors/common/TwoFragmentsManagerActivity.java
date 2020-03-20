@@ -328,11 +328,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
-        closePlayer();
+        if (intent == null || Intent.ACTION_MAIN.equals(intent.getAction())) {
+            return;
+        }
 
-        // wait till exoplayer is closed
-        new Handler(Looper.myLooper())
-           .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
+        if (closePlayer()) {
+            // wait till exoplayer is closed
+            new Handler(Looper.myLooper())
+                    .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
+        } else {
+            onNewIntentInt(intent);
+        }
     }
 
     private void onNewIntentInt(Intent intent) {
@@ -349,13 +355,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void closePlayer() {
+    private boolean closePlayer() {
+        boolean result = false;
+
         if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
             Intent intent = new Intent();
             intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
             setActiveFragment(mBrowserFragment, true);
             mPlayerListener.onPlayerAction(intent);
+            result = true;
         }
+
+        return result;
     }
 
     @Override

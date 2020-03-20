@@ -266,5 +266,19 @@ var YouTubeUtils = {
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
+    },
+
+    moveRight: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.RIGHT);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.RIGHT);
+        }
+    },
+
+    moveUp: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.UP);
+        }
     }
 };

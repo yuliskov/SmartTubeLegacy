@@ -14,6 +14,7 @@ window.VoiceSearch = {
     TAG: 'VoiceSearch',
     SEARCH_PAGE_URL: '/search?resume',
     SEARCH_PAGE_TAG: 'search',
+    SHORTCUT_PRESSED: 'shortcut_pressed',
 
     init: function() {
         // NOTE: you need to change user-agent too
@@ -56,10 +57,18 @@ window.VoiceSearch = {
 
         this.navigateToTheSearchPage();
         this.checkSearchOpened();
-        this.typeSearchText(searchText);
-        this.commitChanges();
-        this.selectResultsRow();
-        this.unfocusMicButton();
+
+        if (searchText != this.SHORTCUT_PRESSED) {
+            this.typeSearchText(searchText);
+            this.commitChanges();
+            this.selectResultsRow();
+            this.unfocusMicButton();
+        } else {
+            // shortcut pressed: focus search field
+            YouTubeUtils.moveRight();
+            YouTubeUtils.moveUp();
+            YouTubeUtils.moveUp();
+        }
     },
 
     checkSearchOpened: function() {
