@@ -62,11 +62,11 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         if (urlData != null) {
             Log.d(TAG, "Searching and removing tv masthead section...");
             JsonBrowseParser browseParser = JsonBrowseParser.parse(urlData);
-            if (browseParser.canRemoveMustHead()) {
-                response = createResponse(MediaType.parse("application/json"), browseParser.removeMustHead().build());
+            if (browseParser.removeMastHead()) {
+                response = createResponse(MediaType.parse("application/json"), browseParser.toStream());
             } else {
                 if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {
-                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData + ". Response: " + Helpers.toString(browseParser.build()));
+                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData + ". Response: " + Helpers.toString(browseParser.toStream()));
                 } else {
                     Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData);
                 }

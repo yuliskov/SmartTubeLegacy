@@ -110,13 +110,18 @@ public class ParserUtils {
         return result;
     }
 
-    public static void delete(String jsonPath, DocumentContext parser) {
+    public static boolean delete(String jsonPath, DocumentContext parser) {
+        boolean result = true;
+
         try {
             parser.delete(jsonPath);
         } catch (PathNotFoundException e) {
             String msg = "Can't delete value. JSON content doesn't contains param: " + jsonPath;
             Log.d(TAG, msg);
+            result = false;
         }
+
+        return result;
     }
 
     public static boolean exists(String jsonPath, DocumentContext parser) {
