@@ -63,6 +63,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             Log.d(TAG, "Searching and removing tv masthead section...");
             JsonBrowseParser browseParser = JsonBrowseParser.parse(urlData);
             if (browseParser.removeMastHead()) {
+                Log.d(TAG, "Success. TV masthead has been removed.");
                 response = createResponse(MediaType.parse("application/json"), browseParser.toStream());
             } else {
                 if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {

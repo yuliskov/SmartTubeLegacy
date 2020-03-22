@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,8 +23,6 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
-import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
@@ -43,7 +40,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        saveStandAlone(getIntent());
+        updateStandAloneState(getIntent());
         setContentView(R.layout.activity_exo);
         getLoadingManager().show();
 
@@ -319,9 +316,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onResume() {
         Log.d(TAG, "Resuming...");
-        mResumeTime = System.currentTimeMillis();
 
-        checkStandAlone();
+        updateStandAloneState();
 
         super.onResume();
     }
@@ -346,9 +342,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         Log.d(TAG, "New intent is coming... " + intent);
 
-        mNewIntentTime = System.currentTimeMillis();
-
-        saveStandAlone(intent);
+        updateStandAloneState(intent);
 
         if (mBrowserFragment != null) {
             mBrowserFragment.onNewIntent(intent);
@@ -376,17 +370,25 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void saveStandAlone(Intent intent) {
-        if (intent != null && CommonApplication.getPreferences().getChannelsCloseApp()) {
-            mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+    private void updateStandAloneState(Intent intent) {
+        if (CommonApplication.getPreferences().getChannelsCloseApp()) {
+            mNewIntentTime = System.currentTimeMillis();
+
+            if (intent != null) {
+                mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+            }
         }
     }
 
-    private void checkStandAlone() {
-        boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
-        boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
-        if (isChained && isInstantSwitch) {
-            mIsStandAlone = false;
+    private void updateStandAloneState() {
+        if (CommonApplication.getPreferences().getChannelsCloseApp()) {
+            mResumeTime = System.currentTimeMillis();
+
+            boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
+            boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
+            if (isChained && isInstantSwitch) {
+                mIsStandAlone = false;
+            }
         }
     }
 }
