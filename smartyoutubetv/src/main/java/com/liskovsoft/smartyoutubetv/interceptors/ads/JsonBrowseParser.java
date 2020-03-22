@@ -7,15 +7,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import java.io.InputStream;
 
 public class JsonBrowseParser {
-    // Select one or zero objects with property 'tvMastheadRenderer'
-    private static final String TV_MASTHEAD_SECTION =
-            "$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[?(@.tvMastheadRenderer)]";
-
-    // res.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[0].tvSecondaryNavSectionRenderer.tabs[0].tabRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[0].tvMastheadRenderer
-
-    private static final String TV_MASTHEAD_SECTION2 =
-            "$.contents.tvBrowseRenderer.content.tvSecondaryNavRenderer.sections[*].tvSecondaryNavSectionRenderer.tabs[*]." +
-                    "tabRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[?(@.tvMastheadRenderer)]";
+    // All objects with property 'tvMastheadRenderer'
+    // ex: https://github.com/json-path/JsonPath
+    private static final String TV_MASTHEAD_SECTION_ANY = "$..content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[?(@.tvMastheadRenderer)]";
 
     private final DocumentContext mParser;
 
@@ -27,14 +21,13 @@ public class JsonBrowseParser {
         return new JsonBrowseParser(content);
     }
 
-    public boolean canRemoveMastHead() {
-        return ParserUtils.exists(TV_MASTHEAD_SECTION2, mParser) || ParserUtils.exists(TV_MASTHEAD_SECTION, mParser);
-    }
-
     public boolean removeMastHead() {
-        boolean result;
+        boolean result = false;
 
-        result = ParserUtils.delete(TV_MASTHEAD_SECTION2, mParser) || ParserUtils.delete(TV_MASTHEAD_SECTION, mParser);
+        if (ParserUtils.exists(TV_MASTHEAD_SECTION_ANY, mParser)) {
+            ParserUtils.delete(TV_MASTHEAD_SECTION_ANY, mParser);
+            result = true;
+        }
 
         return result;
     }

@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonSyntaxException;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -109,28 +110,28 @@ public class ParserUtils {
 
         return result;
     }
-
-    public static boolean delete(String jsonPath, DocumentContext parser) {
-        boolean result = true;
-
+    
+    public static void delete(String jsonPath, DocumentContext parser) {
         try {
             parser.delete(jsonPath);
-        } catch (PathNotFoundException e) {
+        } catch (PathNotFoundException e) { // NOTE: exception isn't thrown in some cases
             String msg = "Can't delete value. JSON content doesn't contains param: " + jsonPath;
             Log.d(TAG, msg);
+        }
+    }
+
+    public static boolean exists(String jsonPath, DocumentContext parser) {
+        boolean result;
+
+        try {
+            JsonArray objOrArray = parser.read(jsonPath);
+
+            result = objOrArray.size() != 0;
+        } catch (PathNotFoundException e) {
+            e.printStackTrace();
             result = false;
         }
 
         return result;
-    }
-
-    public static boolean exists(String jsonPath, DocumentContext parser) {
-        try {
-            return parser.read(jsonPath) != null;
-        } catch (PathNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 }

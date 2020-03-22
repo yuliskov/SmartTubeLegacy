@@ -6,11 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(RobolectricTestRunner.class)
 public class JsonBrowseParserTest {
@@ -36,6 +38,13 @@ public class JsonBrowseParserTest {
     @Test
     public void testRemoveMasthead2() throws IOException {
         testRemoveMasthead(mOriginalInfo2, mResultInfo2);
+    }
+
+    @Test
+    public void testReturnValue() {
+        JsonBrowseParser parser = JsonBrowseParser.parse(mResultInfo2);
+
+        assertFalse(parser.removeMastHead());
     }
 
     private void testRemoveMasthead(InputStream origin, InputStream result) {
