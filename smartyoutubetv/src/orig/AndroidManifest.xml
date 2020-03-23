@@ -125,7 +125,6 @@
         <activity
             android:name=".flavors.webview.SmartYouTubeTV1080Activity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_webview"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:excludeFromRecents="false"
@@ -135,7 +134,6 @@
         <activity
             android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_xwalk"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:excludeFromRecents="false"
@@ -145,7 +143,6 @@
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4K"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_main"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
@@ -156,7 +153,6 @@
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_alt"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:excludeFromRecents="false"
