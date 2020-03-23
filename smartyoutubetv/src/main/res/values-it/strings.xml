@@ -73,11 +73,11 @@
     <string name="tweak_log_to_file">Salva i log in un file</string>
     <string name="tweak_unplayable_video_fix">Correzione video non riproducibili</string>
     <string name="tweak_lock_last_launcher">Blocca su launcher %s</string>
-    <string name="tweak_open_music">Apri la pagina Musica all'avvio</string>
-    <string name="tweak_open_history">Apri la pagina Cronologia all'avvio</string>
-    <string name="tweak_open_subscriptions">Apri la pagina delle sottoscrizioni all'avvio</string>
+    <string name="tweak_open_music">Apri la pagina Musica all\'avvio</string>
+    <string name="tweak_open_history">Apri la pagina Cronologia all\'avvio</string>
+    <string name="tweak_open_subscriptions">Apri la pagina delle sottoscrizioni all\'avvio</string>
     <string name="tweak_global_afx_fix">Correzione afr globale su Pro</string>
-    <string name="toast_remove_old_package">Il nome del pacchetto è cambiato. Per favore rimuovi le vecchie versioni dell'app.</string>
+    <string name="toast_remove_old_package">Il nome del pacchetto è cambiato. Per favore rimuovi le vecchie versioni dell\'app.</string>
     <string name="tweak_history_fix">Abilita correzione cronologia</string>
     <string name="tweak_open_watch_later">Avvio forzato alla pagina Guarda più tardi</string>
     <string name="tweak_open_externally">PRO: Apri i video con un player esterno</string>
@@ -112,7 +112,7 @@
     <string name="enable_ad_block">Abilita blocco pubblicità</string>
     <string name="ad_blocking_permissions">Questa app può filtrare le pubblicità ed altri contenuti per migliorare l\'esperienza utente.\nSei d\'accordo nel farlo?</string>
     <string name="player_ui_show_timeout">Pro: Riduci il tempo di visualizzazione del menù del player</string>
-    <string name="channels_close_app">Android TV Channels: chiudi l'\app tornando indietro</string>
+    <string name="channels_close_app">Android TV Channels: chiudi l\'app tornando indietro</string>
     <string name="lower_player_buffer">PRO: Diminuisci il buffer del player</string>
     <string name="tweak_publish_history_playlist">ATV: Pubblica la playlist della cronologia nei Consigliati</string>
     <string name="tweak_publish_recommended_playlist">ATV: Pubblica le playlist consigliate nei Consigliati</string>
