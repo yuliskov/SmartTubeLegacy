@@ -517,6 +517,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
+        if (mpdContent == null || mpdContent.isEmpty()) {
+            Log.e(TAG, "Can't build media source. MpdContent is null or empty. " + mpdContent);
+            return null;
+        }
+
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         DashMediaSource dashSource = new DashMediaSource.Factory(
                 new DefaultDashChunkSource.Factory(mMediaDataSourceFactory),

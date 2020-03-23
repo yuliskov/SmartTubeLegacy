@@ -87,7 +87,12 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
     @Override
     public void setInitialScale(int scaleInPercent) {
-        mXWalkView.setInitialScale(scaleInPercent);
+        try {
+            mXWalkView.setInitialScale(scaleInPercent);
+        } catch (Exception e) { // Crosswalk's APIs are not ready yet
+            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
