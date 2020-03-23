@@ -70,13 +70,13 @@
     <string name="tweak_log_to_file">Logs bewaren in een bestand</string>
     <string name="tweak_unplayable_video_fix">Niet-speelbare video fix</string>
     <string name="tweak_lock_last_launcher">%s launcher vergrendelen</string>
-    <string name="tweak_open_music">Opstarten met Muziek pagina</string>
-    <string name="tweak_open_subscriptions">Opstarten met Abonnementen pagina</string>
-    <string name="tweak_open_history">Opstarten met Geschiedenis pagina</string>
+    <string name="tweak_open_music">Opstarten met Muziek</string>
+    <string name="tweak_open_subscriptions">Opstarten met Abonnementen</string>
+    <string name="tweak_open_history">Opstarten met Geschiedenis</string>
     <string name="tweak_global_afx_fix">Globale AFR fix voor Pro</string>
     <string name="toast_remove_old_package">Pakketnaam is gewijzigd. Verwijder ajb oude versie van de app.</string>
     <string name="tweak_history_fix">Geschiedenis fix inschakelen</string>
-    <string name="tweak_open_watch_later">Opstarten met Later bekijken pagina</string>
+    <string name="tweak_open_watch_later">Opstarten met Later bekijken</string>
     <string name="tweak_open_externally">PRO: Video openen met externe player</string>
     <string name="message_install_vlc_player">Je moet VLC player installeren</string>
     <string name="tweak_fix_aspect">Beeldverhouding en zoom fix inschakelen</string>
