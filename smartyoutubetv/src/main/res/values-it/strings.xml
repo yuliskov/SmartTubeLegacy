@@ -73,11 +73,11 @@
     <string name="tweak_log_to_file">Salva i log in un file</string>
     <string name="tweak_unplayable_video_fix">Correzione video non riproducibili</string>
     <string name="tweak_lock_last_launcher">Blocca su launcher %s</string>
-    <string name="tweak_open_music">Avvio forzato alla pagina Musica</string>
-    <string name="tweak_open_history">Avvio forzato alla pagina Cronologia</string>
-    <string name="tweak_open_subscriptions">Avvia alla pagina delle sottoscrizioni</string>
+    <string name="tweak_open_music">Apri la pagina Musica all'avvio</string>
+    <string name="tweak_open_history">Apri la pagina Cronologia all'avvio</string>
+    <string name="tweak_open_subscriptions">Apri la pagina delle sottoscrizioni all'avvio</string>
     <string name="tweak_global_afx_fix">Correzione afr globale su Pro</string>
-    <string name="toast_remove_old_package">Il nome del package è cambiato. Per favore rimuovi le vecchie versioni dell'app.</string>
+    <string name="toast_remove_old_package">Il nome del pacchetto è cambiato. Per favore rimuovi le vecchie versioni dell'app.</string>
     <string name="tweak_history_fix">Abilita correzione cronologia</string>
     <string name="tweak_open_watch_later">Avvio forzato alla pagina Guarda più tardi</string>
     <string name="tweak_open_externally">PRO: Apri i video con un player esterno</string>
