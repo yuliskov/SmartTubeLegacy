@@ -76,7 +76,7 @@
     <string name="tweak_global_afx_fix">Globale AFR fix voor Pro</string>
     <string name="toast_remove_old_package">Pakketnaam is gewijzigd. Verwijder ajb oude versie van de app.</string>
     <string name="tweak_history_fix">Geschiedenis fix inschakelen</string>
-    <string name="tweak_open_watch_later">Opstarten met Later bekijken pagina</string>
+    <string name="tweak_open_watch_later">Opstarten met Later bekijken</string>
     <string name="tweak_open_externally">PRO: Video openen met externe player</string>
     <string name="message_install_vlc_player">Je moet VLC player installeren</string>
     <string name="tweak_fix_aspect">Beeldverhouding en zoom fix inschakelen</string>
