@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.webkit.WebResourceResponse;
+import com.google.gson.JsonIOException;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -82,7 +83,10 @@ public class ExoInterceptor extends RequestInterceptor {
 
         // long running code
         new Thread(() -> {
-            mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(mCurrentUrl), mManager.getPlaylistId(mCurrentUrl)));
+            mExoCallback.onMetadata(
+                    mNextInterceptor.getMetadata(
+                            mManager.getVideoId(mCurrentUrl),
+                            mManager.getPlaylistId(mCurrentUrl)));
         }).start();
 
         // long running code
