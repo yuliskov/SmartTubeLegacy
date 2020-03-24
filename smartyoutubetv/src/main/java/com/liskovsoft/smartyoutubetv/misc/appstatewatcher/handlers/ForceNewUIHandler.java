@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
 import android.app.Activity;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
@@ -19,7 +20,7 @@ public class ForceNewUIHandler extends StateHandler {
     }
 
     @Override
-    public void onUpdate() {
+    public void onInit() {
         SmartUtils.setSecureCookie(RESET_UI_COOKIE, COOKIE_URL, mContext);
     }
 }

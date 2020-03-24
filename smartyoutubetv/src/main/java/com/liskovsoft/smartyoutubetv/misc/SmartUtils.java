@@ -12,6 +12,7 @@ import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.flavors.common.TwoFragmentsManagerActivity;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4K;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.SmartYouTubeTV4KAlt;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.SendMessageCommand;
 import com.liskovsoft.smartyoutubetv.flavors.webview.SmartYouTubeTV1080Activity;
 import com.liskovsoft.smartyoutubetv.flavors.xwalk.SmartYouTubeTV1080AltActivity;
@@ -121,11 +122,11 @@ public class SmartUtils {
     }
 
     public static boolean isWebView(Context context) {
-        return context instanceof SmartYouTubeTV1080Activity;
+        return context instanceof SmartYouTubeTV1080Activity || context instanceof SmartYouTubeTV4K;
     }
 
     public static boolean isXWalk(Context context) {
-        return context instanceof SmartYouTubeTV1080AltActivity;
+        return context instanceof SmartYouTubeTV1080AltActivity  || context instanceof SmartYouTubeTV4KAlt;
     }
 
     public static boolean isExo(Context context) {
@@ -142,7 +143,7 @@ public class SmartUtils {
         final long XWALK_INIT_DELAY_MS = 3_000;
 
         try {
-            if (context instanceof SmartYouTubeTV1080Activity || context instanceof SmartYouTubeTV4K) {
+            if (isWebView(context)) {
                 Log.d(TAG, "Setting WebView cookie");
                 CookieManager.getInstance().setCookie(cookieUrl, cookie);
             } else {
