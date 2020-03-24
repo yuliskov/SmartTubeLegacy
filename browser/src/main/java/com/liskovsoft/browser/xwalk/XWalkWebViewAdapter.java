@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
 import com.liskovsoft.browser.addons.HeadersWebSettingsDecorator;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -87,22 +90,17 @@ public class XWalkWebViewAdapter extends HeadersBrowserWebView {
 
     @Override
     public void setInitialScale(int scaleInPercent) {
-        try {
-            mXWalkView.setInitialScale(scaleInPercent);
-        } catch (Exception e) { // Crosswalk's APIs are not ready yet
-            e.printStackTrace();
-            Log.e(TAG, e.getMessage());
-        }
+        Browser.waitInit(() -> mXWalkView.setInitialScale(scaleInPercent));
     }
 
     @Override
     public void loadUrl(String url, Map<String, String> additionalHttpHeaders) {
-        mXWalkView.loadUrl(url, additionalHttpHeaders);
+        Browser.waitInit(() -> mXWalkView.loadUrl(url, additionalHttpHeaders));
     }
 
     @Override
     public void loadUrl(String url) {
-        mXWalkView.loadUrl(url);
+        Browser.waitInit(() -> mXWalkView.loadUrl(url));
     }
 
     @Override

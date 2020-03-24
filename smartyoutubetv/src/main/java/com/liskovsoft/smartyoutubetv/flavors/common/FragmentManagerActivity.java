@@ -227,7 +227,22 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
 
         mEvent = event; // give a ability to modify this event in the middle of the pipeline
-        return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
+        return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || superDispatchKeyEventWrapper();
+    }
+
+    /**
+     * FIX: NPE in com.android.org.chromium.content.browser.ContentViewCore.dispatchKeyEvent (ContentViewCore.java:1883)
+     */
+    private boolean superDispatchKeyEventWrapper() {
+        boolean result = false;
+
+        try {
+            result = super.dispatchKeyEvent(mEvent);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override

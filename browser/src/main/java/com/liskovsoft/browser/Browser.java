@@ -1,7 +1,10 @@
 package com.liskovsoft.browser;
 
 import android.content.res.AssetManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.webkit.CookieSyncManager;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 import java.io.IOException;
@@ -9,6 +12,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Browser extends CommonApplication {
+    private static final String TAG = Browser.class.getSimpleName();
     // Set to true to enable verbose logging.
     final static boolean LOGV_ENABLED = false;
 
@@ -49,10 +53,11 @@ public class Browser extends CommonApplication {
 
     private static EngineType sEngineType = EngineType.WebView;
 
-    public enum EngineType {
-        WebView, XWalk
-    }
 
+
+    public enum EngineType {
+        WebView, XWalk;
+    }
     public static void setEngineType(EngineType engineType) {
         sEngineType = engineType;
     }
@@ -66,6 +71,18 @@ public class Browser extends CommonApplication {
             return null;
         }
         return sProperties.getProperty(key);
+    }
+
+    public static void waitInit(Runnable callback) {
+        if (callback != null) {
+            try {
+                callback.run();
+            } catch (Exception e) { // Crosswalk's APIs are not ready yet
+                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
+                new Handler(Looper.getMainLooper()).postDelayed(callback, 2_000);
+            }
+        }
     }
 }
 

@@ -92,14 +92,6 @@ android {
         //     matchingFallbacks = ['lite']
         //     applicationIdSuffix ".testing"
         // }
-        // Vlitemain {
-        //     matchingFallbacks = ['lite']
-        //     versionCode 9999 // disable auto-update
-        // }
-        // Vlitealt {
-        //     matchingFallbacks = ['lite']
-        //     versionCode 9999 // disable auto-update
-        // }
         Vkids {
             matchingFallbacks = ['Vkids', 'lite']
             applicationIdSuffix ".kids"
@@ -118,37 +110,14 @@ android {
            matchingFallbacks = ['lite']
            versionCode 9400 + defaultConfig.versionCode
         }
-        // Vbolshoetv2 {
-        //     // Eltex NV-501
-        //     matchingFallbacks = ['full']
-        //     versionCode 9400 + defaultConfig.versionCode
-        //     ndk {
-        //         abiFilters "armeabi-v7a", ""
-        //     }
-        // }
-        // Vfakeyoutube {
-        //    matchingFallbacks = ['lite']
-        //    versionCode 9400 + defaultConfig.versionCode
-        //    applicationId "com.google.android.youtube.tv"
-        // }
-        // Vnovotelecom {
-        //     // Eltex NV-310 (MIPS!!!)
-        //     matchingFallbacks = ['lite']
-        //     versionCode 9400 + defaultConfig.versionCode
-        //     applicationId "com.novotelecom.smartyoutubetv"
-        // }
-        // Vnovotelecom2 {
-        //    // Eltex NV-310 (MIPS!!!)
-        //    matchingFallbacks = ['lite']
-        //    versionCode 9400 + defaultConfig.versionCode
-        //    applicationId "com.novotelecom.smartyoutubetv"
-        // }
-        // Vistargroups {
-        //     // Istargroups.com
-        //     matchingFallbacks = ['lite']
-        //     versionCode 9400 + defaultConfig.versionCode
-        //     applicationId "com.istargroups.smartyoutubetv"
-        // }
+        Vbolshoetv2 {
+            // Eltex NV-501
+            matchingFallbacks = ['full']
+            versionCode 9400 + defaultConfig.versionCode
+            ndk {
+                abiFilters "armeabi-v7a", ""
+            }
+        }
         // Vrtarmenia {
         //     matchingFallbacks = ['lite']
         //     versionCode 9400 + defaultConfig.versionCode
@@ -197,16 +166,11 @@ android {
     // More info: https://stackoverflow.com/questions/37439120/product-flavor-duplicate-class-found
     sourceSets {
         def commonDirs = ['src/commonSrc/appWatcher/java', 'src/commonSrc/crashHandler/java']
+        def bolshoetvCommonDirs = ['src/commonSrc/Vbolshoetv/java']
         orig {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
         // Vtesting {
-        //     java.srcDirs = commonDirs
-        // }
-        // Vlitemain {
-        //     java.srcDirs = commonDirs
-        // }
-        // Vlitealt {
         //     java.srcDirs = commonDirs
         // }
         Vkids {
@@ -215,12 +179,6 @@ android {
         Vlive {
             java.srcDirs = commonDirs
         }
-        // Vnovotelecom {
-        //     java.srcDirs = commonDirs
-        // }
-        // Vistargroups {
-        //     java.srcDirs('src/commonSrc/appWatcher/java')
-        // }
         // Vrtarmenia {
         //     java.srcDirs = commonDirs
         // }
@@ -232,6 +190,12 @@ android {
         // }
         Vredboxtv {
             java.srcDirs = commonDirs
+        }
+        Vbolshoetv {
+            java.srcDirs = bolshoetvCommonDirs
+        }
+        Vbolshoetv2 {
+            java.srcDirs = bolshoetvCommonDirs
         }
     }
 }
