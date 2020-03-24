@@ -68,11 +68,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:' + constraintLayoutXVersion
     implementation 'androidx.collection:collection:' + appCompatXLibraryVersion
 
-    // api 'com.amazon.android:exoplayer:' + amazonExoplayerVersion
-    api 'com.google.android.exoplayer:exoplayer:' + exoplayerVersion
+    api 'com.amazon.android:exoplayer:' + amazonExoplayerVersion
+    // api 'com.google.android.exoplayer:exoplayer:' + exoplayerVersion
 
-    // implementation 'com.amazon.android:extension-okhttp:' + amazonExoplayerVersion
-    implementation 'com.google.android.exoplayer:extension-okhttp:' + exoplayerVersion
+    implementation 'com.amazon.android:extension-okhttp:' + amazonExoplayerVersion
+    // implementation 'com.google.android.exoplayer:extension-okhttp:' + exoplayerVersion
 
     // include vp9 extension
     // NOTE: NoSuchMethodError when using 'transitive' prop
