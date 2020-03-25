@@ -180,6 +180,10 @@ var YouTubeUtils = {
         return isOpened;
     },
 
+    isSearchFieldFocused: function() {
+        return this.isSearchOpened() && document.activeElement != null && document.activeElement.nodeName == 'INPUT';
+    },
+
     isChannelOpened: function() {
         var isOpened = Utils.contains(location.hash, this.CHANNEL_SIGN);
 

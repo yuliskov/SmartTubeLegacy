@@ -54,6 +54,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private boolean mPlayerClosed;
     private Uri mDashUrl;
     private Intent mExoIntent;
+    private boolean mDoPauseBrowser;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -102,8 +103,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 return;
             }
 
-            boolean pauseBrowser = !mManager.isMirroring();
-            mFragmentsManager.openExoPlayer(null, pauseBrowser);
+            mDoPauseBrowser = !mManager.isMirroring();
+            focusPlayer();
         };
 
         mHandler = new Handler(Looper.getMainLooper());
@@ -115,7 +116,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mPlayerClosed = false;
         mBlockHandlers = true;
         clearPendingEvents();
-        mFragmentsManager.openExoPlayer(null, false);
+        focusPlayer();
     }
 
     //@Override
@@ -158,7 +159,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mMetadata = metadata;
 
         if (metadata != null && mExoIntent != null) { // called async
-            mFragmentsManager.openExoPlayer(metadata.toIntent(), false);
+            focusPlayer(metadata.toIntent());
+        }
+    }
+
+    @Override
+    public void onFalseCall() {
+        if (!mPlayerClosed) {
+            focusPlayer();
         }
     }
 
@@ -233,7 +241,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         }
 
         CommonApplication.getPreferences().setMirrorEnabled(mManager.isMirroring());
-        mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
+        focusPlayer(playerIntent); // pause every time, except when mirroring
 
         // give the browser time to initialization
         //mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
@@ -265,5 +273,13 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     private void clearPendingEvents() {
         mHandler.removeCallbacks(mPauseBrowser);
+    }
+
+    private void focusPlayer() {
+        mFragmentsManager.openExoPlayer(null, mDoPauseBrowser);
+    }
+
+    private void focusPlayer(Intent intent) {
+        mFragmentsManager.openExoPlayer(intent, mDoPauseBrowser);
     }
 }

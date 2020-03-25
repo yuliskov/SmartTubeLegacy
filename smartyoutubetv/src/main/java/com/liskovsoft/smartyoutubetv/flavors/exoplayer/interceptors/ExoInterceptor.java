@@ -76,6 +76,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + url);
+            mExoCallback.onFalseCall();
             return null;
         }
 
