@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ProLowerPlayerBufferTypeDialogItem extends DialogItem {
+public class ProMediumPlayerBufferTypeDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ProLowerPlayerBufferTypeDialogItem(Context context) {
-        super(context.getResources().getString(R.string.lower_player_buffer), false);
+    public ProMediumPlayerBufferTypeDialogItem(Context context) {
+        super(context.getResources().getString(R.string.medium_player_buffer), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -26,7 +26,7 @@ public class ProLowerPlayerBufferTypeDialogItem extends DialogItem {
         if (checked) {
             mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM);
         } else {
-            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH);
+            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM);
         }
     }
 }

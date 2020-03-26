@@ -114,4 +114,7 @@
     <string name="tweak_publish_history_playlist">ATV: Publish History playlist to Recommendations</string>
     <string name="tweak_publish_recommended_playlist">ATV: Publish Recommended playlist to Recommendations</string>
     <string name="tweak_publish_subscriptions_playlist">ATV: Publish Subscriptions playlist to Recommendations</string>
+    <string name="high_player_buffer">Pro: Max player buffer</string>
+    <string name="medium_player_buffer">Pro: Medium player buffer</string>
+    <string name="low_player_buffer">PRO: Min player buffer</string>
 </resources>

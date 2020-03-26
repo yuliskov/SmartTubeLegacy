@@ -95,4 +95,7 @@
     <string name="tweak_publish_history_playlist">ATV: Публиковать Историю просмотров в Рекомендации</string>
     <string name="tweak_publish_recommended_playlist">ATV: Публиковать Рекомендуемые видео в Рекомендации</string>
     <string name="tweak_publish_subscriptions_playlist">ATV: Публиковать Подписки в Рекомендации</string>
+    <string name="high_player_buffer">PRO: Максимальный буфер плеера</string>
+    <string name="medium_player_buffer">PRO: Средний буфер плеера</string>
+    <string name="low_player_buffer">PRO: Минимальный буфер плеера</string>
 </resources>

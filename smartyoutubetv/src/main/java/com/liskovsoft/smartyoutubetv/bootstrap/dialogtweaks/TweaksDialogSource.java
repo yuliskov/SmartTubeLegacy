@@ -11,7 +11,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAutoShowPla
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVChannelsCloseAppDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProLowerPlayerBufferTypeDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProHighPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EnableAdBlockDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProFixAspectDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LiteForceAVCDialogItem;
@@ -20,6 +20,8 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LiteForceVP9Di
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HideBootTipsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLauncherDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProLowPlayerBufferTypeDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProMediumPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOkButtonDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenHistoryDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
@@ -62,7 +64,9 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new HideBootTipsDialogItem(mContext));
         mItems.add(new EnableAdBlockDialogItem(mContext));
         //mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
-        mItems.add(new ProLowerPlayerBufferTypeDialogItem(mContext));
+        mItems.add(new ProLowPlayerBufferTypeDialogItem(mContext));
+        mItems.add(new ProMediumPlayerBufferTypeDialogItem(mContext));
+        mItems.add(new ProHighPlayerBufferTypeDialogItem(mContext));
         mItems.add(new ProFixAspectDialogItem(mContext));
         mItems.add(new ProUseExternalPlayer4KDialogItem(mContext));
         mItems.add(new ProUseExternalPlayerFHDDialogItem(mContext));
