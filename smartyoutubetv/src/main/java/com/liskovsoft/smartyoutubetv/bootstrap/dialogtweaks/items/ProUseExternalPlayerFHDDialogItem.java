@@ -5,11 +5,11 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class UseExternalPlayerFHDDialogItem extends DialogItem {
+public class ProUseExternalPlayerFHDDialogItem extends DialogItem {
     private final Context mContext;
     private final SmartPreferences mPrefs;
 
-    public UseExternalPlayerFHDDialogItem(Context context) {
+    public ProUseExternalPlayerFHDDialogItem(Context context) {
         super(context.getResources().getString(R.string.tweak_open_externally) + " (FHD)", false);
 
         mContext = context;

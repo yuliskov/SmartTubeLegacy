@@ -2,32 +2,27 @@ package com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ForceVP9DialogItem extends DialogItem {
+public class ProPlayerUIShowTimeoutDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ForceVP9DialogItem(Context context) {
-        super(context.getResources().getString(R.string.force_vp9_lite_only), false);
+    public ProPlayerUIShowTimeoutDialogItem(Context context) {
+        super(context.getResources().getString(R.string.player_ui_show_timeout), false);
 
         mContext = context;
-        mPrefs = CommonApplication.getPreferences();
+        mPrefs = SmartPreferences.instance(context);
     }
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.VP9.equals(mPrefs.getPreferredCodec());
+        return mPrefs.getDecreasePlayerUITimeout();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        if (checked) {
-            mPrefs.setPreferredCodec(SmartPreferences.VP9);
-        } else {
-            mPrefs.setPreferredCodec(SmartPreferences.NONE);
-        }
+        mPrefs.setDecreasePlayerUITimeout(checked);
     }
 }

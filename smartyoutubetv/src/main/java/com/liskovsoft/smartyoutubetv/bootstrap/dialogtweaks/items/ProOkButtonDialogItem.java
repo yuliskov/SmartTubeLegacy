@@ -5,12 +5,12 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
-public class FixAspectDialogItem extends DialogItem {
+public class ProOkButtonDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public FixAspectDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_fix_aspect), false);
+    public ProOkButtonDialogItem(Context context) {
+        super("PRO: " + context.getResources().getString(R.string.tweak_ok_button_fix), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class FixAspectDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getFixAspectRatio();
+        return mPrefs.getEnableOKPause();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setFixAspectRatio(checked);
+        mPrefs.setEnableOKPause(checked);
     }
 }

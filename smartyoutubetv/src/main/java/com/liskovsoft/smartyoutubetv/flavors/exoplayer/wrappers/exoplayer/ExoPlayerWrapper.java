@@ -48,13 +48,13 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
     private static final long BROWSER_INIT_TIME_MS = 10_000;
     private final Runnable mPauseBrowser;
+    private boolean mDoPauseBrowser;
     private final Handler mHandler;
     private boolean mBlockHandlers;
     private VideoMetadata mMetadata;
     private boolean mPlayerClosed;
     private Uri mDashUrl;
     private Intent mExoIntent;
-    private boolean mDoPauseBrowser;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -115,6 +115,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         cleanup();
         mPlayerClosed = false;
         mBlockHandlers = true;
+        mDoPauseBrowser = false;
         clearPendingEvents();
         focusPlayer();
     }

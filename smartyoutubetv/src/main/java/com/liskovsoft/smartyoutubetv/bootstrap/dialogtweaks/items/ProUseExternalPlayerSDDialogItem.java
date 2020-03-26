@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class AutoShowPlayerUIDialogItem extends DialogItem {
-    private final SmartPreferences mPrefs;
+public class ProUseExternalPlayerSDDialogItem extends DialogItem {
     private final Context mContext;
+    private final SmartPreferences mPrefs;
 
-    public AutoShowPlayerUIDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_auto_show_player_ui), false);
+    public ProUseExternalPlayerSDDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (SD)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class AutoShowPlayerUIDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getAutoShowPlayerUI();
+        return SmartPreferences.USE_EXTERNAL_PLAYER_SD.equals(mPrefs.getUseExternalPlayer());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setAutoShowPlayerUI(checked);
+        mPrefs.setUseExternalPlayer(checked ? SmartPreferences.USE_EXTERNAL_PLAYER_SD : SmartPreferences.USE_EXTERNAL_PLAYER_NONE);
     }
 }

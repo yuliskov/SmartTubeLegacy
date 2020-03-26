@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class UseExternalPlayerKodiDialogItem extends DialogItem {
-    private final Context mContext;
+public class ProAltPlayerMappingDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
+    private final Context mContext;
 
-    public UseExternalPlayerKodiDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally) + " (KODI)", false);
+    public ProAltPlayerMappingDialogItem(Context context) {
+        super("PRO: " + context.getResources().getString(R.string.alt_player_mapping), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class UseExternalPlayerKodiDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.USE_EXTERNAL_PLAYER_KODI.equals(mPrefs.getUseExternalPlayer());
+        return mPrefs.getAltPlayerMappingEnabled();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setUseExternalPlayer(checked ? SmartPreferences.USE_EXTERNAL_PLAYER_KODI : SmartPreferences.USE_EXTERNAL_PLAYER_NONE);
+        mPrefs.setAltPlayerMappingEnabled(checked);
     }
 }

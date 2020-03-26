@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ChannelsCloseAppDialogItem extends DialogItem {
-    private final SmartPreferences mPrefs;
+public class ProUgoos50HZFixDialogItem extends DialogItem {
     private final Context mContext;
+    private final SmartPreferences mPrefs;
 
-    public ChannelsCloseAppDialogItem(Context context) {
-        super(context.getResources().getString(R.string.channels_close_app), false);
+    public ProUgoos50HZFixDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_ugoos_afr_fix), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class ChannelsCloseAppDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getChannelsCloseApp();
+        return mPrefs.getUgoos50HZFix();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setChannelsCloseApp(checked);
+        mPrefs.setUgoos50HZFix(checked);
     }
 }

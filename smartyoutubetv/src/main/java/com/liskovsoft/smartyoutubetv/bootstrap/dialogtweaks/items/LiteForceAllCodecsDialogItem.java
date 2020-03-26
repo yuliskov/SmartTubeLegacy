@@ -6,12 +6,12 @@ import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ForceAVCDialogItem extends DialogItem {
+public class LiteForceAllCodecsDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ForceAVCDialogItem(Context context) {
-        super(context.getResources().getString(R.string.force_avc_lite_only), false);
+    public LiteForceAllCodecsDialogItem(Context context) {
+        super(context.getResources().getString(R.string.force_all_codecs_lite_only), false);
 
         mContext = context;
         mPrefs = CommonApplication.getPreferences();
@@ -19,13 +19,13 @@ public class ForceAVCDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.AVC.equals(mPrefs.getPreferredCodec());
+        return SmartPreferences.ALL_CODECS.equals(mPrefs.getPreferredCodec());
     }
 
     @Override
     public void setChecked(boolean checked) {
         if (checked) {
-            mPrefs.setPreferredCodec(SmartPreferences.AVC);
+            mPrefs.setPreferredCodec(SmartPreferences.ALL_CODECS);
         } else {
             mPrefs.setPreferredCodec(SmartPreferences.NONE);
         }

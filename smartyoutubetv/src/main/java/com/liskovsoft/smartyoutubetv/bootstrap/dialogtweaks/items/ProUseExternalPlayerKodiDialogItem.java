@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class PlayerUIShowTimeoutDialogItem extends DialogItem {
-    private final SmartPreferences mPrefs;
+public class ProUseExternalPlayerKodiDialogItem extends DialogItem {
     private final Context mContext;
+    private final SmartPreferences mPrefs;
 
-    public PlayerUIShowTimeoutDialogItem(Context context) {
-        super(context.getResources().getString(R.string.player_ui_show_timeout), false);
+    public ProUseExternalPlayerKodiDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (KODI)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class PlayerUIShowTimeoutDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getDecreasePlayerUITimeout();
+        return SmartPreferences.USE_EXTERNAL_PLAYER_KODI.equals(mPrefs.getUseExternalPlayer());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setDecreasePlayerUITimeout(checked);
+        mPrefs.setUseExternalPlayer(checked ? SmartPreferences.USE_EXTERNAL_PLAYER_KODI : SmartPreferences.USE_EXTERNAL_PLAYER_NONE);
     }
 }

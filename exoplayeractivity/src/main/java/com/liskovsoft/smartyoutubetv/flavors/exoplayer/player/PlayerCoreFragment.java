@@ -381,10 +381,10 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
 
         if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM)) {
-            int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
+            int minBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
             int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
-            int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
-            int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
+            int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2;
+            int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2;
             //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
             baseBuilder.setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs);
         }

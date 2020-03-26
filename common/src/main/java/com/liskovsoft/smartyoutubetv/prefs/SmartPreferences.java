@@ -478,7 +478,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public String getPlayerBufferType() {
-        return getString(PLAYER_BUFFER_TYPE, PLAYER_BUFFER_TYPE_MEDIUM);
+        return getString(PLAYER_BUFFER_TYPE, PLAYER_BUFFER_TYPE_LOW);
     }
 
     public void setPlayerBufferType(String playerBufferType) {

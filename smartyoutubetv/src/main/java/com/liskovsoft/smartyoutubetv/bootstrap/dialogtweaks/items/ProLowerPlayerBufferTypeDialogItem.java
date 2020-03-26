@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class UseExternalPlayerSDDialogItem extends DialogItem {
-    private final Context mContext;
+public class ProLowerPlayerBufferTypeDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
+    private final Context mContext;
 
-    public UseExternalPlayerSDDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally) + " (SD)", false);
+    public ProLowerPlayerBufferTypeDialogItem(Context context) {
+        super(context.getResources().getString(R.string.lower_player_buffer), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,15 @@ public class UseExternalPlayerSDDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.USE_EXTERNAL_PLAYER_SD.equals(mPrefs.getUseExternalPlayer());
+        return mPrefs.getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW);
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setUseExternalPlayer(checked ? SmartPreferences.USE_EXTERNAL_PLAYER_SD : SmartPreferences.USE_EXTERNAL_PLAYER_NONE);
+        if (checked) {
+            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_LOW);
+        } else {
+            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM);
+        }
     }
 }
