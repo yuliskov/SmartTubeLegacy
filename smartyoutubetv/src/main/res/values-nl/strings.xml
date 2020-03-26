@@ -90,7 +90,7 @@
     <string name="fix_clock_msg">Tijd op je apparaat is niet correct ingesteld</string>
     <string name="do_restore_data_msg">Eerder bewaarde gegevens gegevens herstellen?\nApp zal worden heropgestart.</string>
     <string name="restoring_data_msg">Gegevens herstellen...</string>
-    <string name="alt_player_mapping">Afstandsbediening: ALT-media-toetsen toewijzen</string>
+    <string name="alt_player_mapping">Alternatieve mediatoetsen afstandsbediening</string>
     <string name="tip_hash_in_subscriptions">Abonnementen verwijderen? Kanalen verwijderen beginnend met hash #</string>
     <string name="tip_show_main_screen_2">BACK-toets indrukken om app instellingen te openen</string>
     <string name="do_install_bridge_apk">Wil je stem-gestuurd-zoeken inschakelen?\nInstallatie van een bijkomende app kan noodzakelijk zijn.</string>
@@ -108,8 +108,11 @@
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
     <string name="channels_close_app">Android TV Kanalen: App sluiten met BACK-toets</string>
-    <string name="lower_player_buffer">PRO: Bufferen van player verminderen</string>
+    <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
     <string name="tweak_publish_history_playlist">ATV: Geschiedenis playlist weergeven bij Kanalen</string>
     <string name="tweak_publish_recommended_playlist">ATV: Aanbevolen playlist weergeven bij Kanalen</string>
     <string name="tweak_publish_subscriptions_playlist">ATV: Abonnementen playlist weergeven bij Kanalen</string>
+    <string name="high_player_buffer">Pro: Maximum player buffer</string>
+    <string name="medium_player_buffer">Pro: Medium player buffer</string>
+    <string name="low_player_buffer">PRO: Minimum player buffer</string>
 </resources>
