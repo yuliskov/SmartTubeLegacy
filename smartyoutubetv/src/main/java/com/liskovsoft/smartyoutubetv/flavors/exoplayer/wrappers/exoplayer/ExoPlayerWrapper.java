@@ -245,7 +245,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         focusPlayer(playerIntent); // pause every time, except when mirroring
 
         // give the browser time to initialization
-        //mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
+        mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
     }
 
     @Override
