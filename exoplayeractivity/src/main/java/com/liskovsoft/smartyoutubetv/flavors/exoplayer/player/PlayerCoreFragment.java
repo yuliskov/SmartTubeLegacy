@@ -380,14 +380,22 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     private DefaultLoadControl getLoadControl() {
         DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
 
-        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM)) {
-            int minBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
-            int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
-            int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2;
-            int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2;
+        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH)) {
             //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
-            baseBuilder.setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs);
+            baseBuilder.setBufferDurationsMs(
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2);
+        } else if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW)) {
+            baseBuilder.setBufferDurationsMs(
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 2,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2);
         }
+
+        // medium buffer by default
 
         return baseBuilder.createDefaultLoadControl();
     }

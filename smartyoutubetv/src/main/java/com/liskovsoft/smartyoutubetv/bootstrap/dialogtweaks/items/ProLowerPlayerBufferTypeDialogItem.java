@@ -18,15 +18,15 @@ public class ProLowerPlayerBufferTypeDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW);
+        return mPrefs.getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM);
     }
 
     @Override
     public void setChecked(boolean checked) {
         if (checked) {
-            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_LOW);
-        } else {
             mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM);
+        } else {
+            mPrefs.setPlayerBufferType(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH);
         }
     }
 }

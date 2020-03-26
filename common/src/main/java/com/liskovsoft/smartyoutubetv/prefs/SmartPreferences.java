@@ -61,7 +61,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String PLAYER_BUFFER_TYPE = "player_buffer_type";
     public static final String PLAYER_BUFFER_TYPE_LOW = "player_buffer_type_low";
     public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
-    public static final String PLAYER_BUFFER_TYPE_BIG = "player_buffer_type_big";
+    public static final String PLAYER_BUFFER_TYPE_HIGH = "player_buffer_type_high";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -478,7 +478,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public String getPlayerBufferType() {
-        return getString(PLAYER_BUFFER_TYPE, PLAYER_BUFFER_TYPE_LOW);
+        return getString(PLAYER_BUFFER_TYPE, PLAYER_BUFFER_TYPE_MEDIUM);
     }
 
     public void setPlayerBufferType(String playerBufferType) {
