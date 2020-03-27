@@ -69,6 +69,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDa
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.MyDefaultRenderersFactory;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.SubtitleRendererDecorator;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
@@ -187,27 +188,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         mPlayerTopBar.setVisibility(View.GONE);
 
-        configureSubtitleView();
-    }
-
-    private void configureSubtitleView() {
-        if (mSimpleExoPlayerView != null) {
-            SubtitleView subtitleView = mSimpleExoPlayerView.getSubtitleView();
-
-            if (subtitleView != null) {
-                // disable default style
-                subtitleView.setApplyEmbeddedStyles(false);
-
-                int defaultSubtitleColor = Color.argb(255, 218, 218, 218);
-                int outlineColor = Color.argb(255, 43, 43, 43);
-                CaptionStyleCompat style =
-                        new CaptionStyleCompat(defaultSubtitleColor,
-                                Color.TRANSPARENT, Color.TRANSPARENT,
-                                CaptionStyleCompat.EDGE_TYPE_OUTLINE,
-                                outlineColor, Typeface.DEFAULT);
-                subtitleView.setStyle(style);
-            }
-        }
+        SubtitleRendererDecorator.configureSubtitleView(mSimpleExoPlayerView);
     }
 
     public void setIntent(Intent intent) {
