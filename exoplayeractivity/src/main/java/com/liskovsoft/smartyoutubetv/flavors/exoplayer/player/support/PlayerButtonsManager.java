@@ -141,7 +141,7 @@ public class PlayerButtonsManager {
         boolean isSubtitleButton = id == R.id.exo_captions;
         boolean isNextButton = id == R.id.exo_next2 && isChecked;
         boolean isPrevButton = id == R.id.exo_prev && isChecked;
-        boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
+        boolean isSuggestions = (id == R.id.exo_suggestions || id == R.id.down_catch_button) && isChecked;
         boolean isShareButton = id == R.id.exo_share;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
@@ -281,12 +281,9 @@ public class PlayerButtonsManager {
             return;
         }
 
-        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
-                mPlayerFragment.showDebugView(isChecked);
-                mPrefs.setCheckedState(button.getId(), isChecked);
-            }
+        statsButton.setOnCheckedChangeListener((button, isChecked) -> {
+            mPlayerFragment.showDebugView(isChecked);
+            mPrefs.setCheckedState(button.getId(), isChecked);
         });
     }
 

@@ -194,7 +194,7 @@ public abstract class ToggleButtonBase extends LinearLayout {
         initElems();
     }
 
-    private void callCheckedListener(boolean isChecked) {
+    protected void callCheckedListener(boolean isChecked) {
         if (mIsDisabled) {
             Log.d(TAG, "Button " + getId() + " is disabled... Cancel checking events...");
             return;
