@@ -9,9 +9,9 @@
     android:paddingLeft="@dimen/player_second_padding"
     android:paddingRight="@dimen/player_second_padding">
 
-    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TransparentButton
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextFocusButton
         android:id="@+id/down_catch_button"
-        style="@style/ExoMediaButton2_UpCatch"
+        style="@style/ExoMediaButton2_DownCatch"
         android:layout_height="0.1dp"/>
 
 </LinearLayout>

@@ -24,5 +24,5 @@
 
     <include layout="@layout/player_suggestions_row"/>
 
-    <include layout="@layout/down_catch_row"/>
+    <!--<include layout="@layout/down_catch_row"/>-->
 </LinearLayout>
