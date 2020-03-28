@@ -143,6 +143,13 @@ window.ExoUtils = {
             var selector = PlayerActivityMapping[key];
             var btn = ExoButton.fromSelector(selector, states);
             btn.setChecked(isChecked);
+
+            if (btnId == PlayerActivity.BUTTON_SUGGESTIONS || btnId == PlayerActivity.BUTTON_FAVORITES) {
+                // assume that exo is opened
+                if (isChecked) {
+                    YouTubeUtils.sExoPlayerOpen = true;
+                }
+            }
         }
     },
 

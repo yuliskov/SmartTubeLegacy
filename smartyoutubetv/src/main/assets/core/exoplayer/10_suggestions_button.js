@@ -178,7 +178,6 @@ function SuggestionsFakeButton(selector) {
         if (doChecked) { // fake btn can only be checked
             if (!YouTubeUtils.isPlayerClosed()) {
                 Log.d(this.TAG, "opening suggestions");
-                YouTubeUtils.sExoPlayerOpen = true;
                 YouTubeUtils.enablePlayerSuggestions();
                 YouTubeUtils.hidePlayerBackground();
                 this.openSuggestions();
