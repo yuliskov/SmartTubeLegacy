@@ -30,7 +30,7 @@ class DisplaySyncHelper implements UhdHelperListener {
     protected DisplayHolder.Mode mNewMode;
     private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
-    protected static boolean SWITCH_TO_UHD = true;
+    protected static boolean SWITCH_TO_UHD = false;
     private int mModeLength = -1;
     private AutoFrameRateListener mListener;
 
