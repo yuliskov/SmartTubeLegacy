@@ -99,7 +99,7 @@
     <string name="tweak_use_new_ui">Nieuwe User Interface gebruiken</string>
     <string name="tweak_ugoos_afr_fix">PRO: UGOOS 50HZ fix</string>
     <string name="tweak_hide_boot_tips">Tips bij opstarten verbergen</string>
-    <string name="tweak_auto_show_player_ui">UI player automatisch weergeven</string>
+    <string name="tweak_auto_show_player_ui">UI player weergeven bij gebruik mediatoets</string>
     <string name="tweak_open_externally_lq">PRO: Video openen met externe player (SD)</string>
     <string name="message_install_player">MX Player of VLC installeren</string>
     <string name="message_enable_web_server">Web Server in Kodi instellingen inschakelen</string>
