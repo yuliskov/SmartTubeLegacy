@@ -132,6 +132,8 @@ window.ExoUtils = {
 
         Log.d(this.TAG, "syncButtons: " + JSON.stringify(states));
 
+        YouTubeUtils.sExoPlayerOpen = false;
+
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
             var isChecked = states[btnId];

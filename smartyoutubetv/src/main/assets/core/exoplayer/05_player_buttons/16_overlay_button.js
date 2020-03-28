@@ -54,13 +54,13 @@ function OverlayButton(selector) {
         if (doChecked) {
             var el = this.findToggle();
 
+            YouTubeUtils.sExoPlayerOpen = false;
+
             if (!el) {
                 Log.d(this.TAG, "Oops, " + this.selector + " button not found... return to the player");
                 this.sendClose();
                 return;
             }
-
-            Log.d(this.TAG, "Location is " + location.hash);
 
             EventUtils.triggerEnter(el);
 

@@ -272,6 +272,10 @@ var YouTubeUtils = {
         }
     },
 
+    isExoPlayerOpen: function() {
+        return this.sExoPlayerOpen;
+    },
+
     moveRight: function() {
         if (document.activeElement) {
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.RIGHT);
