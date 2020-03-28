@@ -12,6 +12,7 @@ public class BackgroundActionManager {
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
+    private static final String PARAM_MIRROR2 = "ytrcc";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
@@ -108,6 +109,10 @@ public class BackgroundActionManager {
 
     private boolean isMirroring(String url) {
         String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR);
+
+        if (mirrorDeviceName == null) {
+            mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR2);
+        }
 
         if (mirrorDeviceName != null && !mirrorDeviceName.isEmpty()) { // any response is good
             Log.d(TAG, "The video is mirroring from the phone or tablet");
