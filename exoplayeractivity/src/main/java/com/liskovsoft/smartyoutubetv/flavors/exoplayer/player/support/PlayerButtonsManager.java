@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -32,6 +30,7 @@ public class PlayerButtonsManager {
     private Map<Integer, Boolean> mButtonStates;
     private Map<Integer, String> mOutputIdTagMapping;
     private Map<Integer, String> mInputIdTagMapping;
+    private static final int[] STANDALONE_BUTTONS = {R.id.exo_user, R.id.exo_suggestions, R.id.down_catch_button, R.id.exo_favorites};
 
     public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -112,6 +111,7 @@ public class PlayerButtonsManager {
         mOutputIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
         mOutputIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
         mOutputIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
+        mOutputIdTagMapping.put(R.id.down_catch_button, ExoPlayerFragment.BUTTON_SUGGESTIONS);
         mOutputIdTagMapping.put(R.id.exo_favorites, ExoPlayerFragment.BUTTON_FAVORITES);
     }
 
@@ -126,12 +126,7 @@ public class PlayerButtonsManager {
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
-        final int id = button.getId();
-
-        //if (id == R.id.exo_subscribe && !isChecked) {
-        //    Log.d(TAG, "Hmm. Suspicious. Subscribe button has been unchecked. Canceling unsubscribe...");
-        //    return;
-        //}
+        int id = button.getId();
 
         Log.d(TAG, "Button is checked: " + mOutputIdTagMapping.get(id) + ": " + isChecked);
 
@@ -239,7 +234,7 @@ public class PlayerButtonsManager {
 
         // this buttons could be clicked only in the middle of the video
         // so return one of them
-        for (int id : new int[]{R.id.exo_user, R.id.exo_suggestions, R.id.exo_favorites}) {
+        for (int id : STANDALONE_BUTTONS) {
             Boolean checked = mButtonStates.get(id);
             mButtonStates.remove(id);
             if (checked != null && checked) { // one btn could be checked at a time
@@ -260,12 +255,9 @@ public class PlayerButtonsManager {
     }
 
     private void resetState() {
-        mButtonStates.put(R.id.exo_favorites, false);
-        mButtonStates.put(R.id.exo_suggestions, false);
-        mButtonStates.put(R.id.exo_user, false);
-        mButtonStates.put(R.id.exo_back, false);
-        mButtonStates.put(R.id.exo_next2, false);
-        mButtonStates.put(R.id.exo_prev, false);
+        for (int id : STANDALONE_BUTTONS) {
+            mButtonStates.put(id, false);
+        }
     }
 
     private void initDebugButton() {
