@@ -205,9 +205,7 @@ public class PlayerButtonsManager {
         if (mPlayerFragment.getIntent() == null)
             return;
 
-        String mpdManifest = mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA);
-
-        // open external player
+        mPlayerFragment.openExternalPlayer(mPlayerFragment.getIntent());
     }
 
     @TargetApi(17)

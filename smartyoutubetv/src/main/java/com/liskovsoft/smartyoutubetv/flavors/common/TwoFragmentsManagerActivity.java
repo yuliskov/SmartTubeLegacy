@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -245,6 +246,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         setActiveFragment(mBrowserFragment, !doNotPause);
 
         mPlayerListener.onPlayerAction(action);
+    }
+
+    @Override
+    public void openExternalPlayer(Intent intent) {
+        mPlayerListener.openExternalPlayer(intent);
     }
 
     private boolean isClosePlayer(Intent action) {

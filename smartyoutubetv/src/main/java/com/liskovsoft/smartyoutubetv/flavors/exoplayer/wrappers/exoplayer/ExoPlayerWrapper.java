@@ -16,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInter
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer.ExternalPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
@@ -55,6 +56,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private boolean mPlayerClosed;
     private Uri mDashUrl;
     private Intent mExoIntent;
+    private ExternalPlayerWrapper mExternalPlayerWrapper;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -282,5 +284,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     private void focusPlayer(Intent intent) {
         mFragmentsManager.openExoPlayer(intent, mDoPauseBrowser);
+    }
+
+    @Override
+    public void openExternalPlayer(Intent intent) {
+        if (mExternalPlayerWrapper == null) {
+            mExternalPlayerWrapper = ExternalPlayerWrapper.create(mContext, mInterceptor);
+        }
+
+        mExternalPlayerWrapper.openFromIntent(intent);
     }
 }

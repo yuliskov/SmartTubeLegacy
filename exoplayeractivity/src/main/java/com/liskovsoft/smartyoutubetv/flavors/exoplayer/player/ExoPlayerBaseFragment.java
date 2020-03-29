@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -187,6 +188,12 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
         if (mButtonsManager != null)
             mButtonsManager.onCheckedChanged(compoundButton, b);
+    }
+
+    public void openExternalPlayer(Intent intent) {
+        if (getActivity() != null) {
+            ((PlayerListener) getActivity()).openExternalPlayer(intent);
+        }
     }
 
     public void onPlayerAction() {

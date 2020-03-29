@@ -105,8 +105,8 @@
     <style name="ExoMediaButton2.OpenPlayer">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/exo_open_player</item>
-        <item name="imageOff">@mipmap/btn_user_off</item>
-        <item name="imageOn">@mipmap/btn_user_off</item>
+        <item name="imageOff">@mipmap/btn_open_player</item>
+        <item name="imageOn">@mipmap/btn_open_player</item>
     </style>
 
     <style name="ExoMediaButton2.User">
