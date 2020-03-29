@@ -123,8 +123,7 @@ function OverlayButton(selector) {
             this.sendClose();
         } else {
             Log.d(this.TAG, "try to close the overlay");
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            YouTubeUtils.pressBack();
 
             var $this = this;
             setTimeout(function() {

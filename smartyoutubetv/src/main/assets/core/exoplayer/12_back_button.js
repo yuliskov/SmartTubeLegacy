@@ -23,8 +23,7 @@ function BackButton(selector, states) {
         if (backBtn && this.retryTimes > 1) { // last option is try to imitate ESC
             EventUtils.triggerEnter(backBtn);
         } else {
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            YouTubeUtils.pressBack();
         }
 
         if (YouTubeUtils.isPlayerClosed()) {

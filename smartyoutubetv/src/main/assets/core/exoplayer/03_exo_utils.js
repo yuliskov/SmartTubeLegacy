@@ -134,6 +134,9 @@ window.ExoUtils = {
 
         YouTubeUtils.sExoPlayerOpen = false;
 
+        // reset ui state (needed for button decorator)
+        YouTubeUtils.closePlayerControls();
+
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
             var isChecked = states[btnId];
