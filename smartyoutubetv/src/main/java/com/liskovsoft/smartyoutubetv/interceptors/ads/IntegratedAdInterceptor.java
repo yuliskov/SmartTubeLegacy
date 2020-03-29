@@ -17,8 +17,11 @@ import java.io.InputStream;
 public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String TAG = IntegratedAdInterceptor.class.getSimpleName();
     private static final String HOME_PAGE_ID = "\"browseId\":\"default\"";
+    private static final String CONTINUATION_ID = "\"continuation\":";
     private static final String BROWSE_URL = "/youtubei/v1/browse";
+    private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
     private final boolean mAdBlockEnabled;
+    private boolean mIsHome;
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
@@ -28,7 +31,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (url.contains(BROWSE_URL)) {
+        if (url.contains(BROWSE_URL) || url.contains(BROWSE_NEXT_URL)) {
             return mAdBlockEnabled;
         } else {
             return false;
@@ -44,7 +47,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (!postData.contains(HOME_PAGE_ID)) {
+        if (!isHomePage(postData)) {
             Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
             return null;
         }
@@ -77,5 +80,21 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         }
 
         return response;
+    }
+
+    private boolean isHomePage(String postData) {
+        if (postData == null) {
+            return false;
+        }
+
+        if (mIsHome) { // maybe home next page?
+            mIsHome = postData.contains(CONTINUATION_ID);
+        }
+
+        if (!mIsHome) {
+            mIsHome = postData.contains(HOME_PAGE_ID);
+        }
+
+        return mIsHome;
     }
 }
