@@ -138,6 +138,7 @@ public class PlayerButtonsManager {
         boolean isPrevButton = id == R.id.exo_prev && isChecked;
         boolean isSuggestions = (id == R.id.exo_suggestions || id == R.id.down_catch_button) && isChecked;
         boolean isShareButton = id == R.id.exo_share;
+        boolean isOpenPlayerButton = id == R.id.exo_open_player;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
         boolean isBackButton = id == R.id.exo_back;
@@ -158,6 +159,8 @@ public class PlayerButtonsManager {
             mPrefs.setCheckedState(id, isChecked);
         } else if (isShareButton) {
             displayShareDialog();
+        } else if (isOpenPlayerButton) {
+            openExternalPlayer();
         } else if (isUserPageButton || isSuggestions || isFavorites) {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
@@ -195,6 +198,16 @@ public class PlayerButtonsManager {
         String videoId = mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.VIDEO_ID);
         Uri videoUrl = PlayerUtil.convertToFullUrl(videoId);
         PlayerUtil.showMultiChooser(mPlayerFragment.getActivity(), videoUrl);
+    }
+
+    @TargetApi(17)
+    private void openExternalPlayer() {
+        if (mPlayerFragment.getIntent() == null)
+            return;
+
+        String mpdManifest = mPlayerFragment.getIntent().getStringExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA);
+
+        // open external player
     }
 
     @TargetApi(17)
