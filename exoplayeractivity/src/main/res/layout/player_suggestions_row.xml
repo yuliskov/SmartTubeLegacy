@@ -8,8 +8,7 @@
     android:gravity="center_horizontal"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/player_second_padding"
-    android:paddingRight="@dimen/player_second_padding"
-    android:background="@drawable/empty_tiles">
+    android:paddingRight="@dimen/player_second_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
