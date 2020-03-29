@@ -53,4 +53,5 @@
     <string name="toast_format_restricted">Нельзя выбирать формат при активированном пресете</string>
     <string name="changing_video_frame_rate">Настраивается частота кадров %s...</string>
     <string name="enable_autoframerate_pause">Ставить видео на паузу при смене частоты</string>
+    <string name="enable_autoframerate_resolution">Управлять разрешением</string>
 </resources>

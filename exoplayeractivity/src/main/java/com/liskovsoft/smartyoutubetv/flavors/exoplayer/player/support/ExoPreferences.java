@@ -27,6 +27,7 @@ public final class ExoPreferences {
     private static final String RESTORE_SPEED = "restoreSpeed";
     public static final String FORMAT_ANY = "format_any";
     private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
+    private static final String AFR_RESOLUTION_SWITCH_ENABLED = "afr_resolution_switch_enabled";
     private static final String AFR_SWITCH_PAUSE_TIME = "afr_switch_pause_time";
     private boolean mForceRestoreSpeed;
 
@@ -248,6 +249,16 @@ public final class ExoPreferences {
     public void setAfrDelayEnabled(boolean enabled) {
         mPrefs.edit()
                 .putBoolean(AFR_DELAY_ENABLED, enabled)
+                .apply();
+    }
+
+    public boolean isAfrResolutionSwitchEnabled() {
+        return mPrefs.getBoolean(AFR_RESOLUTION_SWITCH_ENABLED, false);
+    }
+
+    public void setAfrResolutionSwitchEnabled(boolean enabled) {
+        mPrefs.edit()
+                .putBoolean(AFR_RESOLUTION_SWITCH_ENABLED, enabled)
                 .apply();
     }
 

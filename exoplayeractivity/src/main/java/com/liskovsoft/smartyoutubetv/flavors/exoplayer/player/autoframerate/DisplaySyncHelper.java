@@ -3,9 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Build.VERSION;
-import android.os.Handler;
 import android.view.Window;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -27,10 +25,10 @@ class DisplaySyncHelper implements UhdHelperListener {
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     protected DisplayHolder.Mode mOriginalMode;
-    protected DisplayHolder.Mode mNewMode;
+    private DisplayHolder.Mode mNewMode;
     private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
-    protected static boolean SWITCH_TO_UHD = true;
+    private boolean mSwitchToUHD;
     private int mModeLength = -1;
     private AutoFrameRateListener mListener;
 
@@ -255,7 +253,7 @@ class DisplaySyncHelper implements UhdHelperListener {
 
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
 
-            if (SWITCH_TO_UHD) { // switch not only framerate but resolution too
+            if (mSwitchToUHD) { // switch not only framerate but resolution too
                 int minHeight;
                 int maxHeight;
 
@@ -422,5 +420,9 @@ class DisplaySyncHelper implements UhdHelperListener {
             mOriginalMode = mNewMode;
             CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mOriginalMode));
         }
+    }
+
+    public void setSwitchToUHD(boolean enabled) {
+        mSwitchToUHD = enabled;
     }
 }

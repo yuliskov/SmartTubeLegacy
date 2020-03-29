@@ -12,7 +12,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPrefere
 class AutoFrameRateHelper {
     private static final String TAG = AutoFrameRateHelper.class.getSimpleName();
     private final Activity mContext;
-    protected DisplaySyncHelper mSyncHelper;
+    private DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
 
@@ -20,6 +20,8 @@ class AutoFrameRateHelper {
         mContext = context;
         mSyncHelper = syncHelper;
         mPrefs = ExoPreferences.instance(mContext);
+
+        mSyncHelper.setSwitchToUHD(mPrefs.isAfrResolutionSwitchEnabled());
     }
 
     public void apply() {
@@ -55,13 +57,26 @@ class AutoFrameRateHelper {
         apply();
     }
 
-    public boolean getDelayEnabled() {
+    public boolean isDelayEnabled() {
         return getEnabled() && mPrefs.isAfrDelayEnabled();
     }
 
     public void setDelayEnabled(boolean enabled) {
         if (getEnabled()) {
             mPrefs.setAfrDelayEnabled(enabled);
+        } else {
+            MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
+        }
+    }
+
+    public boolean isResolutionSwitchEnabled() {
+        return getEnabled() && mPrefs.isAfrResolutionSwitchEnabled();
+    }
+
+    public void setResolutionSwitchEnabled(boolean enabled) {
+        if (getEnabled()) {
+            mPrefs.setAfrResolutionSwitchEnabled(enabled);
+            mSyncHelper.setSwitchToUHD(enabled);
         } else {
             MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
         }
@@ -83,20 +98,20 @@ class AutoFrameRateHelper {
         }
     }
 
-    public void saveOriginalState() {
-        if (!getEnabled()) {
-            return;
-        }
-
-        mSyncHelper.saveOriginalState();
-    }
-
     public void applyModeChangeFix() {
         if (!getEnabled()) {
             return;
         }
 
         mSyncHelper.applyModeChangeFix(mContext.getWindow());
+    }
+
+    public void saveOriginalState() {
+        if (!getEnabled()) {
+            return;
+        }
+
+        mSyncHelper.saveOriginalState();
     }
 
     public void restoreOriginalState() {
@@ -108,25 +123,6 @@ class AutoFrameRateHelper {
         Log.d(TAG, "Restoring original mode...");
 
         mSyncHelper.restoreOriginalState(mContext.getWindow());
-    }
-
-    public void saveCurrentState() {
-        if (!getEnabled()) {
-            return;
-        }
-
-        mSyncHelper.saveCurrentState();
-    }
-
-    public void restoreCurrentState() {
-        if (!getEnabled()) {
-            Log.d(TAG, "restoreCurrentState: autoframerate not enabled... exiting...");
-            return;
-        }
-
-        Log.d(TAG, "Restoring current mode...");
-
-        mSyncHelper.restoreCurrentState(mContext.getWindow());
     }
 
     public void setPlayer(SimpleExoPlayer player) {

@@ -73,4 +73,5 @@
     <string name="changing_video_frame_rate">Adjusting video frame rate %s...</string>
     <string name="enable_autoframerate_pause">Pause video when switching framerate</string>
     <string name="btn_afr">AFR</string>
+    <string name="enable_autoframerate_resolution">Resolution switch</string>
 </resources>
