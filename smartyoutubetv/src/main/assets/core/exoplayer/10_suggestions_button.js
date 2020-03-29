@@ -11,14 +11,12 @@ function SuggestionsWatcher(host) {
         var modelChangeTimeStampMS = 0;
         var relatedEventsTimeWindowMS = 1000;
 
-        var closeSuggestions = function() {
+        var checkSuggestions = function() {
             if ($this.host == null) {
                 return;
             }
 
-            var playerControls = Utils.$(YouTubeSelectors.PLAYER_UI_CONTAINER);
-
-            if (Utils.hasClass(playerControls, YouTubeClasses.HIDDEN)) {
+            if (YouTubeUtils.isPlayerControlsClosed()) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -33,19 +31,20 @@ function SuggestionsWatcher(host) {
                 var diff = Math.abs(modelChangeTimeStampMS - currentTimeMS);
                 if (diff > relatedEventsTimeWindowMS) {
                     console.log("SuggestionsWatcher: simple close suggestions: " + diff);
-                    closeSuggestions(); // event is standalone
+                    checkSuggestions(); // event is standalone
                 } else {
-                    console.log("SuggestionsWatcher: user have clicked on thumbnail...");
+                    console.log("SuggestionsWatcher: user has clicked on thumbnail...");
                 }
             }, 100);
         };
 
+        // used when the user opens channel or search from the suggestions
         var onModelChangeHandler = function(e) {
-            var backToPlayer = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
+            var playerAboutToOpen = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
                 Utils.hasClass(e.target, YouTubeClasses.PLAYER_UI_SHOWING);
-            if (backToPlayer) {
+            if (playerAboutToOpen) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
-                closeSuggestions();
+                checkSuggestions();
                 return;
             }
 
@@ -76,7 +75,8 @@ SuggestionsWatcher.disable = function() {
 function SuggestionsFakeButton(selector) {
     this.TAG = "SuggestionsFakeButton";
     this.selector = selector;
-    this.retryTimes = 10;
+    this.openRetryTimes = 10;
+    this.closeRetryTimes = 4;
     this.callDelayMS = 500;
     this.stateless = true;
 
@@ -97,12 +97,12 @@ function SuggestionsFakeButton(selector) {
             return;
         }
 
-        if (this.retryTimes <= 0) {
+        if (this.openRetryTimes <= 0) {
             this.sendClose();
             return;
         }
 
-        this.retryTimes--;
+        this.openRetryTimes--;
 
         Log.d(this.TAG, "Suggestions not showed... trying to open...");
 
@@ -128,6 +128,7 @@ function SuggestionsFakeButton(selector) {
     this.sendClose = function() {
         clearTimeout(this.openTimeout);
         clearTimeout(this.closeTimeout);
+        SuggestionsWatcher.disable();
 
         if (this.alreadySent) {
             return;
@@ -142,15 +143,22 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.closeSuggestions = function() {
-        if (this.alreadyHidden || YouTubeUtils.isPlayerControlsClosed()) {
-            return;
-        }
-
         Log.d(this.TAG, "closeSuggestions");
 
-        YouTubeUtils.closePlayerControls();
+        this.closeRetryTimes--;
 
-        this.alreadyHidden = true;
+        if (YouTubeUtils.isPlayerControlsClosed() || this.closeRetryTimes <= 0) {
+            Log.d(this.TAG, "suggestions has been closed or retries is out");
+            this.sendClose();
+        } else {
+            Log.d(this.TAG, "try to close the suggestions");
+            YouTubeUtils.closePlayerControls();
+
+            var $this = this;
+            setTimeout(function() {
+                $this.closeSuggestions();
+            }, this.callDelayMS);
+        }
     };
 
     this.suggestionsIsClosed = function() {
@@ -166,7 +174,6 @@ function SuggestionsFakeButton(selector) {
         // immediate close not working here, so take delay
         this.closeTimeout = setTimeout(function() {
             $this.closeSuggestions();
-            $this.sendClose();
         }, this.callDelayMS);
     };
 

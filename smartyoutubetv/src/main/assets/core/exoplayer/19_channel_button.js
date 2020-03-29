@@ -11,6 +11,10 @@ function ChannelButton(selector) {
     this.CHANNEL_CHECK_TIMEOUT_MS = 5000;
     this.stateless = true;
 
+    this.isOverlayOpened = function() {
+        return YouTubeUtils.isChannelOpened();
+    };
+
     this.onOverlayOpen = function() {
         var $this = this;
 

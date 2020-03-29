@@ -11,6 +11,10 @@ function FavoriteButton(selector) {
     this.CHANNEL_CHECK_TIMEOUT_MS = 5000;
     this.stateless = true;
 
+    this.isOverlayOpened = function() {
+        return YouTubeUtils.isOverlayOpened();
+    };
+
     this.onOverlayOpen = function() {
         var $this = this;
 
