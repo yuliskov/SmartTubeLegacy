@@ -2,11 +2,13 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignm
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.TypedValue;
 import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SubtitleView;
+import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
@@ -65,6 +67,8 @@ public class SubtitleRendererDecorator implements TextOutput {
                                 CaptionStyleCompat.EDGE_TYPE_OUTLINE,
                                 outlineColor, Typeface.DEFAULT);
                 subtitleView.setStyle(style);
+                float textSize = subtitleView.getContext().getResources().getDimension(R.dimen.subtitle_text_size);
+                subtitleView.setFixedTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
         }
     }

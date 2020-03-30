@@ -31,7 +31,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (url.contains(BROWSE_URL) || url.contains(BROWSE_NEXT_URL)) {
+        if (url.contains(BROWSE_URL)) {
             return mAdBlockEnabled;
         } else {
             return false;
@@ -47,7 +47,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (!isHomePage(postData)) {
+        if (!postData.contains(HOME_PAGE_ID)) {
             Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
             return null;
         }
@@ -82,7 +82,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         return response;
     }
 
-    private boolean isHomePage(String postData) {
+    private boolean isHomePageOrNext(String postData) {
         if (postData == null) {
             return false;
         }
