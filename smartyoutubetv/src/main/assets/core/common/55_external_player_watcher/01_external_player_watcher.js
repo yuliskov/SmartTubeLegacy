@@ -22,6 +22,9 @@ function ExternalPlayerWatcherAddon() {
                 if ($this.checkPlayerState()) {
                     Log.d($this.TAG, "Blocking BACK key.");
 
+                    // force return to the player (in case buttons handlers didn't work out)
+                    ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
+
                     e.stopPropagation();
                 }
             }
@@ -33,7 +36,7 @@ function ExternalPlayerWatcherAddon() {
 
         // There is a handler that blocks others. We should run before it.
         // Note: running on capture phase
-        EventUtils.addListener(document, DefaultEvents.KEY_DOWN, handler, true);
+        //EventUtils.addListener(document, DefaultEvents.KEY_DOWN, handler, true);
     };
 
     this.checkPlayerState = function() {

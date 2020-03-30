@@ -70,14 +70,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             switch (action) {
                 case ACTION_CLOSE_SUGGESTIONS:
                     returnToPlayer();
-                case ACTION_DISABLE_KEY_EVENTS:
-                    mFragmentsManager.disableKeyEvents();
+                //case ACTION_DISABLE_KEY_EVENTS:
+                //    mFragmentsManager.disableKeyEvents();
             }
         }
 
         private void returnToPlayer() {
             mHandler.post(() -> {
-                if (mCachedIntent != null) {
+                if (mCachedIntent != null && !mPlayerClosed) {
                     Log.d(TAG, "Switching to the running player from suggestions or user's page");
                     prepareAndOpenExoPlayer(null); // player should already be running so pass null
                 }

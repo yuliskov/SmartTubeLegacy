@@ -162,7 +162,7 @@ window.ExoUtils = {
             Log.d(this.TAG, "sending action to the main app: " + action);
             app.onGenericStringResult(action);
         } else {
-            Log.d(this.TAG,"app not found");
+            Log.d(this.TAG, "app not found");
         }
     }
 };
