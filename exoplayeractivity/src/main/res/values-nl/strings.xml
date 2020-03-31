@@ -70,7 +70,7 @@
     <string name="option_zoom_stretch">Uitrekken</string>
     <string name="checkbox_save_speed">Snelheid bewaren</string>
     <string name="toast_format_restricted">Formaat wijzigen onmogelijk want preset is geactiveerd</string>
-    <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
+    <string name="changing_video_frame_rate">Video framerate wijzigen %s...</string>
     <string name="enable_autoframerate_pause">Video pauzeren bij wijzigen van framerate</string>
     <string name="enable_autoframerate_resolution">Resolutie wijzigen</string>
     <string name="exo_open_player">Openen</string>
