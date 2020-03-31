@@ -16,6 +16,8 @@ function SuggestionsWatcher(host) {
                 return;
             }
 
+            console.log("SuggestionsWatcher: sending close signal to host...");
+
             if (YouTubeUtils.isPlayerControlsClosed()) {
                 $this.host.suggestionsIsClosed();
             } else {

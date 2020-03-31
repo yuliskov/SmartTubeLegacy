@@ -264,11 +264,14 @@ var YouTubeUtils = {
     },
 
     closePlayerControls: function() {
-        if (!this.isPlayerControlsClosed()) {
+        if (!this.isPlayerControlsClosed() || this.isOverlayOpened()) {
             Log.d(this.TAG, "Closing player ui...");
 
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            // var activeElement = YouTubeSelectors.PLAYER_EVENTS_RECEIVER;
+            var activeElement = document.activeElement;
+
+            EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
     },
 

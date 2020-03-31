@@ -103,6 +103,42 @@ window.ExoUtils = {
         return states;
     },
 
+    resetPlayerUI: function(callback, tries) {
+        var $this = this;
+
+        SuggestionsWatcher.disable();
+        OverlayWatcher.disable();
+
+        if (typeof tries === 'undefined') { // main entry point
+            tries = 4;
+        }
+
+        if (tries > 0) {
+            if (YouTubeUtils.isPlayerControlsClosed() && !YouTubeUtils.isOverlayOpened()) {
+                Log.d(this.TAG, "Player's ui closed. Running callback...");
+
+                clearTimeout(this.resetPlayerUITimeout);
+                callback();
+            } else {
+                Log.d(this.TAG, "Player's ui NOT closed. Doing retry...");
+
+                var activeElement = document.activeElement;
+
+                EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+                EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+
+                this.resetPlayerUITimeout = setTimeout(function() {
+                    $this.resetPlayerUI(callback, tries--);
+                }, 300)
+            }
+        } else {
+            Log.d(this.TAG, "Player's ui NOT closed and retries are out. Running callback anyway...");
+
+            clearTimeout(this.resetPlayerUITimeout);
+            callback();
+        }
+    },
+
     /**
      * Used when calling through app boundaries.
      */
@@ -118,10 +154,15 @@ window.ExoUtils = {
 
         var $this = this;
 
-        // 'likes not saved' fix
-        setTimeout(function() {
+        // reset ui state (needed for button decorator)
+        this.resetPlayerUI(function() {
             $this.syncButtonsReal(states);
-        }, 100);
+        });
+
+        // // 'likes not saved' fix
+        // setTimeout(function() {
+        //     $this.syncButtonsReal(states);
+        // }, 100);
     },
 
     syncButtonsReal: function(states) {
@@ -133,9 +174,6 @@ window.ExoUtils = {
         Log.d(this.TAG, "syncButtons: " + JSON.stringify(states));
 
         YouTubeUtils.sExoPlayerOpen = false;
-
-        // reset ui state (needed for button decorator)
-        YouTubeUtils.closePlayerControls();
 
         for (var key in PlayerActivity) {
             var btnId = PlayerActivity[key];
