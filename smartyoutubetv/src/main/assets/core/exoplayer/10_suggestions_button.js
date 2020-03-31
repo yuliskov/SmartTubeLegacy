@@ -87,7 +87,7 @@ function SuggestionsFakeButton(selector) {
 
         if (suggestionsShown) {
             Log.d(this.TAG, "Success. Suggestions has been shown!");
-            // Empty suggestions fix
+            // Fix: suggestions list is empty (grey squares)
             YouTubeUtils.getPlayer() && YouTubeUtils.getPlayer().imitatePlaying();
             return;
         }

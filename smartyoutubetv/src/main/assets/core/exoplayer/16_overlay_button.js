@@ -75,17 +75,21 @@ function OverlayButton(selector) {
     };
 
     this.sendClose = function() {
-        Log.d(this.TAG, "Switching to the player...");
+        if (!this.recentlyClosed) {
+            Log.d(this.TAG, "Switching to the player...");
 
-        this.cleanup();
+            this.cleanup();
 
-        this.recentlyClosed = true;
+            this.recentlyClosed = true;
 
-        if (this.onOverlayClosed) {
-            this.onOverlayClosed();
+            if (this.onOverlayClosed) {
+                this.onOverlayClosed();
+            }
+
+            ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
+        } else {
+            Log.d(this.TAG, "Overlay already closed...");
         }
-
-        ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
     };
 
     this.setChecked = function(doChecked) {
@@ -148,10 +152,7 @@ function OverlayButton(selector) {
     };
 
     this.cancelEvents = function() {
-        if (!this.recentlyClosed) {
-            this.recentlyClosed = true;
-            this.sendClose();
-        }
+        this.sendClose();
     };
 
     this.tryToCloseOverlay = function() {

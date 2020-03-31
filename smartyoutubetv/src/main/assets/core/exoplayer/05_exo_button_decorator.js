@@ -69,6 +69,8 @@ function ExoButtonDecorator() {
             Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length + " " + this.callbackBackupStack.length);
             this.running = false;
             this.backupCopied = false;
+            // execute callback even when noting found
+            callback();
         }
     };
 

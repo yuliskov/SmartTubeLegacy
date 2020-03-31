@@ -78,6 +78,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String VIDEO_LENGTH = "video_length";
     public static final String VIDEO_POSITION = "video_position";
     public static final String PERCENT_WATCHED = "percent_watched";
+    public static final String VIDEO_STARTED = "video_started";
 
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private boolean mIsDurationSet;

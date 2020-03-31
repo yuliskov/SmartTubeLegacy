@@ -16,6 +16,7 @@ var PlayerActivity = {
     BUTTON_NEXT: 'button_next',
     BUTTON_SUGGESTIONS: 'button_suggestions',
     TRACK_ENDED: 'track_ended',
+    VIDEO_STARTED: 'video_started',
     BUTTON_BACK: 'button_back' // should be the last
 };
 
@@ -33,5 +34,6 @@ var PlayerActivityMapping = {
     BUTTON_SUGGESTIONS: 'button_suggestions', // fake button (use internal logic)
     BUTTON_FAVORITES: '.material-icon-playlist-add',
     TRACK_ENDED: 'track_ended', // fake button (use internal logic)
+    VIDEO_STARTED: 'video_started',
     BUTTON_BACK: YouTubeSelectors.BUTTON_BACK // should be the last
 };

@@ -8,7 +8,7 @@ console.log("Scripts::Running core script favorite_button.js");
 function FavoriteButton(selector) {
     this.TAG = "FavoriteButton";
     this.selector = selector;
-    this.CHANNEL_CHECK_TIMEOUT_MS = 5000;
+    this.CHECK_TIMEOUT_MS = 3000;
     this.stateless = true;
 
     this.isOverlayOpened = function() {
@@ -24,7 +24,7 @@ function FavoriteButton(selector) {
                 Log.d($this.TAG, "Favorites still not opened... return to the player...");
                 $this.cancelEvents();
             }
-        }, this.CHANNEL_CHECK_TIMEOUT_MS);
+        }, this.CHECK_TIMEOUT_MS);
     };
 
     this.onOverlayClosed = function() {

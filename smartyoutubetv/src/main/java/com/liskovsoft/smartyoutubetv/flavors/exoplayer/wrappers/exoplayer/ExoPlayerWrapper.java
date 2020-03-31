@@ -106,7 +106,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             }
 
             mDoPauseBrowser = !mManager.isMirroring();
-            focusPlayer();
+            startPlayer();
         };
 
         mHandler = new Handler(Looper.getMainLooper());
@@ -119,7 +119,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mBlockHandlers = true;
         mDoPauseBrowser = false;
         clearPendingEvents();
-        focusPlayer();
+        startPlayer();
     }
 
     //@Override
@@ -162,14 +162,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mMetadata = metadata;
 
         if (metadata != null && mExoIntent != null) { // called async
-            focusPlayer(metadata.toIntent());
+            startPlayer(metadata.toIntent());
         }
     }
 
     @Override
     public void onFalseCall() {
         if (!mPlayerClosed) {
-            focusPlayer();
+            startPlayer();
         }
     }
 
@@ -241,10 +241,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             if (mHistory != null) {
                 mHistory.onStart(); // notify that we about to open new video
             }
+
+            //Intent intent = new Intent();
+            //intent.putExtra(ExoPlayerFragment.VIDEO_STARTED, true);
+            //mActionSender.bindActions(intent);
         }
 
         CommonApplication.getPreferences().setMirrorEnabled(mManager.isMirroring());
-        focusPlayer(playerIntent); // pause every time, except when mirroring
+        startPlayer(playerIntent); // pause every time, except when mirroring
 
         // give the browser time to initialization
         //mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
@@ -278,11 +282,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mHandler.removeCallbacks(mPauseBrowser);
     }
 
-    private void focusPlayer() {
+    private void startPlayer() {
         mFragmentsManager.openExoPlayer(null, mDoPauseBrowser);
     }
 
-    private void focusPlayer(Intent intent) {
+    private void startPlayer(Intent intent) {
         mFragmentsManager.openExoPlayer(intent, mDoPauseBrowser);
     }
 
