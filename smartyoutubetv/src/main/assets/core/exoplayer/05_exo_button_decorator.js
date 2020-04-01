@@ -13,10 +13,16 @@ function ExoButtonDecorator() {
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
+        YouTubeUtils.closePlayerControls();
         EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
     };
 
     this.setCheckedWrapper = function(callback, btn) {
+        if (btn.decoratorCondition && !btn.decoratorCondition()) {
+            callback();
+            return;
+        }
+
         var obj = btn.findToggle();
         var $this = this;
         var objExists = obj && obj.children.length;
@@ -75,6 +81,10 @@ function ExoButtonDecorator() {
     };
 
     this.getCheckedWrapper = function(callback, btn) {
+        if (btn.decoratorCondition && !btn.decoratorCondition()) {
+            return callback();
+        }
+
         var obj = btn.findToggle();
         if (!obj || !obj.children.length) {
             Log.d(this.TAG, 'get checked wrapper: btn not initialized: ' + btn.selector);

@@ -154,10 +154,14 @@ window.ExoUtils = {
 
         var $this = this;
 
-        // reset ui state (needed for button decorator)
-        this.resetPlayerUI(function() {
-            $this.syncButtonsReal(states);
-        });
+        // // reset ui state (needed for button decorator)
+        // this.resetPlayerUI(function() {
+        //     $this.syncButtonsReal(states);
+        // });
+
+        SuggestionsWatcher.disable();
+        OverlayWatcher.disable();
+        this.syncButtonsReal(states);
 
         // // 'likes not saved' fix
         // setTimeout(function() {

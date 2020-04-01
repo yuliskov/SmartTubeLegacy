@@ -96,24 +96,24 @@ function OverlayButton(selector) {
         Log.d(this.TAG, "setChecked " + this.selector + " " + doChecked);
 
         if (doChecked) {
-            var el = this.findToggle();
-
-            if (!el) {
-                Log.d(this.TAG, "Oops, " + this.selector + " button not found... return to the player");
-                this.sendClose();
-                return;
-            }
-
             if (!this.isOverlayOpened()) {
+                var el = this.findToggle();
+
+                if (!el) {
+                    Log.d(this.TAG, "Oops, " + this.selector + " button not found... return to the player");
+                    this.sendClose();
+                    return;
+                }
+
                 EventUtils.triggerEnter(el);
+
+                if (this.onOverlayOpen) {
+                    this.onOverlayOpen();
+                }
             }
 
             // start point
             new OverlayWatcher(this);
-
-            if (this.onOverlayOpen) {
-                this.onOverlayOpen();
-            }
         }
     };
 

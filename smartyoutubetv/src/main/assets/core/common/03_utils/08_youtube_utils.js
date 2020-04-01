@@ -174,6 +174,10 @@ var YouTubeUtils = {
         return isOpened;
     },
 
+    isPlayerSuggestionsShown: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
+    },
+
     isSearchOpened: function() {
         var isOpened = this.isPageOpened(YouTubeSelectors.SEARCH_PAGE);
         Log.d(this.TAG, "Search is opened?: " + isOpened);

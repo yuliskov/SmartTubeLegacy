@@ -8,7 +8,7 @@ console.log("Scripts::Running core script channel_button.js");
 function ChannelButton(selector) {
     this.TAG = "ChannelButton";
     this.selector = selector;
-    this.CHECK_TIMEOUT_MS = 3000;
+    this.CHECK_TIMEOUT_MS = 10000;
     this.stateless = true;
 
     this.isOverlayOpened = function() {

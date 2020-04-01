@@ -85,7 +85,7 @@ function SuggestionsFakeButton(selector) {
     Log.d(this.TAG, "Creating " + this.TAG);
 
     this.tryToOpenSuggestions = function() {
-        var suggestionsShown = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
+        var suggestionsShown = YouTubeUtils.isPlayerSuggestionsShown();
 
         if (suggestionsShown) {
             Log.d(this.TAG, "Success. Suggestions has been shown!");

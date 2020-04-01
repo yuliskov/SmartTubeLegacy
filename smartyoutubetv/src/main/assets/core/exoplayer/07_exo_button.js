@@ -71,7 +71,7 @@ function ExoButton(selector) {
         this.isChecked = doChecked;
     };
 
-    this.decorator.apply(this);
+    this.decorator.apply(this); // don't run because selector is null
 }
 
 ExoButton.fromSelector = function(selector, states) {
