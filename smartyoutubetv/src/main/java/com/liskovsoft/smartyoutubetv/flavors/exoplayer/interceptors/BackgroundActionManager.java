@@ -47,12 +47,12 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
+        //boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
 
-        if (isNotPlaylist && continueRecently) {
-            Log.d(TAG, "Cancel playback: Video continuation recently.");
-            return true;
-        }
+        //if (isNotPlaylist && continueRecently) {
+        //    Log.d(TAG, "Cancel playback: Video continuation recently.");
+        //    return true;
+        //}
 
         boolean cancelRecently = (System.currentTimeMillis() - mCancelTime) < CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 

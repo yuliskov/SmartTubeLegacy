@@ -170,6 +170,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     public void onFalseCall() {
         if (!mPlayerClosed) {
             startPlayer();
+        } else { // browser's player could be running in background
+            sendClose();
         }
     }
 
@@ -297,5 +299,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         }
 
         mExternalPlayerWrapper.openFromIntent(intent);
+    }
+
+    private void sendClose() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        mActionSender.bindActions(intent);
     }
 }

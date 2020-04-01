@@ -301,5 +301,22 @@ var YouTubeUtils = {
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.UP);
         }
+    },
+
+    togglePlayerOptions: function() {
+        this.closePlayerControls(); // reset player ui
+
+        // if (YouTubeUtils.isPlayerControlsClosed()) {
+        //     EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER); // show player's ui (by clicking on empty space)
+        // }
+        //YouTubeUtils.showPlayerOptions();
+
+        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
+    },
+
+    resetPlayerOptions: function() {
+        if (Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON_TOGGLED)) { // options opened before
+            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
+        }
     }
 };

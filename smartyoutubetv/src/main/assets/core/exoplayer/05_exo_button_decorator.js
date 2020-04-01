@@ -13,11 +13,8 @@ function ExoButtonDecorator() {
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
-        YouTubeUtils.closePlayerControls(); // reset player ui
-        if (YouTubeUtils.isPlayerControlsClosed()) {
-            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER); // show player's ui (by clicking on empty space)
-        }
-        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
+
+        YouTubeUtils.togglePlayerOptions();
     };
 
     this.setCheckedWrapper = function(callback, btn) {
@@ -76,6 +73,7 @@ function ExoButtonDecorator() {
             Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length + " " + this.callbackBackupStack.length);
             this.running = false;
             this.backupCopied = false;
+            YouTubeUtils.resetPlayerOptions();
             // execute callback even when noting found
             //callback();
         }
