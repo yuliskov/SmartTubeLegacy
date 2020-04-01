@@ -8,7 +8,6 @@ console.log("Scripts::Running core script favorite_button.js");
 function FavoriteButton(selector) {
     this.TAG = "FavoriteButton";
     this.selector = selector;
-    this.CHECK_TIMEOUT_MS = 10000;
     this.stateless = true;
 
     this.decoratorCondition = function() {
@@ -17,23 +16,6 @@ function FavoriteButton(selector) {
 
     this.isOverlayOpened = function() {
         return YouTubeUtils.isOverlayOpened();
-    };
-
-    this.onOverlayOpen = function() {
-        var $this = this;
-
-        // check that app switched to the channels page
-        this.timeout = setTimeout(function() {
-            if (!YouTubeUtils.isOverlayOpened()) {
-                Log.d($this.TAG, "Favorites still not opened... return to the player...");
-                $this.cancelEvents();
-            }
-        }, this.CHECK_TIMEOUT_MS);
-    };
-
-    this.onOverlayClosed = function() {
-        Log.d(this.TAG, "Disposing timeouts...");
-        clearTimeout(this.timeout);
     };
 
     this.decorator.apply(this);

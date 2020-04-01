@@ -18,13 +18,15 @@ function BackButton(selector, states) {
 
         this.retryTimes--;
 
-        var backBtn = this.findToggle();
+        YouTubeUtils.pressBack();
 
-        if (backBtn && this.retryTimes > 1) { // last option is try to imitate ESC
-            EventUtils.triggerEnter(backBtn);
-        } else {
-            YouTubeUtils.pressBack();
-        }
+        // var backBtn = this.findToggle();
+        //
+        // if (backBtn && this.retryTimes > 8) { // last option is try to imitate ESC
+        //     EventUtils.triggerEnter(backBtn);
+        // } else {
+        //     YouTubeUtils.pressBack();
+        // }
 
         if (YouTubeUtils.isPlayerClosed()) {
             return;
@@ -47,9 +49,9 @@ function BackButton(selector, states) {
         if (doChecked) {
             YouTubeUtils.showPlayerBackground();
 
-            this.pressBackOrRetry();
-
             YouTubeUtils.getPlayer().backPressed();
+
+            this.pressBackOrRetry();
         }
     };
 }

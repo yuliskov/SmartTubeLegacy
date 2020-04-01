@@ -272,22 +272,21 @@ var YouTubeUtils = {
             Log.d(this.TAG, "Closing player ui...");
 
             // var activeElement = YouTubeSelectors.PLAYER_EVENTS_RECEIVER;
-            var activeElement = document.activeElement;
 
-            EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
+    },
+
+    pressBack: function() {
+        if (this.isPlayerOpened()) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
     },
 
     isExoPlayerOpen: function() {
         return this.sExoPlayerOpen;
-    },
-
-    pressBack: function() {
-        if (this.isPlayerOpened()) {
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
-        }
     },
 
     moveRight: function() {

@@ -63,6 +63,7 @@ function OverlayButton(selector) {
     this.stateless = true;
     this.closeRetryTimes = 4;
     this.callDelayMS = 500;
+    this.CHECK_TIMEOUT_MS = 5000;
 
     this.getChecked = function() {
         Log.d(this.TAG, "getChecked " + this.selector);
@@ -71,6 +72,7 @@ function OverlayButton(selector) {
 
     this.cleanup = function() {
         clearTimeout(this.closeTimeout);
+        clearTimeout(this.checkTimeout);
         OverlayWatcher.disable();
     };
 
@@ -81,10 +83,6 @@ function OverlayButton(selector) {
             this.cleanup();
 
             this.recentlyClosed = true;
-
-            if (this.onOverlayClosed) {
-                this.onOverlayClosed();
-            }
 
             ExoUtils.sendAction(ExoUtils.ACTION_CLOSE_SUGGESTIONS);
         } else {
@@ -107,9 +105,15 @@ function OverlayButton(selector) {
 
                 EventUtils.triggerEnter(el);
 
-                if (this.onOverlayOpen) {
-                    this.onOverlayOpen();
-                }
+                var $this = this;
+
+                // check that app switched to the channels page
+                this.checkTimeout = setTimeout(function() {
+                    if (!$this.isOverlayOpened()) {
+                        Log.d($this.TAG, "Favorites still not opened... return to the player...");
+                        $this.cancelEvents();
+                    }
+                }, this.CHECK_TIMEOUT_MS);
             }
 
             // start point
