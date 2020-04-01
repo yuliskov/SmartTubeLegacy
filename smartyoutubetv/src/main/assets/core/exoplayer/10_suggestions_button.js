@@ -106,6 +106,11 @@ function SuggestionsFakeButton(selector) {
 
         this.openRetryTimes--;
 
+        if (YouTubeUtils.isOverlayOpened()) { // check favorites is showed
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
+
         Log.d(this.TAG, "Suggestions not showed... trying to open...");
 
         // we assume that no interface currently shown

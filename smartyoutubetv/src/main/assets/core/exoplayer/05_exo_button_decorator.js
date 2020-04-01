@@ -18,11 +18,6 @@ function ExoButtonDecorator() {
     };
 
     this.setCheckedWrapper = function(callback, btn) {
-        if (btn.decoratorCondition && !btn.decoratorCondition()) {
-            callback();
-            return;
-        }
-
         var obj = btn.findToggle();
         var $this = this;
         var objExists = obj && obj.children.length;
@@ -32,7 +27,10 @@ function ExoButtonDecorator() {
             return;
         }
 
-        if (!objExists && this.backupCopied) {
+        if (btn.decoratorCondition && !btn.decoratorCondition()) { // force run callback
+            this.callbackStack.shift(); // remove current callback
+            callback();
+        } else if (!objExists && this.backupCopied) {
             // prevent loop
             this.callbackStack.shift(); // at least one item should be there
         } else if (!objExists) {
@@ -76,7 +74,7 @@ function ExoButtonDecorator() {
             this.running = false;
             this.backupCopied = false;
             // execute callback even when noting found
-            callback();
+            //callback();
         }
     };
 
