@@ -13,8 +13,11 @@ function ExoButtonDecorator() {
 
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
-        YouTubeUtils.closePlayerControls();
-        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON);
+        YouTubeUtils.closePlayerControls(); // reset player ui
+        if (YouTubeUtils.isPlayerControlsClosed()) {
+            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER); // show player's ui (by clicking on empty space)
+        }
+        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
     };
 
     this.setCheckedWrapper = function(callback, btn) {
