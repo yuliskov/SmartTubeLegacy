@@ -26,6 +26,8 @@ public class SubtitleRendererDecorator implements TextOutput {
     private static final int COLOR_BLACK = Color.argb(255, 0, 0, 0);
     private static final int COLOR_YELLOW = Color.argb(255, 255, 255, 0);
     private static final int COLOR_GREEN = Color.argb(255, 0, 255, 0);
+    private static final int COLOR_BLACK_TRANSPARENT = Color.argb(100, 0, 0, 0);
+
 
     public SubtitleRendererDecorator(TextOutput textRendererOutput) {
         mTextRendererOutput = textRendererOutput;
@@ -34,18 +36,21 @@ public class SubtitleRendererDecorator implements TextOutput {
     @Override
     public void onCues(List<Cue> cues) {
         Log.d(TAG, cues);
-        mTextRendererOutput.onCues(fixAlignment(cues));
+        mTextRendererOutput.onCues(forceCenterAlignment(cues));
     }
 
-    private List<Cue> fixAlignment(List<Cue> cues) {
+    private List<Cue> forceCenterAlignment(List<Cue> cues) {
         List<Cue> result = new ArrayList<>();
 
         for (Cue cue : cues) {
-            if (cue.position == 0 && cue.positionAnchor == Cue.ANCHOR_TYPE_START) { // unaligned sub encountered
-                result.add(new Cue(cue.text));
-            } else {
-                result.add(cue);
-            }
+            result.add(new Cue(cue.text)); // sub centered by default
+
+            // CONDITION DOESN'T WORK
+            //if (cue.position == 0 && (cue.positionAnchor == Cue.ANCHOR_TYPE_START)) { // unaligned sub encountered
+            //    result.add(new Cue(cue.text));
+            //} else {
+            //    result.add(cue);
+            //}
         }
 
         return result;
@@ -63,7 +68,7 @@ public class SubtitleRendererDecorator implements TextOutput {
                 int outlineColor = COLOR_BLACK;
                 CaptionStyleCompat style =
                         new CaptionStyleCompat(defaultSubtitleColor,
-                                Color.TRANSPARENT, Color.TRANSPARENT,
+                                COLOR_BLACK_TRANSPARENT, Color.TRANSPARENT,
                                 CaptionStyleCompat.EDGE_TYPE_OUTLINE,
                                 outlineColor, Typeface.DEFAULT);
                 subtitleView.setStyle(style);

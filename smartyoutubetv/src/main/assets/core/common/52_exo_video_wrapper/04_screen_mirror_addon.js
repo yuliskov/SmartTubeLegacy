@@ -46,7 +46,7 @@ function ScreenMirrorAddon() {
 
         if (!this.scrChanged) {
             if (DeviceUtils.isMirrorEnabled() && DeviceUtils.isBrowserInBackground()) { // Suggestions reboot videos fix
-                //DeviceUtils.sendMessage(this.MESSAGE_VIDEO_PAUSED, video.paused);
+                DeviceUtils.sendMessage(this.MESSAGE_VIDEO_PAUSED, video.paused);
                 // force to resend mirror info
                 video.listeners['playing'][0]({type: 'playing', isTrusted: true});
                 video.listeners['pause'][0]({type: 'pause', isTrusted: true});
