@@ -7,7 +7,7 @@ console.log("Scripts::Running core script exo_button_decorator.js");
  */
 function ExoButtonDecorator() {
     this.TAG = 'ExoButtonDecorator';
-    this.menuToggleTimeout = 500; // timeout until Options show on/off
+    this.menuToggleTimeout = 1000; // timeout until Options show on/off
     this.callbackStack = [];
     this.callbackBackupStack = [];
 

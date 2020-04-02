@@ -306,12 +306,13 @@ var YouTubeUtils = {
     togglePlayerOptions: function() {
         this.closePlayerControls(); // reset player ui
 
-        // if (YouTubeUtils.isPlayerControlsClosed()) {
-        //     EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER); // show player's ui (by clicking on empty space)
-        // }
-        //YouTubeUtils.showPlayerOptions();
+        var el = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
 
-        EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
+        if (el) {
+            EventUtils.triggerEnter(el); // click on options button
+        } else {
+            Log.e(this.TAG, "Oops. Player options button not found!!");
+        }
     },
 
     resetPlayerOptions: function() {

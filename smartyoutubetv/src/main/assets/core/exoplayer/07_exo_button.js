@@ -74,6 +74,8 @@ function ExoButton(selector) {
     this.decorator.apply(this); // don't run because selector is null
 }
 
+ExoButton.buttonCache = {};
+
 ExoButton.fromSelector = function(selector, states) {
     var TAG = 'ExoButton'; // 'this' is reference to ExoButton
 
