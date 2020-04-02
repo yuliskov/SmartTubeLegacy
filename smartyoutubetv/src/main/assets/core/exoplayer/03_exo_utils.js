@@ -202,6 +202,10 @@ window.ExoUtils = {
         // code that sends string constant to activity
         if (app && app.onGenericStringResult) {
             Log.d(this.TAG, "sending action to the main app: " + action);
+
+            // fix 'pause' when using favorites
+            YouTubeUtils.sExoPlayerOpen = false;
+
             app.onGenericStringResult(action);
         } else {
             Log.d(this.TAG, "app not found");
