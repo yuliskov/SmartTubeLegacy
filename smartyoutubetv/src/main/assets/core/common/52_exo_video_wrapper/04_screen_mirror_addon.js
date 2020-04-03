@@ -52,6 +52,8 @@ function ScreenMirrorAddon() {
                     // force to resend mirror info
                     video.listeners['playing'][0]({type: 'playing', isTrusted: true});
                     video.listeners['pause'][0]({type: 'pause', isTrusted: true});
+
+                    YouTubeUtils.closePlayerControls(); // FIX: suggestions accidentally opened on pause (Pro Alt)
                 }
             }
         }
