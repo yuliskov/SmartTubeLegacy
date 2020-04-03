@@ -21,6 +21,9 @@ function PlaybackEndAddon() {
         if (YouTubeUtils.isPlayerOpened()) {
             Log.d(this.TAG, "imitate playing...");
             this.imitatePlayingCheck(video);
+
+            YouTubeUtils.resetPlayerOptions();
+            YouTubeUtils.resetFocus();
         } else {
             Log.d(this.TAG, "Player closed. Ignore src change event!");
         }

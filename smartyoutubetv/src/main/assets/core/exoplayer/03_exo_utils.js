@@ -161,8 +161,8 @@ window.ExoUtils = {
 
         SuggestionsWatcher.disable();
         OverlayWatcher.disable();
-        YouTubeUtils.resetFocus();
         YouTubeUtils.resetPlayerOptions();
+        YouTubeUtils.resetFocus();
 
         this.syncButtonsReal(states);
 
@@ -208,6 +208,11 @@ window.ExoUtils = {
 
             // fix 'pause' when using favorites
             YouTubeUtils.sExoPlayerOpen = false;
+
+            if (action == this.ACTION_CLOSE_SUGGESTIONS) {
+                YouTubeUtils.resetPlayerOptions();
+                YouTubeUtils.resetFocus();
+            }
 
             app.onGenericStringResult(action);
         } else {

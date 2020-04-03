@@ -331,10 +331,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent == null || Intent.ACTION_MAIN.equals(intent.getAction())) {
-            return;
-        }
-
-        if (closePlayer()) {
+            onNewIntentInt(intent);
+        } else if (closePlayer()) {
             // wait till exoplayer is closed
             new Handler(Looper.myLooper())
                     .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
