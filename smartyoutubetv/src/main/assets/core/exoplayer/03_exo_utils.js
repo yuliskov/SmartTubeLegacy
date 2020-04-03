@@ -161,6 +161,9 @@ window.ExoUtils = {
 
         SuggestionsWatcher.disable();
         OverlayWatcher.disable();
+        YouTubeUtils.resetFocus();
+        YouTubeUtils.resetPlayerOptions();
+
         this.syncButtonsReal(states);
 
         // // 'likes not saved' fix

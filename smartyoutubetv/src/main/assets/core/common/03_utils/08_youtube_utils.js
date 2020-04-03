@@ -304,8 +304,6 @@ var YouTubeUtils = {
     },
 
     togglePlayerOptions: function() {
-        this.closePlayerControls(); // reset player ui
-
         var el = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
 
         if (el) {
@@ -317,7 +315,13 @@ var YouTubeUtils = {
 
     resetPlayerOptions: function() {
         if (Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON_TOGGLED)) { // options opened before
-            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_MORE_BUTTON); // click on options button
+            this.togglePlayerOptions(); // click on options button
         }
-    }
+    },
+
+    resetFocus: function() {
+        var root = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+
+        root && root.focus();
+    },
 };

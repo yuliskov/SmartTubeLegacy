@@ -7,7 +7,7 @@ console.log("Scripts::Running core script exo_button_decorator.js");
  */
 function ExoButtonDecorator() {
     this.TAG = 'ExoButtonDecorator';
-    this.menuToggleTimeout = 1000; // timeout until Options show on/off
+    this.menuToggleTimeout = 500; // timeout until Options show on/off
     this.callbackStack = [];
     this.callbackBackupStack = [];
 
@@ -33,6 +33,9 @@ function ExoButtonDecorator() {
         } else if (!objExists && this.backupCopied) {
             // prevent loop
             this.callbackStack.shift(); // at least one item should be there
+
+            Log.e(this.TAG, "Can't find element. Running callback anyway.");
+            callback();
         } else if (!objExists) {
             Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + btn.selector);
 
@@ -73,9 +76,9 @@ function ExoButtonDecorator() {
             Log.d($this.TAG, "Reaching top of the stack: " + this.callbackStack.length + " " + this.callbackBackupStack.length);
             this.running = false;
             this.backupCopied = false;
+
             YouTubeUtils.resetPlayerOptions();
-            // execute callback even when noting found
-            //callback();
+            YouTubeUtils.resetFocus();
         }
     };
 
