@@ -364,16 +364,16 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH)) {
             //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
             baseBuilder.setBufferDurationsMs(
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         } else if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW)) {
             baseBuilder.setBufferDurationsMs(
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 2,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 2,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 2,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 2);
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 3);
         }
 
         // medium buffer by default

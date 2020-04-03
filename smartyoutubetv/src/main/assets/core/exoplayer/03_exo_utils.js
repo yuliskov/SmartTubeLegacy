@@ -162,7 +162,8 @@ window.ExoUtils = {
         SuggestionsWatcher.disable();
         OverlayWatcher.disable();
         YouTubeUtils.resetPlayerOptions();
-        YouTubeUtils.resetFocus();
+        // WARN: don't reset focus here!!!
+        //YouTubeUtils.resetFocus();
 
         this.syncButtonsReal(states);
 
@@ -173,7 +174,6 @@ window.ExoUtils = {
     },
 
     syncButtonsReal: function(states) {
-        //this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
         window.lastButtonName = null;
@@ -210,6 +210,9 @@ window.ExoUtils = {
             YouTubeUtils.sExoPlayerOpen = false;
 
             if (action == this.ACTION_CLOSE_SUGGESTIONS) {
+                SuggestionsWatcher.disable();
+                OverlayWatcher.disable();
+                YouTubeUtils.closePlayerControls();
                 YouTubeUtils.resetPlayerOptions();
                 YouTubeUtils.resetFocus();
             }

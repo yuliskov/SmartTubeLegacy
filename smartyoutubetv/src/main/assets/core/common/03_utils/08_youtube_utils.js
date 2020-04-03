@@ -268,18 +268,23 @@ var YouTubeUtils = {
     },
 
     closePlayerControls: function() {
-        if (!this.isPlayerControlsClosed() || this.isOverlayOpened()) {
-            Log.d(this.TAG, "Closing player ui...");
+        if (this.isOverlayOpened()) {
+            Log.d(this.TAG, "Closing player favorites...");
 
-            // var activeElement = YouTubeSelectors.PLAYER_EVENTS_RECEIVER;
+            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        } else if (!this.isPlayerControlsClosed()) {
+            Log.d(this.TAG, "Closing player suggestions...");
 
-            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
     },
 
     pressBack: function() {
         if (this.isPlayerOpened()) {
+            Log.d(this.TAG, "Pressing BACK...");
+
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }

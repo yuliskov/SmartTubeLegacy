@@ -152,20 +152,22 @@ function SuggestionsFakeButton(selector) {
     this.closeSuggestions = function() {
         Log.d(this.TAG, "closeSuggestions");
 
-        this.closeRetryTimes--;
+        this.sendClose();
 
-        if (YouTubeUtils.isPlayerControlsClosed() || this.closeRetryTimes <= 0) {
-            Log.d(this.TAG, "suggestions has been closed or retries is out");
-            this.sendClose();
-        } else {
-            Log.d(this.TAG, "try to close the suggestions");
-            YouTubeUtils.closePlayerControls();
-
-            var $this = this;
-            setTimeout(function() {
-                $this.closeSuggestions();
-            }, this.callDelayMS);
-        }
+        // this.closeRetryTimes--;
+        //
+        // if (YouTubeUtils.isPlayerControlsClosed() || this.closeRetryTimes <= 0) {
+        //     Log.d(this.TAG, "suggestions has been closed or retries is out");
+        //     this.sendClose();
+        // } else {
+        //     Log.d(this.TAG, "try to close the suggestions");
+        //     YouTubeUtils.closePlayerControls();
+        //
+        //     var $this = this;
+        //     setTimeout(function() {
+        //         $this.closeSuggestions();
+        //     }, this.callDelayMS);
+        // }
     };
 
     this.suggestionsIsClosed = function() {

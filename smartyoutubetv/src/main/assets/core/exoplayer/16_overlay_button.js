@@ -124,20 +124,22 @@ function OverlayButton(selector) {
     this.closeOverlay = function() {
         Log.d(this.TAG, "closeOverlay");
 
-        this.closeRetryTimes--;
+        this.sendClose();
 
-        if (!this.isOverlayOpened() || this.closeRetryTimes <= 0) {
-            Log.d(this.TAG, "overlay has been closed or retries is out");
-            this.sendClose();
-        } else {
-            Log.d(this.TAG, "try to close the overlay");
-            YouTubeUtils.pressBack();
-
-            var $this = this;
-            setTimeout(function() {
-                $this.closeOverlay();
-            }, this.callDelayMS);
-        }
+        // this.closeRetryTimes--;
+        //
+        // if (!this.isOverlayOpened() || this.closeRetryTimes <= 0) {
+        //     Log.d(this.TAG, "overlay has been closed or retries is out");
+        //     this.sendClose();
+        // } else {
+        //     Log.d(this.TAG, "try to close the overlay");
+        //     YouTubeUtils.pressBack();
+        //
+        //     var $this = this;
+        //     setTimeout(function() {
+        //         $this.closeOverlay();
+        //     }, this.callDelayMS);
+        // }
     };
 
     this.needToCloseOverlay = function() {
