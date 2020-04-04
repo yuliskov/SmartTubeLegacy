@@ -47,10 +47,15 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (!postData.contains(HOME_PAGE_ID)) {
-            Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
+        if (postData.contains(CONTINUATION_ID)) {
+            Log.e(TAG, "Not a Main page. It's continuation. Skip filtering! Url: " + url);
             return null;
         }
+
+        //if (!postData.contains(HOME_PAGE_ID)) {
+        //    Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
+        //    return null;
+        //}
 
         InputStream urlData = postJsonData(url, postData);
 
