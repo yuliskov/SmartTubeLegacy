@@ -7,7 +7,7 @@ console.log("Scripts::Running core script exo_button_decorator.js");
  */
 function ExoButtonDecorator() {
     this.TAG = 'ExoButtonDecorator';
-    this.menuToggleTimeout = 1000; // timeout until Options show on/off
+    this.menuToggleTimeout = 500; // timeout until Options show on/off
     this.callbackStack = [];
     this.callbackBackupStack = [];
 
@@ -35,6 +35,7 @@ function ExoButtonDecorator() {
             this.callbackStack.shift(); // at least one item should be there
 
             Log.e(this.TAG, "Can't find element. Running callback anyway.");
+            YouTubeUtils.dumpUiState();
             callback();
         } else if (!objExists) {
             Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + btn.selector);

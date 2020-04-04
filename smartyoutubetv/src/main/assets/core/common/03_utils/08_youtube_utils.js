@@ -256,7 +256,6 @@ var YouTubeUtils = {
     },
 
     triggerBack: function() {
-        // EventUtils.triggerEvent(YouTubeSelectors.APP_ROOT, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
     },
 
@@ -329,4 +328,11 @@ var YouTubeUtils = {
 
         root && root.focus();
     },
+
+    dumpUiState: function() {
+        Log.d(this.TAG, "Is player opened: " + this.isPlayerOpened());
+        Log.d(this.TAG, "Is player controls opened: " + !this.isPlayerControlsClosed());
+        Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsShown());
+        Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
+    }
 };
