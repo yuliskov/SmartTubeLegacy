@@ -38,7 +38,7 @@
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="old_ui">Vorige User Interface</string>
     <string name="endcards">Eindgeneriek</string>
-    <string name="tip_save_selection">Dit scherm volgende keer niet meer tonen</string>
+    <string name="tip_save_selection">Dit scherm volgende keer niet meer weergeven</string>
     <string name="tip_endcards">Tips inschakelen voor het einde van de video (enkel bij 1080)</string>
     <string name="tip_language">Taal wijzigen</string>
     <string name="tip_update_check">Controleren op updates</string>
@@ -66,7 +66,7 @@
     <string name="tweak_ok_button_fix">OK-toets pauzeert de video onmiddellijk</string>
     <string name="tweak_update_check">Controleren op STABIELE updates</string>
     <string name="tweak_beta_update_check">Controleren op BETA updates</string>
-    <string name="tweak_end_cards">Eindgeneriek van video tonen</string>
+    <string name="tweak_end_cards">Eindgeneriek van video weergeven</string>
     <string name="tweak_log_to_file">Logs bewaren in een bestand</string>
     <string name="tweak_unplayable_video_fix">Onspeelbare video aanpassen</string>
     <string name="tweak_lock_last_launcher">%s launcher vergrendelen</string>
