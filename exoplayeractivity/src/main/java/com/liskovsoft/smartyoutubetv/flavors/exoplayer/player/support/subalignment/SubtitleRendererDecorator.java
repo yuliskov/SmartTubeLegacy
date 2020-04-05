@@ -1,8 +1,10 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
+import androidx.core.content.ContextCompat;
 import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
@@ -21,13 +23,6 @@ import java.util.List;
 public class SubtitleRendererDecorator implements TextOutput {
     private static final String TAG = SubtitleRendererDecorator.class.getSimpleName();
     private final TextOutput mTextRendererOutput;
-    private static final int COLOR_DARK_GREY = Color.argb(255, 43, 43, 43);
-    private static final int COLOR_LIGHT_GREY = Color.argb(255, 218, 218, 218);
-    private static final int COLOR_BLACK = Color.argb(255, 0, 0, 0);
-    private static final int COLOR_YELLOW = Color.argb(255, 255, 255, 0);
-    private static final int COLOR_GREEN = Color.argb(255, 0, 255, 0);
-    private static final int COLOR_BLACK_TRANSPARENT = Color.argb(100, 0, 0, 0);
-
 
     public SubtitleRendererDecorator(TextOutput textRendererOutput) {
         mTextRendererOutput = textRendererOutput;
@@ -59,19 +54,23 @@ public class SubtitleRendererDecorator implements TextOutput {
     public static void configureSubtitleView(PlayerView playerView) {
         if (playerView != null) {
             SubtitleView subtitleView = playerView.getSubtitleView();
+            Context context = playerView.getContext();
 
-            if (subtitleView != null) {
+            if (subtitleView != null && context != null) {
                 // disable default style
                 subtitleView.setApplyEmbeddedStyles(false);
 
-                int defaultSubtitleColor = COLOR_YELLOW;
-                int outlineColor = COLOR_BLACK;
+                int textColor = ContextCompat.getColor(context, R.color.sub_text_color);
+                int outlineColor = ContextCompat.getColor(context, R.color.sub_outline_color);
+                int backgroundColor = ContextCompat.getColor(context, R.color.sub_background_color);
+
                 CaptionStyleCompat style =
-                        new CaptionStyleCompat(defaultSubtitleColor,
-                                COLOR_BLACK_TRANSPARENT, Color.TRANSPARENT,
+                        new CaptionStyleCompat(textColor,
+                                backgroundColor, Color.TRANSPARENT,
                                 CaptionStyleCompat.EDGE_TYPE_OUTLINE,
                                 outlineColor, Typeface.DEFAULT);
                 subtitleView.setStyle(style);
+
                 float textSize = subtitleView.getContext().getResources().getDimension(R.dimen.subtitle_text_size);
                 subtitleView.setFixedTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
