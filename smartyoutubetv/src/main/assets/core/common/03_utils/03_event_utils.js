@@ -174,6 +174,7 @@ var EventUtils = {
 
     triggerEnter: function(elementOrSelector) {
         // simulate mouse/enter key press
+        this.triggerEvent(elementOrSelector, DefaultEvents.KEY_DOWN, DefaultKeys.ENTER);
         this.triggerEvent(elementOrSelector, DefaultEvents.KEY_UP, DefaultKeys.ENTER);
     },
 
