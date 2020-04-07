@@ -21,7 +21,7 @@
     <string name="retry">Opnieuw proberen</string>
     <string name="selection_default_none">Standaard (geen)</string>
     <string name="unexpected_intent_action">Onverwachte actie: <xliff:g id="action">%1$s</xliff:g></string>
-    <string name="enable_random_adaptation">Willekeurige aanpassing activeren</string>
+    <string name="enable_random_adaptation">Willekeurig aanpassen activeren</string>
     <string name="error_drm_not_supported">Beschermde inhoud niet ondersteund op API levels onder 18</string>
     <string name="error_drm_unsupported_scheme">Dit apparaat ondersteunt het vereiste DRM schema niet</string>
     <string name="error_drm_unknown">Onbekende DRM fout</string>
@@ -69,9 +69,9 @@
     <string name="option_zoom_fit_both">Breedte en hoogte aanpassen</string>
     <string name="option_zoom_stretch">Uitrekken</string>
     <string name="checkbox_save_speed">Snelheid bewaren</string>
-    <string name="toast_format_restricted">Formaat wijzigen onmogelijk want preset is geactiveerd</string>
-    <string name="changing_video_frame_rate">Video framerate wijzigen %s...</string>
-    <string name="enable_autoframerate_pause">Video pauzeren bij wijzigen van framerate</string>
-    <string name="enable_autoframerate_resolution">Resolutie wijzigen</string>
+    <string name="toast_format_restricted">Formaat aanpassen onmogelijk want preset is geactiveerd</string>
+    <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
+    <string name="enable_autoframerate_pause">Video pauzeren bij aanpassen van framerate</string>
+    <string name="enable_autoframerate_resolution">Resolutie aanpassen</string>
     <string name="exo_open_player">Openen</string>
 </resources>
