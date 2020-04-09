@@ -26,6 +26,7 @@ public class KeyHandler {
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
+    private boolean mDisable = true;
     private final Runnable mOnToggle = () -> {
         if (mFragment.getExoPlayerView() != null) {
             mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
@@ -108,12 +109,15 @@ public class KeyHandler {
         event = mTranslator.doTranslateKeys(event);
         setDispatchEvent(event);
 
-        if (isVolumeEvent(event)) {
-            return false;
-        }
-
         boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
         boolean isDownAction = event.getAction() == KeyEvent.ACTION_DOWN;
+
+        // user opens the video and continue to hold the ok button
+        boolean stillHoldingOk = mDisable && isOkKey(event);
+
+        if (isVolumeEvent(event) || stillHoldingOk) {
+            return false;
+        }
 
         boolean uiVisible = mFragment.isUiVisible();
 
@@ -300,5 +304,9 @@ public class KeyHandler {
         } else {
             mOnPlay.run();
         }
+    }
+
+    public void setDisableEvents(boolean disable) {
+        mDisable = disable;
     }
 }

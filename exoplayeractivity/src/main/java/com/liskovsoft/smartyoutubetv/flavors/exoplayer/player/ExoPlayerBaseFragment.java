@@ -111,6 +111,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void initializePlayer() {
+        mKeyHandler.setDisableEvents(false);
+
         if (getIntent() == null || getActivity() == null) {
             return;
         }
@@ -440,6 +442,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mPlayer.setPlayWhenReady(false);
             mPlayer.release();
             resetUiState();
+            mKeyHandler.setDisableEvents(true);
         }
 
         if (mStateManager != null) {
