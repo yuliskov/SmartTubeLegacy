@@ -50,7 +50,7 @@
     <string name="no_subtitle_msg">Video bevat geen ondertitels</string>
     <string name="repeat_video">Herhalen</string>
     <string name="video_speed">Snelheid</string>
-    <string name="select_video_speed">Video snelheid selecteren</string>
+    <string name="select_video_speed">Video snelheid</string>
     <string name="normal">Normaal</string>
     <string name="go_back">Teruggaan</string>
     <string name="btn_restrict_codec">Preset</string>
