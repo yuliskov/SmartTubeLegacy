@@ -35,6 +35,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private long mPauseTime;
     private long mResumeTime;
     private long mNewIntentTime;
+    private long mOpenPlayerTime;
     private static final long INSTANT_SEARCH_TIME = 30_000;
     private ViewGroup mContainer;
 
@@ -212,6 +213,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void openExoPlayer(final Intent intent, final boolean pauseBrowser) {
         runOnUiThread(() -> {
+            mOpenPlayerTime = System.currentTimeMillis();
+
             Log.d(TAG, "opening player for intent=" + Helpers.dumpIntent(intent));
             setActiveFragment(mPlayerFragment, pauseBrowser);
             mPlayerFragment.openVideo(intent);
@@ -236,8 +239,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
-        if (mIsStandAlone && isClosePlayer(action)) {
-            finish();
+        if (isClosePlayer(action) && getStandAloneState()) {
+            super.finish();
             return;
         }
 
@@ -323,7 +326,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onResume() {
         Log.d(TAG, "Resuming...");
 
-        updateStandAloneState();
+        //updateStandAloneState();
 
         super.onResume();
     }
@@ -375,24 +378,48 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private void updateStandAloneState(Intent intent) {
+        Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
+
         if (CommonApplication.getPreferences().getChannelsCloseApp()) {
             mNewIntentTime = System.currentTimeMillis();
 
-            if (intent != null) {
-                mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+            if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+                mIsStandAlone = true;
             }
         }
     }
 
-    private void updateStandAloneState() {
-        if (CommonApplication.getPreferences().getChannelsCloseApp()) {
-            mResumeTime = System.currentTimeMillis();
-
-            boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
-            boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
-            if (isChained && isInstantSwitch) {
-                mIsStandAlone = false;
-            }
+    private boolean getStandAloneState() {
+        if (mOpenPlayerTime - mNewIntentTime > INSTANT_SEARCH_TIME) { // user opens channel first and then our video
+            mIsStandAlone = false;
         }
+
+        return mIsStandAlone;
     }
+
+    //private void updateStandAloneState(Intent intent) {
+    //    Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
+    //
+    //    if (CommonApplication.getPreferences().getChannelsCloseApp()) {
+    //        mNewIntentTime = System.currentTimeMillis();
+    //
+    //        if (intent != null) {
+    //            mIsStandAlone = true;
+    //        }
+    //    }
+    //}
+
+    //private void updateStandAloneState() {
+    //    Log.d(TAG, "updateStandAloneState...");
+    //
+    //    if (CommonApplication.getPreferences().getChannelsCloseApp()) {
+    //        mResumeTime = System.currentTimeMillis();
+    //
+    //        boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
+    //        boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
+    //        if (isChained && isInstantSwitch) {
+    //            mIsStandAlone = false;
+    //        }
+    //    }
+    //}
 }
