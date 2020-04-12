@@ -107,7 +107,7 @@
     <string name="enable_ad_block">AdBlock inschakelen</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
-    <string name="channels_close_app">ATV Kanalen App sluiten met BACK-toets</string>
+    <string name="channels_close_app">TV Kanalen App sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
     <string name="tweak_publish_history_playlist">ATV: Geschiedenis playlist weergeven bij Kanalen</string>
     <string name="tweak_publish_recommended_playlist">ATV: Aanbevolen playlist weergeven bij Kanalen</string>
