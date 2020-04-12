@@ -94,9 +94,27 @@ public class YouTubeHelpers {
     }
 
     public static boolean isChannelIntent(Intent intent) {
-        String result = getViewData(intent);
+        return isKeyIntent(intent, CHANNEL_URL, USER_URL);
+    }
 
-        return result != null && (result.contains(CHANNEL_URL) || result.contains(USER_URL));
+    public static boolean isSearchIntent(Intent intent) {
+        return isKeyIntent(intent, SEARCH_KEYS);
+    }
+
+    private static boolean isKeyIntent(Intent intent, String... keys) {
+        String data = getViewData(intent);
+
+        boolean result = false;
+
+        for (String key : keys) {
+            result = data != null && data.contains(key);
+
+            if (result) {
+                break;
+            }
+        }
+
+        return result;
     }
 
     private static String getViewData(Intent intent) {

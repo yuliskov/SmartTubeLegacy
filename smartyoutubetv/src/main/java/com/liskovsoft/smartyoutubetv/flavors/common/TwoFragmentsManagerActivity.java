@@ -368,7 +368,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
 
         if (CommonApplication.getPreferences().getChannelsCloseApp()) {
-            mIsStandAlone = intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !YouTubeHelpers.isChannelIntent(intent);
+            mIsStandAlone =
+                    intent != null &&
+                    Intent.ACTION_VIEW.equals(intent.getAction()) &&
+                    !YouTubeHelpers.isChannelIntent(intent) &&
+                    !YouTubeHelpers.isSearchIntent(intent);
         } else {
             mIsStandAlone = false;
         }
