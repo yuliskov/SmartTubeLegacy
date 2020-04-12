@@ -233,7 +233,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
         if (isClosePlayer(action) && mIsStandAlone) {
-            //super.finish();
             moveTaskToBack(true); // don't close
             return;
         }
@@ -318,8 +317,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onResume() {
         Log.d(TAG, "Resuming...");
 
-        //updateStandAloneState();
-
         super.onResume();
     }
 
@@ -372,6 +369,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         if (CommonApplication.getPreferences().getChannelsCloseApp()) {
             mIsStandAlone = intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !YouTubeHelpers.isChannelIntent(intent);
+        } else {
+            mIsStandAlone = false;
         }
     }
 }

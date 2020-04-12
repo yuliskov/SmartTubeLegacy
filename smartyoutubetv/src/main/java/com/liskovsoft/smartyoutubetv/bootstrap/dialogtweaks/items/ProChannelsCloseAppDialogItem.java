@@ -10,7 +10,7 @@ public class ProChannelsCloseAppDialogItem extends DialogItem {
     private final Context mContext;
 
     public ProChannelsCloseAppDialogItem(Context context) {
-        super(context.getResources().getString(R.string.channels_close_app), false);
+        super("PRO: " + context.getResources().getString(R.string.channels_close_app), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
