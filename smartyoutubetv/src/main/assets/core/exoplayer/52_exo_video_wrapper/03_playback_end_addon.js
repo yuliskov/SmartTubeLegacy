@@ -19,7 +19,7 @@ function PlaybackEndAddon() {
         // Src may be changed after video is closed.
         // Ignore such events.
         if (YouTubeUtils.isPlayerOpened()) {
-            Log.d(this.TAG, "imitate playing...");
+            Log.d(this.TAG, "Start imitate playing...");
             this.imitatePlayingCheck(video);
         } else {
             Log.d(this.TAG, "Player closed. Ignore src change event!");
@@ -150,7 +150,7 @@ function PlaybackEndAddon() {
 
                 $this.playbackStrategy.videoClosed(video);
 
-                if (!urlChanged) { // something went wrong, simple close player
+                if (!urlChanged && BackButton) { // something went wrong, simple close player
                     new BackButton(PlayerActivityMapping.BUTTON_BACK).setChecked(true);
                 }
 

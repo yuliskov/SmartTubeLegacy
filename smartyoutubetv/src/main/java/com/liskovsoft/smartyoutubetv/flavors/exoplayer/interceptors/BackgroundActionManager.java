@@ -40,19 +40,17 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean continueRecently = (System.currentTimeMillis() - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-
-        if (mSameVideo && (mIsOpened || continueRecently)) {
-            Log.d(TAG, "Cancel playback: Same video.");
+        if (mSameVideo && mIsOpened) {
+            Log.d(TAG, "Cancel playback: Same video while doing playback.");
             return true;
         }
 
-        //boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
+        boolean continueRecently = (System.currentTimeMillis() - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
-        //if (isNotPlaylist && continueRecently) {
-        //    Log.d(TAG, "Cancel playback: Video continuation recently.");
-        //    return true;
-        //}
+        if (mSameVideo && continueRecently && !mIsOpened) {
+            Log.d(TAG, "Cancel playback: Same video right after close previous.");
+            return true;
+        }
 
         boolean cancelRecently = (System.currentTimeMillis() - mCancelTime) < CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 

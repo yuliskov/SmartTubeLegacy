@@ -18,6 +18,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String TAG = IntegratedAdInterceptor.class.getSimpleName();
     private static final String HOME_PAGE_ID = "\"browseId\":\"default\"";
     private static final String CONTINUATION_ID = "\"continuation\":";
+    private static final String BROWSE_ID = "\"browseId\":";
     private static final String BROWSE_URL = "/youtubei/v1/browse";
     private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
     private final boolean mAdBlockEnabled;
@@ -47,8 +48,8 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (postData.contains(CONTINUATION_ID)) {
-            Log.e(TAG, "Not a Main page. It's continuation. Skip filtering! Url: " + url);
+        if (!postData.contains(BROWSE_ID)) {
+            Log.e(TAG, "Not a Browse page. Skip filtering! Url: " + url);
             return null;
         }
 
