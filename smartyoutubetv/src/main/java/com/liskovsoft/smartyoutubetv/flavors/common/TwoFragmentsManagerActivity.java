@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,7 +12,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.sharedutils.GlobalConstants;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -24,6 +22,7 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
@@ -32,10 +31,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
     private boolean mIsStandAlone;
-    private long mPauseTime;
-    private long mResumeTime;
-    private long mNewIntentTime;
-    private long mOpenPlayerTime;
     private static final long INSTANT_SEARCH_TIME = 30_000;
     private ViewGroup mContainer;
 
@@ -213,8 +208,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public void openExoPlayer(final Intent intent, final boolean pauseBrowser) {
         runOnUiThread(() -> {
-            mOpenPlayerTime = System.currentTimeMillis();
-
             Log.d(TAG, "opening player for intent=" + Helpers.dumpIntent(intent));
             setActiveFragment(mPlayerFragment, pauseBrowser);
             mPlayerFragment.openVideo(intent);
@@ -239,8 +232,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
-        if (isClosePlayer(action) && getStandAloneState()) {
-            super.finish();
+        if (isClosePlayer(action) && mIsStandAlone) {
+            //super.finish();
+            moveTaskToBack(true); // don't close
             return;
         }
 
@@ -317,8 +311,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onPause() {
         Log.d(TAG, "Pausing...");
-        mPauseTime = System.currentTimeMillis();
-
         super.onPause();
     }
 
@@ -333,9 +325,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent == null || Intent.ACTION_MAIN.equals(intent.getAction())) {
-            onNewIntentInt(intent);
-        } else if (closePlayer()) {
+        if (YouTubeHelpers.isChannelIntent(intent) && tryClosePlayer()) {
             // wait till exoplayer is closed
             new Handler(Looper.myLooper())
                     .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
@@ -356,7 +346,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private boolean closePlayer() {
+    private boolean tryClosePlayer() {
         boolean result = false;
 
         if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
@@ -381,45 +371,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
 
         if (CommonApplication.getPreferences().getChannelsCloseApp()) {
-            mNewIntentTime = System.currentTimeMillis();
-
-            if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
-                mIsStandAlone = true;
-            }
+            mIsStandAlone = intent != null && Intent.ACTION_VIEW.equals(intent.getAction()) && !YouTubeHelpers.isChannelIntent(intent);
         }
     }
-
-    private boolean getStandAloneState() {
-        if (mOpenPlayerTime - mNewIntentTime > INSTANT_SEARCH_TIME) { // user opens channel first and then our video
-            mIsStandAlone = false;
-        }
-
-        return mIsStandAlone;
-    }
-
-    //private void updateStandAloneState(Intent intent) {
-    //    Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
-    //
-    //    if (CommonApplication.getPreferences().getChannelsCloseApp()) {
-    //        mNewIntentTime = System.currentTimeMillis();
-    //
-    //        if (intent != null) {
-    //            mIsStandAlone = true;
-    //        }
-    //    }
-    //}
-
-    //private void updateStandAloneState() {
-    //    Log.d(TAG, "updateStandAloneState...");
-    //
-    //    if (CommonApplication.getPreferences().getChannelsCloseApp()) {
-    //        mResumeTime = System.currentTimeMillis();
-    //
-    //        boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
-    //        boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
-    //        if (isChained && isInstantSwitch) {
-    //            mIsStandAlone = false;
-    //        }
-    //    }
-    //}
 }

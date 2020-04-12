@@ -94,12 +94,16 @@ public class YouTubeHelpers {
     }
 
     public static boolean isChannelIntent(Intent intent) {
-        boolean result = false;
+        String result = getViewData(intent);
+
+        return result != null && (result.contains(CHANNEL_URL) || result.contains(USER_URL));
+    }
+
+    private static String getViewData(Intent intent) {
+        String result = null;
 
         if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Uri data = intent.getData();
-
-            result = data != null && (data.toString().contains(CHANNEL_URL) || data.toString().contains(USER_URL));
+            result = intent.getDataString();
         }
 
         return result;

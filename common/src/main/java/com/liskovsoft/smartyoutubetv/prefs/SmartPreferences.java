@@ -470,7 +470,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public boolean getChannelsCloseApp() {
-        return getBoolean(CHANNELS_CLOSE_APP, false);
+        return getBoolean(CHANNELS_CLOSE_APP, true);
     }
 
     public void setChannelsCloseApp(boolean checked) {
