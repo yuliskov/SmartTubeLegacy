@@ -57,7 +57,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String AD_BLOCK_DISABLED = "ad_block_disabled";
     public static final String AD_BLOCK_UNDEFINED = "ad_block_undefined";
     private static final String DECREASE_PLAYER_UI_TIMEOUT = "decrease_player_ui_timeout";
-    private static final String CHANNELS_CLOSE_APP = "channels_close_app";
+    private static final String OPEN_LINKS_IN_SIMPLE_VIEW = "open_links_in_simple_view";
     private static final String PLAYER_BUFFER_TYPE = "player_buffer_type";
     public static final String PLAYER_BUFFER_TYPE_LOW = "player_buffer_type_low";
     public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
@@ -469,12 +469,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(DECREASE_PLAYER_UI_TIMEOUT, checked);
     }
 
-    public boolean getChannelsCloseApp() {
-        return getBoolean(CHANNELS_CLOSE_APP, true);
+    public boolean getOpenLinksInSimpleView() {
+        return getBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, true);
     }
 
-    public void setChannelsCloseApp(boolean checked) {
-        putBoolean(CHANNELS_CLOSE_APP, checked);
+    public void setOpenLinksInSimpleView(boolean checked) {
+        putBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, checked);
     }
 
     public String getPlayerBufferType() {

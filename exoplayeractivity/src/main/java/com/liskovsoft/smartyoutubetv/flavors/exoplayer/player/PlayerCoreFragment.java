@@ -2,8 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,13 +45,11 @@ import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
@@ -663,6 +659,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
         boolean isCodecError = false;
+        boolean isSourceError = false;
 
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
@@ -684,18 +681,25 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 //} else {
                 //    errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
                 //}
+            } else {
+                errorString = e.getRendererException().getLocalizedMessage();
             }
 
             isCodecError = true;
         } else if (e.type == ExoPlaybackException.TYPE_SOURCE) {
-            // Response code: 403
+            // Response code: 403 (url not found)
             errorString = e.getSourceException().getLocalizedMessage();
+            isSourceError = true;
         } else if (e.type == ExoPlaybackException.TYPE_UNEXPECTED) {
             errorString = e.getUnexpectedException().getLocalizedMessage();
         }
 
-        if (errorString != null && !getHidePlaybackErrors()) {
-            showToast(errorString);
+        if (errorString != null) {
+            Log.e(TAG, "Playback error: " + errorString);
+
+            if (!getHidePlaybackErrors()) {
+                showToast(errorString);
+            }
         }
 
         mNeedRetrySource = true;
@@ -704,12 +708,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             clearResumePosition();
         } else {
             updateResumePosition();
-            // show retry button to the options
-            //updateButtonVisibilities();
         }
 
         if (isCodecError) {
             restorePlayback();
+        } else if (isSourceError) {
+            MessageHelpers.showLongMessage(getActivity(), getString(R.string.exo_video_link_error));
+            // closing player
+            onBackPressed();
         }
     }
 

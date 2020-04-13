@@ -98,5 +98,5 @@
     <string name="high_player_buffer">PRO: Максимальный буфер плеера</string>
     <string name="medium_player_buffer">PRO: Средний буфер плеера</string>
     <string name="low_player_buffer">PRO: Минимальный буфер плеера</string>
-    <string name="links_in_standalone_player">Открывать ссылки в отдельном плеере</string>
+    <string name="open_links_in_simple_view">Открывать ссылки в упрощенном виде</string>
 </resources>

@@ -10,7 +10,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAltPlayerMa
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProLinksInStandalonePlayerDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOpenLinksInSimpleViewDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProHighPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EnableAdBlockDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProFixAspectDialogItem;
@@ -76,7 +76,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ProAutoShowPlayerUIDialogItem(mContext));
         mItems.add(new ProPlayerUIShowTimeoutDialogItem(mContext));
         mItems.add(new ProAltPlayerMappingDialogItem(mContext));
-        mItems.add(new ProLinksInStandalonePlayerDialogItem(mContext));
+        mItems.add(new ProOpenLinksInSimpleViewDialogItem(mContext));
         mItems.add(new LiteForceAllCodecsDialogItem(mContext));
         mItems.add(new LiteForceAVCDialogItem(mContext));
         mItems.add(new LiteForceVP9DialogItem(mContext));
