@@ -8,7 +8,7 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
     private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000;
-    private static final long CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000;
+    private static final long CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000; // Don't increase value!
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
@@ -55,9 +55,11 @@ public class BackgroundActionManager {
         boolean cancelRecently = (System.currentTimeMillis() - mCancelTime) < CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
         if (cancelRecently) {
-            Log.d(TAG, "Cancel playback: User cancelled video recently.");
+            Log.d(TAG, "Cancel playback: User closed video recently.");
             return true;
         }
+
+        //boolean isPlaylist = getPlaylistId(mCurrentUrl) != null;
 
         return false;
     }
