@@ -233,8 +233,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
         if (isClosePlayer(action) && mIsStandAlone) {
+            forceClosePlayer(action);
             moveTaskToBack(true); // don't close
-            return;
         }
 
         boolean doNotPause = isDoNotPause(action);
@@ -250,7 +250,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     private boolean isClosePlayer(Intent action) {
-        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false);
+        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false);
+    }
+
+    private void forceClosePlayer(Intent action) {
+        action.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        action.putExtra(ExoPlayerFragment.BUTTON_NEXT, false);
+        action.putExtra(ExoPlayerFragment.BUTTON_PREV, false);
+        action.putExtra(ExoPlayerFragment.TRACK_ENDED, false);
     }
 
     private boolean isDoNotPause(Intent action) {
