@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ProChannelsCloseAppDialogItem extends DialogItem {
+public class ProLinksInStandalonePlayerDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ProChannelsCloseAppDialogItem(Context context) {
-        super("PRO: " + context.getResources().getString(R.string.channels_close_app), false);
+    public ProLinksInStandalonePlayerDialogItem(Context context) {
+        super("PRO: " + context.getResources().getString(R.string.links_in_standalone_player), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);

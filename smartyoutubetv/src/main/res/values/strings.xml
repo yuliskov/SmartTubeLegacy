@@ -117,4 +117,5 @@
     <string name="high_player_buffer">Pro: Max player buffer</string>
     <string name="medium_player_buffer">Pro: Medium player buffer</string>
     <string name="low_player_buffer">PRO: Min player buffer</string>
+    <string name="links_in_standalone_player">Open links in standalone player</string>
 </resources>
