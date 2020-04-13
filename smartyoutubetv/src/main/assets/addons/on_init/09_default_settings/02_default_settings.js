@@ -25,12 +25,17 @@ function DefaultSettingsAddon() {
     };
 
     this.applyFlags = function() {
-        if (!window.environment) {
-            return;
-        }
+        if (window.environment) {
+            Log.d(this.TAG, "Environment flags is enabled: " + window.environment.flags != null);
 
-        window.environment.feature_switches.limited_memory = true;
-        window.environment.feature_switches.limited_animation = true;
+            window.environment.flags.enable_masthead_large = false;
+            window.environment.flags.enable_masthead_medium = false;
+            window.environment.flags.enable_masthead_small = false;
+            window.environment.flags.enable_masthead_thumbnail_only = false;
+
+            // window.environment.feature_switches.limited_memory = true;
+            // window.environment.feature_switches.limited_animation = true;
+        }
     };
 }
 

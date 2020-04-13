@@ -33,6 +33,20 @@ var Utils = {
         return Object.prototype.toString.call(obj) === "[object String]";
     },
 
+    removeElement: function(elemOrSelector) {
+        var el = elemOrSelector;
+
+        if (this.isSelector(elemOrSelector)) {
+            el = this.$(elemOrSelector);
+        }
+
+        if (el && el.parentNode && el.parentNode.removeChild) {
+            el.parentNode.removeChild(el);
+        } else {
+            Log.e(this.TAG, "Can't remove element " + EventUtils.toSelector(el));
+        }
+    },
+
     addClass: function(elem, cls) {
         if (!this.hasClass(elem, cls)) {
             elem.className += ' ' + cls;

@@ -84,7 +84,8 @@ var YouTubeSelectors = {
     VOICE_SEARCH: '#voice-search',
     FOCUSED_ELEMENT: '.focused',
     FOCUSED_VIDEO_PROGRESS_BAR: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-resume-playback-renderer__progress-watched',
-    PLAYER_OBJ: 'video'
+    PLAYER_OBJ: 'video',
+    MASTHEAD_SECTION: '.masthead-overlay'
 };
 
 /**
