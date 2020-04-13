@@ -713,7 +713,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         if (isCodecError) {
             restorePlayback();
         } else if (isSourceError) {
-            MessageHelpers.showLongMessage(getActivity(), getString(R.string.exo_video_link_error));
+            showToast(getString(R.string.exo_video_link_error));
             // closing player
             onBackPressed();
         }
