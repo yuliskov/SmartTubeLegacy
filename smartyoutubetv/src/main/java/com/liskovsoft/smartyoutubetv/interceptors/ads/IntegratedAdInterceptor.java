@@ -22,17 +22,20 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     private static final String BROWSE_URL = "/youtubei/v1/browse";
     private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
     private final boolean mAdBlockEnabled;
+    private final Context mContext;
     private boolean mIsHome;
 
     public IntegratedAdInterceptor(Context context) {
         super(context);
+        mContext = context;
         mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
         Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);
     }
 
     @Override
     public boolean test(String url) {
-        if (url.contains(BROWSE_URL)) {
+        // XWalk has very poor performance when switch between sections (Home, History etc)
+        if (SmartUtils.isWebView(mContext) && url.contains(BROWSE_URL)) {
             return mAdBlockEnabled;
         } else {
             return false;
