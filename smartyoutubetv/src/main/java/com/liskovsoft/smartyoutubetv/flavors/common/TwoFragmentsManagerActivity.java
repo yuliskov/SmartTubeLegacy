@@ -23,7 +23,6 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
@@ -32,7 +31,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
-    private boolean mIsStandAlone;
+    private boolean mIsSimpleViewMode;
     private static final long INSTANT_SEARCH_TIME = 30_000;
     private ViewGroup mContainer;
 
@@ -234,7 +233,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
-        if (isClosePlayer(action) && mIsStandAlone) {
+        if (isClosePlayer(action) && mIsSimpleViewMode) {
             forceClosePlayer(action);
             moveTaskToBack(true); // don't close
         }
@@ -275,7 +274,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (getActiveFragment() == mBrowserFragment && mIsStandAlone && mPlayerFragment.isStopped()) {
+            if (getActiveFragment() == mBrowserFragment && mIsSimpleViewMode && mPlayerFragment.isStopped()) {
                 moveTaskToBack(true); // don't close
             }
         }
@@ -361,7 +360,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         updateStandAloneState(intent);
 
-        if (mIsStandAlone) { // remove blinking browser ui when running from channels
+        if (mIsSimpleViewMode) { // remove blinking browser ui when running from channels
             setActiveFragment(mPlayerFragment, false);
         }
 
@@ -395,13 +394,18 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
 
         if (CommonApplication.getPreferences().getOpenLinksInSimpleView()) {
-            mIsStandAlone =
+            mIsSimpleViewMode =
                     intent != null &&
                     Intent.ACTION_VIEW.equals(intent.getAction()) &&
                     !YouTubeHelpers.isChannelIntent(intent) &&
                     !YouTubeHelpers.isSearchIntent(intent);
         } else {
-            mIsStandAlone = false;
+            mIsSimpleViewMode = false;
         }
+    }
+
+    @Override
+    public boolean isSimpleViewMode() {
+        return mIsSimpleViewMode;
     }
 }
