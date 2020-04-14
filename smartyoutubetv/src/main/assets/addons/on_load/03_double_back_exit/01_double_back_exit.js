@@ -26,7 +26,7 @@ function DoubleBackAddon() {
 
         YouTubeUtils.addExitListener(function() {
             Log.d($this.TAG, "Exit dialog is displayed");
-            DeviceUtils.showExitMsg();
+            //DeviceUtils.showExitMsg();
             DeviceUtils.sendMessage($this.MESSAGE_DOUBLE_BACK_EXIT);
         });
     };

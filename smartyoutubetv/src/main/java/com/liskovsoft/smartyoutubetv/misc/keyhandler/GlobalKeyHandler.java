@@ -31,7 +31,7 @@ public class GlobalKeyHandler {
         mExitAppFn = () -> {
             Log.d(TAG, "Closing the app...");
 
-            //mHandler.postDelayed(() -> ctx.moveTaskToBack(true), 1_000); // don't close
+            //mHandler.postDelayed(() -> ctx.moveTaskToBack(true), 100); // don't close
 
             ctx.moveTaskToBack(true);
             //MessageHelpers.showMessage(ctx, R.string.close_msg);
