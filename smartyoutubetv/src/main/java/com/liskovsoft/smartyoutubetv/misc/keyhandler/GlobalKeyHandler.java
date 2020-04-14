@@ -7,10 +7,8 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 public class GlobalKeyHandler {
@@ -19,7 +17,8 @@ public class GlobalKeyHandler {
     private final Handler mHandler;
     private final Activity mContext;
     private final Runnable mExitAppFn;
-    private final Runnable mResetExitFn = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
+    private final Runnable mResetExitFull = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
+    private final Runnable mResetExitPress = () -> {mDoubleBackToExitPressedTimes = 0;};
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private int mDoubleBackToExitPressedTimes;
@@ -30,9 +29,13 @@ public class GlobalKeyHandler {
         mContext = ctx;
         mBackPressExitEnabled = CommonApplication.getPreferences() != null && CommonApplication.getPreferences().getEnableBackPressExit();
         mExitAppFn = () -> {
-            MessageHelpers.showMessage(ctx, R.string.close_msg);
+            Log.d(TAG, "Closing the app...");
+
+            //mHandler.postDelayed(() -> ctx.moveTaskToBack(true), 1_000); // don't close
+
+            ctx.moveTaskToBack(true);
+            //MessageHelpers.showMessage(ctx, R.string.close_msg);
             //ctx.finish();
-            ctx.moveTaskToBack(true); // don't close
         };
     }
 
@@ -118,7 +121,7 @@ public class GlobalKeyHandler {
 
     public void checkDoubleBackExit() {
         mEnableDoubleBackExit = true;
-        mHandler.postDelayed(mResetExitFn, 1000);
+        //mHandler.postDelayed(mResetExitPress, 1000);
     }
 
     private void checkBackPressed(KeyEvent event) {
@@ -126,29 +129,36 @@ public class GlobalKeyHandler {
             return;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            return;
-        }
-
         if (event.getKeyCode() != KeyEvent.KEYCODE_BACK &&
             event.getKeyCode() != KeyEvent.KEYCODE_B &&
             event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
-            mResetExitFn.run();
-            mHandler.removeCallbacks(mResetExitFn);
+            mResetExitFull.run();
+            //mHandler.removeCallbacks(mResetExitPress);
             return;
         }
 
-        if (mDoubleBackToExitPressedTimes >= 0) {
-            // exit action
-            mExitAppFn.run();
+        if (event.getAction() == KeyEvent.ACTION_UP) { // should be UP
             return;
         }
 
-        mDoubleBackToExitPressedTimes++;
+        Log.d(TAG, "Checking double back exit...");
 
-        if (mDoubleBackToExitPressedTimes == 1) {
-            mHandler.postDelayed(mResetExitFn, 1000);
-        }
+        // exit action
+        mExitAppFn.run();
+        mResetExitFull.run();
+
+        //mHandler.removeCallbacks(mResetExitPress);
+
+        //if (mDoubleBackToExitPressedTimes >= 0) { // first press after dialog popup
+        //    // exit action
+        //    mExitAppFn.run();
+        //    mResetExitPress.run();
+        //    return;
+        //}
+        //
+        //mDoubleBackToExitPressedTimes++;
+
+        //mHandler.postDelayed(mResetExitPress, 1000); // back press rate 1press in 1sec
     }
 
     /**
@@ -183,26 +193,4 @@ public class GlobalKeyHandler {
 
         return false;
     }
-
-    /**
-     * Ignore non-paired key up events
-     *
-     * @param event event
-     * @return is ignored
-     */
-    //private boolean isEventIgnoredOld(KeyEvent event) {
-    //    mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
-    //
-    //    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-    //        mDownPressed++;
-    //        return false;
-    //    }
-    //
-    //    if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
-    //        mDownPressed--;
-    //        return false;
-    //    }
-    //
-    //    return true;
-    //}
 }

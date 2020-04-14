@@ -208,6 +208,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mKeyHandler.checkShortcut(event);
 
         if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
+            Log.d(TAG, "Key events are disabled...");
             return true;
         }
 
