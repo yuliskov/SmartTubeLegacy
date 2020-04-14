@@ -26,13 +26,13 @@ public abstract class RequestInterceptor {
         mManager = new HeaderManager(context);
     }
 
-    private String getMimeType(MediaType contentType) {
+    protected String getMimeType(MediaType contentType) {
         String type = contentType.type();
         String subtype = contentType.subtype();
         return String.format("%s/%s", type, subtype);
     }
 
-    private String getCharset(MediaType contentType) {
+    protected String getCharset(MediaType contentType) {
         if (contentType.charset() == null) {
             return null;
         }

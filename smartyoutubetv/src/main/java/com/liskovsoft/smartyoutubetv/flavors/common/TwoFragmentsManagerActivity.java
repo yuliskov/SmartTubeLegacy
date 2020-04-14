@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
@@ -271,6 +273,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (getActiveFragment() == mBrowserFragment && mIsStandAlone) {
+                moveTaskToBack(true); // don't close
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
     public void openBrowser(boolean pausePrevious) {
         runOnUiThread(() -> setActiveFragment(mBrowserFragment, pausePrevious));
     }
@@ -347,6 +360,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         Log.d(TAG, "New intent is coming... " + intent);
 
         updateStandAloneState(intent);
+
+        if (mIsStandAlone) { // remove blinking browser ui when running from channels
+            setActiveFragment(mPlayerFragment, false);
+        }
 
         if (mBrowserFragment != null) {
             mBrowserFragment.onNewIntent(intent);

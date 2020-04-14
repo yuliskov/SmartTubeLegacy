@@ -13,4 +13,4 @@ function MastheadFixAddon() {
     };
 }
 
-new MastheadFixAddon().run();
+// new MastheadFixAddon().run();

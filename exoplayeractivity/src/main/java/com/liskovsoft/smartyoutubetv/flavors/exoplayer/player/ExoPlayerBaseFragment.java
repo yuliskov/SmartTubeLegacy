@@ -92,6 +92,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private List<PlayerEventListener> mListeners;
     private List<String> mRestore;
     private boolean mIsAfrApplying;
+    private boolean mPlaybackStopped;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -241,9 +242,27 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             result.putExtra(VIDEO_POSITION, (float) mPlayer.getCurrentPosition() / 1_000);
         }
 
+        updateLastState(result);
+
         if (getActivity() != null) {
             ((PlayerListener) getActivity()).onPlayerAction(result);
         }
+    }
+
+    protected void updateLastState(Intent intent) {
+        if (intent == null) {
+            mPlaybackStopped = false;
+        } else {
+            mPlaybackStopped =
+                    intent.getBooleanExtra(BUTTON_BACK, false) ||
+                            intent.getBooleanExtra(BUTTON_NEXT, false) ||
+                            intent.getBooleanExtra(BUTTON_PREV, false) ||
+                            intent.getBooleanExtra(TRACK_ENDED, false);
+        }
+    }
+
+    protected boolean isPlaybackStopped() {
+        return mPlaybackStopped;
     }
 
     private void fixSuggestionFocusLost() {
@@ -380,6 +399,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
 
+        updateLastState(intent);
+
         if (isStateIntent(intent)) {
             if (getIntent() == null) {
                 setIntent(intent);
@@ -447,6 +468,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
         if (mStateManager != null) {
             mStateManager.persistState();
+
+            if (isPlaybackStopped()) {
+                setIntent(null);
+            }
         }
 
         if (mDebugViewHelper != null) {

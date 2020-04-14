@@ -61,6 +61,10 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         //    return null;
         //}
 
+        return bakeResponse(url, postData);
+    }
+
+    private WebResourceResponse bakeResponse(String url, String postData) {
         InputStream urlData = postJsonData(url, postData);
 
         WebResourceResponse response = null;
