@@ -275,7 +275,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (getActiveFragment() == mBrowserFragment && mIsStandAlone) {
+            if (getActiveFragment() == mBrowserFragment && mIsStandAlone && mPlayerFragment.isStopped()) {
                 moveTaskToBack(true); // don't close
             }
         }
