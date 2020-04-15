@@ -122,6 +122,10 @@ public abstract class RequestInterceptor {
     protected WebResourceResponse postFormData(String url, String body) {
         Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/x-www-form-urlencoded");
 
+        return createResponse(response);
+    }
+
+    protected WebResourceResponse createResponse(Response response) {
         WebResourceResponse result = null;
 
         if (response != null) {

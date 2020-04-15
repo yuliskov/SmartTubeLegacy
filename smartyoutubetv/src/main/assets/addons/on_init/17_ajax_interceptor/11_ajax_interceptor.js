@@ -64,6 +64,10 @@ function AjaxInterceptorAddon(interceptors) {
                     if (interceptor.interceptHeader) {
                         interceptor.interceptHeader(arguments[0], arguments[1]);
                     }
+
+                    if (interceptor.modifyHeader) {
+                        interceptor.modifyHeader(arguments);
+                    }
                 }
 
                 if ($this.interceptors.length == 0) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
 import com.jakewharton.disklrucache.DiskLruCache;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Bus;
@@ -68,4 +69,17 @@ public class CommonApplication extends Application {
     public static DiskLruCache getCache() {
         return sCache;
     }
+
+    //@Override
+    //public String getPackageName() {
+    //    if (Helpers.checkStackTrace("buildinfo")) {
+    //        return super.getPackageName();
+    //    }
+    //
+    //    if (Helpers.checkStackTrace("webview")) {
+    //        return "com.google.android.youtube.tv";
+    //    }
+    //
+    //    return super.getPackageName();
+    //}
 }

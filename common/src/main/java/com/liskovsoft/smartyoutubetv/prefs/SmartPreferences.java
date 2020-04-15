@@ -84,6 +84,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private long mVideoOpenTimeMS;
     private String mVideoSrc;
     private long mVideoActionTimeMS;
+    private String mVisitorIdHeader;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -374,6 +375,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public String getAuthorizationHeader() {
         return mAuthorizationHeader;
+    }
+
+    public void setVisitorIdHeader(String header) {
+        mVisitorIdHeader = header;
+    }
+
+    public String getVisitorIdHeader() {
+        return mVisitorIdHeader;
     }
 
     public void setCookieHeader(String header) {

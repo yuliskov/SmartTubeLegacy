@@ -35,7 +35,7 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
     @Override
     public boolean test(String url) {
         // XWalk has very poor performance when switch between sections (Home, History etc)
-        if (SmartUtils.isWebView(mContext) && url.contains(BROWSE_URL)) {
+        if (url.endsWith(BROWSE_URL)) {
             return mAdBlockEnabled;
         } else {
             return false;
@@ -51,13 +51,18 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (!postData.contains(BROWSE_ID)) {
-            Log.e(TAG, "Not a Browse page. Skip filtering! Url: " + url);
+        if (!isHomePage(postData)) {
+            Log.e(TAG, "Not a home page. Skip filtering! Url: " + url + " Post data: " + postData);
             return null;
         }
 
+        //if (!postData.contains(BROWSE_ID)) {
+        //    Log.e(TAG, "Not a Browse page. Skip filtering! Url: " + url + " Post data: " + postData);
+        //    return null;
+        //}
+
         //if (!postData.contains(HOME_PAGE_ID)) {
-        //    Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url);
+        //    Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url + " Post data: " + postData);
         //    return null;
         //}
 
@@ -83,9 +88,9 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
                 response = createResponse(MediaType.parse("application/json"), browseParser.toStream());
             } else {
                 if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {
-                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData + ". Response: " + Helpers.toString(browseParser.toStream()));
+                    Log.d(TAG, "Oops. Response doesn't contain masthead section. Url: " + url + ". Post Data: " + postData + ". Response: " + Helpers.toString(browseParser.toStream()));
                 } else {
-                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData);
+                    Log.d(TAG, "Oops. Response doesn't contain masthead section. Url: " + url + ". Post Data: " + postData);
                 }
             }
         } else {
@@ -95,17 +100,23 @@ public class IntegratedAdInterceptor extends RequestInterceptor {
         return response;
     }
 
-    private boolean isHomePageOrNext(String postData) {
+    private boolean isHomePage(String postData) {
         if (postData == null) {
             return false;
         }
 
-        if (mIsHome) { // maybe home next page?
+        if (mIsHome) { // maybe home continuation page?
             mIsHome = postData.contains(CONTINUATION_ID);
+            if (mIsHome) {
+                Log.d(TAG, "Home continuation found");
+            }
         }
 
         if (!mIsHome) {
             mIsHome = postData.contains(HOME_PAGE_ID);
+            if (mIsHome) {
+                Log.d(TAG, "Home page found");
+            }
         }
 
         return mIsHome;

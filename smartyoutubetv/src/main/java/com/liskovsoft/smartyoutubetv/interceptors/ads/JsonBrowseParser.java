@@ -9,7 +9,7 @@ import java.io.InputStream;
 public class JsonBrowseParser {
     // All objects with property 'tvMastheadRenderer'
     // ex: https://github.com/json-path/JsonPath
-    private static final String TV_MASTHEAD_SECTION_ANY = "$..content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[?(@.tvMastheadRenderer)]";
+    private static final String TV_MASTHEAD_SECTION_ANY = "$..[?(@.tvMastheadRenderer)]";
 
     private final DocumentContext mParser;
 

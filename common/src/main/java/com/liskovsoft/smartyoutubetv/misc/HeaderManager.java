@@ -11,6 +11,7 @@ public class HeaderManager {
     private final SmartPreferences mPrefs;
     private HashMap<String, String> mHeaders;
     private String mRootUrl = "https://www.youtube.com/tv";
+    private String mOriginUrl = "https://www.youtube.com";
 
     // this values will be changed over time
     private static final String AD_SIGNALS =
@@ -39,6 +40,7 @@ public class HeaderManager {
     private void initHeaders() {
         mHeaders = new HashMap<>();
 
+        mHeaders.put("Origin", mOriginUrl);
         mHeaders.put("Referer", mRootUrl);
         mHeaders.put("User-Agent", new UserAgentManager().getUA());
         mHeaders.put("Accept-Language", new LangUpdater(mContext).getPreferredBrowserLocale());
@@ -68,6 +70,12 @@ public class HeaderManager {
 
         if (cookies != null) {
             mHeaders.put("Cookie", cookies);
+        }
+
+        String visitorId = mPrefs.getVisitorIdHeader(); // DON'T CACHE: value changed over time
+
+        if (visitorId != null) {
+            mHeaders.put("X-Goog-Visitor-Id", visitorId);
         }
     }
 }

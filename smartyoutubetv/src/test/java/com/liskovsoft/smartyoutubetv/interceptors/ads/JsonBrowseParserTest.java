@@ -20,24 +20,34 @@ public class JsonBrowseParserTest {
     private InputStream mResultInfo;
     private InputStream mOriginalInfo2;
     private InputStream mResultInfo2;
+    private InputStream mOriginalInfo3;
+    private InputStream mResultInfo3;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mOriginalInfo = TestHelpers.openResource("ads/browse_home_full.json");
         mResultInfo = TestHelpers.openResource("ads/browse_home_no_masthead_compact.json");
 
         mOriginalInfo2 = TestHelpers.openResource("ads/tv_masthead2_origin.json");
         mResultInfo2 = TestHelpers.openResource("ads/tv_masthead2_cleared.json");
+
+        mOriginalInfo3 = TestHelpers.openResource("ads/tv_masthead3_origin.json");
+        mResultInfo3 = TestHelpers.openResource("ads/tv_masthead3_cleared.json");
     }
 
     @Test
-    public void testRemoveMasthead() throws IOException {
+    public void testRemoveMasthead() {
         testRemoveMasthead(mOriginalInfo, mResultInfo);
     }
 
     @Test
-    public void testRemoveMasthead2() throws IOException {
+    public void testRemoveMasthead2() {
         testRemoveMasthead(mOriginalInfo2, mResultInfo2);
+    }
+
+    @Test
+    public void testRemoveMasthead3() {
+        testRemoveMasthead(mOriginalInfo3, mResultInfo3);
     }
 
     @Test
