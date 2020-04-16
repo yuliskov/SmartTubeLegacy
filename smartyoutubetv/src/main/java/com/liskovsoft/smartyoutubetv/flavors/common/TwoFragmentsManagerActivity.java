@@ -213,6 +213,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             setActiveFragment(mPlayerFragment, pauseBrowser);
             mPlayerFragment.openVideo(intent);
             xwalkFix();
+
+            onPlaybackStarted();
         });
     }
 
@@ -233,9 +235,13 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
-        if (isClosePlayer(action) && mIsSimpleViewMode) {
-            forceClosePlayer(action);
-            moveTaskToBack(true); // don't close
+        if (isClosePlayer(action)) {
+            onPlaybackStopped();
+
+            if (mIsSimpleViewMode) {
+                forceClosePlayer(action);
+                moveTaskToBack(true); // don't close
+            }
         }
 
         boolean doNotPause = isDoNotPause(action);

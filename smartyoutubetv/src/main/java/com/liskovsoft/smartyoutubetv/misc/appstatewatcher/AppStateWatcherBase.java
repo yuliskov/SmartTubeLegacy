@@ -170,6 +170,18 @@ public class AppStateWatcherBase {
         }
     }
 
+    public void onPlaybackStarted() {
+        for (StateHandler handler : mHandlers) {
+            handler.onPlaybackStarted();
+        }
+    }
+
+    public void onPlaybackStopped() {
+        for (StateHandler handler : mHandlers) {
+            handler.onPlaybackStopped();
+        }
+    }
+
     public static abstract class StateHandler {
         public void onNewIntent(Intent intent) {
             
@@ -189,6 +201,14 @@ public class AppStateWatcherBase {
         }
 
         public void onWake() {
+
+        }
+
+        public void onPlaybackStarted() {
+
+        }
+
+        public void onPlaybackStopped() {
 
         }
 

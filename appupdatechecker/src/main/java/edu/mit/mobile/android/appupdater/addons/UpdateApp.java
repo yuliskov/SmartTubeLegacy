@@ -26,6 +26,7 @@ import java.io.File;
 public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private static final String TAG = UpdateApp.class.getSimpleName();
     private final Context mContext;
+    private boolean mCancelUpdate;
 
     public UpdateApp(Context context) {
         mContext = context;
@@ -33,6 +34,8 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
 
     @Override
     protected Void doInBackground(Uri[]... args) {
+        mCancelUpdate = false; // reset update lock
+
         Uri[] uris = args[0];
 
         String path = null;
@@ -45,8 +48,13 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
         }
 
         if (path != null) {
-            Helpers.installPackage(mContext, path);
+            if (mCancelUpdate) {
+                Log.d(TAG, "Update has been canceled");
+            } else {
+                Helpers.installPackage(mContext, path);
+            }
         } else {
+            Log.e(TAG, "Error while download. Install path is null");
             showMessage(mContext.getResources().getString(R.string.cant_download_msg));
         }
 
@@ -78,8 +86,11 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             }
         } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
             Log.e(TAG, ex.getMessage(), ex);
-            // MessageHelpers.showMessage(mContext, TAG, ex);
         }
         return path;
+    }
+
+    public void cancelPendingUpdate() {
+        mCancelUpdate = true;
     }
 }

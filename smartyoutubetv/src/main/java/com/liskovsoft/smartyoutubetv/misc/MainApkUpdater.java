@@ -16,11 +16,13 @@ public class MainApkUpdater {
     private static final long UPDATE_CHECK_DELAY_MS = 3000;
     private boolean mIsStableChecked;
     private boolean mIsBetaChecked;
+    private final OnUpdateDialog mDialog;
 
     public MainApkUpdater(Context context) {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
+        mDialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
 
         switch (prefs.getBootstrapUpdateCheck()) {
             case SmartPreferences.UPDATE_CHECK_STABLE:
@@ -60,15 +62,19 @@ public class MainApkUpdater {
         }
     }
 
+    public void cancelPendingUpdate() {
+        mDialog.cancelPendingUpdate();
+    }
+
     private void runUpdateChecker(String[] updateUrls) {
         if (updateUrls == null) {
             Log.d(TAG, "Oops... can't start update. Url list seems empty.");
             return;
         }
 
-        OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrls, dialog);
-        // to minimize server payload use forceCheckForUpdatesIfStalled()
+        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrls, mDialog);
+
+        // To minimize server payload use forceCheckForUpdatesIfStalled()
         updateChecker.forceCheckForUpdates();
     }
 }

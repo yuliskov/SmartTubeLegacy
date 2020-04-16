@@ -24,11 +24,14 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     private final Handler mHandler;
     private static final int MSG_SHOW_DIALOG = 1;
     private AlertDialog mDialog;
+    private boolean mCancelUpdate;
+    private final UpdateApp mUpdateApp;
 
     public OnUpdateDialog(Context context, CharSequence appName) {
         mContext = context;
         mAppName = appName;
         mHandler = new MyHandler();
+        mUpdateApp = new UpdateApp(mContext);
     }
 
     public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris) {
@@ -55,7 +58,6 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     private final DialogInterface.OnClickListener dialogOnClickListener = new DialogInterface.OnClickListener() {
-
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case AlertDialog.BUTTON_POSITIVE:
@@ -72,8 +74,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     private void downloadAndInstall(Uri[] downloadUris) {
-        UpdateApp updateApp = new UpdateApp(mContext);
-        updateApp.execute(downloadUris);
+        mUpdateApp.execute(downloadUris);
     }
 
     private class MyHandler extends Handler {
@@ -83,8 +84,12 @@ public class OnUpdateDialog implements OnAppUpdateListener {
                 case MSG_SHOW_DIALOG:
                     try {
                         // TODO fix this so it'll pop up appropriately
-                        mDialog.show();
-                        setupFocus();
+                        if (mCancelUpdate) {
+                            mCancelUpdate = false; // reset update lock
+                        } else {
+                            mDialog.show();
+                            setupFocus();
+                        }
                     } catch (final Exception e) {
                         e.printStackTrace();
                         // XXX ignore for the moment
@@ -101,5 +106,10 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         if (okBtn != null) {
             okBtn.requestFocus();
         }
+    }
+
+    public void cancelPendingUpdate() {
+        mCancelUpdate = true;
+        mUpdateApp.cancelPendingUpdate();
     }
 }

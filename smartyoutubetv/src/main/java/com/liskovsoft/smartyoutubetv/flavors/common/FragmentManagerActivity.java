@@ -447,4 +447,12 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     public boolean isSimpleViewMode() {
         return false;
     }
+
+    protected void onPlaybackStarted() {
+        mAppStateWatcher.onPlaybackStarted();
+    }
+
+    protected void onPlaybackStopped() {
+        mAppStateWatcher.onPlaybackStopped();
+    }
 }
