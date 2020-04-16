@@ -37,6 +37,8 @@ public class ApkUpdaterHandler extends StateHandler {
     @Override
     public void onPlaybackStopped() {
         mDisableUpdate = false;
+
+        mAppStateWatcher.addRunAfterLock(this::checkUpdates);
     }
 
     private void checkUpdates() {

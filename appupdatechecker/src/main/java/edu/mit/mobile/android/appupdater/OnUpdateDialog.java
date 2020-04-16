@@ -35,6 +35,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris) {
+        mCancelUpdate = false; // reset update lock
         this.mDownloadUris = downloadUris;
 
         if (!isLatestVersion) {
@@ -84,9 +85,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
                 case MSG_SHOW_DIALOG:
                     try {
                         // TODO fix this so it'll pop up appropriately
-                        if (mCancelUpdate) {
-                            mCancelUpdate = false; // reset update lock
-                        } else {
+                        if (!mCancelUpdate) {
                             mDialog.show();
                             setupFocus();
                         }
@@ -108,6 +107,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
         }
     }
 
+    @Override
     public void cancelPendingUpdate() {
         mCancelUpdate = true;
         mUpdateApp.cancelPendingUpdate();

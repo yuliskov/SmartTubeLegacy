@@ -17,12 +17,15 @@ public class MainApkUpdater {
     private boolean mIsStableChecked;
     private boolean mIsBetaChecked;
     private final OnUpdateDialog mDialog;
+    private final AppUpdateChecker mUpdateChecker;
 
     public MainApkUpdater(Context context) {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
+
         mDialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
+        mUpdateChecker = new AppUpdateChecker(mContext, mDialog);
 
         switch (prefs.getBootstrapUpdateCheck()) {
             case SmartPreferences.UPDATE_CHECK_STABLE:
@@ -63,7 +66,7 @@ public class MainApkUpdater {
     }
 
     public void cancelPendingUpdate() {
-        mDialog.cancelPendingUpdate();
+        mUpdateChecker.cancelPendingUpdate();
     }
 
     private void runUpdateChecker(String[] updateUrls) {
@@ -72,9 +75,7 @@ public class MainApkUpdater {
             return;
         }
 
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrls, mDialog);
-
         // To minimize server payload use forceCheckForUpdatesIfStalled()
-        updateChecker.forceCheckForUpdates();
+        mUpdateChecker.forceCheckForUpdates(updateUrls);
     }
 }
