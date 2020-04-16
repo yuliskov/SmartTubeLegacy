@@ -19,9 +19,9 @@ public class ContentFilter {
     public ContentFilter(Context context) {
         mContext = context;
 
-        if (SmartUtils.isAdBlockEnabled()) {
-            mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
-        }
+        //if (SmartUtils.isAdBlockEnabled()) {
+        //    mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
+        //}
     }
 
     public InputStream filterFirstScript(InputStream result) {
