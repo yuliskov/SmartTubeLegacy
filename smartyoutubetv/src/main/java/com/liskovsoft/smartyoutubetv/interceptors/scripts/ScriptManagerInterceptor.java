@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ContentFilter;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 import okhttp3.Response;
@@ -17,6 +18,7 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     private static final String TAG = ScriptManagerInterceptor.class.getSimpleName();
     private final Context mContext;
     private final ScriptManager mManager;
+    private final ContentFilter mFilter;
     private boolean mFirstScriptDone;
 
     public ScriptManagerInterceptor(Context context) {
@@ -24,11 +26,16 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
         
         mContext = context;
         mManager = new MainCachedScriptManager(context);
+        mFilter = new ContentFilter(context);
     }
 
     @Override
     public boolean test(String url) {
         if (isFirstScript(url)) {
+            return true;
+        }
+
+        if (isSecondScript(url)) {
             return true;
         }
 
@@ -59,18 +66,19 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
         if (isFirstScript(url)) {
             result = applyInit(result);
             mFirstScriptDone = true;
-        }
-
-        if (isLastScript(url)) {
+            result = mFilter.filterFirstScript(result);
+        } else if (isSecondScript(url)) {
+            result = mFilter.filterSecondScript(result);
+        } else if (isLastScript(url)) {
             if (!mFirstScriptDone) {
                 result = applyInit(result);
             }
 
             result = applyLoad(result);
-        }
-
-        if (isStyle(url)) {
+            result = mFilter.filterLastScript(result);
+        } else if (isStyle(url)) {
             result = applyStyles(result);
+            result = mFilter.filterStyles(result);
         }
 
         return createResponse(response.body().contentType(), result);
@@ -104,6 +112,8 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     }
 
     protected abstract boolean isFirstScript(String url);
+
+    protected abstract boolean isSecondScript(String url);
 
     protected abstract boolean isLastScript(String url);
 
