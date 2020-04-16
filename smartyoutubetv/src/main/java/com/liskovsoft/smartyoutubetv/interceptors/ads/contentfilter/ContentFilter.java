@@ -8,19 +8,19 @@ import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContentFilter {
     private static final String TAG = ContentFilter.class.getSimpleName();
     private final Context mContext;
-    private ReplacePair[] mAdReplacement = {
-            new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld")
-    };
+    private List<ReplacePair> mSecondReplacement = new ArrayList<>();
 
     public ContentFilter(Context context) {
         mContext = context;
 
-        if (!SmartUtils.isAdBlockEnabled()) {
-            mAdReplacement = null;
+        if (SmartUtils.isAdBlockEnabled()) {
+            mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
         }
     }
 
@@ -32,11 +32,12 @@ public class ContentFilter {
     public InputStream filterSecondScript(InputStream result) {
         Log.d(TAG, "Filtering second script...");
 
-        if (mAdReplacement == null || mAdReplacement.length == 0) {
+        if (mSecondReplacement.size() == 0) {
             return result;
         }
 
-        return doReplacement(result, mAdReplacement);
+        return doReplacement(result, mSecondReplacement);
+        //return new ReplacingInputStream(result, mSecondReplacement);
     }
 
     public InputStream filterLastScript(InputStream result) {
@@ -49,7 +50,7 @@ public class ContentFilter {
         return result;
     }
 
-    private InputStream doReplacement(InputStream inputStream, ReplacePair[] pairs) {
+    private InputStream doReplacement(InputStream inputStream, List<ReplacePair> pairs) {
         String data = Helpers.toString(inputStream);
 
         for (ReplacePair pair : pairs) {

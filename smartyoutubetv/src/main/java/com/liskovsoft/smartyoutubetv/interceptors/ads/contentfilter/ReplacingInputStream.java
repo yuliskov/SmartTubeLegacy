@@ -11,7 +11,7 @@ class ReplacingInputStream extends FilterInputStream {
     private LinkedList<Integer> mInQueue = new LinkedList<>();
     private LinkedList<Integer> mOutQueue = new LinkedList<>();
     private static String DEFAULT_ENCODING = "UTF-8";
-    private final ReplacePair[] mPairs;
+    private final List<ReplacePair> mPairs;
 
     static class ReplacePair extends Pair<String, String> {
         public boolean matchFound;
@@ -21,7 +21,7 @@ class ReplacingInputStream extends FilterInputStream {
         }
     }
     
-    protected ReplacingInputStream(InputStream in, ReplacePair... pairs) {
+    protected ReplacingInputStream(InputStream in, List<ReplacePair> pairs) {
         super(in);
         mPairs = pairs;
     }
