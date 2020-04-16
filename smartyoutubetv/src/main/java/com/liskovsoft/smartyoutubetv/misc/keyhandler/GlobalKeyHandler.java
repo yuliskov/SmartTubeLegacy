@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
 public class GlobalKeyHandler {
     private static final String TAG = GlobalKeyHandler.class.getSimpleName();
@@ -17,11 +18,9 @@ public class GlobalKeyHandler {
     private final Handler mHandler;
     private final Activity mContext;
     private final Runnable mExitAppFn;
-    private final Runnable mResetExitFull = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
-    private final Runnable mResetExitPress = () -> {mDoubleBackToExitPressedTimes = 0;};
+    private final Runnable mResetExit = () -> mEnableDoubleBackExit = false;
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
-    private int mDoubleBackToExitPressedTimes;
     private boolean mDownPressed;
 
     public GlobalKeyHandler(Activity ctx) {
@@ -31,11 +30,7 @@ public class GlobalKeyHandler {
         mExitAppFn = () -> {
             Log.d(TAG, "Closing the app...");
 
-            //mHandler.postDelayed(() -> ctx.moveTaskToBack(true), 100); // don't close
-
-            ctx.moveTaskToBack(true);
-            //MessageHelpers.showMessage(ctx, R.string.close_msg);
-            //ctx.finish();
+            SmartUtils.moveTaskToBack(ctx); // ui blink fix
         };
     }
 
@@ -121,7 +116,6 @@ public class GlobalKeyHandler {
 
     public void checkDoubleBackExit() {
         mEnableDoubleBackExit = true;
-        //mHandler.postDelayed(mResetExitPress, 1000);
     }
 
     private void checkBackPressed(KeyEvent event) {
@@ -132,8 +126,7 @@ public class GlobalKeyHandler {
         if (event.getKeyCode() != KeyEvent.KEYCODE_BACK &&
             event.getKeyCode() != KeyEvent.KEYCODE_B &&
             event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
-            mResetExitFull.run();
-            //mHandler.removeCallbacks(mResetExitPress);
+            mResetExit.run();
             return;
         }
 
@@ -145,20 +138,7 @@ public class GlobalKeyHandler {
 
         // exit action
         mExitAppFn.run();
-        mResetExitFull.run();
-
-        //mHandler.removeCallbacks(mResetExitPress);
-
-        //if (mDoubleBackToExitPressedTimes >= 0) { // first press after dialog popup
-        //    // exit action
-        //    mExitAppFn.run();
-        //    mResetExitPress.run();
-        //    return;
-        //}
-        //
-        //mDoubleBackToExitPressedTimes++;
-
-        //mHandler.postDelayed(mResetExitPress, 1000); // back press rate 1press in 1sec
+        mResetExit.run();
     }
 
     /**
