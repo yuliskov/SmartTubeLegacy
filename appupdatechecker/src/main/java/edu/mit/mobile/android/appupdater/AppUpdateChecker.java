@@ -158,6 +158,11 @@ public class AppUpdateChecker {
 
         mCancelUpdate = false; // reset update lock
 
+        // don't run twice if user pressed cancel before
+        if (mUpdateListener.isDone()) {
+            return;
+        }
+
         if (versionListUrls == null || versionListUrls.length == 0) {
             Log.w(TAG, "Supplied url update list is null or empty");
         } else if (versionTask == null) {
