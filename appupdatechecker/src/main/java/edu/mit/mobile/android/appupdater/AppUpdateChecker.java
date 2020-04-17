@@ -349,7 +349,7 @@ public class AppUpdateChecker {
                 }
             }
 
-            mJsonUpdateTask = null; // forget about us, we're done.
+            //mJsonUpdateTask = null; // forget about us, we're done.
             mInProgress = false;
         }
     }
