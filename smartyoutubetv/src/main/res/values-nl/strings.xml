@@ -34,7 +34,7 @@
     <string name="sending_crash_report">Verzenden Crash Rapport&#8230;</string>
     <string name="update_check">Update controleren</string>
     <string name="preferred_codec">Voorkeur codec</string>
-    <string name="select_preferred_codec">Voorkeur codec en resolutie</string>
+    <string name="select_preferred_codec">Preset codec en resolutie</string>
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="old_ui">Vorige User Interface</string>
     <string name="endcards">Eindgeneriek</string>
