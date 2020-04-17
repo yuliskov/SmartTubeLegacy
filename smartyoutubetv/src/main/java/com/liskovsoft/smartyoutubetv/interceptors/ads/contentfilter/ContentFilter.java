@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ReplacingInputStream.ReplacePair;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
@@ -19,9 +20,16 @@ public class ContentFilter {
     public ContentFilter(Context context) {
         mContext = context;
 
-        //if (SmartUtils.isAdBlockEnabled()) {
-        //    mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
-        //}
+        if (SmartUtils.isAdBlockEnabled()) {
+            mSecondReplacement.add(new ReplacePair("airstream/masthead/masthead.html", "empty.html"));
+            //mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
+        }
+
+        if (CommonApplication.getPreferences().getEnableAnimatedPreviews()) {
+            mSecondReplacement.add(new ReplacePair("animatedWebpSupport:I", "animatedWebpSupport:true"));
+            //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:!1", "animatedWebpSupport:true"));
+            //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:c.animatedWebpSupport", "animatedWebpSupport:true"));
+        }
     }
 
     public InputStream filterFirstScript(InputStream result) {

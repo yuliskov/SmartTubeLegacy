@@ -6,6 +6,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishHistoryDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishRecommendedDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishSubscriptionsDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAltPlayerMappingDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
@@ -53,6 +54,8 @@ public class TweaksDialogSource implements MultiDialogSource {
         //mItems.add(new EndCardsDialogItem(mContext));
         mItems.add(new LogToFileDialogItem(mContext));
         //mItems.add(new UnplayableVideoFixDialogItem(mContext));
+        mItems.add(new EnableAdBlockDialogItem(mContext));
+        mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new LockLastLauncherDialogItem(mContext));
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
@@ -62,7 +65,6 @@ public class TweaksDialogSource implements MultiDialogSource {
         //mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new BackPressExitDialogItem(mContext));
         mItems.add(new HideBootTipsDialogItem(mContext));
-        mItems.add(new EnableAdBlockDialogItem(mContext));
         //mItems.add(new UseExternalPlayerKodiDialogItem(mContext));
         mItems.add(new ProLowPlayerBufferTypeDialogItem(mContext));
         mItems.add(new ProMediumPlayerBufferTypeDialogItem(mContext));
