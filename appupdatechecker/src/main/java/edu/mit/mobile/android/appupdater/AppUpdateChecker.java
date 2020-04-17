@@ -71,6 +71,7 @@ public class AppUpdateChecker {
 
     private static final int MILLISECONDS_IN_MINUTE = 60000;
     private boolean mCancelUpdate;
+    private boolean mInProgress;
 
     /**
      * @param context
@@ -157,11 +158,6 @@ public class AppUpdateChecker {
         Log.d(TAG, "checking for updates...");
 
         mCancelUpdate = false; // reset update lock
-
-        // don't run twice if user pressed cancel before
-        if (mUpdateListener.isDone()) {
-            return;
-        }
 
         if (versionListUrls == null || versionListUrls.length == 0) {
             Log.w(TAG, "Supplied url update list is null or empty");
@@ -301,6 +297,7 @@ public class AppUpdateChecker {
 
         @Override
         protected JSONObject doInBackground(String[]... params) {
+            mInProgress = true;
             publishProgress(0);
 
             final String[] urls = params[0];
@@ -348,18 +345,20 @@ public class AppUpdateChecker {
             } else {
                 try {
                     triggerFromJson(result);
-
                 } catch (final JSONException e) {
                     Log.e(TAG, "Error in JSON version file.", e);
                 }
             }
 
             versionTask = null; // forget about us, we're done.
+            mInProgress = false;
         }
     }
 
-    public void cancelPendingUpdate() {
+    public boolean cancelPendingUpdate() {
         mCancelUpdate = true;
         mUpdateListener.cancelPendingUpdate();
+
+        return mInProgress || mUpdateListener.inProgress();
     }
 }

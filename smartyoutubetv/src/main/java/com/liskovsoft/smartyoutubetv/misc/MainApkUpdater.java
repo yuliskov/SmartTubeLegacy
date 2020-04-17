@@ -65,8 +65,8 @@ public class MainApkUpdater {
         }
     }
 
-    public void cancelPendingUpdate() {
-        mUpdateChecker.cancelPendingUpdate();
+    public boolean cancelPendingUpdate() {
+        return mUpdateChecker.cancelPendingUpdate();
     }
 
     private void runUpdateChecker(String[] updateUrls) {

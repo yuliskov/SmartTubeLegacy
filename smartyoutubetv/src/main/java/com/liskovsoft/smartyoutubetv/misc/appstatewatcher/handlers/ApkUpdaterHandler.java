@@ -10,6 +10,7 @@ public class ApkUpdaterHandler extends StateHandler {
     private final FragmentManagerActivity mContext;
     private final AppStateWatcher mAppStateWatcher;
     private boolean mDisableUpdate;
+    private boolean mIsPending;
 
     public ApkUpdaterHandler(FragmentManagerActivity context, AppStateWatcher appStateWatcher) {
         mApkUpdater = new MainApkUpdater(context);
@@ -31,14 +32,18 @@ public class ApkUpdaterHandler extends StateHandler {
     public void onPlaybackStarted() {
         mDisableUpdate = true;
 
-        mApkUpdater.cancelPendingUpdate();
+        if (mApkUpdater.cancelPendingUpdate()) {
+            mIsPending = true;
+        }
     }
 
     @Override
     public void onPlaybackStopped() {
         mDisableUpdate = false;
 
-        mAppStateWatcher.addRunAfterLock(this::checkUpdates);
+        if (mIsPending) {
+            mAppStateWatcher.addRunAfterLock(this::checkUpdates);
+        }
     }
 
     private void checkUpdates() {

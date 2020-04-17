@@ -26,7 +26,6 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     private AlertDialog mDialog;
     private boolean mCancelUpdate;
     private final UpdateApp mUpdateApp;
-    private boolean mIsDone;
 
     public OnUpdateDialog(Context context, CharSequence appName) {
         mContext = context;
@@ -65,7 +64,6 @@ public class OnUpdateDialog implements OnAppUpdateListener {
                 case AlertDialog.BUTTON_POSITIVE:
                     downloadAndInstall(mDownloadUris);
                 case AlertDialog.BUTTON_NEGATIVE:
-                    mIsDone = true;
                     postpone();
             }
 
@@ -116,7 +114,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     @Override
-    public boolean isDone() {
-        return mIsDone;
+    public boolean inProgress() {
+        return mUpdateApp.inProgress();
     }
 }
