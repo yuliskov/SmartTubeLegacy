@@ -70,7 +70,6 @@ public class AppUpdateChecker {
     private SharedPreferences mPrefs;
 
     private static final int MILLISECONDS_IN_MINUTE = 60000;
-    private boolean mCancelUpdate;
     private boolean mInProgress;
 
     /**
@@ -157,17 +156,15 @@ public class AppUpdateChecker {
     public void forceCheckForUpdates(String[] versionListUrls) {
         Log.d(TAG, "checking for updates...");
 
-        if (mUpdateListener.tryRunPendingInstall()) {
+        if (mInProgress) {
             return;
         }
 
-        mCancelUpdate = false; // reset update lock
-
         if (versionListUrls == null || versionListUrls.length == 0) {
             Log.w(TAG, "Supplied url update list is null or empty");
-        } else if (versionTask == null) {
-            versionTask = new GetVersionJsonTask();
-            versionTask.execute(versionListUrls);
+        } else if (mJsonUpdateTask == null) {
+            mJsonUpdateTask = new GetVersionJsonTask();
+            mJsonUpdateTask.execute(versionListUrls);
         } else {
             Log.w(TAG, "checkForUpdates() called while already checking for updates. Ignoring...");
         }
@@ -244,9 +241,7 @@ public class AppUpdateChecker {
             }
         }
 
-        if (!mCancelUpdate) {
-            mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUrls);
-        }
+        mUpdateListener.appUpdateStatus(false, latestVersionName, changelog, downloadUrls);
     }
 
     private Uri[] parse(JSONArray urls) {
@@ -288,7 +283,7 @@ public class AppUpdateChecker {
         }
     }
 
-    private GetVersionJsonTask versionTask;
+    private GetVersionJsonTask mJsonUpdateTask;
 
     private class GetVersionJsonTask extends AsyncTask<String[], Integer, JSONObject> {
         private String errorMsg = null;
@@ -354,13 +349,13 @@ public class AppUpdateChecker {
                 }
             }
 
-            versionTask = null; // forget about us, we're done.
+            mJsonUpdateTask = null; // forget about us, we're done.
             mInProgress = false;
         }
     }
 
     public boolean cancelPendingUpdate() {
-        mCancelUpdate = true;
+        mJsonUpdateTask.cancel(true);
         mUpdateListener.cancelPendingUpdate();
 
         return mInProgress || mUpdateListener.inProgress();

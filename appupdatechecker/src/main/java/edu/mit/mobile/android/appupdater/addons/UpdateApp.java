@@ -26,17 +26,20 @@ import java.io.File;
 public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private static final String TAG = UpdateApp.class.getSimpleName();
     private final Context mContext;
-    private boolean mCancelUpdate;
     private boolean mInProgress;
-    private String mPath;
 
     public UpdateApp(Context context) {
         mContext = context;
     }
 
+    public void downloadAndInstall(Uri[] downloadUris) {
+        if (!mInProgress) {
+            execute(downloadUris);
+        }
+    }
+
     @Override
     protected Void doInBackground(Uri[]... args) {
-        mCancelUpdate = false; // reset update lock
         mInProgress = true;
 
         Uri[] uris = args[0];
@@ -50,15 +53,8 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             }
         }
 
-        mPath = path;
-
         if (path != null) {
-            if (mCancelUpdate) {
-                Log.d(TAG, "Update has been canceled");
-            } else {
-                Helpers.installPackage(mContext, path);
-                mPath = null;
-            }
+            Helpers.installPackage(mContext, path);
         } else {
             Log.e(TAG, "Error while download. Install path is null");
             showMessage(mContext.getResources().getString(R.string.cant_download_msg));
@@ -101,20 +97,10 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     // Smart update logic
 
     public void cancelPendingUpdate() {
-        mCancelUpdate = true;
+        cancel(true);
     }
 
     public boolean inProgress() {
-        return false;
-    }
-
-    public boolean tryRunPendingInstall() {
-        if (mPath != null) {
-            Helpers.installPackage(mContext, mPath);
-            mPath = null;
-            return true;
-        }
-
         return false;
     }
 }

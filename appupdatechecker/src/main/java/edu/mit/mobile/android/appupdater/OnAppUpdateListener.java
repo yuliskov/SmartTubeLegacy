@@ -8,5 +8,4 @@ public interface OnAppUpdateListener {
 	void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris);
 	void cancelPendingUpdate();
 	boolean inProgress();
-	boolean tryRunPendingInstall();
 }
