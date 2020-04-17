@@ -25,6 +25,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     private static final int MSG_SHOW_DIALOG = 1;
     private AlertDialog mDialog;
     private final UpdateApp mUpdateApp;
+    private boolean mCancelDialog;
 
     public OnUpdateDialog(Context context, CharSequence appName) {
         mContext = context;
@@ -34,6 +35,7 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     public void appUpdateStatus(boolean isLatestVersion, String latestVersionName, List<String> changelog, Uri[] downloadUris) {
+        mCancelDialog = false;
         mDownloadUris = downloadUris;
 
         if (!isLatestVersion) {
@@ -79,8 +81,10 @@ public class OnUpdateDialog implements OnAppUpdateListener {
                 case MSG_SHOW_DIALOG:
                     try {
                         // TODO fix this so it'll pop up appropriately
-                        mDialog.show();
-                        setupFocus();
+                        if (!mCancelDialog) {
+                            mDialog.show();
+                            setupFocus();
+                        }
                     } catch (final Exception e) {
                         e.printStackTrace();
                         // XXX ignore for the moment
@@ -100,12 +104,13 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     }
 
     @Override
-    public void cancelPendingUpdate() {
-        mUpdateApp.cancelPendingUpdate();
+    public boolean cancelPendingUpdate() {
+        mCancelDialog = true;
+        return mUpdateApp.cancelPendingUpdate();
     }
 
     @Override
-    public boolean inProgress() {
-        return mUpdateApp.inProgress();
+    public boolean tryInstallPendingUpdate() {
+        return mUpdateApp.tryInstallPendingUpdate();
     }
 }

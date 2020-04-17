@@ -156,7 +156,7 @@ public class AppUpdateChecker {
     public void forceCheckForUpdates(String[] versionListUrls) {
         Log.d(TAG, "checking for updates...");
 
-        if (mInProgress) {
+        if (mInProgress || mUpdateListener.tryInstallPendingUpdate()) {
             return;
         }
 
@@ -355,9 +355,7 @@ public class AppUpdateChecker {
     }
 
     public boolean cancelPendingUpdate() {
-        mJsonUpdateTask.cancel(true);
-        mUpdateListener.cancelPendingUpdate();
-
-        return mInProgress || mUpdateListener.inProgress();
+        boolean mCancelInstall = mUpdateListener.cancelPendingUpdate();
+        return mInProgress || mCancelInstall;
     }
 }
