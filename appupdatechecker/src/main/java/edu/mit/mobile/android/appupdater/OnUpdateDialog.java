@@ -117,4 +117,9 @@ public class OnUpdateDialog implements OnAppUpdateListener {
     public boolean inProgress() {
         return mUpdateApp.inProgress();
     }
+
+    @Override
+    public boolean tryRunPendingInstall() {
+        return mUpdateApp.tryRunPendingInstall();
+    }
 }

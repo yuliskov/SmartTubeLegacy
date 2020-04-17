@@ -29,6 +29,11 @@ public class ApkUpdaterHandler extends StateHandler {
     }
 
     @Override
+    public void onResume() {
+        mAppStateWatcher.addRunAfterLock(this::checkUpdates);
+    }
+
+    @Override
     public void onPlaybackStarted() {
         mDisableUpdate = true;
 

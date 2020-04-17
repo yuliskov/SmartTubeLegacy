@@ -121,8 +121,20 @@ public class AppStateWatcherBase {
         }
     }
 
-    public void onResume() {
+    public void onPause() {
+        Log.d(TAG, "App pausing... Calling handlers...");
 
+        for (StateHandler handler : mHandlers) {
+            handler.onPause();
+        }
+    }
+
+    public void onResume() {
+        Log.d(TAG, "App resuming... Calling handlers...");
+
+        for (StateHandler handler : mHandlers) {
+            handler.onResume();
+        }
     }
 
     public void onWake() {
@@ -201,6 +213,14 @@ public class AppStateWatcherBase {
         }
 
         public void onWake() {
+
+        }
+
+        public void onPause() {
+
+        }
+
+        public void onResume() {
 
         }
 

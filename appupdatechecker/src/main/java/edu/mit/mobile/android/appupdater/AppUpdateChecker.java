@@ -157,6 +157,10 @@ public class AppUpdateChecker {
     public void forceCheckForUpdates(String[] versionListUrls) {
         Log.d(TAG, "checking for updates...");
 
+        if (mUpdateListener.tryRunPendingInstall()) {
+            return;
+        }
+
         mCancelUpdate = false; // reset update lock
 
         if (versionListUrls == null || versionListUrls.length == 0) {

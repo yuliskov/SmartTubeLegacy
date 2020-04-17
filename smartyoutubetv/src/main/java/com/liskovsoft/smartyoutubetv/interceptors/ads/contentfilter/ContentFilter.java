@@ -30,6 +30,10 @@ public class ContentFilter {
             //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:!1", "animatedWebpSupport:true"));
             //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:c.animatedWebpSupport", "animatedWebpSupport:true"));
         }
+
+        //mSecondReplacement.add(new ReplacePair("\"high-contrast\":\"\"", "\"high-contrast\":\"high-contrast\""));
+        //mSecondReplacement.add(new ReplacePair("storageKey:\"high-contrast-enabled\",\"default\":l.isSupported()&&l.highContrastText",
+        //        "storageKey:\"high-contrast-enabled\",\"default\":true"));
     }
 
     public InputStream filterFirstScript(InputStream result) {

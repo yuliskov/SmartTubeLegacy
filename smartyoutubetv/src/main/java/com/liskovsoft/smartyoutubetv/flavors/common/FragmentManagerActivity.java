@@ -324,6 +324,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onPause() {
         super.onPause();
 
+        mAppStateWatcher.onPause();
         CommonApplication.getPreferences().sync();
         Log.flush();
     }
@@ -332,10 +333,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onResume() {
         super.onResume();
 
+        mAppStateWatcher.onResume();
         Helpers.makeActivityFullscreen(this);
         Helpers.makeActivityHorizontal(this);
-
-        mAppStateWatcher.onResume();
     }
 
     @Override

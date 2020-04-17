@@ -28,6 +28,7 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private final Context mContext;
     private boolean mCancelUpdate;
     private boolean mInProgress;
+    private String mPath;
 
     public UpdateApp(Context context) {
         mContext = context;
@@ -49,11 +50,14 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             }
         }
 
+        mPath = path;
+
         if (path != null) {
             if (mCancelUpdate) {
                 Log.d(TAG, "Update has been canceled");
             } else {
                 Helpers.installPackage(mContext, path);
+                mPath = null;
             }
         } else {
             Log.e(TAG, "Error while download. Install path is null");
@@ -94,11 +98,23 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
         return path;
     }
 
+    // Smart update logic
+
     public void cancelPendingUpdate() {
         mCancelUpdate = true;
     }
 
     public boolean inProgress() {
+        return false;
+    }
+
+    public boolean tryRunPendingInstall() {
+        if (mPath != null) {
+            Helpers.installPackage(mContext, mPath);
+            mPath = null;
+            return true;
+        }
+
         return false;
     }
 }
