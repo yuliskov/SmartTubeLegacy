@@ -10,7 +10,6 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
-import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
 public class GlobalKeyHandler {
     private static final String TAG = GlobalKeyHandler.class.getSimpleName();
@@ -30,7 +29,7 @@ public class GlobalKeyHandler {
         mExitAppFn = () -> {
             Log.d(TAG, "Closing the app...");
 
-            SmartUtils.moveTaskToBack(ctx); // ui blink fix
+            mContext.moveTaskToBack(true);
         };
     }
 
@@ -62,11 +61,9 @@ public class GlobalKeyHandler {
                         event.getKeyCode() == KeyEvent.KEYCODE_B;
 
         if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
-            if (event.getRepeatCount() == 0) { // same event fires multiple times
-                mHandler.postDelayed(mExitAppFn, BACK_PRESS_DURATION_MS);
+            if (event.getRepeatCount() == 3) { // same event fires multiple times
+                mExitAppFn.run();
             }
-        } else {
-            mHandler.removeCallbacks(mExitAppFn);
         }
     }
 
