@@ -350,8 +350,9 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (YouTubeHelpers.isChannelIntent(intent) && tryClosePlayer()) {
-            // wait till exoplayer is closed
+        // Voice search while playback fix
+        if (YouTubeHelpers.isBrowseIntent(intent) && tryClosePlayer()) {
+            // Wait till exoplayer is closed
             new Handler(Looper.myLooper())
                     .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
         } else {

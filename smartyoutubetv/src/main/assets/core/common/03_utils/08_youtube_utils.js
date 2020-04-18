@@ -162,7 +162,7 @@ var YouTubeUtils = {
         var isClosed =
             Utils.hasClass(watch, YouTubeClasses.WATCH_IDLE_CLASS) ||
             Utils.hasClass(watch, YouTubeClasses.NO_MODEL);
-        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch.className);
+        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch ? watch.className : null);
         return isClosed;
     },
 

@@ -21,7 +21,8 @@ public class ContentFilter {
         mContext = context;
 
         if (SmartUtils.isAdBlockEnabled()) {
-            mSecondReplacement.add(new ReplacePair("airstream/masthead/masthead.html", "empty.html"));
+            mSecondReplacement.add(new ReplacePair("b.masthead&&!b.masthead.isMuted()", "false"));
+            //mSecondReplacement.add(new ReplacePair("airstream/masthead/masthead.html", "empty.html"));
             //mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
         }
 
@@ -32,8 +33,6 @@ public class ContentFilter {
         }
 
         //mSecondReplacement.add(new ReplacePair("\"high-contrast\":\"\"", "\"high-contrast\":\"high-contrast\""));
-        //mSecondReplacement.add(new ReplacePair("storageKey:\"high-contrast-enabled\",\"default\":l.isSupported()&&l.highContrastText",
-        //        "storageKey:\"high-contrast-enabled\",\"default\":true"));
     }
 
     public InputStream filterFirstScript(InputStream result) {

@@ -188,17 +188,30 @@ window.ExoUtils = {
             if (isChecked == undefined) { // button gone, removed etc..
                 continue;
             }
-            var selector = PlayerActivityMapping[key];
-            var btn = ExoButton.fromSelector(selector, states);
-            btn.setChecked(isChecked);
 
-            if (btnId == PlayerActivity.BUTTON_SUGGESTIONS || btnId == PlayerActivity.BUTTON_FAVORITES) {
+            if (btnId == PlayerActivity.BUTTON_SUGGESTIONS ||
+                btnId == PlayerActivity.BUTTON_FAVORITES ||
+                btnId == PlayerActivity.BUTTON_USER_PAGE) {
                 // assume that exo is opened
                 if (isChecked) {
                     YouTubeUtils.sExoPlayerOpen = true;
                 }
+            } else {
+                this.cleanupOnClose();
             }
+
+            var selector = PlayerActivityMapping[key];
+            var btn = ExoButton.fromSelector(selector, states);
+            btn.setChecked(isChecked);
         }
+    },
+
+    cleanupOnClose: function() {
+        SuggestionsWatcher.disable();
+        OverlayWatcher.disable();
+        YouTubeUtils.closePlayerControls();
+        YouTubeUtils.resetPlayerOptions();
+        YouTubeUtils.resetFocus();
     },
 
     sendAction: function(action) {
@@ -210,11 +223,7 @@ window.ExoUtils = {
             YouTubeUtils.sExoPlayerOpen = false;
 
             if (action == this.ACTION_CLOSE_SUGGESTIONS) {
-                SuggestionsWatcher.disable();
-                OverlayWatcher.disable();
-                YouTubeUtils.closePlayerControls();
-                YouTubeUtils.resetPlayerOptions();
-                YouTubeUtils.resetFocus();
+                this.cleanupOnClose();
             }
 
             app.onGenericStringResult(action);

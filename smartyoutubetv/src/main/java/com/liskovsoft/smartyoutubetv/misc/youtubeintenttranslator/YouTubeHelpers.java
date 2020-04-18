@@ -93,6 +93,10 @@ public class YouTubeHelpers {
         return result.replace("youtu.be/", "v=");
     }
 
+    public static boolean isBrowseIntent(Intent intent) {
+        return isChannelIntent(intent) || isSearchIntent(intent);
+    }
+
     public static boolean isChannelIntent(Intent intent) {
         return isKeyIntent(intent, CHANNEL_URL, USER_URL);
     }
