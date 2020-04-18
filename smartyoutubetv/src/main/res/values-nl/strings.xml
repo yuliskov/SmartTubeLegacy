@@ -34,7 +34,7 @@
     <string name="sending_crash_report">Verzenden Crash Rapport&#8230;</string>
     <string name="update_check">Update controleren</string>
     <string name="preferred_codec">Voorkeur codec</string>
-    <string name="select_preferred_codec">Voorkeur codec en resolutie</string>
+    <string name="select_preferred_codec">Preset codec en resolutie</string>
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="old_ui">Vorige User Interface</string>
     <string name="endcards">Eindgeneriek</string>
@@ -116,4 +116,5 @@
     <string name="medium_player_buffer">PRO: Medium player buffer</string>
     <string name="low_player_buffer">PRO: Minimum player buffer</string>
     <string name="open_links_in_simple_view">Video links openen via ATV launcher</string>
+    <string name="tweak_high_contrast_mode">Donker thema inschakelen</string>
 </resources>
