@@ -27,6 +27,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String LOG_TYPE = "log_type2";
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
     private static final String ANIMATED_PREVIEWS = "animated_previews";
+    private static final String HIGH_CONTRAST_MODE = "high_contrast_mode";
     public static final String MUSIC_PAGE = "music_page";
     public static final String HISTORY_PAGE = "history_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
@@ -234,6 +235,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setEnableAnimatedPreviews(boolean enable) {
         putBoolean(ANIMATED_PREVIEWS, enable);
+    }
+
+    public boolean getEnableHighContrastMode() {
+        return getBoolean(HIGH_CONTRAST_MODE, false);
+    }
+
+    public void setEnableHighContrastMode(boolean enable) {
+        putBoolean(HIGH_CONTRAST_MODE, enable);
     }
 
     public boolean isAppJustInstalled() {

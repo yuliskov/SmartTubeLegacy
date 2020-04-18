@@ -87,7 +87,7 @@
     <string name="message_install_player">Пожалуйста установите MXPlayer или VLC</string>
     <string name="message_enable_web_server">Вы должны активировать Web Server в настройках Kodi</string>
     <string name="message_install_kodi">Похоже, что Kodi не установлен</string>
-    <string name="enable_ad_block">Включить блокировку рекламы</string>
+    <string name="enable_ad_block">Блокировка рекламы</string>
     <string name="ad_blocking_permissions">Данное приложение может фильтровать рекламу и другой контент.\nДаёте ли вы разрешение на это?</string>
     <string name="player_ui_show_timeout">PRO: Уменьшить время отображения инфопанели плеера</string>
     <string name="channels_close_app">Android TV Channels: закрыть приложение после нажатия НАЗАД</string>
@@ -98,5 +98,6 @@
     <string name="high_player_buffer">PRO: Максимальный буфер плеера</string>
     <string name="medium_player_buffer">PRO: Средний буфер плеера</string>
     <string name="low_player_buffer">PRO: Минимальный буфер плеера</string>
-    <string name="open_links_in_simple_view">Открывать ссылки в упрощенном виде</string>
+    <string name="open_links_in_simple_view">Открывать ссылки в простом плеере</string>
+    <string name="tweak_high_contrast_mode">Режим высокой контрасности</string>
 </resources>

@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ProOpenLinksInSimpleViewDialogItem extends DialogItem {
+public class HighContrastModeDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ProOpenLinksInSimpleViewDialogItem(Context context) {
-        super("PRO: " + context.getResources().getString(R.string.open_links_in_simple_view), false);
+    public HighContrastModeDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_high_contrast_mode), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,11 @@ public class ProOpenLinksInSimpleViewDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getOpenLinksInSimpleView();
+        return mPrefs.getEnableHighContrastMode();
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setOpenLinksInSimpleView(checked);
+        mPrefs.setEnableHighContrastMode(checked);
     }
 }

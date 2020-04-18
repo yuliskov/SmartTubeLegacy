@@ -22,17 +22,16 @@ public class ContentFilter {
 
         if (SmartUtils.isAdBlockEnabled()) {
             mSecondReplacement.add(new ReplacePair("b.masthead&&!b.masthead.isMuted()", "false"));
-            //mSecondReplacement.add(new ReplacePair("airstream/masthead/masthead.html", "empty.html"));
-            //mSecondReplacement.add(new ReplacePair("tvMastheadRenderer", "tvMastheadRendererOld"));
         }
 
         if (CommonApplication.getPreferences().getEnableAnimatedPreviews()) {
             mSecondReplacement.add(new ReplacePair("animatedWebpSupport:I", "animatedWebpSupport:true"));
-            //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:!1", "animatedWebpSupport:true"));
-            //mSecondReplacement.add(new ReplacePair("animatedWebpSupport:c.animatedWebpSupport", "animatedWebpSupport:true"));
         }
 
-        //mSecondReplacement.add(new ReplacePair("\"high-contrast\":\"\"", "\"high-contrast\":\"high-contrast\""));
+        // prefs key: ENABLE_HIGH_CONTRAST_MODE
+        if (CommonApplication.getPreferences().getEnableHighContrastMode()) {
+            mSecondReplacement.add(new ReplacePair("c.zds||(b.get()?hH(a.body,\"high-contrast\")", "false||(true?hH(a.body,\"high-contrast\")"));
+        }
     }
 
     public InputStream filterFirstScript(InputStream result) {

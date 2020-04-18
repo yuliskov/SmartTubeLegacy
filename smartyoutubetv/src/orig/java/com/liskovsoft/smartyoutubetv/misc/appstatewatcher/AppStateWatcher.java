@@ -15,7 +15,8 @@ public class AppStateWatcher extends AppStateWatcherBase {
     public AppStateWatcher(FragmentManagerActivity context) {
         super(context);
 
-        addHandler(new ForceNewUIHandler(context));
+        // Don't enable! Old ui may popup sometimes
+        //addHandler(new ForceNewUIHandler(context));
 
         addHandler(new AdBlockPermissionsHandler(context, this));
 
