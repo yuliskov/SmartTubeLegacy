@@ -38,8 +38,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1097
-        versionName "6.17.517"
+        versionCode 1098
+        versionName "6.17.518"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -248,4 +248,7 @@ dependencies {
     implementation 'com.squareup:otto:' + ottoVersion
 
     implementation 'com.jakewharton:disklrucache:' + diskLruCacheVersion
+
+    // https://mvnrepository.com/artifact/org.apache.commons
+    implementation 'org.apache.commons:commons-lang3:' + apacheCommonsLangVersion
 }

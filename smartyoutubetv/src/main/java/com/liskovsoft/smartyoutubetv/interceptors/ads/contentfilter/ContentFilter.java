@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ReplacingInputStream.ReplacePair;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -64,7 +65,7 @@ public class ContentFilter {
         String data = Helpers.toString(inputStream);
 
         for (ReplacePair pair : pairs) {
-            data = data.replace(pair.first, pair.second);
+            data = StringUtils.replace(data, pair.first, pair.second);
         }
 
         return new ByteArrayInputStream(data.getBytes());

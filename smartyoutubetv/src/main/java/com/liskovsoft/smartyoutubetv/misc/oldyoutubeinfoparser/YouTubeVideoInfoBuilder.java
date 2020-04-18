@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.oldyoutubeinfoparser;
 
 import android.net.Uri;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -126,9 +127,8 @@ public class YouTubeVideoInfoBuilder implements VideoInfoBuilder {
             if (format.contains("itag=" + itag)) {
                 String encode = Uri.encode(format);
                 // append comma (format separator) to format specification
-                mResultVideoInfo = mResultVideoInfo
-                        .replace(encode + "%2C", "")
-                        .replace("%2C" + encode, "");
+                mResultVideoInfo = StringUtils.replace(mResultVideoInfo, encode + "%2C", "");
+                mResultVideoInfo = StringUtils.replace(mResultVideoInfo, "%2C" + encode, "");
             }
         }
     }
