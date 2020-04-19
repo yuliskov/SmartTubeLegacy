@@ -22,7 +22,8 @@ public class ContentFilter {
         mContext = context;
 
         if (SmartUtils.isAdBlockEnabled()) {
-            mSecondReplacement.add(new ReplacePair("b.masthead&&!b.masthead.isMuted()", "false"));
+            //mSecondReplacement.add(new ReplacePair("b.masthead&&!b.masthead.isMuted()", "false"));
+            mSecondReplacement.add(new ReplacePair("f.enable_masthead_small||f.enable_masthead_medium||f.enable_masthead_large", "false"));
         }
 
         if (CommonApplication.getPreferences().getEnableAnimatedPreviews()) {
