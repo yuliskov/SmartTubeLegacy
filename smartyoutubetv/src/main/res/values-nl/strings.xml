@@ -104,7 +104,7 @@
     <string name="message_install_player">MX Player of VLC installeren</string>
     <string name="message_enable_web_server">Web Server in Kodi instellingen inschakelen</string>
     <string name="message_install_kodi">Kodi is blijkbaar niet geinstalleerd</string>
-    <string name="enable_ad_block">AdBlock inschakelen</string>
+    <string name="enable_ad_block">Advertenties blokkeren</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
     <string name="channels_close_app">TV Kanalen App sluiten met BACK-toets</string>
