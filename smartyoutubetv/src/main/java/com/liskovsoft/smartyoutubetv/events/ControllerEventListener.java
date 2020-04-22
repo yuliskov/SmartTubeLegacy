@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import androidx.appcompat.app.AppCompatActivity;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -13,7 +14,9 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
+import com.liskovsoft.browser.addons.HeadersWebSettingsDecorator;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.DecipherRoutineInjector;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -58,6 +61,11 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     }
 
     @Override
+    public WebResourceResponse shouldInterceptRequest(Tab tab, String url) {
+        return processRequest(url);
+    }
+
+    @Override
     public WebResourceResponse shouldInterceptRequest(Tab tab, WebResourceRequest request) {
         if (VERSION.SDK_INT >= 21) {
             String url = request.getUrl().toString();
@@ -65,11 +73,6 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         }
 
         return null;
-    }
-
-    @Override
-    public WebResourceResponse shouldInterceptRequest(Tab tab, String url) {
-        return processRequest(url);
     }
 
     private WebResourceResponse processRequest(String url) {

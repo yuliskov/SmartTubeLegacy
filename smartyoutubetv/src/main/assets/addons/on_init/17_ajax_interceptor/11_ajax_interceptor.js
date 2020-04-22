@@ -36,6 +36,7 @@ function AjaxInterceptorAddon(interceptors) {
                 for (var i = 0; i < $this.interceptors.length; i++) {
                     var interceptor = $this.interceptors[i];
                     if (interceptor.interceptOpen) {
+                        // method, url, async
                         interceptor.interceptOpen(arguments[0], arguments[1], arguments[2]);
                     }
                 }
@@ -57,11 +58,10 @@ function AjaxInterceptorAddon(interceptors) {
 
         window.XMLHttpRequest.prototype.setRequestHeader = function() {
             if (arguments.length == 2) {
-                // Log.d($this.TAG, "Found header: " + arguments[0] + ' ' + arguments[1]);
-
                 for (var i = 0; i < $this.interceptors.length; i++) {
                     var interceptor = $this.interceptors[i];
                     if (interceptor.interceptHeader) {
+                        // name, value
                         interceptor.interceptHeader(arguments[0], arguments[1]);
                     }
 

@@ -85,6 +85,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         // for search on app boot see onAppLoaded method
 
         Log.d(TAG, "onCreate intent: " + getIntent().toUri(0)); // print all extras
+
+        Log.d(TAG, "Enabling screensaver...");
+        Helpers.enableScreensaver(this);
     }
 
     @Override
@@ -324,6 +327,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onPause() {
         super.onPause();
 
+        Log.d(TAG, "Disabling screensaver...");
+        Helpers.disableScreensaver(this);
+
         mAppStateWatcher.onPause();
         CommonApplication.getPreferences().sync();
         Log.flush();
@@ -336,6 +342,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mAppStateWatcher.onResume();
         Helpers.makeActivityFullscreen(this);
         Helpers.makeActivityHorizontal(this);
+
+        Log.d(TAG, "Enabling screensaver...");
+        Helpers.enableScreensaver(this);
     }
 
     @Override

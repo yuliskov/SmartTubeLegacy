@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.AdAwayClient;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
@@ -20,7 +21,7 @@ public class AdAwayInterceptor extends RequestInterceptor {
         if (SmartUtils.isExo(context)) {
             mAdBlockEnabled = true; // adview doesn't work on Pro
         } else {
-            mAdBlockEnabled = SmartUtils.isAdBlockEnabled();
+            mAdBlockEnabled = CommonApplication.getPreferences().isAdBlockEnabled();
         }
 
         Log.d(TAG, "AdBlock enabled " + mAdBlockEnabled);

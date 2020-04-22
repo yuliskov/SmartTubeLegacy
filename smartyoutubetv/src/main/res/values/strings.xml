@@ -80,7 +80,7 @@
     <string name="tweak_open_externally">PRO: Open video with external player</string>
     <string name="message_install_vlc_player">You need to install VLC player</string>
     <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
-    <string name="tweak_animated_previews">Enable animated previews</string>
+    <string name="tweak_animated_previews">Animated previews (impact performance)</string>
     <string name="close_msg">App closed!</string>
     <string name="global_afr_fix_warning">This may cause autoplay to work incorrectly</string>
     <string name="tweak_back_press_exit">Hold back key to exit</string>
@@ -106,7 +106,7 @@
     <string name="message_install_player">Please install MXPlayer or VLC</string>
     <string name="message_enable_web_server">Please enable Web Server in Kodi settings</string>
     <string name="message_install_kodi">Seems that Kodi wasn\'t installed</string>
-    <string name="enable_ad_block">Ads block</string>
+    <string name="enable_ad_block">Ads block (impact performance)</string>
     <string name="ad_blocking_permissions">This app can filter ads and other content to improve user experience.\nDo you agree to do that?</string>
     <string name="player_ui_show_timeout">Pro: Decrease player ui show timeout</string>
     <string name="channels_close_app">Android TV Channels: close app on back</string>
@@ -119,4 +119,5 @@
     <string name="low_player_buffer">PRO: Min player buffer</string>
     <string name="open_links_in_simple_view">Open links in simple player</string>
     <string name="tweak_high_contrast_mode">Enable high contrast mode</string>
+    <string name="tweak_hold_ok_video_menu">Hold OK for video menu (impact performance)</string>
 </resources>

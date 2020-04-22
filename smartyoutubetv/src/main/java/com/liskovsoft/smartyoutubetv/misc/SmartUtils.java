@@ -133,12 +133,6 @@ public class SmartUtils {
         return context instanceof TwoFragmentsManagerActivity;
     }
 
-    public static boolean isAdBlockEnabled() {
-        String adBlockStatus = CommonApplication.getPreferences().getAdBlockStatus();
-
-        return SmartPreferences.AD_BLOCK_ENABLED.equals(adBlockStatus) || SmartPreferences.AD_BLOCK_UNDEFINED.equals(adBlockStatus);
-    }
-
     public static void setSecureCookie(String cookie, String cookieUrl, Activity context) {
         final long XWALK_INIT_DELAY_MS = 3_000;
 

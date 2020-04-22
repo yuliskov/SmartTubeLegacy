@@ -12,6 +12,8 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class RequestInterceptor {
     private static final String TAG = RequestInterceptor.class.getSimpleName();
@@ -108,9 +110,21 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream postJsonData(String url, String body) {
+        return postJsonData(url, body, null);
+    }
+
+    protected InputStream postJsonData(String url, String body, Map<String, String> headers) {
         InputStream result = null;
 
-        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
+        HashMap<String, String> resultHeaders = mManager.getHeaders();
+
+        if (headers != null) {
+            for (String key : headers.keySet()) {
+                resultHeaders.put(key, headers.get(key));
+            }
+        }
+
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, resultHeaders, body, "application/json");
 
         if (response != null && response.body() != null) {
             result = response.body().byteStream();

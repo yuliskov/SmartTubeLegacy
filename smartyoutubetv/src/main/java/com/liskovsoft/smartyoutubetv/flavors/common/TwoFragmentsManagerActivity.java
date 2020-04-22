@@ -50,9 +50,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         initPlayerFragment();
         // set active but don't move top so loading won't be overlapped
         super.setActiveFragment(mBrowserFragment, true);
-
-        Log.d(TAG, "Enabling screensaver...");
-        Helpers.enableScreensaver(this);
     }
 
     protected abstract BrowserFragment getBrowserFragment();

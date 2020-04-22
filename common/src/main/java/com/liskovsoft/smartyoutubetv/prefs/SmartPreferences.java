@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.prefs;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
@@ -63,6 +64,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String PLAYER_BUFFER_TYPE_LOW = "player_buffer_type_low";
     public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
     public static final String PLAYER_BUFFER_TYPE_HIGH = "player_buffer_type_high";
+    private static final String ENABLE_VIDEO_MENU = "enable_video_menu";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -86,6 +88,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mVideoSrc;
     private long mVideoActionTimeMS;
     private String mVisitorIdHeader;
+    private String mInterceptUserAgent;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -471,6 +474,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return mVideoOpenTimeMS;
     }
 
+    public boolean isAdBlockEnabled() {
+        String adBlockStatus = getAdBlockStatus();
+
+        return AD_BLOCK_ENABLED.equals(adBlockStatus) || AD_BLOCK_UNDEFINED.equals(adBlockStatus);
+    }
+
     public String getAdBlockStatus() {
         return getString(AD_BLOCK_STATUS, AD_BLOCK_ENABLED);
     }
@@ -501,5 +510,21 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setPlayerBufferType(String playerBufferType) {
         putString(PLAYER_BUFFER_TYPE, playerBufferType);
+    }
+
+    public void setInterceptUserAgent(String userAgent) {
+        mInterceptUserAgent = userAgent;
+    }
+
+    public String getInterceptUserAgent() {
+        return mInterceptUserAgent;
+    }
+
+    public boolean getEnableVideoMenu() {
+        return getBoolean(ENABLE_VIDEO_MENU, false);
+    }
+
+    public void setEnableVideoMenu(boolean enable) {
+        putBoolean(ENABLE_VIDEO_MENU, enable);
     }
 }
