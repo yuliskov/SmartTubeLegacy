@@ -236,7 +236,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             onPlaybackStopped();
 
             if (mIsSimpleViewMode) {
-                forceClosePlayer(action);
+                forceCloseAction(action);
                 moveTaskToBack(true); // don't close
             }
         }
@@ -260,7 +260,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
                 action.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false);
     }
 
-    private void forceClosePlayer(Intent action) {
+    private void forceCloseAction(Intent action) {
         action.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
         action.putExtra(ExoPlayerFragment.BUTTON_NEXT, false);
         action.putExtra(ExoPlayerFragment.BUTTON_PREV, false);
@@ -336,6 +336,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     protected void onPause() {
         Log.d(TAG, "Pausing...");
         super.onPause();
+
+        if (mIsSimpleViewMode) {
+            closeExoPlayer();
+        }
     }
 
     @Override
