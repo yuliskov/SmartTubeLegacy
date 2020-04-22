@@ -115,7 +115,7 @@
     <string name="high_player_buffer">PRO: Maximum player buffer</string>
     <string name="medium_player_buffer">PRO: Medium player buffer</string>
     <string name="low_player_buffer">PRO: Minimum player buffer</string>
-    <string name="open_links_in_simple_view">Video links openen via ATV launcher</string>
+    <string name="open_links_in_simple_view">Video links openen met ATV launcher</string>
     <string name="tweak_high_contrast_mode">Donker thema inschakelen</string>
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
 </resources>
