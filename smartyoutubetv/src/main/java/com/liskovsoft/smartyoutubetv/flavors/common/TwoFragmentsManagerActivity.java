@@ -241,13 +241,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             }
         }
 
-        boolean doNotPause = isDoNotPause(action);
-
-        setActiveFragment(mBrowserFragment, !doNotPause);
-
         if (mPlayerListener != null) {
             mPlayerListener.onPlayerAction(action);
         }
+
+        setActiveFragment(mBrowserFragment, !doNotPause(action));
     }
 
     @Override
@@ -271,7 +269,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         action.putExtra(ExoPlayerFragment.TRACK_ENDED, false);
     }
 
-    private boolean isDoNotPause(Intent action) {
+    private boolean doNotPause(Intent action) {
         return
             action.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false)   ||
             action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
@@ -280,6 +278,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        // Future translation fix!
         if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             if (getActiveFragment() == mBrowserFragment && mIsSimpleViewMode && mPlayerFragment.isStopped()) {
                 moveTaskToBack(true); // don't close
