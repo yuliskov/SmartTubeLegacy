@@ -417,7 +417,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public boolean isSimpleViewMode() {
+    public boolean isSimplePlayerMode() {
         return mIsSimpleViewMode;
     }
 }

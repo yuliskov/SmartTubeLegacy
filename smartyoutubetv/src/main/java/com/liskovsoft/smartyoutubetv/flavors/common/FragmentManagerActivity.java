@@ -453,7 +453,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         onNewIntent(intent);
     }
 
-    public boolean isSimpleViewMode() {
+    public boolean isSimplePlayerMode() {
         return false;
     }
 
