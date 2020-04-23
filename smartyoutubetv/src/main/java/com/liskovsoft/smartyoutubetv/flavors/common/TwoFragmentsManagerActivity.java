@@ -245,12 +245,16 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         setActiveFragment(mBrowserFragment, !doNotPause);
 
-        mPlayerListener.onPlayerAction(action);
+        if (mPlayerListener != null) {
+            mPlayerListener.onPlayerAction(action);
+        }
     }
 
     @Override
     public void openExternalPlayer(Intent intent) {
-        mPlayerListener.openExternalPlayer(intent);
+        if (mPlayerListener != null) {
+            mPlayerListener.openExternalPlayer(intent);
+        }
     }
 
     private boolean isClosePlayer(Intent action) {
