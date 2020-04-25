@@ -26,9 +26,8 @@ public class ContentFilter {
         mPrefs = CommonApplication.getPreferences();
 
         if (mPrefs.isAdBlockEnabled()) {
-            //mSecondReplacement.put("Jpa(a)||Jpa(b)?\"promo\"", "false?\"promo\"");
-
             //mSecondReplacement.put("Jna(k.tvMastheadRenderer)", "0");
+
             mSecondReplacementRegExp.put("enableMastheadLarge:\\w+,", "enableMastheadLarge:false,");
             mSecondReplacementRegExp.put("enableMastheadSmall:\\w+,", "enableMastheadSmall:true,");
 
@@ -91,7 +90,9 @@ public class ContentFilter {
                 data = Helpers.toString(inputStream);
             }
 
-            data = StringUtils.replaceEachRepeatedly(data, pairs.keySet().toArray(new String[0]), pairs.values().toArray(new String[0]));
+            for (String key : pairs.keySet()) {
+                data = StringUtils.replace(data, key, pairs.get(key));
+            }
         }
 
         if (pairsRegExp != null && !pairsRegExp.isEmpty()) {

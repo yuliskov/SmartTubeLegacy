@@ -18,7 +18,7 @@ public class ProOpenLinksInSimplePlayerDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getOpenLinksInSimpleView();
+        return mPrefs.getOpenLinksInSimplePlayer();
     }
 
     @Override

@@ -404,7 +404,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private void updateStandAloneState(Intent intent) {
         Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
 
-        if (CommonApplication.getPreferences().getOpenLinksInSimpleView()) {
+        if (CommonApplication.getPreferences().getOpenLinksInSimplePlayer()) {
             mIsSimpleViewMode =
                     intent != null &&
                     Intent.ACTION_VIEW.equals(intent.getAction()) &&

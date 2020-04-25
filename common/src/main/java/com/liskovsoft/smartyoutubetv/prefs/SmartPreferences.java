@@ -496,8 +496,8 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(DECREASE_PLAYER_UI_TIMEOUT, checked);
     }
 
-    public boolean getOpenLinksInSimpleView() {
-        return getBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, true);
+    public boolean getOpenLinksInSimplePlayer() {
+        return getBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, false);
     }
 
     public void setOpenLinksInSimpleView(boolean checked) {

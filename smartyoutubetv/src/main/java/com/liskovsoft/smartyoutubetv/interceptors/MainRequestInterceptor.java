@@ -4,7 +4,7 @@ import android.content.Context;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.AdAwayInterceptor;
-import com.liskovsoft.smartyoutubetv.interceptors.ads.VideoMenuInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.BrowseInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.scripts.LegacyMainScriptManagerInterceptor;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ public class MainRequestInterceptor extends RequestInterceptor {
         mContext = context;
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
+        mInterceptors.add(new BrowseInterceptor(context)); // impact performance
         //mInterceptors.add(new ContentSecurityPolicyInterceptor(context));
         mInterceptors.add(new OpenExternalPlayerInterceptor(context));
         mInterceptors.add(new PlaybackStatsInterceptor(context));
         mInterceptors.add(new LegacyMainScriptManagerInterceptor(context));
-        mInterceptors.add(new VideoMenuInterceptor(context)); // impact performance
         //mInterceptors.add(new AllUrlsInterceptor(context));
     }
 
