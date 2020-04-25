@@ -10,7 +10,7 @@ public class ProUseExternalPlayerSDDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
 
     public ProUseExternalPlayerSDDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally) + " (SD)", false);
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (SD Preset)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);

@@ -2,10 +2,12 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.sharedutils.helpers.AssetHelper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import okhttp3.MediaType;
 
 import java.io.InputStream;
@@ -25,13 +27,15 @@ public class VideoMenuInterceptor extends RequestInterceptor {
     private static final String BROWSE_URL = "/youtubei/v1/browse";
     private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
     private final Context mContext;
+    private final SmartPreferences mPrefs;
     private boolean mIsHome;
     private boolean mEnabled;
 
     public VideoMenuInterceptor(Context context) {
         super(context);
         mContext = context;
-        mEnabled = CommonApplication.getPreferences().getEnableVideoMenu();
+        mPrefs = CommonApplication.getPreferences();
+        mEnabled = mPrefs.getEnableVideoMenu();
     }
 
     @Override
@@ -45,7 +49,11 @@ public class VideoMenuInterceptor extends RequestInterceptor {
 
     @Override
     public WebResourceResponse intercept(String url) {
-        String postData = CommonApplication.getPreferences().getPostData();
+        //InputStream fakeResp = AssetHelper.getAsset(mContext, "tests/tv_masthead2_origin.json");
+        //
+        //return createResponse(MediaType.parse("application/json"), fakeResp);
+
+        String postData = mPrefs.getPostData();
 
         if (postData == null) {
             Log.e(TAG, "Post body is empty! Skipping url: " + url);

@@ -10,7 +10,7 @@ public class ProUseExternalPlayerFHDDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
 
     public ProUseExternalPlayerFHDDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally) + " (FHD)", false);
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (FHD Preset)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);

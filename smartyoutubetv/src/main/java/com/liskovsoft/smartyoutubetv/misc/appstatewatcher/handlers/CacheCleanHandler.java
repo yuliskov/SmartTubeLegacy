@@ -14,15 +14,15 @@ public class CacheCleanHandler extends StateHandler {
     }
 
     @Override
-    public void onInit() {
-        Log.d(TAG, "App has been started. Removing cache files...");
+    public void onUpdate() {
+        Log.d(TAG, "App has been updated. Removing cache files...");
 
         new CacheManager(mContext).clearCache();
     }
 
     //@Override
-    //public void onUpdate() {
-    //    Log.d(TAG, "App has been updated. Removing cache files...");
+    //public void onInit() {
+    //    Log.d(TAG, "App has been started. Removing cache files...");
     //
     //    new CacheManager(mContext).clearCache();
     //}

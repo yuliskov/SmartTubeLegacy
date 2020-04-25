@@ -6,6 +6,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
@@ -18,31 +19,46 @@ public class ContentFilter {
     private final Context mContext;
     private final SmartPreferences mPrefs;
     private Map<String, String> mSecondReplacement = new HashMap<>();
+    private Map<String, String> mSecondReplacementRegExp = new HashMap<>();
 
     public ContentFilter(Context context) {
         mContext = context;
         mPrefs = CommonApplication.getPreferences();
 
         if (mPrefs.isAdBlockEnabled()) {
-            //mSecondReplacement.add(new ReplacePair("b.masthead&&!b.masthead.isMuted()", "false"));
-            mSecondReplacement.put("f.enable_masthead_small||f.enable_masthead_medium||f.enable_masthead_large", "false");
+            //mSecondReplacement.put("Jpa(a)||Jpa(b)?\"promo\"", "false?\"promo\"");
+
+            //mSecondReplacement.put("Jna(k.tvMastheadRenderer)", "0");
+            mSecondReplacementRegExp.put("enableMastheadLarge:\\w+,", "enableMastheadLarge:false,");
+            mSecondReplacementRegExp.put("enableMastheadSmall:\\w+,", "enableMastheadSmall:true,");
+
+            //mSecondReplacement.put("enableHtml5TealAdBadge:Oa", "enableHtml5TealAdBadge:false");
+            //mSecondReplacement.put("enableZylonAdAttribution:Va", "enableZylonAdAttribution:false");
+
+            //mSecondReplacement.put("isLimitedMemory:I", "isLimitedMemory:true");
+            //mSecondReplacement.put("enableZylonBrowseAutoVeLogging:na", "enableZylonBrowseAutoVeLogging:false");
         }
 
         if (mPrefs.getEnableAnimatedPreviews()) {
-            mSecondReplacement.put("animatedWebpSupport:I", "animatedWebpSupport:true");
+            mSecondReplacementRegExp.put("animatedWebpSupport:\\w+,", "animatedWebpSupport:true,");
         }
 
         // prefs key: ENABLE_HIGH_CONTRAST_MODE
         if (mPrefs.getEnableHighContrastMode()) {
-            mSecondReplacement.put("c.zds||(b.get()?hH(a.body,\"high-contrast\")", "false||(true?hH(a.body,\"high-contrast\")");
+            mSecondReplacementRegExp.put(
+                    // c.zds||(b.get()?hH(a.body,"high-contrast"):jH(a.body,"high-contrast"))
+                    "\\w+\\.\\w+\\|\\|\\(\\w+\\.get\\(\\)\\?(\\w+\\(\\w+\\.body,\"high-contrast\"\\)):\\w+\\(\\w+\\.body,\"high-contrast\"\\)\\)",
+                    // hH(a.body,"high-contrast")
+                    "$1"
+            );
         }
 
         // NOTE: Video menu items source: https://www.youtube.com/youtubei/v1/browse
         // NOTE: Menu items available on Cobalt user agent only
         // see: VideoMenuInterceptor
         if (mPrefs.getEnableVideoMenu()) {
-            mSecondReplacement.put("enableSelectOnKeyup:l", "enableSelectOnKeyup:true");
-            mSecondReplacement.put("enableVideoMenuOnBrowse:va", "enableVideoMenuOnBrowse:true");
+            mSecondReplacementRegExp.put("enableSelectOnKeyup:\\w+,", "enableSelectOnKeyup:true,");
+            mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:\\w+,", "enableVideoMenuOnBrowse:true,");
         }
     }
 
@@ -54,11 +70,7 @@ public class ContentFilter {
     public InputStream filterSecondScript(InputStream result) {
         Log.d(TAG, "Filtering second script...");
 
-        if (mSecondReplacement.isEmpty()) {
-            return result;
-        }
-
-        return doReplacement(result, mSecondReplacement);
+        return doReplacement(result, mSecondReplacement, mSecondReplacementRegExp);
     }
 
     public InputStream filterLastScript(InputStream result) {
@@ -71,11 +83,35 @@ public class ContentFilter {
         return result;
     }
 
-    private InputStream doReplacement(InputStream inputStream, Map<String, String> pairs) {
-        String data = Helpers.toString(inputStream);
+    private InputStream doReplacement(InputStream inputStream, Map<String, String> pairs, Map<String, String> pairsRegExp) {
+        String data = null;
 
-        data = StringUtils.replaceEachRepeatedly(data, pairs.keySet().toArray(new String[0]), pairs.values().toArray(new String[0]));
+        if (pairs != null && !pairs.isEmpty()) {
+            if (data == null) {
+                data = Helpers.toString(inputStream);
+            }
 
-        return new ByteArrayInputStream(data.getBytes());
+            data = StringUtils.replaceEachRepeatedly(data, pairs.keySet().toArray(new String[0]), pairs.values().toArray(new String[0]));
+        }
+
+        if (pairsRegExp != null && !pairsRegExp.isEmpty()) {
+            if (data == null) {
+                data = Helpers.toString(inputStream);
+            }
+
+            for (String key : pairsRegExp.keySet()) {
+                data = RegExUtils.replaceFirst(data, key, pairsRegExp.get(key));
+            }
+        }
+
+        InputStream result;
+
+        if (data != null) {
+            result = new ByteArrayInputStream(data.getBytes());
+        } else {
+            result = inputStream;
+        }
+
+        return result;
     }
 }

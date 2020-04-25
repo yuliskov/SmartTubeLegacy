@@ -10,7 +10,7 @@ public class ProUseExternalPlayer4KDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
 
     public ProUseExternalPlayer4KDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_open_externally) + " (4K)", false);
+        super(context.getResources().getString(R.string.tweak_open_externally) + " (4K Preset)", false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
