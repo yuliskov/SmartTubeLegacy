@@ -38,7 +38,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateStandAloneState(getIntent());
+        updateSimpleViewState(getIntent());
         setContentView(R.layout.activity_exo);
         getLoadingManager().show();
 
@@ -355,8 +355,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
+        boolean intentHasData = intent != null && intent.getData() != null;
+
         // Voice search while playback fix
-        if (tryClosePlayer()) {
+        if (intentHasData && tryClosePlayer()) {
             // Wait till exoplayer is closed
             new Handler(Looper.myLooper())
                     .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
@@ -370,11 +372,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         Log.d(TAG, "New intent is coming... " + intent);
 
-        updateStandAloneState(intent);
-
-        if (mIsSimpleViewMode) { // remove blinking browser ui when running from channels
-            setActiveFragment(mPlayerFragment, false);
-        }
+        updateSimpleViewState(intent);
 
         if (mBrowserFragment != null) {
             mBrowserFragment.onNewIntent(intent);
@@ -399,15 +397,15 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void updateStandAloneState(Intent intent) {
+    private void updateSimpleViewState(Intent intent) {
         Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
 
         if (CommonApplication.getPreferences().getOpenLinksInSimplePlayer()) {
             mIsSimpleViewMode =
                     intent != null &&
-                    Intent.ACTION_VIEW.equals(intent.getAction()) &&
-                    !YouTubeHelpers.isChannelIntent(intent) &&
-                    !YouTubeHelpers.isSearchIntent(intent);
+                            Intent.ACTION_VIEW.equals(intent.getAction()) &&
+                            !YouTubeHelpers.isChannelIntent(intent) &&
+                            !YouTubeHelpers.isSearchIntent(intent);
         } else {
             mIsSimpleViewMode = false;
         }
