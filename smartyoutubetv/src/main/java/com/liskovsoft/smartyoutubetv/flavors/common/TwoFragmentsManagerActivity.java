@@ -241,11 +241,12 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             }
         }
 
+        // make browser active before applying any actions to it (below)
+        setActiveFragment(mBrowserFragment, !doNotPause(action));
+
         if (mPlayerListener != null) {
             mPlayerListener.onPlayerAction(action);
         }
-
-        setActiveFragment(mBrowserFragment, !doNotPause(action));
     }
 
     @Override
@@ -355,7 +356,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onNewIntent(Intent intent) {
         // Voice search while playback fix
-        if (YouTubeHelpers.isBrowseIntent(intent) && tryClosePlayer()) {
+        if (tryClosePlayer()) {
             // Wait till exoplayer is closed
             new Handler(Looper.myLooper())
                     .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
@@ -384,10 +385,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         boolean result = false;
 
         if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
-            Intent intent = new Intent();
-            intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
-            setActiveFragment(mBrowserFragment, true);
-            mPlayerListener.onPlayerAction(intent);
+            closeExoPlayer();
             result = true;
         }
 
