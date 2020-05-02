@@ -28,8 +28,8 @@ public class ContentFilter {
         if (mPrefs.isAdBlockEnabled()) {
             //mSecondReplacement.put("Jna(k.tvMastheadRenderer)", "0");
 
-            mSecondReplacementRegExp.put("enableMastheadLarge:\\w+,", "enableMastheadLarge:false,");
-            mSecondReplacementRegExp.put("enableMastheadSmall:\\w+,", "enableMastheadSmall:true,");
+            mSecondReplacementRegExp.put("enableMastheadLarge:[!\\.\\w]+,", "enableMastheadLarge:false,");
+            mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w]+,", "enableMastheadSmall:true,");
 
             //mSecondReplacement.put("enableHtml5TealAdBadge:Oa", "enableHtml5TealAdBadge:false");
             //mSecondReplacement.put("enableZylonAdAttribution:Va", "enableZylonAdAttribution:false");
@@ -39,7 +39,7 @@ public class ContentFilter {
         }
 
         if (mPrefs.getEnableAnimatedPreviews()) {
-            mSecondReplacementRegExp.put("animatedWebpSupport:\\w+,", "animatedWebpSupport:true,");
+            mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w]+,", "animatedWebpSupport:true,");
         }
 
         // prefs key: ENABLE_HIGH_CONTRAST_MODE
@@ -56,8 +56,8 @@ public class ContentFilter {
         // NOTE: Menu items available on Cobalt user agent only
         // see: VideoMenuInterceptor
         if (mPrefs.getEnableVideoMenu()) {
-            mSecondReplacementRegExp.put("enableSelectOnKeyup:\\w+,", "enableSelectOnKeyup:true,");
-            mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:\\w+,", "enableVideoMenuOnBrowse:true,");
+            mSecondReplacementRegExp.put("enableSelectOnKeyup:[!\\.\\w]+,", "enableSelectOnKeyup:true,");
+            mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:[!\\.\\w]+,", "enableVideoMenuOnBrowse:true,");
         }
     }
 
@@ -101,7 +101,7 @@ public class ContentFilter {
             }
 
             for (String key : pairsRegExp.keySet()) {
-                data = RegExUtils.replaceFirst(data, key, pairsRegExp.get(key));
+                data = RegExUtils.replaceAll(data, key, pairsRegExp.get(key));
             }
         }
 
