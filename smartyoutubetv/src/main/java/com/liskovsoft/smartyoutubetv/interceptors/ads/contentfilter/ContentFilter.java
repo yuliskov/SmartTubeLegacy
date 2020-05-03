@@ -25,17 +25,10 @@ public class ContentFilter {
         mContext = context;
         mPrefs = CommonApplication.getPreferences();
 
-        if (mPrefs.isAdBlockEnabled()) {
-            //mSecondReplacement.put("Jna(k.tvMastheadRenderer)", "0");
-
+        // Workaround for XWalk only. WebView did filter in another place.
+        if (mPrefs.isAdBlockEnabled() && SmartUtils.isXWalk(mContext)) {
             mSecondReplacementRegExp.put("enableMastheadLarge:[!\\.\\w]+,", "enableMastheadLarge:false,");
             mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w]+,", "enableMastheadSmall:true,");
-
-            //mSecondReplacement.put("enableHtml5TealAdBadge:Oa", "enableHtml5TealAdBadge:false");
-            //mSecondReplacement.put("enableZylonAdAttribution:Va", "enableZylonAdAttribution:false");
-
-            //mSecondReplacement.put("isLimitedMemory:I", "isLimitedMemory:true");
-            //mSecondReplacement.put("enableZylonBrowseAutoVeLogging:na", "enableZylonBrowseAutoVeLogging:false");
         }
 
         if (mPrefs.getEnableAnimatedPreviews()) {
