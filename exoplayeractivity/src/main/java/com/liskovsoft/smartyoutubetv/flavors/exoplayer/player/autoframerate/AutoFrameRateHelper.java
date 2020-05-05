@@ -30,8 +30,13 @@ class AutoFrameRateHelper {
             return;
         }
 
-        if (mPlayer == null || mPlayer.getVideoFormat() == null) {
-            Log.e(TAG, "Can't apply mode change: player or format is null");
+        if (mPlayer == null) {
+            Log.e(TAG, "Can't apply mode change: player is null");
+            return;
+        }
+
+        if (mPlayer.getVideoFormat() == null) {
+            Log.e(TAG, "Can't apply mode change: format is null");
             return;
         }
 
