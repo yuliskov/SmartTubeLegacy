@@ -56,7 +56,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     private String mUrl;
     @SerializedName("cipher")
     private String mCipher;
-    private String mSignature;
+    private String mSignatureCiphered;
     @SerializedName("mimeType")
     private String mType;
     @SerializedName("contentLength")
@@ -122,7 +122,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getUrl() {
-        //initUrl();
+        parseCipher();
 
         return mUrl;
     }
@@ -133,25 +133,15 @@ public class SimpleYouTubeMediaItem implements MediaItem {
     }
 
     @Override
-    public String getCipher() {
-        //initCipher();
+    public String getSignatureCipher() {
+        parseCipher();
 
-        return mCipher == null ? mSignatureCipher : mCipher;
+        return mSignatureCiphered;
     }
 
     @Override
-    public void setCipher(String cipher) {
-        mCipher = cipher;
-    }
-
-    @Override
-    public String getS() {
-        return mSignature;
-    }
-
-    @Override
-    public void setS(String s) {
-        mSignature = s;
+    public void setSignatureCipher(String s) {
+        mSignatureCiphered = s;
     }
 
     @Override
@@ -382,17 +372,15 @@ public class SimpleYouTubeMediaItem implements MediaItem {
         return mTemplateSegmentUrl;
     }
 
-    private void initUrl() {
-        if (mSignatureCipher != null && mUrl == null) {
-            MyQueryString queryString = MyQueryStringFactory.parse(mSignatureCipher);
-            mUrl = queryString.get("url");
-        }
-    }
+    private void parseCipher() {
+        if (mUrl == null && mSignatureCiphered == null) {
+            String cipherUri = mCipher == null ? mSignatureCipher : mCipher;
 
-    private void initCipher() {
-        if (mSignatureCipher != null && mCipher == null) {
-            MyQueryString queryString = MyQueryStringFactory.parse(mSignatureCipher);
-            mCipher = queryString.get("s");
+            if (cipherUri != null) {
+                MyQueryString queryString = MyQueryStringFactory.parse(cipherUri);
+                mUrl = queryString.get(MediaItem.URL);
+                mSignatureCiphered = queryString.get(MediaItem.S);
+            }
         }
     }
 

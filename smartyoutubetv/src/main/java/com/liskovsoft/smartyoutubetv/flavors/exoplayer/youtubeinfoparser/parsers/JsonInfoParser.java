@@ -271,11 +271,8 @@ public class JsonInfoParser {
         // Common
         String getUrl();
         void setUrl(String url);
-        // music videos only
-        String getCipher();
-        void setCipher(String url);
-        String getS();
-        void setS(String s);
+        String getSignatureCipher();
+        void setSignatureCipher(String s);
         String getType();
         void setType(String type);
         String getITag();
