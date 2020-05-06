@@ -75,9 +75,9 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
 
         if (newModes.isEmpty()) {
-            Log.i(TAG, "NO MODES FOUND!! " + Arrays.asList(oldModes));
+            Log.i(TAG, "NO MODE CANDIDATES FOUND!! " + Arrays.asList(oldModes));
         } else {
-            Log.i(TAG, "FOUND MODES! " + newModes);
+            Log.i(TAG, "FOUND MODE CANDIDATES! " + newModes);
         }
 
         return newModes;

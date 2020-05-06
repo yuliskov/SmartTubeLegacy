@@ -290,7 +290,13 @@ import java.util.TreeSet;
 
         for (int i = 0; i < mTrackViews.length; i++) {
             for (int j = 0; j < mTrackViews[i].length; j++) {
-                mTrackViews[i][j].setChecked(mOverride != null && mOverride.groupIndex == i && mOverride.containsTrack(j));
+                CheckedTextView checkedTextView = mTrackViews[i][j];
+                boolean isChecked = mOverride != null && mOverride.groupIndex == i && mOverride.containsTrack(j);
+                checkedTextView.setChecked(isChecked);
+
+                if (isChecked) {
+                    checkedTextView.requestFocus();
+                }
             }
         }
 
@@ -299,8 +305,6 @@ import java.util.TreeSet;
             mEnableRandomAdaptationView.setEnabled(enableView);
             mEnableRandomAdaptationView.setFocusable(enableView);
             if (enableView) {
-                // TODO: could be a problems here
-                //mEnableRandomAdaptationView.setChecked(!mIsDisabled && mOverride.factory instanceof RandomTrackSelection.Factory);
                 mEnableRandomAdaptationView.setChecked(!mIsDisabled && mTrackSelectionFactory instanceof RandomTrackSelection.Factory);
             }
         }
