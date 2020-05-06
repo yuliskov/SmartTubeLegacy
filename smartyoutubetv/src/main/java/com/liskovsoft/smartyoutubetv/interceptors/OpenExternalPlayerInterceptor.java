@@ -2,20 +2,18 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.MainExoInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
 public class OpenExternalPlayerInterceptor extends RequestInterceptor {
     private RequestInterceptor mInterceptor;
-    private Context mContext;
 
     public OpenExternalPlayerInterceptor(Context context) {
         super(context);
 
-        mContext = context;
-
-        if (SmartUtils.isExo(mContext)) {
-            mInterceptor = new MainExoInterceptor(mContext);
+        if (SmartUtils.isExo(context)) {
+            mInterceptor = new MainExoInterceptor(context);
         }
     }
 

@@ -1,7 +1,5 @@
 package com.liskovsoft.smartyoutubetv.misc;
 
-import com.liskovsoft.smartyoutubetv.CommonApplication;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +30,8 @@ public class UserAgentManager {
             "Mozilla/5.0 (DirectFB; Linux x86_64) Cobalt/40.13031-qa (unlike Gecko) Starboard/1"
     };
     private final HashMap<String, String> mHeaders;
-    private final boolean mEnableAnimations;
 
     public UserAgentManager() {
-        mEnableAnimations = CommonApplication.getPreferences().getEnableAnimatedPreviews();
         mHeaders = new HashMap<>();
         mHeaders.put(USER_AGENT, getUA());
     }
