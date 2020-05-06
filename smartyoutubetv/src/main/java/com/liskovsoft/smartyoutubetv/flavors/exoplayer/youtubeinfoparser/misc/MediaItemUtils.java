@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 
 public class MediaItemUtils {
@@ -48,5 +49,9 @@ public class MediaItemUtils {
         String id = mediaItem.getITag();
 
         return Helpers.isDash(id);
+    }
+
+    public static boolean checkMediaUrl(MediaItem mediaItem) {
+        return mediaItem != null && mediaItem.getUrl() != null;
     }
 }

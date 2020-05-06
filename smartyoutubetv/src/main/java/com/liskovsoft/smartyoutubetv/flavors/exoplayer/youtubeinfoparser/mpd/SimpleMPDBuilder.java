@@ -320,6 +320,11 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     @Override
     public void append(MediaItem mediaItem) {
+        if (!MediaItemUtils.checkMediaUrl(mediaItem)) {
+            Log.e(TAG, "Media item doesn't contain required url field!");
+            return;
+        }
+
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
         if (!MediaItemUtils.isDash(mediaItem)) {
             return;
