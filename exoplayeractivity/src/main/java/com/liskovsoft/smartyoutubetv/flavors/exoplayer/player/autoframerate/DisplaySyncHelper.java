@@ -430,11 +430,9 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
     }
 
-    public void setSwitchToUHD(boolean enabled) {
+    public void setResolutionSwitchEnabled(boolean enabled) {
         mSwitchToUHD = enabled;
 
-        if (!Build.BRAND.equals("Sasvlad")) { // Ugoos custom firmware fix
-            mSwitchToFHD = enabled;
-        }
+        mSwitchToFHD = !Build.BRAND.equals("Sasvlad"); // Ugoos custom firmware fix
     }
 }

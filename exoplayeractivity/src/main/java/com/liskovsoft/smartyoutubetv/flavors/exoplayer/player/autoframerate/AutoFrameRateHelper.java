@@ -23,7 +23,7 @@ class AutoFrameRateHelper {
         mSyncHelper = syncHelper;
         mPrefs = ExoPreferences.instance(mContext);
 
-        mSyncHelper.setSwitchToUHD(mPrefs.isAfrResolutionSwitchEnabled());
+        mSyncHelper.setResolutionSwitchEnabled(mPrefs.isAfrResolutionSwitchEnabled());
     }
 
     public void apply() {
@@ -89,7 +89,7 @@ class AutoFrameRateHelper {
     public void setResolutionSwitchEnabled(boolean enabled) {
         if (getEnabled()) {
             mPrefs.setAfrResolutionSwitchEnabled(enabled);
-            mSyncHelper.setSwitchToUHD(enabled);
+            mSyncHelper.setResolutionSwitchEnabled(enabled);
         } else {
             MessageHelpers.showMessage(mContext, R.string.autoframerate_not_supported);
         }
