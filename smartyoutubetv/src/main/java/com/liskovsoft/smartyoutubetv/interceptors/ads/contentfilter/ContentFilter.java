@@ -1,11 +1,13 @@
 package com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter;
 
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,28 +17,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContentFilter {
+
     private static final String TAG = ContentFilter.class.getSimpleName();
-    private final Context mContext;
-    private final SmartPreferences mPrefs;
     private Map<String, String> mSecondReplacement = new HashMap<>();
     private Map<String, String> mSecondReplacementRegExp = new HashMap<>();
 
     public ContentFilter(Context context) {
-        mContext = context;
-        mPrefs = CommonApplication.getPreferences();
+        SmartPreferences prefs = CommonApplication.getPreferences();
 
         // Workaround for XWalk only. WebView did filter in another place.
-        if (mPrefs.isAdBlockEnabled() && SmartUtils.isXWalk(mContext)) {
+        if (prefs.isAdBlockEnabled() && SmartUtils.isXWalk(context)) {
             mSecondReplacementRegExp.put("enableMastheadLarge:[!\\.\\w]+,", "enableMastheadLarge:false,");
             mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w]+,", "enableMastheadSmall:true,");
         }
 
-        if (mPrefs.getEnableAnimatedPreviews()) {
+        if (prefs.getEnableAnimatedPreviews()) {
             mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w]+,", "animatedWebpSupport:true,");
         }
 
         // prefs key: ENABLE_HIGH_CONTRAST_MODE
-        if (mPrefs.getEnableHighContrastMode()) {
+        if (prefs.getEnableHighContrastMode()) {
             mSecondReplacementRegExp.put(
                     // c.zds||(b.get()?hH(a.body,"high-contrast"):jH(a.body,"high-contrast"))
                     "\\w+\\.\\w+\\|\\|\\(\\w+\\.get\\(\\)\\?(\\w+\\(\\w+\\.body,\"high-contrast\"\\)):\\w+\\(\\w+\\.body,\"high-contrast\"\\)\\)",
@@ -48,7 +48,7 @@ public class ContentFilter {
         // NOTE: Video menu items source: https://www.youtube.com/youtubei/v1/browse
         // NOTE: Menu items available on Cobalt user agent only
         // see: VideoMenuInterceptor
-        if (mPrefs.getEnableVideoMenu()) {
+        if (prefs.getEnableVideoMenu()) {
             mSecondReplacementRegExp.put("enableSelectOnKeyup:[!\\.\\w]+,", "enableSelectOnKeyup:true,");
             mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:[!\\.\\w]+,", "enableVideoMenuOnBrowse:true,");
         }

@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.sharedutils.helpers.AssetHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -10,10 +11,10 @@ import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import okhttp3.MediaType;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Try to get rich response from browse request.<br/>
@@ -31,19 +32,24 @@ public class BrowseInterceptor extends RequestInterceptor {
     private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
     private final Context mContext;
     private final SmartPreferences mPrefs;
-    private HashMap<String, String> mHeaders;
+    private Map<String, String> mHeaders;
+    private boolean mIsXWalk;
+    private boolean mIsAdBlockEnabled;
+    private boolean mIsEnableVideoMenu;
 
     public BrowseInterceptor(Context context) {
         super(context);
         mContext = context;
         mPrefs = CommonApplication.getPreferences();
-
+        mIsXWalk = SmartUtils.isXWalk(mContext);
+        mIsAdBlockEnabled = mPrefs.isAdBlockEnabled();
+        mIsEnableVideoMenu = mPrefs.getEnableVideoMenu();
         initHeaders();
     }
 
     private void initHeaders() {
         // add video menu in browse response
-        if (mPrefs.getEnableVideoMenu()) {
+        if (mIsEnableVideoMenu) {
             mHeaders = new HashMap<>();
             mHeaders.put("User-Agent", UserAgentManager.COBALT_CLIENT[0]);
         }
@@ -51,7 +57,7 @@ public class BrowseInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        return url != null && url.split("\\?")[0].endsWith(BROWSE_URL);
+        return url != null && url.contains(BROWSE_URL);
     }
 
     @Override
@@ -66,11 +72,11 @@ public class BrowseInterceptor extends RequestInterceptor {
     }
 
     private WebResourceResponse filterBannerData(String url) {
-        if (SmartUtils.isXWalk(mContext)) { // performance impact
+        if (mIsXWalk) { // performance impact
             return null;
         }
 
-        if (!mPrefs.isAdBlockEnabled()) {
+        if (!mIsAdBlockEnabled) {
             return null;
         }
 
@@ -113,7 +119,7 @@ public class BrowseInterceptor extends RequestInterceptor {
                 }
             }
 
-            response = createResponse(MediaType.parse("application/json"), browseParser.toStream());
+            response = createResponse("application/json", null, browseParser.toStream());
         } else {
             Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
         }
@@ -122,7 +128,7 @@ public class BrowseInterceptor extends RequestInterceptor {
     }
 
     private WebResourceResponse filterLongPressVideoMenu(String url) {
-        if (mHeaders == null) { // rich menu not enabled
+        if (!mIsEnableVideoMenu) { // rich menu not enabled
             return null;
         }
 
@@ -138,7 +144,7 @@ public class BrowseInterceptor extends RequestInterceptor {
         InputStream dataStream = postJsonData(url, postData, mHeaders);
 
         if (dataStream != null) {
-            result = createResponse(MediaType.parse("application/json"), dataStream);
+            result = createResponse("application/json", null, dataStream);
         }
 
         return result;
