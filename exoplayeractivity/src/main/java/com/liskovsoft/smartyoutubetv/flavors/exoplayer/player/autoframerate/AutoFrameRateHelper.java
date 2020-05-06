@@ -15,6 +15,8 @@ class AutoFrameRateHelper {
     private DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
+    private static final long THROTTLE_INTERVAL_MS = 3_000;
+    private long mPrevCall;
 
     public AutoFrameRateHelper(Activity context, DisplaySyncHelper syncHelper) {
         mContext = context;
@@ -26,7 +28,7 @@ class AutoFrameRateHelper {
 
     public void apply() {
         if (!getEnabled()) {
-            Log.d(TAG, "apply: autoframerate not enabled... exiting...");
+            Log.d(TAG, "Autoframerate not enabled... exiting...");
             return;
         }
 
@@ -40,6 +42,12 @@ class AutoFrameRateHelper {
             return;
         }
 
+        if (System.currentTimeMillis() - mPrevCall < THROTTLE_INTERVAL_MS) {
+            Log.e(TAG, "Throttling afr calls...");
+            return;
+        } else {
+            mPrevCall = System.currentTimeMillis();
+        }
 
         Format videoFormat = mPlayer.getVideoFormat();
         float frameRate = videoFormat.frameRate;
