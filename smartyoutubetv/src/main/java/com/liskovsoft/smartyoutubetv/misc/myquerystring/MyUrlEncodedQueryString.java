@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.misc.myquerystring;
 
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
@@ -9,7 +8,7 @@ import java.net.URISyntaxException;
 
 public class MyUrlEncodedQueryString implements MyQueryString {
     private String mUrl;
-    private Uri mParsedUri;
+    private URI mParsedUri;
     private UrlEncodedQueryStringBase mQueryString;
 
     private MyUrlEncodedQueryString(String url) {
@@ -17,15 +16,15 @@ public class MyUrlEncodedQueryString implements MyQueryString {
             return;
         }
 
-        mParsedUri = Uri.parse(url);
-
-        if (mParsedUri.getHost() == null) { // not full url
+        if (!url.startsWith("https://") && !url.startsWith("http://")) { // not full url
             mUrl = "http://fakeurl.com?" + url;
         } else {
             mUrl = url;
         }
 
-        mQueryString = UrlEncodedQueryStringBase.parse(getURI(mUrl));
+        mParsedUri = getURI(mUrl);
+
+        mQueryString = UrlEncodedQueryStringBase.parse(mParsedUri);
     }
 
     private URI getURI(String url) {
