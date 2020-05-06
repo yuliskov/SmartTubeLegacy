@@ -122,7 +122,7 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getUrl() {
-        initUrl();
+        //initUrl();
 
         return mUrl;
     }
@@ -134,9 +134,9 @@ public class SimpleYouTubeMediaItem implements MediaItem {
 
     @Override
     public String getCipher() {
-        initCipher();
+        //initCipher();
 
-        return mCipher;
+        return mCipher == null ? mSignatureCipher : mCipher;
     }
 
     @Override
