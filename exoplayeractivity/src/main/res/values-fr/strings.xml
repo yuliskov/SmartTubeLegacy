@@ -75,5 +75,5 @@
     <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Commutateur de résolution</string>
     <string name="exo_open_player">Ouvrir</string>
-    <string name="exo_video_link_error">Oops. Il semble que le lien vidéo est un problème. Sortir...</string>
+    <string name="exo_video_link_error">Oups. Il semble que le lien vidéo est un problème. Sortir...</string>
 </resources>
