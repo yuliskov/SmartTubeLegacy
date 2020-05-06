@@ -29,6 +29,7 @@ class DisplaySyncHelper implements UhdHelperListener {
     private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
     private boolean mSwitchToUHD;
+    private boolean mSwitchToFHD;
     private int mModeLength = -1;
     private AutoFrameRateListener mListener;
 
@@ -254,21 +255,28 @@ class DisplaySyncHelper implements UhdHelperListener {
             List<DisplayHolder.Mode> resultModes = new ArrayList<>();
 
             if (mSwitchToUHD) { // switch not only framerate but resolution too
-                int minHeight;
-                int maxHeight;
-
                 if (videoWidth > 1920) {
-                    minHeight = 2160;
-                    maxHeight = 5000;
-                } else {
-                    minHeight = 1080;
-                    maxHeight = 1080;
+                    int minHeight = 2160;
+                    int maxHeight = 5000;
+
+                    resultModes = filterModes(modes, minHeight, maxHeight);
+
+                    if (!resultModes.isEmpty()) {
+                        needResolutionSwitch = true;
+                    }
                 }
+            }
 
-                resultModes = filterModes(modes, minHeight, maxHeight);
+            if (mSwitchToFHD) { // switch not only framerate but resolution too
+                if (videoWidth <= 1920) {
+                    int minHeight = 1080;
+                    int maxHeight = 1080;
 
-                if (!resultModes.isEmpty()) {
-                    needResolutionSwitch = true;
+                    resultModes = filterModes(modes, minHeight, maxHeight);
+
+                    if (!resultModes.isEmpty()) {
+                        needResolutionSwitch = true;
+                    }
                 }
             }
 
@@ -424,5 +432,9 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     public void setSwitchToUHD(boolean enabled) {
         mSwitchToUHD = enabled;
+
+        if (!Build.BRAND.equals("Sasvlad")) { // Ugoos custom firmware fix
+            mSwitchToFHD = enabled;
+        }
     }
 }
