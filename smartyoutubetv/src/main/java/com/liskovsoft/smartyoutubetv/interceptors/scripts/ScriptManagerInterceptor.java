@@ -2,29 +2,30 @@ package com.liskovsoft.smartyoutubetv.interceptors.scripts;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ContentFilter;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 import java.io.InputStream;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     private static final String TAG = ScriptManagerInterceptor.class.getSimpleName();
-    private final Context mContext;
     private final ScriptManager mManager;
     private final ContentFilter mFilter;
     private boolean mFirstScriptDone;
 
     public ScriptManagerInterceptor(Context context) {
         super(context);
-        
-        mContext = context;
+
         mManager = new MainCachedScriptManager(context);
         mFilter = new ContentFilter(context);
     }

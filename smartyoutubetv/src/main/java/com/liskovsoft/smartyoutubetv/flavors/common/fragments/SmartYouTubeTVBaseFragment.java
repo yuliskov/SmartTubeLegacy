@@ -10,7 +10,9 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.webkit.WebView;
+
 import androidx.fragment.app.FragmentActivity;
+
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
@@ -91,7 +93,7 @@ public abstract class SmartYouTubeTVBaseFragment extends MainBrowserFragment {
         Log.d(TAG, "creating controller: " + "icicle=" + icicle + ", intent=" + origin);
 
         mController = new SimpleUIController(this);
-        mController.setListener(new ControllerEventListener(getActivity(), mController));
+        mController.setListener(new ControllerEventListener(getActivity()));
         mController.setDefaultUrl(Uri.parse(mServiceFinder.getUrl()));
         mController.setDefaultHeaders(mUAManager.getUAHeaders());
 

@@ -2,25 +2,31 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
-import okhttp3.MediaType;
-import okhttp3.Response;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.Response;
+
 public abstract class RequestInterceptor {
+
     private static final String TAG = RequestInterceptor.class.getSimpleName();
+
+    private static final WebResourceResponse EMPTY_RESPONSE = new WebResourceResponse(null, null, null);
+
     private final Context mContext;
     private final HeaderManager mManager;
 
     public abstract boolean test(String url);
+
     public abstract WebResourceResponse intercept(String url);
 
     public RequestInterceptor(Context context) {
@@ -39,6 +45,10 @@ public abstract class RequestInterceptor {
             return null;
         }
         return contentType.charset().name();
+    }
+
+    protected WebResourceResponse createResponse(String mediaType, String charset, InputStream is) {
+        return new WebResourceResponse(mediaType, charset, is);
     }
 
     protected WebResourceResponse createResponse(MediaType mediaType, InputStream is) {
@@ -106,7 +116,7 @@ public abstract class RequestInterceptor {
     }
 
     protected WebResourceResponse emptyResponse() {
-        return new WebResourceResponse(null, null, null);
+        return EMPTY_RESPONSE;
     }
 
     protected InputStream postJsonData(String url, String body) {
@@ -119,9 +129,7 @@ public abstract class RequestInterceptor {
         HashMap<String, String> resultHeaders = mManager.getHeaders();
 
         if (headers != null) {
-            for (String key : headers.keySet()) {
-                resultHeaders.put(key, headers.get(key));
-            }
+            resultHeaders.putAll(headers);
         }
 
         Response response = OkHttpHelpers.doPostOkHttpRequest(url, resultHeaders, body, "application/json");
