@@ -35,7 +35,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private final DecipherRoutineInjector mDecipherInjector;
     private final GenericEventResourceInjector mGenericInjector;
     private final StateUpdater mStateUpdater;
-    private final RequestInterceptorProcessor mMainInterceptor;
+    private final RequestInterceptorProcessor mInterceptorProcessor;
     private final ErrorTranslator mErrorTranslator;
     private final MyCookieSaver mCookieSaver;
 
@@ -47,7 +47,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         mDecipherInjector = new DecipherRoutineInjector(mContext);
         mGenericInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
-        mMainInterceptor = new RequestInterceptorProcessor(mContext);
+        mInterceptorProcessor = new RequestInterceptorProcessor(mContext);
         mErrorTranslator = new ErrorTranslator(mContext);
         mCookieSaver = new MyCookieSaver(mContext);
     }
@@ -72,7 +72,7 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     }
 
     private WebResourceResponse processRequest(String url) {
-        return mMainInterceptor.process(url);
+        return mInterceptorProcessor.process(url);
     }
 
     @Override
