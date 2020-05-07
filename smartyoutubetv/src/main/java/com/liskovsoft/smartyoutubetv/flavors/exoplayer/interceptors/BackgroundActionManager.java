@@ -8,7 +8,8 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
     private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000;
-    private static final long CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000; // Don't increase value!
+    private static final long VIDEO_CANCEL_TIMEOUT_MS = 1_000; // Don't increase value!
+    private static final long PLAYLIST_CANCEL_TIMEOUT_MS = 3_000; // Don't increase value!
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
@@ -45,21 +46,31 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean continueRecently = (System.currentTimeMillis() - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        long curTimeMS = System.currentTimeMillis();
+
+        boolean continueRecently = (curTimeMS - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
         if (mSameVideo && continueRecently && !mIsOpened) {
             Log.d(TAG, "Cancel playback: Same video right after close previous.");
             return true;
         }
 
-        boolean cancelRecently = (System.currentTimeMillis() - mCancelTime) < CANCEL_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+        boolean cancelRecently = (curTimeMS - mCancelTime) < VIDEO_CANCEL_TIMEOUT_MS;
 
         if (cancelRecently) {
             Log.d(TAG, "Cancel playback: User closed video recently.");
             return true;
         }
 
-        //boolean isPlaylist = getPlaylistId(mCurrentUrl) != null;
+        boolean isPlaylist = mCurrentUrl.contains("&" + PARAM_PLAYLIST_ID + "=");
+
+        // Fix playlist bug when new video opens without user interactions
+        boolean playlistCancel = isPlaylist && ((curTimeMS - mCancelTime) < PLAYLIST_CANCEL_TIMEOUT_MS);
+
+        if (playlistCancel) {
+            Log.d(TAG, "Cancel playback: User closed video recently in playlist.");
+            return true;
+        }
 
         return false;
     }

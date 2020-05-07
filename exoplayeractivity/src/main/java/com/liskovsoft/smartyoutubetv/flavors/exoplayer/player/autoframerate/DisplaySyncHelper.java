@@ -65,6 +65,11 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     private ArrayList<DisplayHolder.Mode> filterModes(DisplayHolder.Mode[] oldModes, int minHeight, int maxHeight) {
         ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
+
+        if (minHeight == -1 || maxHeight == -1) {
+            return newModes;
+        }
+
         int modesNum = oldModes.length;
 
         for (int i = 0; i < modesNum; ++i) {
@@ -252,32 +257,29 @@ class DisplaySyncHelper implements UhdHelperListener {
 
             boolean needResolutionSwitch = false;
 
-            List<DisplayHolder.Mode> resultModes = new ArrayList<>();
+            List<DisplayHolder.Mode> resultModes;
+
+            int minHeight = -1;
+            int maxHeight = -1;
 
             if (mSwitchToUHD) { // switch not only framerate but resolution too
                 if (videoWidth > 1920) {
-                    int minHeight = 2160;
-                    int maxHeight = 5000;
-
-                    resultModes = filterModes(modes, minHeight, maxHeight);
-
-                    if (!resultModes.isEmpty()) {
-                        needResolutionSwitch = true;
-                    }
+                    minHeight = 2160;
+                    maxHeight = 5000;
                 }
             }
 
             if (mSwitchToFHD) { // switch not only framerate but resolution too
                 if (videoWidth <= 1920) {
-                    int minHeight = 1080;
-                    int maxHeight = 1080;
-
-                    resultModes = filterModes(modes, minHeight, maxHeight);
-
-                    if (!resultModes.isEmpty()) {
-                        needResolutionSwitch = true;
-                    }
+                    minHeight = 1080;
+                    maxHeight = 1080;
                 }
+            }
+
+            resultModes = filterModes(modes, minHeight, maxHeight);
+
+            if (!resultModes.isEmpty()) {
+                needResolutionSwitch = true;
             }
 
             Log.i(TAG, "Need resolution switch: " + needResolutionSwitch);

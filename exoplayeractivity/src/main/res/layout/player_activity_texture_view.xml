@@ -5,11 +5,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+    <!-- Additional view. Used with conjunction with prefs.getFixAspectRatio() -->
+
     <com.google.android.exoplayer2.ui.PlayerView
              android:id="@+id/player_view"
              app:surface_type="texture_view"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"/>
+             android:layout_height="match_parent"
+             android:background="@color/black"
+             app:shutter_background_color="@color/black"/>
 
     <include layout="@layout/player_top_bar"/>
 
