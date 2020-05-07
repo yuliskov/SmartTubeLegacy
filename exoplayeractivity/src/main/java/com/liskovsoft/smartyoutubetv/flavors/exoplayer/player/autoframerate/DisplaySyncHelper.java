@@ -39,9 +39,6 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     public DisplaySyncHelper(Activity context) {
         mContext = context;
-        
-        Log.d(TAG, "Setting initial mode to 4K@60 (Ugoos fix)");
-        syncDisplayMode(context.getWindow(), 2160, 60);
     }
 
     private List<DisplayHolder.Mode> filterSameResolutionModes(DisplayHolder.Mode[] oldModes, DisplayHolder.Mode currentMode) {
@@ -437,6 +434,6 @@ class DisplaySyncHelper implements UhdHelperListener {
         mSwitchToUHD = enabled;
 
         //mSwitchToFHD = !Build.BRAND.equals("Sasvlad"); // Ugoos custom firmware fix
-        mSwitchToFHD = false; // Ugoos custom firmware fix
+        mSwitchToFHD = enabled;
     }
 }
