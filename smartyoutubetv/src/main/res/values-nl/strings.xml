@@ -109,13 +109,13 @@
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
     <string name="channels_close_app">TV Kanalen App sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
-    <string name="tweak_publish_history_playlist">ATV: Geschiedenis playlist weergeven bij Kanalen</string>
-    <string name="tweak_publish_recommended_playlist">ATV: Aanbevolen playlist weergeven bij Kanalen</string>
-    <string name="tweak_publish_subscriptions_playlist">ATV: Abonnementen playlist weergeven bij Kanalen</string>
+    <string name="tweak_publish_history_playlist">YTV: Geschiedenis playlist weergeven bij Kanalen</string>
+    <string name="tweak_publish_recommended_playlist">YTV: Aanbevolen playlist weergeven bij Kanalen</string>
+    <string name="tweak_publish_subscriptions_playlist">YTV: Abonnementen playlist weergeven bij Kanalen</string>
     <string name="high_player_buffer">PRO: Maximum player buffer</string>
     <string name="medium_player_buffer">PRO: Medium player buffer</string>
     <string name="low_player_buffer">PRO: Minimum player buffer</string>
-    <string name="open_links_in_simple_view">Video links openen met ATV launcher</string>
+    <string name="open_links_in_simple_view">Video links openen met YTV launcher</string>
     <string name="tweak_high_contrast_mode">Donker thema inschakelen</string>
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
 </resources>
