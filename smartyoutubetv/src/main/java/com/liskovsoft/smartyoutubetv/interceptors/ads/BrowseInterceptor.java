@@ -3,11 +3,12 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads;
 import android.content.Context;
 import android.webkit.WebResourceResponse;
 
+import com.liskovsoft.m3uparser.core.utils.Strings;
 import com.liskovsoft.sharedutils.helpers.AssetHelper;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ReplacingInputStream;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -36,6 +37,7 @@ public class BrowseInterceptor extends RequestInterceptor {
     private boolean mIsXWalk;
     private boolean mIsAdBlockEnabled;
     private boolean mIsEnableVideoMenu;
+    private boolean mIsCompatibleSettings;
 
     public BrowseInterceptor(Context context) {
         super(context);
@@ -44,6 +46,7 @@ public class BrowseInterceptor extends RequestInterceptor {
         mIsXWalk = SmartUtils.isXWalk(mContext);
         mIsAdBlockEnabled = mPrefs.isAdBlockEnabled();
         mIsEnableVideoMenu = mPrefs.getEnableVideoMenu();
+        mIsCompatibleSettings = mIsEnableVideoMenu || (mIsAdBlockEnabled && !mIsXWalk);
         initHeaders();
     }
 
@@ -57,7 +60,7 @@ public class BrowseInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        return url != null && url.contains(BROWSE_URL);
+        return mIsCompatibleSettings && (url != null && url.contains(BROWSE_URL));
     }
 
     @Override
@@ -82,7 +85,7 @@ public class BrowseInterceptor extends RequestInterceptor {
 
         String postData = mPrefs.getPostData();
 
-        if (postData == null) {
+        if (Strings.isNullOrEmpty(postData)) {
             Log.e(TAG, "Post body is empty! Skipping url: " + url);
             return null;
         }
@@ -97,34 +100,16 @@ public class BrowseInterceptor extends RequestInterceptor {
 
         InputStream urlData = postJsonData(url, postData, mHeaders);
 
-        WebResourceResponse response = null;
-
-        if (Log.getLogType().equals(Log.LOG_TYPE_FILE) && urlData != null) {
-            String content = Helpers.toString(urlData);
-            Log.d(TAG, "Url: " + url + ". Post Data: " + postData + ". Response: " + content);
-            urlData = Helpers.toStream(content);
-        }
-
-        if (urlData != null) {
-            Log.d(TAG, "Searching and removing tv masthead section...");
-            JsonBrowseParser browseParser = JsonBrowseParser.parse(urlData);
-
-            if (browseParser.removeMastHead()) {
-                Log.d(TAG, "Success. TV masthead has been removed.");
-            } else {
-                if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {
-                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData + ". Response: " + Helpers.toString(browseParser.toStream()));
-                } else {
-                    Log.d(TAG, "Oops. Response doesn't contain MustHead section. Url: " + url + ". Post Data: " + postData);
-                }
-            }
-
-            response = createResponse("application/json", null, browseParser.toStream());
-        } else {
+        if (urlData == null) {
             Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
+            return null;
         }
 
-        return response;
+        Log.d(TAG, "Searching and removing tv masthead section...");
+
+        ReplacingInputStream replacingInputStream = new ReplacingInputStream(urlData, "tvMastheadRenderer", "broken-tvMastheadRend");
+
+        return createResponse("application/json", null, replacingInputStream);
     }
 
     private WebResourceResponse filterLongPressVideoMenu(String url) {
