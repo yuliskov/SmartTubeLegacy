@@ -10,6 +10,7 @@ public class MyUrlEncodedQueryString implements MyQueryString {
     private String mUrl;
     private URI mParsedUri;
     private UrlEncodedQueryStringBase mQueryString;
+    private boolean mHasPrefix;
 
     private MyUrlEncodedQueryString(String url) {
         if (url == null) {
@@ -20,6 +21,7 @@ public class MyUrlEncodedQueryString implements MyQueryString {
             mUrl = "http://fakeurl.com?" + url;
         } else {
             mUrl = url;
+            mHasPrefix = true;
         }
 
         mParsedUri = getURI(mUrl);
@@ -77,7 +79,7 @@ public class MyUrlEncodedQueryString implements MyQueryString {
         String host = mParsedUri.getHost();
         String scheme = mParsedUri.getScheme();
 
-        if (host == null) {
+        if (!mHasPrefix) {
             return mQueryString.toString();
         }
 
