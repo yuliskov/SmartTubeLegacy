@@ -1,142 +1,63 @@
 package com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter;
 
-import androidx.core.util.Pair;
-import com.liskovsoft.sharedutils.mylogger.Log;
 
-import java.io.*;
-import java.util.*;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
-class ReplacingInputStream extends FilterInputStream {
-    private static final String TAG = ReplacingInputStream.class.getSimpleName();
-    private LinkedList<Integer> mInQueue = new LinkedList<>();
-    private LinkedList<Integer> mOutQueue = new LinkedList<>();
-    private static String DEFAULT_ENCODING = "UTF-8";
-    private final List<ReplacePair> mPairs;
+/**
+ * Simple FilterInputStream that can replace occurrances of bytes with something else.
+ */
+public class ReplacingInputStream extends FilterInputStream {
 
-    static class ReplacePair extends Pair<String, String> {
-        public boolean matchFound;
+    // while matching, this is where the bytes go.
+    int[] buf = null;
+    int matchedIndex = 0;
+    int unbufferIndex = 0;
+    int replacedIndex = 0;
 
-        public ReplacePair(String first, String second) {
-            super(first, second);
-        }
+    private final byte[] pattern;
+    private final byte[] replacement;
+    private State state = State.NOT_MATCHED;
+
+    // simple state machine for keeping track of what we are doing
+    private enum State {
+        NOT_MATCHED,
+        MATCHING,
+        REPLACING,
+        UNBUFFER
     }
-    
-    protected ReplacingInputStream(InputStream in, List<ReplacePair> pairs) {
+
+    /**
+     * Replace occurances of pattern in the input. Note: input is assumed to be UTF-8 encoded. If not the case use byte[] based pattern and replacement.
+     *
+     * @param in          input
+     * @param pattern     pattern to replace.
+     * @param replacement the replacement or null
+     */
+    public ReplacingInputStream(InputStream in, String pattern, String replacement) {
+        this(in, pattern.getBytes(StandardCharsets.UTF_8), replacement == null ? null : replacement.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Replace occurances of pattern in the input.
+     *
+     * @param in          input
+     * @param pattern     pattern to replace
+     * @param replacement the replacement or null
+     */
+    public ReplacingInputStream(InputStream in, byte[] pattern, byte[] replacement) {
         super(in);
-        mPairs = pairs;
-    }
-
-    private boolean isMatchFound() throws UnsupportedEncodingException {
-        Iterator<Integer> inIter = mInQueue.iterator();
-
-        int maxLength = findMaxSearchLength();
-        boolean matchFound = false;
-
-        for (int i = 0; i < maxLength; i++) {
-            if (!inIter.hasNext()) {
-                break;
-            }
-
-            Integer next = inIter.next();
-
-            for (ReplacePair pair : mPairs) {
-                if (i < pair.first.getBytes(DEFAULT_ENCODING).length && (pair.matchFound || i == 0)) { // NOTE: it's buggy because of different strings length
-                    pair.matchFound = pair.first.getBytes(DEFAULT_ENCODING)[i] == next;
-
-                    if (pair.matchFound && (pair.first.getBytes(DEFAULT_ENCODING).length - 1) == i) {
-                        matchFound = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return matchFound;
-    }
-
-    private void readAhead() throws IOException {
-        // Work up some look-ahead.
-        int maxLength = findMaxSearchLength();
-        while (mInQueue.size() < maxLength) {
-            int next = super.read();
-            mInQueue.offer(next);
-            if (next == -1) {
-                break;
-            }
-        }
-    }
-
-    private int findMaxSearchLength() throws UnsupportedEncodingException {
-        int length = 0;
-
-        for (Pair<String, String> pair : mPairs) {
-            if (pair.first.getBytes(DEFAULT_ENCODING).length > length) {
-                length = pair.first.getBytes(DEFAULT_ENCODING).length;
-            }
-        }
-
-        return length;
-    }
-
-    private int findMatchedSearchLength() throws UnsupportedEncodingException {
-        int length = 0;
-
-        for (ReplacePair pair : mPairs) {
-            if (pair.matchFound) {
-                length = pair.first.getBytes(DEFAULT_ENCODING).length;
-                break;
-            }
-        }
-
-        return length;
-    }
-
-    private byte[] findReplacement() throws UnsupportedEncodingException {
-        byte[] result = null;
-
-        for (ReplacePair pair : mPairs) {
-            if (pair.matchFound) {
-                result = pair.second.getBytes(DEFAULT_ENCODING);
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public int read() throws IOException {
-        // Next byte already determined.
-        if (mOutQueue.isEmpty()) {
-            readAhead();
-
-            if (isMatchFound()) {
-                int matchedLength = findMatchedSearchLength();
-
-                for (int i = 0; i < matchedLength; i++) {
-                    mInQueue.remove();
-                }
-
-                byte[] replacement = findReplacement();
-
-                for (byte b : replacement) {
-                    mOutQueue.offer((int) b);
-                }
-            } else {
-                mOutQueue.add(mInQueue.remove());
-            }
-        }
-
-        return mOutQueue.remove();
-    }
-
-    @Override
-    public int read(byte[] b) throws IOException {
-        return read(b, 0, b.length);
+        this.pattern = pattern;
+        this.replacement = replacement;
+        // we will never match more than the pattern length
+        buf = new int[pattern.length];
     }
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        // copy of parent logic; we need to call our own read() instead of super.read(), which delegates instead of calling our read
         if (b == null) {
             throw new NullPointerException();
         } else if (off < 0 || len < 0 || len > b.length - off) {
@@ -149,19 +70,108 @@ class ReplacingInputStream extends FilterInputStream {
         if (c == -1) {
             return -1;
         }
-        b[off] = (byte)c;
+        b[off] = (byte) c;
 
         int i = 1;
         try {
-            for (; i < len ; i++) {
+            for (; i < len; i++) {
                 c = read();
                 if (c == -1) {
                     break;
                 }
-                b[off + i] = (byte)c;
+                b[off + i] = (byte) c;
             }
         } catch (IOException ee) {
         }
         return i;
+
     }
+
+    @Override
+    public int read(byte[] b) throws IOException {
+        // call our own read
+        return read(b, 0, b.length);
+    }
+
+    @Override
+    public int read() throws IOException {
+        // use a simple state machine to figure out what we are doing
+        int next;
+        switch (state) {
+            case NOT_MATCHED:
+                // we are not currently matching, replacing, or unbuffering
+                next = super.read();
+                if (pattern[0] == next) {
+                    // clear whatever was there
+                    buf = new int[pattern.length]; // clear whatever was there
+                    // make sure we start at 0
+                    matchedIndex = 0;
+
+                    buf[matchedIndex++] = next;
+                    if (pattern.length == 1) {
+                        // edgecase when the pattern length is 1 we go straight to replacing
+                        state = State.REPLACING;
+                        // reset replace counter
+                        replacedIndex = 0;
+                    } else {
+                        // pattern of length 1
+                        state = State.MATCHING;
+                    }
+                    // recurse to continue matching
+                    return read();
+                } else {
+                    return next;
+                }
+            case MATCHING:
+                // the previous bytes matched part of the pattern
+                next = super.read();
+                if (pattern[matchedIndex] == next) {
+                    buf[matchedIndex++] = next;
+                    if (matchedIndex == pattern.length) {
+                        // we've found a full match!
+                        if (replacement == null || replacement.length == 0) {
+                            // the replacement is empty, go straight to NOT_MATCHED
+                            state = State.NOT_MATCHED;
+                            matchedIndex = 0;
+                        } else {
+                            // start replacing
+                            state = State.REPLACING;
+                            replacedIndex = 0;
+                        }
+                    }
+                } else {
+                    // mismatch -> unbuffer
+                    buf[matchedIndex++] = next;
+                    state = State.UNBUFFER;
+                    unbufferIndex = 0;
+                }
+                return read();
+            case REPLACING:
+                // we've fully matched the pattern and are returning bytes from the replacement
+                next = replacement[replacedIndex++];
+                if (replacedIndex == replacement.length) {
+                    state = State.NOT_MATCHED;
+                    replacedIndex = 0;
+                }
+                return next;
+            case UNBUFFER:
+                // we partially matched the pattern before encountering a non matching byte
+                // we need to serve up the buffered bytes before we go back to NOT_MATCHED
+                next = buf[unbufferIndex++];
+                if (unbufferIndex == matchedIndex) {
+                    state = State.NOT_MATCHED;
+                    matchedIndex = 0;
+                }
+                return next;
+
+            default:
+                throw new IllegalStateException("no such state " + state);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return state.name() + " " + matchedIndex + " " + replacedIndex + " " + unbufferIndex;
+    }
+
 }

@@ -39,7 +39,8 @@ public class RequestInterceptorProcessor {
 
         WebResourceResponse result = null;
 
-        for (RequestInterceptor interceptor : mInterceptors) {
+        for (int i = 0; i < mInterceptors.size(); i++) {
+            RequestInterceptor interceptor = mInterceptors.get(i);
             if (interceptor.test(url)) {
                 result = interceptor.intercept(url);
 

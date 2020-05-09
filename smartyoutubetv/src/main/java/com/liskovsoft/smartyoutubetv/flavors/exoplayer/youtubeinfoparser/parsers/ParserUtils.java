@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
 import android.net.Uri;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonSyntaxException;
 import com.jayway.jsonpath.Configuration;
@@ -15,8 +16,17 @@ import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 
 import java.io.InputStream;
 
-public class ParserUtils {
+public final class ParserUtils {
+
     private static final String TAG = ParserUtils.class.getSimpleName();
+
+    private static final Configuration JSON_PATH_CONFIGURATION = Configuration.builder()
+            .mappingProvider(new GsonMappingProvider())
+            .jsonProvider(new GsonJsonProvider())
+            .build();
+
+    private ParserUtils() {
+    }
 
     public static String extractParam(String queryParam, String content) {
         Uri videoInfo = parseUri(content);
@@ -52,19 +62,13 @@ public class ParserUtils {
             throw new IllegalStateException("Can't create parser. jsonInfo == null");
         }
 
-        Configuration conf = Configuration
-                .builder()
-                .mappingProvider(new GsonMappingProvider())
-                .jsonProvider(new GsonJsonProvider())
-                .build();
-
         DocumentContext jsonPath;
 
         try {
             if (jsonInfo instanceof InputStream) {
-                jsonPath = JsonPath.using(conf).parse((InputStream) jsonInfo, "UTF-8");
+                jsonPath = JsonPath.using(JSON_PATH_CONFIGURATION).parse((InputStream) jsonInfo);
             } else if (jsonInfo instanceof String) {
-                jsonPath = JsonPath.using(conf).parse((String) jsonInfo);
+                jsonPath = JsonPath.using(JSON_PATH_CONFIGURATION).parse((String) jsonInfo);
             } else {
                 throw new IllegalStateException("Can't create parser. Unknown input type: " + jsonInfo.getClass().getSimpleName());
             }
@@ -110,8 +114,8 @@ public class ParserUtils {
 
         return result;
     }
-    
-    public static void delete(String jsonPath, DocumentContext parser) {
+
+    public static void delete(JsonPath jsonPath, DocumentContext parser) {
         try {
             parser.delete(jsonPath);
         } catch (PathNotFoundException e) { // NOTE: exception isn't thrown in some cases
@@ -120,7 +124,7 @@ public class ParserUtils {
         }
     }
 
-    public static boolean exists(String jsonPath, DocumentContext parser) {
+    public static boolean exists(JsonPath jsonPath, DocumentContext parser) {
         boolean result;
 
         try {
