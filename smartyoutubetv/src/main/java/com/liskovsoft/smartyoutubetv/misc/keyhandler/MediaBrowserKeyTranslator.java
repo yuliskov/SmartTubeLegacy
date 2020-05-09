@@ -1,12 +1,42 @@
 package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.view.KeyEvent;
+
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
     private static final String KEY_PRESS_MESSAGE = "key_press_message";
+    private Map<Integer, Integer> keyMapping;
+
+    public MediaBrowserKeyTranslator() {
+        Map<Integer, Integer> superkeyMapping = super.getKeyMapping();
+        keyMapping = new HashMap<>(superkeyMapping);
+        // triggerEvent($('#watch'), 'keydown', 228);
+        // triggerEvent($('.scrubber'), 'keydown', 228);
+
+        // FF
+        // triggerEvent($$('.focused'), 'keydown', 228);
+
+        // P/P
+        // triggerEvent($$('.focused'), 'keyup', 179);
+
+        // test
+        //keyMapping.put(KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_MEDIA_PLAY);
+
+        // disable media keys
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, KeyEvent.KEYCODE_UNKNOWN);
+        keyMapping = Collections.unmodifiableMap(keyMapping);
+    }
 
     @Override
     public KeyEvent doTranslateKeys(KeyEvent event) {
@@ -43,29 +73,6 @@ public class MediaBrowserKeyTranslator extends BrowserKeyTranslator {
 
     @Override
     protected Map<Integer, Integer> getKeyMapping() {
-        Map<Integer, Integer> keyMapping = super.getKeyMapping();
-
-        // triggerEvent($('#watch'), 'keydown', 228);
-        // triggerEvent($('.scrubber'), 'keydown', 228);
-
-        // FF
-        // triggerEvent($$('.focused'), 'keydown', 228);
-
-        // P/P
-        // triggerEvent($$('.focused'), 'keyup', 179);
-
-        // test
-        //keyMapping.put(KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_MEDIA_PLAY);
-
-        // disable media keys
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_UNKNOWN);
-        keyMapping.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, KeyEvent.KEYCODE_UNKNOWN);
-
         return keyMapping;
     }
 }

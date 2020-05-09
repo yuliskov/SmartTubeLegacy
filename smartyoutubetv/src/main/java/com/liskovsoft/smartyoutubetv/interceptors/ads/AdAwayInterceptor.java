@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors.ads;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -29,11 +30,10 @@ public class AdAwayInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
-        if (mClient.isAd(url)) {
-            return mAdBlockEnabled;
-        } else {
-            return false;
+        if (mAdBlockEnabled) {
+            return mClient.isAd(url);
         }
+        return false;
     }
 
     @Override

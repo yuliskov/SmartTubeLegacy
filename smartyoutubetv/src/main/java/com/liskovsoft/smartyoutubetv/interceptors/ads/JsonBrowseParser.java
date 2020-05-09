@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.interceptors.ads;
 
 import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.ParserUtils;
 
@@ -9,7 +10,7 @@ import java.io.InputStream;
 public class JsonBrowseParser {
     // All objects with property 'tvMastheadRenderer'
     // ex: https://github.com/json-path/JsonPath
-    private static final String TV_MASTHEAD_SECTION_ANY = "$..[?(@.tvMastheadRenderer)]";
+    private static final JsonPath TV_MASTHEAD_SECTION_ANY = JsonPath.compile("$..[?(@.tvMastheadRenderer)]");
 
     private final DocumentContext mParser;
 
