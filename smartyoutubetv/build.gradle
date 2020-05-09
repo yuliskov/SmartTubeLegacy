@@ -38,8 +38,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1142
-        versionName "6.17.562"
+        versionCode 1143
+        versionName "6.17.563"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -87,6 +87,10 @@ android {
     productFlavors {
         orig {
             matchingFallbacks = ['lite']
+        }
+        experiments {
+            matchingFallbacks = ['lite']
+            applicationIdSuffix ".experiments"
         }
         // Vtesting {
         //     matchingFallbacks = ['lite']
@@ -168,6 +172,9 @@ android {
         def commonDirs = ['src/commonSrc/appWatcher/java', 'src/commonSrc/crashHandler/java']
         def bolshoetvCommonDirs = ['src/commonSrc/Vbolshoetv/java']
         orig {
+            java.srcDirs('src/commonSrc/crashHandler/java')
+        }
+        experiments {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
         // Vtesting {
