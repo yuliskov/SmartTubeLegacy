@@ -19,7 +19,7 @@
   <string name="do_restore_data_msg">Restaurar dados salvos anteriormente?\nO aplicativo será reiniciado.</string>
   <string name="enable_ad_block">Bloqueador de anúncios (impacto no desempenho)</string>
   <string name="english_lang">Inglês</string>
-  <string name="error_host_lookup">Sem conexão à Internet: %s</string>
+  <string name="error_host_lookup">Sem conexão com a Internet: %s</string>
   <string name="error_unknown">Erro de conexão: %s</string>
   <string name="exit_msg">Pressione novamente para sair do aplicativo</string>
   <string name="exo_alt_tip">Grande número de formatos. Com correções.</string>
