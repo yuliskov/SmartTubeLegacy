@@ -13,6 +13,7 @@ import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
 
 import java.io.InputStream;
+import java.util.BitSet;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -22,6 +23,13 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     private final ScriptManager mManager;
     private final ContentFilter mFilter;
     private boolean mFirstScriptDone;
+    private final BitSet mState = new BitSet(4);
+    private final static BitSet DONE_STATE = new BitSet(4);
+    private boolean mIsScriptsLoad = false;
+
+    static {
+        DONE_STATE.set(1, 5);
+    }
 
     public ScriptManagerInterceptor(Context context) {
         super(context);
@@ -32,6 +40,9 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Override
     public boolean test(String url) {
+        if (mIsScriptsLoad) {
+            return false;
+        }
         if (isFirstScript(url)) {
             return true;
         }
@@ -69,6 +80,7 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
             mFirstScriptDone = true;
             result = mFilter.filterFirstScript(result);
         } else if (isSecondScript(url)) {
+            syncState(4);
             result = mFilter.filterSecondScript(result);
         } else if (isLastScript(url)) {
             if (!mFirstScriptDone) {
@@ -87,6 +99,7 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Nullable
     private InputStream applyInit(InputStream result) {
+        syncState(1);
         Log.d(TAG, "Begin onInitScripts");
         InputStream onInitScripts = mManager.getOnInitScripts();
         Log.d(TAG, "End onInitScripts");
@@ -96,6 +109,7 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Nullable
     private InputStream applyLoad(InputStream result) {
+        syncState(2);
         Log.d(TAG, "Begin onLoadScript");
         InputStream onLoadScripts = mManager.getOnLoadScripts();
         Log.d(TAG, "End onLoadScript");
@@ -105,11 +119,19 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
 
     @Nullable
     private InputStream applyStyles(InputStream result) {
+        syncState(3);
         Log.d(TAG, "Begin onStyles");
         InputStream styles = mManager.getStyles();
         Log.d(TAG, "End onStyles");
         result = Helpers.appendStream(result, styles);
         return result;
+    }
+
+    private void syncState(int state) {
+        mState.set(state);
+        if (DONE_STATE.equals(mState)) {
+            mIsScriptsLoad = true;
+        }
     }
 
     protected abstract boolean isFirstScript(String url);
