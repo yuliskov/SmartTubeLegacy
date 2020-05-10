@@ -8,7 +8,6 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AmazonYouTube
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ApkUpdaterHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.BackupAndRestoreHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.CacheCleanHandler;
-import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ForceNewUIHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckHandler;
 
 public class AppStateWatcher extends AppStateWatcherBase {

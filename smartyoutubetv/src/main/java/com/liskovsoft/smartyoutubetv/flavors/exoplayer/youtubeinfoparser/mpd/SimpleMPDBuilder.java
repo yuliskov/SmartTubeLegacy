@@ -1,17 +1,19 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd;
 
 import android.util.Xml;
+
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.ITag;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.OtfSegmentParser.OtfSegment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.MediaItemComparator;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.MediaItemUtils;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.misc.SimpleYouTubeGenericInfo;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.OtfSegmentParser.OtfSegment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.MediaItem;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
+
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String NULL_INDEX_RANGE = "0-0";
     private static final String NULL_CONTENT_LENGTH = "0";
     private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
+    private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
     private final GenericInfo mInfo;
     private final boolean mVLCFix;
     private XmlSerializer mXmlSerializer;
@@ -299,7 +302,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         attribute("", "value", "main");
         endTag("", "Role");
     }
-    
+
     private void writeMediaListPrologue(Subtitle sub) {
         String id = String.valueOf(mId++);
 
@@ -374,7 +377,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         String codecs = extractCodecs(item);
 
         if (codecs.startsWith("vorbis") ||
-            codecs.startsWith("opus")) {
+                codecs.startsWith("opus")) {
             return MIME_WEBM_AUDIO;
         }
 
@@ -432,7 +435,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
         } else if (item.getSegmentUrlList() != null) {
             writeSegmentList(item);
         } else if (item.getIndex() != null &&
-                   !item.getIndex().equals(NULL_INDEX_RANGE)) { // json format fix: index is null
+                !item.getIndex().equals(NULL_INDEX_RANGE)) { // json format fix: index is null
             writeSegmentBase(item);
         }
 
@@ -528,8 +531,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
     private String extractCodecs(MediaItem item) {
         // input example: video/mp4;+codecs="avc1.640033"
-        Pattern pattern = Pattern.compile(".*codecs=\\\"(.*)\\\"");
-        Matcher matcher = pattern.matcher(item.getType());
+        Matcher matcher = CODECS_PATTERN.matcher(item.getType());
         matcher.find();
         return matcher.group(1);
     }
@@ -541,6 +543,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
      * "http://example.com?dur=544.99&key=val&key2=val2"
      * <br/>
      * "http://example.com/dur/544.99/key/val/key2/val2"
+     *
      * @return duration as string
      */
     private String extractDurationFromTrack() {
@@ -627,7 +630,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private boolean isLiveMedia(MediaItem item) {
         boolean isLive =
                 item.getUrl().contains("live=1") ||
-                item.getUrl().contains("yt_live_broadcast");
+                        item.getUrl().contains("yt_live_broadcast");
 
         return isLive;
     }
@@ -665,7 +668,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         endTag("", "SegmentTemplate");
     }
-    
+
     private void writeOtfSegmentTemplate(MediaItem item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
         //  <SegmentTimeline>

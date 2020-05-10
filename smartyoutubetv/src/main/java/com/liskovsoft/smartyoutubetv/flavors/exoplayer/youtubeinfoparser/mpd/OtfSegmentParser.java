@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
-import okhttp3.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +12,12 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.Response;
+
 public class OtfSegmentParser {
     private static final String TAG = OtfSegmentParser.class.getSimpleName();
+    private static final Pattern SEGMENT_PATTERN = Pattern.compile("Segment-Durations-Ms: (.*)");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile("\\d+");
     private final boolean mCached;
     private List<OtfSegment> mCachedSegments;
     private boolean mAlreadyParsed;
@@ -77,12 +80,10 @@ public class OtfSegmentParser {
 
         BufferedReader bufferedReader = new BufferedReader(stream);
 
-        Pattern segmentPattern = Pattern.compile("Segment-Durations-Ms: (.*)");
-
         try {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
-                Matcher segmentPatternMatcher = segmentPattern.matcher(currentLine);
+                Matcher segmentPatternMatcher = SEGMENT_PATTERN.matcher(currentLine);
                 if (segmentPatternMatcher.matches()) {
                     result = splitToSegments(segmentPatternMatcher.group(1));
                     break;
@@ -107,10 +108,8 @@ public class OtfSegmentParser {
         if (rawString != null) {
             String[] split = rawString.split(",");
             // Sample to match: '5120(r=192)' or '5120'
-            Pattern segmentPattern = Pattern.compile("\\d+");
-
             for (String item : split) {
-                Matcher segmentPatternMatcher = segmentPattern.matcher(item);
+                Matcher segmentPatternMatcher = DIGIT_PATTERN.matcher(item);
 
                 int findNum = 0;
                 OtfSegment segment = new OtfSegment();
