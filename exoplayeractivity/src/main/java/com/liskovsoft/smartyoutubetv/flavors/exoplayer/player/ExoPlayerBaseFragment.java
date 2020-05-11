@@ -2,14 +2,14 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -21,7 +21,6 @@ import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
@@ -90,7 +89,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private PlayerStateManager mStateManager;
     private VideoZoomManager mVideoZoomManager;
     private List<PlayerEventListener> mListeners;
-    private List<String> mRestore;
     private boolean mIsAfrApplying;
     private boolean mPlaybackStopped;
 

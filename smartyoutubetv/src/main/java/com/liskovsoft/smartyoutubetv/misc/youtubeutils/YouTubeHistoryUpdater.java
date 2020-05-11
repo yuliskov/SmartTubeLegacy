@@ -1,14 +1,16 @@
 package com.liskovsoft.smartyoutubetv.misc.youtubeutils;
 
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
-import okhttp3.Response;
 
 import java.util.HashMap;
+
+import okhttp3.Response;
 
 public class YouTubeHistoryUpdater {
     private static final String TAG = YouTubeHistoryUpdater.class.getSimpleName();
@@ -16,12 +18,10 @@ public class YouTubeHistoryUpdater {
     private static final String CMT = "cmt";
     private static final String ST = "st";
     private static final String ET = "et";
-    private final Context mContext;
     private final HeaderManager mManager;
 
     public YouTubeHistoryUpdater(Context context) {
-        mContext = context;
-        mManager = new HeaderManager(mContext);
+        mManager = new HeaderManager(context);
     }
 
     public void sync(String trackingUrl, float position, float length) {

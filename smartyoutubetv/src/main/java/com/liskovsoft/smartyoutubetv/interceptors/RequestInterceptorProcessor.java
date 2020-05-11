@@ -17,8 +17,10 @@ import java.util.List;
 public class RequestInterceptorProcessor {
     private static final String TAG = RequestInterceptorProcessor.class.getSimpleName();
     private final List<RequestInterceptor> mInterceptors;
+    private final FileExtensionInterceptor mFileExtensionInterceptor;
 
     public RequestInterceptorProcessor(Context context) {
+        mFileExtensionInterceptor = new FileExtensionInterceptor(context);
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
         mInterceptors.add(new BrowseInterceptor(context)); // impact performance
@@ -38,7 +40,9 @@ public class RequestInterceptorProcessor {
         Log.d(TAG, "Intercepting url: " + url);
 
         WebResourceResponse result = null;
-
+        if (mFileExtensionInterceptor.test(url)) {
+            return null;
+        }
         for (int i = 0; i < mInterceptors.size(); i++) {
             RequestInterceptor interceptor = mInterceptors.get(i);
             if (interceptor.test(url)) {
