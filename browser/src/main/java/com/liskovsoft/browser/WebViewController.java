@@ -13,10 +13,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.FileChooserParams;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import java.util.Map;
 
@@ -108,14 +105,20 @@ public interface WebViewController {
     boolean shouldCaptureThumbnails();
 
     // My Custom Methods
-    
+
     void setListener(Controller.EventListener listener);
+
     void onControllerStart();
+
     void onSaveControllerState(Bundle state);
+
     void onRestoreControllerState(Bundle state);
+
     void setDefaultUrl(Uri url);
+
     void setDefaultHeaders(Map<String, String> headers);
-    Map<String,String> getDefaultHeaders();
+
+    Map<String, String> getDefaultHeaders();
 
     // End My Custom Methods
 }
