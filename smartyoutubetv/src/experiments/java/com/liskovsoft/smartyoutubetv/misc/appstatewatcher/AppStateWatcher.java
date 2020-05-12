@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
+import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVChannelsHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVYouTubeBridgeHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AdBlockPermissionsHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.AmazonYouTubeBridgeHandler;
@@ -22,6 +23,9 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new CacheCleanHandler(context));
 
         addHandler(new BackupAndRestoreHandler(context, this));
+
+        // update recommendations
+        addHandler(new ATVChannelsHandler(context));
     }
 
 }
