@@ -65,6 +65,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
     public static final String PLAYER_BUFFER_TYPE_HIGH = "player_buffer_type_high";
     private static final String ENABLE_VIDEO_MENU = "enable_video_menu";
+    private static final String ENABLE_ANIMATED_UI = "enable_animated_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -526,5 +527,13 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setEnableVideoMenu(boolean enable) {
         putBoolean(ENABLE_VIDEO_MENU, enable);
+    }
+
+    public boolean getEnableAnimatedUI() {
+        return getBoolean(ENABLE_ANIMATED_UI, false);
+    }
+
+    public void setEnableAnimatedUI(boolean enable) {
+        putBoolean(ENABLE_ANIMATED_UI, enable);
     }
 }

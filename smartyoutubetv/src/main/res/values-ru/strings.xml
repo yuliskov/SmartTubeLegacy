@@ -101,4 +101,5 @@
     <string name="open_links_in_simple_view">Открывать ссылки в простом плеере</string>
     <string name="tweak_high_contrast_mode">Режим высокой контрасности</string>
     <string name="tweak_hold_ok_video_menu">Удерживать ок для видео меню (влияет на производительность)</string>
+    <string name="tweak_animated_ui">Анимированный интерфейс (влияет на производительность)</string>
 </resources>
