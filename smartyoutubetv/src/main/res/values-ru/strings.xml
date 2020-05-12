@@ -67,9 +67,9 @@
     <string name="close_msg">Приложение закрыто!</string>
     <string name="global_afr_fix_warning">Это опция может повлиять на автовоспроизведение</string>
     <string name="tweak_back_press_exit">Удерживайте НАЗАД чтобы закрыть приложение</string>
-    <string name="force_all_codecs_lite_only">LITE: Разблокировать все кодеки (4K)</string>
-    <string name="force_avc_lite_only">LITE: Использовать только AVC (1080p)</string>
-    <string name="force_vp9_lite_only">LITE: Использовать только VP9 (4K)</string>
+    <string name="force_all_codecs_lite_only">LITE: Разблокировать все кодеки (4K) (влияет на производительность)</string>
+    <string name="force_avc_lite_only">LITE: Использовать только AVC (1080p) (влияет на производительность)</string>
+    <string name="force_vp9_lite_only">LITE: Использовать только VP9 (4K) (влияет на производительность)</string>
     <string name="fix_clock_msg">Время на вашем устройстве выставлено неверно</string>
     <string name="do_restore_data_msg">Восстановить предыдущие настройки?\nПриложение будет перезапущено.</string>
     <string name="alt_player_mapping">Пульт: альтернативное поведение медиа-клавиш</string>
