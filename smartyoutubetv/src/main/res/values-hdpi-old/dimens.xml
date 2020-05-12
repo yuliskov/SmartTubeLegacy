@@ -1,0 +1,22 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">21dp</dimen>
+    <dimen name="activity_vertical_margin">21dp</dimen>
+    <dimen name="bootstrap_large_button_width">253dp</dimen>
+    <dimen name="bootstrap_large_button_height">156dp</dimen>
+    <dimen name="bootstrap_large_button_image_padding">13dp</dimen>
+    <dimen name="bootstrap_large_button_padding">20dp</dimen>
+    <dimen name="bootstrap_large_button_image_padding_left">65dp</dimen>
+    <dimen name="bootstrap_large_button_image_padding_right">65dp</dimen>
+    <dimen name="bootstrap_button_text_size">17sp</dimen>
+    <dimen name="bootstrap_text_button_padding">7dp</dimen>
+    <dimen name="bootstrap_large_button_margin_bottom">26dp</dimen>
+    <dimen name="bootstrap_loading_tips_size">39sp</dimen>
+    <dimen name="bootstrap_title_size">39sp</dimen>
+    <dimen name="bootstrap_margin_top">78dp</dimen>
+    <dimen name="bootstrap_margin_bottom">78dp</dimen>
+    <dimen name="bootstrap_tip_size">39sp</dimen>
+    <dimen name="bootstrap_chkbox_text_size">17sp</dimen>
+    <dimen name="bootstrap_chkbox_width">195dp</dimen>
+    <dimen name="bootstrap_chkbox_height">65dp</dimen>
+</resources>
