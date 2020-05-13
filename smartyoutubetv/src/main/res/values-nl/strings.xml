@@ -106,7 +106,7 @@
     <string name="message_install_kodi">Kodi is blijkbaar niet geinstalleerd</string>
     <string name="enable_ad_block">Advertenties blokkeren</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
-    <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI</string>
+    <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen van UI</string>
     <string name="channels_close_app">YTV Kanalen sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
     <string name="tweak_publish_history_playlist">YTV: Geschiedenis playlist weergeven bij Kanalen</string>
