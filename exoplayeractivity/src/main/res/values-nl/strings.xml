@@ -41,7 +41,7 @@
     <string name="published">Gepubliceerd</string>
     <string name="view_count">Aantal views</string>
     <string name="suggested_videos">Video Suggesties</string>
-    <string name="enable_autoframerate">Autoframerate inschakelen</string>
+    <string name="enable_autoframerate">Autoframerate</string>
     <string name="autoframerate_not_supported">Je apparaat ondersteunt Autoframerate niet</string>
     <string name="share_video">Delen</string>
     <string name="send_to">Delen met</string>
