@@ -102,4 +102,5 @@
     <string name="tweak_high_contrast_mode">Режим высокой контрасности</string>
     <string name="tweak_hold_ok_video_menu">Удерживать ок для видео меню (влияет на производительность)</string>
     <string name="tweak_animated_ui">Анимированный интерфейс (влияет на производительность)</string>
+    <string name="tweak_ok_shows_ui">Кнопка OK вызывает интерфейс</string>
 </resources>

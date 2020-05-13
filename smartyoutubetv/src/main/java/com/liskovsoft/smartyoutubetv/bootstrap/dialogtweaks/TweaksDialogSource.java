@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAltPlayerMa
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOKShowsUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOpenLinksInSimplePlayerDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProHighPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.EnableAdBlockDialogItem;
@@ -26,7 +27,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LockLastLaunch
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LogToFileDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProLowPlayerBufferTypeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProMediumPlayerBufferTypeDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOkButtonDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOkPauseDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenHistoryDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenMusicDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.OpenSubscriptionsDialogItem;
@@ -81,7 +82,8 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ProUseExternalPlayerFHDDialogItem(mContext));
         mItems.add(new ProUseExternalPlayerSDDialogItem(mContext));
         mItems.add(new ProUgoos50HZFixDialogItem(mContext));
-        mItems.add(new ProOkButtonDialogItem(mContext));
+        mItems.add(new ProOkPauseDialogItem(mContext));
+        mItems.add(new ProOKShowsUIDialogItem(mContext));
         mItems.add(new ProAutoShowPlayerUIDialogItem(mContext));
         mItems.add(new ProPlayerUIShowTimeoutDialogItem(mContext));
         mItems.add(new ProAltPlayerMappingDialogItem(mContext));

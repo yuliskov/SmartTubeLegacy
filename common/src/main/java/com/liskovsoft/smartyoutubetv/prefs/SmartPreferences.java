@@ -49,6 +49,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String USE_NEW_UI = "use_new_ui";
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
+    private static final String OK_SHOWS_UI = "ok_shows_ui";
     public static final String NEW_VIDEO_OPENED = "new_video_opened";
     public static final String CURRENT_VIDEO_POSITION = "current_video_position";
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
@@ -370,6 +371,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setAutoShowPlayerUI(boolean checked) {
         putBoolean(AUTO_SHOW_PLAYER_UI, checked);
+    }
+
+    public boolean getOKShowsUI() {
+        return getBoolean(OK_SHOWS_UI, true);
+    }
+
+    public void setOKShowsUI(boolean checked) {
+        putBoolean(OK_SHOWS_UI, checked);
     }
 
     // NOT PERSISTENT SETTINGS
