@@ -21,13 +21,20 @@ public class KeyHandler {
     private PlayerInterface mFragment;
     private KeyTranslator mTranslator;
     private Boolean mEnableOKPause;
-    private HashMap<Integer, Runnable> mActions;
+    private HashMap<Integer, Command> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
     private boolean mOKPauseWithoutUI;
+    private boolean mOKPauseWithUI;
+    private boolean mOKPauseNone;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
     private boolean mDisable = true;
-    private final Runnable mOnToggle = () -> {
+
+    private interface Command {
+        boolean run();
+    }
+
+    private final Command mOnToggle = () -> {
         if (mFragment.getExoPlayerView() != null) {
             mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
         }
@@ -35,8 +42,31 @@ public class KeyHandler {
         if (mFragment.getPlayer() != null) {
             mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
         }
+
+        return true;
     };
-    private final Runnable mOnPlay = () -> {
+    private final Command mOnToggleOKPause = () -> {
+        PlayerView exoPlayerView = mFragment.getExoPlayerView();
+        SimpleExoPlayer player = mFragment.getPlayer();
+
+        if (exoPlayerView == null || player == null) {
+            return false;
+        }
+
+        if (!exoPlayerView.isControllerVisible()) {
+            if (!mOKPauseNone) {
+                if (mOKPauseWithUI) {
+                    mFragment.getExoPlayerView().setControllerAutoShow(true);
+                }
+
+                player.setPlayWhenReady(!player.getPlayWhenReady());
+                return true;
+            }
+        }
+
+        return false;
+    };
+    private final Command mOnPlay = () -> {
         SimpleExoPlayer player = mFragment.getPlayer();
         PlayerView playerView = mFragment.getExoPlayerView();
 
@@ -45,8 +75,10 @@ public class KeyHandler {
             player.setPlayWhenReady(true);
             playerView.hideController();
         }
+
+        return true;
     };
-    private final Runnable mOnPause = () -> {
+    private final Command mOnPause = () -> {
         SimpleExoPlayer player = mFragment.getPlayer();
         PlayerView playerView = mFragment.getExoPlayerView();
 
@@ -54,23 +86,38 @@ public class KeyHandler {
             mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
             player.setPlayWhenReady(false);
         }
+
+        return true;
     };
-    private final Runnable mOnFastForward = () -> {
+    private final Command mOnFastForward = () -> {
         if (mFragment.getPlayer() != null) {
             seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
         }
+
+        return true;
     };
-    private final Runnable mOnRewind = () -> {
+    private final Command mOnRewind = () -> {
         if (mFragment.getPlayer() != null) {
             seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
         }
+
+        return true;
     };
-    private final Runnable mOnStop = () -> mFragment.onBackPressed();
+    private final Command mOnStop = () -> {
+        mFragment.onBackPressed();
+        return true;
+    };
 
     @TargetApi(23)
-    private final Runnable mOnNext = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+    private final Command mOnNext = () -> {
+        mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+        return true;
+    };
     @TargetApi(23)
-    private final Runnable mOnPrev = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
+    private final Command mOnPrev = () -> {
+        mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
+        return true;
+    };
 
     public KeyHandler(Activity activity, PlayerInterface playerFragment, HashMap<Integer, Integer> additionalMapping) {
         mActivity = activity;
@@ -79,6 +126,8 @@ public class KeyHandler {
         mAdditionalMapping = additionalMapping;
         mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
         mOKPauseWithoutUI = SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        mOKPauseWithUI = SmartPreferences.OK_PAUSE_WITH_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        mOKPauseNone = SmartPreferences.OK_PAUSE_NONE.equals(CommonApplication.getPreferences().getOKPauseType());
 
         initActionMapping();
     }
@@ -97,11 +146,9 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
-        if (mOKPauseWithoutUI) {
-            mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggle); // handle OK button just like media play/pause
-            mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggle); // handle OK button just like media play/pause
-            mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggle); // handle OK button just like media play/pause
-        }
+        mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggleOKPause); // handle OK button just like media play/pause
+        mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
+        mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
@@ -174,10 +221,8 @@ public class KeyHandler {
 
         if (mActions.containsKey(event.getKeyCode())) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                mActions.get(event.getKeyCode()).run();
+                return mActions.get(event.getKeyCode()).run();
             }
-
-            return true;
         }
 
         return false;

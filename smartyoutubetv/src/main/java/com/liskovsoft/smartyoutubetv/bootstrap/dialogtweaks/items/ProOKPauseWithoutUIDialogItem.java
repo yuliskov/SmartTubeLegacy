@@ -10,7 +10,7 @@ public class ProOKPauseWithoutUIDialogItem extends DialogItem {
     private final Context mContext;
 
     public ProOKPauseWithoutUIDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_ok_pause_without_ui), false);
+        super("PRO: " + context.getResources().getString(R.string.tweak_ok_pause_without_ui), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
