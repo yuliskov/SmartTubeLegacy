@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -25,8 +24,7 @@ public class KeyHandler {
     private HashMap<Integer, Runnable> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
-    private boolean mOKShowsUI;
-    private boolean mOKPauseUI;
+    private boolean mOKPauseWithoutUI;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
     private boolean mDisable = true;
     private final Runnable mOnToggle = () -> {
@@ -80,8 +78,7 @@ public class KeyHandler {
         mTranslator = new PlayerKeyTranslator();
         mAdditionalMapping = additionalMapping;
         mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
-        mOKShowsUI = CommonApplication.getPreferences().getOKShowsUI();
-        mOKPauseUI = CommonApplication.getPreferences().getEnableOKPause();
+        mOKPauseWithoutUI = SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(CommonApplication.getPreferences().getOKPauseType());
 
         initActionMapping();
     }
@@ -100,7 +97,7 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
-        if (!mOKShowsUI && mOKPauseUI) {
+        if (mOKPauseWithoutUI) {
             mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggle); // handle OK button just like media play/pause
             mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggle); // handle OK button just like media play/pause
             mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggle); // handle OK button just like media play/pause

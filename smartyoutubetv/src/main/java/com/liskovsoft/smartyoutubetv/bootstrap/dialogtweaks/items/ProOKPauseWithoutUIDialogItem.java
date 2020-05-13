@@ -5,12 +5,12 @@ import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-public class ProOKShowsUIDialogItem extends DialogItem {
+public class ProOKPauseWithoutUIDialogItem extends DialogItem {
     private final SmartPreferences mPrefs;
     private final Context mContext;
 
-    public ProOKShowsUIDialogItem(Context context) {
-        super(context.getResources().getString(R.string.tweak_ok_shows_ui), false);
+    public ProOKPauseWithoutUIDialogItem(Context context) {
+        super(context.getResources().getString(R.string.tweak_ok_pause_without_ui), false);
 
         mContext = context;
         mPrefs = SmartPreferences.instance(context);
@@ -18,11 +18,15 @@ public class ProOKShowsUIDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getOKShowsUI();
+        return SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(mPrefs.getOKPauseType());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setOKShowsUI(checked);
+        if (checked) {
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_WITHOUT_UI);
+        } else {
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_NONE);
+        }
     }
 }

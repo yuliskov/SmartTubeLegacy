@@ -2,7 +2,6 @@ package com.liskovsoft.smartyoutubetv.prefs;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
@@ -49,7 +48,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String USE_NEW_UI = "use_new_ui";
     private static final String HIDE_BOOT_TIPS = "hide_boot_tips";
     private static final String AUTO_SHOW_PLAYER_UI = "auto_show_player_ui";
-    private static final String OK_SHOWS_UI = "ok_shows_ui";
     public static final String NEW_VIDEO_OPENED = "new_video_opened";
     public static final String CURRENT_VIDEO_POSITION = "current_video_position";
     public static final String CURRENT_VIDEO_PAUSED = "current_video_paused";
@@ -67,6 +65,10 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String PLAYER_BUFFER_TYPE_HIGH = "player_buffer_type_high";
     private static final String ENABLE_VIDEO_MENU = "enable_video_menu";
     private static final String ENABLE_ANIMATED_UI = "enable_animated_ui";
+    private static final String OK_PAUSE_TYPE = "ok_pause_type";
+    public static final String OK_PAUSE_WITH_UI = "ok_pause_with_ui";
+    public static final String OK_PAUSE_NONE = "ok_pause_none";
+    public static final String OK_PAUSE_WITHOUT_UI = "ok_pause_without_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -373,12 +375,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(AUTO_SHOW_PLAYER_UI, checked);
     }
 
-    public boolean getOKShowsUI() {
-        return getBoolean(OK_SHOWS_UI, true);
+    public String getOKPauseType() {
+        return getString(OK_PAUSE_TYPE, OK_PAUSE_WITH_UI);
     }
 
-    public void setOKShowsUI(boolean checked) {
-        putBoolean(OK_SHOWS_UI, checked);
+    public void setOKPauseType(String pauseType) {
+        putString(OK_PAUSE_TYPE, pauseType);
     }
 
     // NOT PERSISTENT SETTINGS

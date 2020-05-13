@@ -45,7 +45,7 @@
     <string name="tweaks">Настройки</string>
     <string name="tip_tweaks">Дополнительные настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
-    <string name="tweak_ok_button_fix">Нажатие OK ставит видео на паузу</string>
+    <string name="tweak_ok_button_fix">OK ставит видео на паузу (показывая интерфейс)</string>
     <string name="tweak_update_check">Проверять обновление стабильных версий</string>
     <string name="tweak_beta_update_check">Проверять обновление бета версий</string>
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>
@@ -102,5 +102,5 @@
     <string name="tweak_high_contrast_mode">Режим высокой контрасности</string>
     <string name="tweak_hold_ok_video_menu">Удерживать ок для видео меню (влияет на производительность)</string>
     <string name="tweak_animated_ui">Анимированный интерфейс (влияет на производительность)</string>
-    <string name="tweak_ok_shows_ui">Кнопка OK вызывает интерфейс</string>
+    <string name="tweak_ok_pause_without_ui">OK ставит видео на паузу (без интерфейса)</string>
 </resources>

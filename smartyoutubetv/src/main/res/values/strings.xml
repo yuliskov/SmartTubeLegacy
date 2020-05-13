@@ -63,7 +63,7 @@
     <string name="tweaks">Settings</string>
     <string name="tip_tweaks">Additional settings</string>
     <string name="tweak_remember_launcher">Remember selected launcher</string>
-    <string name="tweak_ok_button_fix">OK pauses video immediately</string>
+    <string name="tweak_ok_button_fix">OK pauses video immediately (with UI)</string>
     <string name="tweak_update_check">Check for the STABLE updates</string>
     <string name="tweak_beta_update_check">Check for the BETA updates</string>
     <string name="tweak_end_cards">Show end video captions</string>
@@ -121,5 +121,5 @@
     <string name="tweak_high_contrast_mode">Enable high contrast mode</string>
     <string name="tweak_hold_ok_video_menu">Hold OK for video menu (impact performance)</string>
     <string name="tweak_animated_ui">Animated UI (impact performance)</string>
-    <string name="tweak_ok_shows_ui">OK button shows player ui</string>
+    <string name="tweak_ok_pause_without_ui">OK pauses video immediately (without UI)</string>
 </resources>
