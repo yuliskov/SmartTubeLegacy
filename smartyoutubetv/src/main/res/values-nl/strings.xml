@@ -63,7 +63,7 @@
     <string name="tweaks">Instellingen</string>
     <string name="tip_tweaks">Instellingen aanpassen</string>
     <string name="tweak_remember_launcher">Geselecteerde launcher onthouden</string>
-    <string name="tweak_ok_button_fix">Video pauzeren met OK-toets</string>
+    <string name="tweak_ok_button_fix">Video pauzeren met OK-toets (met UI)</string>
     <string name="tweak_update_check">Controleren op STABIELE updates</string>
     <string name="tweak_beta_update_check">Controleren op BETA updates</string>
     <string name="tweak_end_cards">Eindgeneriek van video weergeven</string>
@@ -119,4 +119,5 @@
     <string name="tweak_high_contrast_mode">Donker thema inschakelen</string>
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
     <string name="tweak_animated_ui">Geanimeerde UI inschakelen</string>
+    <string name="tweak_ok_pause_without_ui">Video pauzeren met OK-toets (zonder UI)</string>
 </resources>
