@@ -26,6 +26,7 @@ public class KeyHandler {
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
     private boolean mOKShowsUI;
+    private boolean mOKPauseUI;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
     private boolean mDisable = true;
     private final Runnable mOnToggle = () -> {
@@ -80,6 +81,7 @@ public class KeyHandler {
         mAdditionalMapping = additionalMapping;
         mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
         mOKShowsUI = CommonApplication.getPreferences().getOKShowsUI();
+        mOKPauseUI = CommonApplication.getPreferences().getEnableOKPause();
 
         initActionMapping();
     }
@@ -98,8 +100,10 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
-        if (!mOKShowsUI) {
+        if (!mOKShowsUI && mOKPauseUI) {
             mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggle); // handle OK button just like media play/pause
+            mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggle); // handle OK button just like media play/pause
+            mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggle); // handle OK button just like media play/pause
         }
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
