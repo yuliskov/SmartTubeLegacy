@@ -96,6 +96,7 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
+        mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggle); // handle OK button just like media play/pause
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
