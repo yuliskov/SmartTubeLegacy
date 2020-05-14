@@ -99,14 +99,14 @@
     <string name="tweak_use_new_ui">Nieuwe User Interface gebruiken</string>
     <string name="tweak_ugoos_afr_fix">PRO: UGOOS 50HZ aanpassen</string>
     <string name="tweak_hide_boot_tips">Tips bij opstarten verbergen</string>
-    <string name="tweak_auto_show_player_ui">UI player weergeven bij gebruik mediatoets</string>
+    <string name="tweak_auto_show_player_ui">UI weergeven bij gebruik van mediatoetsen</string>
     <string name="tweak_open_externally_lq">PRO: Video openen met externe player (SD)</string>
     <string name="message_install_player">MX Player of VLC installeren</string>
     <string name="message_enable_web_server">Web Server in Kodi instellingen inschakelen</string>
     <string name="message_install_kodi">Kodi is blijkbaar niet geinstalleerd</string>
     <string name="enable_ad_block">Advertenties blokkeren</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
-    <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen UI player</string>
+    <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen van UI</string>
     <string name="channels_close_app">YTV Kanalen sluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
     <string name="tweak_publish_history_playlist">YTV: Geschiedenis playlist weergeven bij Kanalen</string>
@@ -118,4 +118,5 @@
     <string name="open_links_in_simple_view">Video links openen met YTV launcher</string>
     <string name="tweak_high_contrast_mode">Donker thema inschakelen</string>
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
+    <string name="tweak_animated_ui">Geanimeerde UI inschakelen</string>
 </resources>
