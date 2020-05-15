@@ -62,9 +62,7 @@ public class KeyHandler {
                 if (mOKPauseNone) {
                     exoPlayerView.showController();
                 } else {
-                    if (mOKPauseWithUI) {
-                        mFragment.getExoPlayerView().setControllerAutoShow(true);
-                    }
+                    mFragment.getExoPlayerView().setControllerAutoShow(mOKPauseWithUI);
 
                     player.setPlayWhenReady(!player.getPlayWhenReady());
                 }
