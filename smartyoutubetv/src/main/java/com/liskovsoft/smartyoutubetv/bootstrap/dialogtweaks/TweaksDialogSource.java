@@ -62,7 +62,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new HighContrastModeDialogItem(mContext));
         mItems.add(new LongPressVideoMenuDialogItem(mContext));
-        mItems.add(new AnimatedUIDialogItem(mContext));
+        //mItems.add(new AnimatedUIDialogItem(mContext));
         mItems.add(new LockLastLauncherDialogItem(mContext));
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));

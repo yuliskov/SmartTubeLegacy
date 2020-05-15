@@ -17,7 +17,7 @@ public class MyUrlEncodedQueryString implements MyQueryString {
             return;
         }
 
-        if (!url.startsWith("https://") && !url.startsWith("http://")) { // not full url
+        if (!url.contains("://")) { // not full url
             mUrl = "http://fakeurl.com?" + url;
         } else {
             mUrl = url;
