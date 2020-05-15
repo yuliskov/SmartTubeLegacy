@@ -54,14 +54,17 @@ public class KeyHandler {
         }
 
         if (!exoPlayerView.isControllerVisible()) {
-            if (!mOKPauseNone) {
+            if (mOKPauseNone) {
+                exoPlayerView.showController();
+            } else {
                 if (mOKPauseWithUI) {
                     mFragment.getExoPlayerView().setControllerAutoShow(true);
                 }
 
                 player.setPlayWhenReady(!player.getPlayWhenReady());
-                return true;
             }
+
+            return true;
         }
 
         return false;
