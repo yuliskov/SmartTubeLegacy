@@ -72,6 +72,7 @@
     <string name="toast_format_restricted">Formaat aanpassen onmogelijk want preset is geactiveerd</string>
     <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
     <string name="enable_autoframerate_pause">Video pauzeren bij aanpassen van framerate</string>
+    <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Resolutie aanpassen</string>
     <string name="exo_open_player">Openen</string>
     <string name="exo_video_link_error">Oeps. Video link werkt niet. Afsluiten...</string>
