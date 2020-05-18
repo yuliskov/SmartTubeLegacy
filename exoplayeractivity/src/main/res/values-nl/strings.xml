@@ -56,7 +56,7 @@
     <string name="btn_restrict_codec">Preset</string>
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="select_preferred_codec">Video preset selecteren</string>
-    <string name="time_title">Nu: %1$s</string>
+    <string name="time_title">Datum: %1$s</string>
     <string name="loading_view_message">LADEN...</string>
     <string name="video_hang_msg">Video blijft hangen... oplossing aan het proberen...</string>
     <string name="enable_video_zoom">Video zoom activeren</string>
