@@ -122,10 +122,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         startPlayer();
     }
 
-    //@Override
-    //public void onDashUrlFound(Uri dashUrl) {
-    //    mDashUrl = dashUrl;
-    //}
+    @Override
+    public void onDashUrlFound(Uri dashUrl) {
+        mDashUrl = dashUrl;
+    }
 
     @Override
     public void onHLSFound(final Uri hlsUrl) {
@@ -184,10 +184,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Sample sample = null;
 
-        if (mDashUrl != null) {
-            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
-        } else if (mHlsUrl != null) {
+        if (mHlsUrl != null) {
             sample = SampleHelpers.buildFromHlsUri(mHlsUrl);
+        } else if (mDashUrl != null) {
+            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
         } else if (mMpdContent != null) {
             sample = SampleHelpers.buildFromMPDPlaylist(mMpdContent);
         }

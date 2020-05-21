@@ -2,9 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.webkit.WebResourceResponse;
-import com.google.gson.JsonIOException;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -17,6 +15,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
@@ -69,6 +68,10 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
+        return processUrl(unlockHlsStreams(url));
+    }
+
+    private WebResourceResponse processUrl(final String url) {
         mCurrentUrl = url;
 
         mManager.init(url);
@@ -82,6 +85,7 @@ public class ExoInterceptor extends RequestInterceptor {
 
         mExoCallback.onStart();
 
+        // Video title and other infos
         // long running code
         new Thread(() -> {
             mExoCallback.onMetadata(
@@ -90,13 +94,14 @@ public class ExoInterceptor extends RequestInterceptor {
                             mManager.getPlaylistId(mCurrentUrl)));
         }).start();
 
+        // Clip content
         // long running code
         new Thread(() -> {
             try {
                 parseAndOpenExoPlayer(getUrlData(url));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
-                MessageHelpers.showLongMessage(mContext, "Url doesn't exist " + url);
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + url);
             }
         }).start();
 
@@ -107,7 +112,7 @@ public class ExoInterceptor extends RequestInterceptor {
      * For parsing details see {@link YouTubeMediaParser}
      */
     private void parseAndOpenExoPlayer(InputStream inputStream) {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(inputStream);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mContext, inputStream);
         Log.d(TAG, "Video manifest received");
         dataParser.parse(mExoCallback);
     }
@@ -146,5 +151,34 @@ public class ExoInterceptor extends RequestInterceptor {
 
     public HistoryInterceptor getHistoryInterceptor() {
         return mHistoryInterceptor;
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    private String unlockHlsStreams(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("c", "HTML5");
+
+        return query.toString();
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    private String unlock60FpsFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps formats
+
+        return query.toString();
     }
 }

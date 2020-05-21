@@ -23,6 +23,10 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.analytics.AnalyticsListener.EventTime;
+import com.google.android.exoplayer2.analytics.PlaybackStats;
+import com.google.android.exoplayer2.analytics.PlaybackStatsListener;
+import com.google.android.exoplayer2.analytics.PlaybackStatsListener.Callback;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
@@ -211,13 +215,16 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             //Log.d(TAG, "High Bit Depth supported ? " + VpxLibrary.isHighBitDepthSupported());
 
             mPlayer.addListener(this);
-            mPlayer.addListener(mEventLogger);
-            mPlayer.setAudioDebugListener(mEventLogger);
-            mPlayer.setVideoDebugListener(mEventLogger);
-            mPlayer.setMetadataOutput(mEventLogger);
-
+            
             if (BuildConfig.DEBUG) {
+                mPlayer.addListener(mEventLogger);
+                mPlayer.setAudioDebugListener(mEventLogger);
+                mPlayer.setVideoDebugListener(mEventLogger);
+                mPlayer.addMetadataOutput(mEventLogger);
+
                 mPlayer.addAnalyticsListener(new EventLogger(mTrackSelector));
+
+                //mPlayer.addAnalyticsListener(new PlaybackStatsListener(true, (eventTime, playbackStats) -> Log.d("PlaybackStatsListener", playbackStats)));
             }
 
             mSimpleExoPlayerView.setPlayer(mPlayer);

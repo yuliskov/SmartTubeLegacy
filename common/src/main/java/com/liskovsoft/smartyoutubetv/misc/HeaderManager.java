@@ -48,7 +48,10 @@ public class HeaderManager {
         mHeaders.put("Accept", ACCEPT_PATTERN);
 
         mHeaders.put("X-Requested-With", ORIGINAL_PACKAGE);
-        mHeaders.put("X-YouTube-Client-Name", "TVHTML5");
+
+        // cause empty response from video_info with unlocked hls streams (c=HTML5)
+        //mHeaders.put("X-YouTube-Client-Name", "TVHTML5");
+
         mHeaders.put("X-YouTube-Utc-Offset", "120");
         mHeaders.put("X-Youtube-Time-Zone", "Europe/Athens");
 

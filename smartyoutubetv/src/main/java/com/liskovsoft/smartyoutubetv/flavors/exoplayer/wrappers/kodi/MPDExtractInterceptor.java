@@ -56,7 +56,7 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
     }
 
     private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStream60Fps, mResponseStream30Fps);
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mContext, mResponseStream60Fps, mResponseStream30Fps);
         dataParser.parse(new OnMediaFoundCallback() {
             private Uri mHlsUrl;
             private InputStream mMpdContent;

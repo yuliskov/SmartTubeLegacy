@@ -502,6 +502,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         restorePlayerStateIfNeeded();
 
         if (playbackState == Player.STATE_ENDED && playWhenReady) {
+            Log.d(TAG, "Track ended. Closing player...");
             onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
         } else if (playbackState == Player.STATE_READY) {
             for (PlayerEventListener listener : mListeners) {

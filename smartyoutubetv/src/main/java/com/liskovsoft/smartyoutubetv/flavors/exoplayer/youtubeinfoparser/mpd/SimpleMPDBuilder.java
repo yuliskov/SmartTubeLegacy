@@ -732,4 +732,9 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         return result;
     }
+
+    @Override
+    public boolean isDynamic() {
+        return isLive();
+    }
 }
