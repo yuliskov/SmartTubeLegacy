@@ -112,9 +112,10 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
 
             if (!mMPDBuilder.isEmpty()) { // Regular videos (4K)
                 if (mMPDBuilder.isDynamic()) {
-                    File destination = new File(FileHelpers.getCacheDir(mContext), "dynamic.mpd");
-                    FileHelpers.streamToFile(mMPDBuilder.build(), destination);
-                    mMediaFoundCallback.onDashUrlFound(Uri.parse(destination.getAbsolutePath()));
+                    // TODO: fix dynamic streams
+                    //File destination = new File(FileHelpers.getCacheDir(mContext), "dynamic.mpd");
+                    //FileHelpers.streamToFile(mMPDBuilder.build(), destination);
+                    //mMediaFoundCallback.onDashUrlFound(Uri.parse(destination.getAbsolutePath()));
                 } else {
                     mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
                 }
