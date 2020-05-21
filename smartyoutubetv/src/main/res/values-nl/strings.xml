@@ -67,7 +67,7 @@
     <string name="tweak_update_check">Controleren op STABIELE updates</string>
     <string name="tweak_beta_update_check">Controleren op BETA updates</string>
     <string name="tweak_end_cards">Eindgeneriek van video weergeven</string>
-    <string name="tweak_log_to_file">Logs bewaren in een bestand</string>
+    <string name="tweak_log_to_file">Logbestand bewaren</string>
     <string name="tweak_unplayable_video_fix">Onspeelbare video aanpassen</string>
     <string name="tweak_lock_last_launcher">%s launcher vergrendelen</string>
     <string name="tweak_open_music">Opstarten met Muziek</string>

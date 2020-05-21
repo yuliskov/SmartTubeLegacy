@@ -56,7 +56,7 @@
     <string name="btn_restrict_codec">Preset</string>
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="select_preferred_codec">Video preset selecteren</string>
-    <string name="time_title">Nu: %1$s</string>
+    <string name="time_title">Datum: %1$s</string>
     <string name="loading_view_message">LADEN...</string>
     <string name="video_hang_msg">Video blijft hangen... oplossing aan het proberen...</string>
     <string name="enable_video_zoom">Video zoom activeren</string>
@@ -72,7 +72,8 @@
     <string name="toast_format_restricted">Formaat aanpassen onmogelijk want preset is geactiveerd</string>
     <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
     <string name="enable_autoframerate_pause">Video pauzeren bij aanpassen van framerate</string>
+    <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Resolutie aanpassen</string>
     <string name="exo_open_player">Openen</string>
-    <string name="exo_video_link_error">Oeps. Video link werkt niet. Afsluiten...</string>
+    <string name="exo_video_link_error">Video link werkt niet - afsluiten...</string>
 </resources>
