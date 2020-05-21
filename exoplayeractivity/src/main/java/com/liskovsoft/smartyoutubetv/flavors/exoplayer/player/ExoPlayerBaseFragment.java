@@ -2,10 +2,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -16,12 +14,10 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
@@ -497,8 +493,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        measureLoadTime(playbackState);
-
         restorePlayerStateIfNeeded();
 
         if (playbackState == Player.STATE_ENDED && playWhenReady) {
@@ -522,14 +516,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         showHideLoadingMessage(playbackState);
 
         super.onPlayerStateChanged(playWhenReady, playbackState);
-    }
-
-    private void measureLoadTime(int playbackState) {
-        if (BuildConfig.DEBUG && (playbackState == Player.STATE_READY) && (mExtractStartMS != 0)) {
-            long extractedWithin = System.currentTimeMillis() - mExtractStartMS;
-            mExtractStartMS = 0;
-            Log.d(TAG, "Video loaded within: " + extractedWithin + " ms");
-        }
     }
 
     /**

@@ -88,6 +88,10 @@ android {
         orig {
             matchingFallbacks = ['lite']
         }
+        beta {
+            matchingFallbacks = ['lite']
+            applicationIdSuffix ".beta"
+        }
         // Vtesting {
         //     matchingFallbacks = ['lite']
         //     applicationIdSuffix ".testing"
@@ -170,6 +174,9 @@ android {
         orig {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
+        beta {
+            java.srcDirs('src/commonSrc/crashHandler/java')
+        }
         // Vtesting {
         //     java.srcDirs = commonDirs
         // }
@@ -220,6 +227,7 @@ dependencies {
 
     // ATV INSTALL_FAILED_CONFLICTING_PROVIDER fix
     origImplementation project(path: ':leanbackassistant')
+    betaImplementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 
