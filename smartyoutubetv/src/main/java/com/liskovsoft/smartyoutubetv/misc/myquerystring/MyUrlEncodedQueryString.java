@@ -17,14 +17,17 @@ public class MyUrlEncodedQueryString implements MyQueryString {
             return;
         }
 
-        if (!url.contains("://")) { // not full url
-            mUrl = "http://fakeurl.com?" + url;
-        } else {
-            mUrl = url;
-            mHasPrefix = true;
-        }
+        mUrl = url;
 
-        mParsedUri = getURI(mUrl);
+        // youtube://, http://, https://, ftp://
+        try {
+            mParsedUri = new URI(mUrl);
+            mHasPrefix = true;
+        } catch (URISyntaxException e) {
+            // not full url (only query part)
+            mUrl = "http://fakeurl.com?" + mUrl;
+            mParsedUri = getURI(mUrl);
+        }
 
         mQueryString = UrlEncodedQueryStringBase.parse(mParsedUri);
     }
