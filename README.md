@@ -69,6 +69,11 @@ If you want to support my developments you are welcome to buy me a cup of coffee
  * __[javierpz](https://github.com/javierpz)__ (cast fix)
  * __[TheRMaverick](https://github.com/TheRMaverick)__ (German language)
  * __[Maikell84](https://github.com/Maikell84)__ (misc fixes)
+ * __[foreveryoungforty](https://github.com/foreveryoungforty)__ (Dutch language)
+ * __[bubuleur](https://github.com/bubuleur)__ (French language)
+ * __[otava5](https://github.com/otava5)__ (Czech language)
+ * __[WaggBR](https://github.com/WaggBR)__ (Brazilian Portuguese language)
+ * __[itzxeon78](https://github.com/itzxeon78)__ (Spanish language)
 
 ### Screens:
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
