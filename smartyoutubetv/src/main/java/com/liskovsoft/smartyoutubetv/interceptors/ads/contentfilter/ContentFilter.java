@@ -27,19 +27,19 @@ public class ContentFilter {
 
         // Workaround for XWalk only. WebView did filter in another place.
         if (prefs.isAdBlockEnabled() && SmartUtils.isXWalk(context)) {
-            mSecondReplacementRegExp.put("enableMastheadLarge:[!\\.\\w$]+,", "enableMastheadLarge:false,");
-            mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w$]+,", "enableMastheadSmall:true,");
+            mSecondReplacementRegExp.put("enableMastheadLarge:[!\\.\\w]+,", "enableMastheadLarge:false,");
+            mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w]+,", "enableMastheadSmall:true,");
         }
 
         if (prefs.getEnableAnimatedPreviews()) {
-            mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w$]+,", "animatedWebpSupport:true,");
+            mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w]+,", "animatedWebpSupport:true,");
         }
 
         // prefs key: ENABLE_HIGH_CONTRAST_MODE
         if (prefs.getEnableHighContrastMode()) {
             mSecondReplacementRegExp.put(
                     // c.zds||(b.get()?hH(a.body,"high-contrast"):jH(a.body,"high-contrast"))
-                    "[\\w$]+\\.[\\w$]+\\|\\|\\([\\w$]+\\.get\\(\\)\\?([\\w$]+\\([\\w$]+\\.body,\"high-contrast\"\\)):[\\w$]+\\([\\w$]+\\.body,\"high-contrast\"\\)\\)",
+                    "\\w+\\.\\w+\\|\\|\\(\\w+\\.get\\(\\)\\?([\\w$]+\\(\\w+\\.body,\"high-contrast\"\\)):\\w+\\(\\w+\\.body,\"high-contrast\"\\)\\)",
                     // hH(a.body,"high-contrast")
                     "$1"
             );
@@ -49,15 +49,15 @@ public class ContentFilter {
         // NOTE: Menu items available on Cobalt user agent only
         // see: VideoMenuInterceptor
         if (prefs.getEnableVideoMenu()) {
-            mSecondReplacementRegExp.put("enableSelectOnKeyup:[!\\.\\w$]+,", "enableSelectOnKeyup:true,");
-            mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:[!\\.\\w$]+,", "enableVideoMenuOnBrowse:true,");
+            mSecondReplacementRegExp.put("enableSelectOnKeyup:[!\\.\\w]+,", "enableSelectOnKeyup:true,");
+            mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:[!\\.\\w]+,", "enableVideoMenuOnBrowse:true,");
         }
 
         if (prefs.getEnableAnimatedUI()) {
             //isLimitedMemory probably needed for Force enable animation
-            mSecondReplacementRegExp.put("isLimitedMemory:[!\\.\\w$]+,", "isLimitedMemory:false,");
+            mSecondReplacementRegExp.put("isLimitedMemory:[!\\.\\w]+,", "isLimitedMemory:false,");
             //Force enable animation, just scroll animation side panel animation is something else
-            mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w$]+,", "enableAnimations:true,");
+            mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w]+,", "enableAnimations:true,");
         }
     }
 
