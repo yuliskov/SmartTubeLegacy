@@ -1,6 +1,3 @@
-<!-- IMPORTANT NOTE: Please change the required strings to English if needed.
-     There isn't any notice of DO NOT TRANSLATE rather than in the line 5 -->
-
 <resources>
     <string name="app_name" translatable="false">Smart YouTube TV</string>
     <string name="next_clicked">¡Botón de Siguiente vídeo pulsado!</string>
@@ -23,9 +20,7 @@
     <string name="starting_popup">Iniciando desde el launcher principal</string>
     <string name="save_selection">Recordar</string>
     
-    <!-- I would need to know what %s and launcher&#8230 mean for a better translation -->
-    
-    <string name="starting_popup_fmt">Iniciando el %s launcher&#8230;</string>
+    <string name="starting_popup_fmt">Iniciando %s launcher&#8230;</string>
     <string name="language">Idioma</string>
     <string name="language_dialog_title">Elige el idioma</string>
     <string name="english_lang">English</string>
@@ -33,24 +28,20 @@
     <string name="ukrainian_lang">Українська</string>
     <string name="russian_lang">Русский</string>
     <string name="chinese_lang">中文</string>
-    <string name="autoframerate">Autoframerate</string>
+    <string name="autoframerate">Selección automática de frame</string>
     <string name="german_lang">Deutsch</string>
     <string name="returning_to_the_video">Volviendo al vídeo en reproducción</string>
-    <string name="send_crash_report">Informar errores</string>
+    <string name="send_crash_report">Informar error</string>
     
-    <!-- Same as above. Please define what is &#8230 -->
+    <string name="sending_crash_report">Enviando reporte de fallo&#8230;</string>
     
-    <string name="sending_crash_report">Enviando Crash Report&#8230;</string>
-    
-    <!-- I need the meaning of Update Check -->
-    
-    <string name="update_check">Update Check</string>
+    <string name="update_check">Comprobar actualizaciones</string>
     <string name="preferred_codec">Restringir</string>
     <string name="select_preferred_codec">Restringir códec y resolución</string>
     <string name="no_restrictions">Sin restricciones</string>
     <string name="old_ui">Interfaz antigua</string>
     
-    <!-- Same as above. I need the meaning of End Cards -->
+    <!-- What does End Cards mean?-->
     
     <string name="endcards">End Cards</string>
     <string name="tip_save_selection">No mostrar más esta pantalla</string>
@@ -67,43 +58,44 @@
     <string name="codec_selector_title">Elegir códec</string>
     <string name="restart_app_msg">Necesitas reiniciar la aplicación para aplicar los cambios</string>
     
-    <!-- WORK IN PROGRESS -->
-    
-    <string name="tip_show_main_screen">To open Settings press BACK right here</string>
-    <string name="tip_solve_problem">Problems? Try to select another Launcher</string>
-    <string name="tip_disable_updates">To disable Updates press BACK right here</string>
+    <string name="tip_show_main_screen">Para abrir Ajustes presiona Atrás ahora</string>
+    <string name="tip_solve_problem">¿Sufres problemas? Prueba con otro lanzador</string>
+    <string name="tip_disable_updates">Para deshabilitar actualizaciones presiona Atrás ahora</string>
+     
+    <!-- I guess these are the names for the launchers, so I didn't translate them -->
+     
     <string name="large_btn_title_main">Main</string>
     <string name="large_btn_title_alt">Alt</string>
     <string name="title_exo_main">PRO Main</string>
     <string name="title_exo_alt">PRO Alt</string>
     <string name="title_webview">LITE Main</string>
     <string name="title_xwalk">LITE Alt</string>
-    <string name="tweaks">Tweaks</string>
-    <string name="tip_tweaks">Various app tweaks here</string>
-    <string name="tweak_remember_launcher">Remember selected launcher</string>
-    <string name="tweak_ok_button_fix">OK pauses video immediately</string>
-    <string name="tweak_update_check">Check for the STABLE updates</string>
-    <string name="tweak_beta_update_check">Check for the BETA updates</string>
-    <string name="tweak_end_cards">Show end video captions</string>
-    <string name="tweak_log_to_file">Save log to file</string>
-    <string name="tweak_unplayable_video_fix">Unplayable video fix</string>
-    <string name="tweak_lock_last_launcher">Lock %s launcher</string>
-    <string name="tweak_open_music">Boot strict to the Music page</string>
-    <string name="tweak_open_subscriptions">Boot to subscriptions</string>
-    <string name="tweak_global_afx_fix">Global afr fix on Pro</string>
-    <string name="toast_remove_old_package">Package name has been changed. Please remove old app versions.</string>
-    <string name="tweak_history_fix">Enable history fix</string>
-    <string name="tweak_open_watch_later">Boot strict to Watch Later</string>
-    <string name="tweak_open_externally">PRO: Use external player</string>
-    <string name="message_install_vlc_player">Please install VLC player</string>
-    <string name="tweak_fix_aspect">Enable aspect ratio and zoom fix</string>
-    <string name="tweak_animated_previews">Enable animated previews</string>
-    <string name="close_msg">App closed!</string>
-    <string name="global_afr_fix_warning">This may cause autoplay to work incorrectly</string>
-    <string name="tweak_back_press_exit">Hold back key to exit</string>
-    <string name="force_avc_lite_only">Force AVC codec (LITE only)</string>
-    <string name="force_vp9_lite_only">Force VP9 codec (LITE only)</string>
-    <string name="fix_clock_msg">Time on your device doesn\'t set correctly</string>
-    <string name="do_restore_data_msg">Restore previously saved data?\nApp will be restarted.</string>
-    <string name="restoring_data_msg">Restoring data...</string>
+    <string name="tweaks">Opciones</string>
+    <string name="tip_tweaks">Hay varias opciones para la aplicaciñon aquí</string>
+    <string name="tweak_remember_launcher">Recordar lanzador seleccionado</string>
+    <string name="tweak_ok_button_fix">Presiona OK para parar el vídeo</string>
+    <string name="tweak_update_check">Comprobar actualizaciones estables</string>
+    <string name="tweak_beta_update_check">Comprobar actualizaciones de desarrollo (beta)</string>
+    <string name="tweak_end_cards">Mostrar títulos de final de vídeo</string>
+    <string name="tweak_log_to_file">Guardar registro en archivo</string>
+    <string name="tweak_unplayable_video_fix">Arreglo para vídeos que no se puedan reproducir</string>
+    <string name="tweak_lock_last_launcher">Bloquear lanzador %s</string>
+    <string name="tweak_open_music">Iniciar en la página de Música</string>
+    <string name="tweak_open_subscriptions">Iniciar en la página de Subscripciones</string>
+    <string name="tweak_global_afx_fix">Arreglo general para afr en lanzador Pro</string>
+    <string name="toast_remove_old_package">El nombre del paquete ha sido cambiado. Por favor, desinstale las versiones antiguas..</string>
+    <string name="tweak_history_fix">Habilitar arreglo para historial</string>
+    <string name="tweak_open_watch_later">Iniciar en la página de Ver más tarde</string>
+    <string name="tweak_open_externally">Lanzador PRO: usar reproductor externo</string>
+    <string name="message_install_vlc_player">Por favor, instala VLC Player.</string>
+    <string name="tweak_fix_aspect">Habilitar arreglo para relación de aspecto y zoom</string>
+    <string name="tweak_animated_previews">Habilitar previsualizaciones</string>
+    <string name="close_msg">¡Aplicación cerrada!</string>
+    <string name="global_afr_fix_warning">Esto puede hacer que la reproducción automática deje de funcionar</string>
+    <string name="tweak_back_press_exit">Mantener presionado la tecla Atrás para salir</string>
+    <string name="force_avc_lite_only">Forzar códec AVC (sólo para lanzador LITE)</string>
+    <string name="force_vp9_lite_only">Forzar códec VP9 (sólo para lanzador LITE)</string>
+    <string name="fix_clock_msg">El tiempo en tu dispositivo no está ajustado correctamente.</string>
+    <string name="do_restore_data_msg">¿Quieres recuperar los datos previamente guardados?\nLa aplicación se reiniciará.</string>
+    <string name="restoring_data_msg">Recuperando datos...</string>
 </resources>
