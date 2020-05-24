@@ -75,5 +75,5 @@
     <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Resolutie aanpassen</string>
     <string name="exo_open_player">Openen</string>
-    <string name="exo_video_link_error">Video link werkt niet - afsluiten...</string>
+    <string name="exo_video_link_error">Video link werkt niet - afsluiten.</string>
 </resources>

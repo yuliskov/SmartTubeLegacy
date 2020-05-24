@@ -64,8 +64,8 @@
     <string name="tip_tweaks">Instellingen aanpassen</string>
     <string name="tweak_remember_launcher">Geselecteerde launcher onthouden</string>
     <string name="tweak_ok_button_fix">Video pauzeren met OK-toets (met UI)</string>
-    <string name="tweak_update_check">Controleren op STABIELE updates</string>
-    <string name="tweak_beta_update_check">Controleren op BETA updates</string>
+    <string name="tweak_update_check">Controleren op updates</string>
+    <string name="tweak_beta_update_check">Controleren op beta updates</string>
     <string name="tweak_end_cards">Eindgeneriek van video weergeven</string>
     <string name="tweak_log_to_file">Logbestand bewaren</string>
     <string name="tweak_unplayable_video_fix">Onspeelbare video aanpassen</string>
