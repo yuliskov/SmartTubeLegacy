@@ -9,6 +9,8 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 
+import java.util.HashMap;
+
 public class ApplicationUtil {
     private static final UserAgentManager USER_AGENT_MANAGER = new UserAgentManager();
 

@@ -20,7 +20,9 @@ public class HeaderManager {
     private static final String PAGE_CL = "291117384";
     private static final String PAGE_LABEL = "youtube.ytfe.desktop_20200122_2_RC1";
 
-    private static final String ACCEPT_COMPRESSION = "gzip, deflate";
+    // Compression doesn't supported by ExoPlayer
+    // private static final String ACCEPT_COMPRESSION = "gzip, deflate";
+    private static final String ACCEPT_COMPRESSION = "identity"; // no compression
     private static final String ACCEPT_PATTERN = "*/*";
     private static final String ORIGINAL_PACKAGE = "com.google.android.youtube.tv";
 
@@ -52,14 +54,16 @@ public class HeaderManager {
         // cause empty response from video_info with unlocked hls streams (c=HTML5)
         //mHeaders.put("X-YouTube-Client-Name", "TVHTML5");
 
-        mHeaders.put("X-YouTube-Utc-Offset", "120");
-        mHeaders.put("X-Youtube-Time-Zone", "Europe/Athens");
+        // DO I NEED HEADERS BELOW?
+
+        //mHeaders.put("X-YouTube-Utc-Offset", "120");
+        //mHeaders.put("X-Youtube-Time-Zone", "Europe/Athens");
 
         // this headers will be changed over time
-        mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
-        mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
-        mHeaders.put("X-YouTube-Page-CL", PAGE_CL);
-        mHeaders.put("X-YouTube-Page-Label", PAGE_LABEL);
+        //mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
+        //mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
+        //mHeaders.put("X-YouTube-Page-CL", PAGE_CL);
+        //mHeaders.put("X-YouTube-Page-Label", PAGE_LABEL);
     }
 
     private void updateHeaders() {
