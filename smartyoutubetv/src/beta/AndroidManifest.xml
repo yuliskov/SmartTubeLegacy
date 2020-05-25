@@ -130,6 +130,7 @@
             android:excludeFromRecents="false"
             android:alwaysRetainTaskState="true"
             tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Lite Main"/>
         </activity>
         <activity
             android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"
@@ -139,6 +140,7 @@
             android:excludeFromRecents="false"
             android:alwaysRetainTaskState="true"
             tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Lite Alt"/>
         </activity>
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4K"
@@ -149,6 +151,7 @@
             android:excludeFromRecents="false"
             android:alwaysRetainTaskState="true"
             tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Pro Main"/>
         </activity>
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
@@ -158,6 +161,7 @@
             android:excludeFromRecents="false"
             android:alwaysRetainTaskState="true"
             tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Pro Alt"/>
         </activity>
         <!-- End Flavours -->
 
