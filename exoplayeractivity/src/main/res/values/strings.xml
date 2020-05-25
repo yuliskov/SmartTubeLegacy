@@ -76,5 +76,5 @@
     <string name="enable_autoframerate_resolution">Resolution switch</string>
     <string name="exo_open_player">Open</string>
     <string name="exo_video_link_error">Oops. Seems that video link is broken. Exiting...</string>
-    <string name="exo_video_decoder_error">Oops. Seems that this video format isn\'t supported by your device.</string>
+    <string name="exo_video_decoder_error">Oops. Seems that selected video format isn\'t supported by your device.</string>
 </resources>

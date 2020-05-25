@@ -56,5 +56,5 @@
     <string name="enable_autoframerate_resolution">Переключать разрешение</string>
     <string name="exo_open_player">Открыть</string>
     <string name="exo_video_link_error">Кажется ссылка на видео перестала работать. Выходим...</string>
-    <string name="exo_video_decoder_error">Кажется этот видео формат не поддерживется вашим устройством.</string>
+    <string name="exo_video_decoder_error">Кажется выбранный видео формат не поддерживется вашим устройством.</string>
 </resources>
