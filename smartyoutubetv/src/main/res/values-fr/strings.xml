@@ -120,4 +120,6 @@
     <string name="open_links_in_simple_view">Ouvrir des liens dans un simple lecteur</string>
     <string name="tweak_high_contrast_mode">Activer le mode contraste élevé</string>
     <string name="tweak_hold_ok_video_menu">Maintenez OK pour le menu vidéo (impact sur les performances)</string>
+    <string name="tweak_animated_ui">Interface utilisateur animée (impact sur les performances)</string>
+    <string name="tweak_ok_pause_without_ui">Ok met la vidéo en pause immédiatement (sans l'interface utilisateur)</string>
 </resources>
