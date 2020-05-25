@@ -54,11 +54,13 @@ public final class ExoPreferences {
 
     /**
      * By default (first run or user never opened track dialog)<br/>
-     * select no more than 1080p format for legacy devices support
+     * select no more than 1080p format for legacy devices support.<br/>
+     * Set to 1080 to select fhd track by default.<br/>
+     * Set to 0 to disable any restrictions.
      * @return track height
      */
     public int getSelectedTrackHeight() {
-        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 1080); // select fhd track by default
+        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 0);
     }
 
     public void setSelectedTrackHeight(int height) {

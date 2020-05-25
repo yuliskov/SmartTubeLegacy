@@ -53,7 +53,7 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
             restoreVideoTrack(groups);
         }
 
-        unlockAllVideoFormats(formatSupports);
+        //unlockAllVideoFormats(formatSupports);
 
         return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
     }
