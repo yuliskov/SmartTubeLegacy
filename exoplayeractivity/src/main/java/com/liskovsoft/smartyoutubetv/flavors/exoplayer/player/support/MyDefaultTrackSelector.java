@@ -53,6 +53,8 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
             restoreVideoTrack(groups);
         }
 
+        unlockAllVideoFormats(formatSupports);
+
         return super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, enableAdaptiveTrackSelection);
     }
 
@@ -65,6 +67,16 @@ public class MyDefaultTrackSelector extends DefaultTrackSelector {
                     groups,
                     new SelectionOverride(format.pair.first, format.pair.second)
             ));
+        }
+    }
+
+    private void unlockAllVideoFormats(int[][] formatSupports) {
+        final int videoTrackIndex = 0;
+
+        for (int j = 0; j < formatSupports[videoTrackIndex].length; j++) {
+            if (formatSupports[videoTrackIndex][j] == 19) { // video format not supported by system decoders
+                formatSupports[videoTrackIndex][j] = 52; // force support of video format
+            }
         }
     }
 }

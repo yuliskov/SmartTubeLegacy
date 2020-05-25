@@ -101,6 +101,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_SUBTITLE = 2;
     private static final int UI_SHOW_TIMEOUT_LONG_MS = 5_000;
     private static final int UI_SHOW_TIMEOUT_SHORT_MS = 2_000;
+    private static final int MAX_RESTORE_RETRY_COUNT = 5;
 
     protected MyEventLogger mEventLogger;
 
@@ -115,7 +116,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private DataSource.Factory mMediaDataSourceFactory;
 
-    protected int mRetryCount;
+    protected int mRestoreRetryCount;
     protected boolean mNeedRetrySource;
     protected boolean mShouldAutoPlay;
     protected LinearLayout mPlayerTopBar;
@@ -661,8 +662,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
-        boolean isCodecError = false;
         boolean isSourceError = false;
+        boolean isDecoderError = false;
 
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
@@ -688,7 +689,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 errorString = e.getRendererException().getLocalizedMessage();
             }
 
-            isCodecError = true;
+            isDecoderError = true;
         } else if (e.type == ExoPlaybackException.TYPE_SOURCE) {
             // Response code: 403 (url not found)
             errorString = e.getSourceException().getLocalizedMessage();
@@ -713,8 +714,12 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             updateResumePosition();
         }
 
-        if (isCodecError) {
+        if (isDecoderError) {
             restorePlayback();
+
+            if (mRestoreRetryCount >= MAX_RESTORE_RETRY_COUNT) {
+                showToast(getString(R.string.exo_video_decoder_error));
+            }
         } else if (isSourceError) {
             showToast(getString(R.string.exo_video_link_error));
             // closing player
@@ -726,7 +731,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      * Trying to restore the playback without user interaction
      */
     private void restorePlayback() {
-        if (mRetryCount++ < 5) {
+        if (mRestoreRetryCount++ < MAX_RESTORE_RETRY_COUNT) {
             new Handler(Looper.getMainLooper()).postDelayed(this::initializePlayer, 500);
         }
     }

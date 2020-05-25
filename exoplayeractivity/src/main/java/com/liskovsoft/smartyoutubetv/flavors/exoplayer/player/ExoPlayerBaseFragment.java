@@ -148,13 +148,17 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         );
     }
 
+    /**
+     * NOTE: Track selection based on track bitrate
+     */
     protected void initializeTrackSelector() {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
         mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getActivity());
 
-        mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
+        mTrackSelector.setParameters(mTrackSelector.buildUponParameters()
+                .setForceHighestSupportedBitrate(true));
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
@@ -481,7 +485,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mTrackSelectionHelper = null;
         mEventLogger = null;
         mIsDurationSet = false;
-        mRetryCount = 0;
+        mRestoreRetryCount = 0;
     }
 
     // ExoPlayer.EventListener implementation
