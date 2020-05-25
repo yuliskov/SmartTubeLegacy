@@ -42,7 +42,7 @@
     <string name="view_count">Aantal views</string>
     <string name="suggested_videos">Video Suggesties</string>
     <string name="enable_autoframerate">Autoframerate</string>
-    <string name="autoframerate_not_supported">Je apparaat ondersteunt Autoframerate niet</string>
+    <string name="autoframerate_not_supported">Dit apparaat ondersteunt Autoframerate niet</string>
     <string name="share_video">Delen</string>
     <string name="send_to">Delen met</string>
     <string name="track_view_format">Track Beeldformaat</string>
@@ -57,8 +57,8 @@
     <string name="no_restrictions">Geen beperkingen</string>
     <string name="select_preferred_codec">Video preset selecteren</string>
     <string name="time_title">Datum: %1$s</string>
-    <string name="loading_view_message">LADEN...</string>
-    <string name="video_hang_msg">Video blijft hangen... oplossing aan het proberen...</string>
+    <string name="loading_view_message">Laden...</string>
+    <string name="video_hang_msg">Video blijft hangen - oplossing aan het proberen</string>
     <string name="enable_video_zoom">Video zoom activeren</string>
     <string name="option_zoom_fit_width">Breedte aanpassen</string>
     <string name="dialog_video_zoom">Zoom</string>
@@ -70,10 +70,11 @@
     <string name="option_zoom_stretch">Uitrekken</string>
     <string name="checkbox_save_speed">Snelheid bewaren</string>
     <string name="toast_format_restricted">Formaat aanpassen onmogelijk want preset is geactiveerd</string>
-    <string name="changing_video_frame_rate">Video framerate aanpassen %s...</string>
+    <string name="changing_video_frame_rate">Video framerate aanpassen %s</string>
     <string name="enable_autoframerate_pause">Video pauzeren bij aanpassen van framerate</string>
     <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Resolutie aanpassen</string>
     <string name="exo_open_player">Openen</string>
-    <string name="exo_video_link_error">Video link werkt niet - afsluiten.</string>
+    <string name="exo_video_link_error">Video link werkt niet - afsluiten</string>
+    <string name="exo_video_decoder_error">Dit apparaat ondersteunt het geselecteerde video formaat niet</string>
 </resources>
