@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -186,7 +187,17 @@ import java.util.TreeSet;
 
         // View for clearing the override to allow the selector to use its default selection logic.
 
-        mDefaultView = createRadioButton(context, R.string.selection_default, root);
+        String defaultViewTitle = mContext.getResources().getString(R.string.default_media);
+
+        if (mTrackInfo != null) {
+            int type = mTrackInfo.getRendererType(mRendererIndex);
+
+            if (type == C.TRACK_TYPE_TEXT) {
+                defaultViewTitle = mContext.getResources().getString(R.string.default_subtitle);
+            }
+        }
+
+        mDefaultView = createRadioButton(context, defaultViewTitle, root);
         append(mDefaultView, root);
 
         //////////// MERGE TRACKS FROM DIFFERENT CODECS ////////////
@@ -314,10 +325,9 @@ import java.util.TreeSet;
         new Handler(mContext.getMainLooper()).postDelayed(() -> {
             boolean defaultQualitySelected = !mIsDisabled && mOverride == null;
 
-            String title = mContext.getResources().getString(R.string.selection_default);
-            String newTitle = String.format("%s %s", title, PlayerUtil.getTrackQualityLabel(mPlayerFragment.getPlayer(), mRendererIndex));
+            String newTitle = String.format("%s %s", mDefaultView.getText(), PlayerUtil.getTrackQualityLabel(mPlayerFragment.getPlayer(), mRendererIndex));
 
-            mDefaultView.setText(defaultQualitySelected ? newTitle : title);
+            mDefaultView.setText(defaultQualitySelected ? newTitle : mDefaultView.getText());
         }, 1_000);
     }
 

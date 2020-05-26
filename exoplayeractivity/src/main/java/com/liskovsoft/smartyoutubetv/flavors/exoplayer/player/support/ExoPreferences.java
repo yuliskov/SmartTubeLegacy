@@ -60,7 +60,7 @@ public final class ExoPreferences {
      * @return track height
      */
     public int getSelectedTrackHeight() {
-        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 0);
+        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 1080);
     }
 
     public void setSelectedTrackHeight(int height) {
