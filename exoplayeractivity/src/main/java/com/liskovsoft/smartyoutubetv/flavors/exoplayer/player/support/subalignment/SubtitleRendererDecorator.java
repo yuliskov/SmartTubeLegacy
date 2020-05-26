@@ -60,7 +60,7 @@ public class SubtitleRendererDecorator implements TextOutput {
                 // disable default style
                 subtitleView.setApplyEmbeddedStyles(false);
 
-                int textColor = ContextCompat.getColor(context, R.color.sub_text_color);
+                int textColor = ContextCompat.getColor(context, R.color.sub_text_color2);
                 int outlineColor = ContextCompat.getColor(context, R.color.sub_outline_color);
                 int backgroundColor = ContextCompat.getColor(context, R.color.sub_background_color);
 
