@@ -33,7 +33,7 @@
     <string name="error_unsupported_audio">Media bevat audio, maar afspelen op dit apparaat onmogelijk</string>
     <string name="storage_permission_denied">Toegang tot apparaatopslag geweigerd</string>
     <string name="selection_disabled">Selectie uitgeschakeld</string>
-    <string name="selection_default">Standaard (optimaal)</string>
+    <string name="selection_default">Standaard</string>
     <string name="sample_list_load_error">Opladen van een of meer voorbeeldlijsten mislukt</string>
     <string name="exo_like_desc">Leuk</string>
     <string name="captions">Ondertitels</string>
@@ -54,7 +54,7 @@
     <string name="normal">Normaal</string>
     <string name="go_back">Teruggaan</string>
     <string name="btn_restrict_codec">Preset</string>
-    <string name="no_restrictions">Geen beperkingen</string>
+    <string name="no_restrictions">Geen preset</string>
     <string name="select_preferred_codec">Video preset selecteren</string>
     <string name="time_title">Datum: %1$s</string>
     <string name="loading_view_message">Laden...</string>
@@ -77,4 +77,6 @@
     <string name="exo_open_player">Openen</string>
     <string name="exo_video_link_error">Video link werkt niet - afsluiten</string>
     <string name="exo_video_decoder_error">Dit apparaat ondersteunt het geselecteerde video formaat niet</string>
+    <string name="default_subtitle">Standaard (geen)</string>
+    <string name="default_media">Standaard (optimaal)</string>
 </resources>
