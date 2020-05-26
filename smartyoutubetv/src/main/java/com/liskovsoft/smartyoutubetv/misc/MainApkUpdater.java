@@ -43,25 +43,15 @@ public class MainApkUpdater {
     }
 
     private void checkForUpdatesAfterDelay() {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            checkForStableUpdates();
-            checkForBetaUpdates();
-        }, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
+        new Handler(Looper.getMainLooper())
+                .postDelayed(this::checkForUpdates, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
     }
 
-    private void checkForStableUpdates() {
+    private void checkForUpdates() {
         if (mIsStableChecked) {
             CommonParams params = CommonParams.instance(mContext);
 
             runUpdateChecker(params.getStableUpdateUrls());
-        }
-    }
-
-    private void checkForBetaUpdates() {
-        if (mIsBetaChecked) {
-            CommonParams params = CommonParams.instance(mContext);
-
-            runUpdateChecker(params.getBetaUpdateUrls());
         }
     }
 

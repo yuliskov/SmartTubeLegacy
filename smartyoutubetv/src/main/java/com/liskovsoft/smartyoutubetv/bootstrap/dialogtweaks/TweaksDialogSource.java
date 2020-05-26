@@ -7,13 +7,11 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishHist
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishRecommendedDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishSubscriptionsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HighContrastModeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LongPressVideoMenuDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAltPlayerMappingDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAutoShowPlayerUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BackPressExitDialogItem;
-import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.BetaUpdateCheckDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOKPauseWithoutUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProOpenLinksInSimplePlayerDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProHighPlayerBufferTypeDialogItem;
@@ -54,7 +52,6 @@ public class TweaksDialogSource implements MultiDialogSource {
         //mItems.add(new UseNewUIDialogItem(mContext));
         mItems.add(new SaveSelectionDialogItem(mContext));
         mItems.add(new UpdateCheckDialogItem(mContext));
-        //mItems.add(new BetaUpdateCheckDialogItem(mContext));
         //mItems.add(new EndCardsDialogItem(mContext));
         mItems.add(new LogToFileDialogItem(mContext));
         //mItems.add(new UnplayableVideoFixDialogItem(mContext));

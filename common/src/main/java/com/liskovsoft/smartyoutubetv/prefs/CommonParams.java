@@ -50,10 +50,6 @@ public final class CommonParams {
         return mParser.getArray("stable_urls");
     }
 
-    public String[] getBetaUpdateUrls() {
-        return mParser.getArray("beta_urls");
-    }
-
     public String[] getOldPackageNames() {
         return mParser.getArray("old_package_names");
     }
