@@ -33,7 +33,7 @@
     <string name="error_unsupported_audio">Media bevat audio, maar afspelen op dit apparaat onmogelijk</string>
     <string name="storage_permission_denied">Toegang tot apparaatopslag geweigerd</string>
     <string name="selection_disabled">Selectie uitgeschakeld</string>
-    <string name="selection_default">Standaard</string>
+    <string name="selection_default">Standaard (optimaal)</string>
     <string name="sample_list_load_error">Opladen van een of meer voorbeeldlijsten mislukt</string>
     <string name="exo_like_desc">Leuk</string>
     <string name="captions">Ondertitels</string>
