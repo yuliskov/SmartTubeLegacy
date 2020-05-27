@@ -1,9 +1,14 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed;
 
 import android.content.Context;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.CombinedDialogSource;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
@@ -11,14 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpeedDialogSource implements CombinedDialogSource {
+    private static final String TAG = SpeedDialogSource.class.getSimpleName();
     private final Context mContext;
     private final SimpleExoPlayer mPlayer;
     private final ArrayList<DialogItem> mItems;
     private final ExoPreferences mPrefs;
 
-    public SpeedDialogSource(ExoPlayerFragment playerFragment) {
-        mContext = playerFragment.getActivity();
-        mPlayer = playerFragment.getPlayer();
+    public SpeedDialogSource(Context context, SimpleExoPlayer player) {
+        mContext = context;
+        mPlayer = player;
         mPrefs = ExoPreferences.instance(mContext);
 
         mItems = new ArrayList<>();
@@ -48,5 +54,29 @@ public class SpeedDialogSource implements CombinedDialogSource {
     @Override
     public String getTitle() {
         return mContext.getString(R.string.select_video_speed);
+    }
+
+    public static void handlePlayerState(int playbackState, SimpleExoPlayer player) {
+        if (player == null) {
+            return;
+        }
+
+        //if (BuildConfig.DEBUG) {
+        //    Log.d(TAG, "Player state info. Is buffering: " + (playbackState == Player.STATE_BUFFERING));
+        //    Log.d(TAG, "Player state info. ContentPosition: " + player.getContentPosition());
+        //    Log.d(TAG, "Player state info. CurrentPosition: " + player.getCurrentPosition());
+        //    Log.d(TAG, "Player state info. BufferedPosition: " + player.getBufferedPosition());
+        //    Log.d(TAG, "Player state info. ContentBufferedPosition: " + player.getContentBufferedPosition());
+        //    Log.d(TAG, "Player state info. Duration: " + player.getDuration());
+        //    Log.d(TAG, "Player state info. ContentDuration: " + player.getContentDuration());
+        //}
+
+        if (playbackState == Player.STATE_BUFFERING && player.getDuration() > 0) { // duration is initialized
+            if (player.getDuration() - player.getCurrentPosition() < 10_000) { // // seems live stream (buffering near the end)
+                Log.d(TAG, "Setting playback speed to normal...");
+                player.setPlaybackParameters(new PlaybackParameters(Float.parseFloat("1.0"), 1.0f)); // set speed to normal
+                SpeedDialogItem.sCurrentSpeed = "1.0";
+            }
+        }
     }
 }

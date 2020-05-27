@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
@@ -499,23 +500,28 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         restorePlayerStateIfNeeded();
 
-        if (playbackState == Player.STATE_ENDED && playWhenReady) {
-            Log.d(TAG, "Track ended. Closing player...");
-            onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
-        } else if (playbackState == Player.STATE_READY) {
-            for (PlayerEventListener listener : mListeners) {
-                listener.onPlaybackReady();
-            }
+        switch (playbackState) {
+            case Player.STATE_ENDED:
+                if (playWhenReady) {
+                    Log.d(TAG, "Track ended. Closing player...");
+                    onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
+                }
+                break;
+            case Player.STATE_READY:
+                for (PlayerEventListener listener : mListeners) {
+                    listener.onPlaybackReady();
+                }
 
-            //mSimpleExoPlayerView.setControllerAutoShow(true); // show ui on pause or buffering
-
-            mPlayerInitializer.initTimeBar(); // set proper time increments
-            mPlayerInitializer.initTitleQualityInfo();
+                mPlayerInitializer.initTimeBar(); // set proper time increments
+                mPlayerInitializer.initTitleQualityInfo();
+                break;
         }
 
         if (mSimpleExoPlayerView != null) {
             mSimpleExoPlayerView.setKeepScreenOn(playWhenReady && playbackState == Player.STATE_READY);
         }
+
+        SpeedDialogSource.handlePlayerState(playbackState, mPlayer);
 
         showHideLoadingMessage(playbackState);
 
@@ -612,7 +618,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource((ExoPlayerFragment) this), R.style.AppDialog);
+        CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer), R.style.AppDialog);
     }
 
     @Override
