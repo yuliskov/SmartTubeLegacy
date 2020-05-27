@@ -23,7 +23,6 @@
     <string name="update_check">Пров. обновл.</string>
     <string name="preferred_codec">Огранич.</string>
     <string name="select_preferred_codec">Ограничить кодек и разрешение</string>
-    <string name="no_restrictions">Без ограничений</string>
     <string name="old_ui">Old UI</string>
     <string name="tip_save_selection">Не показывать этот экран в следующий раз</string>
     <string name="tip_endcards">Подсказки перед окончанием видео (только 1080)</string>

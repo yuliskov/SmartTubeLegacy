@@ -19,7 +19,6 @@
     <string name="update_check">Перев. оновл.</string>
     <string name="preferred_codec">Декодер</string>
     <string name="select_preferred_codec">Обмежити кодек та чіткість</string>
-    <string name="no_restrictions">Без обмежень</string>
     <string name="tip_save_selection">Не показувати цей екран у слідуючий раз</string>
     <string name="tip_endcards">Показувати підказки наприкінці відео (тільки 1080)</string>
     <string name="tip_language">Змінити мову</string>

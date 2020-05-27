@@ -35,7 +35,6 @@
     <string name="update_check">Vérification des mises à jour</string>
     <string name="preferred_codec">Restreindre</string>
     <string name="select_preferred_codec">Restreindre codec et résolution</string>
-    <string name="no_restrictions">Pas de restrictions</string>
     <string name="old_ui">Ancienne interface utilisateur</string>
     <string name="endcards">Cartes de fin</string>
     <string name="tip_save_selection">Ne pas montrer cet écran la prochaine fois</string>

@@ -43,8 +43,7 @@
   <string name="message_install_player">Instale o MXPlayer ou o VLC</string>
   <string name="message_install_vlc_player">Por favor, instale o VLC player</string>
   <string name="next_clicked">Próximo botão clicado!</string>
-  <string name="no_restrictions">Sem restrições</string>
-  <string name="old_ui">IU antiga</string>
+    <string name="old_ui">IU antiga</string>
   <string name="open_links_in_simple_view">Abrir links no player simples</string>
   <string name="player_ui_show_timeout">Pro: Diminuir o tempo limite da exibição da interface do usuário</string>
   <string name="preferred_codec">Restringir</string>
