@@ -133,7 +133,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             initTimelinePreviews();
         }
 
-        restoreSpeed();
+        SpeedDialogSource.restoreSpeed(getActivity(), mPlayer);
     }
 
     private void initTimelinePreviews() {
@@ -624,14 +624,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     @Override
     public boolean isUiVisible() {
         return mInterfaceVisibilityState == View.VISIBLE;
-    }
-
-    private void restoreSpeed() {
-        ExoPreferences prefs = ExoPreferences.instance(getActivity());
-
-        if (prefs.getRestoreSpeed() || prefs.getForceRestoreSpeed()) {
-            mPlayer.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(prefs.getCurrentSpeed()), 1.0f));
-        }
     }
 
     private void restorePlayerStateIfNeeded() {

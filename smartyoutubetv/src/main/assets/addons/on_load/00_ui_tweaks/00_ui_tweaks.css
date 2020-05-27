@@ -21,3 +21,9 @@ div#legend > div.legend-item:not(.airstream-back) {
 #text-input input::placeholder {
     color: gray;
 }
+
+
+/* Increase readability of the stream schedule message */
+.player-supplements > .fresca-slate > .fresca-info {
+    background-color: black !important;
+}

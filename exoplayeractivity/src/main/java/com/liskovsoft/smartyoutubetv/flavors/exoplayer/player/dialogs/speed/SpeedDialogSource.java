@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.speed;
 
 import android.content.Context;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -71,12 +72,29 @@ public class SpeedDialogSource implements CombinedDialogSource {
         //    Log.d(TAG, "Player state info. ContentDuration: " + player.getContentDuration());
         //}
 
-        if (playbackState == Player.STATE_BUFFERING && player.getDuration() > 0) { // duration is initialized
-            if (player.getDuration() - player.getCurrentPosition() < 10_000) { // // seems live stream (buffering near the end)
-                Log.d(TAG, "Setting playback speed to normal...");
+        if (playbackState == Player.STATE_BUFFERING && player.getDuration() != C.TIME_UNSET) { // duration is initialized
+            // suppose live stream if buffering near the end
+            boolean isStream = Math.abs(player.getDuration() - player.getCurrentPosition()) < 10_000;
+
+            Log.d(TAG, "Is current video a stream? " + isStream);
+
+            if (isStream) {
+                Log.d(TAG, "It's a stream. Setting playback speed to normal...");
                 player.setPlaybackParameters(new PlaybackParameters(Float.parseFloat("1.0"), 1.0f)); // set speed to normal
                 SpeedDialogItem.sCurrentSpeed = "1.0";
             }
+        }
+    }
+
+    public static void restoreSpeed(Context context, SimpleExoPlayer player) {
+        if (player == null || context == null) {
+            return;
+        }
+
+        ExoPreferences prefs = ExoPreferences.instance(context);
+
+        if (prefs.getRestoreSpeed() || prefs.getForceRestoreSpeed()) {
+            player.setPlaybackParameters(new PlaybackParameters(Float.parseFloat(prefs.getCurrentSpeed()), 1.0f));
         }
     }
 }
