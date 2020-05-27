@@ -62,15 +62,15 @@ public class SpeedDialogSource implements CombinedDialogSource {
             return;
         }
 
-        //if (BuildConfig.DEBUG) {
-        //    Log.d(TAG, "Player state info. Is buffering: " + (playbackState == Player.STATE_BUFFERING));
-        //    Log.d(TAG, "Player state info. ContentPosition: " + player.getContentPosition());
-        //    Log.d(TAG, "Player state info. CurrentPosition: " + player.getCurrentPosition());
-        //    Log.d(TAG, "Player state info. BufferedPosition: " + player.getBufferedPosition());
-        //    Log.d(TAG, "Player state info. ContentBufferedPosition: " + player.getContentBufferedPosition());
-        //    Log.d(TAG, "Player state info. Duration: " + player.getDuration());
-        //    Log.d(TAG, "Player state info. ContentDuration: " + player.getContentDuration());
-        //}
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Player state info. Is buffering: " + (playbackState == Player.STATE_BUFFERING));
+            Log.d(TAG, "Player state info. ContentPosition: " + player.getContentPosition());
+            Log.d(TAG, "Player state info. CurrentPosition: " + player.getCurrentPosition());
+            Log.d(TAG, "Player state info. BufferedPosition: " + player.getBufferedPosition());
+            Log.d(TAG, "Player state info. ContentBufferedPosition: " + player.getContentBufferedPosition());
+            Log.d(TAG, "Player state info. Duration: " + player.getDuration());
+            Log.d(TAG, "Player state info. ContentDuration: " + player.getContentDuration());
+        }
 
         if (playbackState == Player.STATE_BUFFERING && player.getDuration() != C.TIME_UNSET) { // duration is initialized
             // suppose live stream if buffering near the end
