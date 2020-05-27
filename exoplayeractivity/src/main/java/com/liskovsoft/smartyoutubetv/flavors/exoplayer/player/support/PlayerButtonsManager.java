@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -32,6 +30,7 @@ public class PlayerButtonsManager {
     private Map<Integer, Boolean> mButtonStates;
     private Map<Integer, String> mOutputIdTagMapping;
     private Map<Integer, String> mInputIdTagMapping;
+    private static final int[] STANDALONE_BUTTONS = {R.id.exo_user, R.id.exo_suggestions, R.id.down_catch_button, R.id.exo_favorites};
 
     public PlayerButtonsManager(ExoPlayerBaseFragment playerFragment) {
         mPlayerFragment = playerFragment;
@@ -112,6 +111,7 @@ public class PlayerButtonsManager {
         mOutputIdTagMapping.put(R.id.exo_prev, ExoPlayerFragment.BUTTON_PREV);
         mOutputIdTagMapping.put(R.id.exo_next2, ExoPlayerFragment.BUTTON_NEXT);
         mOutputIdTagMapping.put(R.id.exo_suggestions, ExoPlayerFragment.BUTTON_SUGGESTIONS);
+        mOutputIdTagMapping.put(R.id.down_catch_button, ExoPlayerFragment.BUTTON_SUGGESTIONS);
         mOutputIdTagMapping.put(R.id.exo_favorites, ExoPlayerFragment.BUTTON_FAVORITES);
     }
 
@@ -126,12 +126,7 @@ public class PlayerButtonsManager {
     }
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
-        final int id = button.getId();
-
-        //if (id == R.id.exo_subscribe && !isChecked) {
-        //    Log.d(TAG, "Hmm. Suspicious. Subscribe button has been unchecked. Canceling unsubscribe...");
-        //    return;
-        //}
+        int id = button.getId();
 
         Log.d(TAG, "Button is checked: " + mOutputIdTagMapping.get(id) + ": " + isChecked);
 
@@ -141,8 +136,9 @@ public class PlayerButtonsManager {
         boolean isSubtitleButton = id == R.id.exo_captions;
         boolean isNextButton = id == R.id.exo_next2 && isChecked;
         boolean isPrevButton = id == R.id.exo_prev && isChecked;
-        boolean isSuggestions = id == R.id.exo_suggestions && isChecked;
+        boolean isSuggestions = (id == R.id.exo_suggestions || id == R.id.down_catch_button) && isChecked;
         boolean isShareButton = id == R.id.exo_share;
+        boolean isOpenPlayerButton = id == R.id.exo_open_player;
         boolean isRepeatButton = id == R.id.exo_repeat;
         boolean isSpeedButton = id == R.id.exo_speed;
         boolean isBackButton = id == R.id.exo_back;
@@ -163,6 +159,8 @@ public class PlayerButtonsManager {
             mPrefs.setCheckedState(id, isChecked);
         } else if (isShareButton) {
             displayShareDialog();
+        } else if (isOpenPlayerButton) {
+            openExternalPlayer();
         } else if (isUserPageButton || isSuggestions || isFavorites) {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
@@ -203,6 +201,14 @@ public class PlayerButtonsManager {
     }
 
     @TargetApi(17)
+    private void openExternalPlayer() {
+        if (mPlayerFragment.getIntent() == null)
+            return;
+
+        mPlayerFragment.openExternalPlayer(mPlayerFragment.getIntent());
+    }
+
+    @TargetApi(17)
     private void displayShareDialog2() {
         Intent openIntent = new Intent();
         openIntent.setAction(Intent.ACTION_VIEW);
@@ -239,7 +245,7 @@ public class PlayerButtonsManager {
 
         // this buttons could be clicked only in the middle of the video
         // so return one of them
-        for (int id : new int[]{R.id.exo_user, R.id.exo_suggestions, R.id.exo_favorites}) {
+        for (int id : STANDALONE_BUTTONS) {
             Boolean checked = mButtonStates.get(id);
             mButtonStates.remove(id);
             if (checked != null && checked) { // one btn could be checked at a time
@@ -260,12 +266,9 @@ public class PlayerButtonsManager {
     }
 
     private void resetState() {
-        mButtonStates.put(R.id.exo_favorites, false);
-        mButtonStates.put(R.id.exo_suggestions, false);
-        mButtonStates.put(R.id.exo_user, false);
-        mButtonStates.put(R.id.exo_back, false);
-        mButtonStates.put(R.id.exo_next2, false);
-        mButtonStates.put(R.id.exo_prev, false);
+        for (int id : STANDALONE_BUTTONS) {
+            mButtonStates.put(id, false);
+        }
     }
 
     private void initDebugButton() {
@@ -281,12 +284,9 @@ public class PlayerButtonsManager {
             return;
         }
 
-        statsButton.setOnCheckedChangeListener(new ToggleButtonBase.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
-                mPlayerFragment.showDebugView(isChecked);
-                mPrefs.setCheckedState(button.getId(), isChecked);
-            }
+        statsButton.setOnCheckedChangeListener((button, isChecked) -> {
+            mPlayerFragment.showDebugView(isChecked);
+            mPrefs.setCheckedState(button.getId(), isChecked);
         });
     }
 

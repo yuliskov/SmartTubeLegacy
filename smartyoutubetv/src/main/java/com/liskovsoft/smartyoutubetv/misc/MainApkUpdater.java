@@ -16,11 +16,16 @@ public class MainApkUpdater {
     private static final long UPDATE_CHECK_DELAY_MS = 3000;
     private boolean mIsStableChecked;
     private boolean mIsBetaChecked;
+    private final OnUpdateDialog mDialog;
+    private final AppUpdateChecker mUpdateChecker;
 
     public MainApkUpdater(Context context) {
         mContext = context;
 
         SmartPreferences prefs = SmartPreferences.instance(mContext);
+
+        mDialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
+        mUpdateChecker = new AppUpdateChecker(mContext, mDialog);
 
         switch (prefs.getBootstrapUpdateCheck()) {
             case SmartPreferences.UPDATE_CHECK_STABLE:
@@ -38,13 +43,11 @@ public class MainApkUpdater {
     }
 
     private void checkForUpdatesAfterDelay() {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            checkForStableUpdates();
-            checkForBetaUpdates();
-        }, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
+        new Handler(Looper.getMainLooper())
+                .postDelayed(this::checkForUpdates, UPDATE_CHECK_DELAY_MS); // don't show dialog instantly after load
     }
 
-    private void checkForStableUpdates() {
+    private void checkForUpdates() {
         if (mIsStableChecked) {
             CommonParams params = CommonParams.instance(mContext);
 
@@ -52,12 +55,8 @@ public class MainApkUpdater {
         }
     }
 
-    private void checkForBetaUpdates() {
-        if (mIsBetaChecked) {
-            CommonParams params = CommonParams.instance(mContext);
-
-            runUpdateChecker(params.getBetaUpdateUrls());
-        }
+    public boolean cancelPendingUpdate() {
+        return mUpdateChecker.cancelPendingUpdate();
     }
 
     private void runUpdateChecker(String[] updateUrls) {
@@ -66,9 +65,7 @@ public class MainApkUpdater {
             return;
         }
 
-        OnUpdateDialog dialog = new OnUpdateDialog(mContext, mContext.getString(R.string.app_name));
-        AppUpdateChecker updateChecker = new AppUpdateChecker(mContext, updateUrls, dialog);
-        // to minimize server payload use forceCheckForUpdatesIfStalled()
-        updateChecker.forceCheckForUpdates();
+        // To minimize server payload use forceCheckForUpdatesIfStalled()
+        mUpdateChecker.forceCheckForUpdates(updateUrls);
     }
 }

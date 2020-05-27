@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
@@ -19,7 +18,6 @@ import com.liskovsoft.sharedutils.locale.LangHelper;
 import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.common.loading.TipsLoadingManager;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
 import com.liskovsoft.smartyoutubetv.fragments.BrowserFragment;
@@ -87,6 +85,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         // for search on app boot see onAppLoaded method
 
         Log.d(TAG, "onCreate intent: " + getIntent().toUri(0)); // print all extras
+
+        Log.d(TAG, "Enabling screensaver...");
+        Helpers.enableScreensaver(this);
     }
 
     @Override
@@ -207,9 +208,10 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     public boolean dispatchKeyEvent(KeyEvent event) {
         CommonApplication.getPreferences().setLastUserInteraction(System.currentTimeMillis());
 
-        mKeyHandler.checkLongPressExit(event);
+        mKeyHandler.checkShortcut(event);
 
         if (mDisableKeyEvents || mActiveFragment == null) { // 'll be enabled again after fragment switching
+            Log.d(TAG, "Key events are disabled...");
             return true;
         }
 
@@ -229,7 +231,22 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         Log.d(TAG, "Dispatching event: " + event + ", on fragment: " + mActiveFragment.getClass().getSimpleName());
 
         mEvent = event; // give a ability to modify this event in the middle of the pipeline
-        return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || super.dispatchKeyEvent(mEvent);
+        return mVoiceBridge.onKeyEvent(mEvent) || mActiveFragment.dispatchKeyEvent(mEvent) || superDispatchKeyEventWrapper();
+    }
+
+    /**
+     * FIX: NPE in com.android.org.chromium.content.browser.ContentViewCore.dispatchKeyEvent (ContentViewCore.java:1883)
+     */
+    private boolean superDispatchKeyEventWrapper() {
+        boolean result = false;
+
+        try {
+            result = super.dispatchKeyEvent(mEvent);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
@@ -310,6 +327,10 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onPause() {
         super.onPause();
 
+        Log.d(TAG, "Disabling screensaver...");
+        Helpers.disableScreensaver(this);
+
+        mAppStateWatcher.onPause();
         CommonApplication.getPreferences().sync();
         Log.flush();
     }
@@ -318,10 +339,12 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onResume() {
         super.onResume();
 
+        mAppStateWatcher.onResume();
         Helpers.makeActivityFullscreen(this);
         Helpers.makeActivityHorizontal(this);
 
-        mAppStateWatcher.onResume();
+        Log.d(TAG, "Enabling screensaver...");
+        Helpers.enableScreensaver(this);
     }
 
     @Override
@@ -423,5 +446,22 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         // used mainly on custom builds (no bootstrap activity)
         SmartPreferences prefs = CommonApplication.getPreferences();
         Log.init(this, prefs.getLogType(), AppInfoHelpers.getActivityLabel(this, prefs.getBootActivityName()));
+    }
+
+    @Override
+    public void handleIntent(Intent intent) {
+        onNewIntent(intent);
+    }
+
+    public boolean isSimplePlayerMode() {
+        return false;
+    }
+
+    protected void onPlaybackStarted() {
+        mAppStateWatcher.onPlaybackStarted();
+    }
+
+    protected void onPlaybackStopped() {
+        mAppStateWatcher.onPlaybackStopped();
     }
 }

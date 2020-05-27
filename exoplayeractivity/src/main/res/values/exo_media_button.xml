@@ -102,6 +102,13 @@
         <item name="android:contentDescription">@string/repeat_video</item>
     </style>
 
+    <style name="ExoMediaButton2.OpenPlayer">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/exo_open_player</item>
+        <item name="imageOff">@mipmap/btn_open_player</item>
+        <item name="imageOn">@mipmap/btn_open_player</item>
+    </style>
+
     <style name="ExoMediaButton2.User">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/user_page</item>
@@ -176,6 +183,12 @@
     </style>
 
     <style name="ExoMediaButton2_UpCatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ExoMediaButton2_DownCatch">
+        <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

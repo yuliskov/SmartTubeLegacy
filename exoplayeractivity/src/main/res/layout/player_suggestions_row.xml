@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bottom_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/player_suggestions_height"
     android:layout_marginTop="4dp"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
@@ -16,7 +16,11 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextButton
+        <!--<com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageFocusButton-->
+        <!--    android:id="@+id/down_catch_button"-->
+        <!--    style="@style/ExoMediaButton2_DownCatch"/>-->
+
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextFocusButton
             android:id="@+id/exo_suggestions"
             style="@style/ExoMediaButton2.Suggestions"/>
     </LinearLayout>

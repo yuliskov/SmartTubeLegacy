@@ -27,6 +27,7 @@ public final class ExoPreferences {
     private static final String RESTORE_SPEED = "restoreSpeed";
     public static final String FORMAT_ANY = "format_any";
     private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
+    private static final String AFR_RESOLUTION_SWITCH_ENABLED = "afr_resolution_switch_enabled";
     private static final String AFR_SWITCH_PAUSE_TIME = "afr_switch_pause_time";
     private boolean mForceRestoreSpeed;
 
@@ -53,11 +54,13 @@ public final class ExoPreferences {
 
     /**
      * By default (first run or user never opened track dialog)<br/>
-     * select no more than 1080p format for legacy devices support
+     * select no more than 1080p format for legacy devices support.<br/>
+     * Set to 1080 to select fhd track by default.<br/>
+     * Set to 0 to disable any restrictions.
      * @return track height
      */
     public int getSelectedTrackHeight() {
-        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 1080); // select fhd track by default
+        return mPrefs.getInt(SELECTED_TRACK_HEIGHT, 1080);
     }
 
     public void setSelectedTrackHeight(int height) {
@@ -248,6 +251,16 @@ public final class ExoPreferences {
     public void setAfrDelayEnabled(boolean enabled) {
         mPrefs.edit()
                 .putBoolean(AFR_DELAY_ENABLED, enabled)
+                .apply();
+    }
+
+    public boolean isAfrResolutionSwitchEnabled() {
+        return mPrefs.getBoolean(AFR_RESOLUTION_SWITCH_ENABLED, false);
+    }
+
+    public void setAfrResolutionSwitchEnabled(boolean enabled) {
+        mPrefs.edit()
+                .putBoolean(AFR_RESOLUTION_SWITCH_ENABLED, enabled)
                 .apply();
     }
 

@@ -3,15 +3,16 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Browser.EngineType;
-import com.liskovsoft.sharedutils.GlobalConstants;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -22,6 +23,7 @@ import com.liskovsoft.smartyoutubetv.fragments.GenericFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerFragment;
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivity implements TwoFragmentManager {
     private static final String TAG = TwoFragmentsManagerActivity.class.getSimpleName();
@@ -29,17 +31,14 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerFragment mPlayerFragment;
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
-    private boolean mIsStandAlone;
-    private long mPauseTime;
-    private long mResumeTime;
-    private long mNewIntentTime;
+    private boolean mIsSimpleViewMode;
     private static final long INSTANT_SEARCH_TIME = 30_000;
     private ViewGroup mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        saveStandAlone(getIntent());
+        updateSimpleViewState(getIntent());
         setContentView(R.layout.activity_exo);
         getLoadingManager().show();
 
@@ -51,9 +50,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         initPlayerFragment();
         // set active but don't move top so loading won't be overlapped
         super.setActiveFragment(mBrowserFragment, true);
-
-        Log.d(TAG, "Enabling screensaver...");
-        Helpers.enableScreensaver(this);
     }
 
     protected abstract BrowserFragment getBrowserFragment();
@@ -214,6 +210,8 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             setActiveFragment(mPlayerFragment, pauseBrowser);
             mPlayerFragment.openVideo(intent);
             xwalkFix();
+
+            onPlaybackStarted();
         });
     }
 
@@ -234,27 +232,61 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     public void onPlayerAction(Intent action) {
         Log.d(TAG, "on receive player action: " + Helpers.dumpIntent(action));
 
-        if (mIsStandAlone && isClosePlayer(action)) {
-            finish();
-            return;
+        if (isClosePlayer(action)) {
+            onPlaybackStopped();
+
+            if (mIsSimpleViewMode) {
+                forceCloseAction(action);
+                moveTaskToBack(true); // don't close
+            }
         }
 
-        boolean doNotPause = isDoNotPause(action);
+        // make browser active before applying any actions to it (below)
+        setActiveFragment(mBrowserFragment, !doNotPause(action));
 
-        setActiveFragment(mBrowserFragment, !doNotPause);
+        if (mPlayerListener != null) {
+            mPlayerListener.onPlayerAction(action);
+        }
+    }
 
-        mPlayerListener.onPlayerAction(action);
+    @Override
+    public void openExternalPlayer(Intent intent) {
+        if (mPlayerListener != null) {
+            mPlayerListener.openExternalPlayer(intent);
+        }
     }
 
     private boolean isClosePlayer(Intent action) {
-        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false);
+        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false) ||
+                action.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false);
     }
 
-    private boolean isDoNotPause(Intent action) {
+    private void forceCloseAction(Intent action) {
+        action.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        action.putExtra(ExoPlayerFragment.BUTTON_NEXT, false);
+        action.putExtra(ExoPlayerFragment.BUTTON_PREV, false);
+        action.putExtra(ExoPlayerFragment.TRACK_ENDED, false);
+    }
+
+    private boolean doNotPause(Intent action) {
         return
             action.getBooleanExtra(ExoPlayerFragment.BUTTON_USER_PAGE, false)   ||
             action.getBooleanExtra(ExoPlayerFragment.BUTTON_SUGGESTIONS, false) ||
             action.getBooleanExtra(ExoPlayerFragment.BUTTON_FAVORITES, false);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // Future translation fix!
+        if (event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (getActiveFragment() == mBrowserFragment && mIsSimpleViewMode && mPlayerFragment.isStopped()) {
+                moveTaskToBack(true); // don't close
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     @Override
@@ -307,48 +339,55 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     @Override
     protected void onPause() {
         Log.d(TAG, "Pausing...");
-        mPauseTime = System.currentTimeMillis();
-
         super.onPause();
+
+        if (mIsSimpleViewMode) {
+            closeExoPlayer();
+        }
     }
 
     @Override
     protected void onResume() {
         Log.d(TAG, "Resuming...");
-        mResumeTime = System.currentTimeMillis();
-
-        checkStandAlone();
 
         super.onResume();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        boolean intentHasData = intent != null && intent.getData() != null;
+
+        // Voice search while playback fix
+        if (intentHasData && tryClosePlayer()) {
+            // Wait till exoplayer is closed
+            new Handler(Looper.myLooper())
+                    .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
+        } else {
+            onNewIntentInt(intent);
+        }
+    }
+
+    private void onNewIntentInt(Intent intent) {
         super.onNewIntent(intent);
 
         Log.d(TAG, "New intent is coming... " + intent);
 
-        mNewIntentTime = System.currentTimeMillis();
-
-        saveStandAlone(intent);
+        updateSimpleViewState(intent);
 
         if (mBrowserFragment != null) {
-            if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
-                Log.d(TAG, "Close player when handling channel url.");
-                closePlayer();
-            }
-
             mBrowserFragment.onNewIntent(intent);
         }
     }
 
-    private void closePlayer() {
+    private boolean tryClosePlayer() {
+        boolean result = false;
+
         if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
-            Intent intent = new Intent();
-            intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
-            setActiveFragment(mBrowserFragment, true);
-            mPlayerListener.onPlayerAction(intent);
+            closeExoPlayer();
+            result = true;
         }
+
+        return result;
     }
 
     @Override
@@ -358,17 +397,22 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private void saveStandAlone(Intent intent) {
-        if (intent != null && CommonApplication.getPreferences().getChannelsCloseApp()) {
-            mIsStandAlone = intent.getBooleanExtra(GlobalConstants.STANDALONE_PLAYER, false);
+    private void updateSimpleViewState(Intent intent) {
+        Log.d(TAG, "updateStandAloneState for intent: " + Helpers.dumpIntent(intent));
+
+        if (CommonApplication.getPreferences().getOpenLinksInSimplePlayer()) {
+            mIsSimpleViewMode =
+                    intent != null &&
+                            Intent.ACTION_VIEW.equals(intent.getAction()) &&
+                            !YouTubeHelpers.isChannelIntent(intent) &&
+                            !YouTubeHelpers.isSearchIntent(intent);
+        } else {
+            mIsSimpleViewMode = false;
         }
     }
 
-    private void checkStandAlone() {
-        boolean isChained = (mResumeTime - mNewIntentTime) < 1_000;
-        boolean isInstantSwitch = (mResumeTime - mPauseTime) < INSTANT_SEARCH_TIME;
-        if (isChained && isInstantSwitch) {
-            mIsStandAlone = false;
-        }
+    @Override
+    public boolean isSimplePlayerMode() {
+        return mIsSimpleViewMode;
     }
 }

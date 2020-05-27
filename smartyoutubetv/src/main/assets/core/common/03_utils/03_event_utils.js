@@ -63,8 +63,7 @@ var EventUtils = {
     addPlaybackListener: function(listener) {
         // do every time when video loads:
         window.addEventListener(DefaultEvents.HASH_CHANGE, function(){
-            var isPlayerOpened = window.location.hash.indexOf(YouTubeConstants.PLAYER_URL_KEY) != -1;
-            if (isPlayerOpened) {
+            if (YouTubeUtils.isPlayerOpened()) {
                 Utils.postSmallDelayed(listener.onPlaybackEvent, listener); // video initialized with small delay
             }
         }, false);
@@ -175,6 +174,7 @@ var EventUtils = {
 
     triggerEnter: function(elementOrSelector) {
         // simulate mouse/enter key press
+        //this.triggerEvent(elementOrSelector, DefaultEvents.KEY_DOWN, DefaultKeys.ENTER); // buggy on search page
         this.triggerEvent(elementOrSelector, DefaultEvents.KEY_UP, DefaultKeys.ENTER);
     },
 

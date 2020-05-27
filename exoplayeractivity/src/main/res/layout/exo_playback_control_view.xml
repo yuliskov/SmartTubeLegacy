@@ -16,11 +16,13 @@
               android:paddingRight="@dimen/player_main_padding"
               android:paddingTop="@dimen/player_main_padding">
 
-    <include layout="@layout/player_dummy_row"/>
+    <include layout="@layout/up_catch_row"/>
 
     <include layout="@layout/player_timebar_row_preview"/>
 
     <include layout="@layout/player_controls_row"/>
 
     <include layout="@layout/player_suggestions_row"/>
+
+    <!--<include layout="@layout/down_catch_row"/>-->
 </LinearLayout>

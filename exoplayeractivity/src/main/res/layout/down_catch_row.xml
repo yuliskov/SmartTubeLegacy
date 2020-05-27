@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dummy row (used for key catching) -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/player_second_padding"
+    android:paddingRight="@dimen/player_second_padding">
+
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextFocusButton
+        android:id="@+id/down_catch_button"
+        style="@style/ExoMediaButton2_DownCatch"
+        android:layout_height="0.1dp"/>
+
+</LinearLayout>

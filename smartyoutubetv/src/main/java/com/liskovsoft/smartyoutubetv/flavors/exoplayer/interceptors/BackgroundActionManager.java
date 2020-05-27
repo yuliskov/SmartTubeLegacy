@@ -8,15 +8,19 @@ import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 public class BackgroundActionManager {
     private static final String TAG = BackgroundActionManager.class.getSimpleName();
     private static final long SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS = 1_000;
+    private static final long VIDEO_CANCEL_TIMEOUT_MS = 1_000; // Don't increase value!
+    private static final long PLAYLIST_CANCEL_TIMEOUT_MS = 3_000; // Don't increase value!
     private static final String PARAM_VIDEO_ID = "video_id";
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
+    private static final String PARAM_MIRROR2 = "ytrcc";
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
      * see {@link ExoInterceptor#intercept(String)} method
      */
-    private long mExitTime;
+    private long mContinueTime;
+    private long mCancelTime;
     private boolean mIsOpened;
     private String mCurrentUrl;
     private boolean mSameVideo;
@@ -37,32 +41,50 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean closedRecently = (System.currentTimeMillis() - mExitTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
-
-        if (mSameVideo && (mIsOpened || closedRecently)) {
-            Log.d(TAG, "Cancel playback: Same video.");
+        if (mSameVideo && mIsOpened) {
+            Log.d(TAG, "Cancel playback: Same video while doing playback.");
             return true;
         }
 
-        boolean isNotPlaylist = getPlaylistId(mCurrentUrl) == null;
+        long curTimeMS = System.currentTimeMillis();
 
-        if (isNotPlaylist && closedRecently) {
-            Log.d(TAG, "Cancel playback: Video closed recently.");
+        boolean continueRecently = (curTimeMS - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
+
+        if (mSameVideo && continueRecently && !mIsOpened) {
+            Log.d(TAG, "Cancel playback: Same video right after close previous.");
+            return true;
+        }
+
+        boolean cancelRecently = (curTimeMS - mCancelTime) < VIDEO_CANCEL_TIMEOUT_MS;
+
+        if (cancelRecently) {
+            Log.d(TAG, "Cancel playback: User closed video recently.");
+            return true;
+        }
+
+        boolean isPlaylist = mCurrentUrl.contains("&" + PARAM_PLAYLIST_ID + "=");
+
+        // Fix playlist bug when new video opens without user interactions
+        boolean playlistCancel = isPlaylist && ((curTimeMS - mCancelTime) < PLAYLIST_CANCEL_TIMEOUT_MS);
+
+        if (playlistCancel) {
+            Log.d(TAG, "Cancel playback: User closed video recently in playlist.");
             return true;
         }
 
         return false;
     }
 
-    public void onClose() {
-        Log.d(TAG, "Video is closed");
-        mExitTime = System.currentTimeMillis();
+    public void onContinue() {
+        Log.d(TAG, "Video: on continue");
+        mContinueTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;
     }
 
     public void onCancel() {
-        Log.d(TAG, "Video is canceled");
+        Log.d(TAG, "Video: canceled");
+        mCancelTime = System.currentTimeMillis();
         //mPrevVideoId = null;
         mIsOpened = false;
     }
@@ -98,6 +120,10 @@ public class BackgroundActionManager {
 
     private boolean isMirroring(String url) {
         String mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR);
+
+        if (mirrorDeviceName == null) {
+            mirrorDeviceName = MyUrlEncodedQueryString.parse(url).get(PARAM_MIRROR2);
+        }
 
         if (mirrorDeviceName != null && !mirrorDeviceName.isEmpty()) { // any response is good
             Log.d(TAG, "The video is mirroring from the phone or tablet");

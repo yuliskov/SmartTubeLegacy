@@ -1,16 +1,18 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers;
 
-import android.content.Context;
+import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.MainApkUpdater;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcher;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase.StateHandler;
 
 public class ApkUpdaterHandler extends StateHandler {
     private final MainApkUpdater mApkUpdater;
+    private final FragmentManagerActivity mContext;
     private final AppStateWatcher mAppStateWatcher;
 
-    public ApkUpdaterHandler(Context context, AppStateWatcher appStateWatcher) {
+    public ApkUpdaterHandler(FragmentManagerActivity context, AppStateWatcher appStateWatcher) {
         mApkUpdater = new MainApkUpdater(context);
+        mContext = context;
         mAppStateWatcher = appStateWatcher;
     }
 
@@ -24,7 +26,14 @@ public class ApkUpdaterHandler extends StateHandler {
         mAppStateWatcher.addRunAfterLock(this::checkUpdates);
     }
 
+    @Override
+    public void onResume() {
+        mAppStateWatcher.addRunAfterLock(this::checkUpdates);
+    }
+
     private void checkUpdates() {
-        mApkUpdater.start();
+        if (!mContext.isSimplePlayerMode()) {
+            mApkUpdater.start();
+        }
     }
 }

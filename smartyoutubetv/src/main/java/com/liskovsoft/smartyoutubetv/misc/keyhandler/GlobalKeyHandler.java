@@ -1,36 +1,56 @@
 package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.R;
+import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 
 public class GlobalKeyHandler {
     private static final String TAG = GlobalKeyHandler.class.getSimpleName();
     private final boolean mBackPressExitEnabled;
     private final Handler mHandler;
+    private final Activity mContext;
     private final Runnable mExitAppFn;
-    private final Runnable mResetExitFn = () -> {mDoubleBackToExitPressedTimes = 0; mEnableDoubleBackExit = false;};
+    private final Runnable mResetExit = () -> mEnableDoubleBackExit = false;
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
-    private int mDoubleBackToExitPressedTimes;
     private boolean mDownPressed;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
+        mContext = ctx;
         mBackPressExitEnabled = CommonApplication.getPreferences() != null && CommonApplication.getPreferences().getEnableBackPressExit();
         mExitAppFn = () -> {
-            MessageHelpers.showMessage(ctx, R.string.close_msg);
-            ctx.finish();
+            Log.d(TAG, "Closing the app...");
+
+            mContext.moveTaskToBack(true);
         };
     }
 
-    public void checkLongPressExit(KeyEvent event) {
+    public void checkShortcut(KeyEvent event) {
+        checkLongPressExit(event);
+        checkSearchKey(event);
+    }
+
+    /**
+     * Handle searches on the bluetooth keyboard.
+     */
+    private void checkSearchKey(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_SLASH && event.getAction() == KeyEvent.ACTION_UP) {
+            if (mContext instanceof FragmentManager) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://empty.url?search_query=shortcut_pressed"));
+                ((FragmentManager) mContext).handleIntent(intent);
+            }
+        }
+    }
+
+    private void checkLongPressExit(KeyEvent event) {
         if (!mBackPressExitEnabled) {
             return;
         }
@@ -41,11 +61,9 @@ public class GlobalKeyHandler {
                         event.getKeyCode() == KeyEvent.KEYCODE_B;
 
         if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
-            if (event.getRepeatCount() == 0) { // same event fires multiple times
-                mHandler.postDelayed(mExitAppFn, BACK_PRESS_DURATION_MS);
+            if (event.getRepeatCount() == 3) { // same event fires multiple times
+                mExitAppFn.run();
             }
-        } else {
-            mHandler.removeCallbacks(mExitAppFn);
         }
     }
 
@@ -95,7 +113,6 @@ public class GlobalKeyHandler {
 
     public void checkDoubleBackExit() {
         mEnableDoubleBackExit = true;
-        mHandler.postDelayed(mResetExitFn, 1000);
     }
 
     private void checkBackPressed(KeyEvent event) {
@@ -103,29 +120,22 @@ public class GlobalKeyHandler {
             return;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            return;
-        }
-
         if (event.getKeyCode() != KeyEvent.KEYCODE_BACK &&
             event.getKeyCode() != KeyEvent.KEYCODE_B &&
             event.getKeyCode() != KeyEvent.KEYCODE_ESCAPE) {
-            mResetExitFn.run();
-            mHandler.removeCallbacks(mResetExitFn);
+            mResetExit.run();
             return;
         }
 
-        if (mDoubleBackToExitPressedTimes >= 0) {
-            // exit action
-            mExitAppFn.run();
+        if (event.getAction() == KeyEvent.ACTION_UP) { // should be UP
             return;
         }
 
-        mDoubleBackToExitPressedTimes++;
+        Log.d(TAG, "Checking double back exit...");
 
-        if (mDoubleBackToExitPressedTimes == 1) {
-            mHandler.postDelayed(mResetExitFn, 1000);
-        }
+        // exit action
+        mExitAppFn.run();
+        mResetExit.run();
     }
 
     /**
@@ -160,26 +170,4 @@ public class GlobalKeyHandler {
 
         return false;
     }
-
-    /**
-     * Ignore non-paired key up events
-     *
-     * @param event event
-     * @return is ignored
-     */
-    //private boolean isEventIgnoredOld(KeyEvent event) {
-    //    mDownPressed = mDownPressed < 0 ? 0 : mDownPressed; // do reset sometimes
-    //
-    //    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-    //        mDownPressed++;
-    //        return false;
-    //    }
-    //
-    //    if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed > 0) {
-    //        mDownPressed--;
-    //        return false;
-    //    }
-    //
-    //    return true;
-    //}
 }

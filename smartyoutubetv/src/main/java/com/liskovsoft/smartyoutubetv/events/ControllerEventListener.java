@@ -6,11 +6,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.Tab;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -19,8 +21,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injecto
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.injectors.WebViewJavaScriptInterface;
-import com.liskovsoft.smartyoutubetv.interceptors.MainRequestInterceptor;
-import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptorProcessor;
 import com.liskovsoft.smartyoutubetv.misc.ErrorTranslator;
 import com.liskovsoft.smartyoutubetv.misc.MyCookieSaver;
 import com.liskovsoft.smartyoutubetv.misc.StateUpdater;
@@ -34,27 +35,30 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
     private final DecipherRoutineInjector mDecipherInjector;
     private final GenericEventResourceInjector mGenericInjector;
     private final StateUpdater mStateUpdater;
-    private final Controller mController;
-    private final RequestInterceptor mMainInterceptor;
+    private final RequestInterceptorProcessor mInterceptorProcessor;
     private final ErrorTranslator mErrorTranslator;
     private final MyCookieSaver mCookieSaver;
 
-    public ControllerEventListener(Activity context, Controller controller) {
+    public ControllerEventListener(Activity context) {
         mContext = context;
-        mController = controller;
         mStateUpdater = new StateUpdater(null, context);
 
         // mFormatInjector = new VideoFormatInjector(mContext);
         mDecipherInjector = new DecipherRoutineInjector(mContext);
         mGenericInjector = new GenericEventResourceInjector(mContext);
         mJSInterface = new WebViewJavaScriptInterface(mContext);
-        mMainInterceptor = new MainRequestInterceptor(mContext);
+        mInterceptorProcessor = new RequestInterceptorProcessor(mContext);
         mErrorTranslator = new ErrorTranslator(mContext);
         mCookieSaver = new MyCookieSaver(mContext);
     }
 
     private FrameLayout getRootView() {
         return ((AppCompatActivity) mContext).getWindow().getDecorView().findViewById(android.R.id.content);
+    }
+
+    @Override
+    public WebResourceResponse shouldInterceptRequest(Tab tab, String url) {
+        return processRequest(url);
     }
 
     @Override
@@ -67,17 +71,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
         return null;
     }
 
-    @Override
-    public WebResourceResponse shouldInterceptRequest(Tab tab, String url) {
-        return processRequest(url);
-    }
-
     private WebResourceResponse processRequest(String url) {
-        if (mMainInterceptor.test(url)) {
-            return mMainInterceptor.intercept(url);
-        }
-
-        return null;
+        return mInterceptorProcessor.process(url);
     }
 
     @Override
@@ -103,7 +98,8 @@ public class ControllerEventListener implements Controller.EventListener, Tab.Ev
      * I've got a mistake. I tried to wait {@link #onPageFinished(Tab, String) onPageFinished} event. DO NOT DO THIS.
      * <br/>
      * <a href="https://stackoverflow.com/questions/13773037/webview-geturl-returns-null-because-page-not-done-loading">More info</a>
-     * @param tab tab
+     *
+     * @param tab       tab
      * @param errorCode see {@link android.webkit.WebViewClient} for details
      */
     @Override

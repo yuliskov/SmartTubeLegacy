@@ -2,8 +2,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +23,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
@@ -46,13 +45,11 @@ import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
@@ -68,6 +65,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDa
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.MyDefaultRenderersFactory;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.SubtitleRendererDecorator;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.TextToggleButton;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
@@ -103,6 +101,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     public static final int RENDERER_INDEX_SUBTITLE = 2;
     private static final int UI_SHOW_TIMEOUT_LONG_MS = 5_000;
     private static final int UI_SHOW_TIMEOUT_SHORT_MS = 2_000;
+    private static final int MAX_RESTORE_RETRY_COUNT = 5;
 
     protected MyEventLogger mEventLogger;
 
@@ -117,7 +116,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
     private DataSource.Factory mMediaDataSourceFactory;
 
-    protected int mRetryCount;
+    protected int mRestoreRetryCount;
     protected boolean mNeedRetrySource;
     protected boolean mShouldAutoPlay;
     protected LinearLayout mPlayerTopBar;
@@ -186,27 +185,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
         mPlayerTopBar.setVisibility(View.GONE);
 
-        configureSubtitleView();
-    }
-
-    private void configureSubtitleView() {
-        if (mSimpleExoPlayerView != null) {
-            SubtitleView subtitleView = mSimpleExoPlayerView.getSubtitleView();
-
-            if (subtitleView != null) {
-                // disable default style
-                subtitleView.setApplyEmbeddedStyles(false);
-
-                int defaultSubtitleColor = Color.argb(255, 218, 218, 218);
-                int outlineColor = Color.argb(255, 43, 43, 43);
-                CaptionStyleCompat style =
-                        new CaptionStyleCompat(defaultSubtitleColor,
-                                Color.TRANSPARENT, Color.TRANSPARENT,
-                                CaptionStyleCompat.EDGE_TYPE_OUTLINE,
-                                outlineColor, Typeface.DEFAULT);
-                subtitleView.setStyle(style);
-            }
-        }
+        SubtitleRendererDecorator.configureSubtitleView(mSimpleExoPlayerView);
     }
 
     public void setIntent(Intent intent) {
@@ -228,16 +207,21 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
 
             mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), getRenderersFactory(), mTrackSelector, getLoadControl(), getDrmManager(intent), BANDWIDTH_METER);
 
+            enableAudioFocus(mPlayer);
+
             //Log.d(TAG, "High Bit Depth supported ? " + VpxLibrary.isHighBitDepthSupported());
 
             mPlayer.addListener(this);
-            mPlayer.addListener(mEventLogger);
-            mPlayer.setAudioDebugListener(mEventLogger);
-            mPlayer.setVideoDebugListener(mEventLogger);
-            mPlayer.setMetadataOutput(mEventLogger);
-
+            
             if (BuildConfig.DEBUG) {
+                mPlayer.addListener(mEventLogger);
+                mPlayer.setAudioDebugListener(mEventLogger);
+                mPlayer.setVideoDebugListener(mEventLogger);
+                mPlayer.addMetadataOutput(mEventLogger);
+
                 mPlayer.addAnalyticsListener(new EventLogger(mTrackSelector));
+
+                //mPlayer.addAnalyticsListener(new PlaybackStatsListener(true, (eventTime, playbackStats) -> Log.d("PlaybackStatsListener", playbackStats)));
             }
 
             mSimpleExoPlayerView.setPlayer(mPlayer);
@@ -267,6 +251,17 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 Log.d(TAG, "Video extract starting...");
                 mExtractStartMS = System.currentTimeMillis();
             }
+        }
+    }
+
+    private void enableAudioFocus(SimpleExoPlayer player) {
+        if (player != null) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.CONTENT_TYPE_MOVIE)
+                    .build();
+
+            player.setAudioAttributes(audioAttributes, true);
         }
     }
 
@@ -366,14 +361,22 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     private DefaultLoadControl getLoadControl() {
         DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
 
-        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_MEDIUM)) {
-            int minBufferMs = DefaultLoadControl.DEFAULT_MIN_BUFFER_MS;
-            int maxBufferMs = DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 2;
-            int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
-            int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
+        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH)) {
             //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
-            baseBuilder.setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs);
+            baseBuilder.setBufferDurationsMs(
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
+        } else if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW)) {
+            baseBuilder.setBufferDurationsMs(
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 3,
+                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS / 3);
         }
+
+        // medium buffer by default
 
         return baseBuilder.createDefaultLoadControl();
     }
@@ -503,6 +506,11 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
+        if (mpdContent == null || mpdContent.isEmpty()) {
+            Log.e(TAG, "Can't build media source. MpdContent is null or empty. " + mpdContent);
+            return null;
+        }
+
         // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
         DashMediaSource dashSource = new DashMediaSource.Factory(
                 new DefaultDashChunkSource.Factory(mMediaDataSourceFactory),
@@ -654,7 +662,8 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     @Override
     public void onPlayerError(ExoPlaybackException e) {
         String errorString = null;
-        boolean isCodecError = false;
+        boolean isSourceError = false;
+        boolean isDecoderError = false;
 
         if (e.type == ExoPlaybackException.TYPE_RENDERER) {
             Exception cause = e.getRendererException();
@@ -676,18 +685,25 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
                 //} else {
                 //    errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
                 //}
+            } else {
+                errorString = e.getRendererException().getLocalizedMessage();
             }
 
-            isCodecError = true;
+            isDecoderError = true;
         } else if (e.type == ExoPlaybackException.TYPE_SOURCE) {
-            // Response code: 403
+            // Response code: 403 (url not found)
             errorString = e.getSourceException().getLocalizedMessage();
+            isSourceError = true;
         } else if (e.type == ExoPlaybackException.TYPE_UNEXPECTED) {
             errorString = e.getUnexpectedException().getLocalizedMessage();
         }
 
-        if (errorString != null && !getHidePlaybackErrors()) {
-            showToast(errorString);
+        if (errorString != null) {
+            Log.e(TAG, "Playback error: " + errorString);
+
+            if (!getHidePlaybackErrors()) {
+                showToast(errorString);
+            }
         }
 
         mNeedRetrySource = true;
@@ -696,12 +712,18 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
             clearResumePosition();
         } else {
             updateResumePosition();
-            // show retry button to the options
-            //updateButtonVisibilities();
         }
 
-        if (isCodecError) {
+        if (isDecoderError) {
             restorePlayback();
+
+            if (mRestoreRetryCount >= MAX_RESTORE_RETRY_COUNT) {
+                showToast(getString(R.string.exo_video_decoder_error));
+            }
+        } else if (isSourceError) {
+            showToast(getString(R.string.exo_video_link_error));
+            // closing player
+            onBackPressed();
         }
     }
 
@@ -709,7 +731,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      * Trying to restore the playback without user interaction
      */
     private void restorePlayback() {
-        if (mRetryCount++ < 5) {
+        if (mRestoreRetryCount++ < MAX_RESTORE_RETRY_COUNT) {
             new Handler(Looper.getMainLooper()).postDelayed(this::initializePlayer, 500);
         }
     }

@@ -11,6 +11,7 @@ public class HeaderManager {
     private final SmartPreferences mPrefs;
     private HashMap<String, String> mHeaders;
     private String mRootUrl = "https://www.youtube.com/tv";
+    private String mOriginUrl = "https://www.youtube.com";
 
     // this values will be changed over time
     private static final String AD_SIGNALS =
@@ -19,7 +20,9 @@ public class HeaderManager {
     private static final String PAGE_CL = "291117384";
     private static final String PAGE_LABEL = "youtube.ytfe.desktop_20200122_2_RC1";
 
-    private static final String ACCEPT_COMPRESSION = "gzip, deflate";
+    // Compression doesn't supported by ExoPlayer
+    // private static final String ACCEPT_COMPRESSION = "gzip, deflate";
+    private static final String ACCEPT_COMPRESSION = "identity"; // no compression
     private static final String ACCEPT_PATTERN = "*/*";
     private static final String ORIGINAL_PACKAGE = "com.google.android.youtube.tv";
 
@@ -39,6 +42,7 @@ public class HeaderManager {
     private void initHeaders() {
         mHeaders = new HashMap<>();
 
+        mHeaders.put("Origin", mOriginUrl);
         mHeaders.put("Referer", mRootUrl);
         mHeaders.put("User-Agent", new UserAgentManager().getUA());
         mHeaders.put("Accept-Language", new LangUpdater(mContext).getPreferredBrowserLocale());
@@ -46,15 +50,20 @@ public class HeaderManager {
         mHeaders.put("Accept", ACCEPT_PATTERN);
 
         mHeaders.put("X-Requested-With", ORIGINAL_PACKAGE);
-        mHeaders.put("X-YouTube-Client-Name", "TVHTML5");
-        mHeaders.put("X-YouTube-Utc-Offset", "120");
-        mHeaders.put("X-Youtube-Time-Zone", "Europe/Athens");
+
+        // cause empty response from video_info with unlocked hls streams (c=HTML5)
+        //mHeaders.put("X-YouTube-Client-Name", "TVHTML5");
+
+        // DO I NEED HEADERS BELOW?
+
+        //mHeaders.put("X-YouTube-Utc-Offset", "120");
+        //mHeaders.put("X-Youtube-Time-Zone", "Europe/Athens");
 
         // this headers will be changed over time
-        mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
-        mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
-        mHeaders.put("X-YouTube-Page-CL", PAGE_CL);
-        mHeaders.put("X-YouTube-Page-Label", PAGE_LABEL);
+        //mHeaders.put("X-YouTube-Ad-Signals", AD_SIGNALS);
+        //mHeaders.put("X-YouTube-Client-Version", CLIENT_VERSION);
+        //mHeaders.put("X-YouTube-Page-CL", PAGE_CL);
+        //mHeaders.put("X-YouTube-Page-Label", PAGE_LABEL);
     }
 
     private void updateHeaders() {
@@ -68,6 +77,12 @@ public class HeaderManager {
 
         if (cookies != null) {
             mHeaders.put("Cookie", cookies);
+        }
+
+        String visitorId = mPrefs.getVisitorIdHeader(); // DON'T CACHE: value changed over time
+
+        if (visitorId != null) {
+            mHeaders.put("X-Goog-Visitor-Id", visitorId);
         }
     }
 }

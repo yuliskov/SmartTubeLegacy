@@ -20,10 +20,17 @@ public class CacheCleanHandler extends StateHandler {
         new CacheManager(mContext).clearCache();
     }
 
-    @Override
-    public void onFirstRun() {
-        Log.d(TAG, "App might be upgraded from older version. Removing cache files...");
+    //@Override
+    //public void onInit() {
+    //    Log.d(TAG, "App has been started. Removing cache files...");
+    //
+    //    new CacheManager(mContext).clearCache();
+    //}
 
-        new CacheManager(mContext).clearCache();
-    }
+    //@Override
+    //public void onFirstRun() {
+    //    Log.d(TAG, "App might be upgraded from older version. Removing cache files...");
+    //
+    //    new CacheManager(mContext).clearCache();
+    //}
 }

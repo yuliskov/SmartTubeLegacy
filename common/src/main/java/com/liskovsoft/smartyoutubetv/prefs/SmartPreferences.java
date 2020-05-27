@@ -27,7 +27,9 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String LOG_TYPE = "log_type2";
     private static final String PLAYBACK_WORKING_KEY = "playback_working_key";
     private static final String ANIMATED_PREVIEWS = "animated_previews";
+    private static final String HIGH_CONTRAST_MODE = "high_contrast_mode";
     public static final String MUSIC_PAGE = "music_page";
+    public static final String HISTORY_PAGE = "history_page";
     public static final String SUBSCRIPTIONS_PAGE = "subscriptions_page";
     public static final String WATCH_LATER_PAGE = "watch_later_page";
     public static final String DEFAULT_PAGE = "default_page";
@@ -56,11 +58,17 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String AD_BLOCK_DISABLED = "ad_block_disabled";
     public static final String AD_BLOCK_UNDEFINED = "ad_block_undefined";
     private static final String DECREASE_PLAYER_UI_TIMEOUT = "decrease_player_ui_timeout";
-    private static final String CHANNELS_CLOSE_APP = "channels_close_app";
+    private static final String OPEN_LINKS_IN_SIMPLE_VIEW = "open_links_in_simple_view";
     private static final String PLAYER_BUFFER_TYPE = "player_buffer_type";
     public static final String PLAYER_BUFFER_TYPE_LOW = "player_buffer_type_low";
     public static final String PLAYER_BUFFER_TYPE_MEDIUM = "player_buffer_type_medium";
-    public static final String PLAYER_BUFFER_TYPE_BIG = "player_buffer_type_big";
+    public static final String PLAYER_BUFFER_TYPE_HIGH = "player_buffer_type_high";
+    private static final String ENABLE_VIDEO_MENU = "enable_video_menu";
+    private static final String ENABLE_ANIMATED_UI = "enable_animated_ui";
+    private static final String OK_PAUSE_TYPE = "ok_pause_type";
+    public static final String OK_PAUSE_WITH_UI = "ok_pause_with_ui";
+    public static final String OK_PAUSE_NONE = "ok_pause_none";
+    public static final String OK_PAUSE_WITHOUT_UI = "ok_pause_without_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -83,6 +91,8 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private long mVideoOpenTimeMS;
     private String mVideoSrc;
     private long mVideoActionTimeMS;
+    private String mVisitorIdHeader;
+    private String mInterceptUserAgent;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -234,6 +244,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(ANIMATED_PREVIEWS, enable);
     }
 
+    public boolean getEnableHighContrastMode() {
+        return getBoolean(HIGH_CONTRAST_MODE, false);
+    }
+
+    public void setEnableHighContrastMode(boolean enable) {
+        putBoolean(HIGH_CONTRAST_MODE, enable);
+    }
+
     public boolean isAppJustInstalled() {
         boolean justInstalled = getBoolean(IS_APP_JUST_INSTALLED, true);
 
@@ -357,6 +375,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(AUTO_SHOW_PLAYER_UI, checked);
     }
 
+    public String getOKPauseType() {
+        return getString(OK_PAUSE_TYPE, OK_PAUSE_WITH_UI);
+    }
+
+    public void setOKPauseType(String pauseType) {
+        putString(OK_PAUSE_TYPE, pauseType);
+    }
+
     // NOT PERSISTENT SETTINGS
 
     public long getLastUserInteraction() {
@@ -373,6 +399,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public String getAuthorizationHeader() {
         return mAuthorizationHeader;
+    }
+
+    public void setVisitorIdHeader(String header) {
+        mVisitorIdHeader = header;
+    }
+
+    public String getVisitorIdHeader() {
+        return mVisitorIdHeader;
     }
 
     public void setCookieHeader(String header) {
@@ -452,6 +486,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         return mVideoOpenTimeMS;
     }
 
+    public boolean isAdBlockEnabled() {
+        String adBlockStatus = getAdBlockStatus();
+
+        return AD_BLOCK_ENABLED.equals(adBlockStatus) || AD_BLOCK_UNDEFINED.equals(adBlockStatus);
+    }
+
     public String getAdBlockStatus() {
         return getString(AD_BLOCK_STATUS, AD_BLOCK_ENABLED);
     }
@@ -468,12 +508,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
         putBoolean(DECREASE_PLAYER_UI_TIMEOUT, checked);
     }
 
-    public boolean getChannelsCloseApp() {
-        return getBoolean(CHANNELS_CLOSE_APP, false);
+    public boolean getOpenLinksInSimplePlayer() {
+        return getBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, false);
     }
 
-    public void setChannelsCloseApp(boolean checked) {
-        putBoolean(CHANNELS_CLOSE_APP, checked);
+    public void setOpenLinksInSimpleView(boolean checked) {
+        putBoolean(OPEN_LINKS_IN_SIMPLE_VIEW, checked);
     }
 
     public String getPlayerBufferType() {
@@ -482,5 +522,29 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public void setPlayerBufferType(String playerBufferType) {
         putString(PLAYER_BUFFER_TYPE, playerBufferType);
+    }
+
+    public void setInterceptUserAgent(String userAgent) {
+        mInterceptUserAgent = userAgent;
+    }
+
+    public String getInterceptUserAgent() {
+        return mInterceptUserAgent;
+    }
+
+    public boolean getEnableVideoMenu() {
+        return getBoolean(ENABLE_VIDEO_MENU, false);
+    }
+
+    public void setEnableVideoMenu(boolean enable) {
+        putBoolean(ENABLE_VIDEO_MENU, enable);
+    }
+
+    public boolean getEnableAnimatedUI() {
+        return getBoolean(ENABLE_ANIMATED_UI, false);
+    }
+
+    public void setEnableAnimatedUI(boolean enable) {
+        putBoolean(ENABLE_ANIMATED_UI, enable);
     }
 }

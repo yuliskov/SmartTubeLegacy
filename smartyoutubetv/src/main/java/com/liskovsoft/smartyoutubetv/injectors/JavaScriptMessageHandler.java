@@ -27,6 +27,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_POST_DATA = "message_post_data";
     private final static String MESSAGE_HIGH_CONTRAST_ENABLED = "message_high_contrast_enabled";
     private final static String MESSAGE_VIDEO_OPEN_TIME = "message_video_open_time";
+    private final static String MESSAGE_VISITOR_ID_HEADER = "message_visitor_id_header";
     private final Context mContext;
     private final SmartPreferences mPrefs;
 
@@ -49,8 +50,10 @@ public class JavaScriptMessageHandler {
                 updater.update();
                 break;
             case MESSAGE_AUTHORIZATION_HEADER:
-                SmartPreferences prefs = SmartPreferences.instance(mContext);
-                prefs.setAuthorizationHeader(content);
+                mPrefs.setAuthorizationHeader(content);
+                break;
+            case MESSAGE_VISITOR_ID_HEADER:
+                mPrefs.setVisitorIdHeader(content);
                 break;
             case MESSAGE_ENABLE_SCREENSAVER:
                 Helpers.enableScreensaver((Activity) mContext);

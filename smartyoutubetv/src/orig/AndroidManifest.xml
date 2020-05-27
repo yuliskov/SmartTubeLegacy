@@ -72,6 +72,8 @@
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
                   android:windowSoftInputMode="adjustResize"
                   android:noHistory="true"
+                  android:excludeFromRecents="true"
+                  android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
                   tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -122,36 +124,44 @@
         <!-- Flavours -->
         <activity
             android:name=".flavors.webview.SmartYouTubeTV1080Activity"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_webview"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Lite Main"/>
         </activity>
         <activity
             android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_xwalk"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Lite Alt"/>
         </activity>
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4K"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_main"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:exported="true"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Pro Main"/>
         </activity>
         <activity
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
-            android:label="@string/title_exo_alt"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Pro Alt"/>
         </activity>
         <!-- End Flavours -->
 
@@ -160,16 +170,19 @@
         <activity-alias
             android:targetActivity=".bootstrap.BootstrapActivity"
             android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
-            android:allowTaskReparenting="true"
-            android:taskAffinity="com.liskovsoft.smartyoutubetv"
-            android:launchMode="singleTask"
-            android:alwaysRetainTaskState="true"
+            android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
             android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:exported="true"
+            tools:node="replace">
         </activity-alias>
 
-        <receiver android:name=".receivers.ClearCacheReceiver" android:exported="true">
+        <receiver
+            android:name=".receivers.ClearCacheReceiver"
+            android:exported="true"
+            tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.CLEAR_CACHE"/>
                 <category android:name="android.intent.category.DEFAULT"/>

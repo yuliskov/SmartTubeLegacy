@@ -10,8 +10,10 @@
         <item>Arabic|ar</item>
         <item>Hebrew|he</item>
         <item>Spanish|es</item>
+        <item>Português Brasileiro|pt_BR</item>
         <item>Français|fr</item>
         <item>Nederlands|nl</item>
         <item>Czech|cs</item>
+        <item>Italiano|it</item>
     </string-array>
 </resources>

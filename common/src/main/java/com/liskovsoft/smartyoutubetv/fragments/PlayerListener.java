@@ -4,4 +4,5 @@ import android.content.Intent;
 
 public interface PlayerListener {
     void onPlayerAction(Intent intent);
+    void openExternalPlayer(Intent intent);
 }

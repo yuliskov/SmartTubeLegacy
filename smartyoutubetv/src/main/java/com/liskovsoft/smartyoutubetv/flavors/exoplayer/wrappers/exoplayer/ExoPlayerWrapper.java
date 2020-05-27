@@ -16,6 +16,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInter
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer.ExternalPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
@@ -25,9 +26,7 @@ import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerListener {
     private static final String TAG = ExoPlayerWrapper.class.getSimpleName();
@@ -50,11 +49,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private static final String ACTION_DISABLE_KEY_EVENTS = "action_disable_key_events";
     private static final long BROWSER_INIT_TIME_MS = 10_000;
     private final Runnable mPauseBrowser;
+    private boolean mDoPauseBrowser;
     private final Handler mHandler;
     private boolean mBlockHandlers;
     private VideoMetadata mMetadata;
     private boolean mPlayerClosed;
     private Uri mDashUrl;
+    private Intent mExoIntent;
+    private ExternalPlayerWrapper mExternalPlayerWrapper;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -68,14 +70,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             switch (action) {
                 case ACTION_CLOSE_SUGGESTIONS:
                     returnToPlayer();
-                case ACTION_DISABLE_KEY_EVENTS:
-                    mFragmentsManager.disableKeyEvents();
+                //case ACTION_DISABLE_KEY_EVENTS:
+                //    mFragmentsManager.disableKeyEvents();
             }
         }
 
         private void returnToPlayer() {
             mHandler.post(() -> {
-                if (mCachedIntent != null) {
+                if (mCachedIntent != null && !mPlayerClosed) {
                     Log.d(TAG, "Switching to the running player from suggestions or user's page");
                     prepareAndOpenExoPlayer(null); // player should already be running so pass null
                 }
@@ -103,8 +105,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
                 return;
             }
 
-            boolean pauseBrowser = !mManager.isMirroring();
-            mFragmentsManager.openExoPlayer(null, pauseBrowser);
+            mDoPauseBrowser = !mManager.isMirroring();
+            startPlayer();
         };
 
         mHandler = new Handler(Looper.getMainLooper());
@@ -112,16 +114,18 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     @Override
     public void onStart() {
+        cleanup();
         mPlayerClosed = false;
         mBlockHandlers = true;
+        mDoPauseBrowser = false;
         clearPendingEvents();
-        mFragmentsManager.openExoPlayer(null, false);
+        startPlayer();
     }
 
-    //@Override
-    //public void onDashUrlFound(Uri dashUrl) {
-    //    mDashUrl = dashUrl;
-    //}
+    @Override
+    public void onDashUrlFound(Uri dashUrl) {
+        mDashUrl = dashUrl;
+    }
 
     @Override
     public void onHLSFound(final Uri hlsUrl) {
@@ -156,6 +160,19 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     @Override
     public void onMetadata(VideoMetadata metadata) {
         mMetadata = metadata;
+
+        if (metadata != null && mExoIntent != null) { // called async
+            startPlayer(metadata.toIntent());
+        }
+    }
+
+    @Override
+    public void onFalseCall() {
+        if (!mPlayerClosed) {
+            startPlayer();
+        } else { // browser's player could be running in background
+            sendClose();
+        }
     }
 
     @Override
@@ -167,10 +184,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Sample sample = null;
 
-        if (mDashUrl != null) {
-            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
-        } else if (mHlsUrl != null) {
+        if (mHlsUrl != null) {
             sample = SampleHelpers.buildFromHlsUri(mHlsUrl);
+        } else if (mDashUrl != null) {
+            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
         } else if (mMpdContent != null) {
             sample = SampleHelpers.buildFromMPDPlaylist(mMpdContent);
         }
@@ -184,9 +201,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         Log.d(TAG, "Video info has been parsed... opening exoplayer...");
 
-        Intent exoIntent = createExoIntent(sample, mInfo);
-        prepareAndOpenExoPlayer(exoIntent);
-        cleanup();
+        mExoIntent = createExoIntent(sample, mInfo);
+        prepareAndOpenExoPlayer(mExoIntent);
     }
 
     private void cleanup() {
@@ -194,6 +210,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mHlsUrl = null;
         mMpdContent = null;
         mSpec = null;
+        mExoIntent = null;
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {
@@ -226,10 +243,14 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             if (mHistory != null) {
                 mHistory.onStart(); // notify that we about to open new video
             }
+
+            //Intent intent = new Intent();
+            //intent.putExtra(ExoPlayerFragment.VIDEO_STARTED, true);
+            //mActionSender.bindActions(intent);
         }
 
         CommonApplication.getPreferences().setMirrorEnabled(mManager.isMirroring());
-        mFragmentsManager.openExoPlayer(playerIntent, false); // pause every time, except when mirroring
+        startPlayer(playerIntent); // pause every time, except when mirroring
 
         // give the browser time to initialization
         //mHandler.postDelayed(mPauseBrowser, BROWSER_INIT_TIME_MS);
@@ -240,15 +261,16 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mBlockHandlers = true;
         clearPendingEvents();
 
-        boolean closePlayer =
-                intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
-                intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false);
-
-        if (closePlayer) {
+        if (intent.getBooleanExtra(ExoPlayerFragment.TRACK_ENDED, false) ||
+            intent.getBooleanExtra(ExoPlayerFragment.BUTTON_NEXT, false) ||
+            intent.getBooleanExtra(ExoPlayerFragment.BUTTON_PREV, false)) {
+            cleanup();
             mPlayerClosed = true;
-            mManager.onClose();
+            mManager.onContinue();
+        } else if (intent.getBooleanExtra(ExoPlayerFragment.BUTTON_BACK, false)) {
+            cleanup();
+            mPlayerClosed = true;
+            mManager.onCancel();
         }
 
         if (mHistory != null) {
@@ -260,5 +282,28 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
     private void clearPendingEvents() {
         mHandler.removeCallbacks(mPauseBrowser);
+    }
+
+    private void startPlayer() {
+        mFragmentsManager.openExoPlayer(null, mDoPauseBrowser);
+    }
+
+    private void startPlayer(Intent intent) {
+        mFragmentsManager.openExoPlayer(intent, mDoPauseBrowser);
+    }
+
+    @Override
+    public void openExternalPlayer(Intent intent) {
+        if (mExternalPlayerWrapper == null) {
+            mExternalPlayerWrapper = ExternalPlayerWrapper.create(mContext, mInterceptor);
+        }
+
+        mExternalPlayerWrapper.openFromIntent(intent);
+    }
+
+    private void sendClose() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
+        mActionSender.bindActions(intent);
     }
 }

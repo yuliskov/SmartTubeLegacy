@@ -7,11 +7,11 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import java.io.InputStream;
 
 public class JsonBrowseParser {
-    // Select one or zero objects with property 'tvMastheadRenderer'
-    private static final String TV_MASTHEAD_SECTION =
-            "$.contents.tvBrowseRenderer.content.tvSurfaceContentRenderer.content.sectionListRenderer.contents[?(@.tvMastheadRenderer)]";
+    // All objects with property 'tvMastheadRenderer'
+    // ex: https://github.com/json-path/JsonPath
+    private static final String TV_MASTHEAD_SECTION_ANY = "$..[?(@.tvMastheadRenderer)]";
+
     private final DocumentContext mParser;
-    private boolean mRemoveMustHead;
 
     public JsonBrowseParser(InputStream content) {
         mParser = ParserUtils.createJsonInfoParser(content);
@@ -21,21 +21,18 @@ public class JsonBrowseParser {
         return new JsonBrowseParser(content);
     }
 
-    public boolean canRemoveMustHead() {
-        return ParserUtils.exists(TV_MASTHEAD_SECTION, mParser);
-    }
+    public boolean removeMastHead() {
+        boolean result = false;
 
-    public JsonBrowseParser removeMustHead() {
-        mRemoveMustHead = true;
-
-        return this;
-    }
-
-    public InputStream build() {
-        if (mRemoveMustHead) {
-            ParserUtils.delete(TV_MASTHEAD_SECTION, mParser);
+        if (ParserUtils.exists(TV_MASTHEAD_SECTION_ANY, mParser)) {
+            ParserUtils.delete(TV_MASTHEAD_SECTION_ANY, mParser);
+            result = true;
         }
 
+        return result;
+    }
+
+    public InputStream toStream() {
         return Helpers.toStream(mParser.jsonString());
     }
 }

@@ -162,7 +162,7 @@ var YouTubeUtils = {
         var isClosed =
             Utils.hasClass(watch, YouTubeClasses.WATCH_IDLE_CLASS) ||
             Utils.hasClass(watch, YouTubeClasses.NO_MODEL);
-        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch.className);
+        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch ? watch.className : null);
         return isClosed;
     },
 
@@ -174,10 +174,18 @@ var YouTubeUtils = {
         return isOpened;
     },
 
+    isPlayerSuggestionsShown: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
+    },
+
     isSearchOpened: function() {
         var isOpened = this.isPageOpened(YouTubeSelectors.SEARCH_PAGE);
         Log.d(this.TAG, "Search is opened?: " + isOpened);
         return isOpened;
+    },
+
+    isSearchFieldFocused: function() {
+        return this.isSearchOpened() && document.activeElement != null && document.activeElement.nodeName == 'INPUT';
     },
 
     isChannelOpened: function() {
@@ -248,7 +256,6 @@ var YouTubeUtils = {
     },
 
     triggerBack: function() {
-        // EventUtils.triggerEvent(YouTubeSelectors.APP_ROOT, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
     },
 
@@ -260,11 +267,72 @@ var YouTubeUtils = {
     },
 
     closePlayerControls: function() {
-        if (!this.isPlayerControlsClosed()) {
-            Log.d(this.TAG, "Closing player ui...");
+        if (this.isOverlayOpened()) {
+            Log.d(this.TAG, "Closing player favorites...");
+
+            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        } else if (!this.isPlayerControlsClosed()) {
+            Log.d(this.TAG, "Closing player suggestions...");
 
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
+    },
+
+    pressBack: function() {
+        if (this.isPlayerOpened()) {
+            Log.d(this.TAG, "Pressing BACK...");
+
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+        }
+    },
+
+    isExoPlayerOpen: function() {
+        return this.sExoPlayerOpen;
+    },
+
+    moveRight: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.RIGHT);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.RIGHT);
+        }
+    },
+
+    moveUp: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.UP);
+        }
+    },
+
+    togglePlayerOptions: function() {
+        var el = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
+
+        if (el) {
+            EventUtils.triggerEnter(el); // click on options button
+        } else {
+            Log.e(this.TAG, "Oops. Player options button not found!!");
+        }
+    },
+
+    resetPlayerOptions: function() {
+        if (Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON_TOGGLED)) { // options opened before
+            this.togglePlayerOptions(); // click on options button
+        }
+    },
+
+    resetFocus: function() {
+        var root = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
+
+        root && root.focus();
+    },
+
+    dumpUiState: function() {
+        Log.d(this.TAG, "Is player opened: " + this.isPlayerOpened());
+        Log.d(this.TAG, "Is player controls opened: " + !this.isPlayerControlsClosed());
+        Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsShown());
+        Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
     }
 };

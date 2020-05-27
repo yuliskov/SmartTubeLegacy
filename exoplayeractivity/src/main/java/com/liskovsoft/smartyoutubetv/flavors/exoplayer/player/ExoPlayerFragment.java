@@ -174,6 +174,11 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
     }
 
     @Override
+    public boolean isStopped() {
+        return isPlaybackStopped();
+    }
+
+    @Override
     public int getState() {
         return mState;
     }

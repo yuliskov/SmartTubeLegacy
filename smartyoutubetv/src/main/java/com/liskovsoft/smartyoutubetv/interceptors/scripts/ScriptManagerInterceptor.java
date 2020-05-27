@@ -2,33 +2,41 @@ package com.liskovsoft.smartyoutubetv.interceptors.scripts;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ContentFilter;
 import com.liskovsoft.smartyoutubetv.webscripts.MainCachedScriptManager;
 import com.liskovsoft.smartyoutubetv.webscripts.ScriptManager;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 import java.io.InputStream;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     private static final String TAG = ScriptManagerInterceptor.class.getSimpleName();
-    private final Context mContext;
     private final ScriptManager mManager;
+    private final ContentFilter mFilter;
     private boolean mFirstScriptDone;
 
     public ScriptManagerInterceptor(Context context) {
         super(context);
-        
-        mContext = context;
+
         mManager = new MainCachedScriptManager(context);
+        mFilter = new ContentFilter(context);
     }
 
     @Override
     public boolean test(String url) {
         if (isFirstScript(url)) {
+            return true;
+        }
+
+        if (isSecondScript(url)) {
             return true;
         }
 
@@ -47,30 +55,31 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Response response = getResponse(url);
 
-        ResponseBody body = response.body();
-
-        if (body == null) {
-            Log.e(TAG, "Can't inject custom scripts into " + url + ". Response is empty.");
+        if (response == null || response.body() == null) {
+            Log.e(TAG, "Can't inject custom scripts into " + url + ". Response is empty: " + response);
             return null;
         }
+
+        ResponseBody body = response.body();
 
         InputStream result = body.byteStream();
 
         if (isFirstScript(url)) {
             result = applyInit(result);
             mFirstScriptDone = true;
-        }
-
-        if (isLastScript(url)) {
+            result = mFilter.filterFirstScript(result);
+        } else if (isSecondScript(url)) {
+            result = mFilter.filterSecondScript(result);
+        } else if (isLastScript(url)) {
             if (!mFirstScriptDone) {
                 result = applyInit(result);
             }
 
             result = applyLoad(result);
-        }
-
-        if (isStyle(url)) {
+            result = mFilter.filterLastScript(result);
+        } else if (isStyle(url)) {
             result = applyStyles(result);
+            result = mFilter.filterStyles(result);
         }
 
         return createResponse(response.body().contentType(), result);
@@ -104,6 +113,8 @@ public abstract class ScriptManagerInterceptor extends RequestInterceptor {
     }
 
     protected abstract boolean isFirstScript(String url);
+
+    protected abstract boolean isSecondScript(String url);
 
     protected abstract boolean isLastScript(String url);
 

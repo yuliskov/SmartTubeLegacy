@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
@@ -77,7 +78,14 @@ public class VoiceSearchBridge implements SearchCallback {
             return false;
         }
 
-        String searchString = YouTubeHelpers.extractSearchString(pageUrl.toString());
+        String searchString = null;
+
+        try {
+            searchString = YouTubeHelpers.extractSearchString(pageUrl.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageHelpers.showLongMessage(mActivity, e.getMessage());
+        }
 
         if (searchString != null) {
             openSearchPage(searchString);

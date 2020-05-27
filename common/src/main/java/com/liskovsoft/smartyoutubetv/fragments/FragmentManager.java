@@ -12,4 +12,5 @@ public interface FragmentManager {
     void startActivityForResult(Intent intent, ActivityResult callback);
     void disableKeyEvents();
     void onSearchFieldFocused();
+    void handleIntent(Intent intent);
 }

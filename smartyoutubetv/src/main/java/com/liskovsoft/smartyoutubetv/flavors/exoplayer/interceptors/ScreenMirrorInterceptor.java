@@ -34,14 +34,12 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
         String postData = mPrefs.getPostData();
 
-        Log.d(TAG, url);
-        Log.d(TAG, postData);
-
         if (mPrefs.isMirrorEnabled() && postData != null) {
             LoungeData loungeData = LoungeData.parse(postData, url);
 
             if (loungeData.isDisconnected()) {
                 mExoRootInterceptor.getTwoFragmentManager().closeExoPlayer();
+                Log.d(TAG, "Screen mirror disconnected.");
             } else {
                 if (loungeData.getState() != LoungeData.STATE_UNDEFINED) {
                     fixLoungeState(loungeData);
@@ -53,8 +51,14 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
                     res = postFormData(loungeData.getUrl(), loungeData.toString());
 
                     syncPlayer(loungeData);
+
+                    Log.d(TAG, "Screen mirror data is OK. Processing... Post url: " + loungeData.getUrl() + " Post data: " + loungeData.toString());
+                } else {
+                    Log.d(TAG, "Screen mirror data is undefined. Cancel processing.");
                 }
             }
+        } else {
+            Log.d(TAG, "Screen mirror isn't enabled. Cancel processing.");
         }
 
         return res;
@@ -71,9 +75,9 @@ public class ScreenMirrorInterceptor extends RequestInterceptor {
 
     private void syncPlayer(LoungeData loungeData) {
         boolean stateActual = (System.currentTimeMillis() - mPrefs.getLastUserActionTimeMS()) < 1_000;
-        Log.d(TAG, "syncPlayer: State is actual? " + stateActual);
         if (stateActual && (loungeData.getState() == LoungeData.STATE_PAUSED ||
             loungeData.getState() == LoungeData.STATE_PLAYING)) {
+            Log.d(TAG, "syncPlayer: sync player state...");
             ExoIntent exoIntent = new ExoIntent();
             exoIntent.setPositionSec(loungeData.getCurrentTime());
             exoIntent.setPaused(mPrefs.getHtmlVideoPaused());

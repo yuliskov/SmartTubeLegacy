@@ -61,7 +61,6 @@ public class AppUpdateChecker {
     public static final String SHARED_PREFERENCES_NAME = "edu.mit.mobile.android.appupdater.preferences";
     public static final String PREF_ENABLED = "enabled", PREF_MIN_INTERVAL = "min_interval", PREF_LAST_UPDATED = "last_checked";
 
-    private final String[] mVersionListUrls;
     private int currentAppVersion;
 
     private JSONObject pkgInfo;
@@ -71,23 +70,13 @@ public class AppUpdateChecker {
     private SharedPreferences mPrefs;
 
     private static final int MILLISECONDS_IN_MINUTE = 60000;
+    private boolean mInProgress;
 
     /**
      * @param context
-     * @param versionListUrl URL pointing to a JSON file with the update list.
      * @param updateListener
      */
-    public AppUpdateChecker(Context context, String versionListUrl, OnAppUpdateListener updateListener) {
-        this(context, new String[]{versionListUrl}, updateListener);
-    }
-
-    /**
-     * @param context
-     * @param versionListUrls url array, tests url by access, first worked is used
-     * @param updateListener
-     */
-    public AppUpdateChecker(Context context, String[] versionListUrls, OnAppUpdateListener updateListener) {
-        mVersionListUrls = versionListUrls;
+    public AppUpdateChecker(Context context, OnAppUpdateListener updateListener) {
         mContext = context;
         mUpdateListener = updateListener;
 
@@ -123,7 +112,7 @@ public class AppUpdateChecker {
     }
 
     /**
-     * You normally shouldn't need to call this, as {@link #checkForUpdates()} checks it before doing any updates.
+     * You normally shouldn't need to call this, as {@link #checkForUpdates(String[] versionListUrls)} checks it before doing any updates.
      *
      * @return true if the updater should check for updates
      */
@@ -134,18 +123,18 @@ public class AppUpdateChecker {
     /**
      * Checks for updates if updates haven't been checked for recently and if checking is enabled.
      */
-    public void checkForUpdates() {
+    public void checkForUpdates(String[] versionListUrls) {
         if (getEnabled() && isStale()) {
-            forceCheckForUpdates();
+            forceCheckForUpdates(versionListUrls);
         }
     }
 
     /**
      * Like {@link #forceCheckForUpdates} but only if updates is enabled
      */
-    public void forceCheckForUpdatesIfEnabled() {
+    public void forceCheckForUpdatesIfEnabled(String[] versionListUrls) {
         if (getEnabled()) {
-            forceCheckForUpdates();
+            forceCheckForUpdates(versionListUrls);
         }
     }
 
@@ -153,23 +142,29 @@ public class AppUpdateChecker {
      * Minimize server payload!<br/>
      * Like {@link #forceCheckForUpdates} but only if prev update was long enough
      */
-    public void forceCheckForUpdatesIfStalled() {
+    public void forceCheckForUpdatesIfStalled(String[] versionListUrls) {
         if (isStale()) {
-            forceCheckForUpdates();
+            forceCheckForUpdates(versionListUrls);
         }
     }
 
     /**
-     * Checks for updates regardless of when the last check happened or if checking for updates is enabled.
+     * Checks for updates regardless of when the last check happened or if checking for updates is enabled.<br/>
+     * URL pointing to a JSON file with the update list <br/>
+     * @param versionListUrls url array, tests url by access, first worked is used
      */
-    public void forceCheckForUpdates() {
+    public void forceCheckForUpdates(String[] versionListUrls) {
         Log.d(TAG, "checking for updates...");
 
-        if (mVersionListUrls == null || mVersionListUrls.length == 0) {
+        if (mInProgress || mUpdateListener.tryInstallPendingUpdate()) {
+            return;
+        }
+
+        if (versionListUrls == null || versionListUrls.length == 0) {
             Log.w(TAG, "Supplied url update list is null or empty");
-        } else if (versionTask == null) {
-            versionTask = new GetVersionJsonTask();
-            versionTask.execute(mVersionListUrls);
+        } else if (mJsonUpdateTask == null) {
+            mJsonUpdateTask = new GetVersionJsonTask();
+            mJsonUpdateTask.execute(versionListUrls);
         } else {
             Log.w(TAG, "checkForUpdates() called while already checking for updates. Ignoring...");
         }
@@ -288,7 +283,7 @@ public class AppUpdateChecker {
         }
     }
 
-    private GetVersionJsonTask versionTask;
+    private GetVersionJsonTask mJsonUpdateTask;
 
     private class GetVersionJsonTask extends AsyncTask<String[], Integer, JSONObject> {
         private String errorMsg = null;
@@ -301,6 +296,7 @@ public class AppUpdateChecker {
 
         @Override
         protected JSONObject doInBackground(String[]... params) {
+            mInProgress = true;
             publishProgress(0);
 
             final String[] urls = params[0];
@@ -345,17 +341,20 @@ public class AppUpdateChecker {
         protected void onPostExecute(JSONObject result) {
             if (result == null) {
                 Log.e(TAG, errorMsg);
-                // Helpers.showMessage(mContext, TAG, errorMsg);
             } else {
                 try {
                     triggerFromJson(result);
-
                 } catch (final JSONException e) {
                     Log.e(TAG, "Error in JSON version file.", e);
-                    // Helpers.showMessage(mContext, TAG, e);
                 }
             }
-            versionTask = null; // forget about us, we're done.
+
+            mInProgress = false;
         }
+    }
+
+    public boolean cancelPendingUpdate() {
+        boolean mCancelInstall = mUpdateListener.cancelPendingUpdate();
+        return mInProgress || mCancelInstall;
     }
 }

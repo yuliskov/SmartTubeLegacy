@@ -1,6 +1,9 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers;
 
+import android.content.Context;
 import android.net.Uri;
+import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.UrlListBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.hls.SimpleUrlListBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
@@ -10,10 +13,13 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonInfoParser.Subtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
+    private static final String TAG = SimpleYouTubeInfoParser.class.getSimpleName();
     private final String[] mContent;
+    private final Context mContext;
 
     private class MergeMediaVisitor extends YouTubeInfoVisitor {
         private final OnMediaFoundCallback mMediaFoundCallback;
@@ -105,7 +111,14 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
             }
 
             if (!mMPDBuilder.isEmpty()) { // Regular videos (4K)
-                mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+                if (mMPDBuilder.isDynamic()) {
+                    // TODO: fix dynamic streams
+                    //File destination = new File(FileHelpers.getCacheDir(mContext), "dynamic.mpd");
+                    //FileHelpers.streamToFile(mMPDBuilder.build(), destination);
+                    //mMediaFoundCallback.onDashUrlFound(Uri.parse(destination.getAbsolutePath()));
+                } else {
+                    mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+                }
             }
 
             // Low quality videos
@@ -113,15 +126,19 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                 mMediaFoundCallback.onUrlListFound(mUrlListBuilder.buildUriList());
             }
 
+            Log.d(TAG, "Media parsing done!");
+
             mMediaFoundCallback.onDone();
         }
     }
 
     /**
      * One or multiple <em>get_video_info</em> files as a source
+     *
      * @param content get_video_info content
      */
-    public SimpleYouTubeInfoParser(InputStream ...content) {
+    public SimpleYouTubeInfoParser(Context context, InputStream... content) {
+        mContext = context;
         mContent = new String[content.length];
         readContent(content);
     }

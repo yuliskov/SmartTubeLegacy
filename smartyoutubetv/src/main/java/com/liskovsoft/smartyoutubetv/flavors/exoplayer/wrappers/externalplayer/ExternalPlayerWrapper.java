@@ -7,12 +7,15 @@ import android.net.Uri;
 import com.liskovsoft.m3uparser.m3u.M3UParser;
 import com.liskovsoft.m3uparser.m3u.models.Playlist;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInterceptor;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
@@ -20,6 +23,7 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
@@ -42,6 +46,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private InputStream mMpdContent;
     private static final String MIME_MP4 = "video/mp4";
     private static final String MIME_HLS = "application/x-mpegURL";
+    private boolean mBlockClose;
 
     protected ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mUAManager = new UserAgentManager();
@@ -52,7 +57,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mHistory = interceptor.getHistoryInterceptor();
     }
 
-    public static OnMediaFoundCallback create(Context context, ExoInterceptor interceptor) {
+    public static ExternalPlayerWrapper create(Context context, ExoInterceptor interceptor) {
         if (SmartPreferences.USE_EXTERNAL_PLAYER_KODI.equals(CommonApplication.getPreferences().getUseExternalPlayer())) {
             return new KodiPlayerWrapper(context, interceptor);
         }
@@ -64,6 +69,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     public void onStart() {
         mHistory.onStart();
         cleanup();
+        PermissionHelpers.verifyStoragePermissions(mContext);
     }
 
     @Override
@@ -110,7 +116,14 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             mDashUrl = null;
         }
 
-        openExternalPlayer();
+        try {
+            openExternalPlayer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageHelpers.showLongMessage(mContext, e.getMessage());
+            checkCloseVideo();
+        }
+
         cleanup();
     }
 
@@ -124,9 +137,22 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     @Override
     public void onResult(int resultCode, Intent data) {
-        Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + data);
-        mInterceptor.closePlayer();
-        mHistory.updatePosition(0);
+        Log.d(TAG, "External player is closed. Result: " + resultCode + ". Data: " + Helpers.dumpIntent(data));
+
+        if (data != null) {
+            // values: end_by=playback_completion or end_by=user
+            if ("playback_completion".equals(data.getStringExtra("end_by"))) {
+                mInterceptor.jumpToNextVideo();
+            } else {
+                checkCloseVideo();
+            }
+
+            int positionMs = data.getIntExtra("position", 0);
+            mHistory.updatePosition(positionMs / 1000);
+        } else {
+            checkCloseVideo();
+            mHistory.updatePosition(0);
+        }
     }
 
     /**
@@ -197,11 +223,38 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             MessageHelpers.showMessage(mContext, R.string.message_install_player);
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            mInterceptor.closePlayer();
+            checkCloseVideo();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
-            mInterceptor.closePlayer();
+            checkCloseVideo();
+        }
+    }
+
+    private void checkCloseVideo() {
+        if (!mBlockClose) {
+            mInterceptor.closeVideo();
+        }
+    }
+
+    public void openFromIntent(Intent intent) {
+        if (intent != null) {
+            mBlockClose = true;
+            cleanup();
+
+            String mpdManifest = intent.getStringExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA);
+
+            if (mpdManifest != null) {
+                mMpdContent = new ByteArrayInputStream(mpdManifest.getBytes());
+            }
+
+            mHlsUrl = intent.getData();
+
+            mMetadata = new VideoMetadata();
+            mMetadata.setTitle(intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE));
+
+            // Fix NetworkOnMainThread exception
+            new Thread(this::onDone).start();
         }
     }
 }

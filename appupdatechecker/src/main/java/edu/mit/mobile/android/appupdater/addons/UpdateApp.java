@@ -26,13 +26,25 @@ import java.io.File;
 public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
     private static final String TAG = UpdateApp.class.getSimpleName();
     private final Context mContext;
+    private boolean mInProgress;
+    private boolean mCancelInstall;
+    private String mDownPath;
 
     public UpdateApp(Context context) {
         mContext = context;
     }
 
+    public void downloadAndInstall(Uri[] downloadUris) {
+        if (!mInProgress) {
+            execute(downloadUris);
+        }
+    }
+
     @Override
     protected Void doInBackground(Uri[]... args) {
+        mDownPath = null;
+        mInProgress = true;
+
         Uri[] uris = args[0];
 
         String path = null;
@@ -45,10 +57,17 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
         }
 
         if (path != null) {
-            Helpers.installPackage(mContext, path);
+            if (!mCancelInstall) {
+                Helpers.installPackage(mContext, path);
+            } else {
+                mDownPath = path;
+            }
         } else {
+            Log.e(TAG, "Error while download. Install path is null");
             showMessage(mContext.getResources().getString(R.string.cant_download_msg));
         }
+
+        mInProgress = false;
 
         return null;
     }
@@ -78,8 +97,26 @@ public class UpdateApp extends AsyncTask<Uri[],Void,Void> {
             }
         } catch (IllegalStateException ex) { // CANNOT OBTAIN WRITE PERMISSIONS
             Log.e(TAG, ex.getMessage(), ex);
-            // MessageHelpers.showMessage(mContext, TAG, ex);
         }
         return path;
+    }
+
+    // Smart update logic
+
+    public boolean cancelPendingUpdate() {
+        mCancelInstall = true;
+        return mInProgress;
+    }
+
+    public boolean tryInstallPendingUpdate() {
+        mCancelInstall = false;
+
+        if (mDownPath != null) {
+            Helpers.installPackage(mContext, mDownPath);
+            mDownPath = null;
+            return true;
+        }
+
+        return false;
     }
 }

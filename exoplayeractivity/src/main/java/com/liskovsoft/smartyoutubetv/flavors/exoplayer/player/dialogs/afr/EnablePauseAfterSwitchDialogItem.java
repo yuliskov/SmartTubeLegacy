@@ -23,7 +23,7 @@ public class EnablePauseAfterSwitchDialogItem extends MultiDialogItem {
     @Override
     public void setChecked(boolean checked) {
         if (checked) {
-            mAfrManager.setEnabled(checked);
+            mAfrManager.setEnabled(true);
         }
 
         mAfrManager.setDelayEnabled(checked);

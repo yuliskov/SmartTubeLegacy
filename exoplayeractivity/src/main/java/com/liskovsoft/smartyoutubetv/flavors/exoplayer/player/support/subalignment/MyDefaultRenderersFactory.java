@@ -23,7 +23,7 @@ public class MyDefaultRenderersFactory extends DefaultRenderersFactory {
 
     @Override
     public Renderer[] createRenderers(Handler eventHandler, VideoRendererEventListener videoRendererEventListener, AudioRendererEventListener audioRendererEventListener, TextOutput textRendererOutput, MetadataOutput metadataRendererOutput, @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager) {
-        textRendererOutput = new TextRendererDecorator(textRendererOutput);
+        textRendererOutput = new SubtitleRendererDecorator(textRendererOutput);
 
         return super.createRenderers(
                 eventHandler,

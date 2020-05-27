@@ -6,10 +6,13 @@
 console.log("Scripts::Running script default_settings.js");
 
 function DefaultSettingsAddon() {
+    this.TAG = 'DefaultSettingsAddon';
+
     this.run = function() {
         this.applySettings();
         this.applyFlags();
     };
+
     this.applySettings = function() {
         if (!localStorage) {
             return;
@@ -25,12 +28,21 @@ function DefaultSettingsAddon() {
     };
 
     this.applyFlags = function() {
-        if (!window.environment) {
-            return;
-        }
+        Log.d(this.TAG, "Apply flags");
 
-        window.environment.feature_switches.limited_memory = true;
-        window.environment.feature_switches.limited_animation = true;
+        if (window.environment) {
+            Log.d(this.TAG, "Environment flags is enabled: " + (window.environment.flags != null));
+
+            // FLAGS DON'T WORK AT ALL!
+
+            // window.environment.flags.enable_masthead_large = false;
+            // window.environment.flags.enable_masthead_medium = false;
+            // window.environment.flags.enable_masthead_small = false;
+            // window.environment.flags.enable_masthead_thumbnail_only = false;
+
+            // window.environment.feature_switches.limited_memory = true;
+            // window.environment.feature_switches.limited_animation = true;
+        }
     };
 }
 

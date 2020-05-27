@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -22,54 +21,131 @@ public class KeyHandler {
     private PlayerInterface mFragment;
     private KeyTranslator mTranslator;
     private Boolean mEnableOKPause;
-    private HashMap<Integer, Runnable> mActions;
+    private HashMap<Integer, Command> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
+    private boolean mOKPauseWithoutUI;
+    private boolean mOKPauseWithUI;
+    private boolean mOKPauseNone;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
-    private final Runnable mOnToggle = () -> {
-        if (mFragment.getExoPlayerView() != null) {
-            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
+    private static final int DEFAULT_ACTION = KeyEvent.ACTION_UP;
+    private boolean mDisable = true;
+
+    private interface Command {
+        boolean run(int action);
+    }
+
+    private final Command mOnToggle = (int action) -> {
+        if (action == DEFAULT_ACTION) {
+            if (mFragment.getExoPlayerView() != null) {
+                mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
+            }
+
+            if (mFragment.getPlayer() != null) {
+                mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
+            }
         }
 
-        if (mFragment.getPlayer() != null) {
-            mFragment.getPlayer().setPlayWhenReady(!mFragment.getPlayer().getPlayWhenReady());
-        }
+        return true;
     };
-    private final Runnable mOnPlay = () -> {
+
+    private final Command mOnToggleOKPause = (int action) -> {
+        PlayerView exoPlayerView = mFragment.getExoPlayerView();
+        SimpleExoPlayer player = mFragment.getPlayer();
+
+        if (exoPlayerView == null || player == null) {
+            return false;
+        }
+
+        if (!exoPlayerView.isControllerVisible()) {
+            if (action == DEFAULT_ACTION) {
+                if (mOKPauseNone) {
+                    exoPlayerView.showController();
+                } else {
+                    mFragment.getExoPlayerView().setControllerAutoShow(mOKPauseWithUI);
+
+                    player.setPlayWhenReady(!player.getPlayWhenReady());
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    };
+
+    private final Command mOnPlay = (int action) -> {
         SimpleExoPlayer player = mFragment.getPlayer();
         PlayerView playerView = mFragment.getExoPlayerView();
 
-
-        if (playerView != null && player != null && !player.getPlayWhenReady()) {
-            player.setPlayWhenReady(true);
-            playerView.hideController();
+        if (action == DEFAULT_ACTION) {
+            if (playerView != null && player != null && !player.getPlayWhenReady()) {
+                player.setPlayWhenReady(true);
+                playerView.hideController();
+            }
         }
+
+        return true;
     };
-    private final Runnable mOnPause = () -> {
+
+    private final Command mOnPause = (int action) -> {
         SimpleExoPlayer player = mFragment.getPlayer();
         PlayerView playerView = mFragment.getExoPlayerView();
 
-        if (playerView != null && player != null && player.getPlayWhenReady()) {
-            mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
-            player.setPlayWhenReady(false);
+        if (action == DEFAULT_ACTION) {
+            if (playerView != null && player != null && player.getPlayWhenReady()) {
+                mFragment.getExoPlayerView().setControllerAutoShow(mAutoShowPlayerUI);
+                player.setPlayWhenReady(false);
+            }
         }
+
+        return true;
     };
-    private final Runnable mOnFastForward = () -> {
-        if (mFragment.getPlayer() != null) {
-            seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
+
+    private final Command mOnFastForward = (int action) -> {
+        if (action == KeyEvent.ACTION_DOWN) {
+            if (mFragment.getPlayer() != null) {
+                seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
+            }
         }
+
+        return true;
     };
-    private final Runnable mOnRewind = () -> {
-        if (mFragment.getPlayer() != null) {
-            seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
+
+    private final Command mOnRewind = (int action) -> {
+        if (action == KeyEvent.ACTION_DOWN) {
+            if (mFragment.getPlayer() != null) {
+                seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
+            }
         }
+
+        return true;
     };
-    private final Runnable mOnStop = () -> mFragment.onBackPressed();
+    
+    private final Command mOnStop = (int action) -> {
+        if (action == DEFAULT_ACTION) {
+            mFragment.onBackPressed();
+        }
+
+        return true;
+    };
 
     @TargetApi(23)
-    private final Runnable mOnNext = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+    private final Command mOnNext = (int action) -> {
+        if (action == DEFAULT_ACTION) {
+            mFragment.getExoPlayerView().findViewById(R.id.exo_next2).callOnClick();
+        }
+
+        return true;
+    };
     @TargetApi(23)
-    private final Runnable mOnPrev = () -> mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
+    private final Command mOnPrev = (int action) -> {
+        if (action == DEFAULT_ACTION) {
+            mFragment.getExoPlayerView().findViewById(R.id.exo_prev).callOnClick();
+        }
+
+        return true;
+    };
 
     public KeyHandler(Activity activity, PlayerInterface playerFragment, HashMap<Integer, Integer> additionalMapping) {
         mActivity = activity;
@@ -77,6 +153,9 @@ public class KeyHandler {
         mTranslator = new PlayerKeyTranslator();
         mAdditionalMapping = additionalMapping;
         mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
+        mOKPauseWithoutUI = SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        mOKPauseWithUI = SmartPreferences.OK_PAUSE_WITH_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        mOKPauseNone = SmartPreferences.OK_PAUSE_NONE.equals(CommonApplication.getPreferences().getOKPauseType());
 
         initActionMapping();
     }
@@ -95,6 +174,9 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
+        mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggleOKPause); // handle OK button just like media play/pause
+        mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
+        mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
@@ -108,12 +190,15 @@ public class KeyHandler {
         event = mTranslator.doTranslateKeys(event);
         setDispatchEvent(event);
 
-        if (isVolumeEvent(event)) {
+        boolean isUpAction = event.getAction() == DEFAULT_ACTION;
+        boolean isDownAction = event.getAction() == KeyEvent.ACTION_DOWN;
+
+        // user opens the video and continue to hold the ok button
+        boolean stillHoldingOk = mDisable && isOkKey(event);
+
+        if (isVolumeEvent(event) || stillHoldingOk) {
             return false;
         }
-
-        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
-        boolean isDownAction = event.getAction() == KeyEvent.ACTION_DOWN;
 
         boolean uiVisible = mFragment.isUiVisible();
 
@@ -163,11 +248,7 @@ public class KeyHandler {
         event = applyAdditionalMapping(event);
 
         if (mActions.containsKey(event.getKeyCode())) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                mActions.get(event.getKeyCode()).run();
-            }
-
-            return true;
+            return mActions.get(event.getKeyCode()).run(event.getAction());
         }
 
         return false;
@@ -248,7 +329,7 @@ public class KeyHandler {
     }
 
     private boolean hideUI(KeyEvent event) {
-        boolean isUpAction = event.getAction() == KeyEvent.ACTION_UP;
+        boolean isUpAction = event.getAction() == DEFAULT_ACTION;
         boolean isVisible = mFragment.isUiVisible();
 
         if (isVisible) {
@@ -296,9 +377,13 @@ public class KeyHandler {
 
     public void pause(boolean paused) {
         if (paused) {
-            mOnPause.run();
+            mOnPause.run(DEFAULT_ACTION);
         } else {
-            mOnPlay.run();
+            mOnPlay.run(DEFAULT_ACTION);
         }
+    }
+
+    public void setDisableEvents(boolean disable) {
+        mDisable = disable;
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -15,12 +14,10 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.CombinedChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.dialogs.SingleChoiceSelectorDialog;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.afr.AfrDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec.RestrictFormatDialogSource;
@@ -77,6 +74,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public static final String VIDEO_LENGTH = "video_length";
     public static final String VIDEO_POSITION = "video_position";
     public static final String PERCENT_WATCHED = "percent_watched";
+    public static final String VIDEO_STARTED = "video_started";
 
     private int mInterfaceVisibilityState = View.INVISIBLE;
     private boolean mIsDurationSet;
@@ -90,6 +88,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     private List<PlayerEventListener> mListeners;
     private List<String> mRestore;
     private boolean mIsAfrApplying;
+    private boolean mPlaybackStopped;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -109,6 +108,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void initializePlayer() {
+        mKeyHandler.setDisableEvents(false);
+
         if (getIntent() == null || getActivity() == null) {
             return;
         }
@@ -147,13 +148,17 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         );
     }
 
+    /**
+     * NOTE: Track selection based on track bitrate
+     */
     protected void initializeTrackSelector() {
         TrackSelection.Factory trackSelectionFactory =
                 new AdaptiveTrackSelection.Factory();
 
         mTrackSelector = new MyDefaultTrackSelector(trackSelectionFactory, getActivity());
 
-        mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setForceHighestSupportedBitrate(true));
+        mTrackSelector.setParameters(mTrackSelector.buildUponParameters()
+                .setForceHighestSupportedBitrate(true));
 
         // Commented out because of bug: can't instantiate OMX decoder...
         // NOTE: 'Tunneled video playback' (HDR and others) (https://medium.com/google-exoplayer/tunneled-video-playback-in-exoplayer-84f084a8094d)
@@ -187,6 +192,12 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     public void onCheckedChanged(@NonNull ToggleButtonBase compoundButton, boolean b) {
         if (mButtonsManager != null)
             mButtonsManager.onCheckedChanged(compoundButton, b);
+    }
+
+    public void openExternalPlayer(Intent intent) {
+        if (getActivity() != null) {
+            ((PlayerListener) getActivity()).openExternalPlayer(intent);
+        }
     }
 
     public void onPlayerAction() {
@@ -231,9 +242,27 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             result.putExtra(VIDEO_POSITION, (float) mPlayer.getCurrentPosition() / 1_000);
         }
 
+        updateLastState(result);
+
         if (getActivity() != null) {
             ((PlayerListener) getActivity()).onPlayerAction(result);
         }
+    }
+
+    protected void updateLastState(Intent intent) {
+        if (intent == null) {
+            mPlaybackStopped = false;
+        } else {
+            mPlaybackStopped =
+                    intent.getBooleanExtra(BUTTON_BACK, false) ||
+                            intent.getBooleanExtra(BUTTON_NEXT, false) ||
+                            intent.getBooleanExtra(BUTTON_PREV, false) ||
+                            intent.getBooleanExtra(TRACK_ENDED, false);
+        }
+    }
+
+    protected boolean isPlaybackStopped() {
+        return mPlaybackStopped;
     }
 
     private void fixSuggestionFocusLost() {
@@ -370,6 +399,8 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     protected void openVideoFromIntent(Intent intent) {
         Log.d(TAG, "Open video from intent=" + intent);
 
+        updateLastState(intent);
+
         if (isStateIntent(intent)) {
             if (getIntent() == null) {
                 setIntent(intent);
@@ -432,10 +463,15 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mPlayer.setPlayWhenReady(false);
             mPlayer.release();
             resetUiState();
+            mKeyHandler.setDisableEvents(true);
         }
 
         if (mStateManager != null) {
             mStateManager.persistState();
+
+            if (isPlaybackStopped()) {
+                setIntent(null);
+            }
         }
 
         if (mDebugViewHelper != null) {
@@ -449,7 +485,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         mTrackSelectionHelper = null;
         mEventLogger = null;
         mIsDurationSet = false;
-        mRetryCount = 0;
+        mRestoreRetryCount = 0;
     }
 
     // ExoPlayer.EventListener implementation
@@ -461,11 +497,10 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        measureLoadTime(playbackState);
-
         restorePlayerStateIfNeeded();
 
         if (playbackState == Player.STATE_ENDED && playWhenReady) {
+            Log.d(TAG, "Track ended. Closing player...");
             onPlayerAction(ExoPlayerBaseFragment.TRACK_ENDED);
         } else if (playbackState == Player.STATE_READY) {
             for (PlayerEventListener listener : mListeners) {
@@ -485,14 +520,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         showHideLoadingMessage(playbackState);
 
         super.onPlayerStateChanged(playWhenReady, playbackState);
-    }
-
-    private void measureLoadTime(int playbackState) {
-        if (BuildConfig.DEBUG && (playbackState == Player.STATE_READY) && (mExtractStartMS != 0)) {
-            long extractedWithin = System.currentTimeMillis() - mExtractStartMS;
-            mExtractStartMS = 0;
-            Log.d(TAG, "Video loaded within: " + extractedWithin + " ms");
-        }
     }
 
     /**

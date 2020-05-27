@@ -45,13 +45,13 @@ public class SimpleYouTubeInfoVisitable implements YouTubeInfoVisitable {
         mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
         mediaItem.setITag(mediaUrl.getQueryParameter(MediaItem.ITAG));
         mediaItem.setType(mediaUrl.getQueryParameter(MediaItem.TYPE));
-        mediaItem.setS(mediaUrl.getQueryParameter(MediaItem.S));
+        mediaItem.setSignatureCipher(mediaUrl.getQueryParameter(MediaItem.S));
         decipherSignature(mediaItem);
         return mediaItem;
     }
 
     private void decipherSignature(SimpleYouTubeMediaItem mediaItem) {
-        String sig = mediaItem.getS();
+        String sig = mediaItem.getSignatureCipher();
         if (sig != null) {
             String url = mediaItem.getUrl();
             String newSig = CipherUtils.decipherSignature(sig);

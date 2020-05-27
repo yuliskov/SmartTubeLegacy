@@ -33,9 +33,12 @@ public class BootstrapActivity extends BootstrapActivityBase {
     public static final String SKIP_RESTORE = "skip_restore";
     private SmartPreferences mPrefs;
     private HashMap<Integer, Class<?>> mLauncherMapping;
+    private boolean mRestoreSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mRestoreSuccess = false;
+
         // do it before view instantiation
         initPrefs();
 
@@ -43,11 +46,14 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_bootstrap);
+        // hide ui in case of direct launch of specific activity
+        if (!mRestoreSuccess) {
+            setContentView(R.layout.activity_bootstrap);
 
-        initLauncherMapping();
-        initVersion();
-        lockOtherLaunchers();
+            initLauncherMapping();
+            initVersion();
+            lockOtherLaunchers();
+        }
     }
 
     private void initVersion() {
@@ -80,6 +86,8 @@ public class BootstrapActivity extends BootstrapActivityBase {
     }
 
     private void tryToRestoreLastActivity() {
+        Log.d(TAG, "Restoring last launcher...");
+
         boolean skipRestore = getIntent().getBooleanExtra(SKIP_RESTORE, false);
         if (skipRestore) {
             return;
@@ -114,15 +122,18 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void startActivity(Context ctx, String clazz) {
         Intent intent = getIntent(); // modify original intent
+
         // value used in StateUpdater class
         intent.putExtra(FROM_BOOTSTRAP, true);
-        // NOTE: make activity transparent (non-reachable from launcher or resents)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // Replace all inherited flags
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClassName(ctx, clazz);
 
         try {
             Log.d(TAG, "Starting from intent: " + Helpers.dumpIntent(intent));
             startActivity(intent);
+            mRestoreSuccess = true;
         } catch (ActivityNotFoundException e) { // activity's name changed (choose again)
             e.printStackTrace();
         }
@@ -130,12 +141,14 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void startActivity(Context ctx, Class<?> clazz) {
         Intent intent = getIntent(); // modify original intent
-        // NOTE: make activity transparent (non-reachable from launcher or from resent list)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // Replace all inherited flags
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(ctx, clazz);
 
         Log.d(TAG, "Starting from intent: " + Helpers.dumpIntent(intent));
         startActivity(intent);
+        mRestoreSuccess = true;
     }
 
     public void lockOtherLaunchers() {

@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
@@ -18,17 +18,13 @@ public class PlaybackStatsInterceptor extends RequestInterceptor {
     private static final String START_VIDEO_URL = "youtube.com/get_midroll_info";
     private static final String PRESTART_VIDEO_URL = "youtube.com/get_video_info";
     private static final String TAG = PlaybackStatsInterceptor.class.getSimpleName();
-    private final Context mContext;
     private final SmartPreferences mPrefs;
-    private boolean mPlaybackUrlFound = false;
     private int mWorkCount = 0;
     private int mState = 0;
     private int mRunCount = 0;
 
     public PlaybackStatsInterceptor(Context context) {
         super(context);
-
-        mContext = context;
         mPrefs = SmartPreferences.instance(context);
     }
 

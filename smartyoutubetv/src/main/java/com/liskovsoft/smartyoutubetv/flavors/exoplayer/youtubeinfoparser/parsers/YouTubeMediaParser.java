@@ -178,7 +178,7 @@ public class YouTubeMediaParser {
         mediaItem.setUrl(String.valueOf(content.get(MediaItem.URL)));
         mediaItem.setITag(Helpers.toIntString(content.get(MediaItem.ITAG)));
         mediaItem.setType(String.valueOf(content.get(MediaItem.TYPE)));
-        mediaItem.setS(String.valueOf(content.get(MediaItem.S)));
+        mediaItem.setSignatureCipher(String.valueOf(content.get(MediaItem.S)));
         mediaItem.setClen(String.valueOf(content.get(MediaItem.CLEN)));
         mediaItem.setFps(String.valueOf(content.get(MediaItem.FPS)));
         mediaItem.setIndex(String.valueOf(content.get(MediaItem.INDEX)));
@@ -194,7 +194,7 @@ public class YouTubeMediaParser {
         mediaItem.setUrl(mediaUrl.getQueryParameter(MediaItem.URL));
         mediaItem.setITag(mediaUrl.getQueryParameter(MediaItem.ITAG));
         mediaItem.setType(mediaUrl.getQueryParameter(MediaItem.TYPE));
-        mediaItem.setS(mediaUrl.getQueryParameter(MediaItem.S));
+        mediaItem.setSignatureCipher(mediaUrl.getQueryParameter(MediaItem.S));
         mediaItem.setClen(mediaUrl.getQueryParameter(MediaItem.CLEN));
         mediaItem.setFps(mediaUrl.getQueryParameter(MediaItem.FPS));
         mediaItem.setIndex(mediaUrl.getQueryParameter(MediaItem.INDEX));
@@ -216,7 +216,6 @@ public class YouTubeMediaParser {
         List<String> result = new ArrayList<>();
 
         for (MediaItem item : mMediaItems) {
-            prepareForDecipher(item);
             result.add(findStrangeSignature(item));
         }
 
@@ -234,7 +233,7 @@ public class YouTubeMediaParser {
     private String findStrangeSignature(MediaItem item) {
         MyQueryString query = MyQueryStringFactory.parse(item.getUrl());
         return findStrangeSignature(
-                item.getS(),
+                item.getSignatureCipher(),
                 query.get(MediaItem.S));
     }
 
@@ -319,7 +318,7 @@ public class YouTubeMediaParser {
 
             item.setUrl(url.toString());
             item.setSignature(signature);
-            item.setS(null);
+            item.setSignatureCipher(null);
         }
 
         if (mNewMediaItems != null) { // NOTE: NPE here
@@ -331,7 +330,7 @@ public class YouTubeMediaParser {
 
     // not used code
     private void decipherSignature(SimpleYouTubeMediaItem mediaItem) {
-        String sig = mediaItem.getS();
+        String sig = mediaItem.getSignatureCipher();
         if (sig != null) {
             String url = mediaItem.getUrl();
             String newSig = CipherUtils.decipherSignature(sig);
@@ -399,18 +398,5 @@ public class YouTubeMediaParser {
         }
 
         return null;
-    }
-
-    private void prepareForDecipher(MediaItem item) {
-        if (item.getCipher() == null) { // regular video
-            return;
-        }
-
-        // music video
-        Uri parseUri = ParserUtils.parseUri(item.getCipher());
-        String cipher = parseUri.getQueryParameter(MediaItem.S);
-        String url = parseUri.getQueryParameter(MediaItem.URL);
-        item.setS(cipher);
-        item.setUrl(url);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="low_memory_notify">Внимание: память заканчивается...</string>
-    <string name="select_webview_provider_msg">Невозможно продолжить. Попробуйте удалить обновления WebView.apk</string>
+    <string name="select_webview_provider_msg">Невозможно продолжить. Попробуйте удалить обновления WebView.apk\nВнимание, есть разница между пакетами com.android.webview и com.google.android.webview</string>
 </resources>

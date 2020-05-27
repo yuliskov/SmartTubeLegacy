@@ -3,9 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Build.VERSION;
-import android.os.Handler;
 import android.view.Window;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplayHolder.Mode;
@@ -27,10 +25,11 @@ class DisplaySyncHelper implements UhdHelperListener {
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
     protected DisplayHolder.Mode mOriginalMode;
-    protected DisplayHolder.Mode mNewMode;
+    private DisplayHolder.Mode mNewMode;
     private DisplayHolder.Mode mCurrentMode;
     // switch not only framerate but resolution too
-    protected static boolean SWITCH_TO_UHD = true;
+    private boolean mSwitchToUHD;
+    private boolean mSwitchToFHD;
     private int mModeLength = -1;
     private AutoFrameRateListener mListener;
 
@@ -66,6 +65,11 @@ class DisplaySyncHelper implements UhdHelperListener {
 
     private ArrayList<DisplayHolder.Mode> filterModes(DisplayHolder.Mode[] oldModes, int minHeight, int maxHeight) {
         ArrayList<DisplayHolder.Mode> newModes = new ArrayList<>();
+
+        if (minHeight == -1 || maxHeight == -1) {
+            return newModes;
+        }
+
         int modesNum = oldModes.length;
 
         for (int i = 0; i < modesNum; ++i) {
@@ -77,9 +81,9 @@ class DisplaySyncHelper implements UhdHelperListener {
         }
 
         if (newModes.isEmpty()) {
-            Log.i(TAG, "NO MODES FOUND!! " + Arrays.asList(oldModes));
+            Log.i(TAG, "NO MODE CANDIDATES FOUND!! " + Arrays.asList(oldModes));
         } else {
-            Log.i(TAG, "FOUND MODES! " + newModes);
+            Log.i(TAG, "FOUND MODE CANDIDATES! " + newModes);
         }
 
         return newModes;
@@ -253,25 +257,29 @@ class DisplaySyncHelper implements UhdHelperListener {
 
             boolean needResolutionSwitch = false;
 
-            List<DisplayHolder.Mode> resultModes = new ArrayList<>();
+            List<DisplayHolder.Mode> resultModes;
 
-            if (SWITCH_TO_UHD) { // switch not only framerate but resolution too
-                int minHeight;
-                int maxHeight;
+            int minHeight = -1;
+            int maxHeight = -1;
 
+            if (mSwitchToUHD) { // switch not only framerate but resolution too
                 if (videoWidth > 1920) {
                     minHeight = 2160;
                     maxHeight = 5000;
-                } else {
+                }
+            }
+
+            if (mSwitchToFHD) { // switch not only framerate but resolution too
+                if (videoWidth <= 1920) {
                     minHeight = 1080;
                     maxHeight = 1080;
                 }
+            }
 
-                resultModes = filterModes(modes, minHeight, maxHeight);
+            resultModes = filterModes(modes, minHeight, maxHeight);
 
-                if (!resultModes.isEmpty()) {
-                    needResolutionSwitch = true;
-                }
+            if (!resultModes.isEmpty()) {
+                needResolutionSwitch = true;
             }
 
             Log.i(TAG, "Need resolution switch: " + needResolutionSwitch);
@@ -291,7 +299,7 @@ class DisplaySyncHelper implements UhdHelperListener {
                 return false;
             }
 
-            Log.i(TAG, "Found closer framerate: " + closerMode.getRefreshRate() + " for fps " + videoFramerate);
+            Log.i(TAG, "Found closer mode: " + closerMode + " for fps " + videoFramerate);
             Log.i(TAG, "Current mode: " + currentMode);
 
             if (closerMode.equals(currentMode)) {
@@ -422,5 +430,12 @@ class DisplaySyncHelper implements UhdHelperListener {
             mOriginalMode = mNewMode;
             CommonApplication.getPreferences().setDefaultDisplayMode(UhdHelper.formatMode(mOriginalMode));
         }
+    }
+
+    public void setResolutionSwitchEnabled(boolean enabled) {
+        mSwitchToUHD = enabled;
+
+        //mSwitchToFHD = !Build.BRAND.equals("Sasvlad"); // Ugoos custom firmware fix
+        mSwitchToFHD = enabled;
     }
 }

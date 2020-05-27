@@ -12,4 +12,5 @@ public interface MPDBuilder {
     void append(MediaItem mediaItem);
     void append(List<Subtitle> subs);
     void append(Subtitle sub);
+    boolean isDynamic();
 }

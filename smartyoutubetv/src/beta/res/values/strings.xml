@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">Beta YouTube TV</string>
+    <string name="bootstrap_main_title">Please, select YouTube Beta launcher</string>
+</resources>

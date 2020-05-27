@@ -19,7 +19,7 @@
     <string name="view_count">vues</string>
     <string name="published">Publié</string>
     <string name="starting_popup">À partir du lanceur principal</string>
-    <string name="save_selection">Rappelez-vous</string>
+    <string name="save_selection">Mémoriser</string>
     <string name="starting_popup_fmt">Démarrage du %s lanceur &#8230;</string>
     <string name="language">Langue</string>
     <string name="language_dialog_title">Sélectionner une langue</string>
@@ -62,7 +62,7 @@
     <string name="title_xwalk">LITE Alternatif</string>
     <string name="tweaks">Réglages</string>
     <string name="tip_tweaks">Réglages de l\'application</string>
-    <string name="tweak_remember_launcher">Se souvenir du lanceur sélectionné</string>
+    <string name="tweak_remember_launcher">Mémoriser le lanceur sélectionné</string>
     <string name="tweak_ok_button_fix">Appuyez sur le bouton Ok met la vidéo en pause immédiatement</string>
     <string name="tweak_update_check">Vérifier les mises à jour STABLE</string>
     <string name="tweak_beta_update_check">Vérifier les mises à jour BETA</string>
@@ -71,7 +71,8 @@
     <string name="tweak_unplayable_video_fix">Correctif pour vidéo injouable</string>
     <string name="tweak_lock_last_launcher">Verrouiller lanceur %s</string>
     <string name="tweak_open_music">Démarrage sur la page Musique</string>
-    <string name="tweak_open_subscriptions">Démarrage sur Abonnements</string>
+    <string name="tweak_open_subscriptions">Démarrage sur la page Abonnements</string>
+    <string name="tweak_open_history">Démarrage sur la page Historique</string>
     <string name="tweak_global_afx_fix">Correction afr globale sur Pro</string>
     <string name="toast_remove_old_package">Le nom du paquet a été changé. Veuillez supprimer les anciennes versions de l\'application.</string>
     <string name="tweak_history_fix">Activer le correctif de l\'historique</string>
@@ -86,7 +87,7 @@
     <string name="force_all_codecs_lite_only">LITE: Déverrouiller tous les codecs (4K)</string>
     <string name="force_avc_lite_only">Forcer le codec AVC (LITE uniquement)</string>
     <string name="force_vp9_lite_only">Forcer le codec VP9 (LITE uniquement)</string>
-    <string name="fix_clock_msg">Le temps sur votre appareil n\'est pas correctement réglé</string>
+    <string name="fix_clock_msg">L\'horloge sur votre appareil n\'est pas correctement réglé</string>
     <string name="do_restore_data_msg">Restaurer les données précédemment enregistrées?\nL\'application va redémarré.</string>
     <string name="restoring_data_msg">Restauration des données...</string>
     <string name="alt_player_mapping">Télécommande: cartographie alt media-keys</string>
@@ -98,11 +99,27 @@
     </string>
     <string name="app_crashed">App crashed.\nVérifier si une version plus récente existe?</string>
     <string name="tweak_use_new_ui">Utiliser une nouvelle interface utilisateur</string>
-    <string name="tweak_ugoos_afr_fix">Correction de UGOOS 50HZ</string>
+    <string name="tweak_ugoos_afr_fix">Correction UGOOS 50HZ</string>
     <string name="tweak_hide_boot_tips">Masquer les conseils de démarrage</string>
     <string name="tweak_auto_show_player_ui">Montrer automatiquement le lecteur de l\'interface utilisateur</string>
     <string name="tweak_open_externally_lq">PRO: Ouvrir la vidéo avec un lecteur externe (SD)</string>
     <string name="message_install_player">S\'il vous plaît installer MXPlayer ou VLC</string>
     <string name="message_enable_web_server">S\'il vous plaît activer le serveur Web dans les paramètres de Kodi</string>
     <string name="message_install_kodi">Il semble que Kodi n\'ait pas été installé</string>
+    <string name="enable_ad_block">Activer le blocage d’annonces</string>
+    <string name="ad_blocking_permissions">Cette application peut filtrer les annonces et autres contenus pour améliorer l\'expérience de l\'utilisateur.\nEtes-vous d\’accord pour le faire?</string>
+    <string name="player_ui_show_timeout">Pro: diminuer le délai d\'affichage de l\'interface utilisateur du lecteur</string>
+    <string name="channels_close_app">Chaînes Android TV: fermer l\'application avec le bouton Retour</string>
+    <string name="lower_player_buffer">PRO: Descendre le tampon de lecture</string>
+    <string name="tweak_publish_history_playlist">ATV: Publier la playlist historique aux recommandations</string>
+    <string name="tweak_publish_recommended_playlist">ATV: Publier la playlist recommandée aux recommandations</string>
+    <string name="tweak_publish_subscriptions_playlist">ATV: Publier la playlist des abonnements aux recommandations</string>
+    <string name="high_player_buffer">Pro: Tampon du lecteur sur max</string>
+    <string name="medium_player_buffer">Pro: Tampon du lecteur sur moyen</string>
+    <string name="low_player_buffer">PRO: Tampon du lecteur sur minimum</string>
+    <string name="open_links_in_simple_view">Ouvrir des liens dans un simple lecteur</string>
+    <string name="tweak_high_contrast_mode">Activer le mode contraste élevé</string>
+    <string name="tweak_hold_ok_video_menu">Maintenez OK pour le menu vidéo (impact sur les performances)</string>
+    <string name="tweak_animated_ui">Interface utilisateur animée (impact sur les performances)</string>
+    <string name="tweak_ok_pause_without_ui">Ok met la vidéo en pause immédiatement (sans l\'interface utilisateur)</string>
 </resources>

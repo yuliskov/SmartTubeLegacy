@@ -9,23 +9,72 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OtfSegmentParser {
     private static final String TAG = OtfSegmentParser.class.getSimpleName();
+    private final boolean mCached;
+    private List<OtfSegment> mCachedSegments;
+    private boolean mAlreadyParsed;
 
-    public static List<OtfSegment> parse(String url) {
-        Response response = OkHttpHelpers.doGetOkHttpRequest(url);
-
-        if (response.body() != null) {
-            return parse(response.body().charStream());
-        }
-
-        return null;
+    public OtfSegmentParser(boolean cached) {
+        mCached = cached;
     }
 
-    public static List<OtfSegment> parse(Reader stream) {
+    public List<OtfSegment> parse(String url) {
+        return parseInt(() -> parseInt(url));
+    }
+
+    public List<OtfSegment> parse(Reader stream) {
+        return parseInt(() -> parseInt(stream));
+    }
+
+    public List<OtfSegment> parseInt(Callable<List<OtfSegment>> callable) {
+        List<OtfSegment> result;
+
+        try {
+            if (mCached) {
+                if (mCachedSegments == null && !mAlreadyParsed) {
+                    mCachedSegments = callable.call();
+                    mAlreadyParsed = true;
+                }
+
+                result = mCachedSegments;
+            } else {
+                result = callable.call();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            result = null;
+        }
+
+        return result;
+    }
+
+    private List<OtfSegment> parseInt(String url) {
+        List<OtfSegment> result = null;
+
+        if (url != null) {
+            Response response = OkHttpHelpers.doGetOkHttpRequest(url);
+
+            if (response != null && response.body() != null) {
+                result = parseInt(response.body().charStream());
+            } else {
+                Log.e(TAG, "Can't parse url " + url + ". Response is " + response);
+            }
+        } else {
+            Log.e(TAG, "Can't parse url. Url is empty.");
+        }
+
+        return result;
+    }
+
+    private List<OtfSegment> parseInt(Reader stream) {
+        List<OtfSegment> result = null;
+
         BufferedReader bufferedReader = new BufferedReader(stream);
 
         Pattern segmentPattern = Pattern.compile("Segment-Durations-Ms: (.*)");
@@ -35,7 +84,8 @@ public class OtfSegmentParser {
             while ((currentLine = bufferedReader.readLine()) != null) {
                 Matcher segmentPatternMatcher = segmentPattern.matcher(currentLine);
                 if (segmentPatternMatcher.matches()) {
-                    return splitToSegments(segmentPatternMatcher.group(1));
+                    result = splitToSegments(segmentPatternMatcher.group(1));
+                    break;
                 }
             }
         } catch (IOException e) {
@@ -43,13 +93,13 @@ public class OtfSegmentParser {
             e.printStackTrace();
         }
 
-        return null;
+        return result;
     }
 
     /**
      * RegEx test: https://www.freeformatter.com/java-regex-tester.html#ad-output
      */
-    private static List<OtfSegment> splitToSegments(String rawString) {
+    private List<OtfSegment> splitToSegments(String rawString) {
         // Segment-Durations-Ms: 5120(r=192),5700,
 
         ArrayList<OtfSegment> list = new ArrayList<>();
@@ -65,13 +115,16 @@ public class OtfSegmentParser {
                 int findNum = 0;
                 OtfSegment segment = new OtfSegment();
 
+                // example pattern: 5120(r=192)
                 while (segmentPatternMatcher.find()) {
                     findNum++;
-                    if (findNum == 1) {
+                    if (findNum == 1) { // 5120
                         segment.setDuration(segmentPatternMatcher.group(0));
                         list.add(segment); // at least duration should be present
-                    } else if (findNum == 2) {
+                    } else if (findNum == 2) { // 192
                         segment.setRepeatCount(segmentPatternMatcher.group(0));
+                    } else {
+                        break;
                     }
                 }
             }

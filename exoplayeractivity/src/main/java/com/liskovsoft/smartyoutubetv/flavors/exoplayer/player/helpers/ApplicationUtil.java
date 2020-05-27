@@ -1,14 +1,15 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers;
 
 import android.content.Context;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
+import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
+
+import java.util.HashMap;
 
 public class ApplicationUtil {
     private static final UserAgentManager USER_AGENT_MANAGER = new UserAgentManager();
@@ -22,6 +23,13 @@ public class ApplicationUtil {
     //}
 
     public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
-        return new DefaultHttpDataSourceFactory(USER_AGENT_MANAGER.getUA(), bandwidthMeter);
+        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(USER_AGENT_MANAGER.getUA(), bandwidthMeter);
+        addCommonHeaders(context, dataSourceFactory);
+        return dataSourceFactory;
+    }
+
+    private static void addCommonHeaders(Context context, DefaultHttpDataSourceFactory dataSourceFactory) {
+        HeaderManager headerManager = new HeaderManager(context);
+        dataSourceFactory.getDefaultRequestProperties().set(headerManager.getHeaders());
     }
 }

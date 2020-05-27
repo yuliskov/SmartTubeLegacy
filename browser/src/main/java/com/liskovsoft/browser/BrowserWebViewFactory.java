@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import com.liskovsoft.browser.Browser.EngineType;
 import com.liskovsoft.browser.addons.HeadersBrowserWebView;
@@ -102,18 +103,23 @@ public class BrowserWebViewFactory implements WebViewFactory {
         w.setScrollbarFadingEnabled(true);
         w.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         w.setMapTrackballToArrowKeys(false); // use trackball directly
-        // Enable the built-in zoom
-        w.getSettings().setBuiltInZoomControls(true);
-        final PackageManager pm = mContext.getPackageManager();
-        boolean supportsMultiTouch =
-                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH)
-                        || pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
-        w.getSettings().setDisplayZoomControls(!supportsMultiTouch);
 
-        // Add this WebView to the settings observer list and update the
-        // settings
-        final BrowserSettings s = BrowserSettings.getInstance();
-        s.startManagingSettings(w.getSettings());
+        WebSettings settings = w.getSettings();
+
+        if (settings != null) { // RuntimeException: Crosswalk's APIs are not ready yet
+            // Enable the built-in zoom
+            settings.setBuiltInZoomControls(true);
+            final PackageManager pm = mContext.getPackageManager();
+            boolean supportsMultiTouch =
+                    pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH)
+                            || pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+            settings.setDisplayZoomControls(!supportsMultiTouch);
+
+            // Add this WebView to the settings observer list and update the
+            // settings
+            final BrowserSettings s = BrowserSettings.getInstance();
+            s.startManagingSettings(settings);
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             // Remote Web Debugging is always enabled, where available.

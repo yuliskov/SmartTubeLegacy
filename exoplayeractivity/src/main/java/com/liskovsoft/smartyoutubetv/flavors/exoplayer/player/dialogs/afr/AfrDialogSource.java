@@ -23,6 +23,7 @@ public class AfrDialogSource implements CombinedDialogSource {
 
         mItems = new ArrayList<>();
         mItems.add(new EnableAfrDialogItem(playerFragment));
+        mItems.add(new EnableResolutionSwitchDialogItem(playerFragment));
         mItems.add(new EnablePauseAfterSwitchDialogItem(playerFragment));
         mItems.add(new PauseAfterSwitchDialogItem("0.5 sec", 500, playerFragment));
         mItems.add(new PauseAfterSwitchDialogItem("1 sec", 1_000, playerFragment));

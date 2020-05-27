@@ -14,4 +14,6 @@
     <dimen name="player_time_bar_scrubber_dragged_size">21dp</dimen>
     <dimen name="progress_bar_size">90dp</dimen>
     <dimen name="debug_text_size">15sp</dimen>
+    <dimen name="player_suggestions_height">65dp</dimen>
+    <dimen name="subtitle_text_size">40sp</dimen>
 </resources>

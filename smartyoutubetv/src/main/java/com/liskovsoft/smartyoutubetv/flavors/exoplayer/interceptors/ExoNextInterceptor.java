@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
+import com.google.gson.JsonIOException;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
@@ -76,7 +77,12 @@ public class ExoNextInterceptor extends RequestInterceptor {
             InputStream response = postJsonData(mNextUrl, getBody(videoId, playlistId));
 
             if (response != null) {
-                metadata = new JsonNextParser(response).extractVideoMetadata();
+                try {
+                    metadata = new JsonNextParser(response).extractVideoMetadata();
+                } catch (Exception e) { // FIX: caused by java.net.SocketTimeoutException: timeout
+                    e.printStackTrace();
+                    Log.e(TAG, "Error: Response timeout: " + e.getMessage());
+                }
             }
         }
 

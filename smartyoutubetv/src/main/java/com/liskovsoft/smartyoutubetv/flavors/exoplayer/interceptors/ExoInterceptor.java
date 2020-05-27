@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -14,6 +15,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.io.InputStream;
@@ -29,7 +31,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private final HistoryInterceptor mHistoryInterceptor;
     private final SmartPreferences mPrefs;
     private final ActionsSender mSender;
-    private InputStream mResponseStreamSimple;
     private String mCurrentUrl;
     public static final String URL_VIDEO_DATA = "get_video_info";
     public static final String URL_TV_TRANSPORT = "gen_204";
@@ -67,6 +68,10 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
+        return processUrl(unlockHlsStreams(url));
+    }
+
+    private WebResourceResponse processUrl(final String url) {
         mCurrentUrl = url;
 
         mManager.init(url);
@@ -74,33 +79,40 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + url);
+            mExoCallback.onFalseCall();
             return null;
         }
 
         mExoCallback.onStart();
-        mExoCallback.onMetadata(mNextInterceptor.getMetadata(mManager.getVideoId(mCurrentUrl), mManager.getPlaylistId(mCurrentUrl)));
-        
-        prepareResponseStream(url);
-        parseAndOpenExoPlayer();
+
+        // Video title and other infos
+        // long running code
+        new Thread(() -> {
+            mExoCallback.onMetadata(
+                    mNextInterceptor.getMetadata(
+                            mManager.getVideoId(mCurrentUrl),
+                            mManager.getPlaylistId(mCurrentUrl)));
+        }).start();
+
+        // Clip content
+        // long running code
+        new Thread(() -> {
+            try {
+                parseAndOpenExoPlayer(getUrlData(url));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + url);
+            }
+        }).start();
 
         return null;
-    }
-
-    // We also try looking in get_video_info since it may contain different dashmpd
-    // URL that points to a DASH manifest with possibly different itag set (some itags
-    // are missing from DASH manifest pointed by webpage's dashmpd, some - from DASH
-    // manifest pointed by get_video_info's dashmpd).
-    // The general idea is to take a union of itags of both DASH manifests (for example
-    // video with such 'manifest behavior' see https://github.com/rg3/youtube-dl/issues/6093)
-    private void prepareResponseStream(String url) {
-        mResponseStreamSimple = getUrlData(url);
     }
 
     /**
      * For parsing details see {@link YouTubeMediaParser}
      */
-    private void parseAndOpenExoPlayer() {
-        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mResponseStreamSimple);
+    private void parseAndOpenExoPlayer(InputStream inputStream) {
+        final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mContext, inputStream);
         Log.d(TAG, "Video manifest received");
         dataParser.parse(mExoCallback);
     }
@@ -123,14 +135,50 @@ public class ExoInterceptor extends RequestInterceptor {
         return mCurrentUrl;
     }
 
-    public void closePlayer() {
+    public void closeVideo() {
         Intent intent = new Intent();
         intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
         mSender.bindActions(intent);
-        mManager.onClose();
+        mManager.onCancel();
+    }
+
+    public void jumpToNextVideo() {
+        Intent intent = new Intent();
+        intent.putExtra(ExoPlayerFragment.BUTTON_NEXT, true);
+        mSender.bindActions(intent);
+        mManager.onContinue();
     }
 
     public HistoryInterceptor getHistoryInterceptor() {
         return mHistoryInterceptor;
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    private String unlockHlsStreams(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("c", "HTML5");
+
+        return query.toString();
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     * @param url
+     * @return
+     */
+    private String unlock60FpsFormats(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps formats
+
+        return query.toString();
     }
 }

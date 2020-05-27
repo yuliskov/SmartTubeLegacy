@@ -9,6 +9,7 @@ import java.util.List;
 
 public abstract class OnMediaFoundCallback {
     public void onStart(){}
+    public void onFalseCall(){}
     public void onDashMPDFound(InputStream mpdContent){}
     public void onHLSFound(Uri hlsUrl){}
     public void onUrlListFound(List<String> uriList) {}

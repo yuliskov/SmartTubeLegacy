@@ -2,23 +2,32 @@ package com.liskovsoft.smartyoutubetv.interceptors;
 
 import android.content.Context;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import okhttp3.MediaType;
 import okhttp3.Response;
 
-import java.io.InputStream;
-
 public abstract class RequestInterceptor {
+
     private static final String TAG = RequestInterceptor.class.getSimpleName();
+
+    private static final WebResourceResponse EMPTY_RESPONSE = new WebResourceResponse(null, null, null);
+
     private final Context mContext;
     private final HeaderManager mManager;
 
     public abstract boolean test(String url);
+
     public abstract WebResourceResponse intercept(String url);
 
     public RequestInterceptor(Context context) {
@@ -26,17 +35,21 @@ public abstract class RequestInterceptor {
         mManager = new HeaderManager(context);
     }
 
-    private String getMimeType(MediaType contentType) {
+    protected String getMimeType(MediaType contentType) {
         String type = contentType.type();
         String subtype = contentType.subtype();
         return String.format("%s/%s", type, subtype);
     }
 
-    private String getCharset(MediaType contentType) {
+    protected String getCharset(MediaType contentType) {
         if (contentType.charset() == null) {
             return null;
         }
         return contentType.charset().name();
+    }
+
+    protected WebResourceResponse createResponse(String mediaType, String charset, InputStream is) {
+        return new WebResourceResponse(mediaType, charset, is);
     }
 
     protected WebResourceResponse createResponse(MediaType mediaType, InputStream is) {
@@ -82,9 +95,15 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream getUrlData(String url) {
+        InputStream result = null;
+
         Response response = OkHttpHelpers.doGetOkHttpRequest(url, mManager.getHeaders());
 
-        return response == null ? null : response.body().byteStream();
+        if (response != null && response.body() != null) {
+            result = response.body().byteStream();
+        }
+
+        return result;
     }
 
     protected Response getResponse(String url) {
@@ -98,18 +117,38 @@ public abstract class RequestInterceptor {
     }
 
     protected WebResourceResponse emptyResponse() {
-        return new WebResourceResponse(null, null, null);
+        return EMPTY_RESPONSE;
     }
 
     protected InputStream postJsonData(String url, String body) {
-        Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/json");
+        return postJsonData(url, body, null);
+    }
 
-        return response == null ? null : response.body().byteStream();
+    protected InputStream postJsonData(String url, String body, Map<String, String> headers) {
+        InputStream result = null;
+
+        HashMap<String, String> resultHeaders = mManager.getHeaders();
+
+        if (headers != null) {
+            resultHeaders.putAll(headers);
+        }
+
+        Response response = OkHttpHelpers.doPostOkHttpRequest(url, resultHeaders, body, "application/json");
+
+        if (response != null && response.body() != null) {
+            result = response.body().byteStream();
+        }
+
+        return result;
     }
 
     protected WebResourceResponse postFormData(String url, String body) {
         Response response = OkHttpHelpers.doPostOkHttpRequest(url, mManager.getHeaders(), body, "application/x-www-form-urlencoded");
 
+        return createResponse(response);
+    }
+
+    protected WebResourceResponse createResponse(Response response) {
         WebResourceResponse result = null;
 
         if (response != null) {

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto"
+          package="com.liskovsoft.smartyoutubetv">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <!-- NOTE: use older sdk -->
+    <uses-sdk tools:overrideLibrary="
+        org.xwalk.core,
+        com.algolia.instantsearch.voice,
+        androidx.leanback, androidx.tvprovider,
+        com.github.rubensousa.previewseekbar,
+        com.github.rubensousa.previewseekbar.exoplayer,
+        com.google.android.exoplayer2.ext.vp9,
+        com.google.android.exoplayer2.testutil,
+        com.google.android.exoplayer2.ext.okhttp"/>
+
+    <!-- Leanback required fields -->
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.sensor"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <!-- End Leanback required fields -->
+
+    <!-- NOTE: ExoApplication: exoplayer specific params -->
+    <application
+        android:name="com.liskovsoft.browser.Browser"
+        android:allowBackup="true"
+        android:banner="@mipmap/ic_banner_main"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher_main"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        tools:node="merge"
+        tools:replace="android:name">
+
+        <!-- allow to use repacked XWalk's apk -->
+        <meta-data android:name="xwalk_verify" android:value="disable" />
+
+        <!-- NOTE: Screen Mirror (e.g. DIAL) for Amazon TV -->
+        <meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>
+
+        <!-- Root (bootstrap) Activity -->
+        <!-- NOTE: avoid setting launchMode or you will get new activity every time from launcher -->
+        <!-- NOTE: also, you'll got problems with activity restarting (System.exit) -->
+        <activity android:name=".bootstrap.BootstrapActivity"
+                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+                  android:windowSoftInputMode="adjustResize"
+                  android:noHistory="true"
+                  android:excludeFromRecents="true"
+                  android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
+                  tools:node="replace">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+            </intent-filter>
+            <!-- Pass url from other apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="youtube.com"/>
+                <data android:host="www.youtube.com"/>
+                <data android:host="m.youtube.com"/>
+                <data android:host="youtu.be"/>
+                <data android:pathPattern=".*"/>
+                <data android:host="search" android:scheme="youtube"/>
+                <data android:host="play" android:scheme="youtube"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="vnd.youtube"/>
+                <data android:scheme="vnd.youtube.launch"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.CLEAR_CACHE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- End Pass url from other apps -->
+        </activity>
+        <!-- End Root Activity -->
+
+        <!-- Flavours -->
+        <activity
+            android:name=".flavors.webview.SmartYouTubeTV1080Activity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Lite Main"/>
+        </activity>
+        <activity
+            android:name=".flavors.xwalk.SmartYouTubeTV1080AltActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Lite Alt"/>
+        </activity>
+        <activity
+            android:name=".flavors.exoplayer.SmartYouTubeTV4K"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Pro Main"/>
+        </activity>
+        <activity
+            android:name=".flavors.exoplayer.SmartYouTubeTV4KAlt"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            tools:node="replace">
+            <meta-data android:name="AppLabel" android:value="Beta Pro Alt"/>
+        </activity>
+        <!-- End Flavours -->
+
+        <!-- Amazon Launcher for official YouTube -->
+        <!-- WARN: for compatibility with bridge try to not rename the activity -->
+        <activity-alias
+            android:targetActivity=".bootstrap.BootstrapActivity"
+            android:name=".flavors.exoplayer.SmartYouTubeTV4KAmazon"
+            android:taskAffinity="com.liskovsoft.smartyoutubetv.orig"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|fontScale"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            tools:node="replace">
+        </activity-alias>
+
+        <receiver
+            android:name=".receivers.ClearCacheReceiver"
+            android:exported="true"
+            tools:node="replace">
+            <intent-filter>
+                <action android:name="android.intent.action.CLEAR_CACHE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

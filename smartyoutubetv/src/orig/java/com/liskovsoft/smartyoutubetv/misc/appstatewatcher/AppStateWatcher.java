@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.misc.appstatewatcher;
 
-import android.app.Activity;
 import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVChannelsHandler;
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ATVYouTubeBridgeHandler;
@@ -13,10 +12,11 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.ForceNewUIHan
 import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.handlers.LoadingCheckHandler;
 
 public class AppStateWatcher extends AppStateWatcherBase {
-    public AppStateWatcher(Activity context) {
+    public AppStateWatcher(FragmentManagerActivity context) {
         super(context);
 
-        addHandler(new ForceNewUIHandler(context));
+        // Don't enable! Old ui may popup sometimes
+        //addHandler(new ForceNewUIHandler(context));
 
         addHandler(new AdBlockPermissionsHandler(context, this));
 
@@ -25,9 +25,7 @@ public class AppStateWatcher extends AppStateWatcherBase {
         addHandler(new ATVYouTubeBridgeHandler(context, this));
         addHandler(new AmazonYouTubeBridgeHandler(context, this));
 
-        if (context instanceof FragmentManagerActivity) {
-            addHandler(new LoadingCheckHandler((FragmentManagerActivity) context));
-        }
+        addHandler(new LoadingCheckHandler(context));
 
         addHandler(new CacheCleanHandler(context));
 
