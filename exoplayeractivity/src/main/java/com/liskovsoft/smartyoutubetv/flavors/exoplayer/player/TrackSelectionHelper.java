@@ -240,7 +240,7 @@ import java.util.TreeSet;
         mAudioDelayView.setVisibility(View.GONE);
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_AUDIO) {
-            mAudioDelayView.setVisibility(View.VISIBLE);
+            //mAudioDelayView.setVisibility(View.VISIBLE);
             append(mAudioDelayView, root);
         }
 
