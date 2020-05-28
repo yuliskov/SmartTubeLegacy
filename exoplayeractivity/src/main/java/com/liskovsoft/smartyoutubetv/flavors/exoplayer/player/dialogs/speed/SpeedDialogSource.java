@@ -19,31 +19,28 @@ import java.util.List;
 public class SpeedDialogSource implements CombinedDialogSource {
     private static final String TAG = SpeedDialogSource.class.getSimpleName();
     private final Context mContext;
-    private final SimpleExoPlayer mPlayer;
     private final ArrayList<DialogItem> mItems;
-    private final ExoPreferences mPrefs;
 
     public SpeedDialogSource(Context context, SimpleExoPlayer player) {
         mContext = context;
-        mPlayer = player;
-        mPrefs = ExoPreferences.instance(mContext);
+        ExoPreferences prefs = ExoPreferences.instance(mContext);
 
         mItems = new ArrayList<>();
-        mItems.add(new SaveSpeedDialogItem(mContext.getString(R.string.checkbox_save_speed), mPrefs));
-        mItems.add(new SpeedDialogItem("0.25", "0.25", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("0.5", "0.5", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("0.75", "0.75", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem(mContext.getString(R.string.normal), "1.0", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("1.25", "1.25", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("1.5", "1.5", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("1.75", "1.75", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("2", "2.0", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("2.25", "2.25", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("2.5", "2.5", mPlayer, mPrefs));
-        mItems.add(new SpeedDialogItem("2.75", "2.75", mPlayer, mPrefs));
+        mItems.add(new SaveSpeedDialogItem(mContext.getString(R.string.checkbox_save_speed), prefs));
+        mItems.add(new SpeedDialogItem("0.25", "0.25", player, prefs));
+        mItems.add(new SpeedDialogItem("0.5", "0.5", player, prefs));
+        mItems.add(new SpeedDialogItem("0.75", "0.75", player, prefs));
+        mItems.add(new SpeedDialogItem(mContext.getString(R.string.normal), "1.0", player, prefs));
+        mItems.add(new SpeedDialogItem("1.25", "1.25", player, prefs));
+        mItems.add(new SpeedDialogItem("1.5", "1.5", player, prefs));
+        mItems.add(new SpeedDialogItem("1.75", "1.75", player, prefs));
+        mItems.add(new SpeedDialogItem("2", "2.0", player, prefs));
+        mItems.add(new SpeedDialogItem("2.25", "2.25", player, prefs));
+        mItems.add(new SpeedDialogItem("2.5", "2.5", player, prefs));
+        mItems.add(new SpeedDialogItem("2.75", "2.75", player, prefs));
 
-        if (mPlayer != null) {
-            SpeedDialogItem.sCurrentSpeed = String.valueOf(mPlayer.getPlaybackParameters().speed);
+        if (player != null) {
+            SpeedDialogItem.sCurrentSpeed = String.valueOf(player.getPlaybackParameters().speed);
         }
     }
 

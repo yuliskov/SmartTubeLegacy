@@ -1,7 +1,9 @@
 apply from: '../../SharedUtils/constants.gradle'
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
+        jcenter()
+        google()
+        //maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
@@ -10,14 +12,29 @@ buildscript {
 
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        classpath 'io.fabric.tools:gradle:1.+'
+        //classpath 'io.fabric.tools:gradle:1.+'
+
+        // Check that you have the Google Services Gradle plugin v4.3.2 or later
+        // (if not, add it).
+        classpath 'com.google.gms:google-services:4.3.3'
+
+        // Add the Crashlytics Gradle plugin.
+        // https://firebase.google.com/docs/crashlytics/get-started?platform=android
+        // https://firebase.google.com/docs/android/setup
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
     }
 }
 
 apply plugin: 'com.android.application'
 
 // Put Fabric plugin after Android plugin
-apply plugin: 'io.fabric'
+//apply plugin: 'io.fabric'
+
+// Google Services Gradle plugin (transforms google-services.json file)
+apply plugin: 'com.google.gms.google-services'
+
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -237,9 +254,13 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    implementation('com.crashlytics.sdk.android:crashlytics:' + crashlyticsVersion) { // see top part of this file
-        transitive = true
-    }
+    // Add the Firebase Crashlytics SDK.
+    origImplementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    betaImplementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+
+    // implementation('com.crashlytics.sdk.android:crashlytics:' + crashlyticsVersion) { // see top part of this file
+    //     transitive = true
+    // }
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
     implementation 'androidx.media:media:' + appCompatXLibraryVersion // exoplayer fix
