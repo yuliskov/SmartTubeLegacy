@@ -3,16 +3,11 @@ buildscript {
     repositories {
         jcenter()
         google()
-        //maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         // These docs use an open ended version so that our plugin
         // can be updated quickly in response to Android tooling updates
-
-        // We recommend changing it to the latest version from our changelog:
-        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        //classpath 'io.fabric.tools:gradle:1.+'
 
         // Check that you have the Google Services Gradle plugin v4.3.2 or later
         // (if not, add it).
@@ -26,9 +21,6 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-
-// Put Fabric plugin after Android plugin
-//apply plugin: 'io.fabric'
 
 // Google Services Gradle plugin (transforms google-services.json file)
 apply plugin: 'com.google.gms.google-services'
@@ -60,10 +52,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
-        multiDexEnabled = true
         // More info: http://myhexaville.com/2017/03/10/android-multidex/
-        //multiDexKeepFile file('multidex-config.txt')
-        //multiDexKeepProguard file('multidex-config.pro')
+        multiDexEnabled = true
     }
 
     //signingConfigs {
@@ -109,10 +99,6 @@ android {
             matchingFallbacks = ['lite']
             applicationIdSuffix ".beta"
         }
-        // Vtesting {
-        //     matchingFallbacks = ['lite']
-        //     applicationIdSuffix ".testing"
-        // }
         Vkids {
             matchingFallbacks = ['Vkids', 'lite']
             applicationIdSuffix ".kids"
@@ -194,9 +180,6 @@ android {
         beta {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
-        // Vtesting {
-        //     java.srcDirs = commonDirs
-        // }
         Vkids {
             java.srcDirs = commonDirs
         }
@@ -229,11 +212,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:' + junitVersion
-    // example: assertThat(newEmployees).hasSize(6).contains(frodo, sam);
     testImplementation 'org.assertj:assertj-core:' + assertJVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
-    //testImplementation project.properties.robolectricMultidexVersion
-    //testImplementation project.properties.robolectricSupportV4Version
     testImplementation 'commons-io:commons-io:' + commonsIOVersion
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -245,6 +225,7 @@ dependencies {
     // ATV INSTALL_FAILED_CONFLICTING_PROVIDER fix
     origImplementation project(path: ':leanbackassistant')
     betaImplementation project(path: ':leanbackassistant')
+    // experimentsImplementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
 
@@ -255,12 +236,9 @@ dependencies {
     implementation project(path: ':appupdatechecker')
 
     // Add the Firebase Crashlytics SDK.
-    origImplementation 'com.google.firebase:firebase-crashlytics:17.0.0'
-    betaImplementation 'com.google.firebase:firebase-crashlytics:17.0.0'
-
-    // implementation('com.crashlytics.sdk.android:crashlytics:' + crashlyticsVersion) { // see top part of this file
-    //     transitive = true
-    // }
+    origImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
+    betaImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
+    // experimentsImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
     implementation 'androidx.media:media:' + appCompatXLibraryVersion // exoplayer fix
