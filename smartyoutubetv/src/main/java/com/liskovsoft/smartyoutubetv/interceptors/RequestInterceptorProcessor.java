@@ -17,10 +17,10 @@ import java.util.List;
 public class RequestInterceptorProcessor {
     private static final String TAG = RequestInterceptorProcessor.class.getSimpleName();
     private final List<RequestInterceptor> mInterceptors;
-    private final FileExtensionInterceptor mFileExtensionInterceptor;
+    //private final FileExtensionInterceptor mFileExtensionInterceptor;
 
     public RequestInterceptorProcessor(Context context) {
-        mFileExtensionInterceptor = new FileExtensionInterceptor(context);
+        //mFileExtensionInterceptor = new FileExtensionInterceptor(context);
         mInterceptors = new ArrayList<>();
         mInterceptors.add(new AdAwayInterceptor(context));
         mInterceptors.add(new BrowseInterceptor(context)); // impact performance
@@ -42,9 +42,9 @@ public class RequestInterceptorProcessor {
         WebResourceResponse result = null;
 
         // don't process media files
-        if (mFileExtensionInterceptor.test(url)) {
-            return null;
-        }
+        //if (mFileExtensionInterceptor.test(url)) {
+        //    return null;
+        //}
 
         for (RequestInterceptor interceptor : mInterceptors) {
             if (interceptor.test(url)) {

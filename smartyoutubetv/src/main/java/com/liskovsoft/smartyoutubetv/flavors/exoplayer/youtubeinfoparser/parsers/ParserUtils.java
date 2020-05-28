@@ -66,7 +66,7 @@ public final class ParserUtils {
 
         try {
             if (jsonInfo instanceof InputStream) {
-                jsonPath = JsonPath.using(JSON_PATH_CONFIGURATION).parse((InputStream) jsonInfo);
+                jsonPath = JsonPath.using(JSON_PATH_CONFIGURATION).parse((InputStream) jsonInfo, "UTF-8");
             } else if (jsonInfo instanceof String) {
                 jsonPath = JsonPath.using(JSON_PATH_CONFIGURATION).parse((String) jsonInfo);
             } else {
