@@ -59,4 +59,5 @@
     <string name="exo_video_decoder_error">Кажется выбранный видео формат не поддерживется вашим устройством.</string>
     <string name="default_subtitle">По-умолчанию (отключены)</string>
     <string name="default_media">По-умолчанию (оптимально)</string>
+    <string name="set_audio_delay">Задержка звука в миллисекундах</string>
 </resources>
