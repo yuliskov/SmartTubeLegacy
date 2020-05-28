@@ -79,4 +79,5 @@
     <string name="exo_video_decoder_error">Dit apparaat ondersteunt het geselecteerde video formaat niet</string>
     <string name="default_subtitle">Standaard (geen)</string>
     <string name="default_media">Standaard (optimaal)</string>
+    <string name="set_audio_delay">Audiovertraging in milliseconden</string>
 </resources>
