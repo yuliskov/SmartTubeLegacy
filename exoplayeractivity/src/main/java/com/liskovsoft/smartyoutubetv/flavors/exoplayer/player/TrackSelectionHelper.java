@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -143,6 +144,24 @@ import java.util.TreeSet;
         mAlertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
                 .setView(buildView(builder.getContext())).create();
         mAlertDialog.show();
+
+        setUpControllerTimeout();
+    }
+
+    private void setUpControllerTimeout() {
+        if (mPlayerFragment != null) {
+            PlayerView playerView = mPlayerFragment.getExoPlayerView();
+
+            if (playerView != null) {
+                int controllerShowTimeoutMs = playerView.getControllerShowTimeoutMs();
+                playerView.setControllerShowTimeoutMs(0); // show indefinitely
+
+                if (mAlertDialog != null) {
+                    mAlertDialog.setOnDismissListener((DialogInterface dialog) -> playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs));
+                }
+            }
+
+        }
     }
 
     private View createCustomTitle(Context context, CharSequence title) {
@@ -241,6 +260,12 @@ import java.util.TreeSet;
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_AUDIO) {
             mAudioDelayView.setVisibility(View.VISIBLE);
             append(mAudioDelayView, root);
+
+            mAudioDelayView.setOnFocusChangeListener((View v, boolean hasFocus) -> {
+                if (!hasFocus) {
+                    mKeyboardShown = false; // fix onClick listener state
+                }
+            });
         }
 
         //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////
