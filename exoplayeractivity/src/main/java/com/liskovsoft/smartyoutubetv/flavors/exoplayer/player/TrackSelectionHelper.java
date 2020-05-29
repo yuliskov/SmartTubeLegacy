@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Handler;
-import android.text.InputType;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Pair;
@@ -147,10 +146,10 @@ import java.util.TreeSet;
                 .setView(buildView(builder.getContext())).create();
         mAlertDialog.show();
 
-        setUpControllerTimeout();
+        setUpDialogFocusOutListeners();
     }
 
-    private void setUpControllerTimeout() {
+    private void setUpDialogFocusOutListeners() {
         if (mPlayerFragment != null) {
             PlayerView playerView = mPlayerFragment.getExoPlayerView();
 
@@ -159,7 +158,10 @@ import java.util.TreeSet;
                 playerView.setControllerShowTimeoutMs(0); // show indefinitely
 
                 if (mAlertDialog != null) {
-                    mAlertDialog.setOnDismissListener((DialogInterface dialog) -> playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs));
+                    mAlertDialog.setOnDismissListener((DialogInterface dialog) -> {
+                        playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
+                        onAudioDelayCommit();
+                    });
                 }
             }
 
