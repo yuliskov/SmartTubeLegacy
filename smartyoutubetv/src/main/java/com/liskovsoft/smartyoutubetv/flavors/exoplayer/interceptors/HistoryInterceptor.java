@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
-import android.os.Handler;
 import android.webkit.WebResourceResponse;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
@@ -11,15 +11,13 @@ import com.liskovsoft.smartyoutubetv.misc.youtubeutils.YouTubeWatchTime;
 
 public class HistoryInterceptor extends RequestInterceptor {
     private static final String TAG = HistoryInterceptor.class.getSimpleName();
-    private final Context mContext;
     private final YouTubeHistoryUpdater mTracker;
     private float mPosition;
     private String mUrl;
 
     public HistoryInterceptor(Context context) {
         super(context);
-        mContext = context;
-        mTracker = new YouTubeHistoryUpdater(mContext);
+        mTracker = new YouTubeHistoryUpdater(context);
     }
 
     @Override

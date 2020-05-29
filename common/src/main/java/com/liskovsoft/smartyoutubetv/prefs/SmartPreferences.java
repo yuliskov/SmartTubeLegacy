@@ -92,6 +92,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mVideoSrc;
     private long mVideoActionTimeMS;
     private String mVisitorIdHeader;
+    private String mClientDataHeader;
     private String mInterceptUserAgent;
 
     public static SmartPreferences instance(Context ctx) {
@@ -407,6 +408,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public String getVisitorIdHeader() {
         return mVisitorIdHeader;
+    }
+
+    public void setClientDataHeader(String header) {
+        mClientDataHeader = header;
+    }
+
+    public String getClientDataHeader() {
+        return mClientDataHeader;
     }
 
     public void setCookieHeader(String header) {

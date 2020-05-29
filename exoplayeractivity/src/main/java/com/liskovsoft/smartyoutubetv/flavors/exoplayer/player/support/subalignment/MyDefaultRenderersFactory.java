@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignm
 import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
@@ -16,7 +15,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
  * My wrapper<br/>
  * Main intent: fix subtitle alignment on some videos
  */
-public class MyDefaultRenderersFactory extends DefaultRenderersFactory {
+public class MyDefaultRenderersFactory extends MyAudioDelayOverrideRenderersFactory {
     public MyDefaultRenderersFactory(FragmentActivity activity) {
         super(activity);
     }

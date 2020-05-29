@@ -19,7 +19,9 @@
         com.github.rubensousa.previewseekbar.exoplayer,
         com.google.android.exoplayer2.ext.vp9,
         com.google.android.exoplayer2.testutil,
-        com.google.android.exoplayer2.ext.okhttp"/>
+        com.google.android.exoplayer2.ext.okhttp,
+        com.google.firebase.crashlytics,
+        com.google.firebase.iid"/>
 
     <!-- Leanback required fields -->
     <uses-feature

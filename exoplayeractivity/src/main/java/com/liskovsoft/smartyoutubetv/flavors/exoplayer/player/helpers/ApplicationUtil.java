@@ -9,10 +9,13 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class ApplicationUtil {
     private static final UserAgentManager USER_AGENT_MANAGER = new UserAgentManager();
+    private static final List<String> EXO_HEADERS = Arrays.asList("Origin", "Referer", "User-Agent", "Accept-Language", "Accept", "X-Client-Data");
 
     public static DataSource.Factory buildDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
         return new DefaultDataSourceFactory(context, bandwidthMeter, buildHttpDataSourceFactory(context, bandwidthMeter));
@@ -30,6 +33,14 @@ public class ApplicationUtil {
 
     private static void addCommonHeaders(Context context, DefaultHttpDataSourceFactory dataSourceFactory) {
         HeaderManager headerManager = new HeaderManager(context);
-        dataSourceFactory.getDefaultRequestProperties().set(headerManager.getHeaders());
+        HashMap<String, String> headers = headerManager.getHeaders();
+
+        // NOTE: "Accept-Encoding" should set to "identity" or not present
+
+        for (String header : headers.keySet()) {
+            if (EXO_HEADERS.contains(header)) {
+                dataSourceFactory.getDefaultRequestProperties().set(header, headers.get(header));
+            }
+        }
     }
 }

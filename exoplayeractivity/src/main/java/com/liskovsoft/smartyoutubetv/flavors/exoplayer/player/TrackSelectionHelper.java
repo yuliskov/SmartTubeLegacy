@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Handler;
+import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -28,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -39,10 +39,13 @@ import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.RandomTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyExoAudioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 import java.util.Arrays;
@@ -74,10 +77,12 @@ import java.util.TreeSet;
     private CheckedTextView mAutoframerateView;
     private CheckedTextView mAutoframerateDelayView;
     private CheckedTextView mHideErrorsView;
+    private EditText mAudioDelayView;
     private CheckedTextView[][] mTrackViews;
     private AlertDialog mAlertDialog;
     private Context mContext;
     private ExoPlayerFragment mPlayerFragment;
+    private boolean mKeyboardShown;
 
     private class TrackViewComparator implements Comparator<CheckedTextView> {
         @Override
@@ -139,6 +144,24 @@ import java.util.TreeSet;
         mAlertDialog = builder.setCustomTitle(createCustomTitle(builder.getContext(), title))
                 .setView(buildView(builder.getContext())).create();
         mAlertDialog.show();
+
+        setUpControllerTimeout();
+    }
+
+    private void setUpControllerTimeout() {
+        if (mPlayerFragment != null) {
+            PlayerView playerView = mPlayerFragment.getExoPlayerView();
+
+            if (playerView != null) {
+                int controllerShowTimeoutMs = playerView.getControllerShowTimeoutMs();
+                playerView.setControllerShowTimeoutMs(0); // show indefinitely
+
+                if (mAlertDialog != null) {
+                    mAlertDialog.setOnDismissListener((DialogInterface dialog) -> playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs));
+                }
+            }
+
+        }
     }
 
     private View createCustomTitle(Context context, CharSequence title) {
@@ -189,12 +212,8 @@ import java.util.TreeSet;
 
         String defaultViewTitle = mContext.getResources().getString(R.string.default_media);
 
-        if (mTrackInfo != null) {
-            int type = mTrackInfo.getRendererType(mRendererIndex);
-
-            if (type == C.TRACK_TYPE_TEXT) {
-                defaultViewTitle = mContext.getResources().getString(R.string.default_subtitle);
-            }
+        if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_SUBTITLE) {
+            defaultViewTitle = mContext.getResources().getString(R.string.default_subtitle);
         }
 
         mDefaultView = createRadioButton(context, defaultViewTitle, root);
@@ -231,6 +250,22 @@ import java.util.TreeSet;
 
         for (CheckedTextView trackView : sortedViewList) {
             root.addView(trackView);
+        }
+
+        // Audio delay view
+
+        mAudioDelayView = createEditTextButton(context, R.string.set_audio_delay, root);
+        mAudioDelayView.setVisibility(View.GONE);
+
+        if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_AUDIO) {
+            mAudioDelayView.setVisibility(View.VISIBLE);
+            append(mAudioDelayView, root);
+
+            mAudioDelayView.setOnFocusChangeListener((View v, boolean hasFocus) -> {
+                if (!hasFocus) {
+                    mKeyboardShown = false; // fix onClick listener state
+                }
+            });
         }
 
         //////////// END MERGE TRACKS FROM DIFFERENT CODECS ////////////
@@ -319,6 +354,12 @@ import java.util.TreeSet;
                 mEnableRandomAdaptationView.setChecked(!mIsDisabled && mTrackSelectionFactory instanceof RandomTrackSelection.Factory);
             }
         }
+
+        if (mAudioDelayView != null && mAudioDelayView.getVisibility() == View.VISIBLE) {
+            int audioDelay = new MyExoAudioManager(mContext).getAudioDelayMs();
+            String title = mContext.getString(R.string.set_audio_delay);
+            mAudioDelayView.setText(String.format("%s: %d", title, audioDelay));
+        }
     }
 
     private void updateDefaultView() {
@@ -366,6 +407,28 @@ import java.util.TreeSet;
             boolean checked = mHideErrorsView.isChecked();
             ExoPlayerFragment player = mPlayerFragment;
             player.setHidePlaybackErrors(!checked);
+        } else if (view == mAudioDelayView) {
+            if (!mKeyboardShown) {
+                Helpers.showKeyboard(mContext);
+
+                mAudioDelayView.setText("");
+                mKeyboardShown = true;
+            } else {
+                MyExoAudioManager audioManager = new MyExoAudioManager(mContext);
+                String text = mAudioDelayView.getText().toString();
+
+                if (Helpers.isNumeric(text)) {
+                    audioManager.setAudioDelayMs(Integer.parseInt(text));
+                }
+
+                String title = mContext.getString(R.string.set_audio_delay);
+                mAudioDelayView.setText(String.format("%s: %d", title, audioManager.getAudioDelayMs()));
+
+                Helpers.hideKeyboard(mContext);
+                mKeyboardShown = false;
+            }
+
+            return; // don't update views or save selection (dialog doesn't closed yet)
         } else { // change quality
             mIsDisabled = false;
             @SuppressWarnings("unchecked")
@@ -471,30 +534,34 @@ import java.util.TreeSet;
     }
 
     private CheckedTextView createRadioButton(Context context, CharSequence title, ViewGroup root) {
-        return createDialogButton(context, R.layout.dialog_check_item_single, title, root);
+        return (CheckedTextView) createDialogButton(context, R.layout.dialog_check_item_single, title, root);
     }
 
     private CheckedTextView createRadioButton(Context context, int titleResId, ViewGroup root) {
-        return createDialogButton(context, R.layout.dialog_check_item_single, titleResId, root);
+        return (CheckedTextView) createDialogButton(context, R.layout.dialog_check_item_single, titleResId, root);
     }
 
     private CheckedTextView createCheckButton(Context context, int titleResId, ViewGroup root) {
-        return createDialogButton(context, R.layout.dialog_check_item_multi, titleResId, root);
+        return (CheckedTextView) createDialogButton(context, R.layout.dialog_check_item_multi, titleResId, root);
     }
 
-    private CheckedTextView createDialogButton(Context context, int btnLayoutId, int titleResId, ViewGroup root) {
+    private EditText createEditTextButton(Context context, int titleResId, ViewGroup root) {
+        return (EditText) createDialogButton(context, R.layout.dialog_edit_text, titleResId, root);
+    }
+
+    private TextView createDialogButton(Context context, int btnLayoutId, int titleResId, ViewGroup root) {
         String title = context.getResources().getString(titleResId);
         return createDialogButton(context, btnLayoutId, title, root);
     }
 
-    private CheckedTextView createDialogButton(Context context, int btnLayoutId, CharSequence title, ViewGroup root) {
+    private TextView createDialogButton(Context context, int btnLayoutId, CharSequence title, ViewGroup root) {
         LayoutInflater inflater = LayoutInflater.from(context);
 
         TypedArray attributeArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});
         int selectableItemBackgroundResourceId = attributeArray.getResourceId(0, 0);
         attributeArray.recycle();
 
-        CheckedTextView view = (CheckedTextView) inflater.inflate(btnLayoutId, root, false);
+        TextView view = (TextView) inflater.inflate(btnLayoutId, root, false);
         view.setBackgroundResource(selectableItemBackgroundResourceId);
         view.setText(title);
         view.setFocusable(true);

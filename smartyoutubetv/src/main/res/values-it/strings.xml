@@ -38,7 +38,6 @@
     <string name="update_check">Verifica aggiornamenti</string>
     <string name="preferred_codec">Restrict</string>
     <string name="select_preferred_codec">Restrict codec and resolution</string>
-    <string name="no_restrictions">Senza restrizioni</string>
     <string name="old_ui">Vecchia UI</string>
     <string name="endcards">End Cards</string>
     <string name="tip_save_selection">Non mostrare questa schermata la prossima volta</string>

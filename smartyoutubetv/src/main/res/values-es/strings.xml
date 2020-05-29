@@ -38,7 +38,6 @@
     <string name="update_check">Comprobar actualizaciones</string>
     <string name="preferred_codec">Restringir</string>
     <string name="select_preferred_codec">Restringir códec y resolución</string>
-    <string name="no_restrictions">Sin restricciones</string>
     <string name="old_ui">Interfaz antigua</string>
     
     <!-- What does End Cards mean?-->

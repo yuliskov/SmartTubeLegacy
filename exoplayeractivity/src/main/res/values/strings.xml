@@ -79,4 +79,6 @@
     <string name="exo_video_decoder_error">Oops. Seems that selected video format isn\'t supported by your device.</string>
     <string name="default_subtitle">Default (None)</string>
     <string name="default_media">Default (Optimal)</string>
+    <string name="set_audio_delay">Audio delay in milliseconds</string>
+    <string name="restart_video_to_apply_audio_delay">You need to restart the video to apply delay</string>
 </resources>

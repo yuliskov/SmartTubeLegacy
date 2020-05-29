@@ -21,8 +21,8 @@ public class HeaderManager {
     private static final String PAGE_LABEL = "youtube.ytfe.desktop_20200122_2_RC1";
 
     // Compression doesn't supported by ExoPlayer
-    // private static final String ACCEPT_COMPRESSION = "gzip, deflate";
-    private static final String ACCEPT_COMPRESSION = "identity"; // no compression
+    private static final String ACCEPT_COMPRESSION = "gzip, deflate";
+    //private static final String ACCEPT_COMPRESSION = "identity"; // no compression
     private static final String ACCEPT_PATTERN = "*/*";
     private static final String ORIGINAL_PACKAGE = "com.google.android.youtube.tv";
 
@@ -83,6 +83,12 @@ public class HeaderManager {
 
         if (visitorId != null) {
             mHeaders.put("X-Goog-Visitor-Id", visitorId);
+        }
+
+        String clientData = mPrefs.getClientDataHeader(); // DON'T CACHE: value changed over time
+
+        if (clientData != null) {
+            mHeaders.put("X-Client-Data", clientData);
         }
     }
 }
