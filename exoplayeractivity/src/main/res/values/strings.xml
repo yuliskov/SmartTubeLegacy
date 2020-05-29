@@ -80,4 +80,5 @@
     <string name="default_subtitle">Default (None)</string>
     <string name="default_media">Default (Optimal)</string>
     <string name="set_audio_delay">Audio delay in milliseconds</string>
+    <string name="restart_video_to_apply_audio_delay">You need to restart the video to apply delay</string>
 </resources>

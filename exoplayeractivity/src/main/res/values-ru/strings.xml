@@ -60,4 +60,5 @@
     <string name="default_subtitle">По-умолчанию (отключены)</string>
     <string name="default_media">По-умолчанию (оптимально)</string>
     <string name="set_audio_delay">Задержка звука в миллисекундах</string>
+    <string name="restart_video_to_apply_audio_delay">Вам нужно перезапустить видео, чтобы применить задержку</string>
 </resources>

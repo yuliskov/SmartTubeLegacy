@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Handler;
-import android.text.Editable;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Pair;
@@ -30,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.RendererCapabilities;
 import com.google.android.exoplayer2.source.TrackGroup;
@@ -46,7 +44,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.AutoFrameRateManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.AudioManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyExoAudioManager;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 import java.util.Arrays;
@@ -83,6 +81,7 @@ import java.util.TreeSet;
     private AlertDialog mAlertDialog;
     private Context mContext;
     private ExoPlayerFragment mPlayerFragment;
+    private boolean mKeyboardShown;
 
     private class TrackViewComparator implements Comparator<CheckedTextView> {
         @Override
@@ -240,7 +239,7 @@ import java.util.TreeSet;
         mAudioDelayView.setVisibility(View.GONE);
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_AUDIO) {
-            //mAudioDelayView.setVisibility(View.VISIBLE);
+            mAudioDelayView.setVisibility(View.VISIBLE);
             append(mAudioDelayView, root);
         }
 
@@ -330,6 +329,14 @@ import java.util.TreeSet;
                 mEnableRandomAdaptationView.setChecked(!mIsDisabled && mTrackSelectionFactory instanceof RandomTrackSelection.Factory);
             }
         }
+
+        if (mAudioDelayView != null && mAudioDelayView.getVisibility() == View.VISIBLE) {
+            int audioDelay = new MyExoAudioManager().getAudioDelayMs();
+
+            if (audioDelay != 0) {
+                mAudioDelayView.setText(String.valueOf(audioDelay));
+            }
+        }
     }
 
     private void updateDefaultView() {
@@ -378,13 +385,24 @@ import java.util.TreeSet;
             ExoPlayerFragment player = mPlayerFragment;
             player.setHidePlaybackErrors(!checked);
         } else if (view == mAudioDelayView) {
-            AudioManager audioManager = new AudioManager();
-            String text = ((EditText) view).getText().toString();
+            if (!mKeyboardShown) {
+                Helpers.showKeyboard(mContext);
+                mKeyboardShown = true;
 
-            audioManager.setAudioDelay(text);
+                MyExoAudioManager audioManager = new MyExoAudioManager();
+                mAudioDelayView.setText(String.valueOf(audioManager.getAudioDelayMs()));
+                return; // don't update views or save selection (dialog doesn't closed yet)
+            } else {
+                MyExoAudioManager audioManager = new MyExoAudioManager();
+                String text = mAudioDelayView.getText().toString();
 
-            Helpers.showKeyboard(mContext);
-            return; // don't update views or save selection
+                if (Helpers.isNumeric(text)) {
+                    audioManager.setAudioDelayMs(Integer.parseInt(text));
+                }
+
+                Helpers.hideKeyboard(mContext);
+                mKeyboardShown = false;
+            }
         } else { // change quality
             mIsDisabled = false;
             @SuppressWarnings("unchecked")
