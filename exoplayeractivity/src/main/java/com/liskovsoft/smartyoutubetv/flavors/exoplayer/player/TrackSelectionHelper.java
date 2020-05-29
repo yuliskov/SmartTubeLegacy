@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Handler;
+import android.text.InputType;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Pair;
@@ -126,6 +127,7 @@ import java.util.TreeSet;
      * @param rendererIndex The index of the renderer.
      */
     public void showSelectionDialog(ExoPlayerFragment fragment, CharSequence title, MappedTrackInfo trackInfo, int rendererIndex) {
+        mKeyboardShown = false;
         mTrackInfo = trackInfo;
         mRendererIndex = rendererIndex;
         mContext = fragment.getActivity();
@@ -259,11 +261,13 @@ import java.util.TreeSet;
 
         if (mRendererIndex == ExoPlayerFragment.RENDERER_INDEX_AUDIO) {
             mAudioDelayView.setVisibility(View.VISIBLE);
+            //mAudioDelayView.setInputType(InputType.TYPE_NULL);
+            //mAudioDelayView.setTextIsSelectable(true);
             append(mAudioDelayView, root);
 
             mAudioDelayView.setOnFocusChangeListener((View v, boolean hasFocus) -> {
                 if (!hasFocus) {
-                    mKeyboardShown = false; // fix onClick listener state
+                    onAudioDelayCommit();
                 }
             });
         }
@@ -409,23 +413,9 @@ import java.util.TreeSet;
             player.setHidePlaybackErrors(!checked);
         } else if (view == mAudioDelayView) {
             if (!mKeyboardShown) {
-                Helpers.showKeyboard(mContext);
-
-                mAudioDelayView.setText("");
-                mKeyboardShown = true;
+                onAudioDelayStartEdit();
             } else {
-                MyExoAudioManager audioManager = new MyExoAudioManager(mContext);
-                String text = mAudioDelayView.getText().toString();
-
-                if (Helpers.isNumeric(text)) {
-                    audioManager.setAudioDelayMs(Integer.parseInt(text));
-                }
-
-                String title = mContext.getString(R.string.set_audio_delay);
-                mAudioDelayView.setText(String.format("%s: %d", title, audioManager.getAudioDelayMs()));
-
-                Helpers.hideKeyboard(mContext);
-                mKeyboardShown = false;
+                onAudioDelayCommit();
             }
 
             return; // don't update views or save selection (dialog doesn't closed yet)
@@ -569,5 +559,28 @@ import java.util.TreeSet;
         view.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.dialog_text_size));
 
         return view;
+    }
+
+    private void onAudioDelayStartEdit() {
+        mAudioDelayView.setText("");
+        mKeyboardShown = true;
+
+        Helpers.showKeyboard(mContext);
+    }
+
+    private void onAudioDelayCommit() {
+        MyExoAudioManager audioManager = new MyExoAudioManager(mContext);
+        String text = mAudioDelayView.getText().toString();
+
+        if (Helpers.isNumeric(text)) {
+            audioManager.setAudioDelayMs(Integer.parseInt(text));
+        }
+
+        String title = mContext.getString(R.string.set_audio_delay);
+        mAudioDelayView.setText(String.format("%s: %d", title, audioManager.getAudioDelayMs()));
+
+        mKeyboardShown = false;
+
+        Helpers.hideKeyboard(mContext, mAudioDelayView);
     }
 }
