@@ -11,17 +11,27 @@ import com.google.android.exoplayer2.audio.MediaCodecAudioRenderer;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
-import com.liskovsoft.sharedutils.mylogger.Log;
 
 public class MyExoAudioManager {
     private static int sDelayUs;
+    private final ExoPreferences mPrefs;
+
+    public MyExoAudioManager(Context context) {
+        mPrefs = ExoPreferences.instance(context);
+    }
+
+    public void syncState() {
+        sDelayUs = mPrefs.getAudioDelayMs() * 1_000;
+    }
 
     public void setAudioDelayMs(int delay) {
+        mPrefs.setAudioDelayMs(delay);
+
         sDelayUs = delay * 1_000;
     }
 
     public int getAudioDelayMs() {
-        return sDelayUs / 1_000;
+        return mPrefs.getAudioDelayMs();
     }
 
     public static class MyMediaCodecAudioRendererAdapter extends MediaCodecAudioRenderer {

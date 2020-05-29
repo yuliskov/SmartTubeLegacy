@@ -65,6 +65,8 @@ public class MyAudioDelayOverrideRenderersFactory extends DefaultRenderersFactor
             Handler eventHandler,
             AudioRendererEventListener eventListener,
             ArrayList<Renderer> out) {
+        new MyExoAudioManager(context).syncState(); // apply audio shift from prefs
+
         out.add(
                 new MyExoAudioManager.MyMediaCodecAudioRendererAdapter(
                         context,

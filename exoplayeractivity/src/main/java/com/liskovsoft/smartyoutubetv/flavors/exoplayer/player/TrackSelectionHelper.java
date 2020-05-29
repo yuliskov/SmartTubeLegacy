@@ -331,11 +331,9 @@ import java.util.TreeSet;
         }
 
         if (mAudioDelayView != null && mAudioDelayView.getVisibility() == View.VISIBLE) {
-            int audioDelay = new MyExoAudioManager().getAudioDelayMs();
-
-            if (audioDelay != 0) {
-                mAudioDelayView.setText(String.valueOf(audioDelay));
-            }
+            int audioDelay = new MyExoAudioManager(mContext).getAudioDelayMs();
+            String title = mContext.getString(R.string.set_audio_delay);
+            mAudioDelayView.setText(String.format("%s: %d", title, audioDelay));
         }
     }
 
@@ -387,22 +385,25 @@ import java.util.TreeSet;
         } else if (view == mAudioDelayView) {
             if (!mKeyboardShown) {
                 Helpers.showKeyboard(mContext);
-                mKeyboardShown = true;
 
-                MyExoAudioManager audioManager = new MyExoAudioManager();
-                mAudioDelayView.setText(String.valueOf(audioManager.getAudioDelayMs()));
-                return; // don't update views or save selection (dialog doesn't closed yet)
+                mAudioDelayView.setText("");
+                mKeyboardShown = true;
             } else {
-                MyExoAudioManager audioManager = new MyExoAudioManager();
+                MyExoAudioManager audioManager = new MyExoAudioManager(mContext);
                 String text = mAudioDelayView.getText().toString();
 
                 if (Helpers.isNumeric(text)) {
                     audioManager.setAudioDelayMs(Integer.parseInt(text));
                 }
 
+                String title = mContext.getString(R.string.set_audio_delay);
+                mAudioDelayView.setText(String.format("%s: %d", title, audioManager.getAudioDelayMs()));
+
                 Helpers.hideKeyboard(mContext);
                 mKeyboardShown = false;
             }
+
+            return; // don't update views or save selection (dialog doesn't closed yet)
         } else { // change quality
             mIsDisabled = false;
             @SuppressWarnings("unchecked")

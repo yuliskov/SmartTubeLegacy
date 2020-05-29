@@ -29,6 +29,7 @@ public final class ExoPreferences {
     private static final String AFR_DELAY_ENABLED = "afr_delay_enabled";
     private static final String AFR_RESOLUTION_SWITCH_ENABLED = "afr_resolution_switch_enabled";
     private static final String AFR_SWITCH_PAUSE_TIME = "afr_switch_pause_time";
+    private static final String AUDIO_DELAY_MS = "audio_delay_ms";
     private boolean mForceRestoreSpeed;
 
     public static ExoPreferences instance(Context ctx) {
@@ -272,5 +273,15 @@ public final class ExoPreferences {
 
     public long getAfrDelayTime() {
         return mPrefs.getLong(AFR_SWITCH_PAUSE_TIME, 3_000);
+    }
+
+    public int getAudioDelayMs() {
+        return mPrefs.getInt(AUDIO_DELAY_MS, 0);
+    }
+
+    public void setAudioDelayMs(int delay) {
+        mPrefs.edit()
+                .putInt(AUDIO_DELAY_MS, delay)
+                .apply();
     }
 }
