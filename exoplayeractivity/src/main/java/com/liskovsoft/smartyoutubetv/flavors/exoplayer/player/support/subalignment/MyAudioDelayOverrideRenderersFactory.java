@@ -13,11 +13,9 @@ import com.google.android.exoplayer2.audio.DefaultAudioSink;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyExoAudioManager;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyExoAudioManager.MyMediaCodecAudioRenderer;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -68,7 +66,7 @@ public class MyAudioDelayOverrideRenderersFactory extends DefaultRenderersFactor
         new MyExoAudioManager(context).syncState(); // apply audio shift from prefs
 
         out.add(
-                new MyExoAudioManager.MyMediaCodecAudioRendererAdapter(
+                new MyMediaCodecAudioRenderer(
                         context,
                         mediaCodecSelector,
                         drmSessionManager,

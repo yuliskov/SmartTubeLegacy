@@ -9,6 +9,8 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.autoframerate.DisplaySyncHelper.AutoFrameRateListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
+import java.util.HashMap;
+
 class AutoFrameRateHelper {
     private static final String TAG = AutoFrameRateHelper.class.getSimpleName();
     private final Activity mContext;
@@ -17,6 +19,7 @@ class AutoFrameRateHelper {
     private SimpleExoPlayer mPlayer;
     private static final long THROTTLE_INTERVAL_MS = 3_000;
     private long mPrevCall;
+    private HashMap<Float, Float> mFrameRateMap;
 
     public AutoFrameRateHelper(Activity context, DisplaySyncHelper syncHelper) {
         mContext = context;
@@ -24,6 +27,14 @@ class AutoFrameRateHelper {
         mPrefs = ExoPreferences.instance(mContext);
 
         mSyncHelper.setResolutionSwitchEnabled(mPrefs.isAfrResolutionSwitchEnabled());
+
+        initFrameRateMap();
+    }
+
+    private void initFrameRateMap() {
+        mFrameRateMap = new HashMap<>();
+        mFrameRateMap.put(30f, 29.97f);
+        mFrameRateMap.put(60f, 59.94f);
     }
 
     public void apply() {
@@ -51,6 +62,8 @@ class AutoFrameRateHelper {
 
         Format videoFormat = mPlayer.getVideoFormat();
         float frameRate = videoFormat.frameRate;
+        frameRate = transformFrameRate(frameRate);
+
         int width = videoFormat.width;
         Log.d(TAG, String.format("Applying mode change... Video fps: %s, width: %s", frameRate, width));
         mSyncHelper.syncDisplayMode(mContext.getWindow(), width, frameRate);
@@ -148,5 +161,16 @@ class AutoFrameRateHelper {
 
     public void resetStats() {
         mSyncHelper.resetStats();
+    }
+
+    /**
+     * ExoPlayer reports wrong fps for some formats
+     */
+    private float transformFrameRate(float frameRate) {
+        if (mFrameRateMap.containsKey(frameRate)) {
+            frameRate = mFrameRateMap.get(frameRate);
+        }
+
+        return frameRate;
     }
 }
