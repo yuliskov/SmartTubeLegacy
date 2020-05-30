@@ -564,7 +564,9 @@ import java.util.TreeSet;
     }
 
     private void onAudioDelayStartEdit() {
-        mAudioDelayView.setText("");
+        MyExoAudioManager audioManager = new MyExoAudioManager(mContext);
+        mAudioDelayView.setText(String.valueOf(audioManager.getAudioDelayMs()));
+        mAudioDelayView.selectAll();
         mKeyboardShown = true;
 
         Helpers.showKeyboard(mContext);
