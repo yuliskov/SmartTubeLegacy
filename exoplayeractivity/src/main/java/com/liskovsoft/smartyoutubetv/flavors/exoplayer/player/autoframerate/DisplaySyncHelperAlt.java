@@ -20,6 +20,10 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
         return getFHDRateMapping();
     }
 
+    /**
+     * ExoPlayer reports wrong for 60 and 30 fps formats.<br/>
+     * Do workarounds: 60 => 59.94, 30 => 59.94
+     */
     private HashMap<Integer, int[]> getFHDRateMapping() {
         HashMap<Integer, int[]> relatedRates = new HashMap<>();
         relatedRates.put(1500, new int[]{6000, 3000});
@@ -28,10 +32,10 @@ class DisplaySyncHelperAlt extends DisplaySyncHelper {
         relatedRates.put(2497, new int[]{5000, 2500});
         relatedRates.put(2500, new int[]{5000, 2500});
         relatedRates.put(2997, new int[]{6000, 2997, 3000});
-        relatedRates.put(3000, new int[]{6000, 3000});
+        relatedRates.put(3000, new int[]{5994, 6000, 2997, 3000});
         relatedRates.put(5000, new int[]{5000, 2500});
         relatedRates.put(5994, new int[]{5994, 6000, 3000});
-        relatedRates.put(6000, new int[]{6000, 3000});
+        relatedRates.put(6000, new int[]{5994, 6000, 3000});
         return relatedRates;
     }
 
