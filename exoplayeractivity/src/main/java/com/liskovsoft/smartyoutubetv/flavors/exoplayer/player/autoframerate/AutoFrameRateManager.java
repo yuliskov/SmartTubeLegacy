@@ -4,7 +4,6 @@ import android.os.Handler;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.PlayerEventListener;
@@ -152,6 +151,20 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
             mPlayerFragment.getPlayer().setPlayWhenReady(false);
 
             mHandler.postDelayed(mPlayerPlay, delay);
+        }
+    }
+
+    public boolean is60fpsCorrectionEnabled() {
+        if (mAutoFrameRateHelper == null) {
+            return false;
+        }
+
+        return mAutoFrameRateHelper.is60fpsCorrectionEnabled();
+    }
+
+    public void set60fpsCorrectionEnabled(boolean checked) {
+        if (mAutoFrameRateHelper != null) {
+            mAutoFrameRateHelper.set60fpsCorrectionEnabled(checked);
         }
     }
 }

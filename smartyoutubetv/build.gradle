@@ -28,10 +28,6 @@ apply plugin: 'com.google.gms.google-services'
 // Apply the Crashlytics Gradle plugin
 apply plugin: 'com.google.firebase.crashlytics'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
     compileOptions {
@@ -47,8 +43,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1189
-        versionName "6.17.609"
+        versionCode 1199
+        versionName "6.17.619"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -236,8 +232,10 @@ dependencies {
     implementation project(path: ':appupdatechecker')
 
     // Add the Firebase Crashlytics SDK.
-    origImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
-    betaImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
+    //origImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
+    betaImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+        transitive = true
+    }
     // experimentsImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion

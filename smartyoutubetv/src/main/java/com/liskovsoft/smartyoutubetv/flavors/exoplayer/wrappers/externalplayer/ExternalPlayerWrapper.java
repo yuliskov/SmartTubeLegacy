@@ -45,7 +45,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private List<String> mUrlList;
     private InputStream mMpdContent;
     private static final String MIME_MP4 = "video/mp4";
-    private static final String MIME_HLS = "application/x-mpegURL";
+    private static final String MIME_HLS = "application/x-mpegurl";
     private boolean mBlockClose;
 
     protected ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
