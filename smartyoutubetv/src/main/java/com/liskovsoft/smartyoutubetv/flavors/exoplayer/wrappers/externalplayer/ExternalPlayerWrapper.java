@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import com.liskovsoft.m3uparser.m3u.M3UParser;
 import com.liskovsoft.m3uparser.m3u.models.Playlist;
+import com.liskovsoft.m3uparser.m3u.models.Stream;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -182,8 +183,10 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             Playlist pl = parser.parse(mHlsUrl);
 
             // find FHD stream
-            if (pl.getStreams() != null && pl.getStreams().size() > 0) {
-                mHlsUrl = pl.getStreams().get(pl.getStreams().size() - 1).uri;
+            Stream maxQualityStream = findMaxQualityStream(pl);
+
+            if (maxQualityStream != null) {
+                mHlsUrl = maxQualityStream.uri;
             }
 
             intent.setDataAndType(mHlsUrl, MIME_HLS); // m3u8
@@ -256,5 +259,26 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             // Fix NetworkOnMainThread exception
             new Thread(this::onDone).start();
         }
+    }
+
+    private Stream findMaxQualityStream(Playlist pl) {
+        if (pl.getStreams() == null) {
+            return null;
+        }
+
+        Stream maxQualityStream = null;
+
+        for (Stream stream : pl.getStreams()) {
+            if (maxQualityStream == null) {
+                maxQualityStream = stream;
+                continue;
+            }
+
+            if (maxQualityStream.bandWidth < stream.bandWidth) {
+                maxQualityStream = stream;
+            }
+        }
+
+        return maxQualityStream;
     }
 }
