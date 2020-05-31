@@ -21,8 +21,10 @@ public class EnableResolutionSwitchDialogItem extends MultiDialogItem {
 
     @Override
     public void setChecked(boolean checked) {
-        mAfrManager.setResolutionSwitchEnabled(checked);
+        if (checked) {
+            mAfrManager.setEnabled(true);
+        }
 
-        mAfrManager.setEnabled(true);
+        mAfrManager.setResolutionSwitchEnabled(checked);
     }
 }

@@ -61,5 +61,4 @@
     <string name="default_media">По-умолчанию (оптимально)</string>
     <string name="set_audio_delay">Смещение аудио в миллисекундах</string>
     <string name="restart_video_to_apply_audio_delay">Вам нужно перезапустить видео, чтобы применить задержку</string>
-    <string name="enable_autoframerate_60fps_correction">Коррекция fps</string>
 </resources>
