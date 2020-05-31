@@ -8,7 +8,7 @@
     <string name="user_page">Kanaal</string>
     <string name="prev_video">Vorige</string>
     <string name="next_video">Volgende</string>
-    <string name="pause">Pauze</string>
+    <string name="pause">Pause</string>
     <string name="play">Play</string>
     <string name="dislike">Niet leuk</string>
     <string name="like">Leuk</string>
@@ -48,7 +48,7 @@
     <string name="track_view_format">Track Beeldformaat</string>
     <string name="hide_playback_errors">Playback fouten verbergen</string>
     <string name="no_subtitle_msg">Video bevat geen ondertitels</string>
-    <string name="repeat_video">Herhalen</string>
+    <string name="repeat_video">Repeat</string>
     <string name="video_speed">Snelheid</string>
     <string name="select_video_speed">Video snelheid</string>
     <string name="normal">Normaal</string>
@@ -79,6 +79,7 @@
     <string name="exo_video_decoder_error">Dit apparaat ondersteunt het geselecteerde video formaat niet</string>
     <string name="default_subtitle">Standaard (geen)</string>
     <string name="default_media">Standaard (optimaal)</string>
-    <string name="set_audio_delay">Audiovertraging in milliseconden</string>
-    <string name="restart_video_to_apply_audio_delay">Video opnieuw starten voor audiovertraging</string>
+    <string name="set_audio_delay">Audio-delay in milliseconden</string>
+    <string name="restart_video_to_apply_audio_delay">Video opnieuw starten voor audio-delay</string>
+    <string name="enable_autoframerate_60fps_correction">Fps corrigeren</string>
 </resources>
