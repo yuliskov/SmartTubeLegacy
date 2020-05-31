@@ -78,7 +78,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ProUseExternalPlayer4KDialogItem(mContext));
         mItems.add(new ProUseExternalPlayerFHDDialogItem(mContext));
         mItems.add(new ProUseExternalPlayerSDDialogItem(mContext));
-        mItems.add(new ProUgoos50HZFixDialogItem(mContext));
+        //mItems.add(new ProUgoos50HZFixDialogItem(mContext));
         mItems.add(new ProOkPauseDialogItem(mContext));
         mItems.add(new ProOKPauseWithoutUIDialogItem(mContext));
         mItems.add(new ProAutoShowPlayerUIDialogItem(mContext));

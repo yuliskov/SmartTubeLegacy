@@ -95,9 +95,13 @@ public abstract class RequestInterceptor {
     }
 
     protected InputStream getUrlData(String url) {
+        return getUrlData(url, mManager.getHeaders());
+    }
+
+    protected InputStream getUrlData(String url, Map<String, String> headers) {
         InputStream result = null;
 
-        Response response = OkHttpHelpers.doGetOkHttpRequest(url, mManager.getHeaders());
+        Response response = OkHttpHelpers.doGetOkHttpRequest(url, headers);
 
         if (response != null && response.body() != null) {
             result = response.body().byteStream();

@@ -122,10 +122,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         startPlayer();
     }
 
-    @Override
-    public void onDashUrlFound(Uri dashUrl) {
-        mDashUrl = dashUrl;
-    }
+    //@Override
+    //public void onDashUrlFound(Uri dashUrl) {
+    //    mDashUrl = dashUrl;
+    //}
 
     @Override
     public void onHLSFound(final Uri hlsUrl) {
