@@ -98,7 +98,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(url));
+                parseAndOpenExoPlayer(getUrlData(url, null));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
                 MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + url);
@@ -152,6 +152,17 @@ public class ExoInterceptor extends RequestInterceptor {
     public HistoryInterceptor getHistoryInterceptor() {
         return mHistoryInterceptor;
     }
+    
+    private String unlockHlsStreams(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+
+        //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+
+        query.remove("access_token"); // needed to unlock personal uploaded videos
+        query.set("c", "HTML5"); // needed to unlock streams
+
+        return query.toString();
+    }
 
     /**
      * Unlocking most of 4K mp4 formats.
@@ -159,7 +170,7 @@ public class ExoInterceptor extends RequestInterceptor {
      * @param url
      * @return
      */
-    private String unlockHlsStreams(String url) {
+    private String unlockHlsStreamsOld(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
         query.set("c", "HTML5");
