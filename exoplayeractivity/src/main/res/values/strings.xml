@@ -81,5 +81,5 @@
     <string name="default_media">Default (Optimal)</string>
     <string name="set_audio_delay">Audio delay in milliseconds</string>
     <string name="restart_video_to_apply_audio_delay">You need to restart the video to apply delay</string>
-    <string name="enable_autoframerate_60fps_correction">Enable fps correction</string>
+    <string name="enable_autoframerate_60fps_correction">fps correction</string>
 </resources>
