@@ -36,9 +36,13 @@ public class AutoFrameRateManager implements PlayerEventListener, AutoFrameRateL
         }
 
         mAutoFrameRateHelper.saveOriginalState();
-        if (CommonApplication.getPreferences().getUgoos50HZFix()) {
-            mAutoFrameRateHelper.applyModeChangeFix();
-        }
+
+        //if (CommonApplication.getPreferences().getUgoos50HZFix()) {
+        //    mAutoFrameRateHelper.applyModeChangeFix();
+        //}
+
+        mAutoFrameRateHelper.applyModeChangeFix();
+
         mAutoFrameRateHelper.setListener(this);
     }
 

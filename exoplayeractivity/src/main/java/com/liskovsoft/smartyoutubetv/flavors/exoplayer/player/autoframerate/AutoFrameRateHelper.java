@@ -17,7 +17,7 @@ class AutoFrameRateHelper {
     private DisplaySyncHelper mSyncHelper;
     private final ExoPreferences mPrefs;
     private SimpleExoPlayer mPlayer;
-    private static final long THROTTLE_INTERVAL_MS = 3_000;
+    private static final long THROTTLE_INTERVAL_MS = 5_000;
     private long mPrevCall;
     private HashMap<Float, Float> mFrameRateMapping;
 
