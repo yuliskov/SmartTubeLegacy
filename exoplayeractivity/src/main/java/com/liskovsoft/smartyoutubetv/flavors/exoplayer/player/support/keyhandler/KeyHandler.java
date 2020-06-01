@@ -161,6 +161,38 @@ public class KeyHandler {
 
         return true;
     };
+
+    private final Command mOnFastForwardUIFix = (int action) -> {
+        PlayerView exoPlayerView = mFragment.getExoPlayerView();
+
+        if (exoPlayerView != null && exoPlayerView.isControllerVisible()) {
+            return false;
+        }
+
+        if (action == KeyEvent.ACTION_DOWN) {
+            if (mFragment.getPlayer() != null) {
+                seekTo(mFragment.getPlayer().getCurrentPosition() + DEFAULT_FAST_FORWARD_REWIND_MS);
+            }
+        }
+
+        return true;
+    };
+
+    private final Command mOnRewindUIFix = (int action) -> {
+        PlayerView exoPlayerView = mFragment.getExoPlayerView();
+
+        if (exoPlayerView != null && exoPlayerView.isControllerVisible()) {
+            return false;
+        }
+
+        if (action == KeyEvent.ACTION_DOWN) {
+            if (mFragment.getPlayer() != null) {
+                seekTo(mFragment.getPlayer().getCurrentPosition() - DEFAULT_FAST_FORWARD_REWIND_MS);
+            }
+        }
+
+        return true;
+    };
     
     private final Command mOnStop = (int action) -> {
         if (action == DEFAULT_ACTION) {
@@ -234,8 +266,8 @@ public class KeyHandler {
             mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPauseWithoutUI); // handle OK button just like media play/pause
             mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPauseWithoutUI); // handle OK button just like media play/pause
 
-            mActions.put(KeyEvent.KEYCODE_DPAD_RIGHT, mOnFastForward);
-            mActions.put(KeyEvent.KEYCODE_DPAD_LEFT, mOnRewind);
+            mActions.put(KeyEvent.KEYCODE_DPAD_RIGHT, mOnFastForwardUIFix);
+            mActions.put(KeyEvent.KEYCODE_DPAD_LEFT, mOnRewindUIFix);
         }
     }
 
