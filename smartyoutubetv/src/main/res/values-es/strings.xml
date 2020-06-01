@@ -72,7 +72,7 @@
     <string name="tweaks">Opciones</string>
     <string name="tip_tweaks">Hay varias opciones para la aplicaciñon aquí</string>
     <string name="tweak_remember_launcher">Recordar lanzador seleccionado</string>
-    <string name="tweak_ok_button_fix">Presiona OK para parar el vídeo</string>
+    <string name="tweak_press_ok_to_pause">Presiona OK para parar el vídeo</string>
     <string name="tweak_update_check">Comprobar actualizaciones estables</string>
     <string name="tweak_beta_update_check">Comprobar actualizaciones de desarrollo (beta)</string>
     <string name="tweak_end_cards">Mostrar títulos de final de vídeo</string>

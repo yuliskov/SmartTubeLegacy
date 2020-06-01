@@ -87,7 +87,7 @@
   <string name="tweak_hold_ok_video_menu">Segure OK para o menu de vídeo (impacto no desempenho)</string>
   <string name="tweak_lock_last_launcher">Bloquear %s launcher</string>
   <string name="tweak_log_to_file">Salvar log em um arquivo</string>
-  <string name="tweak_ok_button_fix">Clicar \"OK\" pausa o vídeo imediatamente</string>
+  <string name="tweak_press_ok_to_pause">Clicar \"OK\" pausa o vídeo imediatamente</string>
   <string name="tweak_open_externally">Usar reprodutor externo</string>
   <string name="tweak_open_externally_lq">PRO: Abrir vídeo com reprodutor externo (SD)</string>
   <string name="tweak_open_history">Inicialização na página de \"Histórico\"</string>

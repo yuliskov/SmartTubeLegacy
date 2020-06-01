@@ -62,7 +62,7 @@
     <string name="tweaks">Réglages</string>
     <string name="tip_tweaks">Réglages de l\'application</string>
     <string name="tweak_remember_launcher">Mémoriser le lanceur sélectionné</string>
-    <string name="tweak_ok_button_fix">Appuyez sur le bouton Ok met la vidéo en pause immédiatement</string>
+    <string name="tweak_press_ok_to_pause">Appuyez sur le bouton Ok met la vidéo en pause immédiatement</string>
     <string name="tweak_update_check">Vérifier les mises à jour STABLE</string>
     <string name="tweak_beta_update_check">Vérifier les mises à jour BETA</string>
     <string name="tweak_end_cards">Afficher les légendes de fin de vidéo</string>

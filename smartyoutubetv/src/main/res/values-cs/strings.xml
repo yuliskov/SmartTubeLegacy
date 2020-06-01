@@ -63,7 +63,7 @@
     <string name="tweaks">Nastavení</string>
     <string name="tip_tweaks">Nastavení aplikace</string>
     <string name="tweak_remember_launcher">Pamatovat vybraný laucher</string>
-    <string name="tweak_ok_button_fix">Stisknutím tlačítka OK se video okamžitě pozastaví.</string>
+    <string name="tweak_press_ok_to_pause">Stisknutím tlačítka OK se video okamžitě pozastaví.</string>
     <string name="tweak_update_check">Zkontrolovat STABILNÍ aktualizace</string>
     <string name="tweak_beta_update_check">Zkontrolovat BETA aktualizace</string>
     <string name="tweak_end_cards">Zobrazit konec titulků videa</string>

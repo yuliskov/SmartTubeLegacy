@@ -26,7 +26,7 @@ public class ProOKPauseWithoutUIDialogItem extends DialogItem {
         if (checked) {
             mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_WITHOUT_UI);
         } else {
-            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_NONE);
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_ONLY_UI);
         }
     }
 }

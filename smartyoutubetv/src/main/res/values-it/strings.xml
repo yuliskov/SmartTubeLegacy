@@ -65,7 +65,7 @@
     <string name="tweaks">Impostazioni</string>
     <string name="tip_tweaks">Impostazioni aggiuntive</string>
     <string name="tweak_remember_launcher">Ricorda il launcher selezionato</string>
-    <string name="tweak_ok_button_fix">OK mette in pausa il video immediatamente</string>
+    <string name="tweak_press_ok_to_pause">OK mette in pausa il video immediatamente</string>
     <string name="tweak_update_check">Controlla aggiornamenti STABILI</string>
     <string name="tweak_beta_update_check">Controlla aggiornamenti BETA</string>
     <string name="tweak_end_cards">Mostra i sottotitoli di fine video</string>

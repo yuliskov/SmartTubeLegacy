@@ -1,4 +1,5 @@
 apply from: '../../SharedUtils/constants.gradle'
+def crashlyticsEnabled
 buildscript {
     repositories {
         jcenter()
@@ -22,11 +23,13 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
-// Google Services Gradle plugin (transforms google-services.json file)
-apply plugin: 'com.google.gms.google-services'
+if (crashlyticsEnabled) {
+    // Google Services Gradle plugin (transforms google-services.json file)
+    apply plugin: 'com.google.gms.google-services'
 
-// Apply the Crashlytics Gradle plugin
-apply plugin: 'com.google.firebase.crashlytics'
+    // Apply the Crashlytics Gradle plugin
+    apply plugin: 'com.google.firebase.crashlytics'
+}
 
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
@@ -94,6 +97,7 @@ android {
         beta {
             matchingFallbacks = ['lite']
             applicationIdSuffix ".beta"
+            crashlyticsEnabled = true
         }
         Vkids {
             matchingFallbacks = ['Vkids', 'lite']
@@ -231,12 +235,12 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    // Add the Firebase Crashlytics SDK.
-    //origImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
-    betaImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
-        transitive = true
+    if (crashlyticsEnabled) {
+        // Add the Firebase Crashlytics SDK.
+        implementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+            transitive = true
+        }
     }
-    // experimentsImplementation 'com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
     implementation 'androidx.media:media:' + appCompatXLibraryVersion // exoplayer fix

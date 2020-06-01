@@ -62,7 +62,7 @@
     <string name="tweaks">Settings</string>
     <string name="tip_tweaks">Additional settings</string>
     <string name="tweak_remember_launcher">Remember selected launcher</string>
-    <string name="tweak_ok_button_fix">OK pauses video immediately (with UI)</string>
+    <string name="tweak_press_ok_to_pause">OK pauses video immediately</string>
     <string name="tweak_update_check">Check for the updates</string>
     <string name="tweak_beta_update_check">Check for the BETA updates</string>
     <string name="tweak_end_cards">Show end video captions</string>

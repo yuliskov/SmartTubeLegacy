@@ -67,7 +67,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String ENABLE_ANIMATED_UI = "enable_animated_ui";
     private static final String OK_PAUSE_TYPE = "ok_pause_type";
     public static final String OK_PAUSE_WITH_UI = "ok_pause_with_ui";
-    public static final String OK_PAUSE_NONE = "ok_pause_none";
+    public static final String OK_PAUSE_ONLY_UI = "ok_pause_none";
     public static final String OK_PAUSE_WITHOUT_UI = "ok_pause_without_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;

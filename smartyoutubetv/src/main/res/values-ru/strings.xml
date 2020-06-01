@@ -44,7 +44,7 @@
     <string name="tweaks">Настройки</string>
     <string name="tip_tweaks">Дополнительные настройки</string>
     <string name="tweak_remember_launcher">Запомнить выбранный лаунчер</string>
-    <string name="tweak_ok_button_fix">OK ставит видео на паузу (показывая интерфейс)</string>
+    <string name="tweak_press_ok_to_pause">OK ставит видео на паузу</string>
     <string name="tweak_update_check">Проверять доступность новой версии</string>
     <string name="tweak_beta_update_check">Проверять обновление бета версий</string>
     <string name="tweak_end_cards">Показывать заголовки в конце видео</string>

@@ -19,14 +19,14 @@ import java.util.HashMap;
 public class KeyHandler {
     private final Activity mActivity;
     private PlayerInterface mFragment;
-    private KeyTranslator mTranslator;
-    private Boolean mEnableOKPause;
+    private final KeyTranslator mTranslator;
+    private final boolean mEnableOKPause;
     private HashMap<Integer, Command> mActions;
     private HashMap<Integer, Integer> mAdditionalMapping;
     private boolean mAutoShowPlayerUI;
-    private boolean mOKPauseWithoutUI;
-    private boolean mOKPauseWithUI;
-    private boolean mOKPauseNone;
+    //private boolean mOKPauseWithoutUI;
+    //private boolean mOKPauseWithUI;
+    //private boolean mOKPauseOnlyUI;
     private static final long DEFAULT_FAST_FORWARD_REWIND_MS = 10_000;
     private static final int DEFAULT_ACTION = KeyEvent.ACTION_UP;
     private boolean mDisable = true;
@@ -49,7 +49,32 @@ public class KeyHandler {
         return true;
     };
 
-    private final Command mOnToggleOKPause = (int action) -> {
+    //private final Command mOnToggleOKPause = (int action) -> {
+    //    PlayerView exoPlayerView = mFragment.getExoPlayerView();
+    //    SimpleExoPlayer player = mFragment.getPlayer();
+    //
+    //    if (exoPlayerView == null || player == null) {
+    //        return false;
+    //    }
+    //
+    //    if (!exoPlayerView.isControllerVisible()) {
+    //        if (action == DEFAULT_ACTION) {
+    //            if (mOKPauseOnlyUI) {
+    //                exoPlayerView.showController();
+    //            } else {
+    //                mFragment.getExoPlayerView().setControllerAutoShow(mOKPauseWithUI);
+    //
+    //                player.setPlayWhenReady(!player.getPlayWhenReady());
+    //            }
+    //        }
+    //
+    //        return true;
+    //    }
+    //
+    //    return false;
+    //};
+
+    private final Command mOnToggleOKPauseWithUI = (int action) -> {
         PlayerView exoPlayerView = mFragment.getExoPlayerView();
         SimpleExoPlayer player = mFragment.getPlayer();
 
@@ -59,13 +84,28 @@ public class KeyHandler {
 
         if (!exoPlayerView.isControllerVisible()) {
             if (action == DEFAULT_ACTION) {
-                if (mOKPauseNone) {
-                    exoPlayerView.showController();
-                } else {
-                    mFragment.getExoPlayerView().setControllerAutoShow(mOKPauseWithUI);
+                mFragment.getExoPlayerView().setControllerAutoShow(true);
+                player.setPlayWhenReady(!player.getPlayWhenReady());
+            }
 
-                    player.setPlayWhenReady(!player.getPlayWhenReady());
-                }
+            return true;
+        }
+
+        return false;
+    };
+
+    private final Command mOnToggleOKPauseWithoutUI = (int action) -> {
+        PlayerView exoPlayerView = mFragment.getExoPlayerView();
+        SimpleExoPlayer player = mFragment.getPlayer();
+
+        if (exoPlayerView == null || player == null) {
+            return false;
+        }
+
+        if (!exoPlayerView.isControllerVisible()) {
+            if (action == DEFAULT_ACTION) {
+                mFragment.getExoPlayerView().setControllerAutoShow(false);
+                player.setPlayWhenReady(!player.getPlayWhenReady());
             }
 
             return true;
@@ -153,9 +193,10 @@ public class KeyHandler {
         mTranslator = new PlayerKeyTranslator();
         mAdditionalMapping = additionalMapping;
         mAutoShowPlayerUI = CommonApplication.getPreferences().getAutoShowPlayerUI();
-        mOKPauseWithoutUI = SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(CommonApplication.getPreferences().getOKPauseType());
-        mOKPauseWithUI = SmartPreferences.OK_PAUSE_WITH_UI.equals(CommonApplication.getPreferences().getOKPauseType());
-        mOKPauseNone = SmartPreferences.OK_PAUSE_NONE.equals(CommonApplication.getPreferences().getOKPauseType());
+        //mOKPauseWithoutUI = SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        //mOKPauseWithUI = SmartPreferences.OK_PAUSE_WITH_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        //mOKPauseOnlyUI = SmartPreferences.OK_PAUSE_ONLY_UI.equals(CommonApplication.getPreferences().getOKPauseType());
+        mEnableOKPause = SmartPreferences.instance(mActivity).getEnableOKPause();
 
         initActionMapping();
     }
@@ -174,9 +215,6 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY, mOnPlay);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PAUSE, mOnPause);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mOnToggle);
-        mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggleOKPause); // handle OK button just like media play/pause
-        mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
-        mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPause); // handle OK button just like media play/pause
         mActions.put(KeyEvent.KEYCODE_MEDIA_NEXT, mOnNext);
         mActions.put(KeyEvent.KEYCODE_MEDIA_PREVIOUS, mOnPrev);
         mActions.put(KeyEvent.KEYCODE_MEDIA_STOP, mOnStop);
@@ -184,6 +222,21 @@ public class KeyHandler {
         mActions.put(KeyEvent.KEYCODE_MEDIA_REWIND, mOnRewind);
         mActions.put(KeyEvent.KEYCODE_CHANNEL_UP, mOnNext);
         mActions.put(KeyEvent.KEYCODE_CHANNEL_DOWN, mOnPrev);
+
+        if (mAutoShowPlayerUI) {
+            if (mEnableOKPause) {
+                mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggleOKPauseWithUI); // handle OK button just like media play/pause
+                mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPauseWithUI); // handle OK button just like media play/pause
+                mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPauseWithUI); // handle OK button just like media play/pause
+            }
+        } else {
+            mActions.put(KeyEvent.KEYCODE_DPAD_CENTER, mOnToggleOKPauseWithoutUI); // handle OK button just like media play/pause
+            mActions.put(KeyEvent.KEYCODE_NUMPAD_ENTER, mOnToggleOKPauseWithoutUI); // handle OK button just like media play/pause
+            mActions.put(KeyEvent.KEYCODE_ENTER, mOnToggleOKPauseWithoutUI); // handle OK button just like media play/pause
+
+            mActions.put(KeyEvent.KEYCODE_DPAD_RIGHT, mOnFastForward);
+            mActions.put(KeyEvent.KEYCODE_DPAD_LEFT, mOnRewind);
+        }
     }
 
     public boolean handle(KeyEvent event) {
@@ -356,12 +409,6 @@ public class KeyHandler {
     }
 
     private boolean getEnableOKPause() {
-        if (mEnableOKPause != null) {
-            return mEnableOKPause;
-        }
-
-        mEnableOKPause = SmartPreferences.instance(mActivity).getEnableOKPause();
-
         return mEnableOKPause;
     }
 
