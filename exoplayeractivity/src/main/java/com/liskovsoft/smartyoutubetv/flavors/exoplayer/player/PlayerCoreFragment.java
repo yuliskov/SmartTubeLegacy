@@ -193,6 +193,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         mDeviceRam = Helpers.getDeviceRam(getActivity());
         // If ram is too big, bigger then max int value DeviceRam will return a negative number...
         // use 196MB as that can only happens if device has more than 17GB of RAM, so 196 is enough and safe
+        // https://github.com/yuliskov/SmartYouTubeTV/issues/532
         if (mDeviceRam < 0) {
             mDeviceRam = 196000000;
         }
