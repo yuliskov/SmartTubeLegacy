@@ -274,6 +274,10 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
                 continue;
             }
 
+            if (stream.bandWidth > 3_000_000) {
+                continue;
+            }
+
             if (maxQualityStream.bandWidth < stream.bandWidth) {
                 maxQualityStream = stream;
             }
