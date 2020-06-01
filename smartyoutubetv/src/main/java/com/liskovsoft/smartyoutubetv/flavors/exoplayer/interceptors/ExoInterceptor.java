@@ -156,10 +156,13 @@ public class ExoInterceptor extends RequestInterceptor {
     private String unlockHlsStreams(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
+        //removeUnusedParams(query);
+
         //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
 
-        query.remove("access_token"); // needed to unlock personal uploaded videos
+        query.remove("access_token"); // needed to unlock some personal uploaded videos
         query.set("c", "HTML5"); // needed to unlock streams
+        //query.remove("c"); // needed to unlock streams
 
         return query.toString();
     }
@@ -191,5 +194,29 @@ public class ExoInterceptor extends RequestInterceptor {
         query.set("ps", "default"); // unlock 60fps formats
 
         return query.toString();
+    }
+
+    private void removeUnusedParams(MyUrlEncodedQueryString query) {
+        query.remove("cpn");
+        query.remove("itct");
+        query.remove("ei");
+        query.remove("hl");
+        query.remove("lact");
+        query.remove("cos");
+        query.remove("cosver");
+        query.remove("cplatform");
+        query.remove("width");
+        query.remove("height");
+        query.remove("cbrver");
+        query.remove("ctheme");
+        query.remove("cmodel");
+        query.remove("cnetwork");
+        query.remove("c");
+        query.remove("cver");
+        query.remove("cplayer");
+        query.remove("cbrand");
+        query.remove("cbr");
+        query.remove("el");
+        query.remove("ps");
     }
 }
