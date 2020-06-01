@@ -62,15 +62,15 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean isPlaylist = mCurrentUrl.contains("&" + PARAM_PLAYLIST_ID + "=");
-
-        // Fix playlist bug when new video opens without user interactions
-        boolean playlistCancel = isPlaylist && ((curTimeMS - mCancelTime) < PLAYLIST_CANCEL_TIMEOUT_MS);
-
-        if (playlistCancel) {
-            Log.d(TAG, "Cancel playback: User closed video recently in playlist.");
-            return true;
-        }
+        //boolean isPlaylist = mCurrentUrl.contains("&" + PARAM_PLAYLIST_ID + "=");
+        //
+        //// Fix playlist bug when new video opens without user interactions
+        //boolean playlistCancel = isPlaylist && ((curTimeMS - mCancelTime) < PLAYLIST_CANCEL_TIMEOUT_MS);
+        //
+        //if (playlistCancel) {
+        //    Log.d(TAG, "Cancel playback: User closed video recently in playlist.");
+        //    return true;
+        //}
 
         return false;
     }
