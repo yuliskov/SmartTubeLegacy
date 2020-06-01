@@ -154,6 +154,7 @@ import java.util.TreeSet;
             PlayerView playerView = mPlayerFragment.getExoPlayerView();
 
             if (playerView != null) {
+                View focusedView = playerView.findFocus();
                 int controllerShowTimeoutMs = playerView.getControllerShowTimeoutMs();
                 playerView.setControllerShowTimeoutMs(0); // show indefinitely
 
@@ -161,6 +162,13 @@ import java.util.TreeSet;
                     mAlertDialog.setOnDismissListener((DialogInterface dialog) -> {
                         playerView.setControllerShowTimeoutMs(controllerShowTimeoutMs);
                         onAudioDelayCommit();
+
+                        if (focusedView != null) {
+                            View viewById = playerView.findViewById(focusedView.getId()); // note, ui recreated after apply
+                            if (viewById != null) {
+                                viewById.requestFocus();
+                            }
+                        }
                     });
                 }
             }
@@ -346,9 +354,9 @@ import java.util.TreeSet;
                 boolean isChecked = mOverride != null && mOverride.groupIndex == i && mOverride.containsTrack(j);
                 checkedTextView.setChecked(isChecked);
 
-                if (isChecked) {
-                    checkedTextView.requestFocus();
-                }
+                //if (isChecked) {
+                //    checkedTextView.requestFocus();
+                //}
             }
         }
 
