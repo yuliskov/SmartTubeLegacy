@@ -71,6 +71,11 @@ public class CodecSelectorAddon {
         public String getTitle() {
             return mContext.getString(R.string.codec_selector_title);
         }
+
+        @Override
+        public void onDismiss() {
+            // NOP
+        }
     }
 
     public void run() {

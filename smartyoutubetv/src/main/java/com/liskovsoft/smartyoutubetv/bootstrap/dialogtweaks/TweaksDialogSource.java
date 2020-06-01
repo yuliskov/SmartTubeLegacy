@@ -101,4 +101,9 @@ public class TweaksDialogSource implements MultiDialogSource {
     public String getTitle() {
         return mContext.getResources().getString(R.string.tweaks);
     }
+
+    @Override
+    public void onDismiss() {
+        // NOP
+    }
 }

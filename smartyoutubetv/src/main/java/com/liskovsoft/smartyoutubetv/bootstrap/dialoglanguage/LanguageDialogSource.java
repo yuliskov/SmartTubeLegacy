@@ -39,4 +39,9 @@ public class LanguageDialogSource implements SingleDialogSource {
     public String getTitle() {
         return mActivity.getString(R.string.language_dialog_title);
     }
+
+    @Override
+    public void onDismiss() {
+        // NOP
+    }
 }

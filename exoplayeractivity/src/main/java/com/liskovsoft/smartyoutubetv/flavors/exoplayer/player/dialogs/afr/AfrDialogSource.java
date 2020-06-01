@@ -5,18 +5,20 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.CombinedDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.ExoDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AfrDialogSource implements CombinedDialogSource {
+public class AfrDialogSource extends ExoDialogSource implements CombinedDialogSource {
     private final Context mContext;
     private final SimpleExoPlayer mPlayer;
     private final ArrayList<DialogItem> mItems;
     private final ExoPreferences mPrefs;
 
     public AfrDialogSource(ExoPlayerFragment playerFragment) {
+        super(playerFragment.getExoPlayerView());
         mContext = playerFragment.getActivity();
         mPlayer = playerFragment.getPlayer();
         mPrefs = ExoPreferences.instance(mContext);

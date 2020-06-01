@@ -1,19 +1,22 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.restrictcodec;
 
 import android.content.Context;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.R;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.ExoDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.SingleDialogSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestrictFormatDialogSource implements SingleDialogSource {
+public class RestrictFormatDialogSource extends ExoDialogSource implements SingleDialogSource {
     private final ExoPreferences mPrefs;
     private final Context mContext;
     private final List<DialogItem> mItems;
 
-    public RestrictFormatDialogSource(Context ctx) {
+    public RestrictFormatDialogSource(Context ctx, PlayerView playerView) {
+        super(playerView);
         mContext = ctx;
         mPrefs = ExoPreferences.instance(ctx);
 

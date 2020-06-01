@@ -312,9 +312,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         }
 
         if (view.getId() == R.id.btn_restrict_codec) {
-            SingleChoiceSelectorDialog.create(context, new RestrictFormatDialogSource(context), R.style.AppDialog);
+            SingleChoiceSelectorDialog.create(context, new RestrictFormatDialogSource(context, mSimpleExoPlayerView), R.style.AppDialog);
         } else if (view.getId() == R.id.btn_video_zoom) {
-            SingleChoiceSelectorDialog.create(context, new VideoZoomDialogSource(context, mVideoZoomManager), R.style.AppDialog);
+            SingleChoiceSelectorDialog.create(context, new VideoZoomDialogSource(context, mVideoZoomManager, mSimpleExoPlayerView), R.style.AppDialog);
         } else if (view.getId() == R.id.btn_afr) {
             CombinedChoiceSelectorDialog.create(context, new AfrDialogSource((ExoPlayerFragment) this), R.style.AppDialog);
         }
@@ -621,7 +621,7 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
     }
 
     public void onSpeedClicked() {
-        CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer), R.style.AppDialog);
+        CombinedChoiceSelectorDialog.create(getActivity(), new SpeedDialogSource(getActivity(), mPlayer, mSimpleExoPlayerView), R.style.AppDialog);
     }
 
     @Override

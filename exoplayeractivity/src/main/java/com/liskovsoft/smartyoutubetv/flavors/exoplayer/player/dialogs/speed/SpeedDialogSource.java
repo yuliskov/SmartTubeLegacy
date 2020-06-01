@@ -5,24 +5,27 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.CombinedDialogSource;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerBaseFragment;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.dialogs.ExoDialogSource;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeedDialogSource implements CombinedDialogSource {
+public class SpeedDialogSource extends ExoDialogSource implements CombinedDialogSource {
     private static final String TAG = SpeedDialogSource.class.getSimpleName();
     private final Context mContext;
+    private final PlayerView mPlayerView;
     private final ArrayList<DialogItem> mItems;
 
-    public SpeedDialogSource(Context context, SimpleExoPlayer player) {
+    public SpeedDialogSource(Context context, SimpleExoPlayer player, PlayerView playerView) {
+        super(playerView);
         mContext = context;
+        mPlayerView = playerView;
         ExoPreferences prefs = ExoPreferences.instance(mContext);
 
         mItems = new ArrayList<>();
