@@ -51,6 +51,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.EventLogger;
@@ -58,6 +59,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.BuildConfig;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
@@ -136,6 +138,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private Intent mIntent;
+    private int mDeviceRam;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -186,6 +189,13 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         mPlayerTopBar.setVisibility(View.GONE);
 
         SubtitleRendererDecorator.configureSubtitleView(mSimpleExoPlayerView);
+
+        mDeviceRam = Helpers.getDeviceRam(getActivity());
+        // If ram is too big, bigger then max int value DeviceRam will return a negative number...
+        // use 196MB as that can only happens if device has more than 17GB of RAM, so 196 is enough and safe
+        if (mDeviceRam < 0) {
+            mDeviceRam = 196000000;
+        }
     }
 
     public void setIntent(Intent intent) {
@@ -360,16 +370,20 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
      */
     private DefaultLoadControl getLoadControl() {
         DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
+        String bufferType = CommonApplication.getPreferences().getPlayerBufferType();
 
-        if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH)) {
-            //baseBuilder.setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
-            baseBuilder.setBufferDurationsMs(
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
-                    DefaultLoadControl.DEFAULT_MAX_BUFFER_MS * 3,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                    DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-        } else if (CommonApplication.getPreferences().getPlayerBufferType().equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW)) {
-            baseBuilder.setBufferDurationsMs(
+        if (bufferType.equals(SmartPreferences.PLAYER_BUFFER_TYPE_HIGH)) {
+            int minBufferMs = 30000; // 30 seconds
+            int maxBufferMs = 36000000; // technical infinity, recommended here a very high number, the max will be based on setTargetBufferBytes() value
+            int bufferForPlaybackMs = 500; // half a seconds can be lower as lowe as 250
+            int bufferForPlaybackAfterRebufferMs = 3000; // 3 seconds
+            baseBuilder
+                    .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
+                    .setBufferDurationsMs(minBufferMs, maxBufferMs, bufferForPlaybackMs, bufferForPlaybackAfterRebufferMs)
+                    .setTargetBufferBytes(mDeviceRam);
+        } else if (bufferType.equals(SmartPreferences.PLAYER_BUFFER_TYPE_LOW)) {
+            baseBuilder
+                    .setBufferDurationsMs(
                     DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
                     DefaultLoadControl.DEFAULT_MAX_BUFFER_MS / 3,
                     DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS / 3,

@@ -10,5 +10,5 @@
     <color name="sub_text_color">#CDDC39</color>
     <color name="sub_text_color2">#E4E4E4</color>
     <color name="sub_outline_color">#000000</color>
-    <color name="sub_background_color">#46000000</color>
+    <color name="sub_background_color">#64000000</color>
 </resources>
