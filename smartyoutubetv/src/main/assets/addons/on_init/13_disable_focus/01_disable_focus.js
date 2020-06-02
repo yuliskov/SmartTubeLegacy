@@ -5,6 +5,10 @@
 
 console.log("Scripts::Running script disable_focus.js");
 
+/**
+ * WARNING: Don't enable. location.hash won't work after that.
+ * @constructor
+ */
 function DisableFocusAddon() {
     this.TAG = 'FocusOverrideAddon';
 
@@ -24,6 +28,6 @@ function DisableFocusAddon() {
     };
 }
 
-if (DeviceUtils.isExo()) {
-    new DisableFocusAddon().run();
-}
+// if (DeviceUtils.isExo()) {
+//     new DisableFocusAddon().run();
+// }
