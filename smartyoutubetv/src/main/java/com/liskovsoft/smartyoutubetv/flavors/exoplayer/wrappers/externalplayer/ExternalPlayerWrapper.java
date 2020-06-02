@@ -249,9 +249,9 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
             if (mpdManifest != null) {
                 mMpdContent = new ByteArrayInputStream(mpdManifest.getBytes());
+            } else {
+                mHlsUrl = intent.getData(); // assume that we are opening direct link
             }
-
-            mHlsUrl = intent.getData();
 
             mMetadata = new VideoMetadata();
             mMetadata.setTitle(intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE));
@@ -271,10 +271,6 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         for (Stream stream : pl.getStreams()) {
             if (maxQualityStream == null) {
                 maxQualityStream = stream;
-                continue;
-            }
-
-            if (stream.bandWidth > 3_000_000) {
                 continue;
             }
 
