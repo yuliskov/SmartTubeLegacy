@@ -66,9 +66,9 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String ENABLE_VIDEO_MENU = "enable_video_menu";
     private static final String ENABLE_ANIMATED_UI = "enable_animated_ui";
     private static final String OK_PAUSE_TYPE = "ok_pause_type";
-    public static final String OK_PAUSE_WITH_UI = "ok_pause_with_ui";
-    public static final String OK_PAUSE_ONLY_UI = "ok_pause_none";
-    public static final String OK_PAUSE_WITHOUT_UI = "ok_pause_without_ui";
+    public static final String OK_PAUSE_TYPE_DEFAULT = "ok_pause_type_default";
+    public static final String OK_PAUSE_TYPE_WITH_UI = "ok_pause_type_with_ui";
+    public static final String OK_PAUSE_TYPE_WITHOUT_UI = "ok_pause_type_without_ui";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -377,7 +377,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     }
 
     public String getOKPauseType() {
-        return getString(OK_PAUSE_TYPE, OK_PAUSE_WITH_UI);
+        return getString(OK_PAUSE_TYPE, OK_PAUSE_TYPE_WITH_UI);
     }
 
     public void setOKPauseType(String pauseType) {

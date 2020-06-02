@@ -18,15 +18,15 @@ public class ProOKPauseWithoutUIDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return SmartPreferences.OK_PAUSE_WITHOUT_UI.equals(mPrefs.getOKPauseType());
+        return SmartPreferences.OK_PAUSE_TYPE_WITHOUT_UI.equals(mPrefs.getOKPauseType());
     }
 
     @Override
     public void setChecked(boolean checked) {
         if (checked) {
-            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_WITHOUT_UI);
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_TYPE_WITHOUT_UI);
         } else {
-            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_ONLY_UI);
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_TYPE_DEFAULT);
         }
     }
 }

@@ -18,11 +18,15 @@ public class ProOkPauseDialogItem extends DialogItem {
 
     @Override
     public boolean getChecked() {
-        return mPrefs.getEnableOKPause();
+        return SmartPreferences.OK_PAUSE_TYPE_WITH_UI.equals(mPrefs.getOKPauseType());
     }
 
     @Override
     public void setChecked(boolean checked) {
-        mPrefs.setEnableOKPause(checked);
+        if (checked) {
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_TYPE_WITH_UI);
+        } else {
+            mPrefs.setOKPauseType(SmartPreferences.OK_PAUSE_TYPE_DEFAULT);
+        }
     }
 }
