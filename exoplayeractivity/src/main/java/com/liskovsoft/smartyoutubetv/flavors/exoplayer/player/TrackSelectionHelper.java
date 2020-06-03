@@ -483,19 +483,21 @@ import java.util.TreeSet;
     }
 
     private boolean canSwitchFormats() {
-        if (mRendererIndex != ExoPlayerFragment.RENDERER_INDEX_VIDEO) {
-            return true;
-        }
+        return true; // allow user to switch format temporally (until next video)
 
-        ExoPreferences prefs = ExoPreferences.instance(mContext);
-
-        if (prefs.getPreferredFormat().equals(ExoPreferences.FORMAT_ANY)) {
-            return true;
-        }
-
-        MessageHelpers.showMessage(mContext, R.string.toast_format_restricted);
-
-        return false;
+        //if (mRendererIndex != ExoPlayerFragment.RENDERER_INDEX_VIDEO) {
+        //    return true;
+        //}
+        //
+        //ExoPreferences prefs = ExoPreferences.instance(mContext);
+        //
+        //if (prefs.getPreferredFormat().equals(ExoPreferences.FORMAT_ANY)) {
+        //    return true;
+        //}
+        //
+        //MessageHelpers.showMessage(mContext, R.string.toast_format_restricted);
+        //
+        //return false;
     }
 
     private void setOverride(int group, int[] tracks, boolean enableRandomAdaptation) {
