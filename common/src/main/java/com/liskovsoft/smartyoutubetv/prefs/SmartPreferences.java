@@ -12,7 +12,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private static final String BOOTSTRAP_UPDATE_CHECK = "bootstrapUpdateCheck";
     private static final String BOOTSTRAP_END_CARDS = "bootstrapEndCards";
     private static final String PREFERRED_CODEC = "preferredCodec";
-    private static final String BOOTSTRAP_OK_PAUSE = "bootstrapOKPause";
     private static final String UNPLAYABLE_VIDEO_FIX = "unplayableVideoFix";
     private static final String LOCK_LAST_LAUNCHER = "lockLastLauncher";
     private static final String BOOT_PAGE = "bootPage";
@@ -94,6 +93,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     private String mVisitorIdHeader;
     private String mClientDataHeader;
     private String mInterceptUserAgent;
+    private boolean mIsLanguageChanged;
 
     public static SmartPreferences instance(Context ctx) {
         if (sInstance == null)
@@ -163,14 +163,6 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public boolean getEnableEndCards() {
         return getBoolean(BOOTSTRAP_END_CARDS, true);
-    }
-
-    public void setEnableOKPause(boolean isChecked) {
-        putBoolean(BOOTSTRAP_OK_PAUSE, isChecked);
-    }
-
-    public boolean getEnableOKPause() {
-        return getBoolean(BOOTSTRAP_OK_PAUSE, true);
     }
 
     public void setUnplayableVideoFix(boolean isChecked) {

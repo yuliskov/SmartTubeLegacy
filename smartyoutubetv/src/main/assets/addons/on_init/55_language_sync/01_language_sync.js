@@ -10,10 +10,13 @@ function LanguageSyncAddon() {
     this.LANG_KEY = 'hl';
 
     this.run = function() {
+        Log.d(this.TAG, "Running...");
+
         var langCode = CookieManager.getQueryCookie(this.COOKIE_NAME)[this.LANG_KEY];
         if (langCode) {
             Log.d(this.TAG, "Syncing language: " + langCode);
             DeviceUtils.sendMessage(DeviceUtils.MESSAGE_SYNC_LANG, langCode);
+            CookieManager.deleteCookie(this.COOKIE_NAME); // use app locale instead
         }
     };
 }

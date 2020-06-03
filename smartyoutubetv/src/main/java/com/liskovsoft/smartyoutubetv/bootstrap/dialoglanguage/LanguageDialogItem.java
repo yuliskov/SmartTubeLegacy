@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.BootstrapActivity;
 import com.liskovsoft.smartyoutubetv.misc.LangUpdater;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 import java.util.Map;
 

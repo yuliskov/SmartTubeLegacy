@@ -67,7 +67,8 @@ public class LangUpdater {
      * @param langCode lang
      */
     public void setPreferredLocale(String langCode) {
-        SmartPreferences.instance(mContext).setPreferredLanguage(langCode);
+        SmartPreferences mPrefs = SmartPreferences.instance(mContext);
+        mPrefs.setPreferredLanguage(langCode);
     }
 
     /**

@@ -16,6 +16,24 @@ var CookieManager = {
         return new this.QueryCookie(raw);
     },
 
+    setQueryCookie: function(name, values) {
+        var resultValue = '';
+
+        for (var key in values) {
+            if (key == 'raw') {
+                continue;
+            }
+
+            resultValue += key + '=' + values[key] + ';';
+        }
+
+        document.cookie = name + '=' + resultValue;
+    },
+
+    deleteCookie: function(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    },
+
     QueryCookie: function(raw) {
         this.raw = raw;
 
