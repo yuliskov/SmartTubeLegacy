@@ -80,7 +80,11 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + mCurrentUrl);
-            //mExoCallback.onFalseCall();
+
+            if (mManager.isOpened()) { // return to player when suggestions doesn't work
+                mExoCallback.onFalseCall();
+            }
+
             return null;
         }
 
