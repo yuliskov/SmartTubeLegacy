@@ -69,7 +69,7 @@ public class BackgroundActionManager {
         boolean isOK = GlobalKeyHandler.isOKButton(mKeyHandler.getLastEventKeyCode());
 
         if (!isOK && somethingPressedRecently) { // fix music videos autoplay
-            Log.d(TAG, "User didn't pressed ok recently. Exititing...");
+            Log.d(TAG, "User didn't pressed ok recently. Exiting...");
             return true;
         }
 
