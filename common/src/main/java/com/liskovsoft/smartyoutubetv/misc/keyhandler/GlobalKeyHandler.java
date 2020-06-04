@@ -21,6 +21,7 @@ public class GlobalKeyHandler {
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private boolean mDownPressed;
+    private long mOKTimeMs;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
@@ -77,6 +78,12 @@ public class GlobalKeyHandler {
         if (isReservedKey(event)) {
             Log.d(TAG, "Found globally reserved key. Ignoring..." + event);
             return null;
+        }
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER ||
+            event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
+            event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+            mOKTimeMs = System.currentTimeMillis();
         }
 
         checkBackPressed(event);
@@ -169,5 +176,9 @@ public class GlobalKeyHandler {
         }
 
         return false;
+    }
+
+    public boolean isOKRecently() {
+        return (System.currentTimeMillis() - mOKTimeMs) < 1_000;
     }
 }

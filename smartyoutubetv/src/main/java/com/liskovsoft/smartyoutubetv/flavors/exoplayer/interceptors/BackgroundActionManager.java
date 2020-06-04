@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
+import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
@@ -14,6 +15,7 @@ public class BackgroundActionManager {
     private static final String PARAM_PLAYLIST_ID = "list";
     private static final String PARAM_MIRROR = "ytr";
     private static final String PARAM_MIRROR2 = "ytrcc";
+    private final GlobalKeyHandler mKeyHandler;
     /**
      * fix playlist advance bug<br/>
      * create time window (1sec) where get_video_info isn't allowed<br/>
@@ -26,8 +28,9 @@ public class BackgroundActionManager {
     private boolean mSameVideo;
     private final SmartPreferences mPrefs;
 
-    public BackgroundActionManager() {
+    public BackgroundActionManager(GlobalKeyHandler keyHandler) {
         mPrefs = CommonApplication.getPreferences();
+        mKeyHandler = keyHandler;
     }
 
     public boolean cancelPlayback() {
@@ -59,6 +62,11 @@ public class BackgroundActionManager {
 
         if (cancelRecently) {
             Log.d(TAG, "Cancel playback: User closed video recently.");
+            return true;
+        }
+
+        if (!mKeyHandler.isOKRecently()) {
+            Log.d(TAG, "User didn't pressed ok recently. Exititing...");
             return true;
         }
 

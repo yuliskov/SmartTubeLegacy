@@ -47,7 +47,7 @@ public class ExoInterceptor extends RequestInterceptor {
         mDelayedInterceptor = delayedInterceptor;
         mNextInterceptor = nextInterceptor;
         mHistoryInterceptor = historyInterceptor;
-        mManager = new BackgroundActionManager();
+        mManager = new BackgroundActionManager(mFragmentsManager.getKeyHandler());
         mPrefs = SmartPreferences.instance(mContext);
         mSender = new ActionsSender(mContext, this);
         
@@ -80,7 +80,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + mCurrentUrl);
-            mExoCallback.onFalseCall();
+            //mExoCallback.onFalseCall();
             return null;
         }
 

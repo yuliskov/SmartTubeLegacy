@@ -464,4 +464,9 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
     protected void onPlaybackStopped() {
         mAppStateWatcher.onPlaybackStopped();
     }
+
+    @Override
+    public GlobalKeyHandler getKeyHandler() {
+        return mKeyHandler;
+    }
 }
