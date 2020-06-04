@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.kodi;
 import android.content.Context;
 import android.net.Uri;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.SimpleYouTubeInfoParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeInfoParser;
@@ -59,11 +60,11 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
         final YouTubeInfoParser dataParser = new SimpleYouTubeInfoParser(mContext, mResponseStream60Fps, mResponseStream30Fps);
         dataParser.parse(new OnMediaFoundCallback() {
             private Uri mHlsUrl;
-            private InputStream mMpdContent;
             private GenericInfo mInfo;
+            private MPDBuilder mMpdBuilder;
             @Override
-            public void onDashMPDFound(final InputStream mpdContent) {
-                mMpdContent = mpdContent;
+            public void onDashMPDFound(final MPDBuilder mpdBuilder) {
+                mMpdBuilder = mpdBuilder;
             }
             @Override
             public void onHLSFound(final Uri hlsUrl) {
@@ -77,8 +78,8 @@ public abstract class MPDExtractInterceptor extends RequestInterceptor {
 
             @Override
             public void onDone() {
-                if (mMpdContent != null) {
-                    MPDExtractInterceptor.this.onDashMPDFound(mMpdContent);
+                if (mMpdBuilder != null) {
+                    MPDExtractInterceptor.this.onDashMPDFound(mMpdBuilder.build());
                 } else if (mHlsUrl != null) {
                     MPDExtractInterceptor.this.onLiveUrlFound(mHlsUrl);
                 }

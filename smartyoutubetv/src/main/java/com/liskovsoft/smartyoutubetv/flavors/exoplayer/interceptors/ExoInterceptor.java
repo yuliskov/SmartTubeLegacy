@@ -26,7 +26,8 @@ public class ExoInterceptor extends RequestInterceptor {
     private final DelayedCommandCallInterceptor mDelayedInterceptor;
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
-    private final OnMediaFoundCallback mExoCallback;
+    private OnMediaFoundCallback mExoCallback;
+    private OnMediaFoundCallback mPrevExoCallback;
     private final ExoNextInterceptor mNextInterceptor;
     private final HistoryInterceptor mHistoryInterceptor;
     private final SmartPreferences mPrefs;
@@ -68,21 +69,25 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        return processUrl(unlockHlsStreams(url));
-    }
+        if (mPrevExoCallback != null) { // using external player time to time
+            mExoCallback = mPrevExoCallback;
+        }
 
-    private WebResourceResponse processUrl(final String url) {
-        mCurrentUrl = url;
+        mCurrentUrl = unlockHlsStreams(url);
 
-        mManager.init(url);
+        mManager.init(mCurrentUrl);
 
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
-            Log.d(TAG, "Video canceled: " + url);
+            Log.d(TAG, "Video canceled: " + mCurrentUrl);
             mExoCallback.onFalseCall();
             return null;
         }
 
+        return processCurrentUrl();
+    }
+
+    private WebResourceResponse processCurrentUrl() {
         mExoCallback.onStart();
 
         // Video title and other infos
@@ -98,10 +103,10 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(url, null));
+                parseAndOpenExoPlayer(getUrlData(mCurrentUrl, null));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
-                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + url);
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + mCurrentUrl);
             }
         }).start();
 
@@ -218,5 +223,11 @@ public class ExoInterceptor extends RequestInterceptor {
         query.remove("cbr");
         query.remove("el");
         query.remove("ps");
+    }
+
+    public void openExternally(OnMediaFoundCallback playerWrapper) {
+        mPrevExoCallback = mExoCallback;
+        mExoCallback = playerWrapper;
+        processCurrentUrl();
     }
 }

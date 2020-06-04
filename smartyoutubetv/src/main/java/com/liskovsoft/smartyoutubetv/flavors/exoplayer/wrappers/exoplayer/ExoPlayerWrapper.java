@@ -18,6 +18,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelp
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.SampleHelpers.Sample;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.externalplayer.ExternalPlayerWrapper;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.injectors.GenericEventResourceInjector.GenericStringResultEvent;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser.GenericInfo;
@@ -36,7 +37,6 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final HistoryInterceptor mHistory;
     private GenericInfo mInfo;
     private String mSpec;
-    private InputStream mMpdContent;
     private Uri mHlsUrl;
     private Uri mTrackingUrl;
     private Uri mRealTrackingUrl;
@@ -57,6 +57,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private Uri mDashUrl;
     private Intent mExoIntent;
     private ExternalPlayerWrapper mExternalPlayerWrapper;
+    private MPDBuilder mMpdBuilder;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -133,8 +134,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     @Override
-    public void onDashMPDFound(final InputStream mpdContent) {
-        mMpdContent = mpdContent;
+    public void onDashMPDFound(final MPDBuilder mpdBuilder) {
+        mMpdBuilder = mpdBuilder;
     }
 
     @Override
@@ -188,8 +189,8 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             sample = SampleHelpers.buildFromHlsUri(mHlsUrl);
         } else if (mDashUrl != null) {
             sample = SampleHelpers.buildFromMpdUri(mDashUrl);
-        } else if (mMpdContent != null) {
-            sample = SampleHelpers.buildFromMPDPlaylist(mMpdContent);
+        } else if (mMpdBuilder != null) {
+            sample = SampleHelpers.buildFromMPDPlaylist(mMpdBuilder.build());
         }
 
         if (sample == null || mInfo == null) {
@@ -208,7 +209,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private void cleanup() {
         mDashUrl = null;
         mHlsUrl = null;
-        mMpdContent = null;
+        mMpdBuilder = null;
         mSpec = null;
         mExoIntent = null;
     }
@@ -298,7 +299,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             mExternalPlayerWrapper = ExternalPlayerWrapper.create(mContext, mInterceptor);
         }
 
-        mExternalPlayerWrapper.openFromIntent(intent);
+        mInterceptor.openExternally(mExternalPlayerWrapper);
     }
 
     private void sendClose() {

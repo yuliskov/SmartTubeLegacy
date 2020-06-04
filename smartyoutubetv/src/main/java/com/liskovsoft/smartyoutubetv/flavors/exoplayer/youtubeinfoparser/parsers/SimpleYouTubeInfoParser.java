@@ -117,7 +117,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
                     //FileHelpers.streamToFile(mMPDBuilder.build(), destination);
                     //mMediaFoundCallback.onDashUrlFound(Uri.parse(destination.getAbsolutePath()));
                 } else {
-                    mMediaFoundCallback.onDashMPDFound(mMPDBuilder.build());
+                    mMediaFoundCallback.onDashMPDFound(mMPDBuilder);
                 }
             }
 

@@ -17,6 +17,7 @@ import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
 import com.liskovsoft.smartyoutubetv.fragments.ActivityResult;
@@ -44,10 +45,10 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private Uri mHlsUrl;
     protected VideoMetadata mMetadata;
     private List<String> mUrlList;
-    private InputStream mMpdContent;
     private static final String MIME_MP4 = "video/mp4";
     private static final String MIME_HLS = "application/x-mpegurl";
     private boolean mBlockClose;
+    private MPDBuilder mMpdBuilder;
 
     protected ExternalPlayerWrapper(Context context, ExoInterceptor interceptor) {
         mUAManager = new UserAgentManager();
@@ -74,8 +75,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     @Override
-    public void onDashMPDFound(InputStream mpdContent) {
-        mMpdContent = mpdContent;
+    public void onDashMPDFound(MPDBuilder mpdBuilder) {
+        mMpdBuilder = mpdBuilder;
     }
 
     //@Override
@@ -112,7 +113,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     @Override
     public void onDone() {
         if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_SD.equals(mPrefs.getUseExternalPlayer())) {
-            mMpdContent = null;
+            mMpdBuilder = null;
             mHlsUrl = null;
             mDashUrl = null;
         }
@@ -133,7 +134,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
         mHlsUrl = null;
         mUrlList = null;
         mMetadata = null;
-        mMpdContent = null;
+        mMpdBuilder = null;
     }
 
     @Override
@@ -170,8 +171,8 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     private void initIntent(Intent intent) {
-        if (mMpdContent != null) {
-            FileHelpers.streamToFile(mMpdContent, mMpdFile);
+        if (mMpdBuilder != null) {
+            FileHelpers.streamToFile(mMpdBuilder.build(), mMpdFile);
             // NOTE: Don't use fromFile or you will get FileUriExposedException
             //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
             // VLC fix
@@ -237,27 +238,6 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     private void checkCloseVideo() {
         if (!mBlockClose) {
             mInterceptor.closeVideo();
-        }
-    }
-
-    public void openFromIntent(Intent intent) {
-        if (intent != null) {
-            mBlockClose = true;
-            cleanup();
-
-            String mpdManifest = intent.getStringExtra(ExoPlayerFragment.MPD_CONTENT_EXTRA);
-
-            if (mpdManifest != null) {
-                mMpdContent = new ByteArrayInputStream(mpdManifest.getBytes());
-            } else {
-                mHlsUrl = intent.getData(); // assume that we are opening direct link
-            }
-
-            mMetadata = new VideoMetadata();
-            mMetadata.setTitle(intent.getStringExtra(ExoPlayerFragment.VIDEO_TITLE));
-
-            // Fix NetworkOnMainThread exception
-            new Thread(this::onDone).start();
         }
     }
 
