@@ -62,7 +62,7 @@
     <string name="tweaks">Instellingen</string>
     <string name="tip_tweaks">Instellingen aanpassen</string>
     <string name="tweak_remember_launcher">Geselecteerde launcher onthouden</string>
-    <string name="tweak_ok_button_fix">Video pauzeren met OK-toets (UI)</string>
+    <string name="tweak_press_ok_to_pause">Video pauzeren met OK-toets (UI)</string>
     <string name="tweak_update_check">Controleren op updates</string>
     <string name="tweak_beta_update_check">Controleren op beta updates</string>
     <string name="tweak_end_cards">Eindgeneriek van video weergeven</string>
