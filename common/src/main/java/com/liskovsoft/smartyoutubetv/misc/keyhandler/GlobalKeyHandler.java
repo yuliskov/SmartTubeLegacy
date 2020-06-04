@@ -21,7 +21,8 @@ public class GlobalKeyHandler {
     private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private boolean mDownPressed;
-    private long mOKTimeMs;
+    private long mLastEventTimeMs;
+    private int mLastEventCode;
 
     public GlobalKeyHandler(Activity ctx) {
         mHandler = new Handler(ctx.getMainLooper());
@@ -80,11 +81,8 @@ public class GlobalKeyHandler {
             return null;
         }
 
-        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER ||
-            event.getKeyCode() == KeyEvent.KEYCODE_ENTER ||
-            event.getKeyCode() == KeyEvent.KEYCODE_NUMPAD_ENTER) {
-            mOKTimeMs = System.currentTimeMillis();
-        }
+        mLastEventTimeMs = System.currentTimeMillis();
+        mLastEventCode = event.getKeyCode();
 
         checkBackPressed(event);
 
@@ -178,7 +176,17 @@ public class GlobalKeyHandler {
         return false;
     }
 
-    public boolean isOKRecently() {
-        return (System.currentTimeMillis() - mOKTimeMs) < 1_000;
+    public int getLastEventKeyCode() {
+        return mLastEventCode;
+    }
+
+    public long getLastEventTimeMs() {
+        return mLastEventTimeMs;
+    }
+
+    public static boolean isOKButton(int code) {
+        return code == KeyEvent.KEYCODE_DPAD_CENTER ||
+               code == KeyEvent.KEYCODE_ENTER ||
+               code == KeyEvent.KEYCODE_NUMPAD_ENTER;
     }
 }
