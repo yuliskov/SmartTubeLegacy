@@ -49,6 +49,7 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private final Set<MediaItem> mWEBMVideos;
     private final List<Subtitle> mSubs;
     private final OtfSegmentParser mSegmentParser;
+    private String mLimitVideoCodec;
 
     public SimpleMPDBuilder() {
         this(new SimpleYouTubeGenericInfo());
@@ -204,6 +205,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         // Representation
         for (MediaItem item : filtered) {
+            if (mLimitVideoCodec != null && isVideo(item) && !item.getType().contains(mLimitVideoCodec)) {
+                continue;
+            }
+
             if (item.getGlobalSegmentList() != null) {
                 writeGlobalSegmentList(item);
                 continue;
@@ -739,5 +744,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     @Override
     public boolean isDynamic() {
         return isLive();
+    }
+
+    @Override
+    public void limitVideoCodec(String codec) {
+        mLimitVideoCodec = codec;
     }
 }

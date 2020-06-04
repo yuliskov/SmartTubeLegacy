@@ -27,7 +27,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private final BackgroundActionManager mManager;
     private final TwoFragmentManager mFragmentsManager;
     private OnMediaFoundCallback mExoCallback;
-    private OnMediaFoundCallback mPrevExoCallback;
+    private OnMediaFoundCallback mRealExoCallback;
     private final ExoNextInterceptor mNextInterceptor;
     private final HistoryInterceptor mHistoryInterceptor;
     private final SmartPreferences mPrefs;
@@ -56,7 +56,7 @@ public class ExoInterceptor extends RequestInterceptor {
         if (useExternalPlayer) {
             mExoCallback = ExternalPlayerWrapper.create(mContext, this);
         } else {
-            mExoCallback = new ExoPlayerWrapper(mContext, this);
+            mRealExoCallback = mExoCallback = new ExoPlayerWrapper(mContext, this);
         }
     }
 
@@ -69,8 +69,8 @@ public class ExoInterceptor extends RequestInterceptor {
     public WebResourceResponse intercept(String url) {
         Log.d(TAG, "Video intercepted: " + url);
 
-        if (mPrevExoCallback != null) { // using external player time to time
-            mExoCallback = mPrevExoCallback;
+        if (mRealExoCallback != null) { // video may be processed externally, so we need to restore
+            mExoCallback = mRealExoCallback;
         }
 
         mCurrentUrl = unlockHlsStreams(url);
@@ -141,6 +141,10 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     public void closeVideo() {
+        if (mRealExoCallback != null) { // don't response in exo mode
+            return;
+        }
+
         Intent intent = new Intent();
         intent.putExtra(ExoPlayerFragment.BUTTON_BACK, true);
         mSender.bindActions(intent);
@@ -148,6 +152,10 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     public void jumpToNextVideo() {
+        if (mRealExoCallback != null) { // don't response in exo mode
+            return;
+        }
+
         Intent intent = new Intent();
         intent.putExtra(ExoPlayerFragment.BUTTON_NEXT, true);
         mSender.bindActions(intent);
@@ -226,7 +234,6 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     public void openExternally(OnMediaFoundCallback playerWrapper) {
-        mPrevExoCallback = mExoCallback;
         mExoCallback = playerWrapper;
         processCurrentUrl();
     }

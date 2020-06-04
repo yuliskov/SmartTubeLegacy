@@ -16,7 +16,6 @@ import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.R;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.ExoInterceptor;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors.HistoryInterceptor;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.mpd.MPDBuilder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.JsonNextParser.VideoMetadata;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.OnMediaFoundCallback;
@@ -25,9 +24,7 @@ import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 
 public class ExternalPlayerWrapper extends OnMediaFoundCallback implements ActivityResult {
@@ -172,6 +169,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     private void initIntent(Intent intent) {
         if (mMpdBuilder != null) {
+            mMpdBuilder.limitVideoCodec(MPDBuilder.VIDEO_MP4); // limit to FHD
             FileHelpers.streamToFile(mMpdBuilder.build(), mMpdFile);
             // NOTE: Don't use fromFile or you will get FileUriExposedException
             //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
