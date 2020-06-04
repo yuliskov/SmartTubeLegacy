@@ -20,6 +20,7 @@ public class JavaScriptMessageHandler {
     private final static String MESSAGE_DISABLE_SCREENSAVER = "message_disable_screensaver";
     private final static String MESSAGE_VIDEO_OPENED = "message_video_opened";
     private final static String MESSAGE_VIDEO_POSITION = "message_video_position";
+    private final static String MESSAGE_VIDEO_TYPE = "message_video_type";
     private final static String MESSAGE_VIDEO_PAUSED = "message_video_paused";
     private final static String MESSAGE_DOUBLE_BACK_EXIT = "message_double_back_exit";
     private final static String MESSAGE_SEARCH_FIELD_FOCUSED = "message_search_field_focused";
@@ -70,6 +71,9 @@ public class JavaScriptMessageHandler {
                 break;
             case MESSAGE_VIDEO_POSITION:
                 mPrefs.setCurrentVideoPosition(Integer.parseInt(content));
+                break;
+            case MESSAGE_VIDEO_TYPE:
+                mPrefs.setCurrentVideoType(content);
                 break;
             case MESSAGE_VIDEO_PAUSED:
                 mPrefs.setHtmlVideoPaused(Boolean.parseBoolean(content));

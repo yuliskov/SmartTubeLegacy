@@ -2,7 +2,11 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
+import android.text.InputType;
 import android.webkit.WebResourceResponse;
+import com.liskovsoft.m3uparser.core.utils.IOUtils;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -17,6 +21,7 @@ import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import okhttp3.MediaType;
 
 import java.io.InputStream;
 
@@ -73,7 +78,7 @@ public class ExoInterceptor extends RequestInterceptor {
             mExoCallback = mRealExoCallback;
         }
 
-        mCurrentUrl = unlockHlsStreams(url);
+        mCurrentUrl = unlockStreams(url);
 
         mManager.init(mCurrentUrl);
 
@@ -93,6 +98,8 @@ public class ExoInterceptor extends RequestInterceptor {
 
     private WebResourceResponse processCurrentUrl() {
         mExoCallback.onStart();
+
+        //String urlContent = Helpers.toString(getUrlData(mCurrentUrl, null));
 
         // Video title and other infos
         // long running code
@@ -114,6 +121,7 @@ public class ExoInterceptor extends RequestInterceptor {
             }
         }).start();
 
+        //return createResponse(MediaType.parse("application/x-www-form-urlencoded"), Helpers.toStream(urlContent));
         return null;
     }
 
@@ -170,16 +178,21 @@ public class ExoInterceptor extends RequestInterceptor {
         return mHistoryInterceptor;
     }
     
-    private String unlockHlsStreams(String url) {
+    private String unlockStreams(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        //removeUnusedParams(query);
-
-        //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
-
-        query.remove("access_token"); // needed to unlock some personal uploaded videos
-        query.set("c", "HTML5"); // needed to unlock streams
-        //query.remove("c"); // needed to unlock streams
+        switch(mPrefs.getCurrentVideoType()) {
+            case SmartPreferences.VIDEO_TYPE_DEFAULT:
+                //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+                break;
+            case SmartPreferences.VIDEO_TYPE_LIVE:
+            case SmartPreferences.VIDEO_TYPE_UPCOMING:
+            case SmartPreferences.VIDEO_TYPE_UNDEFINED:
+                query.remove("access_token"); // needed to unlock some personal uploaded videos
+                query.set("c", "HTML5"); // needed to unlock streams
+                //query.remove("c"); // needed to unlock streams
+                break;
+        }
 
         return query.toString();
     }

@@ -84,6 +84,7 @@ var YouTubeSelectors = {
     VOICE_SEARCH: '#voice-search',
     FOCUSED_ELEMENT: '.focused',
     FOCUSED_VIDEO_PROGRESS_BAR: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-resume-playback-renderer__progress-watched',
+    FOCUSED_VIDEO_TYPE_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-time-status-renderer',
     PLAYER_OBJ: 'video',
     MASTHEAD_SECTION: '.masthead-overlay'
 };
@@ -102,7 +103,10 @@ var YouTubeClasses = {
     BUTTON_TOGGLED: 'toggle-selected',
     NO_MODEL: 'no-model',
     HIDDEN: 'hidden',
-    PLAYER_UI_SHOWING: 'transport-showing'
+    PLAYER_UI_SHOWING: 'transport-showing',
+    VIDEO_TYPE_LIVE: 'ytlr-thumbnail-overlay-time-status-renderer--LIVE',
+    VIDEO_TYPE_DEFAULT: 'ytlr-thumbnail-overlay-time-status-renderer--DEFAULT',
+    VIDEO_TYPE_UPCOMING: 'ytlr-thumbnail-overlay-time-status-renderer--UPCOMING'
 };
 
 /**

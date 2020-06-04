@@ -68,6 +68,10 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String OK_PAUSE_TYPE_DEFAULT = "ok_pause_type_default";
     public static final String OK_PAUSE_TYPE_WITH_UI = "ok_pause_type_with_ui";
     public static final String OK_PAUSE_TYPE_WITHOUT_UI = "ok_pause_type_without_ui";
+    public static final String VIDEO_TYPE_UNDEFINED = "video_type_undefined";
+    public static final String VIDEO_TYPE_DEFAULT = "video_type_default";
+    public static final String VIDEO_TYPE_LIVE = "video_type_live";
+    public static final String VIDEO_TYPE_UPCOMING = "video_type_upcoming";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -77,6 +81,7 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String NONE = "";
     private static SmartPreferences sInstance;
     private int mPositionSec = -1;
+    private String mVideoType = VIDEO_TYPE_UNDEFINED;
     private long mLastUserInteraction;
     private String mAuthorizationHeader;
     private String mCookieHeader;
@@ -299,6 +304,14 @@ public final class SmartPreferences extends SmartPreferencesBase {
 
     public long getCurrentVideoPosition() {
         return mPositionSec;
+    }
+
+    public void setCurrentVideoType(String videoType) {
+        mVideoType = videoType;
+    }
+
+    public String getCurrentVideoType() {
+        return mVideoType;
     }
 
     public void setHtmlVideoPaused(boolean paused) {
