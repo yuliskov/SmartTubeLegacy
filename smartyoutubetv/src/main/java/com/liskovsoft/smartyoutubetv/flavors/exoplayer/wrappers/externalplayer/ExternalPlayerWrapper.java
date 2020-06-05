@@ -89,6 +89,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     @Override
     public void onMetadata(VideoMetadata metadata) {
         mMetadata = metadata;
+        onDone(); // metadata consumed asynchronously
     }
 
     /**
@@ -100,15 +101,11 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
     }
 
     @Override
-    public boolean getVLCFix() {
-        // Fix LQ playback in external players.
-        // Remain one item in the list.
-        // Put avc on top
-        return SmartPreferences.USE_EXTERNAL_PLAYER_FHD.equals(mPrefs.getUseExternalPlayer());
-    }
-
-    @Override
     public void onDone() {
+        if (mMetadata == null) {
+            return;
+        }
+
         if (mUrlList != null && SmartPreferences.USE_EXTERNAL_PLAYER_SD.equals(mPrefs.getUseExternalPlayer())) {
             mMpdBuilder = null;
             mHlsUrl = null;
@@ -169,7 +166,7 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
 
     private void initIntent(Intent intent) {
         if (mMpdBuilder != null) {
-            mMpdBuilder.limitVideoCodec(MPDBuilder.VIDEO_MP4); // limit to FHD
+            applyLimits();
             FileHelpers.streamToFile(mMpdBuilder.build(), mMpdFile);
             // NOTE: Don't use fromFile or you will get FileUriExposedException
             //intent.setDataAndType(FileHelpers.getFileUri(mContext, mMpdFile), MIME_MP4);
@@ -193,6 +190,15 @@ public class ExternalPlayerWrapper extends OnMediaFoundCallback implements Activ
             intent.setDataAndType(Uri.parse(mUrlList.get(0)), MIME_MP4);
         } else {
             Log.d(TAG, "Unrecognized content type");
+        }
+    }
+
+    private void applyLimits() {
+        String externalPlayerType = CommonApplication.getPreferences().getUseExternalPlayer();
+        if (SmartPreferences.USE_EXTERNAL_PLAYER_NONE.equals(externalPlayerType) ||
+            SmartPreferences.USE_EXTERNAL_PLAYER_FHD.equals(externalPlayerType)) {
+            mMpdBuilder.limitVideoCodec(MPDBuilder.VIDEO_MP4); // limit to FHD
+            mMpdBuilder.limitAudioCodec(MPDBuilder.AUDIO_MP4); // limit to AAC
         }
     }
 

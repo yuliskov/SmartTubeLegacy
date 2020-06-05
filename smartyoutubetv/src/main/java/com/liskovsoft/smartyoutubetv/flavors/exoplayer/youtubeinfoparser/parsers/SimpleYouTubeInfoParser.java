@@ -39,7 +39,7 @@ public class SimpleYouTubeInfoParser implements YouTubeInfoParser {
         @Override
         public void onGenericInfo(GenericInfo info) {
             if (mMPDBuilder == null) {
-                mMPDBuilder = new SimpleMPDBuilder(info, mMediaFoundCallback.getVLCFix());
+                mMPDBuilder = new SimpleMPDBuilder(info);
             }
 
             if (mUrlListBuilder == null) {

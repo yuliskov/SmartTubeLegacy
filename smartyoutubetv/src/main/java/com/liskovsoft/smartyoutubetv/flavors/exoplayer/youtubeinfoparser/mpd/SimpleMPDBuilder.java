@@ -39,7 +39,6 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private static final String TAG = SimpleMPDBuilder.class.getSimpleName();
     private static final Pattern CODECS_PATTERN = Pattern.compile(".*codecs=\\\"(.*)\\\"");
     private final GenericInfo mInfo;
-    private final boolean mVLCFix;
     private XmlSerializer mXmlSerializer;
     private StringWriter mWriter;
     private int mId;
@@ -50,18 +49,13 @@ public class SimpleMPDBuilder implements MPDBuilder {
     private final List<Subtitle> mSubs;
     private final OtfSegmentParser mSegmentParser;
     private String mLimitVideoCodec;
+    private String mLimitAudioCodec;
 
     public SimpleMPDBuilder() {
         this(new SimpleYouTubeGenericInfo());
     }
 
     public SimpleMPDBuilder(GenericInfo info) {
-        this(info, false);
-    }
-
-    public SimpleMPDBuilder(GenericInfo info, boolean VLCFix) {
-        mVLCFix = VLCFix;
-
         mInfo = info;
         MediaItemComparator comp = new MediaItemComparator();
         mMP4Audios = new TreeSet<>(comp);
@@ -131,21 +125,12 @@ public class SimpleMPDBuilder implements MPDBuilder {
             writeLiveHeaderSegmentList();
         }
 
-        if (mVLCFix) {
-            // VLC can't play VP9
-            writeMediaTagsForGroup(mMP4Videos);
-            writeMediaTagsForGroup(mMP4Audios);
-            writeMediaTagsForGroup(mWEBMVideos);
-            writeMediaTagsForGroup(mWEBMAudios);
-            writeMediaTagsForGroup(mSubs);
-        } else {
-            // MXPlayer fix: write high quality formats first
-            writeMediaTagsForGroup(mWEBMVideos);
-            writeMediaTagsForGroup(mWEBMAudios);
-            writeMediaTagsForGroup(mMP4Videos);
-            writeMediaTagsForGroup(mMP4Audios);
-            writeMediaTagsForGroup(mSubs);
-        }
+        // MXPlayer fix: write high quality formats first
+        writeMediaTagsForGroup(mWEBMVideos);
+        writeMediaTagsForGroup(mWEBMAudios);
+        writeMediaTagsForGroup(mMP4Videos);
+        writeMediaTagsForGroup(mMP4Audios);
+        writeMediaTagsForGroup(mSubs);
     }
 
     private void writeLiveHeaderSegmentList() {
@@ -209,17 +194,16 @@ public class SimpleMPDBuilder implements MPDBuilder {
                 continue;
             }
 
+            if (mLimitAudioCodec != null && isAudio(item) && !item.getType().contains(mLimitAudioCodec)) {
+                continue;
+            }
+
             if (item.getGlobalSegmentList() != null) {
                 writeGlobalSegmentList(item);
                 continue;
             }
 
             writeMediaItemTag(item);
-
-            // VLC fix: limit to max quality
-            if (mVLCFix) {
-                break;
-            }
         }
 
         writeMediaListEpilogue();
@@ -526,6 +510,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
         return item.getSize() != null;
     }
 
+    private boolean isAudio(MediaItem item) {
+        return item.getType() != null && item.getType().contains("audio");
+    }
+
     private XmlSerializer text(String url) {
         try {
             return mXmlSerializer.text(url);
@@ -749,5 +737,10 @@ public class SimpleMPDBuilder implements MPDBuilder {
     @Override
     public void limitVideoCodec(String codec) {
         mLimitVideoCodec = codec;
+    }
+
+    @Override
+    public void limitAudioCodec(String codec) {
+        mLimitAudioCodec = codec;
     }
 }

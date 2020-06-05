@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface MPDBuilder {
     String VIDEO_MP4 = "video/mp4";
+    String AUDIO_MP4 = "audio/mp4";
     InputStream build();
     boolean isEmpty();
     void append(MediaItem mediaItem);
@@ -15,4 +16,5 @@ public interface MPDBuilder {
     void append(Subtitle sub);
     boolean isDynamic();
     void limitVideoCodec(String codec);
+    void limitAudioCodec(String codec);
 }

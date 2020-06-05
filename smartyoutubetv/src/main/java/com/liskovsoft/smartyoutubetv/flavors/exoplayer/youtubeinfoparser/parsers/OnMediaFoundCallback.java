@@ -20,9 +20,5 @@ public abstract class OnMediaFoundCallback {
     public void onStorySpecFound(String spec) {}
     public void onGenericInfoFound(GenericInfo info){}
     public void onMetadata(VideoMetadata metadata){}
-    public boolean getVLCFix() {
-        return false;
-    }
-
     public abstract void onDone(); // Required!!!
 }
