@@ -46,8 +46,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1214
-        versionName "6.17.634"
+        versionCode 1215
+        versionName "6.17.635"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
