@@ -99,8 +99,6 @@ public class ExoInterceptor extends RequestInterceptor {
     private WebResourceResponse processCurrentUrl() {
         mExoCallback.onStart();
 
-        //String urlContent = Helpers.toString(getUrlData(mCurrentUrl, null));
-
         // Video title and other infos
         // long running code
         new Thread(() -> {
@@ -114,14 +112,13 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(mCurrentUrl));
+                parseAndOpenExoPlayer(getUrlData(mCurrentUrl, null));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
                 MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + mCurrentUrl);
             }
         }).start();
 
-        //return createResponse(MediaType.parse("application/x-www-form-urlencoded"), Helpers.toStream(urlContent));
         return null;
     }
 
@@ -181,18 +178,20 @@ public class ExoInterceptor extends RequestInterceptor {
     private String unlockStreams(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        switch(mPrefs.getCurrentVideoType()) {
-            case SmartPreferences.VIDEO_TYPE_DEFAULT:
-                //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
-                break;
-            case SmartPreferences.VIDEO_TYPE_LIVE:
-            case SmartPreferences.VIDEO_TYPE_UPCOMING:
-            case SmartPreferences.VIDEO_TYPE_UNDEFINED:
-                //query.remove("access_token"); // needed to unlock some personal uploaded videos
-                query.set("c", "HTML5"); // needed to unlock streams
-                //query.remove("c"); // needed to unlock streams
-                break;
-        }
+        query.set("c", "HTML5"); // needed to unlock streams
+
+        //switch(mPrefs.getCurrentVideoType()) {
+        //    case SmartPreferences.VIDEO_TYPE_DEFAULT:
+        //        //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+        //        break;
+        //    case SmartPreferences.VIDEO_TYPE_LIVE:
+        //    case SmartPreferences.VIDEO_TYPE_UPCOMING:
+        //    case SmartPreferences.VIDEO_TYPE_UNDEFINED:
+        //        //query.remove("access_token"); // needed to unlock some personal uploaded videos
+        //        query.set("c", "HTML5"); // needed to unlock streams
+        //        //query.remove("c"); // needed to unlock streams
+        //        break;
+        //}
 
         return query.toString();
     }
