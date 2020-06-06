@@ -114,7 +114,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(mCurrentUrl, null));
+                parseAndOpenExoPlayer(getUrlData(mCurrentUrl));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
                 MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + mCurrentUrl);
@@ -188,7 +188,7 @@ public class ExoInterceptor extends RequestInterceptor {
             case SmartPreferences.VIDEO_TYPE_LIVE:
             case SmartPreferences.VIDEO_TYPE_UPCOMING:
             case SmartPreferences.VIDEO_TYPE_UNDEFINED:
-                query.remove("access_token"); // needed to unlock some personal uploaded videos
+                //query.remove("access_token"); // needed to unlock some personal uploaded videos
                 query.set("c", "HTML5"); // needed to unlock streams
                 //query.remove("c"); // needed to unlock streams
                 break;
