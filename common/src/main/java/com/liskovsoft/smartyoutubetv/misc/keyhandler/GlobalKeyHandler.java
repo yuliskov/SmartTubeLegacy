@@ -184,9 +184,18 @@ public class GlobalKeyHandler {
         return mLastEventTimeMs;
     }
 
-    public static boolean isOKButton(int code) {
-        return code == KeyEvent.KEYCODE_DPAD_CENTER ||
-               code == KeyEvent.KEYCODE_ENTER ||
-               code == KeyEvent.KEYCODE_NUMPAD_ENTER;
+    /** Whether key will, by default, trigger a click on the focused view.
+     * @hide
+     */
+    public static final boolean isConfirmKey(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_SPACE:
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+                return true;
+            default:
+                return false;
+        }
     }
 }

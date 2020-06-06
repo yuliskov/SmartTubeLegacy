@@ -27,7 +27,7 @@ public class ApplicationUtil {
 
     public static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
         DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(USER_AGENT_MANAGER.getUA(), bandwidthMeter);
-        //addCommonHeaders(context, dataSourceFactory);
+        addCommonHeaders(context, dataSourceFactory);
         return dataSourceFactory;
     }
 

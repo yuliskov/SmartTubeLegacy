@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
+import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
@@ -66,10 +67,10 @@ public class BackgroundActionManager {
         }
 
         boolean somethingPressedRecently = (System.currentTimeMillis() - mKeyHandler.getLastEventTimeMs()) < 3_000;
-        boolean isOK = GlobalKeyHandler.isOKButton(mKeyHandler.getLastEventKeyCode());
+        boolean isOK = GlobalKeyHandler.isConfirmKey(mKeyHandler.getLastEventKeyCode());
 
         if (!isOK && somethingPressedRecently) { // fix music videos autoplay
-            Log.d(TAG, "User didn't pressed ok recently. Exiting...");
+            Log.d(TAG, "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode());
             return true;
         }
 

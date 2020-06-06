@@ -112,7 +112,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(mCurrentUrl, null));
+                parseAndOpenExoPlayer(getUrlData(mCurrentUrl));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
                 MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken: " + mCurrentUrl);
@@ -178,20 +178,18 @@ public class ExoInterceptor extends RequestInterceptor {
     private String unlockStreams(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
-        query.set("c", "HTML5"); // needed to unlock streams
-
-        //switch(mPrefs.getCurrentVideoType()) {
-        //    case SmartPreferences.VIDEO_TYPE_DEFAULT:
-        //        //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
-        //        break;
-        //    case SmartPreferences.VIDEO_TYPE_LIVE:
-        //    case SmartPreferences.VIDEO_TYPE_UPCOMING:
-        //    case SmartPreferences.VIDEO_TYPE_UNDEFINED:
-        //        //query.remove("access_token"); // needed to unlock some personal uploaded videos
-        //        query.set("c", "HTML5"); // needed to unlock streams
-        //        //query.remove("c"); // needed to unlock streams
-        //        break;
-        //}
+        switch(mPrefs.getCurrentVideoType()) {
+            case SmartPreferences.VIDEO_TYPE_DEFAULT:
+                query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+                break;
+            case SmartPreferences.VIDEO_TYPE_LIVE:
+            case SmartPreferences.VIDEO_TYPE_UPCOMING:
+            case SmartPreferences.VIDEO_TYPE_UNDEFINED:
+                //query.remove("access_token"); // needed to unlock some personal uploaded videos
+                query.set("c", "HTML5"); // needed to unlock streams
+                //query.remove("c"); // needed to unlock streams
+                break;
+        }
 
         return query.toString();
     }
