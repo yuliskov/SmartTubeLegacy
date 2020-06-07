@@ -1,17 +1,14 @@
 package com.liskovsoft.smartyoutubetv.misc.keyhandler;
 
 import android.view.KeyEvent;
-
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.keytranslator.KeyTranslator;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BrowserKeyTranslator extends KeyTranslator {
-
-    private static Map<Integer, Integer> KEY_MAPPING = new HashMap<>();
+    private final static Map<Integer, Integer> KEY_MAPPING = new HashMap<>();
 
     static {
         KEY_MAPPING.put(KeyEvent.KEYCODE_BUTTON_B, KeyEvent.KEYCODE_ESCAPE);
@@ -20,7 +17,6 @@ public class BrowserKeyTranslator extends KeyTranslator {
         KEY_MAPPING.put(KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_ENTER);
         KEY_MAPPING.put(KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_ENTER);
         KEY_MAPPING.put(KeyEvent.KEYCODE_BUTTON_Y, KeyEvent.KEYCODE_SEARCH);
-        KEY_MAPPING = Collections.unmodifiableMap(KEY_MAPPING);
     }
 
     public static KeyTranslator create() {

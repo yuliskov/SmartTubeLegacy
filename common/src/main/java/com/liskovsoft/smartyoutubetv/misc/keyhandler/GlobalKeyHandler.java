@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.fragments.FragmentManager;
@@ -166,14 +167,7 @@ public class GlobalKeyHandler {
     }
 
     private boolean isReservedKey(KeyEvent event) {
-        // Philips ambilight button
-        int KEYCODE_SVC_EXIT = 319;
-
-        if (event.getKeyCode() == KEYCODE_SVC_EXIT) {
-            return true;
-        }
-
-        return false;
+        return KeyHelpers.isAmbilightKey(event.getKeyCode());
     }
 
     public int getLastEventKeyCode() {
@@ -182,20 +176,5 @@ public class GlobalKeyHandler {
 
     public long getLastEventTimeMs() {
         return mLastEventTimeMs;
-    }
-
-    /** Whether key will, by default, trigger a click on the focused view.
-     * @hide
-     */
-    public static final boolean isConfirmKey(int keyCode) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-            case KeyEvent.KEYCODE_ENTER:
-            case KeyEvent.KEYCODE_SPACE:
-            case KeyEvent.KEYCODE_NUMPAD_ENTER:
-                return true;
-            default:
-                return false;
-        }
     }
 }
