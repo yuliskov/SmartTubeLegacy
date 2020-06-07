@@ -6,20 +6,20 @@
 
 console.log("Scripts::Running script video_stats_watcher_addon.js");
 
-function VideoStatsWatcherAddon() {
-    this.TAG = 'VideoStatsWatcherAddon';
-    this.MESSAGE_VIDEO_POSITION = 'message_video_position';
-    this.MESSAGE_VIDEO_TYPE = 'message_video_type';
-    this.VIDEO_TYPE_UNDEFINED = 'video_type_undefined';
-    this.VIDEO_TYPE_DEFAULT = 'video_type_default';
-    this.VIDEO_TYPE_LIVE = 'video_type_live';
-    this.VIDEO_TYPE_UPCOMING = 'video_type_upcoming';
+var VideoStatsWatcherAddon = {
+    TAG: 'VideoStatsWatcherAddon',
+    MESSAGE_VIDEO_POSITION: 'message_video_position',
+    MESSAGE_VIDEO_TYPE: 'message_video_type',
+    VIDEO_TYPE_UNDEFINED: 'video_type_undefined',
+    VIDEO_TYPE_DEFAULT: 'video_type_default',
+    VIDEO_TYPE_LIVE: 'video_type_live',
+    VIDEO_TYPE_UPCOMING: 'video_type_upcoming',
 
-    this.run = function() {
+    run: function() {
         this.addListener();
-    };
+    },
 
-    this.addListener = function() {
+    addListener: function() {
         var $this = this;
 
         // There is a handler that blocks others. We should run before it.
@@ -32,9 +32,9 @@ function VideoStatsWatcherAddon() {
                 $this.notifyVideoType();
             }
         }, true);
-    };
+    },
 
-    this.notifyPosition = function() {
+    notifyPosition: function() {
         var bar = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_PROGRESS_BAR);
 
         if (bar && bar.style && bar.style.width) {
@@ -47,9 +47,9 @@ function VideoStatsWatcherAddon() {
             Log.d(this.TAG, "Opening video. Position data not found!");
             DeviceUtils.sendMessage(this.MESSAGE_VIDEO_POSITION, -1);
         }
-    };
+    },
 
-    this.notifyVideoType = function() {
+    notifyVideoType: function() {
         var typeBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_TYPE_BAGE);
 
         var videoType = this.VIDEO_TYPE_UNDEFINED;
@@ -66,9 +66,11 @@ function VideoStatsWatcherAddon() {
 
         Log.d(this.TAG, "Current video type: " + videoType);
         DeviceUtils.sendMessage(this.MESSAGE_VIDEO_TYPE, videoType);
-    };
+        this.recentVideoType = videoType;
+    }
 }
 
-if (DeviceUtils.isExo()) {
-    new VideoStatsWatcherAddon().run();
-}
+// global obj
+window.VideoStatsWatcherAddon = VideoStatsWatcherAddon;
+
+VideoStatsWatcherAddon.run();

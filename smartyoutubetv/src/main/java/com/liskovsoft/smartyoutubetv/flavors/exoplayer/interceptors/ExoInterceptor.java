@@ -176,22 +176,30 @@ public class ExoInterceptor extends RequestInterceptor {
     }
     
     private String unlockStreams(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+        //MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
         switch(mPrefs.getCurrentVideoType()) {
             case SmartPreferences.VIDEO_TYPE_DEFAULT:
-                query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+                // already removed in video_info_interceptor.js
+                //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
                 break;
             case SmartPreferences.VIDEO_TYPE_LIVE:
             case SmartPreferences.VIDEO_TYPE_UPCOMING:
             case SmartPreferences.VIDEO_TYPE_UNDEFINED:
                 //query.remove("access_token"); // needed to unlock some personal uploaded videos
-                query.set("c", "HTML5"); // needed to unlock streams
+                //query.set("el", "leanback");
+                //query.set("ps", "leanback");
+                //query.set("c", "HTML5"); // needed to unlock streams
                 //query.remove("c"); // needed to unlock streams
+
+                // NOTE: don't unlock streams in video_info_interceptor.js
+                // otherwise you'll get errors in youtube client
+                url = url.replace("&c=TVHTML5", "&c=HTML5");
+
                 break;
         }
 
-        return query.toString();
+        return url;
     }
 
     /**

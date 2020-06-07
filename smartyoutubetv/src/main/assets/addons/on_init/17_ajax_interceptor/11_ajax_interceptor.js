@@ -39,6 +39,11 @@ function AjaxInterceptorAddon(interceptors) {
                         // method, url, async
                         interceptor.interceptOpen(arguments[0], arguments[1], arguments[2]);
                     }
+
+                    if (interceptor.modifyOpen) {
+                        // method, url, async
+                        interceptor.modifyOpen(arguments);
+                    }
                 }
 
                 if ($this.interceptors.length == 0) {
@@ -66,6 +71,7 @@ function AjaxInterceptorAddon(interceptors) {
                     }
 
                     if (interceptor.modifyHeader) {
+                        // name, value
                         interceptor.modifyHeader(arguments);
                     }
                 }
@@ -107,4 +113,4 @@ function AjaxInterceptorAddon(interceptors) {
     };
 }
 
-new AjaxInterceptorAddon([new AuthInterceptor(), new PostDataInterceptor()]).run();
+new AjaxInterceptorAddon([new AuthInterceptor(), new PostDataInterceptor(), new VideoInfoInterceptor()]).run();
