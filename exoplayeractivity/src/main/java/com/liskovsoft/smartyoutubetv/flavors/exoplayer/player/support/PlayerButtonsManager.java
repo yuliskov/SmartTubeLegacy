@@ -17,7 +17,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ToggleButtonBase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlayerButtonsManager {
@@ -28,7 +30,8 @@ public class PlayerButtonsManager {
     private final View mRootView;
     private boolean mListenerAdded;
 
-    private Map<Integer, OnChecked> mActionButtons;
+    private Map<Integer, OnChecked> mActions;
+    private List<Integer> mStatefullButtons;
     private Map<Integer, String> mIdTagMapping;
     private Map<String, Boolean> mResultState;
 
@@ -51,6 +54,12 @@ public class PlayerButtonsManager {
     }
 
     private void initButtons() {
+        mStatefullButtons = new ArrayList<>();
+
+        mStatefullButtons.add(R.id.exo_like);
+        mStatefullButtons.add(R.id.exo_dislike);
+        mStatefullButtons.add(R.id.exo_subscribe);
+
         mResultState = new HashMap<>();
 
         mIdTagMapping = new HashMap<>();
@@ -66,38 +75,38 @@ public class PlayerButtonsManager {
         mIdTagMapping.put(R.id.exo_back, ExoPlayerFragment.BUTTON_BACK);
         mIdTagMapping.put(R.id.exo_search, ExoPlayerFragment.BUTTON_SEARCH);
 
-        mActionButtons = new HashMap<>();
+        mActions = new HashMap<>();
         // has state
-        mActionButtons.put(R.id.exo_like, (checked) -> false);
-        mActionButtons.put(R.id.exo_dislike, (checked) -> false);
-        mActionButtons.put(R.id.exo_subscribe, (checked) -> false);
+        mActions.put(R.id.exo_like, (checked) -> false);
+        mActions.put(R.id.exo_dislike, (checked) -> false);
+        mActions.put(R.id.exo_subscribe, (checked) -> false);
         // no state
-        mActionButtons.put(R.id.exo_user, (checked) -> {
+        mActions.put(R.id.exo_user, (checked) -> {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             return true;
         });
-        mActionButtons.put(R.id.down_catch_button, (checked) -> {
+        mActions.put(R.id.down_catch_button, (checked) -> {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             return true;
         });
-        mActionButtons.put(R.id.exo_suggestions, (checked) -> {
+        mActions.put(R.id.exo_suggestions, (checked) -> {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             return true;
         });
-        mActionButtons.put(R.id.exo_favorites, (checked) -> {
+        mActions.put(R.id.exo_favorites, (checked) -> {
             // loop video while user page or suggestions displayed
             mPlayerFragment.setRepeatEnabled(true);
             return true;
         });
-        mActionButtons.put(R.id.exo_prev, (checked) -> !restartVideo());
-        mActionButtons.put(R.id.exo_next2, (checked) -> true);
-        mActionButtons.put(R.id.exo_open_player, (checked) -> {openExternalPlayer(); return false;});
-        mActionButtons.put(R.id.exo_share, (checked) -> {displayShareDialog(); return false;});
-        mActionButtons.put(R.id.exo_speed, (checked) -> {mPlayerFragment.onSpeedClicked(); return false;});
-        mActionButtons.put(R.id.exo_captions, (checked) -> {
+        mActions.put(R.id.exo_prev, (checked) -> !restartVideo());
+        mActions.put(R.id.exo_next2, (checked) -> true);
+        mActions.put(R.id.exo_open_player, (checked) -> {openExternalPlayer(); return false;});
+        mActions.put(R.id.exo_share, (checked) -> {displayShareDialog(); return false;});
+        mActions.put(R.id.exo_speed, (checked) -> {mPlayerFragment.onSpeedClicked(); return false;});
+        mActions.put(R.id.exo_captions, (checked) -> {
             View subBtn = mRootView.findViewById(R.id.exo_captions2); // we have two sub buttons with different ids
             if (subBtn == null) {
                 Toast.makeText(mPlayerFragment.getActivity(), R.string.no_subtitle_msg, Toast.LENGTH_LONG).show();
@@ -107,13 +116,13 @@ public class PlayerButtonsManager {
 
             return false;
         });
-        mActionButtons.put(R.id.exo_repeat, (checked) -> {
+        mActions.put(R.id.exo_repeat, (checked) -> {
             mPlayerFragment.setRepeatEnabled(checked);
             mPrefs.setCheckedState(R.id.exo_repeat, checked);
             return false;
         });
-        mActionButtons.put(R.id.exo_back, (checked) -> true);
-        mActionButtons.put(R.id.exo_search, (checked) -> true);
+        mActions.put(R.id.exo_back, (checked) -> true);
+        mActions.put(R.id.exo_search, (checked) -> true);
     }
 
     private boolean restartVideo() {
@@ -181,18 +190,23 @@ public class PlayerButtonsManager {
 
     public void onCheckedChanged(ToggleButtonBase button, boolean isChecked) {
         int id = button.getId();
+        String tag = mIdTagMapping.get(id);
 
-        Log.d(TAG, "Button is checked: " + mIdTagMapping.get(id) + ": " + isChecked );
+        Log.d(TAG, "Button is checked: " + tag + ": " + isChecked );
 
-        if (mActionButtons.containsKey(id)) {
-            OnChecked onChecked = mActionButtons.get(id);
+        if (mActions.containsKey(id)) {
+            OnChecked onChecked = mActions.get(id);
             boolean result = onChecked.onChecked(isChecked);
 
-            if (mIdTagMapping.containsKey(id)) {
-                mResultState.put(mIdTagMapping.get(id), isChecked);
+            if (tag != null) {
+                mResultState.put(tag, isChecked);
 
                 if (result) {
                     mPlayerFragment.onPlayerAction();
+                }
+
+                if (!mStatefullButtons.contains(id)) {
+                    mResultState.remove(tag);
                 }
             }
         }
@@ -220,8 +234,6 @@ public class PlayerButtonsManager {
         Intent resultIntent;
 
         resultIntent = createStateIntent();
-
-        syncButtonStates();
 
         return resultIntent;
     }
