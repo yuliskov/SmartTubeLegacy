@@ -118,5 +118,5 @@
     <string name="tweak_high_contrast_mode">Donker thema</string>
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
     <string name="tweak_animated_ui">Geanimeerde UI</string>
-    <string name="tweak_ok_pause_without_ui">Video pauzeren met OK-toets (zonder UI)</string>
+    <string name="tweak_ok_pause_without_ui">Video pauzeren met OK-toets (geen UI)</string>
 </resources>
