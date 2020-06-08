@@ -82,4 +82,5 @@
     <string name="set_audio_delay">Audio-delay in milliseconden</string>
     <string name="restart_video_to_apply_audio_delay">Video opnieuw starten voor audio-delay</string>
     <string name="enable_autoframerate_60fps_correction">Fps corrigeren</string>
+    <string name="btn_search">Zoeken</string>
 </resources>
