@@ -43,6 +43,10 @@
         android:gravity="end">
 
         <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+            android:id="@+id/exo_search"
+            style="@style/ExoMediaButton2.Search"/>
+
+        <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
             android:id="@+id/exo_user"
             style="@style/ExoMediaButton2.User"/>
 
