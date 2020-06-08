@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.exoplayeractivity.R;
@@ -91,7 +92,7 @@ public class PlayerButtonsManager {
             mPlayerFragment.setRepeatEnabled(true);
             return true;
         });
-        mActionButtons.put(R.id.exo_prev, (checked) -> true);
+        mActionButtons.put(R.id.exo_prev, (checked) -> !restartVideo());
         mActionButtons.put(R.id.exo_next2, (checked) -> true);
         mActionButtons.put(R.id.exo_open_player, (checked) -> {openExternalPlayer(); return false;});
         mActionButtons.put(R.id.exo_share, (checked) -> {displayShareDialog(); return false;});
@@ -113,6 +114,20 @@ public class PlayerButtonsManager {
         });
         mActionButtons.put(R.id.exo_back, (checked) -> true);
         mActionButtons.put(R.id.exo_search, (checked) -> true);
+    }
+
+    private boolean restartVideo() {
+        SimpleExoPlayer player = mPlayerFragment.getPlayer();
+
+        if (player != null) {
+            long currentPosition = player.getCurrentPosition();
+            if (currentPosition >= 10_000) {
+                player.seekTo(0);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void syncButtonStates() {
