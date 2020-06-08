@@ -23,6 +23,7 @@
 
     <style name="ExoMediaButton2.Options">
         <item name="layout1">@+id/layout1</item>
+        <item name="layout1_1">@+id/layout1_1</item>
         <item name="layout2">@+id/player_options_row</item>
         <item name="textOff">@string/options</item>
         <item name="textOn">@string/options</item>
@@ -32,6 +33,7 @@
 
     <style name="ExoMediaButton2.Quality">
         <item name="layout1">@+id/layout1</item>
+        <item name="layout1_1">@+id/layout1_1</item>
         <item name="layout2">@+id/controls_root</item>
         <item name="textOff">@string/quality</item>
         <item name="textOn">@string/quality</item>

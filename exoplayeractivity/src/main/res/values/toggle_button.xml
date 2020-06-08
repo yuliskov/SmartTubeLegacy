@@ -14,6 +14,7 @@
 
     <declare-styleable name="LayoutToggleButton">
         <attr name="layout1" format="reference"/>
+        <attr name="layout1_1" format="reference"/>
         <attr name="layout2" format="reference"/>
     </declare-styleable>
 

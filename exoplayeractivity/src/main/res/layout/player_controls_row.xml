@@ -23,6 +23,16 @@
             android:id="@+id/player_quality_btn"
             style="@style/ExoMediaButton2.Quality"/>
 
+        <LinearLayout
+            android:id="@+id/layout1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+                android:id="@+id/exo_search"
+                style="@style/ExoMediaButton2.Search"/>
+        </LinearLayout>
+
         <!-- NOTE: align to the right of the quality btn -->
 
         <!-- quality settings: Video, Audio, Text, Retry -->

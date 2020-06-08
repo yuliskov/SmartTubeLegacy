@@ -15,8 +15,10 @@ import java.util.List;
 
 public class LayoutToggleButton extends TextToggleButton {
     private int mLayoutId1;
+    private int mLayoutId1_1;
     private int mLayoutId2;
     private View mLayout1;
+    private View mLayout1_1;
     private View mLayout2;
     private List<View> mButtons;
 
@@ -40,6 +42,7 @@ public class LayoutToggleButton extends TextToggleButton {
 
         try {
             mLayoutId1 = a.getResourceId(R.styleable.LayoutToggleButton_layout1, 0);
+            mLayoutId1_1 = a.getResourceId(R.styleable.LayoutToggleButton_layout1_1, 0);
             mLayoutId2 = a.getResourceId(R.styleable.LayoutToggleButton_layout2, 0);
         } finally {
             a.recycle();
@@ -92,6 +95,7 @@ public class LayoutToggleButton extends TextToggleButton {
 
         View rootView = getRootView();
         mLayout1 = rootView.findViewById(mLayoutId1);
+        mLayout1_1 = rootView.findViewById(mLayoutId1_1);
         mLayout2 = rootView.findViewById(mLayoutId2);
 
         mButtons = findViewsByType((ViewGroup) rootView, getClass());
@@ -100,11 +104,17 @@ public class LayoutToggleButton extends TextToggleButton {
     @Override
     protected void onButtonChecked() {
         super.onButtonChecked();
+
         if (mLayout1 == null) {
             return;
         }
+
         mLayout1.setVisibility(GONE);
         mLayout2.setVisibility(VISIBLE);
+
+        if (mLayout1_1 != null) {
+            mLayout1_1.setVisibility(GONE);
+        }
 
         disableOtherToggles();
     }
@@ -112,11 +122,17 @@ public class LayoutToggleButton extends TextToggleButton {
     @Override
     protected void onButtonUnchecked() {
         super.onButtonUnchecked();
+
         if (mLayout1 == null) {
             return;
         }
+
         mLayout1.setVisibility(VISIBLE);
         mLayout2.setVisibility(GONE);
+
+        if (mLayout1_1 != null) {
+            mLayout1_1.setVisibility(VISIBLE);
+        }
 
         enableOtherToggles();
     }
