@@ -180,8 +180,8 @@ public class ExoInterceptor extends RequestInterceptor {
 
         switch(mPrefs.getCurrentVideoType()) {
             case SmartPreferences.VIDEO_TYPE_DEFAULT:
-                // already removed in video_info_interceptor.js
                 //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+                url = url.replace("&el=leanback", "");
                 break;
             case SmartPreferences.VIDEO_TYPE_LIVE:
             case SmartPreferences.VIDEO_TYPE_UPCOMING:

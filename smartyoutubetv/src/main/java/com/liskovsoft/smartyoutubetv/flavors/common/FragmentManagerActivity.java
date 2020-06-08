@@ -376,6 +376,10 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mAppStateWatcher.onNewIntent(intent);
     }
 
+    protected void displaySpeechRecognizers() {
+        mVoiceBridge.displaySpeechRecognizers();
+    }
+
     @Override
     public boolean isAppLoaded() {
         return mLoadingDone;

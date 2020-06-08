@@ -41,106 +41,113 @@
     <style name="ExoMediaButton2.Next">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/next_video</item>
-        <item name="imageOff">@mipmap/btn_next</item>
-        <item name="imageOn">@mipmap/btn_next</item>
+        <item name="imageOff">@drawable/btn_next</item>
+        <item name="imageOn">@drawable/btn_next</item>
         <item name="android:contentDescription">@string/exo_controls_next_description</item>
     </style>
     <style name="ExoMediaButton2.Pause">
         <item name="desc">@string/pause</item>
-        <item name="imageOff">@mipmap/btn_pause</item>
-        <item name="imageOn">@mipmap/btn_pause</item>
+        <item name="imageOff">@drawable/btn_pause</item>
+        <item name="imageOn">@drawable/btn_pause</item>
         <item name="android:contentDescription">@string/exo_controls_pause_description</item>
     </style>
     <style name="ExoMediaButton2.Play">
         <item name="desc">@string/play</item>
-        <item name="imageOff">@mipmap/btn_play</item>
-        <item name="imageOn">@mipmap/btn_play</item>
+        <item name="imageOff">@drawable/btn_play</item>
+        <item name="imageOn">@drawable/btn_play</item>
         <item name="android:contentDescription">@string/exo_controls_play_description</item>
     </style>
     <style name="ExoMediaButton2.Previous">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/prev_video</item>
-        <item name="imageOff">@mipmap/btn_prev</item>
-        <item name="imageOn">@mipmap/btn_prev</item>
+        <item name="imageOff">@drawable/btn_prev</item>
+        <item name="imageOn">@drawable/btn_prev</item>
         <item name="android:contentDescription">@string/exo_controls_previous_description</item>
     </style>
 
     <style name="ExoMediaButton2.Captions">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/captions</item>
-        <item name="imageOff">@mipmap/btn_captions_off</item>
-        <item name="imageOn">@mipmap/btn_captions_off</item>
+        <item name="imageOff">@drawable/btn_captions_off</item>
+        <item name="imageOn">@drawable/btn_captions_off</item>
     </style>
 
     <style name="ExoMediaButton2.Share">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/share_video</item>
-        <item name="imageOff">@mipmap/btn_share_off</item>
-        <item name="imageOn">@mipmap/btn_share_off</item>
+        <item name="imageOff">@drawable/btn_share_off</item>
+        <item name="imageOn">@drawable/btn_share_off</item>
     </style>
 
     <style name="ExoMediaButton2.Favorites">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/btn_favorites</item>
-        <item name="imageOff">@mipmap/btn_favorites</item>
-        <item name="imageOn">@mipmap/btn_favorites</item>
+        <item name="imageOff">@drawable/btn_favorites</item>
+        <item name="imageOn">@drawable/btn_favorites</item>
     </style>
 
     <style name="ExoMediaButton2.Speed">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/video_speed</item>
-        <item name="imageOff">@mipmap/btn_speed</item>
-        <item name="imageOn">@mipmap/btn_speed</item>
+        <item name="imageOff">@drawable/btn_speed</item>
+        <item name="imageOn">@drawable/btn_speed</item>
         <item name="android:contentDescription">@string/video_speed</item>
     </style>
 
     <style name="ExoMediaButton2.Repeat">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/repeat_video</item>
-        <item name="imageOff">@mipmap/btn_repeat_off</item>
-        <item name="imageOn">@mipmap/btn_repeat_on</item>
+        <item name="imageOff">@drawable/btn_repeat_off</item>
+        <item name="imageOn">@drawable/btn_repeat_on</item>
         <item name="android:contentDescription">@string/repeat_video</item>
     </style>
 
     <style name="ExoMediaButton2.OpenPlayer">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/exo_open_player</item>
-        <item name="imageOff">@mipmap/btn_open_player</item>
-        <item name="imageOn">@mipmap/btn_open_player</item>
+        <item name="imageOff">@drawable/btn_open_player</item>
+        <item name="imageOn">@drawable/btn_open_player</item>
     </style>
 
     <style name="ExoMediaButton2.User">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/user_page</item>
-        <item name="imageOff">@mipmap/btn_user_off</item>
-        <item name="imageOn">@mipmap/btn_user_off</item>
+        <item name="imageOff">@drawable/btn_user_off</item>
+        <item name="imageOn">@drawable/btn_user_off</item>
+    </style>
+
+    <style name="ExoMediaButton2.Search">
+        <item name="onCheckedChanged">onCheckedChanged</item>
+        <item name="desc">@string/btn_search</item>
+        <item name="imageOff">@drawable/btn_search</item>
+        <item name="imageOn">@drawable/btn_search</item>
     </style>
 
     <style name="ExoMediaButton2.Like">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/like</item>
-        <item name="imageOff">@mipmap/btn_like_off</item>
-        <item name="imageOn">@mipmap/btn_like_on</item>
+        <item name="imageOff">@drawable/btn_like_off</item>
+        <item name="imageOn">@drawable/btn_like_on</item>
     </style>
 
     <style name="ExoMediaButton2.Dislike">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/dislike</item>
-        <item name="imageOff">@mipmap/btn_dislike_off</item>
-        <item name="imageOn">@mipmap/btn_dislike_on</item>
+        <item name="imageOff">@drawable/btn_dislike_off</item>
+        <item name="imageOn">@drawable/btn_dislike_on</item>
     </style>
 
     <style name="ExoMediaButton2.Subscribe">
         <item name="onCheckedChanged">onCheckedChanged</item>
         <item name="desc">@string/subscribe</item>
-        <item name="imageOff">@mipmap/btn_subscribe_off</item>
-        <item name="imageOn">@mipmap/btn_subscribe_on</item>
+        <item name="imageOff">@drawable/btn_subscribe_off</item>
+        <item name="imageOn">@drawable/btn_subscribe_on</item>
     </style>
 
     <style name="ExoMediaButton2.Stats">
         <item name="desc">@string/stats</item>
-        <item name="imageOff">@mipmap/btn_stats_off</item>
-        <item name="imageOn">@mipmap/btn_stats_on</item>
+        <item name="imageOff">@drawable/btn_stats_off</item>
+        <item name="imageOn">@drawable/btn_stats_on</item>
     </style>
 
     <style name="ExoMediaButton2.Video">
@@ -176,8 +183,8 @@
 
     <style name="ExoMediaButton2.Back">
         <item name="onCheckedChanged">onCheckedChanged</item>
-        <item name="imageOff">@mipmap/btn_back</item>
-        <item name="imageOn">@mipmap/btn_back</item>
+        <item name="imageOff">@drawable/btn_back</item>
+        <item name="imageOn">@drawable/btn_back</item>
         <item name="textOff">@string/go_back</item>
         <item name="textOn">@string/go_back</item>
     </style>

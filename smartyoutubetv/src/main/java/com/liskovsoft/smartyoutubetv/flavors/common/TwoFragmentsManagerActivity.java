@@ -241,6 +241,11 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
             }
         }
 
+        if (isSearch(action)) {
+            displaySpeechRecognizers();
+            return;
+        }
+
         // make browser active before applying any actions to it (below)
         setActiveFragment(mBrowserFragment, !doNotPause(action));
 
@@ -254,6 +259,10 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         if (mPlayerListener != null) {
             mPlayerListener.openExternalPlayer(intent);
         }
+    }
+
+    private boolean isSearch(Intent action) {
+        return action.getBooleanExtra(ExoPlayerFragment.BUTTON_SEARCH, false);
     }
 
     private boolean isClosePlayer(Intent action) {

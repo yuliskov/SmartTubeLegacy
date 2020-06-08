@@ -162,9 +162,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
 
         if (intent != null) {
             openVideoFromIntent(intent);
-        } else {
-            // loop video while user page or suggestions displayed
-            mButtonsManager.syncRepeatButton();
         }
     }
 
@@ -228,7 +225,6 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         } else if (getIntent() != null) {
             syncButtonStates(); // onCheckedChanged depends on this
             initializePlayer();
-            //initializeUiScale();
         }
     }
 

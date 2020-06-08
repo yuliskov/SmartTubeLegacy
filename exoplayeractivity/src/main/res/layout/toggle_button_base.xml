@@ -16,7 +16,7 @@
         android:clickable="false"
         android:padding="@dimen/toggle_button_padding"
         android:scaleType="fitCenter"
-        android:src="@mipmap/btn_placeholder"
+        android:src="@drawable/btn_placeholder"
         android:background="@color/transparent"
         android:layout_width="@dimen/toggle_button_width"
         android:layout_height="@dimen/toggle_button_height"

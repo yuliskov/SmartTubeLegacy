@@ -15,11 +15,11 @@ function VideoInfoInterceptor() {
 
         if (url && url.indexOf(this.VIDEO_INFO_URL) >= 0) {
             switch (window.VideoStatsWatcherAddon.recentVideoType) {
-                case window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT:
-                    Log.d(this.TAG, "Apply age restrictions... " + url);
-                    // unlock age restricted videos but locks some streams (use carefully)
-                    rawArgs[1] = url.replace("&el=leanback", "");
-                    break;
+                // case window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT:
+                //     Log.d(this.TAG, "Apply age restrictions... " + url);
+                //     // unlock age restricted videos but locks some streams (use carefully)
+                //     rawArgs[1] = url.replace("&el=leanback", "");
+                //     break;
                 case window.VideoStatsWatcherAddon.VIDEO_TYPE_LIVE:
                 case window.VideoStatsWatcherAddon.VIDEO_TYPE_UPCOMING:
                 case window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED:
