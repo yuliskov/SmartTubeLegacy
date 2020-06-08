@@ -3,8 +3,6 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     private PlayerListener mPlayerListener;
     private boolean mXWalkFixDone;
     private boolean mIsSimpleViewMode;
-    private static final long INSTANT_SEARCH_TIME = 30_000;
-    private ViewGroup mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,37 +93,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.setActiveFragment(fragment, pausePrevious);
     }
 
-    private void removeFromContainer(GenericFragment fragment) {
-        if (!isInitialized(fragment)) {
-            return;
-        }
-
-        ViewGroup container = findViewById(R.id.exo_container);
-        View child = fragment.getWrapper();
-
-        if (containsChild(container, child)) {
-            container.removeView(child);
-        }
-    }
-
-    private void moveToTopOld(GenericFragment fragment) {
-        if (!isInitialized(fragment)) {
-            return;
-        }
-
-        ViewGroup container = findViewById(R.id.exo_container);
-        View child = fragment.getWrapper();
-
-        // fragment not attached
-        if (!containsChild(container, child)) {
-            container.addView(child);
-            return;
-        }
-
-        // fragment already attached, so only reorder it
-        child.bringToFront();
-    }
-
     private void moveToTop(GenericFragment fragment) {
         if (!isInitialized(fragment)) {
             String className = fragment != null ? fragment.getClass().getSimpleName() : "null";
@@ -141,62 +106,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
         // fragment already attached, so only reorder it
         wrapper.bringToFront();
-    }
-
-    private void moveToTop2(GenericFragment fragment) {
-        if (!isInitialized(fragment)) {
-            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
-            return;
-        }
-
-        Log.d(TAG, "Moving fragment to top: " + fragment.getClass().getSimpleName());
-
-        if (mContainer == null) {
-            mContainer = findViewById(R.id.exo_container);
-        }
-
-        View wrapper = fragment.getWrapper();
-
-        if (wrapper != null) {
-            mContainer.bringChildToFront(wrapper);
-            mContainer.forceLayout();
-        }
-    }
-
-    private void moveToTopNew(GenericFragment fragment) {
-        if (!isInitialized(fragment)) {
-            Log.d(TAG, "Can't move to top. Fragment isn't initialized: " + fragment.getClass().getSimpleName());
-            return;
-        }
-
-        Log.d(TAG, "Moving fragment to top: " + fragment.getClass().getSimpleName());
-
-        if (mContainer == null) {
-            mContainer = findViewById(R.id.exo_container);
-        }
-
-        View wrapper = fragment.getWrapper();
-
-        if (!isTopAlready(wrapper)) {
-            mContainer.removeView(wrapper);
-            mContainer.addView(wrapper);
-        }
-    }
-
-    private boolean isTopAlready(View wrapper) {
-        if (mContainer != null) {
-            int index = mContainer.indexOfChild(wrapper);
-            if (index != -1) {
-                int childCount = mContainer.getChildCount();
-                return childCount == (index + 1);
-            }
-        }
-
-        return false;
-    }
-
-    private static boolean containsChild(ViewGroup container, View view) {
-        return container.indexOfChild(view) != -1;
     }
 
     private boolean isInitialized(GenericFragment fragment) {
@@ -299,7 +208,7 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
     }
 
     @Override
-    public void openBrowser(boolean pausePrevious) {
+    public void switchToBrowser(boolean pausePrevious) {
         runOnUiThread(() -> setActiveFragment(mBrowserFragment, pausePrevious));
     }
 
@@ -375,21 +284,13 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         }
     }
 
-    private boolean tryClosePlayer() {
-        boolean result = false;
-
-        if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
-            closeExoPlayer();
-            result = true;
-        }
-
-        return result;
-    }
-
     @Override
-    public void onSearchQuery() {
+    public void onSearchQueryReceived() {
+        Log.d(TAG, "Search query received");
+
         if (getActiveFragment() != mBrowserFragment) {
             setActiveFragment(mBrowserFragment, true);
+            closeExoPlayer();
         }
     }
 

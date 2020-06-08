@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv.voicesearch;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.os.Build.VERSION;
 import android.speech.RecognizerIntent;
 import java.util.List;
 

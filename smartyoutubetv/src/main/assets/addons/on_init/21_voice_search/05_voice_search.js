@@ -85,12 +85,7 @@ window.VoiceSearch = {
 
         YouTubeUtils.closePlayerIfOpened();
 
-        var $this = this;
-
-        // wait till player close
-        setTimeout(function() {
-            location.hash = $this.SEARCH_PAGE_URL;
-        }, 1000);
+        location.hash = this.SEARCH_PAGE_URL;
     },
 
     /**

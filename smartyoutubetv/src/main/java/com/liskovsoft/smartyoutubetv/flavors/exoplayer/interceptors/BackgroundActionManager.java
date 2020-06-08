@@ -1,6 +1,5 @@
 package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
-import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;

@@ -1,11 +1,11 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
+import androidx.appcompat.app.AppCompatActivity;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv.flavors.common.FragmentManagerActivity;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class VoiceSearchBridge implements SearchCallback {
     private final VoiceSearchConnector mConnector;
     private final ArrayList<VoiceDialog> mDialogs;
-    private final AppCompatActivity mActivity;
+    private final Activity mActivity;
 
     public VoiceSearchBridge(AppCompatActivity activity) {
         mActivity = activity;
@@ -65,17 +65,21 @@ public class VoiceSearchBridge implements SearchCallback {
 
     @Override
     public void openSearchPage(String searchText) {
+        if (searchText == null) {
+            return;
+        }
+
         // close exo player (if opened)
-        if (mActivity instanceof FragmentManagerActivity) {
-            ((FragmentManagerActivity) mActivity).onSearchQuery();
+        if (mActivity instanceof SearchListener) {
+            ((SearchListener) mActivity).onSearchQueryReceived();
         }
 
         mConnector.openSearchPage(searchText);
     }
 
-    public boolean openSearchPage(Uri pageUrl) {
+    public void openSearchPage(Uri pageUrl) {
         if (pageUrl == null) {
-            return false;
+            return;
         }
 
         String searchString = null;
@@ -90,7 +94,9 @@ public class VoiceSearchBridge implements SearchCallback {
         if (searchString != null) {
             openSearchPage(searchString);
         }
+    }
 
-        return searchString != null;
+    public interface SearchListener {
+        void onSearchQueryReceived();
     }
 }

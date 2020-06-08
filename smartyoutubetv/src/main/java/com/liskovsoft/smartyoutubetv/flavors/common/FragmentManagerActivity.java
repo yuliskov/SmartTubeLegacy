@@ -31,11 +31,12 @@ import com.liskovsoft.smartyoutubetv.misc.appstatewatcher.AppStateWatcherBase;
 import com.liskovsoft.smartyoutubetv.misc.keyhandler.GlobalKeyHandler;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge;
+import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBridge.SearchListener;
 import com.liskovsoft.smartyoutubetv.voicesearch.VoiceSearchBusBridge;
 
 import java.util.HashMap;
 
-public abstract class FragmentManagerActivity extends CrashHandlerActivity implements FragmentManager {
+public abstract class FragmentManagerActivity extends CrashHandlerActivity implements FragmentManager, SearchListener {
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
     private KeyEvent mEvent;
     private GenericFragment mActiveFragment;
@@ -354,9 +355,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mLoadingManager.hide();
         mAppStateWatcher.onLoad();
 
-        if (mVoiceBridge.openSearchPage(mUrlData)) {
-            onSearchQuery();
-        }
+        mVoiceBridge.openSearchPage(mUrlData);
 
         mActiveFragment.onLoad();
     }
@@ -369,9 +368,7 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
 
         mUrlData = intent.getData();
 
-        if (mVoiceBridge.openSearchPage(intent.getData())) {
-            onSearchQuery();
-        }
+        mVoiceBridge.openSearchPage(intent.getData());
 
         mAppStateWatcher.onNewIntent(intent);
     }
@@ -414,7 +411,8 @@ public abstract class FragmentManagerActivity extends CrashHandlerActivity imple
         mActiveFragment.showSoftKeyboard();
     }
 
-    public void onSearchQuery() {}
+    @Override
+    public void onSearchQueryReceived() {}
 
     private void checkMemory() {
         MemoryInfo memory = Helpers.getAvailableMemory(this);
