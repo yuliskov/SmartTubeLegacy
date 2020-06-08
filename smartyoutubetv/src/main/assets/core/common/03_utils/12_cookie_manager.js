@@ -16,7 +16,11 @@ var CookieManager = {
         return new this.QueryCookie(raw);
     },
 
-    setQueryCookie: function(name, values) {
+    setQueryCookie: function(name, values, domain) {
+        if (!domain) {
+            domain = '.youtube.com';
+        }
+
         var resultValue = '';
 
         for (var key in values) {
@@ -27,11 +31,15 @@ var CookieManager = {
             resultValue += key + '=' + values[key] + ';';
         }
 
-        document.cookie = name + '=' + resultValue;
+        document.cookie = name + '=' + resultValue  + '; domain=' + domain;
     },
 
-    deleteCookie: function(name) {
-        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    deleteCookie: function(name, domain) {
+        if (!domain) {
+            domain = '.youtube.com';
+        }
+
+        document.cookie = name + '=; domain=' + domain + '; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
 
     QueryCookie: function(raw) {
