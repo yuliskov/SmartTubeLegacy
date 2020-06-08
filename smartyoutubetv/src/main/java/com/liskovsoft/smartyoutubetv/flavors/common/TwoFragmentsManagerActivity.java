@@ -364,19 +364,6 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
 
     @Override
     protected void onNewIntent(Intent intent) {
-        boolean intentHasData = intent != null && intent.getData() != null;
-
-        // Voice search while playback fix
-        if (intentHasData && tryClosePlayer()) {
-            // Wait till exoplayer is closed
-            new Handler(Looper.myLooper())
-                    .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
-        } else {
-            onNewIntentInt(intent);
-        }
-    }
-
-    private void onNewIntentInt(Intent intent) {
         super.onNewIntent(intent);
 
         Log.d(TAG, "New intent is coming... " + intent);

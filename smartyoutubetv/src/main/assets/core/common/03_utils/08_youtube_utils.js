@@ -334,5 +334,12 @@ var YouTubeUtils = {
         Log.d(this.TAG, "Is player controls opened: " + !this.isPlayerControlsClosed());
         Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsShown());
         Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
+    },
+
+    closePlayerIfOpened: function() {
+        if (this.isPlayerOpened()) {
+            Log.d(this.TAG, "Closing player...");
+            this.pressBack();
+        }
     }
 };
