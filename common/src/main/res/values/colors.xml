@@ -4,6 +4,7 @@
     <color name="youtube_background_new">#181818</color>
     <color name="youtube_background_old">#282828</color>
     <color name="youtube_background_high_contrast">#000000</color>
-    <color name="dialog_bg_color">#262628</color>
+    <color name="dialog_bg_color">#101010</color>
+    <color name="dialog_bg_color_old">#262628</color>
     <color name="dialog_text_color">#a1a1a6</color>
 </resources>
