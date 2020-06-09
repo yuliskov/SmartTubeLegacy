@@ -27,6 +27,8 @@ import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerListener {
     private static final String TAG = ExoPlayerWrapper.class.getSimpleName();
     private final SuggestionsWatcher mReceiver; // don't delete, its system bus receiver
@@ -56,6 +58,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private Intent mExoIntent;
     private ExternalPlayerWrapper mExternalPlayerWrapper;
     private MPDBuilder mMpdBuilder;
+    private List<String> mUrlList;
 
     private class SuggestionsWatcher {
         SuggestionsWatcher() {
@@ -121,10 +124,10 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         startPlayer();
     }
 
-    //@Override
-    //public void onDashUrlFound(Uri dashUrl) {
-    //    mDashUrl = dashUrl;
-    //}
+    @Override
+    public void onDashUrlFound(Uri dashUrl) {
+        mDashUrl = dashUrl;
+    }
 
     @Override
     public void onHLSFound(final Uri hlsUrl) {
@@ -157,6 +160,11 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     }
 
     @Override
+    public void onUrlListFound(List<String> uriList) {
+        mUrlList = uriList;
+    }
+
+    @Override
     public void onMetadata(VideoMetadata metadata) {
         mMetadata = metadata;
 
@@ -185,10 +193,12 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
 
         if (mHlsUrl != null) {
             sample = SampleHelpers.buildFromHlsUri(mHlsUrl);
-        } else if (mDashUrl != null) {
-            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
         } else if (mMpdBuilder != null) {
             sample = SampleHelpers.buildFromMPDPlaylist(mMpdBuilder.build());
+        } else if (mDashUrl != null) {
+            sample = SampleHelpers.buildFromMpdUri(mDashUrl);
+        } else if (mUrlList != null) {
+            sample = SampleHelpers.buildFromList(mUrlList);
         }
 
         if (sample == null || mInfo == null) {
