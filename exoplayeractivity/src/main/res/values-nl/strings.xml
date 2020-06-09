@@ -52,7 +52,7 @@
     <string name="video_speed">Snelheid</string>
     <string name="select_video_speed">Video snelheid</string>
     <string name="normal">Normaal</string>
-    <string name="go_back">Teruggaan</string>
+    <string name="go_back">Terug</string>
     <string name="btn_restrict_codec">Preset</string>
     <string name="no_restrictions">Geen preset</string>
     <string name="select_preferred_codec">Video preset selecteren</string>
