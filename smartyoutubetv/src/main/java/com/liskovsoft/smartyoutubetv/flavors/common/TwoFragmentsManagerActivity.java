@@ -3,6 +3,8 @@ package com.liskovsoft.smartyoutubetv.flavors.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -271,8 +273,24 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         super.onResume();
     }
 
+    /**
+     * Close player before opening channel or search intents
+     */
     @Override
     protected void onNewIntent(Intent intent) {
+        boolean intentHasData = intent != null && intent.getData() != null;
+
+        // Voice search while playback fix
+        if (intentHasData && tryClosePlayer()) {
+            // Wait till exoplayer is closed
+            new Handler(Looper.myLooper())
+                    .postDelayed(() -> this.onNewIntentInt(intent), 1_000);
+        } else {
+            onNewIntentInt(intent);
+        }
+    }
+
+    private void onNewIntentInt(Intent intent) {
         super.onNewIntent(intent);
 
         Log.d(TAG, "New intent is coming... " + intent);
@@ -282,6 +300,17 @@ public abstract class TwoFragmentsManagerActivity extends FragmentManagerActivit
         if (mBrowserFragment != null) {
             mBrowserFragment.onNewIntent(intent);
         }
+    }
+
+    private boolean tryClosePlayer() {
+        boolean result = false;
+
+        if (mPlayerFragment != null && getActiveFragment() == mPlayerFragment) {
+            closeExoPlayer();
+            result = true;
+        }
+
+        return result;
     }
 
     @Override
