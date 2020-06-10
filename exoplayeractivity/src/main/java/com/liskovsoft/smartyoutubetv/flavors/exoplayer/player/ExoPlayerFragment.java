@@ -163,6 +163,8 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
         if (intent != null) {
             openVideoFromIntent(intent);
         }
+
+        syncButtonStates(intent != null);
     }
 
     @Override
@@ -223,7 +225,7 @@ public class ExoPlayerFragment extends ExoPlayerBaseFragment {
             openVideoFromIntent(mPendingIntent);
             mPendingIntent = null;
         } else if (getIntent() != null) {
-            syncButtonStates(); // onCheckedChanged depends on this
+            syncButtonStates(true); // onCheckedChanged depends on this
             initializePlayer();
         }
     }

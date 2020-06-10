@@ -279,9 +279,9 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
         new Handler().postDelayed(mSimpleExoPlayerView::hideController, 500);
     }
 
-    protected void syncButtonStates() {
+    protected void syncButtonStates(boolean isNewVideo) {
         if (mButtonsManager != null) {
-            mButtonsManager.syncButtonStates();
+            mButtonsManager.syncButtonStates(isNewVideo);
         }
     }
 
@@ -414,7 +414,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             }
 
             mPlayerInitializer.initVideoTitle();
-            syncButtonStates();
             syncPlayerState();
         } else {
             ExoPreferences prefs = ExoPreferences.instance(getActivity());
@@ -425,7 +424,6 @@ public abstract class ExoPlayerBaseFragment extends PlayerCoreFragment {
             mNeedRetrySource = true; // process supplied intent
             clearResumePosition(); // restore position will be done later from the app storage
             setIntent(intent);
-            syncButtonStates(); // onCheckedChanged depends on this
             initializePlayer();
         }
     }

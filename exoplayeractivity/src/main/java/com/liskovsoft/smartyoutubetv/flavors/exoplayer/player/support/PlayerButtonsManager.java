@@ -139,14 +139,17 @@ public class PlayerButtonsManager {
         return false;
     }
 
-    public void syncButtonStates() {
-        doCleanup();
-        initWebButtons();
-        initNextButton(); // force enable next button
-        initDebugButton();
-        initRepeatButton();
+    public void syncButtonStates(boolean isNewVideo) {
+        if (isNewVideo) {
+            doCleanup();
+            initWebButtons();
+            initNextButton(); // force enable next button
+            initDebugButton();
+            initRepeatButton();
+            mListenerAdded = true;
+        }
+
         syncRepeatButton();
-        mListenerAdded = true;
     }
 
     /**

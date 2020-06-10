@@ -114,6 +114,8 @@ public class BackgroundActionManager {
 
         if (prevVideoId != null) {
             mSameVideo = prevVideoId.equals(currentVideoId);
+        } else {
+            mSameVideo = false;
         }
 
         if (mSameVideo) {
