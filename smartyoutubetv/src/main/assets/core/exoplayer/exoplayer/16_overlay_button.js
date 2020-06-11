@@ -32,8 +32,6 @@ function OverlayWatcher(host) {
 
         EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, onBlurHandler);
 
-        //EventUtils.addListener(YouTubeSelectors.OVERLAY_PANEL_CONTAINER, YouTubeEvents.COMPONENT_BLUR_EVENT, onBlurHandler);
-
         this.setHost = function(host) {
             this.host = host;
         };

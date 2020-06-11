@@ -25,6 +25,7 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.fragments.PlayerListener;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
     private final ActionsSender mActionSender;
     private final ExoInterceptor mInterceptor;
     private final HistoryInterceptor mHistory;
+    private final SmartPreferences mPrefs;
     private GenericInfo mInfo;
     private String mSpec;
     private Uri mHlsUrl;
@@ -112,6 +114,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         };
 
         mHandler = new Handler(Looper.getMainLooper());
+        mPrefs = CommonApplication.getPreferences();
     }
 
     @Override
@@ -258,7 +261,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
             //mActionSender.bindActions(intent);
         }
 
-        CommonApplication.getPreferences().setMirrorEnabled(mManager.isMirroring());
+        mPrefs.setMirrorEnabled(mManager.isMirroring());
         startPlayer(playerIntent); // pause every time, except when mirroring
 
         // give the browser time to initialization
