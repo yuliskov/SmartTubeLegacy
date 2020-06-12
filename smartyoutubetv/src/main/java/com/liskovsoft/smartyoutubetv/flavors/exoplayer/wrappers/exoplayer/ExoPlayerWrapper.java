@@ -223,6 +223,7 @@ public class ExoPlayerWrapper extends OnMediaFoundCallback implements PlayerList
         mMpdBuilder = null;
         mSpec = null;
         mExoIntent = null;
+        mUrlList = null;
     }
 
     private Intent createExoIntent(Sample sample, GenericInfo info) {

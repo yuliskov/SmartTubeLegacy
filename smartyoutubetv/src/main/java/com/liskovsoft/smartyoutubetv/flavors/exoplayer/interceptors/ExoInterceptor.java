@@ -232,6 +232,8 @@ public class ExoInterceptor extends RequestInterceptor {
     }
 
     private void removeUnusedParams(MyUrlEncodedQueryString query) {
+        // should remain only: video_id, eurl, access_token, pageid
+
         query.remove("cpn");
         query.remove("itct");
         query.remove("ei");
