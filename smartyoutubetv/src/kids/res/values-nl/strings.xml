@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Kids YouTube TV</string>
+    <string name="bootstrap_main_title">Kids YouTube launcher selecteren</string>
+</resources>
