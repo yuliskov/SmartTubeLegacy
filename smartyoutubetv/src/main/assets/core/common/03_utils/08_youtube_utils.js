@@ -341,5 +341,25 @@ var YouTubeUtils = {
             Log.d(this.TAG, "Closing player...");
             this.pressBack();
         }
+    },
+
+    /**
+     * Detect video clip based on duration
+     */
+    isVideoClip: function(duration) {
+        if (duration) {
+            var timeParts = duration.split(':');
+
+            if (timeParts && timeParts.length == 2) { // duration less then hour
+                var minutes = timeParts[0];
+
+                if (minutes <= 10) {
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
     }
 };

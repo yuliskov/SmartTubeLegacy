@@ -2,11 +2,7 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
-import android.text.InputType;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.m3uparser.core.utils.IOUtils;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
@@ -20,8 +16,8 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
+import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import okhttp3.MediaType;
 
 import java.io.InputStream;
 
@@ -78,7 +74,7 @@ public class ExoInterceptor extends RequestInterceptor {
             mExoCallback = mRealExoCallback;
         }
 
-        mCurrentUrl = unlockStreams(url);
+        mCurrentUrl = unlockVideos(url);
 
         mManager.init(mCurrentUrl);
 
@@ -175,86 +171,22 @@ public class ExoInterceptor extends RequestInterceptor {
         return mHistoryInterceptor;
     }
     
-    private String unlockStreams(String url) {
-        //MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
+    private String unlockVideos(String url) {
+        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
         switch(mPrefs.getCurrentVideoType()) {
             case SmartPreferences.VIDEO_TYPE_DEFAULT:
-                //query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
-                //url = url.replace("&el=leanback", "");
+                // NOTE: should be unlocked in video_info_interceptor.js
+                // YouTubeHelpers.unlockAgeRestrictedVideos(query);
                 break;
             case SmartPreferences.VIDEO_TYPE_LIVE:
             case SmartPreferences.VIDEO_TYPE_UPCOMING:
             case SmartPreferences.VIDEO_TYPE_UNDEFINED:
-                //query.remove("access_token"); // needed to unlock some personal uploaded videos
-                //query.set("el", "leanback");
-                //query.set("ps", "leanback");
-                //query.set("c", "HTML5"); // needed to unlock streams
-                //query.remove("c"); // needed to unlock streams
-
-                // NOTE: don't unlock streams in video_info_interceptor.js
-                // otherwise you'll get errors in youtube client
-                url = url.replace("&c=TVHTML5", "&c=HTML5");
-
+                YouTubeHelpers.unlockLiveStreams(query);
                 break;
         }
 
-        return url;
-    }
-
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    private String unlockHlsStreamsOld(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("c", "HTML5");
-
         return query.toString();
-    }
-
-    /**
-     * Unlocking most of 4K mp4 formats.
-     * It is done by removing c=TVHTML5 query param.
-     * @param url
-     * @return
-     */
-    private String unlock60FpsFormats(String url) {
-        MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
-
-        query.set("el", "info"); // unlock dashmpd url
-        query.set("ps", "default"); // unlock 60fps formats
-
-        return query.toString();
-    }
-
-    private void removeUnusedParams(MyUrlEncodedQueryString query) {
-        // should remain only: video_id, eurl, access_token, pageid
-
-        query.remove("cpn");
-        query.remove("itct");
-        query.remove("ei");
-        query.remove("hl");
-        query.remove("lact");
-        query.remove("cos");
-        query.remove("cosver");
-        query.remove("cplatform");
-        query.remove("width");
-        query.remove("height");
-        query.remove("cbrver");
-        query.remove("ctheme");
-        query.remove("cmodel");
-        query.remove("cnetwork");
-        query.remove("c");
-        query.remove("cver");
-        query.remove("cplayer");
-        query.remove("cbrand");
-        query.remove("cbr");
-        query.remove("el");
-        query.remove("ps");
     }
 
     public void openExternally(OnMediaFoundCallback playerWrapper) {

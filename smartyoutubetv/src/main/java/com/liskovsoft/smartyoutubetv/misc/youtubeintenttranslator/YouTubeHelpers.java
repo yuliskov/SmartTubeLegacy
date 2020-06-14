@@ -6,6 +6,8 @@ import android.util.Log;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryString;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyQueryStringFactory;
+import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
+import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 
 public class YouTubeHelpers {
     private static final String TAG = YouTubeHelpers.class.getSimpleName();
@@ -129,5 +131,79 @@ public class YouTubeHelpers {
         }
 
         return result;
+    }
+
+    /**
+     * Unlock age restricted videos but locks some streams (use carefully)
+     */
+    public static void unlockAgeRestrictedVideos(MyUrlEncodedQueryString query) {
+        query.remove("el"); // unlock age restricted videos but locks some streams (use carefully)
+    }
+
+    /**
+     * Unlock age restricted videos but locks some streams (use carefully)
+     */
+    public static void unlockAgeRestrictedVideos2(MyUrlEncodedQueryString query) {
+        removeUnusedParams(query);
+
+        query.set("eurl", "https://youtube.googleapis.com/v/" + query.get("video_id"));
+        query.set("sts", query.get("sts"));
+        query.set("ps", "default");
+        query.set("gl", "US");
+        query.set("hl", "en");
+        query.remove("access_token");
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     */
+    public static void unlockLiveStreams(MyUrlEncodedQueryString query) {
+        //query.remove("access_token"); // needed to unlock some personal uploaded videos
+        //query.set("el", "leanback");
+        //query.set("ps", "leanback");
+
+        // NOTE: don't unlock streams in video_info_interceptor.js
+        // otherwise you'll get errors in youtube client
+        query.set("c", "HTML5"); // needed to unlock streams
+    }
+
+    /**
+     * Unlocking most of 4K mp4 formats.
+     * It is done by removing c=TVHTML5 query param.
+     */
+    public static void unlock60FpsFormats(MyUrlEncodedQueryString query) {
+        query.set("el", "info"); // unlock dashmpd url
+        query.set("ps", "default"); // unlock 60fps formats
+    }
+
+    /**
+     * Minimal url: https://www.youtube.com/get_video_info?video_id=<id>&eurl=https://youtube.googleapis.com/v/<id>&sts=<sts>&ps=default&gl=US&hl=en
+     */
+    public static void removeUnusedParams(MyUrlEncodedQueryString query) {
+        // https://www.youtube.com/get_video_info?video_id=<id>&eurl=https://youtube.googleapis.com/v/<id>&sts=<sts>&ps=default&gl=US&hl=en
+        // should remain only: video_id, eurl, sts, access_token (?), ps
+
+        query.remove("cpn");
+        query.remove("itct");
+        query.remove("ei");
+        query.remove("hl");
+        query.remove("lact");
+        query.remove("cos");
+        query.remove("cosver");
+        query.remove("cplatform");
+        query.remove("width");
+        query.remove("height");
+        query.remove("cbrver");
+        query.remove("ctheme");
+        query.remove("cmodel");
+        query.remove("cnetwork");
+        query.remove("c");
+        query.remove("cver");
+        query.remove("cplayer");
+        query.remove("cbrand");
+        query.remove("cbr");
+        query.remove("el");
+        query.remove("ps");
     }
 }

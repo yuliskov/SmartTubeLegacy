@@ -51,6 +51,7 @@ var VideoStatsWatcherAddon = {
 
     notifyVideoType: function() {
         var typeBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_TYPE_BAGE);
+        var durationBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_DURATION_BAGE);
 
         var videoType = this.VIDEO_TYPE_UNDEFINED;
 
@@ -67,6 +68,12 @@ var VideoStatsWatcherAddon = {
         Log.d(this.TAG, "Current video type: " + videoType);
         DeviceUtils.sendMessage(this.MESSAGE_VIDEO_TYPE, videoType);
         this.recentVideoType = videoType;
+
+        if (durationBage && durationBage.innerText) {
+            this.recentVideoDuration = durationBage.innerText;
+        } else {
+            this.recentVideoDuration = null;
+        }
     }
 }
 
