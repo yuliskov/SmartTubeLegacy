@@ -10,6 +10,11 @@
     android:visibility="gone">
 
     <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
+        android:id="@+id/exo_open_player"
+        style="@style/ExoMediaButton2.OpenPlayer"
+        android:visibility="gone"/>
+
+    <com.liskovsoft.smartyoutubetv.flavors.exoplayer.widgets.ImageButton
         android:id="@+id/exo_user"
         style="@style/ExoMediaButton2.User"
         android:visibility="gone"/>

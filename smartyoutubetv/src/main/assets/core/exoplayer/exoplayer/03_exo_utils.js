@@ -114,7 +114,7 @@ window.ExoUtils = {
         }
 
         if (tries > 0) {
-            if (YouTubeUtils.isPlayerControlsClosed() && !YouTubeUtils.isOverlayOpened()) {
+            if (YouTubeUtils.isAllPlayerUIClosed()) {
                 Log.d(this.TAG, "Player's ui closed. Running callback...");
 
                 clearTimeout(this.resetPlayerUITimeout);

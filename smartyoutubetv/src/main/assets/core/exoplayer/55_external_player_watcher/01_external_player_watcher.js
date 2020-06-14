@@ -41,7 +41,7 @@ function ExternalPlayerWatcherAddon() {
 
     this.checkPlayerState = function() {
         var allPlayersActive = YouTubeUtils.isPlayerOpened() && YouTubeUtils.isExoPlayerOpen();
-        var controlsClosed = YouTubeUtils.isPlayerControlsClosed() && !YouTubeUtils.isOverlayOpened();
+        var controlsClosed = YouTubeUtils.isAllPlayerUIClosed();
         return allPlayersActive && controlsClosed;
     };
 }

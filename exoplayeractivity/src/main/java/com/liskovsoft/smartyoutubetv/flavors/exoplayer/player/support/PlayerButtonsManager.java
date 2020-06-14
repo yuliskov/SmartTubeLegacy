@@ -103,7 +103,7 @@ public class PlayerButtonsManager {
         });
         mActions.put(R.id.exo_prev, (checked) -> !restartVideo());
         mActions.put(R.id.exo_next2, (checked) -> true);
-        //mActions.put(R.id.exo_open_player, (checked) -> {openExternalPlayer(); return false;});
+        mActions.put(R.id.exo_open_player, (checked) -> {openExternalPlayer(); return false;});
         mActions.put(R.id.exo_share, (checked) -> {displayShareDialog(); return false;});
         mActions.put(R.id.exo_speed, (checked) -> {mPlayerFragment.onSpeedClicked(); return false;});
         mActions.put(R.id.exo_captions, (checked) -> {

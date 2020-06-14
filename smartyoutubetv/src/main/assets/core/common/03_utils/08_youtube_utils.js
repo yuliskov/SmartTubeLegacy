@@ -157,13 +157,16 @@ var YouTubeUtils = {
         return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN); // NOTE: changed for kids
     },
 
-    isPlayerControlsClosed: function() {
-        var watch = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        var isClosed =
-            Utils.hasClass(watch, YouTubeClasses.WATCH_IDLE_CLASS) ||
-            Utils.hasClass(watch, YouTubeClasses.NO_MODEL);
-        Log.d(this.TAG, "isPlayerControlsClosed: " + isClosed + ' ' + watch ? watch.className : null);
-        return isClosed;
+    isAllPlayerUIClosed: function() {
+        return !this.isPlayerControlsOpened() && !this.isPlayerSuggestionsOpened() && !this.isOverlayOpened();
+    },
+
+    isPlayerControlsOpened: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_CONTROLS), YouTubeClasses.ELEMENT_FOCUSED);
+    },
+
+    isPlayerSuggestionsOpened: function() {
+        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
     },
 
     isPlayerOpened: function() {
@@ -172,10 +175,6 @@ var YouTubeUtils = {
             location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
         Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
         return isOpened;
-    },
-
-    isPlayerSuggestionsShown: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
     },
 
     isSearchOpened: function() {
@@ -196,7 +195,8 @@ var YouTubeUtils = {
     },
 
     isOverlayOpened: function() {
-        return !Utils.hasClass(Utils.$(YouTubeSelectors.OVERLAY_PANEL_CONTAINER), YouTubeClasses.HIDDEN);
+        var overlay = Utils.$(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
+        return overlay && !Utils.hasClass(overlay, YouTubeClasses.HIDDEN);
     },
 
     isDisabled: function(elem) {
@@ -272,7 +272,7 @@ var YouTubeUtils = {
 
             EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_UP, DefaultKeys.ESC);
-        } else if (!this.isPlayerControlsClosed()) {
+        } else if (this.isPlayerControlsOpened() || this.isPlayerSuggestionsOpened()) {
             Log.d(this.TAG, "Closing player suggestions...");
 
             EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
@@ -331,8 +331,8 @@ var YouTubeUtils = {
 
     dumpUiState: function() {
         Log.d(this.TAG, "Is player opened: " + this.isPlayerOpened());
-        Log.d(this.TAG, "Is player controls opened: " + !this.isPlayerControlsClosed());
-        Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsShown());
+        Log.d(this.TAG, "Is player controls opened: " + this.isPlayerControlsOpened());
+        Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsOpened());
         Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
     },
 

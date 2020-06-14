@@ -18,7 +18,7 @@ function SuggestionsWatcher(host) {
 
             console.log("SuggestionsWatcher: sending close signal to host...");
 
-            if (YouTubeUtils.isPlayerControlsClosed()) {
+            if (YouTubeUtils.isAllPlayerUIClosed()) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -43,7 +43,7 @@ function SuggestionsWatcher(host) {
         // used when the user opens channel or search from the suggestions
         var onModelChangeHandler = function(e) {
             var playerAboutToOpen = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
-                Utils.hasClass(e.target, YouTubeClasses.PLAYER_UI_SHOWING);
+                Utils.hasClass(e.target, YouTubeClasses.PLAYER_CONTROLS_SHOWING);
             if (playerAboutToOpen) {
                 console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
                 checkSuggestions();
@@ -85,7 +85,7 @@ function SuggestionsFakeButton(selector) {
     Log.d(this.TAG, "Creating " + this.TAG);
 
     this.tryToOpenSuggestions = function() {
-        var suggestionsShown = YouTubeUtils.isPlayerSuggestionsShown();
+        var suggestionsShown = YouTubeUtils.isPlayerSuggestionsOpened();
 
         if (suggestionsShown) {
             Log.d(this.TAG, "Success. Suggestions has been shown!");
@@ -107,6 +107,7 @@ function SuggestionsFakeButton(selector) {
         this.openRetryTimes--;
 
         if (YouTubeUtils.isOverlayOpened()) { // check favorites is showed
+            Log.d(this.TAG, "Closing overlay...");
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }

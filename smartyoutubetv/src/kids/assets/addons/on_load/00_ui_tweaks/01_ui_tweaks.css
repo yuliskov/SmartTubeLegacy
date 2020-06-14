@@ -1,9 +1,15 @@
 /* Remove page background. Make selection more easy to spot. */
 #browse.browse {
     background-image: none !important;
+    background-color: grey !important;
 }
 
 /* Fix loading circle in background on Search page */
 #search {
     background-color: #eee;
 }
+
+/*!* Outline focused video *!*/
+/*.focused.selected.compact-video > .scale-cont {*/
+/*    border-color: #000;*/
+/*}*/

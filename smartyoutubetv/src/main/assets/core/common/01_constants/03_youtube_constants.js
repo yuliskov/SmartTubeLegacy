@@ -79,7 +79,7 @@ var YouTubeSelectors = {
     // NOTE: 'div.pivot-shelf-list' - original, '#pivot-list' - kids
     PLAYER_SUGGESTIONS_LIST: ['div.pivot-shelf-list', '#pivot-list'],
     // NOTE: '#transport-controls' - original, '.transport-controls' - kids
-    PLAYER_UI_CONTAINER: ['#transport-controls', '.transport-controls'],
+    PLAYER_CONTROLS: ['#transport-controls', '.transport-controls'],
     CHANNEL_CONTENT: '.ytlr-tv-browse-renderer',
     VOICE_SEARCH: '#voice-search',
     FOCUSED_ELEMENT: '.focused',
@@ -103,7 +103,8 @@ var YouTubeClasses = {
     BUTTON_TOGGLED: 'toggle-selected',
     NO_MODEL: 'no-model',
     HIDDEN: 'hidden',
-    PLAYER_UI_SHOWING: 'transport-showing',
+    PLAYER_CONTROLS_SHOWING: 'transport-showing',
+    PLAYER_CONTROLS_SHOWING_KIDS: 'transport-controls-showing',
     VIDEO_TYPE_LIVE: 'ytlr-thumbnail-overlay-time-status-renderer--LIVE',
     VIDEO_TYPE_DEFAULT: 'ytlr-thumbnail-overlay-time-status-renderer--DEFAULT',
     VIDEO_TYPE_UPCOMING: 'ytlr-thumbnail-overlay-time-status-renderer--UPCOMING'
