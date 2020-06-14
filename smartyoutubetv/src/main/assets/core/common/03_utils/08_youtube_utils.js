@@ -358,10 +358,9 @@ var YouTubeUtils = {
                 if (timeParts.length == 2) { // duration less then hour
                     var minutes = timeParts[0];
 
-                    if (minutes <= 10) {
+                    if (!isNaN(minutes) && minutes <= 10) {
                         return true;
                     }
-
                 }
             }
         }
