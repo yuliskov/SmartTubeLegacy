@@ -35,7 +35,7 @@ var VideoStatsWatcherAddon = {
     },
 
     notifyPosition: function() {
-        var bar = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_PROGRESS_BAR);
+        var bar = Utils.$([YouTubeSelectors.FOCUSED_VIDEO_PROGRESS_BAR, YouTubeSelectors.SUGGESTIONS_FOCUSED_VIDEO_PROGRESS_BAR]);
 
         if (bar && bar.style && bar.style.width) {
             var widthTemp = bar.style.width;
@@ -51,7 +51,7 @@ var VideoStatsWatcherAddon = {
 
     notifyVideoType: function() {
         var typeBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_TYPE_BAGE);
-        var durationBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_DURATION_BAGE);
+        var durationBage = Utils.$([YouTubeSelectors.FOCUSED_VIDEO_DURATION_BAGE, YouTubeSelectors.SUGGESTIONS_FOCUSED_VIDEO_DURATION_BAGE]);
 
         var videoType = this.VIDEO_TYPE_UNDEFINED;
 

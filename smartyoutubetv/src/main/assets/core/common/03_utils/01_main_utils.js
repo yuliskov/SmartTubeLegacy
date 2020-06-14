@@ -89,10 +89,14 @@ var Utils = {
             var el = null;
             for (var i = 0; i < selectors.length; i++) {
                 el = document.querySelector(selectors[i]);
-                if (el && el.children && el.children.length &&
-                    !Utils.hasClass(el, YouTubeClasses.ELEMENT_DISABLED)) {
+                if (el && el.children) {
                     break;
                 }
+
+                // if (el && el.children && el.children.length &&
+                //     !Utils.hasClass(el, YouTubeClasses.ELEMENT_DISABLED)) {
+                //     break;
+                // }
             }
             return el;
         }

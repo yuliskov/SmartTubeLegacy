@@ -84,8 +84,11 @@ var YouTubeSelectors = {
     VOICE_SEARCH: '#voice-search',
     FOCUSED_ELEMENT: '.focused',
     FOCUSED_VIDEO_PROGRESS_BAR: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-resume-playback-renderer__progress-watched',
+    SUGGESTIONS_FOCUSED_VIDEO_PROGRESS_BAR: '.focused.watchable-tile .airstream-video-tile-progress-watched',
+    // NOTE: suggested videos doesn't contain type bage
     FOCUSED_VIDEO_TYPE_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-time-status-renderer',
     FOCUSED_VIDEO_DURATION_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-time-status-renderer__text',
+    SUGGESTIONS_FOCUSED_VIDEO_DURATION_BAGE: '.focused.watchable-tile .airstream-video-tile-decoration-text',
     PLAYER_OBJ: 'video',
     MASTHEAD_SECTION: '.masthead-overlay'
 };
