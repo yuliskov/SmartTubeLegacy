@@ -350,13 +350,19 @@ var YouTubeUtils = {
         if (duration) {
             var timeParts = duration.split(':');
 
-            if (timeParts && timeParts.length == 2) { // duration less then hour
-                var minutes = timeParts[0];
-
-                if (minutes <= 10) {
+            if (timeParts) {
+                if (timeParts.length == 1) { // jam videos
                     return true;
                 }
 
+                if (timeParts.length == 2) { // duration less then hour
+                    var minutes = timeParts[0];
+
+                    if (minutes <= 10) {
+                        return true;
+                    }
+
+                }
             }
         }
 
