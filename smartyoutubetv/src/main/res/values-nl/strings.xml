@@ -5,7 +5,7 @@
     <string name="button_webview">Oorsprong</string>
     <string name="button_xwalk">Alt</string>
     <string name="button_exo">4K</string>
-    <string name="bootstrap_main_title">YouTube Launcher selecteren</string>
+    <string name="bootstrap_main_title">YouTube launcher selecteren</string>
     <string name="webview_desc">1080 Main</string>
     <string name="xwalk_desc">1080 Alt</string>
     <string name="exo_desc">4K Main</string>
@@ -29,7 +29,7 @@
     <string name="autoframerate">AFR</string>
     <string name="german_lang">Duits</string>
     <string name="nederlands_lang">Nederlands</string>
-    <string name="returning_to_the_video">Teruggaan naar de geopende video</string>
+    <string name="returning_to_the_video">Terug</string>
     <string name="send_crash_report">Crash Rapport</string>
     <string name="sending_crash_report">Verzenden Crash Rapport&#8230;</string>
     <string name="update_check">Update controleren</string>
