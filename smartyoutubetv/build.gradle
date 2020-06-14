@@ -99,8 +99,8 @@ android {
             applicationIdSuffix ".beta"
             crashlyticsEnabled = true
         }
-        Vkids {
-            matchingFallbacks = ['Vkids', 'lite']
+        kids {
+            matchingFallbacks = ['kids', 'lite']
             applicationIdSuffix ".kids"
         }
         Vlive {
@@ -180,7 +180,7 @@ android {
         beta {
             java.srcDirs('src/commonSrc/crashHandler/java')
         }
-        Vkids {
+        kids {
             java.srcDirs = commonDirs
         }
         Vlive {

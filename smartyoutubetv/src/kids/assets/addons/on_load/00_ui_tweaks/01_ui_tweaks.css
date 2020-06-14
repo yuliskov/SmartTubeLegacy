@@ -1,0 +1,9 @@
+/* Remove page background. Make selection more easy to spot. */
+#browse.browse {
+    background-image: none !important;
+}
+
+/* Fix loading circle in background on Search page */
+#search {
+    background-color: #eee;
+}

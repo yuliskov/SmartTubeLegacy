@@ -39,7 +39,7 @@ android {
     productFlavors {
         lite {}
         full {}
-        Vkids {
+        kids {
             matchingFallbacks = ['lite']
         }
     }
