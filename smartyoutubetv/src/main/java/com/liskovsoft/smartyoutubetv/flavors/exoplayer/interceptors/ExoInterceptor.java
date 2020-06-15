@@ -81,7 +81,7 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + mCurrentUrl);
-            MessageHelpers.showMessage(mContext, mManager.getReason() + "\n" + mCurrentUrl);
+            MessageHelpers.showMessage(mContext, mManager.getReason());
 
             if (mManager.isOpened()) { // return to player when suggestions doesn't work
                 mExoCallback.onFalseCall();
@@ -109,10 +109,10 @@ public class ExoInterceptor extends RequestInterceptor {
         // long running code
         new Thread(() -> {
             try {
-                parseAndOpenExoPlayer(getUrlData(mCurrentUrl, null));
+                parseAndOpenExoPlayer(getUrlData(mCurrentUrl));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
-                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken. " + e.getMessage() + "\n" + mCurrentUrl);
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken. " + e.getMessage());
             }
         }).start();
 
