@@ -122,6 +122,11 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         long posMs;
 
         long duration = mPlayer.getDuration();
+
+        if (duration < MIN_PERSIST_DURATION_MILLIS) { // exclude video clips and other stuff
+            return;
+        }
+        
         String title = mPlayerFragment.getMainTitle() + duration; // create something like hash
 
         if (posPercents < 0 || posPercents > 97 || sRestored.contains(title)) { // app just started, video opened
