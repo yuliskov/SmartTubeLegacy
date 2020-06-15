@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.wrappers.exoplayer.ExoPlayerWrapper;
@@ -36,6 +37,7 @@ public class ExoInterceptor extends RequestInterceptor {
     private String mCurrentUrl;
     public static final String URL_VIDEO_DATA = "get_video_info";
     public static final String URL_TV_TRANSPORT = "gen_204";
+    private final boolean mIsBeta;
 
     public ExoInterceptor(Context context,
                           DelayedCommandCallInterceptor delayedInterceptor,
@@ -59,6 +61,8 @@ public class ExoInterceptor extends RequestInterceptor {
         } else {
             mRealExoCallback = mExoCallback = new ExoPlayerWrapper(mContext, this);
         }
+
+        mIsBeta = "beta".equals(BuildConfig.FLAVOR);
     }
 
     @Override
@@ -81,7 +85,10 @@ public class ExoInterceptor extends RequestInterceptor {
         // 'next' should not be fired at this point
         if (mManager.cancelPlayback()) {
             Log.d(TAG, "Video canceled: " + mCurrentUrl);
-            MessageHelpers.showMessage(mContext, mManager.getReason());
+
+            if (mIsBeta) {
+                MessageHelpers.showMessage(mContext, mManager.getReason());
+            }
 
             if (mManager.isOpened()) { // return to player when suggestions doesn't work
                 mExoCallback.onFalseCall();
