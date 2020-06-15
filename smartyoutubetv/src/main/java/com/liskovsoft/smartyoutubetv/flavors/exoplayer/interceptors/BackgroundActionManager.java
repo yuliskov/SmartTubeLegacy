@@ -28,6 +28,7 @@ public class BackgroundActionManager {
     private String mCurrentUrl;
     private boolean mSameVideo;
     private final SmartPreferences mPrefs;
+    private String mReason;
 
     public BackgroundActionManager(GlobalKeyHandler keyHandler) {
         mPrefs = CommonApplication.getPreferences();
@@ -36,17 +37,20 @@ public class BackgroundActionManager {
 
     public boolean cancelPlayback() {
         if (mCurrentUrl == null || !mCurrentUrl.contains(ExoInterceptor.URL_VIDEO_DATA)) {
-            Log.d(TAG, "Cancel playback: No video data.");
+            mReason = "Cancel playback: No video data.";
+            Log.d(TAG, mReason);
             return true;
         }
 
         if (getVideoId(mCurrentUrl) == null) {
-            Log.d(TAG, "Cancel playback: Supplied url doesn't contain video info.");
+            mReason = "Cancel playback: Supplied url doesn't contain video info.";
+            Log.d(TAG, mReason);
             return true;
         }
 
         if (mSameVideo && mIsOpened) {
-            Log.d(TAG, "Cancel playback: Same video while doing playback.");
+            mReason = "Cancel playback: Same video while doing playback.";
+            Log.d(TAG, mReason);
             return true;
         }
 
@@ -55,14 +59,16 @@ public class BackgroundActionManager {
         boolean continueRecently = (curTimeMS - mContinueTime) < SAME_VIDEO_NO_INTERACTION_TIMEOUT_MS;
 
         if (mSameVideo && continueRecently && !mIsOpened) {
-            Log.d(TAG, "Cancel playback: Same video right after close previous.");
+            mReason = "Cancel playback: Same video right after close previous.";
+            Log.d(TAG, mReason);
             return true;
         }
 
         boolean cancelRecently = (curTimeMS - mCancelTime) < VIDEO_CANCEL_TIMEOUT_MS;
 
         if (cancelRecently) {
-            Log.d(TAG, "Cancel playback: User closed video recently.");
+            mReason = "Cancel playback: User closed video recently.";
+            Log.d(TAG, mReason);
             return true;
         }
 
@@ -70,14 +76,16 @@ public class BackgroundActionManager {
         boolean isOkKey = KeyHelpers.isConfirmKey(mKeyHandler.getLastEventKeyCode());
 
         if (!isOkKey && somethingPressedRecently) { // fix music videos autoplay
-            Log.d(TAG, "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode());
+            mReason = "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode();
+            Log.d(TAG, mReason);
             return true;
         }
 
         boolean isUpcoming = SmartPreferences.VIDEO_TYPE_UPCOMING.equals(mPrefs.getCurrentVideoType());
 
         if (isUpcoming) {
-            Log.d(TAG, "Cancel playback: Video announced but not available yet.");
+            mReason = "Cancel playback: Video announced but not available yet.";
+            Log.d(TAG, mReason);
             return true;
         }
 
@@ -166,5 +174,9 @@ public class BackgroundActionManager {
         }
 
         return MyUrlEncodedQueryString.parse(url).get(PARAM_PLAYLIST_ID);
+    }
+
+    public String getReason() {
+        return mReason;
     }
 }

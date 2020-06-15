@@ -122,10 +122,6 @@ public class PlayerStateManager extends PlayerStateManagerBase {
         long posMs;
 
         long duration = mPlayer.getDuration();
-
-        if (duration < MIN_PERSIST_DURATION_MILLIS) { // exclude video clips and other stuff
-            return;
-        }
         
         String title = mPlayerFragment.getMainTitle() + duration; // create something like hash
 
@@ -136,7 +132,8 @@ public class PlayerStateManager extends PlayerStateManagerBase {
             sRestored.add(title); // restore from web once, then use local data
         }
 
-        if (posMs > 0 && posMs < (duration - MAX_TRAIL_DURATION_MILLIS)) {
+        if (posMs > MAX_START_DURATION_MILLIS &&
+            posMs < (duration - MAX_TRAIL_DURATION_MILLIS)) {
             mPlayer.seekTo(posMs);
         }
     }
