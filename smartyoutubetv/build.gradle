@@ -1,5 +1,4 @@
 apply from: '../../SharedUtils/constants.gradle'
-def crashlyticsEnabled
 buildscript {
     repositories {
         jcenter()
@@ -23,13 +22,11 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
-if (crashlyticsEnabled) {
-    // Google Services Gradle plugin (transforms google-services.json file)
-    apply plugin: 'com.google.gms.google-services'
+// Google Services Gradle plugin (transforms google-services.json file)
+apply plugin: 'com.google.gms.google-services'
 
-    // Apply the Crashlytics Gradle plugin
-    apply plugin: 'com.google.firebase.crashlytics'
-}
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
@@ -46,8 +43,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1267
-        versionName "6.17.687"
+        versionCode 1268
+        versionName "6.17.688"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -97,7 +94,6 @@ android {
         beta {
             matchingFallbacks = ['lite']
             applicationIdSuffix ".beta"
-            crashlyticsEnabled = true
         }
         kids {
             matchingFallbacks = ['kids', 'lite']
@@ -235,11 +231,9 @@ dependencies {
 
     implementation project(path: ':appupdatechecker')
 
-    if (crashlyticsEnabled) {
-        // Add the Firebase Crashlytics SDK.
-        implementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
-            transitive = true
-        }
+    // Add the Firebase Crashlytics SDK.
+    betaImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+        transitive = true
     }
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
