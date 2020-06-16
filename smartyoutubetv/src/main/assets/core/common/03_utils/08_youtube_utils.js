@@ -353,7 +353,7 @@ var YouTubeUtils = {
 
         if (videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT ||
             videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
-            if (Utils.contains(videoData.author, ["Россия", "Культура"])) { // channels that don't allow embedding
+            if (Utils.contains(videoData.author, ["Россия", "Культура", "ТСН", "1+1"])) { // channels that don't allow embedding
                 return false;
             }
 
