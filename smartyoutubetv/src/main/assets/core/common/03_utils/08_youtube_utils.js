@@ -346,9 +346,13 @@ var YouTubeUtils = {
     /**
      * Detect video clip based on duration
      */
-    isVideoClip: function(duration) {
-        if (duration) {
-            var timeParts = duration.split(':');
+    isRestrictedVideo: function(videoData) {
+        if (videoData && videoData.duration) {
+            if (Utils.contains(videoData.author, ["Россия 24"])) {
+                return false;
+            }
+
+            var timeParts = videoData.duration.split(':');
 
             if (timeParts) {
                 if (timeParts.length == 1) { // jam videos

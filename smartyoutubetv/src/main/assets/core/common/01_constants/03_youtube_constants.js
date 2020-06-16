@@ -88,7 +88,9 @@ var YouTubeSelectors = {
     // NOTE: suggested videos doesn't contain type bage
     FOCUSED_VIDEO_TYPE_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-time-status-renderer',
     FOCUSED_VIDEO_DURATION_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus .ytlr-thumbnail-overlay-time-status-renderer__text',
+    FOCUSED_VIDEO_AUTHOR_BAGE: '.yt-virtual-list__item--selected ytlr-tile-renderer.zylon-focus ytlr-tile-metadata-renderer ytlr-line-renderer',
     SUGGESTIONS_FOCUSED_VIDEO_DURATION_BAGE: '.focused.watchable-tile .airstream-video-tile-decoration-text',
+    SUGGESTIONS_FOCUSED_VIDEO_AUTHOR_BAGE: '.focused.watchable-tile .channel-name',
     PLAYER_OBJ: 'video',
     MASTHEAD_SECTION: '.masthead-overlay'
 };

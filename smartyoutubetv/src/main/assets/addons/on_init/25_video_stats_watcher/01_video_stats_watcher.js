@@ -14,6 +14,7 @@ var VideoStatsWatcherAddon = {
     VIDEO_TYPE_DEFAULT: 'video_type_default',
     VIDEO_TYPE_LIVE: 'video_type_live',
     VIDEO_TYPE_UPCOMING: 'video_type_upcoming',
+    recentVideoData: {},
 
     run: function() {
         this.addListener();
@@ -52,6 +53,7 @@ var VideoStatsWatcherAddon = {
     notifyVideoType: function() {
         var typeBage = Utils.$(YouTubeSelectors.FOCUSED_VIDEO_TYPE_BAGE);
         var durationBage = Utils.$([YouTubeSelectors.FOCUSED_VIDEO_DURATION_BAGE, YouTubeSelectors.SUGGESTIONS_FOCUSED_VIDEO_DURATION_BAGE]);
+        var authorBage = Utils.$([YouTubeSelectors.FOCUSED_VIDEO_AUTHOR_BAGE, YouTubeSelectors.SUGGESTIONS_FOCUSED_VIDEO_AUTHOR_BAGE]);
 
         var videoType = this.VIDEO_TYPE_UNDEFINED;
 
@@ -67,12 +69,18 @@ var VideoStatsWatcherAddon = {
 
         Log.d(this.TAG, "Current video type: " + videoType);
         DeviceUtils.sendMessage(this.MESSAGE_VIDEO_TYPE, videoType);
-        this.recentVideoType = videoType;
+        this.recentVideoData.type = videoType;
 
         if (durationBage && durationBage.innerText) {
-            this.recentVideoDuration = durationBage.innerText;
+            this.recentVideoData.duration = durationBage.innerText;
         } else {
-            this.recentVideoDuration = null;
+            this.recentVideoData.duration = null;
+        }
+
+        if (authorBage && authorBage.innerText) {
+            this.recentVideoData.author = authorBage.innerText;
+        } else {
+            this.recentVideoData.author = null;
         }
     }
 }
