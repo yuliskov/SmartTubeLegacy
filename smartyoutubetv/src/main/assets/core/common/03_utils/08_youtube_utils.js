@@ -344,27 +344,33 @@ var YouTubeUtils = {
     },
 
     /**
-     * Detect video clip based on duration
+     * Detect video clip based on duration and author name
      */
-    isRestrictedVideo: function(videoData) {
-        if (videoData && videoData.duration) {
-            if (Utils.contains(videoData.author, ["Россия 24"])) {
+    isAgeRestrictedVideo: function(videoData) {
+        if (!videoData) {
+            return false;
+        }
+
+        if (videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT ||
+            videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
+            if (Utils.contains(videoData.author, ["Россия", "Культура"])) { // channels that don't allow embedding
+                return false;
+            }
+
+            if (!videoData.duration) {
                 return false;
             }
 
             var timeParts = videoData.duration.split(':');
 
-            if (timeParts) {
-                if (timeParts.length == 1) { // jam videos
+            if (timeParts.length == 1) { // jam videos
+                return true;
+            }
+
+            if (timeParts.length == 2) { // duration less then hour
+                var minutes = timeParts[0];
+                if (!isNaN(minutes) && minutes <= 10) { // <= 10 min
                     return true;
-                }
-
-                if (timeParts.length == 2) { // duration less then hour
-                    var minutes = timeParts[0];
-
-                    if (!isNaN(minutes) && minutes <= 10) {
-                        return true;
-                    }
                 }
             }
         }
