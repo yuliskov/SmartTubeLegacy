@@ -353,25 +353,8 @@ var YouTubeUtils = {
 
         if (videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT ||
             videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
-            if (Utils.contains(videoData.author, ["Россия", "Культура", "ТСН", "1+1"])) { // channels that don't allow embedding
-                return false;
-            }
-
-            if (!videoData.duration) {
-                return false;
-            }
-
-            var timeParts = videoData.duration.split(':');
-
-            if (timeParts.length == 1) { // jam videos
+            if (Utils.contains(videoData.author, ["Lindemann", "PlayStation", "Cyberpunk"])) { // channels that don't allow embedding
                 return true;
-            }
-
-            if (timeParts.length == 2) { // duration less then hour
-                var minutes = timeParts[0];
-                if (!isNaN(minutes) && minutes <= 10) { // <= 10 min
-                    return true;
-                }
             }
         }
 
