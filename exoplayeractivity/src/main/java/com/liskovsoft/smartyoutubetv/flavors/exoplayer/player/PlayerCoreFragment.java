@@ -65,6 +65,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.ExtendedDataHolder;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.helpers.PlayerUtil;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.MyDashManifestParser;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.PlayerInterface;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.MyDefaultRenderersFactory;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.subalignment.SubtitleRendererDecorator;
@@ -544,7 +545,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private DashManifest getManifest(Uri uri, InputStream mpdContent) {
-        DashManifestParser parser = new DashManifestParser();
+        DashManifestParser parser = new MyDashManifestParser();
         DashManifest result;
         try {
             result = parser.parse(uri, mpdContent);
@@ -555,7 +556,7 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
     }
 
     private DashManifest getManifest(Uri uri, String mpdContent) {
-        DashManifestParser parser = new DashManifestParser();
+        DashManifestParser parser = new MyDashManifestParser();
         DashManifest result;
         try {
             result = parser.parse(uri, FileHelpers.toStream(mpdContent));

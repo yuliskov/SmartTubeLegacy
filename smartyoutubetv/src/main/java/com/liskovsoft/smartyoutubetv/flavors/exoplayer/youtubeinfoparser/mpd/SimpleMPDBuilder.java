@@ -672,13 +672,17 @@ public class SimpleMPDBuilder implements MPDBuilder {
 
         List<OtfSegment> segments = mSegmentParser.parse(item.getOtfInitUrl());
 
+        writeOtfSegmentTemplate(item.getOtfTemplateUrl(), item.getOtfInitUrl(), "1", segments);
+    }
+
+    private void writeOtfSegmentTemplate(String mediaUrl, String initUrl, String startNumber, List<OtfSegment> segments) {
         if (segments != null && segments.size() > 0) {
             startTag("", "SegmentTemplate");
 
             attribute("", "timescale", "1000"); // units per second
-            attribute("", "media", item.getOtfTemplateUrl());
-            attribute("", "initialization", item.getOtfInitUrl());
-            attribute("", "startNumber", "1");
+            attribute("", "media", mediaUrl);
+            attribute("", "initialization", initUrl);
+            attribute("", "startNumber", startNumber);
 
             writeOtfSegmentTimeline(segments);
 
