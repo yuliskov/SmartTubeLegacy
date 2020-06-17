@@ -353,7 +353,7 @@ var YouTubeUtils = {
 
         if (videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT ||
             videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
-            if (Utils.contains(videoData.author, ["Lindemann", "PlayStation", "Cyberpunk"])) { // channels that don't allow embedding
+            if (Utils.contains(videoData.author, ["Lindemann", "Rammstein", "Official", "PlayStation", "Cyberpunk"])) { // channels that don't allow embedding
                 return true;
             }
         }

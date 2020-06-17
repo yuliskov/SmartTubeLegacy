@@ -240,7 +240,14 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         }
 
         if (needNewPlayer || mNeedRetrySource) {
-            MediaSource mediaSource = extractMediaSource(intent);
+            MediaSource mediaSource = null;
+
+            try {
+                mediaSource = extractMediaSource(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                MessageHelpers.showLongMessage(getContext(), Helpers.toString(e));
+            }
 
             if (mediaSource == null) {
                 return;
