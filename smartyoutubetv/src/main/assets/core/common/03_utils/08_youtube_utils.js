@@ -353,7 +353,10 @@ var YouTubeUtils = {
 
         if (videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_DEFAULT ||
             videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
-            if (Utils.contains(videoData.author, ["Lindemann", "Rammstein", "Official", "PlayStation", "Cyberpunk"])) { // channels that don't allow embedding
+            if (Utils.contains(videoData.author, 
+                ["Official", "Game", "Play", "Soft", "Play", "Station", 
+                    "Rock", "Star", "Battle", "Field", "Cyber", "Punk", "Distructive", "Creation", 
+                    "Resident", "Evil", "Just", "Cause"])) { // channels with age restricted content
                 return true;
             }
         }

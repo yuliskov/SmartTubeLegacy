@@ -37,8 +37,8 @@ public class UserAgentManager {
     }
 
     public String getUA() {
-        return LG_SMART_TV[1];
-        //return SAMSUNG_SMART_TV[1];
+        //return LG_SMART_TV[1];
+        return SAMSUNG_SMART_TV[1];
     }
 
     public Map<String, String> getUAHeaders() {
