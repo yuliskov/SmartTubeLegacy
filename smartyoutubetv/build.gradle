@@ -22,11 +22,11 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
-// Google Services Gradle plugin (transforms google-services.json file)
-apply plugin: 'com.google.gms.google-services'
-
-// Apply the Crashlytics Gradle plugin
-apply plugin: 'com.google.firebase.crashlytics'
+// // Google Services Gradle plugin (transforms google-services.json file)
+// apply plugin: 'com.google.gms.google-services'
+//
+// // Apply the Crashlytics Gradle plugin
+// apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
@@ -43,8 +43,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1272
-        versionName "6.17.692"
+        versionCode 1273
+        versionName "6.17.693"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 

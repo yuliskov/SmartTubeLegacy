@@ -20,17 +20,17 @@ public class MainScriptManagerInterceptor extends ScriptManagerInterceptor {
     }
 
     @Override
-    protected boolean isFirstScript(String url) {
+    protected boolean isBaseScript(String url) {
         return Helpers.endsWith(url, BASE_SCRIPT_NAME);
     }
 
     @Override
-    protected boolean isSecondScript(String url) {
+    protected boolean isMainScript(String url) {
         return Helpers.endsWith(url, MAIN_SCRIPT_NAME);
     }
 
     @Override
-    protected boolean isLastScript(String url) {
+    protected boolean isPlayerScript(String url) {
         return Helpers.endsWith(url, PLAYER_SCRIPT_NAME);
     }
 

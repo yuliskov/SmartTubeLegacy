@@ -8,13 +8,13 @@ import com.liskovsoft.smartyoutubetv.CommonApplication;
 
 import java.io.InputStream;
 
-public class MainCachedScriptManager extends MainScriptManager {
+public class CachedMainScriptManager extends MainScriptManager {
     private final DiskLruCache mCache;
     private String ON_INIT_SCRIPTS_KEY;
     private String ON_LOAD_SCRIPTS_KEY;
     private String STYLES_KEY;
 
-    public MainCachedScriptManager(Context context) {
+    public CachedMainScriptManager(Context context) {
         super(context);
 
         mCache = CommonApplication.getCache();

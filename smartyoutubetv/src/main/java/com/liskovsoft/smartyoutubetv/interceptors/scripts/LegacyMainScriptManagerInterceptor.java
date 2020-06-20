@@ -19,13 +19,13 @@ public class LegacyMainScriptManagerInterceptor extends MainScriptManagerInterce
     }
 
     @Override
-    protected boolean isFirstScript(String url) {
-        return super.isFirstScript(url) || Helpers.matchAll(url, BASE_SCRIPT_REGEX);
+    protected boolean isBaseScript(String url) {
+        return super.isBaseScript(url) || Helpers.matchAll(url, BASE_SCRIPT_REGEX);
     }
 
     @Override
-    protected boolean isSecondScript(String url) {
-        return super.isSecondScript(url) || Helpers.matchAll(url, MAIN_SCRIPT_REGEX);
+    protected boolean isMainScript(String url) {
+        return super.isMainScript(url) || Helpers.matchAll(url, MAIN_SCRIPT_REGEX);
     }
 
     @Override

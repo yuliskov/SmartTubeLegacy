@@ -6,6 +6,7 @@ import android.webkit.WebResourceResponse;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.AdAwayInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.ads.BrowseInterceptor;
+import com.liskovsoft.smartyoutubetv.interceptors.scripts.CachedLegacyMainScriptManagerInterceptor;
 import com.liskovsoft.smartyoutubetv.interceptors.scripts.LegacyMainScriptManagerInterceptor;
 
 import java.util.ArrayList;

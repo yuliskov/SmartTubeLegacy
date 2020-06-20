@@ -59,6 +59,11 @@ public class ContentFilter {
             //Force enable animation, just scroll animation side panel animation is something else
             mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w]+,", "enableAnimations:true,");
         }
+
+        if (Helpers.isMicAvailable(context)) {
+            mSecondReplacementRegExp.put("this\\.environment\\.supportsVoiceSearch", "true");
+            mSecondReplacementRegExp.put("b\\.supportsVoiceSearch", "true");
+        }
     }
 
     public InputStream filterFirstScript(InputStream result) {
