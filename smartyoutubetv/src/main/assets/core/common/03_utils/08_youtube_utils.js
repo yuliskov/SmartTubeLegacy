@@ -355,8 +355,8 @@ var YouTubeUtils = {
             videoData.type == window.VideoStatsWatcherAddon.VIDEO_TYPE_UNDEFINED) { // video launched from suggestions
             if (Utils.contains(videoData.author, 
                 ["Official", "gameplay", "Ubisoft", "PlayStation",
-                    "Rockstar", "Battlefield", "Cyberpunk", "Distructive Creation",
-                    "ResidentEvil", "Just Cause"])) { // channels with age restricted content
+                    "Rockstar", "Battlefield", "Cyberpunk", "Distructive",
+                    "Resident", "Just Cause"])) { // channels with age restricted content
                 return true;
             }
         }
