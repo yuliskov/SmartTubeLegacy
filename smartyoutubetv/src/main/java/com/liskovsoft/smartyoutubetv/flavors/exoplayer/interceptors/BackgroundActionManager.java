@@ -73,9 +73,9 @@ public class BackgroundActionManager {
         }
 
         boolean somethingPressedRecently = (System.currentTimeMillis() - mKeyHandler.getLastEventTimeMs()) < 3_000;
-        boolean isOkKey = KeyHelpers.isConfirmKey(mKeyHandler.getLastEventKeyCode());
+        boolean isSpecialKey = KeyHelpers.isConfirmKey(mKeyHandler.getLastEventKeyCode()) || KeyHelpers.isMediaKey(mKeyHandler.getLastEventKeyCode());
 
-        if (!isOkKey && somethingPressedRecently) { // fix music videos autoplay
+        if (!isSpecialKey && somethingPressedRecently) { // fix music videos autoplay
             mReason = "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode();
             Log.d(TAG, mReason);
             return true;
