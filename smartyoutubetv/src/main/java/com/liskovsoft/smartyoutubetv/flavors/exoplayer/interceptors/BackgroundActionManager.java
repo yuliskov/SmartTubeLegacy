@@ -72,14 +72,14 @@ public class BackgroundActionManager {
             return true;
         }
 
-        boolean somethingPressedRecently = (System.currentTimeMillis() - mKeyHandler.getLastEventTimeMs()) < 3_000;
-        boolean isSpecialKey = KeyHelpers.isConfirmKey(mKeyHandler.getLastEventKeyCode()) || KeyHelpers.isMediaKey(mKeyHandler.getLastEventKeyCode());
-
-        if (!isSpecialKey && somethingPressedRecently) { // fix music videos autoplay
-            mReason = "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode();
-            Log.d(TAG, mReason);
-            return true;
-        }
+        //boolean somethingPressedRecently = (System.currentTimeMillis() - mKeyHandler.getLastEventTimeMs()) < 3_000;
+        //boolean isSpecialKey = KeyHelpers.isConfirmKey(mKeyHandler.getLastEventKeyCode()) || KeyHelpers.isMediaKey(mKeyHandler.getLastEventKeyCode());
+        //
+        //if (!isSpecialKey && somethingPressedRecently) { // fix music videos autoplay
+        //    mReason = "User didn't pressed ok recently. Exiting... Code is " + mKeyHandler.getLastEventKeyCode();
+        //    Log.d(TAG, mReason);
+        //    return true;
+        //}
 
         boolean isUpcoming = SmartPreferences.VIDEO_TYPE_UPCOMING.equals(mPrefs.getCurrentVideoType());
 
