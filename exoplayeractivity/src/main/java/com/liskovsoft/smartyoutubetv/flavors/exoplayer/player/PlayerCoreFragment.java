@@ -738,24 +738,31 @@ public abstract class PlayerCoreFragment extends Fragment implements OnClickList
         }
 
         if (isDecoderError) {
-            restorePlayback();
+            boolean restored = restorePlayback();
 
-            if (mRestoreRetryCount >= MAX_RESTORE_RETRY_COUNT) {
+            if (!restored) {
                 showToast(getString(R.string.exo_video_decoder_error));
             }
         } else if (isSourceError) {
-            showToast(getString(R.string.exo_video_link_error));
-            // closing player
-            onBackPressed();
+            boolean restored = restorePlayback();
+
+            if (!restored) {
+                showToast(getString(R.string.exo_video_link_error));
+                // closing player
+                onBackPressed();
+            }
         }
     }
 
     /**
      * Trying to restore the playback without user interaction
      */
-    private void restorePlayback() {
+    private boolean restorePlayback() {
         if (mRestoreRetryCount++ < MAX_RESTORE_RETRY_COUNT) {
             new Handler(Looper.getMainLooper()).postDelayed(this::initializePlayer, 500);
+            return true;
+        } else {
+            return false;
         }
     }
 
