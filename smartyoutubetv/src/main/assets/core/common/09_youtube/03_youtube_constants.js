@@ -119,7 +119,11 @@ var YouTubeClasses = {
 };
 
 var YouTubeClassesV2 = {
-    GENERIC_OVERLAY_HIDDEN: 'yt-overlay-stage--hidden'
+    GENERIC_OVERLAY_HIDDEN: 'yt-overlay-stage--hidden',
+    WATCH_PAGE_CONTROL: 'ytlr-watch-page--control',
+    WATCH_PAGE_IDLE: 'ytlr-watch-page--idle',
+    WATCH_PAGE_OVERLAY: 'ytlr-watch-page--overlay', // overlay has been shown
+    WATCH_PAGE_PIVOT: 'ytlr-watch-page--pivot' // player suggestions
 };
 
 var YouTubeSelectorsV2 = {
@@ -127,29 +131,21 @@ var YouTubeSelectorsV2 = {
     OPTIONS_APP_VALUE_SELECTOR: '.ytlr-setting-app-version__app-version-value'
 };
 
-/**
- * Custom events
- */
-var YouTubeEvents = {
-    MODEL_CHANGED_EVENT: 'model:changed',
-    COMPONENT_FOCUS_EVENT: 'component-focus',
-    COMPONENT_BLUR_EVENT: 'component-blur',
-    BUTTON_ENTER: 'button-enter'
-};
+// /**
+//  * Custom events
+//  */
+// var YouTubeEvents = {
+//     MODEL_CHANGED_EVENT: 'model:changed',
+//     COMPONENT_FOCUS_EVENT: 'component-focus',
+//     COMPONENT_BLUR_EVENT: 'component-blur',
+//     BUTTON_ENTER: 'button-enter'
+// };
 
-/**
- * Unclassified YouTube keywords
- */
-var YouTubeOther = {
-    PLAYER_URL_KEY: 'watch',
-    OPTIONS_VERSION_TITLE: 'Version',
-    OPTIONS_DEVICE_TITLE: 'Device'
-};
-
-var YouTubeTags = {
+var YouTubeTagsV2 = {
     SETTING_APP_VERSION: 'YTLR-SETTING-APP-VERSION',
     SEARCH_PAGE: 'YTLR-SEARCH-CONTAINER',
-    GENERIC_OVERLAY: 'YT-OVERLAY-STAGE'
+    GENERIC_OVERLAY: 'YT-OVERLAY-STAGE',
+    WATCH_PAGE: 'YTLR-WATCH-PAGE'
 };
 
 /**

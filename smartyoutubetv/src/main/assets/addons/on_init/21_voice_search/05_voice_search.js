@@ -110,16 +110,13 @@ window.VoiceSearch = {
     },
 
     commitChanges: function() {
-        EventUtils.triggerEvent(
-            YouTubeSelectors.SEARCH_INPUT_FIELD,
-            DefaultEvents.ON_TEXT_TYPE,
-            DefaultKeys.ENTER);
+        YouTubeEventEmulator.clickOnSearchField();
     },
 
     selectResultsRow: function() {
         // wait till search complete
         setTimeout(function() {
-            EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
+            YouTubeEventEmulator.clickOnStartSearchButton();
         }, 1000);
     },
 

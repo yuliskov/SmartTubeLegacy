@@ -10,7 +10,11 @@ var YouTubeEventManager = {
     onSettingsAppVersionShown: [],
     onSearchPageShown: [],
     onGenericOverlayShown: [],
+    onGenericOverlayHidden: [],
     onUiChange: [],
+    onPlayerSuggestionsHidden: [],
+    onPlayerSuggestionsShown: [],
+    onPlayerControlsShown: [],
     init: function() {
         var $this = this;
         this.onLoad(function() {
@@ -51,39 +55,56 @@ var YouTubeEventManager = {
                 var record = records[i];
 
                 if (record.type === 'childList') {
-                    // Log.d($this.TAG, 'A child node has been added or removed. ' + record.target);
-                    // for (var j = 0; j < record.addedNodes; j++) {
-                    //     Log.d($this.TAG, "Added node: " + record.addedNodes[j].tagName);
-                    // }
-                    // for (var k = 0; k < record.removedNodes; k++) {
-                    //     Log.d($this.TAG, "Removed node: " + record.removedNodes[j].tagName);
-                    // }
+                    Log.d($this.TAG, "Element added: " + EventUtils.toSelector(record.target));
 
-                    // Log.d($this.TAG, "Target: " + EventUtils.toSelector(record.target));
-
-                    $this.checkAndApply(record.target);
+                    $this.checkAndApplyChildList(record.target);
                 } else if (record.type === 'attributes') {
-                    Log.d($this.TAG, 'The ' + record.attributeName + ' attribute was modified.');
+                    Log.d($this.TAG, 'Attribute was modified: ' + EventUtils.toSelector(record.target));
+
+                    $this.checkAndApplyAttributes(record.target);
                 }
             }
         });
-        observer.observe(Utils.$(YouTubeSelectors.ROOT_CONTAINER), {subtree: true, childList: true});
+        observer.observe(Utils.$(YouTubeSelectors.ROOT_CONTAINER), {subtree: true, childList: true, attributes: true});
     },
-    checkAndApply: function(element) {
+    checkAndApplyChildList: function(element) {
         if (element) {
-            if (element.tagName == YouTubeTags.SETTING_APP_VERSION) {
+            if (element.tagName == YouTubeTagsV2.SETTING_APP_VERSION) {
                 Log.d(this.TAG, "Settings > App Version has been opened");
                 this.triggerCallbacks(this.onSettingsAppVersionShown, element);
-            } else if (element.tagName == YouTubeTags.SEARCH_PAGE) {
+            } else if (element.tagName == YouTubeTagsV2.SEARCH_PAGE) {
                 Log.d(this.TAG, "App Search page has been opened");
                 this.triggerCallbacks(this.onSearchPageShown, element);
-            } else if (element.tagName == YouTubeTags.GENERIC_OVERLAY && !Utils.hasClass(element, YouTubeClassesV2.GENERIC_OVERLAY_HIDDEN)) {
-                Log.d(this.TAG, "App generic overlay has been shown");
-                this.triggerCallbacks(this.onGenericOverlayShown, element);
+            } else if (element.tagName == YouTubeTagsV2.GENERIC_OVERLAY) {
+                if (Utils.hasClass(element, YouTubeClassesV2.GENERIC_OVERLAY_HIDDEN)) {
+                    Log.d(this.TAG, "App generic overlay has been hidden");
+                    this.triggerCallbacks(this.onGenericOverlayHidden, element);
+                } else {
+                    Log.d(this.TAG, "App generic overlay has been shown");
+                    this.triggerCallbacks(this.onGenericOverlayShown, element);
+                }
             }
 
             // generic change event
             this.triggerCallbacks(this.onUiChange);
+        }
+    },
+    checkAndApplyAttributes: function(element) {
+        if (element) {
+            if (element.tagName == YouTubeTagsV2.WATCH_PAGE) {
+                if (Utils.hasClass(element, YouTubeClassesV2.WATCH_PAGE_PIVOT)) {
+                    Log.d(this.TAG, "Suggestions has been shown...");
+                    this.suggestionsShown = true;
+                    this.triggerCallbacks(this.onPlayerSuggestionsShown, element);
+                } else if (this.suggestionsShown) {
+                    Log.d(this.TAG, "Suggestions has been hidden...");
+                    this.triggerCallbacks(this.onPlayerSuggestionsHidden, element);
+                    this.suggestionsShown = false;
+                } else if (Utils.hasClass(element, YouTubeClassesV2.WATCH_PAGE_CONTROL)) {
+                    Log.d(this.TAG, "Playback controls has been shown...");
+                    this.triggerCallbacks(this.onPlayerControlsShown, element);
+                }
+            }
         }
     },
     triggerCallbacks: function(callbacks, element) {
@@ -110,8 +131,20 @@ var YouTubeEventManager = {
     addOnGenericOverlayShown: function(callback) {
         this.addCallback(this.onGenericOverlayShown, callback);
     },
+    addOnGenericOverlayHidden: function(callback) {
+        this.addCallback(this.onGenericOverlayHidden, callback);
+    },
     addOnUiChange: function(callback) {
         this.addCallback(this.onUiChange, callback);
+    },
+    addOnPlayerSuggestionsHidden: function(callback) {
+        this.addCallback(this.onPlayerSuggestionsHidden, callback);
+    },
+    addOnPlayerSuggestionsShown: function(callback) {
+        this.addCallback(this.onPlayerSuggestionsShown, callback);
+    },
+    addOnPlayerControlsShown: function(callback) {
+        this.addCallback(this.onPlayerControlsShown, callback);
     }
 };
 

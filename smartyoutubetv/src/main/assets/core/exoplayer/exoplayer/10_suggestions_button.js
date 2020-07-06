@@ -28,33 +28,43 @@ function SuggestionsWatcher(host) {
         };
 
         var onBlurHandler = function() {
-            var currentTimeMS = Utils.getCurrentTimeMs();
-            setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
-                var diff = Math.abs(modelChangeTimeStampMS - currentTimeMS);
-                if (diff > relatedEventsTimeWindowMS) {
-                    console.log("SuggestionsWatcher: simple close suggestions: " + diff);
-                    checkSuggestions(); // event is standalone
-                } else {
-                    console.log("SuggestionsWatcher: user has clicked on thumbnail...");
-                }
-            }, 100);
+            //var currentTimeMS = Utils.getCurrentTimeMs();
+            // setTimeout(function() { // change event ordering: set 'modelChangedEvent' before 'componentBlurEvent'
+            //     var diff = Math.abs(modelChangeTimeStampMS - currentTimeMS);
+            //     if (diff > relatedEventsTimeWindowMS) {
+            //         console.log("SuggestionsWatcher: simple close suggestions: " + diff);
+            //         checkSuggestions(); // event is standalone
+            //     } else {
+            //         console.log("SuggestionsWatcher: user has clicked on thumbnail...");
+            //     }
+            // }, 100);
+
+            console.log("SuggestionsWatcher: simple close suggestions...");
+            checkSuggestions(); // event is standalone
         };
 
         // used when the user opens channel or search from the suggestions
-        var onModelChangeHandler = function(e) {
-            var playerAboutToOpen = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
-                Utils.hasClass(e.target, YouTubeClasses.PLAYER_CONTROLS_SHOWING);
-            if (playerAboutToOpen) {
-                console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
-                checkSuggestions();
-                return;
-            }
+        var onModelChangeHandler = function() {
+            // var playerAboutToOpen = Utils.hasClass(e.target, YouTubeClasses.HIDDEN) &&
+            //     Utils.hasClass(e.target, YouTubeClasses.PLAYER_CONTROLS_SHOWING);
+            // if (playerAboutToOpen) {
+            //     console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
+            //     checkSuggestions();
+            //     return;
+            // }
+            //
+            // modelChangeTimeStampMS = Utils.getCurrentTimeMs();
 
-            modelChangeTimeStampMS = Utils.getCurrentTimeMs();
+            console.log("SuggestionsWatcher: user navigated out from the channel or search screen");
+            checkSuggestions();
         };
 
-        EventUtils.addListener(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST, YouTubeEvents.COMPONENT_BLUR_EVENT, onBlurHandler);
-        EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, onModelChangeHandler);
+        // V2: may not work properly!
+        YouTubeEventManager.addOnPlayerSuggestionsHidden(onBlurHandler);
+        YouTubeEventManager.addOnPlayerControlsShown(onModelChangeHandler);
+
+        //EventUtils.addListener(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST, YouTubeEvents.COMPONENT_BLUR_EVENT, onBlurHandler);
+        //EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.MODEL_CHANGED_EVENT, onModelChangeHandler);
 
         this.setHost = function(host) {
             this.host = host;

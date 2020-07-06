@@ -30,7 +30,8 @@ function OverlayWatcher(host) {
             }, 100);
         };
 
-        EventUtils.addListener(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, YouTubeEvents.COMPONENT_FOCUS_EVENT, onBlurHandler);
+        // V2: may not work properly!
+        YouTubeEventManager.addOnGenericOverlayHidden(onBlurHandler);
 
         this.setHost = function(host) {
             this.host = host;
