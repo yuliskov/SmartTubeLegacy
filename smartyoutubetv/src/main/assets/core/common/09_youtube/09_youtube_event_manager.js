@@ -10,6 +10,7 @@ var YouTubeEventManager = {
     onSettingsAppVersionShown: [],
     onSearchPageShown: [],
     onGenericOverlayShown: [],
+    onUiChange: [],
     init: function() {
         var $this = this;
         this.onLoad(function() {
@@ -80,6 +81,9 @@ var YouTubeEventManager = {
                 Log.d(this.TAG, "App generic overlay has been shown");
                 this.triggerCallbacks(this.onGenericOverlayShown, element);
             }
+
+            // generic change event
+            this.triggerCallbacks(this.onUiChange);
         }
     },
     triggerCallbacks: function(callbacks, element) {
@@ -89,25 +93,25 @@ var YouTubeEventManager = {
             }
         }
     },
-    addOnExitDialogShown: function(callback) {
-        if (!Utils.arrayContains(this.onExitDialogShownCallbacks, callback)) {
-            Utils.arrayAdd(this.onExitDialogShownCallbacks, callback);
+    addCallback: function(callbacks, callback) {
+        if (!Utils.arrayContains(callbacks, callback)) {
+            Utils.arrayAdd(callbacks, callback);
         }
+    },
+    addOnExitDialogShown: function(callback) {
+        this.addCallback(this.onExitDialogShownCallbacks, callback);
     },
     addOnSettingsAppVersionShown: function(callback) {
-        if (!Utils.arrayContains(this.onSettingsAppVersionShown, callback)) {
-            Utils.arrayAdd(this.onSettingsAppVersionShown, callback);
-        }
+        this.addCallback(this.onSettingsAppVersionShown, callback);
     },
     addOnSearchPageShown: function(callback) {
-        if (!Utils.arrayContains(this.onSearchPageShown, callback)) {
-            Utils.arrayAdd(this.onSearchPageShown, callback);
-        }
+        this.addCallback(this.onSearchPageShown, callback);
     },
     addOnGenericOverlayShown: function(callback) {
-        if (!Utils.arrayContains(this.onGenericOverlayShown, callback)) {
-            Utils.arrayAdd(this.onGenericOverlayShown, callback);
-        }
+        this.addCallback(this.onGenericOverlayShown, callback);
+    },
+    addOnUiChange: function(callback) {
+        this.addCallback(this.onUiChange, callback);
     }
 };
 

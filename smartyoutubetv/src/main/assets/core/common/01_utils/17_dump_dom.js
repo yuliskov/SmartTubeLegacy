@@ -23,14 +23,13 @@ var DomDumper = {
 
         Log.d(this.TAG, "Initializing...");
 
-        ListenerUtil.addListener(YouTubeSelectors.SURFACE_AREA, YouTubeEvents.MODEL_CHANGED_EVENT, function() {
+        YouTubeEventManager.addOnUiChange(function() {
             setTimeout(function() {
                 if (location.href.indexOf("zylon-surface?c=default") != -1) {
                     Log.d($this.TAG, "Dumping home page...");
                     $this.dump();
                 }
             }, 3000);
-
         });
     },
 
