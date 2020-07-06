@@ -34,6 +34,8 @@ public class SpeedDialogSource extends ExoDialogSource implements CombinedDialog
         mItems.add(new SpeedDialogItem("0.5", "0.5", player, prefs));
         mItems.add(new SpeedDialogItem("0.75", "0.75", player, prefs));
         mItems.add(new SpeedDialogItem(mContext.getString(R.string.normal), "1.0", player, prefs));
+        mItems.add(new SpeedDialogItem("1.10", "1.10", player, prefs));
+        mItems.add(new SpeedDialogItem("1.15", "1.15", player, prefs));
         mItems.add(new SpeedDialogItem("1.25", "1.25", player, prefs));
         mItems.add(new SpeedDialogItem("1.5", "1.5", player, prefs));
         mItems.add(new SpeedDialogItem("1.75", "1.75", player, prefs));

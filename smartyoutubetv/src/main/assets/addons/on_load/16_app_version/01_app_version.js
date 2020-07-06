@@ -10,20 +10,14 @@ function AppVersionAddon() {
 
     this.run = function() {
         var $this = this;
-        EventUtils.addListener(
-            YouTubeConstants.SURFACE_CONTENT_SELECTOR,
-            YouTubeConstants.MODEL_CHANGED_EVENT,
-            function(e) {
-                if (!Utils.hasClass(e.target, YouTubeConstants.MODEL_LOADED_CLASS))
-                    return;
-
-                $this.updateValues();
+        YouTubeEventManager.addOnSettingsAppVersionShown(function() {
+            $this.updateValues();
         });
     };
 
     this.updateValues = function() {
-        var keys = Utils.$$(YouTubeConstants.OPTIONS_APP_KEY_SELECTOR);
-        var values = Utils.$$(YouTubeConstants.OPTIONS_APP_VALUE_SELECTOR);
+        var keys = Utils.$$(YouTubeSelectorsV2.OPTIONS_APP_KEY_SELECTOR);
+        var values = Utils.$$(YouTubeSelectorsV2.OPTIONS_APP_VALUE_SELECTOR);
 
         if (keys.length == 0 || values.length == 0)
             return;

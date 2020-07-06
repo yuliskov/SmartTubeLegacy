@@ -37,6 +37,7 @@ var YouTubeConstants = {
  * Selectors for the YouTube elements
  */
 var YouTubeSelectors = {
+    ROOT_CONTAINER: '#container', // app v2.0
     APP_ROOT: '#app-markup',
     PLAYER_EVENTS_RECEIVER: '#watch',
     PLAYER_CONTROLS_CONTAINER: '.controls-row',
@@ -92,7 +93,8 @@ var YouTubeSelectors = {
     SUGGESTIONS_FOCUSED_VIDEO_DURATION_BAGE: '.focused.watchable-tile .airstream-video-tile-decoration-text',
     SUGGESTIONS_FOCUSED_VIDEO_AUTHOR_BAGE: '.focused.watchable-tile .channel-name',
     PLAYER_OBJ: 'video',
-    MASTHEAD_SECTION: '.masthead-overlay'
+    MASTHEAD_SECTION: '.masthead-overlay',
+    SETTING_APP_VERSION: 'YTLR-SETTING-APP-VERSION.ytlr-setting-app-version'
 };
 
 /**
@@ -116,6 +118,15 @@ var YouTubeClasses = {
     VIDEO_TYPE_UPCOMING: 'ytlr-thumbnail-overlay-time-status-renderer--UPCOMING'
 };
 
+var YouTubeClassesV2 = {
+    GENERIC_OVERLAY_HIDDEN: 'yt-overlay-stage--hidden'
+};
+
+var YouTubeSelectorsV2 = {
+    OPTIONS_APP_KEY_SELECTOR: '.ytlr-setting-app-version__app-version-key',
+    OPTIONS_APP_VALUE_SELECTOR: '.ytlr-setting-app-version__app-version-value'
+};
+
 /**
  * Custom events
  */
@@ -133,6 +144,12 @@ var YouTubeOther = {
     PLAYER_URL_KEY: 'watch',
     OPTIONS_VERSION_TITLE: 'Version',
     OPTIONS_DEVICE_TITLE: 'Device'
+};
+
+var YouTubeTags = {
+    SETTING_APP_VERSION: 'YTLR-SETTING-APP-VERSION',
+    SEARCH_PAGE: 'YTLR-SEARCH-CONTAINER',
+    GENERIC_OVERLAY: 'YT-OVERLAY-STAGE'
 };
 
 /**

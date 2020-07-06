@@ -475,6 +475,35 @@ var Utils = {
         for (var key in obj) {
             console.log(key + " " + obj[key]);
         }
+    },
+
+    arrayContains: function(arr, obj) {
+        if (this.isArray(arr)) {
+            for (var item in arr) {
+                if (item == obj) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    },
+
+    arrayAdd: function(arr, obj) {
+        if (this.isArray(arr)) {
+            arr.push(obj);
+        }
+    },
+
+    /**
+     * Removes only a single occurrence of obj from the array
+     */
+    arrayRemove: function(arr, obj) {
+        var idx = arr.indexOf(obj);
+
+        if (idx > -1) {
+            arr.splice(idx, 1);
+        }
     }
 };
 
