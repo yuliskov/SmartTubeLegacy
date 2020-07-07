@@ -110,13 +110,13 @@ window.VoiceSearch = {
     },
 
     commitChanges: function() {
-        YouTubeEventEmulator.clickOnSearchField();
+        YouTubeUiUtils.clickOnSearchField();
     },
 
     selectResultsRow: function() {
         // wait till search complete
         setTimeout(function() {
-            YouTubeEventEmulator.clickOnStartSearchButton();
+            YouTubeUiUtils.clickOnStartSearchButton();
         }, 1000);
     },
 

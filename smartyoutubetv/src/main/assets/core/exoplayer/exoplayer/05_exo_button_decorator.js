@@ -14,7 +14,7 @@ function ExoButtonDecorator() {
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
 
-        YouTubeUtils.togglePlayerOptions();
+        YouTubeUiUtils.clickOnPlayerOptions();
     };
 
     this.setCheckedWrapper = function(callback, btn) {

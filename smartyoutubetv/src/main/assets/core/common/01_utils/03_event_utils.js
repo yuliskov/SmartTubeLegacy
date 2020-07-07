@@ -69,13 +69,6 @@ var EventUtils = {
         }, false);
     },
 
-    delayUntilPlayerBeInitialized: function(fn) {
-        var testFn = function() {
-            return Utils.$(YouTubeConstants.PLAYER_PLAY_BUTTON_SELECTOR);
-        };
-        Utils.delayTillTestFnSuccess(fn, testFn);
-    },
-
     delayUntilElementInit: function(selector, callback) {
         var $this = this;
         var el = Utils.$(selector);

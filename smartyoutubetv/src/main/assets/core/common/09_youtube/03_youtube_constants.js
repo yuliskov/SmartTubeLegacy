@@ -9,8 +9,6 @@ var YouTubeConstants = {
     APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
     SEARCH_FIELD_SELECTOR: '#search-input',
     PLAYER_EVENTS_RECEIVER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
-    PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
-    PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',
     // CSS Classes
     PLAYER_CONTAINER_CLASS: 'watch',
     // Other
@@ -119,7 +117,18 @@ var YouTubeSelectorsV2 = {
     SEARCH_PAGE_SUGGESTIONS: 'ytlr-search-suggestions',
     SEARCH_PAGE_KEYBOARD: 'ytlr-search-keyboard',
     SEARCH_PAGE_TEXT_BOX: 'ytlr-search-text-box',
-    OVERLAY_PANEL_BUTTON: 'yt-overlay-stage ytlr-button-renderer'
+    OVERLAY_PANEL_BUTTON: 'yt-overlay-stage ytlr-button-renderer',
+    PLAYER_NEXT_BUTTON: 'ytlr-skip-forward-button',
+    PLAYER_PREV_BUTTON: 'ytlr-skip-backward-button',
+    PLAYER_PLAY_BUTTON: 'ytlr-play-button',
+    PLAYER_CHANNEL_BUTTON: 'ytlr-video-owner-renderer',
+    PLAYER_BACK_BUTTON: 'ytlr-legend .ytlr-legend-item__icon--back',
+    PLAYER_MORE_BUTTON: 'ytlr-button-renderer.ytlr-transport-controls-renderer__more-options-button',
+    PLAYER_QUALITY_BUTTON: 'ytlr-quality-button',
+    PLAYER_ADD_TO_FAV_BUTTON: 'ytlr-button-renderer .material-icon-playlist-add',
+    PLAYER_LIKE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-thumb-up',
+    PLAYER_DISLIKE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-thumb-down',
+    PLAYER_SUBSCRIBE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-video-youtube'
 };
 
 // /**

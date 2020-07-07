@@ -114,44 +114,6 @@ var YouTubeUtils = {
         Utils.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
     },
 
-    getViewCount: function() {
-        var element = Utils.$(YouTubeSelectors.PLAYER_VIEW_COUNT);
-        if (element != null) {
-            // don't rely on , symbol parsing here! because it depends on localization
-            return element.innerHTML;
-        }
-
-        // new player ui
-        element = Utils.$(YouTubeSelectors.PLAYER_VIDEO_DETAILS);
-        if (element != null) {
-            var parts = element.innerHTML.split('•');
-            if (parts.length >= 2) {
-                return parts[1].trim();
-            }
-        }
-
-        return "";
-    },
-
-    getVideoDate: function() {
-        var element = Utils.$(YouTubeSelectors.PLAYER_UPLOAD_DATE);
-        if (element != null) {
-            // don't rely on : symbol parsing here! because it depends on localization
-            return element.innerHTML;
-        }
-
-        // new player ui
-        element = Utils.$(YouTubeSelectors.PLAYER_VIDEO_DETAILS);
-        if (element != null) {
-            var parts = element.innerHTML.split('•');
-            if (parts.length >= 3) {
-                return parts[2].trim();
-            }
-        }
-
-        return "";
-    },
-
     isPlayerClosed: function() {
         return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN); // NOTE: changed for kids
     },
@@ -285,19 +247,9 @@ var YouTubeUtils = {
         }
     },
 
-    togglePlayerOptions: function() {
-        var el = Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON);
-
-        if (el) {
-            EventUtils.triggerEnter(el); // click on options button
-        } else {
-            Log.e(this.TAG, "Oops. Player options button not found!!");
-        }
-    },
-
     resetPlayerOptions: function() {
-        if (Utils.$(YouTubeSelectors.PLAYER_MORE_BUTTON_TOGGLED)) { // options opened before
-            this.togglePlayerOptions(); // click on options button
+        if (YouTubeUiUtils.isPlayerOptionsToggled()) { // options opened before
+            YouTubeUiUtils.clickOnPlayerOptions(); // click on options button
         }
     },
 

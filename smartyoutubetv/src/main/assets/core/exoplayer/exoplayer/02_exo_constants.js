@@ -26,6 +26,24 @@ var PlayerActivityMapping = {
     // BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
     // BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
     // BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
+    BUTTON_USER_PAGE: YouTubeSelectorsV2.PLAYER_CHANNEL_BUTTON,
+    // multiple selectors: first that exists is used
+    // so now we can match buttons from the different app versions
+    BUTTON_NEXT: YouTubeSelectorsV2.PLAYER_NEXT_BUTTON,
+    BUTTON_PREV: YouTubeSelectorsV2.PLAYER_PREV_BUTTON,
+    BUTTON_SUGGESTIONS: 'button_suggestions', // fake button (use internal logic)
+    BUTTON_FAVORITES: YouTubeSelectorsV2.PLAYER_ADD_TO_FAV_BUTTON,
+    TRACK_ENDED: 'track_ended', // fake button (use internal logic)
+    VIDEO_STARTED: 'video_started',
+    BUTTON_BACK: YouTubeSelectorsV2.PLAYER_BACK_BUTTON // should come last
+};
+
+// java constants in js code
+var PlayerActivityMappingOld = {
+    VIDEO_CANCELED: 'video_canceled',
+    // BUTTON_LIKE: ['.material-icon-thumb-up.toggle-button', '.icon-like.toggle-button'],
+    // BUTTON_DISLIKE: ['.material-icon-thumb-down.toggle-button', '.icon-dislike.toggle-button'],
+    // BUTTON_SUBSCRIBE: ['.material-icon-video-youtube.toggle-button', '.icon-logo-lozenge.toggle-button'],
     BUTTON_USER_PAGE: YouTubeSelectors.PLAYER_CHANNEL_BUTTON,
     // multiple selectors: first that exists is used
     // so now we can match buttons from the different app versions
