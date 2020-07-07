@@ -10,7 +10,6 @@ var YouTubeUtils = {
     FIRST_REVISION: 1,
     VIDEO_SIGN: '#/watch/video',
     VIDEO_LIST_SIGN: '#/watch/loading?list',
-    CATALOG_SIGN: ['#/surface', '#/zylon-surface'],
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: ['#/channel', '#/zylon-detail-surface', '#/zylon-surface'],
     ACTIVE_ACCOUNT_KEY: 'yt.leanback.default::active-account',
@@ -234,27 +233,6 @@ var YouTubeUtils = {
         return key != null;
     },
 
-    addExitListener: function(callback) {
-        if (callback == null) {
-            return;
-        }
-
-        var $this = this;
-
-        EventUtils.addListener(YouTubeSelectors.OVERLAY_PANEL_CONTAINER, DefaultEvents.FOCUS, function() {
-            Log.d($this.TAG, "Overlay is shown!");
-
-            var rows = Utils.$$(YouTubeSelectors.OVERLAY_PANEL_MENU_ITEM);
-
-            // Since Exit dialog has only one menu item
-            var isOneRow = rows && rows.length == 1;
-            var isCatalog = Utils.contains(location.href, $this.CATALOG_SIGN);
-            if (isOneRow && isCatalog) {
-                callback();
-            }
-        });
-    },
-
     triggerBack: function() {
         EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
     },
@@ -362,5 +340,15 @@ var YouTubeUtils = {
         }
 
         return false;
+    },
+
+    isExitDialogShown: function(element) {
+        var rows = Utils.$$(YouTubeSelectorsV2.OVERLAY_PANEL_BUTTON, element);
+
+        // Since Exit dialog has only one menu item
+        var isOneRow = rows && rows.length == 1;
+        var isCatalog = Utils.contains(location.href, YouTubeConstants.CATALOG_SIGN);
+
+        return isOneRow && isCatalog;
     }
 };

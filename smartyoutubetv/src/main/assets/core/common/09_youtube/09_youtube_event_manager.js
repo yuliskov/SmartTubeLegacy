@@ -6,7 +6,7 @@ console.log("Scripts::Running script youtube_event_manager.js");
 
 var YouTubeEventManager = {
     TAG: 'YouTubeEventManager',
-    onExitDialogShownCallbacks: [],
+    onExitDialogShown: [],
     onSettingsAppVersionShown: [],
     onSearchPageShown: [],
     onGenericOverlayShown: [],
@@ -75,13 +75,17 @@ var YouTubeEventManager = {
             } else if (element.tagName == YouTubeTagsV2.SEARCH_PAGE) {
                 Log.d(this.TAG, "App Search page has been opened");
                 this.triggerCallbacks(this.onSearchPageShown, element);
-            } else if (element.tagName == YouTubeTagsV2.GENERIC_OVERLAY) {
+            } else if (element.tagName == YouTubeTagsV2.OVERLAY_PANEL) {
                 if (Utils.hasClass(element, YouTubeClassesV2.GENERIC_OVERLAY_HIDDEN)) {
                     Log.d(this.TAG, "App generic overlay has been hidden");
                     this.triggerCallbacks(this.onGenericOverlayHidden, element);
                 } else {
                     Log.d(this.TAG, "App generic overlay has been shown");
                     this.triggerCallbacks(this.onGenericOverlayShown, element);
+
+                    if (YouTubeUtils.isExitDialogShown(element)) {
+                        this.triggerCallbacks(this.onExitDialogShown, element);
+                    }
                 }
             }
 
@@ -119,8 +123,13 @@ var YouTubeEventManager = {
             Utils.arrayAdd(callbacks, callback);
         }
     },
+    removeCallback: function(callbacks, callback) {
+        if (Utils.arrayContains(callbacks, callback)) {
+            Utils.arrayRemove(callbacks, callback);
+        }
+    },
     addOnExitDialogShown: function(callback) {
-        this.addCallback(this.onExitDialogShownCallbacks, callback);
+        this.addCallback(this.onExitDialogShown, callback);
     },
     addOnSettingsAppVersionShown: function(callback) {
         this.addCallback(this.onSettingsAppVersionShown, callback);
@@ -136,6 +145,9 @@ var YouTubeEventManager = {
     },
     addOnUiChange: function(callback) {
         this.addCallback(this.onUiChange, callback);
+    },
+    removeOnUiChange: function(callback) {
+        this.removeCallback(this.onUiChange, callback);
     },
     addOnPlayerSuggestionsHidden: function(callback) {
         this.addCallback(this.onPlayerSuggestionsHidden, callback);

@@ -6,31 +6,18 @@ console.log("Scripts::Running script youtube_constants.js");
 
 var YouTubeConstants = {
     // CSS Selectors
-    APP_EVENTS_RECEIVER_SELECTOR: '#leanback', // div that receives keys events for app
-    DIALOG_WINDOW_SELECTOR: ['#dialog-stage', '#overlay-stage'],
-    DIALOG_CANCEL_BUTTON_SELECTOR: ['#dialog-cancel-button', '.overlay-partials-menu-item'],
-    DIALOG_OK_BUTTON_SELECTOR: ['#dialog-ok-button', '.overlay-partials-menu-item'],
     APP_CONTAINER_SELECTOR: '#leanback', // div that receives keys events for app,
     SEARCH_FIELD_SELECTOR: '#search-input',
     PLAYER_EVENTS_RECEIVER_SELECTOR: '#watch', // div that receives keys events for player (note: some events don't reach upper levels)
-    PLAYER_WRAPPER_SELECTOR: '.html5-video-container', // parent element of the 'video' tag
     PLAYER_MORE_BUTTON_SELECTOR: '#transport-more-button',
     PLAYER_PLAY_BUTTON_SELECTOR: '.icon-player-play',
-    SURFACE_CONTENT_SELECTOR: '#surface-content', // holds all right area content
-    OPTIONS_APP_KEY_SELECTOR: '.app-version-key',
-    OPTIONS_APP_VALUE_SELECTOR: '.app-version-value',
     // CSS Classes
-    ELEMENT_FOCUSED_CLASS: 'focused',
     PLAYER_CONTAINER_CLASS: 'watch',
-    MODEL_LOADED_CLASS: 'loaded',
-    // DOM Events
-    MODEL_CHANGED_EVENT: 'model:changed',
-    COMPONENT_FOCUS_EVENT: 'component-focus',
-    COMPONENT_BLUR_EVENT: 'component-blur',
     // Other
     PLAYER_URL_KEY: 'watch',
     OPTIONS_VERSION_TITLE: 'Version',
-    OPTIONS_DEVICE_TITLE: 'Device'
+    OPTIONS_DEVICE_TITLE: 'Device',
+    CATALOG_SIGN: ['#/surface', '#/zylon-surface']
 };
 
 /**
@@ -128,7 +115,11 @@ var YouTubeClassesV2 = {
 
 var YouTubeSelectorsV2 = {
     OPTIONS_APP_KEY_SELECTOR: '.ytlr-setting-app-version__app-version-key',
-    OPTIONS_APP_VALUE_SELECTOR: '.ytlr-setting-app-version__app-version-value'
+    OPTIONS_APP_VALUE_SELECTOR: '.ytlr-setting-app-version__app-version-value',
+    SEARCH_PAGE_SUGGESTIONS: 'ytlr-search-suggestions',
+    SEARCH_PAGE_KEYBOARD: 'ytlr-search-keyboard',
+    SEARCH_PAGE_TEXT_BOX: 'ytlr-search-text-box',
+    OVERLAY_PANEL_BUTTON: 'yt-overlay-stage ytlr-button-renderer'
 };
 
 // /**
@@ -144,7 +135,7 @@ var YouTubeSelectorsV2 = {
 var YouTubeTagsV2 = {
     SETTING_APP_VERSION: 'YTLR-SETTING-APP-VERSION',
     SEARCH_PAGE: 'YTLR-SEARCH-CONTAINER',
-    GENERIC_OVERLAY: 'YT-OVERLAY-STAGE',
+    OVERLAY_PANEL: 'YT-OVERLAY-STAGE',
     WATCH_PAGE: 'YTLR-WATCH-PAGE'
 };
 

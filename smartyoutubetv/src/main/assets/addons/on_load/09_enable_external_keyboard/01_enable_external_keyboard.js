@@ -91,4 +91,5 @@ function EnableExternalKeyboardAddon() {
     };
 }
 
-new EnableExternalKeyboardAddon().run();
+// TODO: V2: not working, input was removed in this version
+// new EnableExternalKeyboardAddon().run();

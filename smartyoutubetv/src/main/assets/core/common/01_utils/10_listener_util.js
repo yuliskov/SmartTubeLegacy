@@ -97,19 +97,6 @@ var ListenerUtil = {
         this.initDone = true;
 
         var $this = this;
-        var surface = Utils.$(YouTubeSelectors.SURFACE_AREA);
-
-        if (!surface || YouTubeUtils.isPlayerOpened()) { // running on early stage??
-            Log.d(this.TAG, "Can't instantiate root listener: " + YouTubeSelectors.SURFACE_AREA);
-
-            this.initDone = false;
-
-            setTimeout(function() {
-               $this.initModelChangeListener();
-            }, 1000);
-
-            return;
-        }
 
         var checkHandlers = function() {
             Log.d($this.TAG, "Running pending handlers... " + $this.handlers.length);
@@ -128,7 +115,8 @@ var ListenerUtil = {
             if ($this.handlers.length == 0) {
                 Log.d($this.TAG, "No pending handlers. Removing root listener...");
 
-                surface.removeEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
+                YouTubeEventManager.removeOnUiChange(onModelChanged);
+
                 $this.initDone = false;
 
                 return;
@@ -138,6 +126,7 @@ var ListenerUtil = {
         };
 
         Log.d(this.TAG, "Adding root listener...");
-        surface.addEventListener(YouTubeConstants.MODEL_CHANGED_EVENT, onModelChanged, false);
+
+        YouTubeEventManager.addOnUiChange(onModelChanged);
     }
 };

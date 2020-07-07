@@ -66,20 +66,29 @@ var Utils = {
         return (" " + elem.className + " ").indexOf(" " + cls + " ") > -1;
     },
 
-    $$: function(elementOrSelector) {
+    $$: function(elementOrSelector, rootElement) {
         if (!elementOrSelector) {
             return null;
         }
 
-        if (!this.isSelector(elementOrSelector))
-            return elementOrSelector;
+        if (!rootElement) {
+            rootElement = document;
+        }
 
-        return document.querySelectorAll(elementOrSelector);
+        if (!this.isSelector(elementOrSelector)) {
+            return elementOrSelector;
+        }
+
+        return rootElement.querySelectorAll(elementOrSelector);
     },
 
-    $: function(elementOrSelector) {
+    $: function(elementOrSelector, rootElement) {
         if (!elementOrSelector) {
             return null;
+        }
+
+        if (!rootElement) {
+            rootElement = document;
         }
 
         // allow to use arrays as selectors like ['a', 'b', 'c']
@@ -104,7 +113,7 @@ var Utils = {
         if (!this.isSelector(elementOrSelector))
             return elementOrSelector;
 
-        return document.querySelector(elementOrSelector);
+        return rootElement.querySelector(elementOrSelector);
     },
 
     appendHtml: function(el, str) {
