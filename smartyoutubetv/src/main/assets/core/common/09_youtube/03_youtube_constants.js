@@ -128,7 +128,9 @@ var YouTubeSelectorsV2 = {
     PLAYER_ADD_TO_FAV_BUTTON: 'ytlr-button-renderer .material-icon-playlist-add',
     PLAYER_LIKE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-thumb-up',
     PLAYER_DISLIKE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-thumb-down',
-    PLAYER_SUBSCRIBE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-video-youtube'
+    PLAYER_SUBSCRIBE_BUTTON: 'ytlr-toggle-button-renderer .material-icon-video-youtube',
+    PLAYER_CONTAINER_ENABLED: 'ytlr-player.ytlr-player--enabled',
+    PLAYER_EVENTS_RECEIVER: 'ytlr-watch-page'
 };
 
 // /**

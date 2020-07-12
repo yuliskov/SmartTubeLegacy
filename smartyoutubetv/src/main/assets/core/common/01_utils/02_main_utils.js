@@ -79,7 +79,13 @@ var Utils = {
             return elementOrSelector;
         }
 
-        return rootElement.querySelectorAll(elementOrSelector);
+        var elems = rootElement.querySelectorAll(elementOrSelector);
+
+        if (!elems.length) {
+            Log.w(this.TAG, "Elements not found: " + elementOrSelector);
+        }
+
+        return elems;
     },
 
     $: function(elementOrSelector, rootElement) {
@@ -110,10 +116,15 @@ var Utils = {
             return el;
         }
 
-        if (!this.isSelector(elementOrSelector))
-            return elementOrSelector;
+        if (!this.isSelector(elementOrSelector)) return elementOrSelector;
 
-        return rootElement.querySelector(elementOrSelector);
+        var elem = rootElement.querySelector(elementOrSelector);
+
+        if (!elem) {
+            Log.w(this.TAG, "Element not found: " + elementOrSelector);
+        }
+
+        return elem;
     },
 
     appendHtml: function(el, str) {

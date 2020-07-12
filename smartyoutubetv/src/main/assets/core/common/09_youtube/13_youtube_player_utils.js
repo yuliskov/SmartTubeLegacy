@@ -6,6 +6,8 @@ console.log("Scripts::Running script youtube_player_utils.js");
 
 var YouTubePlayerUtils = {
     TAG: 'YouTubePlayerUtils',
+    VIDEO_SIGN: '#/watch/video',
+    VIDEO_LIST_SIGN: '#/watch/loading?list',
     clickOnPlayerOptions: function() {
         var el = Utils.$(YouTubeSelectorsV2.PLAYER_MORE_BUTTON);
 
@@ -30,7 +32,7 @@ var YouTubePlayerUtils = {
         }
     },
     closePlayerControls: function() {
-        if (this.isOverlayOpened()) {
+        if (this.isPlayerOverlayOpened()) {
             Log.d(this.TAG, "Closing player favorites...");
 
             EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
@@ -84,6 +86,10 @@ var YouTubePlayerUtils = {
     disablePlayerSuggestions: function() {
         Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST);
     },
+    showPlayerSuggestions: function() {
+        EventUtils.triggerEvent(YouTubeSelectorsV2.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+        EventUtils.triggerEvent(YouTubeSelectorsV2.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.DOWN);
+    },
     getPlayerRevision: function() {
         var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
 
@@ -94,29 +100,39 @@ var YouTubePlayerUtils = {
         return this.FIRST_REVISION;
     },
     isPlayerClosed: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN); // NOTE: changed for kids
+        var isClosed = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN);
+        Log.d(this.TAG, "Player is closed: " + isClosed);
+        return isClosed; // NOTE: changed for kids
     },
     isAllPlayerUIClosed: function() {
-        return !this.isPlayerControlsOpened() && !this.isPlayerSuggestionsOpened() && !this.isOverlayOpened();
+        return !this.isPlayerControlsOpened() && !this.isPlayerSuggestionsOpened() && !this.isPlayerOverlayOpened();
     },
     isPlayerControlsOpened: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_CONTROLS), YouTubeClasses.ELEMENT_FOCUSED);
+        var isOpened = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_CONTROLS), YouTubeClasses.ELEMENT_FOCUSED);
+        Log.d(this.TAG, "Player controls opened: " + isOpened);
+        return isOpened;
     },
     isPlayerSuggestionsOpened: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
+        var isOpened = Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
+        Log.d(this.TAG, "Player suggestions opened: " + isOpened);
+        return isOpened;
     },
     isPlayerOpened: function() {
-        var isOpened =
-            location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
-            location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
-        Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
+        var isOpened = Utils.$(YouTubeSelectorsV2.PLAYER_CONTAINER_ENABLED);
+        Log.d(this.TAG, "Player is opened: " + isOpened);
+        return isOpened;
+    },
+    isPlayerOverlayOpened: function() {
+        var overlay = Utils.$(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
+        var isOpened = overlay && !Utils.hasClass(overlay, YouTubeClasses.HIDDEN);
+        Log.d(this.TAG, "Player is overlay opened: " + isOpened);
         return isOpened;
     },
     dumpUiState: function() {
         Log.d(this.TAG, "Is player opened: " + this.isPlayerOpened());
         Log.d(this.TAG, "Is player controls opened: " + this.isPlayerControlsOpened());
         Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsOpened());
-        Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
+        Log.d(this.TAG, "Is player overlay opened: " + this.isPlayerOverlayOpened());
     },
     isPlayerVisible: function() {
         return Utils.isVisible('video');

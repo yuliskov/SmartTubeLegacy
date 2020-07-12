@@ -116,18 +116,16 @@ function SuggestionsFakeButton(selector) {
 
         this.openRetryTimes--;
 
-        if (YouTubeUtils.isOverlayOpened()) { // check favorites is showed
+        if (YouTubePlayerUtils.isPlayerOverlayOpened()) { // check favorites is showed
             Log.d(this.TAG, "Closing overlay...");
-            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
+            YouTubeUtils.pressEsc();
         }
 
         Log.d(this.TAG, "Suggestions not showed... trying to open...");
 
         // we assume that no interface currently shown
         // press multiple times util suggestion will have focus
-        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
-        EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.DOWN);
+        YouTubePlayerUtils.showPlayerSuggestions();
 
         var $this = this;
         this.openTimeout = setTimeout(function() {

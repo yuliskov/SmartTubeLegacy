@@ -8,8 +8,6 @@ var YouTubeUtils = {
     TAG: 'YouTubeUtils',
     LATEST_REVISION: 0,
     FIRST_REVISION: 1,
-    VIDEO_SIGN: '#/watch/video',
-    VIDEO_LIST_SIGN: '#/watch/loading?list',
     SEARCH_SIGN: '#/search',
     CHANNEL_SIGN: ['#/channel', '#/zylon-detail-surface', '#/zylon-surface'],
     ACTIVE_ACCOUNT_KEY: 'yt.leanback.default::active-account',
@@ -81,11 +79,6 @@ var YouTubeUtils = {
         return isOpened;
     },
 
-    isOverlayOpened: function() {
-        var overlay = Utils.$(YouTubeSelectors.OVERLAY_PANEL_CONTAINER);
-        return overlay && !Utils.hasClass(overlay, YouTubeClasses.HIDDEN);
-    },
-
     isDisabled: function(elem) {
         var hasClass = Utils.hasClass(elem, YouTubeClasses.ELEMENT_DISABLED);
         console.log("ExoUtils: check elem is disabled: " + EventUtils.toSelector(elem) + ' ' + hasClass);
@@ -126,6 +119,20 @@ var YouTubeUtils = {
         if (document.activeElement) {
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.UP);
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.UP);
+        }
+    },
+
+    pressDown: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.DOWN);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.DOWN);
+        }
+    },
+
+    pressEsc: function() {
+        if (document.activeElement) {
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
+            EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
     },
 

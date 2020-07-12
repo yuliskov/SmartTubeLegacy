@@ -11,11 +11,11 @@ function FavoriteButton(selector) {
     this.stateless = true;
 
     this.decoratorCondition = function() {
-        return !YouTubeUtils.isOverlayOpened();
+        return !YouTubePlayerUtils.isPlayerOverlayOpened();
     };
 
     this.isOverlayOpened = function() {
-        return YouTubeUtils.isOverlayOpened();
+        return YouTubePlayerUtils.isPlayerOverlayOpened();
     };
 
     this.decorator.apply(this);
