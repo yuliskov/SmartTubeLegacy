@@ -34,56 +34,6 @@ var YouTubeUtils = {
         return hasClass;
     },
 
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    hidePlayerBackground: function() {
-        Utils.$('body').style.backgroundImage = 'initial';
-
-        // NOTE: for kids
-        // var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        // if (playerEventsRoot) {
-        //     playerEventsRoot.style.backgroundColor = 'initial';
-        // }
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    showPlayerBackground: function() {
-        Utils.$('body').style.backgroundImage = '';
-
-        // NOTE: for kids
-        // var playerEventsRoot = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        // if (playerEventsRoot) {
-        //     playerEventsRoot.style.backgroundColor = '';
-        // }
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    enablePlayerSuggestions: function() {
-        Utils.show(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST);
-    },
-
-    /**
-     * For other hidden ui parts see exoplayer.css
-     */
-    disablePlayerSuggestions: function() {
-        Utils.hide(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST);
-    },
-
-    getPlayerRevision: function() {
-        var title = Utils.$(YouTubeSelectors.PLAYER_NEW_TITLE);
-
-        if (title) {
-            return this.LATEST_REVISION;
-        }
-
-        return this.FIRST_REVISION;
-    },
-
     show: function(elementOrSelector) {
         var el = this.$(elementOrSelector);
 
@@ -114,30 +64,6 @@ var YouTubeUtils = {
         Utils.removeClass(elem, YouTubeClasses.ELEMENT_FOCUSED);
     },
 
-    isPlayerClosed: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER), YouTubeClasses.HIDDEN); // NOTE: changed for kids
-    },
-
-    isAllPlayerUIClosed: function() {
-        return !this.isPlayerControlsOpened() && !this.isPlayerSuggestionsOpened() && !this.isOverlayOpened();
-    },
-
-    isPlayerControlsOpened: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_CONTROLS), YouTubeClasses.ELEMENT_FOCUSED);
-    },
-
-    isPlayerSuggestionsOpened: function() {
-        return Utils.hasClass(Utils.$(YouTubeSelectors.PLAYER_SUGGESTIONS_LIST), YouTubeClasses.ELEMENT_FOCUSED);
-    },
-
-    isPlayerOpened: function() {
-        var isOpened =
-            location.hash.indexOf(this.VIDEO_SIGN) != -1    ||
-            location.hash.indexOf(this.VIDEO_LIST_SIGN) != -1;
-        Log.d(this.TAG, "Player is opened: " + isOpened + ", hash: " + location.hash);
-        return isOpened;
-    },
-
     isSearchOpened: function() {
         var isOpened = this.isPageOpened(YouTubeSelectors.SEARCH_PAGE);
         Log.d(this.TAG, "Search is opened?: " + isOpened);
@@ -166,25 +92,6 @@ var YouTubeUtils = {
         return hasClass;
     },
 
-    isPlayerVisible: function() {
-        return Utils.isVisible('video');
-    },
-
-    isPlayerPaused: function() {
-        var v = Utils.$('video');
-        return v && v.paused;
-    },
-
-    playerPlay: function() {
-        var v = Utils.$('video');
-        v && v.pause();
-        v && v.play();
-    },
-
-    getPlayer: function() {
-        return Utils.$('video');
-    },
-
     isPageOpened: function(elementOrSelector) {
         return !Utils.hasClass(Utils.$(elementOrSelector), YouTubeClasses.HIDDEN);
     },
@@ -199,38 +106,13 @@ var YouTubeUtils = {
         EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
     },
 
-    openPlayerControls: function() {
-        if (this.isPlayerOpened()) {
-            Log.d(this.TAG, "Showing player ui...");
-            EventUtils.triggerEnter(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
-        }
-    },
-
-    closePlayerControls: function() {
-        if (this.isOverlayOpened()) {
-            Log.d(this.TAG, "Closing player favorites...");
-
-            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.OVERLAY_PANEL, DefaultEvents.KEY_UP, DefaultKeys.ESC);
-        } else if (this.isPlayerControlsOpened() || this.isPlayerSuggestionsOpened()) {
-            Log.d(this.TAG, "Closing player suggestions...");
-
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
-            EventUtils.triggerEvent(YouTubeSelectors.PLAYER_EVENTS_RECEIVER, DefaultEvents.KEY_UP, DefaultKeys.ESC);
-        }
-    },
-
     pressBack: function() {
-        if (this.isPlayerOpened()) {
+        if (YouTubePlayerUtils.isPlayerOpened()) {
             Log.d(this.TAG, "Pressing BACK...");
 
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_DOWN, DefaultKeys.ESC);
             EventUtils.triggerEvent(document.activeElement, DefaultEvents.KEY_UP, DefaultKeys.ESC);
         }
-    },
-
-    isExoPlayerOpen: function() {
-        return this.sExoPlayerOpen;
     },
 
     moveRight: function() {
@@ -247,30 +129,10 @@ var YouTubeUtils = {
         }
     },
 
-    resetPlayerOptions: function() {
-        if (YouTubeUiUtils.isPlayerOptionsToggled()) { // options opened before
-            YouTubeUiUtils.clickOnPlayerOptions(); // click on options button
-        }
-    },
-
     resetFocus: function() {
         var root = Utils.$(YouTubeSelectors.PLAYER_EVENTS_RECEIVER);
 
         root && root.focus();
-    },
-
-    dumpUiState: function() {
-        Log.d(this.TAG, "Is player opened: " + this.isPlayerOpened());
-        Log.d(this.TAG, "Is player controls opened: " + this.isPlayerControlsOpened());
-        Log.d(this.TAG, "Is player suggestions opened: " + this.isPlayerSuggestionsOpened());
-        Log.d(this.TAG, "Is player overlay opened: " + this.isOverlayOpened());
-    },
-
-    closePlayerIfOpened: function() {
-        if (this.isPlayerOpened()) {
-            Log.d(this.TAG, "Closing player...");
-            this.pressBack();
-        }
     },
 
     /**
@@ -302,5 +164,16 @@ var YouTubeUtils = {
         var isCatalog = Utils.contains(location.href, YouTubeConstants.CATALOG_SIGN);
 
         return isOneRow && isCatalog;
+    },
+
+    clickOnSearchField: function() {
+        EventUtils.triggerEvent(
+            YouTubeSelectors.SEARCH_INPUT_FIELD,
+            DefaultEvents.ON_TEXT_TYPE,
+            DefaultKeys.ENTER);
+    },
+
+    clickOnStartSearchButton: function() {
+        EventUtils.triggerEnter(YouTubeSelectors.SEARCH_START_BUTTON);
     }
 };

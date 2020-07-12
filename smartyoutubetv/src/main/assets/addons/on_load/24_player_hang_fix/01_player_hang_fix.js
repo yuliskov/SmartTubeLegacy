@@ -18,10 +18,10 @@ function PlayerHangFixAddon() {
     };
 
     this.pressOnPlayButton = function() {
-        if (YouTubeUtils.isPlayerVisible() && YouTubeUtils.isPlayerPaused()) {
-            YouTubeUtils.playerPlay();
+        if (YouTubePlayerUtils.isPlayerVisible() && YouTubePlayerUtils.isPlayerPaused()) {
+            YouTubePlayerUtils.playerPlay();
             setTimeout(function() {
-                YouTubeUtils.isPlayerPaused() && EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
+                YouTubePlayerUtils.isPlayerPaused() && EventUtils.triggerEnter(YouTubeSelectors.BUTTON_BACK);
             }, this.QUIT_VIDEO_TIMEOUT);
         }
     };

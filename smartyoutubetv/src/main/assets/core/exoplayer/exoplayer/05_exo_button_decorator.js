@@ -14,7 +14,7 @@ function ExoButtonDecorator() {
     this.doPressOnOptionsBtn = function() {
         Log.d(this.TAG, "clicking on options button");
 
-        YouTubeUiUtils.clickOnPlayerOptions();
+        YouTubePlayerUtils.clickOnPlayerOptions();
     };
 
     this.setCheckedWrapper = function(callback, btn) {
@@ -35,7 +35,7 @@ function ExoButtonDecorator() {
             this.callbackStack.shift(); // at least one item should be there
 
             Log.e(this.TAG, "Can't find element. Running callback anyway.");
-            YouTubeUtils.dumpUiState();
+            YouTubePlayerUtils.dumpUiState();
             callback();
         } else if (!objExists) {
             Log.d(this.TAG, 'set checked wrapper: btn not initialized: ' + btn.selector);

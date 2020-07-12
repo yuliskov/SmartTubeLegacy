@@ -40,8 +40,8 @@ function ExternalPlayerWatcherAddon() {
     };
 
     this.checkPlayerState = function() {
-        var allPlayersActive = YouTubeUtils.isPlayerOpened() && YouTubeUtils.isExoPlayerOpen();
-        var controlsClosed = YouTubeUtils.isAllPlayerUIClosed();
+        var allPlayersActive = YouTubePlayerUtils.isPlayerOpened() && YouTubePlayerUtils.isExoPlayerOpen();
+        var controlsClosed = YouTubePlayerUtils.isAllPlayerUIClosed();
         return allPlayersActive && controlsClosed;
     };
 }

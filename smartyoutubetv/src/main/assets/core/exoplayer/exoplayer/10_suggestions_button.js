@@ -18,7 +18,7 @@ function SuggestionsWatcher(host) {
 
             console.log("SuggestionsWatcher: sending close signal to host...");
 
-            if (YouTubeUtils.isAllPlayerUIClosed()) {
+            if (YouTubePlayerUtils.isAllPlayerUIClosed()) {
                 $this.host.suggestionsIsClosed();
             } else {
                 $this.host.needToCloseSuggestions();
@@ -95,7 +95,7 @@ function SuggestionsFakeButton(selector) {
     Log.d(this.TAG, "Creating " + this.TAG);
 
     this.tryToOpenSuggestions = function() {
-        var suggestionsShown = YouTubeUtils.isPlayerSuggestionsOpened();
+        var suggestionsShown = YouTubePlayerUtils.isPlayerSuggestionsOpened();
 
         if (suggestionsShown) {
             Log.d(this.TAG, "Success. Suggestions has been shown!");
@@ -104,7 +104,7 @@ function SuggestionsFakeButton(selector) {
             return;
         }
  
-        if (!YouTubeUtils.isPlayerOpened()) {
+        if (!YouTubePlayerUtils.isPlayerOpened()) {
             Log.d(this.TAG, "Error. Player is closed. Can't show the suggestions.");
             return;
         }
@@ -136,7 +136,7 @@ function SuggestionsFakeButton(selector) {
     };
 
     this.openSuggestions = function() {
-        YouTubeUtils.enablePlayerSuggestions();
+        YouTubePlayerUtils.enablePlayerSuggestions();
         this.tryToOpenSuggestions();
 
         // start point
@@ -203,10 +203,10 @@ function SuggestionsFakeButton(selector) {
 
     this.setChecked = function(doChecked) {
         if (doChecked) { // fake btn can only be checked
-            if (!YouTubeUtils.isPlayerClosed()) {
+            if (!YouTubePlayerUtils.isPlayerClosed()) {
                 Log.d(this.TAG, "opening suggestions");
-                YouTubeUtils.enablePlayerSuggestions();
-                YouTubeUtils.hidePlayerBackground();
+                YouTubePlayerUtils.enablePlayerSuggestions();
+                YouTubePlayerUtils.hidePlayerBackground();
                 this.openSuggestions();
             } else {
                 this.sendClose();

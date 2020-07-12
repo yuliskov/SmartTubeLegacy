@@ -12,7 +12,7 @@ function GlobalAfrFixAddon() {
 
     this.overrideVideoSrc = function() {
         var $this = this;
-        var v = YouTubeUtils.getPlayer();
+        var v = YouTubePlayerUtils.getPlayer();
 
         if (!v) {
             setTimeout(function() {

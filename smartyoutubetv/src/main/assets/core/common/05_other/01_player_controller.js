@@ -26,7 +26,7 @@ var PlayerController = {
     setPosition2: function(position, onFail) {
         var $this = this;
 
-        var player = YouTubeUtils.getPlayer();
+        var player = YouTubePlayerUtils.getPlayer();
 
         switch (position) {
             case this.POSITION_END:
@@ -50,7 +50,7 @@ var PlayerController = {
     setPosition: function(position, onFail) {
         var $this = this;
 
-        var player = YouTubeUtils.getPlayer();
+        var player = YouTubePlayerUtils.getPlayer();
 
         var url = this.getPlayerSrc();
 
@@ -92,7 +92,7 @@ var PlayerController = {
         var $this = this;
 
         setTimeout(function() {
-            var player = YouTubeUtils.getPlayer();
+            var player = YouTubePlayerUtils.getPlayer();
 
             if (player) {
                 Log.d($this.TAG, "Checking player src, position and duration: " + player.src + ' ' + player.currentTime + ' ' + player.duration + ' ' + checkUrl);

@@ -66,8 +66,8 @@ window.ExoUtils = {
             return;
         }
 
-        YouTubeUtils.hidePlayerBackground();
-        YouTubeUtils.disablePlayerSuggestions();
+        YouTubePlayerUtils.hidePlayerBackground();
+        YouTubePlayerUtils.disablePlayerSuggestions();
         //this.preparePlayer();
         new SuggestionsWatcher(null); // init watcher
 
@@ -94,8 +94,8 @@ window.ExoUtils = {
             states[PlayerActivity.BUTTON_NEXT] = null;
         }
 
-        if (YouTubeUtils.isPlayerClosed()) {
-            YouTubeUtils.showPlayerBackground();
+        if (YouTubePlayerUtils.isPlayerClosed()) {
+            YouTubePlayerUtils.showPlayerBackground();
         }
 
         Log.d(this.TAG, "getButtonStates: " + JSON.stringify(states));
@@ -114,7 +114,7 @@ window.ExoUtils = {
         }
 
         if (tries > 0) {
-            if (YouTubeUtils.isAllPlayerUIClosed()) {
+            if (YouTubePlayerUtils.isAllPlayerUIClosed()) {
                 Log.d(this.TAG, "Player's ui closed. Running callback...");
 
                 clearTimeout(this.resetPlayerUITimeout);
@@ -161,7 +161,7 @@ window.ExoUtils = {
 
         SuggestionsWatcher.disable();
         OverlayWatcher.disable();
-        YouTubeUtils.resetPlayerOptions();
+        YouTubePlayerUtils.resetPlayerOptions();
         // WARN: don't reset focus here!!!
         //YouTubeUtils.resetFocus();
 
@@ -209,8 +209,8 @@ window.ExoUtils = {
     cleanupOnClose: function() {
         SuggestionsWatcher.disable();
         OverlayWatcher.disable();
-        YouTubeUtils.closePlayerControls();
-        YouTubeUtils.resetPlayerOptions();
+        YouTubePlayerUtils.closePlayerControls();
+        YouTubePlayerUtils.resetPlayerOptions();
         YouTubeUtils.resetFocus();
     },
 

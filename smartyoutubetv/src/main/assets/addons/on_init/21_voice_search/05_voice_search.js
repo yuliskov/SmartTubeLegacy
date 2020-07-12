@@ -83,7 +83,7 @@ window.VoiceSearch = {
             return;
         }
 
-        YouTubeUtils.closePlayerIfOpened();
+        YouTubePlayerUtils.closePlayerIfOpened();
 
         location.hash = this.SEARCH_PAGE_URL;
     },
@@ -110,13 +110,13 @@ window.VoiceSearch = {
     },
 
     commitChanges: function() {
-        YouTubeUiUtils.clickOnSearchField();
+        YouTubeUtils.clickOnSearchField();
     },
 
     selectResultsRow: function() {
         // wait till search complete
         setTimeout(function() {
-            YouTubeUiUtils.clickOnStartSearchButton();
+            YouTubeUtils.clickOnStartSearchButton();
         }, 1000);
     },
 

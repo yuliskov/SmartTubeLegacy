@@ -12,7 +12,7 @@ function BackButton(selector, states) {
     this.TAG = 'BackButton';
 
     this.pressBackOrRetry = function() {
-        if (this.retryTimes <= 0 || YouTubeUtils.isPlayerClosed()) {
+        if (this.retryTimes <= 0 || YouTubePlayerUtils.isPlayerClosed()) {
             return;
         }
 
@@ -28,7 +28,7 @@ function BackButton(selector, states) {
         //     YouTubeUtils.pressBack();
         // }
 
-        if (YouTubeUtils.isPlayerClosed()) {
+        if (YouTubePlayerUtils.isPlayerClosed()) {
             return;
         }
 
@@ -47,9 +47,9 @@ function BackButton(selector, states) {
     this.setChecked = function(doChecked) {
         console.log("BackButton: setChecked " + this.selector + " " + doChecked);
         if (doChecked) {
-            YouTubeUtils.showPlayerBackground();
+            YouTubePlayerUtils.showPlayerBackground();
 
-            YouTubeUtils.getPlayer().backPressed();
+            YouTubePlayerUtils.getPlayer().backPressed();
 
             this.pressBackOrRetry();
         }

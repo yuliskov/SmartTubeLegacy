@@ -9,7 +9,7 @@ function VideoCanceledButton(selector) {
     this.stateless = true;
 
     this.getChecked = function() {
-        return YouTubeUtils.isPlayerClosed();
+        return YouTubePlayerUtils.isPlayerClosed();
     };
 
     this.setChecked = function(doChecked) {

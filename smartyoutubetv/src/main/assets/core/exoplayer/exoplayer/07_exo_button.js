@@ -29,7 +29,7 @@ function ExoButton(selector) {
     };
 
     this.getChecked = function() {
-        if (YouTubeUtils.isPlayerClosed()) {
+        if (YouTubePlayerUtils.isPlayerClosed()) {
             return null; // element not exists (see ActionReceiver.java for details)
         }
 
@@ -49,7 +49,7 @@ function ExoButton(selector) {
     };
     
     this.setChecked = function(doChecked) {
-        if (YouTubeUtils.isPlayerClosed()) {
+        if (YouTubePlayerUtils.isPlayerClosed()) {
             Log.d(this.TAG, "setChecked: video is closed already... do nothing: " + this.selector);
             return;
         }

@@ -46,14 +46,14 @@ function ScreenMirrorAddon() {
 
         if (!this.scrChanged) {
             if (DeviceUtils.isMirrorEnabled() && DeviceUtils.isBrowserInBackground()) { // Suggestions reboot videos fix
-                if (!YouTubeUtils.isExoPlayerOpen()) {
+                if (!YouTubePlayerUtils.isExoPlayerOpen()) {
                     DeviceUtils.sendMessage(this.MESSAGE_VIDEO_PAUSED, video.paused);
 
                     // force to resend mirror info
                     video.listeners['playing'][0]({type: 'playing', isTrusted: true});
                     video.listeners['pause'][0]({type: 'pause', isTrusted: true});
 
-                    YouTubeUtils.closePlayerControls(); // FIX: suggestions accidentally opened on pause (Pro Alt)
+                    YouTubePlayerUtils.closePlayerControls(); // FIX: suggestions accidentally opened on pause (Pro Alt)
                 }
             }
         }

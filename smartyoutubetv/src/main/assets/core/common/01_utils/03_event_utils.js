@@ -63,7 +63,7 @@ var EventUtils = {
     addPlaybackListener: function(listener) {
         // do every time when video loads:
         window.addEventListener(DefaultEvents.HASH_CHANGE, function(){
-            if (YouTubeUtils.isPlayerOpened()) {
+            if (YouTubePlayerUtils.isPlayerOpened()) {
                 Utils.postSmallDelayed(listener.onPlaybackEvent, listener); // video initialized with small delay
             }
         }, false);

@@ -10,9 +10,9 @@ function VideoStartedButton(selector) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && YouTubeUtils.isPlayerOpened()) {
+        if (doChecked && YouTubePlayerUtils.isPlayerOpened()) {
             Log.d(this.TAG, "imitate playing...");
-            YouTubeUtils.getPlayer().imitatePlaying();
+            YouTubePlayerUtils.getPlayer().imitatePlaying();
         }
     };
 }

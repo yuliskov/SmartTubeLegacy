@@ -22,15 +22,15 @@ function TrackEndFakeButton(selector, states) {
     };
 
     this.setChecked = function(doChecked) {
-        if (doChecked && !YouTubeUtils.isPlayerClosed()) {
-            YouTubeUtils.enablePlayerSuggestions();
-            YouTubeUtils.showPlayerBackground();
+        if (doChecked && !YouTubePlayerUtils.isPlayerClosed()) {
+            YouTubePlayerUtils.enablePlayerSuggestions();
+            YouTubePlayerUtils.showPlayerBackground();
 
             // update history position
             // YouTubeUtils.getPlayer().properties.currentTime = states['video_position'];
             // Log.d(this.TAG, "Current time is set to " + YouTubeUtils.getPlayer().currentTime);
 
-            YouTubeUtils.getPlayer().imitateEnding();
+            YouTubePlayerUtils.getPlayer().imitateEnding();
 
             // var $this = this;
             // PlayerController.jumpToEnd(function() {

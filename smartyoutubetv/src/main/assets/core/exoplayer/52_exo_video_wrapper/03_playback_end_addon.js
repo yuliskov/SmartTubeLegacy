@@ -18,7 +18,7 @@ function PlaybackEndAddon() {
     this.onSrcChange = function(video) {
         // Src may be changed after video is closed.
         // Ignore such events.
-        if (YouTubeUtils.isPlayerOpened()) {
+        if (YouTubePlayerUtils.isPlayerOpened()) {
             Log.d(this.TAG, "Start imitate playing...");
             this.imitatePlayingCheck(video);
         } else {
