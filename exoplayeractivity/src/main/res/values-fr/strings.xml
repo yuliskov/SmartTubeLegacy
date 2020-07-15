@@ -75,5 +75,12 @@
     <string name="btn_afr">AFR</string>
     <string name="enable_autoframerate_resolution">Commutateur de résolution</string>
     <string name="exo_open_player">Ouvrir</string>
-    <string name="exo_video_link_error">Oups. Il semble que le lien vidéo est un problème. Sortir...</string>
+    <string name="exo_video_link_error">Oups. Il semble que le lien vidéo est un problème...</string>
+    <string name="exo_video_decoder_error">Oups. Il semble que le format vidéo sélectionné n\'est pas pris en charge par votre appareil.</string>
+    <string name="default_subtitle">Par défaut (Aucun)</string>
+    <string name="default_media">Par défaut (Optimal)</string>
+    <string name="set_audio_delay">Retard audio en millisecondes</string>
+    <string name="restart_video_to_apply_audio_delay">Vous devez redémarrer la vidéo pour appliquer le délai</string>
+    <string name="enable_autoframerate_60fps_correction">correction fps</string>
+    <string name="btn_search">Rechercher</string>
 </resources>
