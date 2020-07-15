@@ -7,19 +7,19 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 
 import java.io.InputStream;
 
-public class JsonBrowseParser {
+public class JsonBrowseAdParser {
     // All objects with property 'tvMastheadRenderer'
     // ex: https://github.com/json-path/JsonPath
     private static final JsonPath TV_MASTHEAD_SECTION_ANY = JsonPath.compile("$..[?(@.tvMastheadRenderer)]");
 
     private final DocumentContext mParser;
 
-    public JsonBrowseParser(InputStream content) {
+    public JsonBrowseAdParser(InputStream content) {
         mParser = ParserUtils.createJsonInfoParser(content);
     }
 
-    public static JsonBrowseParser parse(InputStream content) {
-        return new JsonBrowseParser(content);
+    public static JsonBrowseAdParser parse(InputStream content) {
+        return new JsonBrowseAdParser(content);
     }
 
     public boolean removeMastHead() {

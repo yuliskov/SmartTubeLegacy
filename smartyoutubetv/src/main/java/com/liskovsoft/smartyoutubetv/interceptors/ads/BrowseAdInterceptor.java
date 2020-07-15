@@ -5,13 +5,14 @@ import android.webkit.WebResourceResponse;
 
 import com.liskovsoft.m3uparser.core.utils.Strings;
 import com.liskovsoft.sharedutils.helpers.AssetHelper;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.interceptors.ads.contentfilter.ReplacingInputStream;
 import com.liskovsoft.smartyoutubetv.misc.SmartUtils;
 import com.liskovsoft.smartyoutubetv.misc.UserAgentManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
+import okhttp3.MediaType;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -23,8 +24,8 @@ import java.util.Map;
  * Main trick is to change user agent to Cobalt.<br/>
  * NOTE: set user agent via js produce next error: Refused to set unsafe header "User-Agent"
  */
-public class BrowseInterceptor extends RequestInterceptor {
-    private static final String TAG = BrowseInterceptor.class.getSimpleName();
+public class BrowseAdInterceptor extends RequestInterceptor {
+    private static final String TAG = BrowseAdInterceptor.class.getSimpleName();
     private static final String BROWSE_URL = "/youtubei/v1/browse";
     private static final String HOME_ID = "\"browseId\":\"default\"";
     private static final String TOPICS_ID = "\"browseId\":\"FEtopics\"";
@@ -39,7 +40,7 @@ public class BrowseInterceptor extends RequestInterceptor {
     private boolean mIsEnableVideoMenu;
     private boolean mIsCompatibleSettings;
 
-    public BrowseInterceptor(Context context) {
+    public BrowseAdInterceptor(Context context) {
         super(context);
         mContext = context;
         mPrefs = CommonApplication.getPreferences();
@@ -95,9 +96,6 @@ public class BrowseInterceptor extends RequestInterceptor {
             return null;
         }
 
-        // TEST ONLY!!!
-        //InputStream urlData = getTestResponse();
-
         InputStream urlData = postJsonData(url, postData, mHeaders);
 
         if (urlData == null) {
@@ -105,11 +103,18 @@ public class BrowseInterceptor extends RequestInterceptor {
             return null;
         }
 
-        Log.d(TAG, "Searching and removing tv masthead section...");
+        JsonBrowseAdParser parser = new JsonBrowseAdParser(urlData);
 
-        ReplacingInputStream replacingInputStream = new ReplacingInputStream(urlData, "tvMastheadRenderer", "broken-tvMastheadRend");
+        if (Log.getLogType().equals(Log.LOG_TYPE_FILE)) {
+            Log.d(TAG, "Searching and removing tv masthead section..." + Helpers.toString(parser.toStream()));
+        }
 
-        return createResponse("application/json", null, replacingInputStream);
+
+        if (parser.removeMastHead()) {
+            return createResponse(MediaType.parse("application/json"), parser.toStream());
+        }
+
+        return null;
     }
 
     private WebResourceResponse filterLongPressVideoMenu(String url) {

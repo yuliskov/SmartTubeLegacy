@@ -6,9 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -52,13 +50,13 @@ public class JsonBrowseParserTest {
 
     @Test
     public void testReturnValue() {
-        JsonBrowseParser parser = JsonBrowseParser.parse(mResultInfo2);
+        JsonBrowseAdParser parser = JsonBrowseAdParser.parse(mResultInfo2);
 
         assertFalse(parser.removeMastHead());
     }
 
     private void testRemoveMasthead(InputStream origin, InputStream result) {
-        JsonBrowseParser parser = JsonBrowseParser.parse(origin);
+        JsonBrowseAdParser parser = JsonBrowseAdParser.parse(origin);
         if (parser.removeMastHead()) {
             InputStream build = parser.toStream();
             assertEquals(TestHelpers.unescapeJavaString(Helpers.toString(result)), TestHelpers.unescapeJavaString(Helpers.toString(build)));
