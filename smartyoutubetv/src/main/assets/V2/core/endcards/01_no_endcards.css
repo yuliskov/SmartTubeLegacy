@@ -1,0 +1,4 @@
+/* Hide End Cards */
+#creator-endscreen {
+    display: none !important;
+}

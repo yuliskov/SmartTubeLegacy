@@ -14,7 +14,7 @@ public class CommonScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnInitScripts() {
-        return AssetHelper.getAssetJSFilesMerged(mContext, CORE_COMMON_DIR);
+        return AssetHelper.getAssetJSFilesMerged(mContext, JSDirs.CORE_COMMON_DIR);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class CommonScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_COMMON_DIR);
+        return AssetHelper.getAssetCSSFilesMerged(mContext, JSDirs.CORE_COMMON_DIR);
     }
 
     @Override

@@ -1,0 +1,8 @@
+#search-keyboard #keyboard-grid,
+#search-keyboard .special-keys-container {
+    margin-left: 4rem !important;
+}
+
+#search-keyboard #microphone {
+    display: block !important;
+}

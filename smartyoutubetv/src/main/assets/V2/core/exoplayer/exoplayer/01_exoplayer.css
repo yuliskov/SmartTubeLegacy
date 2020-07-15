@@ -1,0 +1,37 @@
+/* hide LOADING... indicator */
+div#spinner,
+/* hide subtitles */
+.caption-window,
+/* hide title-bar */
+/* origin title controls */
+.watch-title-tray,
+/* kids title controls */
+.title-tray-cont,
+/* hide player's buttons (progress bar, play, pause etc) */
+/* origin controls */
+#transport-controls.transport-controls,
+/* kids controls */
+.transport-controls-cont,
+/* hide debug panel */
+.html5-video-info-panel {
+    display: none !important;
+}
+
+/* Make suggestions' background transparent */
+
+div.player,
+div.loader-container,
+body, html {
+    background-color: transparent !important;
+}
+
+/* For Kids only */
+#watch:not(.post-play) {
+    background-color: initial !important;
+}
+
+video {
+    visibility: hidden !important;
+}
+
+/* End Make suggestions' background transparent */

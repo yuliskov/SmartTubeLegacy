@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserAgentManager {
+    public enum UAVersion {V1, V2}
     private static final String USER_AGENT = "user-agent";
     public final static String[] LG_SMART_TV = {
             // 2013
@@ -37,8 +38,12 @@ public class UserAgentManager {
     }
 
     public String getUA() {
-        return LG_SMART_TV[1];
-        //return SAMSUNG_SMART_TV[1];
+        //return LG_SMART_TV[1];
+        return SAMSUNG_SMART_TV[1];
+    }
+
+    public UAVersion getUAVersion() {
+        return UAVersion.V1;
     }
 
     public Map<String, String> getUAHeaders() {

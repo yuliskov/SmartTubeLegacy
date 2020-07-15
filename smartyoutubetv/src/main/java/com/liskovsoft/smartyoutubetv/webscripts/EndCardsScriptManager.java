@@ -28,7 +28,7 @@ public class EndCardsScriptManager implements ScriptManager {
 
     @Override
     public InputStream getStyles() {
-        return AssetHelper.getAssetCSSFilesMerged(mContext, CORE_ENDCARDS_DIR);
+        return AssetHelper.getAssetCSSFilesMerged(mContext, JSDirs.CORE_ENDCARDS_DIR);
     }
 
     @Override

@@ -17,18 +17,18 @@ public class AddonsScriptManager implements ScriptManager {
 
     @Override
     public InputStream getOnInitScripts() {
-        return mergeJSAddons(ADDONS_INIT_DIR);
+        return mergeJSAddons(JSDirs.ADDONS_INIT_DIR);
     }
 
     @Override
     public InputStream getOnLoadScripts() {
-        return mergeJSAddons(ADDONS_LOAD_DIR);
+        return mergeJSAddons(JSDirs.ADDONS_LOAD_DIR);
     }
 
     @Override
     public InputStream getStyles() {
-        InputStream initStyles = AssetHelper.getAssetCSSFilesMerged(mContext, ADDONS_INIT_DIR);
-        InputStream loadStyles = AssetHelper.getAssetCSSFilesMerged(mContext, ADDONS_LOAD_DIR);
+        InputStream initStyles = AssetHelper.getAssetCSSFilesMerged(mContext, JSDirs.ADDONS_INIT_DIR);
+        InputStream loadStyles = AssetHelper.getAssetCSSFilesMerged(mContext, JSDirs.ADDONS_LOAD_DIR);
         return Helpers.appendStream(initStyles, loadStyles);
     }
 
