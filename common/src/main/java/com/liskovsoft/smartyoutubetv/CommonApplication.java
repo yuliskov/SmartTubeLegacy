@@ -7,6 +7,7 @@ import androidx.multidex.MultiDex;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.smartyoutubetv.misc.ProxyManager;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
@@ -26,6 +27,9 @@ public class CommonApplication extends Application {
 
         sSmartPreferences = SmartPreferences.instance(this);
         sCache = createDiskLruCache();
+
+        ProxyManager proxyManager = new ProxyManager(this);
+        proxyManager.configureSystemProxy();
     }
 
     private DiskLruCache createDiskLruCache() {

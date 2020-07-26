@@ -2,4 +2,6 @@
     <string name="system_lang">Default</string>
     <string name="log_stored_in_path">Log enabled: %s</string>
     <string name="log_to_file_started">Starting log: %s</string>
+    <string name="proxy_enabled">Web Proxy Enabled: %s</string>
+    <string name="proxy_disabled">Web Proxy Disabled</string>
 </resources>

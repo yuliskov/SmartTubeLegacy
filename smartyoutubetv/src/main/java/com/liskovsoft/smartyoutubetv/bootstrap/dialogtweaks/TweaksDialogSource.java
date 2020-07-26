@@ -37,6 +37,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.UpdateCheckDia
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProUseExternalPlayer4KDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProUseExternalPlayerFHDDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProUseExternalPlayerSDDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.WebProxyDialogItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new ATVPublishHistoryDialogItem(mContext));
         mItems.add(new ATVPublishRecommendedDialogItem(mContext));
         mItems.add(new ATVPublishSubscriptionsDialogItem(mContext));
+        mItems.add(new WebProxyDialogItem(mContext));
     }
 
     @Override
