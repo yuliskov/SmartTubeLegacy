@@ -272,8 +272,7 @@ public class ProxyManager {
         try {
             if (Build.VERSION.SDK_INT < 19) {
                 throw new UnsupportedOperationException("Web Proxy support not implemented for API level < 19");
-            }
-            else { // API level >= 19
+            } else { // API level >= 19
                 return setWebProxyAPI19Plus();
             }
         } catch (Exception e) {
