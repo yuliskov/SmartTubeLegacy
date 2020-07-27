@@ -72,6 +72,8 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public static final String VIDEO_TYPE_DEFAULT = "video_type_default";
     public static final String VIDEO_TYPE_LIVE = "video_type_live";
     public static final String VIDEO_TYPE_UPCOMING = "video_type_upcoming";
+    public static final String WEB_PROXY_URI = "web_proxy_url";
+    public static final String WEB_PROXY_ENABLED = "web_proxy_enabled";
     public static final int PLAYBACK_UNKNOWN = 0;
     public static final int PLAYBACK_IS_WORKING = 1;
     public static final int PLAYBACK_NOT_WORKING = 2;
@@ -561,4 +563,12 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public void setEnableAnimatedUI(boolean enable) {
         putBoolean(ENABLE_ANIMATED_UI, enable);
     }
+
+    public String getWebProxyUri() { return getString(WEB_PROXY_URI, ""); }
+
+    public void setWebProxyUri(String webProxy) { putString(WEB_PROXY_URI, webProxy); }
+
+    public boolean getWebProxyEnabled() { return getBoolean(WEB_PROXY_ENABLED, false); }
+
+    public void setWebProxyEnabled(boolean enable) { putBoolean(WEB_PROXY_ENABLED, enable);}
 }
