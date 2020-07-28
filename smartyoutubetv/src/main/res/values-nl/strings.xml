@@ -122,8 +122,8 @@
     <string name="proxy_port_hint">Proxy poort</string>
     <string name="proxy_host_hint">Proxy hostnaam of IP</string>
     <string name="proxy_type">Proxy type</string>
-    <string name="proxy_type_http">HTTP</string>
-    <string name="proxy_type_socks">SOCKS</string>
+    <string name="proxy_type_http" translatable="false">HTTP</string>
+    <string name="proxy_type_socks" translatable="false">SOCKS</string>
     <string name="enable_web_proxy">Web Proxy gebruiken</string>
     <string name="proxy_not_supported">Web Proxy niet mogelijk (Android 4.4+ vereist)</string>
     <string name="proxy_test_btn">TESTEN</string>
@@ -132,7 +132,7 @@
     <string name="proxy_test_cancelled">Test#%d: geannuleerd</string>
     <string name="proxy_type_invalid">Proxy type niet ingesteld</string>
     <string name="proxy_host_invalid">Proxy host niet ingesteld</string>
-    <string name="proxy_port_invalid">Ongeldige proxy poort: getal moet &gt; 0 </string>
+    <string name="proxy_port_invalid">Ongeldige proxy poort: getal moet &gt; 0</string>
     <string name="proxy_test_aborted">Test onderbroken, proxy instellingen invoeren ajb</string>
     <string name="proxy_test_start">Test#%d: %s ...</string>
     <string name="proxy_test_error">Fout#%d: %s</string>
