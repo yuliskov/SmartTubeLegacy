@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="system_lang">Default</string>
+    <string name="log_stored_in_path">已启用日志: %s</string>
+    <string name="log_to_file_started">开始记录日志: %s</string>
+    <string name="proxy_enabled">已启用代理服务器: %s</string>
+    <string name="proxy_disabled">已禁用代理服务器</string>
 </resources>
