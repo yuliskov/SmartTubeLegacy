@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- AppUpdateChecker -->
-    <!-- 											version_number ↓        ↓ app_name -->
-    <string name="app_update_new_version">有一个新版本 (%1$s) 的 %2$s 可得到!</string>
-    <string name="upgrade">升级</string>
-    <string name="cancel">取消</string>
-    <string name="no_external_storage_error">无法安装更新。 外部存储不存在。</string>
-</resources>

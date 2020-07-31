@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <CheckBoxPreference android:title="@string/pref_check_updates_title" android:key="enabled" android:defaultValue="true"/>
-    <EditTextPreference android:summary="@string/pref_min_interval_summary"
-                        android:key="min_interval" android:title="@string/pref_min_interval_title" android:defaultValue="180" />
-</PreferenceScreen>
