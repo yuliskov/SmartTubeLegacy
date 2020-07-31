@@ -1,5 +1,5 @@
 "[SmartYouTubeTV] is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial"
-<!--<a href="https://tracking.gitads.io/?repo=SmartYouTubeTV"> <img src="https://images.gitads.io/SmartYouTubeTV" alt="GitAds"/> </a>-->
+<a href="https://tracking.gitads.io/?repo=SmartYouTubeTV"> <img src="https://images.gitads.io/SmartYouTubeTV" alt="GitAds"/> </a>
 
 ![Logo of SmartYouTubeTV](screenshots/smartyoutubetv-logo_small.png "Logo of SmartYouTubeTV") SmartYouTubeTV
 =========
