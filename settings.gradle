@@ -3,12 +3,12 @@ include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker'
 def rootDir = settingsDir
 
 // prepare to git submodule
-gradle.ext.sharedUtilsRoot = new File(rootDir, '../SharedUtils').exists() ? new File(rootDir, '../SharedUtils') : new File(rootDir, './SharedUtils')
-apply from: new File(gradle.ext.sharedUtilsRoot, 'core_settings.gradle')
+gradle.ext.sharedModulesRoot = new File(rootDir, '../SharedModules').exists() ? new File(rootDir, '../SharedModules') : new File(rootDir, './SharedModules')
+apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
 // prepare to git submodule
-gradle.ext.myVideoTubeRoot = new File(rootDir, '../MyVideoTube').exists() ? new File(rootDir, '../MyVideoTube') : new File(rootDir, './MyVideoTube')
-apply from: new File(gradle.ext.myVideoTubeRoot, 'core_settings.gradle')
+gradle.ext.mediaServiceCoreRoot = new File(rootDir, '../MediaServiceCore').exists() ? new File(rootDir, '../MediaServiceCore') : new File(rootDir, './MediaServiceCore')
+apply from: new File(gradle.ext.mediaServiceCoreRoot, 'core_settings.gradle')
 
 // exoplayer extensions
 // gradle.ext.exoplayerRoot = new File(rootDir, '../ExoPlayer2.11.1')
