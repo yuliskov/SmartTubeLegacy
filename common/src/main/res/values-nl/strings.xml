@@ -2,4 +2,6 @@
     <string name="system_lang">Standaard</string>
     <string name="log_stored_in_path">Log bewaard in: %s</string>
     <string name="log_to_file_started">Logging gestart: %s</string>
+    <string name="proxy_enabled">Web Proxy ingeschakeld: %s</string>
+    <string name="proxy_disabled">Web Proxy uitgeschakeld</string>
 </resources>

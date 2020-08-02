@@ -119,4 +119,22 @@
     <string name="tweak_hold_ok_video_menu">Video menu openen met OK-toets (lang drukken)</string>
     <string name="tweak_animated_ui">Geanimeerde UI</string>
     <string name="tweak_ok_pause_without_ui">Video pauzeren met OK-toets (geen UI)</string>
+    <string name="proxy_port_hint">Proxy poort</string>
+    <string name="proxy_host_hint">Proxy hostnaam of IP</string>
+    <string name="proxy_type">Proxy type</string>
+    <string name="proxy_type_http" translatable="false">HTTP</string>
+    <string name="proxy_type_socks" translatable="false">SOCKS</string>
+    <string name="enable_web_proxy">Web Proxy gebruiken</string>
+    <string name="proxy_not_supported">Web Proxy niet mogelijk (Android 4.4+ vereist)</string>
+    <string name="proxy_test_btn">TESTEN</string>
+    <string name="proxy_settings_title">Proxy server instellingen</string>
+    <string name="proxy_test_urls">https://www.youtube.com\nhttps://www.google.com</string>
+    <string name="proxy_test_cancelled">Test#%d: geannuleerd</string>
+    <string name="proxy_type_invalid">Proxy type niet ingesteld</string>
+    <string name="proxy_host_invalid">Proxy host niet ingesteld</string>
+    <string name="proxy_port_invalid">Ongeldige proxy poort: waarde moet &gt; 0 zijn</string>
+    <string name="proxy_test_aborted">Test onderbroken, proxy instellingen invoeren ajb</string>
+    <string name="proxy_test_start">Test#%d: %s ...</string>
+    <string name="proxy_test_error">Fout#%d: %s</string>
+    <string name="proxy_test_status">Status#%d: %s %d %s</string>
 </resources>
