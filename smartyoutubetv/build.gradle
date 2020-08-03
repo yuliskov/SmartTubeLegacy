@@ -1,4 +1,4 @@
-apply from: '../../SharedModules/constants.gradle'
+apply from: gradle.ext.sharedModulesConstants
 buildscript {
     repositories {
         jcenter()
