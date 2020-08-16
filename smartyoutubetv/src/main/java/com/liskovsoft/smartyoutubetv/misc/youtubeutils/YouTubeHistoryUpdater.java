@@ -27,11 +27,16 @@ public class YouTubeHistoryUpdater {
     public void sync(String trackingUrl, float position, float length) {
         Log.d(TAG, String.format("Start history updating: %s, position: %s, length: %s", trackingUrl, position, length));
         HashMap<String, String> headers = mManager.getHeaders();
+
+        // TODO: for testing only!
+        HashMap<String, String> testHeaders = new HashMap<>();
+        testHeaders.put("Authorization", headers.get("Authorization"));
+
         final String fullTrackingUrl = processUrl(trackingUrl, position, length);
         Log.d(TAG, "Composed tracking url: " + fullTrackingUrl);
         //Log.d(TAG, "Tracking headers: " + headers);
         new Thread(() -> {  // avoid NetworkOnMainThreadException
-            Response response = OkHttpHelpers.doGetOkHttpRequest(fullTrackingUrl, headers);
+            Response response = OkHttpHelpers.doGetOkHttpRequest(fullTrackingUrl, testHeaders);
             if (response == null || !response.isSuccessful()) {
                 Log.e(TAG, "Bad tracking response: " + response);
             }
@@ -58,6 +63,48 @@ public class YouTubeHistoryUpdater {
         //result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
         result.set(ET, position);
         //result.set(ET, String.format("%s,%s", 0, watched));
+
+        // TODO: for testing only!
+        //result.remove("cpn"); // required!
+        //result.remove("ei"); // required!
+        //result.remove("ns"); // required!
+        //result.remove("ver"); // required!
+        //result.remove("final"); // required!
+        result.remove("vm"); // can be removed!
+        result.remove("el"); // can be removed!
+        result.remove("referrer"); // can be removed!
+        result.remove("fmt"); // can be removed!
+        result.remove("fs"); // can be removed!
+        result.remove("rt"); // can be removed!
+        result.remove("of"); // can be removed!
+        result.remove("euri"); // can be removed!
+        result.remove("lact"); // can be removed!
+        result.remove("cl"); // can be removed!
+        result.remove("state"); // can be removed!
+        result.remove("volume"); // can be removed!
+        result.remove("c");  // can be removed!
+        result.remove("cver");  // can be removed!
+        result.remove("cplayer");  // can be removed!
+        result.remove("cbrand");  // can be removed!
+        result.remove("cbr");  // can be removed!
+        result.remove("cbrver");  // can be removed!
+        result.remove("ctheme");  // can be removed!
+        result.remove("cmodel");  // can be removed!
+        result.remove("cnetwork"); // can be removed!
+        result.remove("cos");  // can be removed!
+        result.remove("cosver");  // can be removed!
+        result.remove("cplatform"); // can be removed!
+        result.remove("hl"); // can be removed!
+        result.remove("cr"); // can be removed!
+        result.remove("rtn"); // can be removed!
+        result.remove("feature"); // can be removed!
+        result.remove("afmt"); // can be removed!
+        result.remove("idpj"); // can be removed!
+        result.remove("ldpj"); // can be removed!
+        result.remove("muted"); // can be removed!
+        result.remove("subscribed"); // can be removed!
+        result.remove("rti"); // can be removed!
+        result.remove("conn"); // can be removed!
 
         return result.toString();
     }
