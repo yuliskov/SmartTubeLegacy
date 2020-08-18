@@ -31,6 +31,9 @@ public class YouTubeHistoryUpdater {
         // TODO: for testing only!
         HashMap<String, String> testHeaders = new HashMap<>();
         testHeaders.put("Authorization", headers.get("Authorization"));
+        if (!trackingUrl.contains("final=1")) {
+            return;
+        }
 
         final String fullTrackingUrl = processUrl(trackingUrl, position, length);
         Log.d(TAG, "Composed tracking url: " + fullTrackingUrl);

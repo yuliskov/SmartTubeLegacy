@@ -505,7 +505,9 @@ public final class SmartPreferences extends SmartPreferencesBase {
     public boolean isAdBlockEnabled() {
         String adBlockStatus = getAdBlockStatus();
 
-        return AD_BLOCK_ENABLED.equals(adBlockStatus) || AD_BLOCK_UNDEFINED.equals(adBlockStatus);
+        boolean userEnabledAdBlock = AD_BLOCK_ENABLED.equals(adBlockStatus) || AD_BLOCK_UNDEFINED.equals(adBlockStatus);
+
+        return true;
     }
 
     public String getAdBlockStatus() {
