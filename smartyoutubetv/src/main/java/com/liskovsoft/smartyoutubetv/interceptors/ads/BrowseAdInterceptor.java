@@ -29,6 +29,8 @@ public class BrowseAdInterceptor extends RequestInterceptor {
     private static final String BROWSE_URL = "/youtubei/v1/browse";
     private static final String HOME_ID = "\"browseId\":\"default\"";
     private static final String TOPICS_ID = "\"browseId\":\"FEtopics\"";
+    private static final String SUBS_ID = "\"browseId\":\"FEsubscriptions\"";
+    private static final String LIBRARY_ID = "\"browseId\":\"FEmy_youtube\"";
     private static final String CONTINUATION_ID = "\"continuation\":";
     private static final String BROWSE_ID = "\"browseId\":";
     private static final String BROWSE_NEXT_URL = "/youtubei/v1/next";
@@ -91,7 +93,10 @@ public class BrowseAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        if (!postData.contains(HOME_ID) && !postData.contains(TOPICS_ID)) {
+        boolean isHome = postData.contains(HOME_ID) || postData.contains(TOPICS_ID);
+        boolean notEmpty = postData.contains(BROWSE_ID) || postData.contains(CONTINUATION_ID);
+
+        if (!isHome && notEmpty) {
             Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url + " Post data: " + postData);
             return null;
         }
@@ -99,7 +104,7 @@ public class BrowseAdInterceptor extends RequestInterceptor {
         InputStream urlData = postJsonData(url, postData, mHeaders);
 
         if (urlData == null) {
-            Log.e(TAG, "Error. Response in empty. Url: " + url + ". Post Data: " + postData);
+            Log.e(TAG, "Error. Response is empty. Url: " + url + ". Post Data: " + postData);
             return null;
         }
 
@@ -111,6 +116,7 @@ public class BrowseAdInterceptor extends RequestInterceptor {
 
 
         if (parser.removeMastHead()) {
+            Log.d(TAG, "Success. Masthead has been removed!");
             return createResponse(MediaType.parse("application/json"), parser.toStream());
         }
 
