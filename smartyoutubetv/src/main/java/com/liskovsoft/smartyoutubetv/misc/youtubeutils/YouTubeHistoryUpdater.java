@@ -31,9 +31,9 @@ public class YouTubeHistoryUpdater {
         // TODO: for testing only!
         HashMap<String, String> testHeaders = new HashMap<>();
         testHeaders.put("Authorization", headers.get("Authorization"));
-        if (!trackingUrl.contains("final=1")) {
-            return;
-        }
+        //if (!trackingUrl.contains("final=1")) {
+        //    return;
+        //}
 
         final String fullTrackingUrl = processUrl(trackingUrl, position, length);
         Log.d(TAG, "Composed tracking url: " + fullTrackingUrl);
@@ -47,6 +47,9 @@ public class YouTubeHistoryUpdater {
     }
 
     private String processUrl(String trackingUrl, float position, float length) {
+        // 'watchtime' doesn't work anymore?
+        trackingUrl = trackingUrl.replace("api/stats/watchtime?", "api/stats/playback?");
+
         MyQueryString result = MyQueryStringFactory.parse(trackingUrl);
 
         // only for testing
@@ -62,9 +65,10 @@ public class YouTubeHistoryUpdater {
         result.set(LEN, length);
         // watch time in seconds
         result.set(CMT, position);
-        result.set(ST, position); // the same. why?
+        //result.set(ST, position); // the same. why?
+        //result.set(ET, position); // the same. why?
+
         //result.set(ST, String.format("%s,%s", 0, watched - 2)); // ???
-        result.set(ET, position);
         //result.set(ET, String.format("%s,%s", 0, watched));
 
         // TODO: for testing only!
@@ -73,7 +77,9 @@ public class YouTubeHistoryUpdater {
         //result.remove("ns"); // required!
         //result.remove("ver"); // required!
         //result.remove("final"); // required!
-        result.remove("vm"); // can be removed!
+        //result.remove("vm"); // required!
+        result.remove("st"); // can be removed!
+        result.remove("et"); // can be removed!
         result.remove("el"); // can be removed!
         result.remove("referrer"); // can be removed!
         result.remove("fmt"); // can be removed!
