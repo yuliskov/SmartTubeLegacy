@@ -93,12 +93,12 @@ public class BrowseAdInterceptor extends RequestInterceptor {
             return null;
         }
 
-        //boolean isHome = postData.contains(HOME_ID) || postData.contains(TOPICS_ID);
-        //
-        //if (!isHome) {
-        //    Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url + " Post data: " + postData);
-        //    return null;
-        //}
+        boolean isHome = postData.contains(HOME_ID) || postData.contains(TOPICS_ID);
+
+        if (!isHome) {
+            Log.e(TAG, "Not a Home page. Skip filtering! Url: " + url + " Post data: " + postData);
+            return null;
+        }
 
         InputStream urlData = postJsonData(url, postData, mHeaders);
 
