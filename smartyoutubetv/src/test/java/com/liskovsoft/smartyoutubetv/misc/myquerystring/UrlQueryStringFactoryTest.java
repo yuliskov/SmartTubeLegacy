@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class MyQueryStringFactoryTest {
+public class UrlQueryStringFactoryTest {
     private static final String PATH_URL = "http://myurl.com/hello/world/key1/value1/key2/value2/";
     private static final String PATH_URL2 = "http://myurl.com/hello/world/key2/value2/";
     private static final String PATH_URL3 = "http://myurl.com/hello/world/key1/value1/key2/value2/key3/value3";
