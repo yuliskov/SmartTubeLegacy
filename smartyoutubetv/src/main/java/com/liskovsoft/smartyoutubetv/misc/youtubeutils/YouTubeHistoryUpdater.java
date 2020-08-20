@@ -28,12 +28,16 @@ public class YouTubeHistoryUpdater {
         Log.d(TAG, String.format("Start history updating: %s, position: %s, length: %s", trackingUrl, position, length));
         HashMap<String, String> headers = mManager.getHeaders();
 
+        String authorization = headers.get("Authorization");
+
+        if (authorization == null) {
+            Log.e(TAG, "Error: Authorization not found!");
+            return;
+        }
+
         // TODO: for testing only!
         HashMap<String, String> testHeaders = new HashMap<>();
-        testHeaders.put("Authorization", headers.get("Authorization"));
-        //if (!trackingUrl.contains("final=1")) {
-        //    return;
-        //}
+        testHeaders.put("Authorization", authorization);
 
         final String fullTrackingUrl = processUrl(trackingUrl, position, length);
         Log.d(TAG, "Composed tracking url: " + fullTrackingUrl);

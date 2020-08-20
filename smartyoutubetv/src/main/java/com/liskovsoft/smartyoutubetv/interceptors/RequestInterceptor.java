@@ -165,4 +165,20 @@ public abstract class RequestInterceptor {
 
         return result;
     }
+
+    protected WebResourceResponse filterVideoInfoResponse(String url) {
+        WebResourceResponse result = null;
+
+        if (url != null) {
+            InputStream urlData = getUrlData(url);
+            String response = Helpers.toString(urlData);
+
+            if (response != null) {
+                String filteredResponse = response.replace("%2C%22adPlacements%22%3A%5B%7B%22", "%2C%22removedAdPlacements%22%3A%5B%7B%22");
+                result = createResponse(MediaType.parse("application/x-www-form-urlencoded"), Helpers.toStream(filteredResponse));
+            }
+        }
+
+        return result;
+    }
 }

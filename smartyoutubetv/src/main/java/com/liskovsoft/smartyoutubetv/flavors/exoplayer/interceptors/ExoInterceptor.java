@@ -3,10 +3,8 @@ package com.liskovsoft.smartyoutubetv.flavors.exoplayer.interceptors;
 import android.content.Context;
 import android.content.Intent;
 import android.webkit.WebResourceResponse;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpHelpers;
 import com.liskovsoft.smartyoutubetv.BuildConfig;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.commands.GenericCommand;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.ExoPlayerFragment;
@@ -18,11 +16,9 @@ import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.youtubeinfoparser.parsers.YouTubeMediaParser;
 import com.liskovsoft.smartyoutubetv.fragments.TwoFragmentManager;
 import com.liskovsoft.smartyoutubetv.interceptors.RequestInterceptor;
-import com.liskovsoft.smartyoutubetv.misc.HeaderManager;
 import com.liskovsoft.smartyoutubetv.misc.myquerystring.MyUrlEncodedQueryString;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 import com.liskovsoft.smartyoutubetv.prefs.SmartPreferences;
-import okhttp3.MediaType;
 
 import java.io.InputStream;
 
@@ -130,23 +126,7 @@ public class ExoInterceptor extends RequestInterceptor {
             }
         }).start();
 
-        return filterResponse();
-    }
-
-    private WebResourceResponse filterResponse() {
-        WebResourceResponse result = null;
-
-        if (mOriginUrl != null) {
-            InputStream urlData = getUrlData(mOriginUrl);
-            String response = Helpers.toString(urlData);
-
-            if (response != null) {
-                String filteredResponse = response.replace("%2C%22adPlacements%22%3A%5B%7B%22", "%2C%22removedAdPlacements%22%3A%5B%7B%22");
-                result = createResponse(MediaType.parse("application/x-www-form-urlencoded"), Helpers.toStream(filteredResponse));
-            }
-        }
-
-        return result;
+        return filterVideoInfoResponse(mOriginUrl);
     }
 
     /**
