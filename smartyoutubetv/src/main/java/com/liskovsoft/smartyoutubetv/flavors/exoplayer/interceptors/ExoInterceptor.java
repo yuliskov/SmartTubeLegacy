@@ -97,7 +97,7 @@ public class ExoInterceptor extends RequestInterceptor {
                 mExoCallback.onFalseCall();
             }
 
-            return null;
+            return emptyResponse();
         }
 
         return processCurrentUrl();
