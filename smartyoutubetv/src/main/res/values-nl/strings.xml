@@ -133,7 +133,7 @@
     <string name="proxy_type_invalid">Proxy type niet ingesteld</string>
     <string name="proxy_host_invalid">Proxy host niet ingesteld</string>
     <string name="proxy_port_invalid">Ongeldige proxy poort: waarde moet &gt; 0 zijn</string>
-    <string name="proxy_test_aborted">Test onderbroken, proxy instellingen invoeren ajb</string>
+    <string name="proxy_test_aborted">Test onderbroken, proxy instellingen eerst invoeren</string>
     <string name="proxy_test_start">Test#%d: %s ...</string>
     <string name="proxy_test_error">Fout#%d: %s</string>
     <string name="proxy_test_status">Status#%d: %s %d %s</string>
