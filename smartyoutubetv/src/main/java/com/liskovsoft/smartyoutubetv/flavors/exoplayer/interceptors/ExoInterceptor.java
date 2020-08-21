@@ -122,7 +122,8 @@ public class ExoInterceptor extends RequestInterceptor {
                 parseAndOpenExoPlayer(getUrlData(mCurrentUrl));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
-                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or broken. " + e.getMessage());
+                Log.e(TAG, "Url doesn't exist or its content broken: " + mCurrentUrl);
+                MessageHelpers.showLongMessage(mContext, "Url doesn't exist or its content is broken. " + e.getMessage());
             }
         }).start();
 
