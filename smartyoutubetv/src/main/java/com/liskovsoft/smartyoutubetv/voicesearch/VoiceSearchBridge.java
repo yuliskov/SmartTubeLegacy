@@ -30,13 +30,18 @@ public class VoiceSearchBridge implements SearchCallback {
      * @return handled
      */
     public boolean onKeyEvent(KeyEvent event) {
+        boolean isSearchKey;
+
         // open voice search activity on mic/search key or joystick Y key
-        boolean isSearchKey =
+        if (VERSION.SDK_INT >= 21) {
+            isSearchKey =
+                    event.getKeyCode() == KeyEvent.KEYCODE_SEARCH ||
+                    event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_Y ||
+                    event.getKeyCode() == KeyEvent.KEYCODE_VOICE_ASSIST;
+        } else {
+            isSearchKey =
                 event.getKeyCode() == KeyEvent.KEYCODE_SEARCH ||
                 event.getKeyCode() == KeyEvent.KEYCODE_BUTTON_Y;
-
-        if (VERSION.SDK_INT >= 21) {
-            isSearchKey = event.getKeyCode() == KeyEvent.KEYCODE_VOICE_ASSIST;
         }
 
         if (isSearchKey) {
