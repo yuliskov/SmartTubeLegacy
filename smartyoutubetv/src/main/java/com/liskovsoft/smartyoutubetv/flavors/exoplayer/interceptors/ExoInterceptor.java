@@ -97,7 +97,7 @@ public class ExoInterceptor extends RequestInterceptor {
                 mExoCallback.onFalseCall();
             }
 
-            return emptyResponse();
+            return filterVideoInfoResponse(mOriginUrl);
         }
 
         return processCurrentUrl();
