@@ -186,6 +186,8 @@ public class ExoInterceptor extends RequestInterceptor {
     private String unlockVideos(String url) {
         MyUrlEncodedQueryString query = MyUrlEncodedQueryString.parse(url);
 
+        fixJsonError(query);
+
         switch(mPrefs.getCurrentVideoType()) {
             case SmartPreferences.VIDEO_TYPE_DEFAULT:
                 // NOTE: should be unlocked in video_info_interceptor.js
@@ -204,5 +206,10 @@ public class ExoInterceptor extends RequestInterceptor {
     public void openExternally(OnMediaFoundCallback playerWrapper) {
         mExoCallback = playerWrapper;
         processCurrentUrl();
+    }
+
+    private void fixJsonError(MyUrlEncodedQueryString query) {
+        query.remove("access_token");
+        query.remove("action_display_post");
     }
 }
