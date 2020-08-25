@@ -54,8 +54,6 @@ public class ContentFilter {
         }
 
         if (prefs.getEnableAnimatedUI()) {
-            //isLimitedMemory probably needed for Force enable animation
-            mSecondReplacementRegExp.put("isLimitedMemory:[!\\.\\w]+,", "isLimitedMemory:false,");
             //Force enable animation, just scroll animation side panel animation is something else
             mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w]+,", "enableAnimations:true,");
         }

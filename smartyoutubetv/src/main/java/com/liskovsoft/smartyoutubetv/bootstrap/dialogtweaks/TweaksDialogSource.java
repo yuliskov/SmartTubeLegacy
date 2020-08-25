@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishHist
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishRecommendedDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ATVPublishSubscriptionsDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedPreviewsDialogItem;
+import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.AnimatedUIDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.HighContrastModeDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.LongPressVideoMenuDialogItem;
 import com.liskovsoft.smartyoutubetv.bootstrap.dialogtweaks.items.ProAltPlayerMappingDialogItem;
@@ -60,7 +61,7 @@ public class TweaksDialogSource implements MultiDialogSource {
         mItems.add(new AnimatedPreviewsDialogItem(mContext));
         mItems.add(new HighContrastModeDialogItem(mContext));
         mItems.add(new LongPressVideoMenuDialogItem(mContext));
-        //mItems.add(new AnimatedUIDialogItem(mContext));
+        mItems.add(new AnimatedUIDialogItem(mContext));
         mItems.add(new LockLastLauncherDialogItem(mContext));
         mItems.add(new OpenMusicDialogItem(mContext));
         mItems.add(new OpenSubscriptionsDialogItem(mContext));
