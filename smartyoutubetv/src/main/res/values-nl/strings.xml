@@ -79,7 +79,7 @@
     <string name="tweak_open_externally">PRO: Video openen met externe player</string>
     <string name="message_install_vlc_player">Je moet VLC player installeren</string>
     <string name="tweak_fix_aspect">Beeldverhouding en zoom aanpassen</string>
-    <string name="tweak_animated_previews">Geanimeerde previews weergeven</string>
+    <string name="tweak_animated_previews">Geanimeerde previews</string>
     <string name="close_msg">App afgesloten!</string>
     <string name="global_afr_fix_warning">Dit kan de autoplay functie verstoren</string>
     <string name="tweak_back_press_exit">App sluiten met BACK-toets (lang drukken)</string>
