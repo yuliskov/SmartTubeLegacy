@@ -77,6 +77,7 @@ If you want to support my developments you are welcome to buy me a cup of coffee
  * __[otava5](https://github.com/otava5)__ (Czech language)
  * __[WaggBR](https://github.com/WaggBR)__ (Brazilian Portuguese language)
  * __[itzxeon78](https://github.com/itzxeon78)__ (Spanish language)
+ * __[AlexKoala](https://github.com/alexkoala)__ (Korean language)
 
 ### Screens:
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
