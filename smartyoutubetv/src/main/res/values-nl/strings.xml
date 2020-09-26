@@ -45,7 +45,7 @@
     <string name="xwalk_tip">Beperkt aantal formaten - alternatief</string>
     <string name="exo_tip">Uitgebreid aantal formaten - standaard</string>
     <string name="exo_alt_tip">Uitgebreid aantal formaten - alternatief</string>
-    <string name="exit_msg">BACK-toets nogmaals indrukken om app te sluiten</string>
+    <string name="exit_msg">BACK-toets nogmaals indrukken om app af te sluiten</string>
     <string name="error_host_lookup">Geen internet verbinding: %s</string>
     <string name="error_unknown">Fout bij verbinding: %s</string>
     <string name="codec_selector_title">Codec selecteren</string>
@@ -82,7 +82,7 @@
     <string name="tweak_animated_previews">Geanimeerde previews</string>
     <string name="close_msg">App afgesloten!</string>
     <string name="global_afr_fix_warning">Dit kan de autoplay functie verstoren</string>
-    <string name="tweak_back_press_exit">App sluiten met BACK-toets (lang drukken)</string>
+    <string name="tweak_back_press_exit">App afsluiten met BACK-toets (lang drukken)</string>
     <string name="force_all_codecs_lite_only">LITE: Alle codecs forceren (4K)</string>
     <string name="force_avc_lite_only">LITE: AVC codec forceren (1080p)</string>
     <string name="force_vp9_lite_only">LITE: VP9 codec forceren (4K)</string>
@@ -106,7 +106,7 @@
     <string name="enable_ad_block">Advertenties blokkeren</string>
     <string name="ad_blocking_permissions">Deze app filtert advertenties en andere inhoud om je gebruikerservaring te verbeteren.\nBen je akkoord?</string>
     <string name="player_ui_show_timeout">PRO: Time-out weergeven bij verkleinen van UI</string>
-    <string name="channels_close_app">YTV Kanalen sluiten met BACK-toets</string>
+    <string name="channels_close_app">YTV Kanalen afsluiten met BACK-toets</string>
     <string name="lower_player_buffer">PRO: Player buffer verminderen</string>
     <string name="tweak_publish_history_playlist">YTV: Geschiedenis playlist weergeven bij Kanalen</string>
     <string name="tweak_publish_recommended_playlist">YTV: Aanbevolen playlist weergeven bij Kanalen</string>
