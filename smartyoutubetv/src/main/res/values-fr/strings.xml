@@ -89,7 +89,7 @@
     <string name="fix_clock_msg">L\'horloge sur votre appareil n\'est pas correctement réglé</string>
     <string name="do_restore_data_msg">Restaurer les données précédemment enregistrées?\nL\'application va redémarré.</string>
     <string name="restoring_data_msg">Restauration des données...</string>
-    <string name="alt_player_mapping">Télécommande: cartographie alt media-keys</string>
+    <string name="alt_player_mapping">Télécommande: mapping alt media-keys</string>
     <string name="tip_hash_in_subscriptions">Vider abonnements? Supprimer les canaux commençant par le hachage #</string>
     <string name="tip_show_main_screen_2">Appuyez sur RETOUR pour ouvrir les paramètres principaux</string>
     <string name="do_install_bridge_apk">Voulez-vous activer la recherche vocale mondiale?\nIl peut être nécessaire d\'installer des apk supplémentaires.
@@ -121,4 +121,23 @@
     <string name="tweak_hold_ok_video_menu">Maintenez OK pour le menu vidéo (impact sur les performances)</string>
     <string name="tweak_animated_ui">Interface utilisateur animée (impact sur les performances)</string>
     <string name="tweak_ok_pause_without_ui">Ok met la vidéo en pause immédiatement (sans l\'interface utilisateur)</string>
+    <string name="proxy_port_hint">Port proxy</string>
+    <string name="proxy_host_hint">Nom d'hôte ou IP du proxy</string>
+    <string name="proxy_type">Type de proxy</string>
+    <string name="proxy_type_http" translatable="false">HTTP</string>
+    <string name="proxy_type_socks" translatable="false">SOCKS</string>
+    <string name="enable_web_proxy">Utiliser le proxy Web</string>
+    <string name="proxy_not_supported">Utiliser le proxy Web (nécessite Android 4.4+)</string>
+    <string name="proxy_test_btn">Tester</string>
+    <string name="proxy_settings_title">Paramètres du serveur proxy</string>
+    <string name="proxy_test_urls">https://www.youtube.com\nhttps://www.google.com</string>
+    <string name="proxy_test_cancelled">Test#%d: annulé.</string>
+    <string name="proxy_type_invalid">Type de proxy non défini.</string>
+    <string name="proxy_host_invalid">Hôte proxy non défini.</string>
+    <string name="proxy_port_invalid">Port proxy non valide, doit &gt; 0.</string>
+    <string name="proxy_test_aborted">Test abandonné, veuillez d'abord corriger les paramètres du proxy.</string>
+    <string name="proxy_test_start">Test#%d: %s ...</string>
+    <string name="proxy_test_error">Erreur#%d: %s</string>
+    <string name="proxy_test_status">Statut#%d: %s %d %s</string>
+</resources>
 </resources>
