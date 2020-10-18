@@ -31,19 +31,19 @@ public class ContentFilter {
             mSecondReplacementRegExp.put("enableMastheadSmall:[!\\.\\w]+,", "enableMastheadSmall:true,");
         }
 
-        if (prefs.getEnableAnimatedPreviews()) {
-            mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w]+,", "animatedWebpSupport:true,");
-        }
+        //if (prefs.getEnableAnimatedPreviews()) {
+        //    mSecondReplacementRegExp.put("animatedWebpSupport:[!\\.\\w]+,", "animatedWebpSupport:true,");
+        //}
 
         // prefs key: ENABLE_HIGH_CONTRAST_MODE
-        if (prefs.getEnableHighContrastMode()) {
-            mSecondReplacementRegExp.put(
-                    // c.zds||(b.get()?hH(a.body,"high-contrast"):jH(a.body,"high-contrast"))
-                    "\\w+\\.\\w+\\|\\|\\(\\w+\\.get\\(\\)\\?([\\w$]+\\(\\w+\\.body,\"high-contrast\"\\)):\\w+\\(\\w+\\.body,\"high-contrast\"\\)\\)",
-                    // hH(a.body,"high-contrast")
-                    "$1"
-            );
-        }
+        //if (prefs.getEnableHighContrastMode()) {
+        //    mSecondReplacementRegExp.put(
+        //            // c.zds||(b.get()?hH(a.body,"high-contrast"):jH(a.body,"high-contrast"))
+        //            "\\w+\\.\\w+\\|\\|\\(\\w+\\.get\\(\\)\\?([\\w$]+\\(\\w+\\.body,\"high-contrast\"\\)):\\w+\\(\\w+\\.body,\"high-contrast\"\\)\\)",
+        //            // hH(a.body,"high-contrast")
+        //            "$1"
+        //    );
+        //}
 
         // NOTE: Video menu items source: https://www.youtube.com/youtubei/v1/browse
         // NOTE: Menu items available on Cobalt user agent only
@@ -53,10 +53,10 @@ public class ContentFilter {
             mSecondReplacementRegExp.put("enableVideoMenuOnBrowse:[!\\.\\w]+,", "enableVideoMenuOnBrowse:true,");
         }
 
-        if (prefs.getEnableAnimatedUI()) {
-            //Force enable animation, just scroll animation side panel animation is something else
-            mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w]+,", "enableAnimations:true,");
-        }
+        //if (prefs.getEnableAnimatedUI()) {
+        //    //Force enable animation, just scroll animation side panel animation is something else
+        //    mSecondReplacementRegExp.put("enableAnimations:![!\\.\\w]+,", "enableAnimations:true,");
+        //}
 
         if (Helpers.isMicAvailable(context)) {
             mSecondReplacementRegExp.put("this\\.environment\\.supportsVoiceSearch", "true");
