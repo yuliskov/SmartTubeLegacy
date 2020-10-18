@@ -38,14 +38,14 @@ public class UserAgentManager {
     }
 
     public String getUA() {
-        //return LG_SMART_TV[1];
+        return LG_SMART_TV[1];
         //return SAMSUNG_SMART_TV[1];
-        return PHILIPS_SMART_TV[0];
+        //return PHILIPS_SMART_TV[0];
     }
 
     // used inside JSDirs.java
     public UAVersion getUAVersion() {
-        return UAVersion.V1;
+        return UAVersion.V2;
     }
 
     public Map<String, String> getUAHeaders() {

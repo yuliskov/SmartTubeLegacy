@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,7 +32,7 @@ public class DisplayHolder {
         private int mWidth;
         private float mRefreshRate;
 
-        Mode(int mModeId,int mWidth, int mHeight, float refreshRate){
+        public Mode(int mModeId,int mWidth, int mHeight, float refreshRate){
             this.mModeId = mModeId;
             this.mWidth = mWidth;
             this.mHeight = (mHeight);

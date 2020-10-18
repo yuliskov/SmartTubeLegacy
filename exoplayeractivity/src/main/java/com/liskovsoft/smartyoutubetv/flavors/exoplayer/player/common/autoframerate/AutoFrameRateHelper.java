@@ -6,7 +6,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.liskovsoft.exoplayeractivity.R;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.DisplaySyncHelper.AutoFrameRateListener;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplaySyncHelper;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplaySyncHelper.AutoFrameRateListener;
 import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.support.ExoPreferences;
 
 import java.util.HashMap;

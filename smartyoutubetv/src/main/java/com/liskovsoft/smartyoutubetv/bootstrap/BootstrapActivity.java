@@ -97,7 +97,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
         if (isChecked) {
             if (bootstrapActivityName == null) {
-                bootstrapActivityName = SmartYouTubeTV4K.class.getCanonicalName();
+                bootstrapActivityName = SmartYouTubeTV1080Activity.class.getCanonicalName();
             }
 
             startActivity(this, bootstrapActivityName);

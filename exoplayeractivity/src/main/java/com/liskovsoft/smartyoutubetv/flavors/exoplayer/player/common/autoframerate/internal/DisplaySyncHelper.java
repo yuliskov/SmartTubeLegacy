@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal;
 
 import android.app.Activity;
 import android.os.Build;
@@ -6,7 +6,7 @@ import android.os.Build.VERSION;
 import android.view.Window;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv.CommonApplication;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.DisplayHolder.Mode;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplayHolder.Mode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.List;
 
 // Source: https://developer.amazon.com/docs/fire-tv/4k-apis-for-hdmi-mode-switch.html#amazonextension
 
-class DisplaySyncHelper implements UhdHelperListener {
+public class DisplaySyncHelper implements UhdHelperListener {
     private static final String TAG = DisplaySyncHelper.class.getSimpleName();
     private static final int STATE_ORIGINAL = 1;
     private static final int STATE_CURRENT = 2;
@@ -33,7 +33,7 @@ class DisplaySyncHelper implements UhdHelperListener {
     private int mModeLength = -1;
     private AutoFrameRateListener mListener;
 
-    interface AutoFrameRateListener {
+    public interface AutoFrameRateListener {
         void onModeStart(Mode newMode);
     }
 

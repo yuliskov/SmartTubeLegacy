@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -17,7 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.DisplayHolder.Mode;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplayHolder.Mode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

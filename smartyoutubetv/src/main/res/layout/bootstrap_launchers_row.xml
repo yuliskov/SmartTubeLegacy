@@ -3,6 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:orientation="horizontal" tools:showIn="@layout/activity_bootstrap">
     <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo"
+                                                                android:visibility="gone"
                                                                 android:onClick="selectFlavour"
                                                                 android:layout_height="wrap_content"
                                                                 android:layout_width="wrap_content"
@@ -10,6 +11,7 @@
                                                                 app:titleText="@string/title_exo_main"
                                                                 app:tipText="@string/exo_tip"/>
     <com.liskovsoft.smartyoutubetv.widgets.BootstrapLargeButton android:id="@+id/button_exo2"
+                                                                android:visibility="gone"
                                                                 android:onClick="selectFlavour"
                                                                 android:layout_height="wrap_content"
                                                                 android:layout_width="wrap_content"

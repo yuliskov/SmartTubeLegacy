@@ -1,4 +1,4 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal;
 
 import android.view.Window;
 

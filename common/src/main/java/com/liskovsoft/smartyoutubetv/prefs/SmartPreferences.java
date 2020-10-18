@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 public final class SmartPreferences extends SmartPreferencesBase {
     private static final String TAG = SmartPreferences.class.getSimpleName();
     private static final String VIDEO_FORMAT_NAME = "videoFormatName"; // e.g. '360p' or '720p'
-    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName";
+    private static final String BOOTSTRAP_ACTIVITY_NAME = "bootstrapActivityName2";
     private static final String BOOTSTRAP_CHECKBOX_CHECKED = "bootstrapCheckBoxChecked";
     private static final String BOOTSTRAP_SELECTED_LANGUAGE = "bootstrapSelectedLanguage";
     private static final String BOOTSTRAP_UPDATE_CHECK = "bootstrapUpdateCheck";

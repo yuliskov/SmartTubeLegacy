@@ -1,9 +1,10 @@
-package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate;
+package com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.old;
 
 import android.app.Activity;
 import android.view.Window;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.DisplayHolder.Mode;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplayHolder.Mode;
+import com.liskovsoft.smartyoutubetv.flavors.exoplayer.player.common.autoframerate.internal.DisplaySyncHelper;
 
 import java.util.HashMap;
 
