@@ -122,7 +122,7 @@
     <string name="tweak_animated_ui">Interface utilisateur animée (impact sur les performances)</string>
     <string name="tweak_ok_pause_without_ui">Ok met la vidéo en pause immédiatement (sans l\'interface utilisateur)</string>
     <string name="proxy_port_hint">Port proxy</string>
-    <string name="proxy_host_hint">Nom d'hôte ou IP du proxy</string>
+    <string name="proxy_host_hint">Nom d\'hôte ou IP du proxy</string>
     <string name="proxy_type">Type de proxy</string>
     <string name="proxy_type_http" translatable="false">HTTP</string>
     <string name="proxy_type_socks" translatable="false">SOCKS</string>
@@ -135,7 +135,7 @@
     <string name="proxy_type_invalid">Type de proxy non défini.</string>
     <string name="proxy_host_invalid">Hôte proxy non défini.</string>
     <string name="proxy_port_invalid">Port proxy non valide, doit &gt; 0.</string>
-    <string name="proxy_test_aborted">Test abandonné, veuillez d'abord corriger les paramètres du proxy.</string>
+    <string name="proxy_test_aborted">Test abandonné, veuillez d\'abord corriger les paramètres du proxy.</string>
     <string name="proxy_test_start">Test#%d: %s ...</string>
     <string name="proxy_test_error">Erreur#%d: %s</string>
     <string name="proxy_test_status">Statut#%d: %s %d %s</string>
