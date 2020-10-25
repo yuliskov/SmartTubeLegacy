@@ -13,6 +13,8 @@ public class UserAgentManager {
             "Mozilla/5.0 (Unknown; Linux armv7l) AppleWebKit/537.1+ (KHTML, like Gecko) Safari/537.1+ LG Browser/6.00.00(+mouse+3D+SCREEN+TUNER; LGE; 43LK5760PTA; 04.25.05; 0x00000001;); LG NetCast.TV-2013 /04.25.05 (LG, 43LK5760PTA, wired)"
     };
     public final static String[] SAMSUNG_SMART_TV = {
+            // Another old ua
+            "Mozilla/5.0 (SMART-TV; Linux; Tizen 2.4.0) AppleWebkit/538.1 (KHTML, like Gecko) SamsungBrowser/1.1 TV Safari/538.1",
             // Old UI (no exit dialog)
             "Mozilla/5.0 (Linux; Tizen 2.3) AppleWebKit/538.1 (KHTML, like Gecko)Version/2.3 TV Safari/538.1",
             "Mozilla/5.0 (Linux; Tizen 2.3; SmartHub; SMART-TV; SmartTV; U; Maple2012) AppleWebKit/538.1+ (KHTML, like Gecko) TV Safari/538.1+",
@@ -38,9 +40,7 @@ public class UserAgentManager {
     }
 
     public String getUA() {
-        //return LG_SMART_TV[1];
-        //return SAMSUNG_SMART_TV[1];
-        return PHILIPS_SMART_TV[0];
+        return SAMSUNG_SMART_TV[0];
     }
 
     // used inside JSDirs.java
