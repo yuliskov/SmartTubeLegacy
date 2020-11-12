@@ -97,7 +97,7 @@ public class BootstrapActivity extends BootstrapActivityBase {
         boolean isChecked = mPrefs.getBootstrapSaveSelection();
         if (isChecked) {
             if (bootstrapActivityName == null) {
-                bootstrapActivityName = SmartYouTubeTV4K.class.getCanonicalName();
+                bootstrapActivityName = SmartYouTubeTV1080Activity.class.getCanonicalName();
             }
 
             startActivity(this, bootstrapActivityName);
@@ -106,10 +106,10 @@ public class BootstrapActivity extends BootstrapActivityBase {
 
     private void initLauncherMapping() {
         mLauncherMapping = new HashMap<>();
-        mLauncherMapping.put(R.id.button_exo, SmartYouTubeTV4K.class);
-        mLauncherMapping.put(R.id.button_exo2, SmartYouTubeTV4KAlt.class);
         mLauncherMapping.put(R.id.button_webview, SmartYouTubeTV1080Activity.class);
         mLauncherMapping.put(R.id.button_xwalk, SmartYouTubeTV1080AltActivity.class);
+        mLauncherMapping.put(R.id.button_exo, SmartYouTubeTV4K.class);
+        mLauncherMapping.put(R.id.button_exo2, SmartYouTubeTV4KAlt.class);
     }
 
     public void selectFlavour(View view) {
