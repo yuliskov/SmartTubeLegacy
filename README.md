@@ -6,6 +6,14 @@
 
 [![MPLv2 License](http://img.shields.io/badge/license-MPLv2-blue.svg?style=flat-square)](https://www.mozilla.org/MPL/2.0/)
 
+## Deprecation Notice
+
+**This app is no longer updated.**
+
+For a better YouTube experience on Android TV check out **[SmartTubeNext](https://github.com/yuliskov/SmartTubeNext)**
+
+---
+
 __SmartYouTubeTV: A YouTube client for set-top boxes and Android-based TVs:__
 
  * <a href="https://t.me/SmartYouTubeTV">Telegram group</a>
