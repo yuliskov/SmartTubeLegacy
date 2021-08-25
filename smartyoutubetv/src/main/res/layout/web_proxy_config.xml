@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/proxy_type"
-        android:textColor="@color/sub_text_color2"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <RadioGroup
@@ -68,5 +68,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:lines="4"
-        android:textColor="@color/sub_text_color" />
+        android:textColor="@color/black" />
 </LinearLayout>

@@ -1,13 +1,14 @@
 package com.liskovsoft.smartyoutubetv.voicesearch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import com.algolia.instantsearch.voice.VoiceSpeechRecognizer;
 import com.algolia.instantsearch.voice.ui.Voice;
 import com.algolia.instantsearch.voice.ui.VoiceInputDialogFragment;
 import com.algolia.instantsearch.voice.ui.VoicePermissionDialogFragment;
 
 class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.ResultsListener {
-    private final AppCompatActivity mActivity;
+    private final FragmentActivity mActivity;
     private final SearchCallback mCallback;
 
     private enum Tag {
@@ -15,7 +16,7 @@ class VoiceOverlayDialog implements VoiceDialog, VoiceSpeechRecognizer.ResultsLi
         Voice
     }
 
-    public VoiceOverlayDialog(AppCompatActivity activity, SearchCallback callback) {
+    public VoiceOverlayDialog(FragmentActivity activity, SearchCallback callback) {
         mActivity = activity;
         mCallback = callback;
     }

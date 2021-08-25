@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.view.KeyEvent;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv.misc.youtubeintenttranslator.YouTubeHelpers;
 
@@ -16,7 +17,7 @@ public class VoiceSearchBridge implements SearchCallback {
     private final ArrayList<VoiceDialog> mDialogs;
     private final Activity mActivity;
 
-    public VoiceSearchBridge(AppCompatActivity activity) {
+    public VoiceSearchBridge(FragmentActivity activity) {
         mActivity = activity;
         mConnector = new VoiceSearchConnector();
         mDialogs = new ArrayList<>();

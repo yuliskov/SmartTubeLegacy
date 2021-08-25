@@ -1,4 +1,4 @@
-include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common', ':exoplayer-extension-vp9'
+include ':smartyoutubetv', ':browser', ':exoplayeractivity', ':appupdatechecker', ':common'
 
 def rootDir = settingsDir
 

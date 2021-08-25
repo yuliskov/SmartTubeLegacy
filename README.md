@@ -53,12 +53,6 @@ The device/resolution options at start launches different playing methods (as pe
 Also important, it's possible to select max resolution and codec (ie 1080/AVC1) via the start screen that will be applied on video loading (**Codec** option).
 
 The **Remember** tick box acts as a configuration saving for next app launches.
-
-### Donation:
-If you want to support my developments you are welcome to buy me a cup of coffee :)
- * [__Donation Alerts (RU, PayPal)__](https://www.donationalerts.ru/r/firsthash)
- * [__PrivatBank (UA)__](https://privatbank.ua/ru/sendmoney?payment=5fcdddf53e3d491d63fcb050e6e2e05f2f2678c2)
- * __BTC__: 1JAT5VVWarVBkpVbNDn8UA8HXNdrukuBSx
  
 ### Reviews / Articles:
  * [__Official site__](https://smartyoutubetv.github.io)

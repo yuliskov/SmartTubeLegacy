@@ -43,8 +43,8 @@ android {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
         applicationId "com.liskovsoft.videomanager"
-        versionCode 1305
-        versionName "6.17.725"
+        versionCode 1319
+        versionName "6.17.739"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -219,8 +219,8 @@ dependencies {
     implementation project(path: ':sharedutils')
 
     // ATV INSTALL_FAILED_CONFLICTING_PROVIDER fix
-    origImplementation project(path: ':leanbackassistant')
-    betaImplementation project(path: ':leanbackassistant')
+    // origImplementation project(path: ':leanbackassistant')
+    // betaImplementation project(path: ':leanbackassistant')
     // experimentsImplementation project(path: ':leanbackassistant')
 
     implementation project(path: ':common')
