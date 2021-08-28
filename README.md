@@ -31,20 +31,20 @@ __NOTE: SmartYouTubeTV provides internal login mechanism which allows you to kee
 ### Install SmartYouTubeTV:
 
 __Easy installation in less than 5 minutes with only the FireTV__
- * <a href="https://github.com/yuliskov/SmartYouTubeTV/wiki/Install-SmartYouTubeTV-(only-FireTV-needed)">Install SmartYouTubeTV (only FireTV needed)</a>
+ * <a href="https://github.com/yuliskov/SmartTubeLegacy/wiki/Install-SmartYouTubeTV-(only-FireTV-needed)">Install SmartYouTubeTV (only FireTV needed)</a>
 
 __Standard installation via ADB__
  * If you don't know how to sideload/install apps via ADB, read a tutorial (e.g. <a href="http://kodi.wiki/view/HOW-TO:Install_Kodi_on_Fire_TV" target="_blank">this one</a>)
- * <a href="https://github.com/yuliskov/SmartYouTubeTV/releases" target="_blank">Download latest SmartYouTubeTV APK</a> and sideload/install with adb: 
+ * <a href="https://github.com/yuliskov/SmartTubeLegacy/releases" target="_blank">Download latest SmartYouTubeTV APK</a> and sideload/install with adb: 
  * *adb install -r SmartYouTubeTV_Orig.apk*
  * Enjoy :)
 
 __How to change system language with only the MiTV3__
- * [How-to-enable-English-on-Android-5.1](https://github.com/yuliskov/SmartYouTubeTV/wiki/How-to-enable-English-on-Android-5.1)
+ * [How-to-enable-English-on-Android-5.1](https://github.com/yuliskov/SmartTubeLegacy/wiki/How-to-enable-English-on-Android-5.1)
 
 ### Starting screen:
 
-The device/resolution options at start launches different playing methods (as per https://github.com/yuliskov/SmartYouTubeTV/issues/15#issuecomment-364805950)
+The device/resolution options at start launches different playing methods (as per https://github.com/yuliskov/SmartTubeLegacy/issues/15#issuecomment-364805950)
 * 1080 Main - WebView
 * 1080 Alt  - XWalk
 * 4K Main   - Exoplayer + WebView
@@ -59,7 +59,7 @@ The **Remember** tick box acts as a configuration saving for next app launches.
  * [__XDA thread__](https://forum.xda-developers.com/fire-tv/themes-apps/modified-version-smart-youtube-tv-t3773384)
  
 ### Changelog:
- * [Check releases page for changelog ..](https://github.com/yuliskov/SmartYouTubeTV/releases)
+ * [Check releases page for changelog ..](https://github.com/yuliskov/SmartTubeLegacy/releases)
 
 ### Contributors:
  * __[WolfganP](https://github.com/WolfganP)__ (README)
