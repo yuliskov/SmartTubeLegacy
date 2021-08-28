@@ -54,9 +54,9 @@ Also important, it's possible to select max resolution and codec (ie 1080/AVC1) 
 
 The **Remember** tick box acts as a configuration saving for next app launches.
  
-### Reviews / Articles:
+<!-- ### Reviews / Articles:
  * [__Official site__](https://smartyoutubetv.github.io)
- * [__XDA thread__](https://forum.xda-developers.com/fire-tv/themes-apps/modified-version-smart-youtube-tv-t3773384)
+ * [__XDA thread__](https://forum.xda-developers.com/fire-tv/themes-apps/modified-version-smart-youtube-tv-t3773384) -->
  
 ### Changelog:
  * [Check releases page for changelog ..](https://github.com/yuliskov/SmartTubeLegacy/releases)
