@@ -74,7 +74,7 @@ The **Remember** tick box acts as a configuration saving for next app launches.
 
 ### Screens:
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_01.jpg "Screenshot of SmartYouTubeTV")
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_02.jpg "Screenshot of SmartYouTubeTV")
+<!-- ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_02.jpg "Screenshot of SmartYouTubeTV") -->
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_03.jpg "Screenshot of SmartYouTubeTV")
-![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV")
+<!-- ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_04.jpg "Screenshot of SmartYouTubeTV") -->
 ![Screenshot of SmartYouTubeTV](screenshots/smartyoutubetv_screenshot_05.jpg "Screenshot of SmartYouTubeTV")
